@@ -12,6 +12,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_ENABLED: ${POSTGRES_ENABLED}
 
   adminer:
     image: adminer:4.8.1
@@ -20,9 +21,38 @@ services:
     ports:
       - 8080:8080
 
+  redis:
+    image: redis:7.0-alpine
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASS}
+    volumes:
+      - redisdata:/data
+
+  back:
+    build: docker/node
+    expose:
+      - 3000
+    ports:
+      - 9229:9229
+    volumes:
+        - ./back:/home/node/app
+    depends_on:
+        - postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_ENABLED: ${POSTGRES_ENABLED}
+      NODE_ENV: ${NODE_ENV}
+    command: sh -c "yarn install && yarn run start:debug"
+
+
+
 volumes:
   modules:
   build:
   store:
-  redis:
+  redisdata:
   pgdata:
