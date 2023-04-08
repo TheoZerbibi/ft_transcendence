@@ -13,28 +13,34 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_ENABLED: ${POSTGRES_ENABLED}
+    labels:
+    - traefik.enable=false
+
 
   adminer:
     image: adminer:4.8.1
     container_name: adminer
     restart: always
-    ports:
-      - 8080:8080
+    labels:
+    - traefik.enable=true
+    - traefik.http.services.adminer.loadbalancer.server.port=8080
+    - traefik.http.routers.adminer.rule=Host(`adminer.transcendence.localhost`)
+
 
   redis:
     image: redis:7.0-alpine
-    ports:
-      - '6379:6379'
+    container_name: redis
+    expose:
+      - '6379'
     command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASS}
     volumes:
       - redisdata:/data
 
   back:
     build: docker/node
+    container_name: back
     expose:
       - 3000
-    ports:
-      - 9229:9229
     volumes:
         - ./back:/home/node/app
     depends_on:
@@ -46,7 +52,30 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_ENABLED: ${POSTGRES_ENABLED}
       NODE_ENV: ${NODE_ENV}
-    command: sh -c "yarn install && yarn run start:debug"
+    command: sh -c "tail -f /dev/null"
+    labels:
+    - traefik.enable=true
+    - traefik.http.services.api.loadbalancer.server.port=3000
+    - traefik.http.routers.api.rule=Host(`api.transcendence.localhost`)
+
+  
+  traefik:
+    image: traefik:2.8
+    container_name: traefik
+    command:
+        - --api.insecure=true
+        - --providers.docker
+        - --entryPoints.web.address=:80
+        - "--providers.docker.exposedbydefault=false"
+    ports:
+        - "80:80"
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+        - traefik.enable=true
+        - traefik.http.routers.traefik.service=api@internal
+        - traefik.http.routers.traefik.rule=Host(`traefik.transcendence.localhost`)
+
 
 
 

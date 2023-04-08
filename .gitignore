@@ -179,6 +179,7 @@ dist
 # and uncomment the following lines
 
 .pnp.*
+.pnpm-store/
 
 config.json
 config.prod.json
