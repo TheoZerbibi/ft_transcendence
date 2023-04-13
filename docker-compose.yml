@@ -14,13 +14,6 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_ENABLED: ${POSTGRES_ENABLED}
 
-  adminer:
-    image: adminer:4.8.1
-    container_name: adminer
-    ports:
-      - 8080:8080
-    restart: always
-
   redis:
     image: redis:7.0-alpine
     container_name: redis
@@ -29,6 +22,25 @@ services:
     command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASS}
     volumes:
       - redisdata:/data
+
+  prisma:
+    build: docker/node
+    container_name: prisma
+    ports:
+      - 5555:5555 # NE PAS EXPOSE EN PROD
+    volumes:
+        - ./back:/home/node/app
+    depends_on:
+        - postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_ENABLED: ${POSTGRES_ENABLED}
+      NODE_ENV: ${NODE_ENV}
+      DATABASE_URL: ${DATABASE_URL}
+    command: sh -c "pnpm install && npx prisma studio"
 
   api:
     build: docker/node
@@ -48,6 +60,7 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_ENABLED: ${POSTGRES_ENABLED}
       NODE_ENV: ${NODE_ENV}
+      DATABASE_URL: ${DATABASE_URL}
     command: sh -c "tail -f /dev/null"
 
 volumes:
