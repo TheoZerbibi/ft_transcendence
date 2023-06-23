@@ -17,6 +17,8 @@ module.exports = {
 	},
 	ignorePatterns: ['.eslintrc.js'],
 	rules: {
+		'indent': ['error', 'tab'],
+		'prettier/prettier': [2, { 'useTabs': true }],
 		'semi': ["error", "always"],
 		"no-tabs": 0,
 		'linebreak-style': ['error', 'unix'],
