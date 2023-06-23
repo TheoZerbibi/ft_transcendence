@@ -1,0 +1,11 @@
+{
+	"scripts": {
+		"prismix": "cat prisma/base.prisma src/models/**/*.prisma > prisma/schema.prisma && npx prisma generate",
+		"start:prisma": "npm run prismix && npx prisma studio"
+	},
+	"dependencies": {
+		"@prisma/client": "^4.16.1",
+		"prisma": "^4.16.1",
+		"prisma-dbml-generator": "^0.9.1"
+	}
+}

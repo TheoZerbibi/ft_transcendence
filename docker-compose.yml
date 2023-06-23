@@ -24,12 +24,13 @@ services:
       - redisdata:/data
 
   prisma:
-    build: docker/node
     container_name: prisma
+    build:
+      context: ./
+      dockerfile: ./docker/prisma/Dockerfile
     ports:
       - 5555:5555 # NE PAS EXPOSE EN PROD
-    volumes:
-        - ./back:/home/node/app
+      - 5556:5556
     depends_on:
         - postgres
     environment:
@@ -40,7 +41,8 @@ services:
       POSTGRES_ENABLED: ${POSTGRES_ENABLED}
       NODE_ENV: ${NODE_ENV}
       DATABASE_URL: ${DATABASE_URL}
-    command: sh -c "pnpm install && npx prisma studio"
+    command: sh -c "npm run start:prisma"
+    # command: sh -c "tail -f /dev/null"
 
   api:
     build: docker/node
@@ -61,7 +63,7 @@ services:
       POSTGRES_ENABLED: ${POSTGRES_ENABLED}
       NODE_ENV: ${NODE_ENV}
       DATABASE_URL: ${DATABASE_URL}
-    command: sh -c "tail -f /dev/null"
+    command: sh -c "npx prisma migrate dev && tail -f /dev/null"
 
 volumes:
   modules:
