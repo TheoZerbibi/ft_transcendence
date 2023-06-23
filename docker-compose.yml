@@ -60,7 +60,8 @@ services:
       REDIS_PASS: ${REDIS_PASS}
       REDIS_URL: ${REDIS_URL}
       NODE_ENV: ${NODE_ENV}
-    command: sh -c "tail -f /dev/null"
+      HOST: ${HOST}
+    command: sh -c "pnpm install && pnpm run start:dev"
 
   api:
     build: docker/node
@@ -81,7 +82,8 @@ services:
       POSTGRES_ENABLED: ${POSTGRES_ENABLED}
       NODE_ENV: ${NODE_ENV}
       DATABASE_URL: ${DATABASE_URL}
-    command: sh -c "npx prisma migrate dev && tail -f /dev/null"
+      HOST: ${HOST}
+    command: sh -c "pnpm prismix && npx prisma migrate dev && tail -f /dev/null"
 
 volumes:
   modules:
