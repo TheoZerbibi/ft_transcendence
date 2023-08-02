@@ -67,9 +67,9 @@ services:
     build: docker/node
     container_name: api
     expose:
-      - 3000
+      - 3001
     ports:
-      - 3000:3000
+      - 3001:3001
     volumes:
         - ./back:/home/node/app
     depends_on:
@@ -83,7 +83,24 @@ services:
       NODE_ENV: ${NODE_ENV}
       DATABASE_URL: ${DATABASE_URL}
       HOST: ${HOST}
-    command: sh -c "pnpm prismix && npx prisma migrate dev && tail -f /dev/null"
+    command: sh -c "pnpm prismix && npx prisma migrate dev && pnpm start:dev"
+
+  front:
+    build: docker/node
+    container_name: front
+    expose:
+      - 3000
+    ports:
+      - 3000:3000
+    volumes:
+        - ./front:/home/node/app
+    depends_on:
+        - socket
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      HOST: ${HOST}
+      VITE_APP_TITLE: "Front"
+    command: sh -c "tail -f /dev/null"
 
 volumes:
   modules:
