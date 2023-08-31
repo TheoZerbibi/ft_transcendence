@@ -64,10 +64,13 @@ services:
   #     REDIS_URL: ${REDIS_URL}
   #     NODE_ENV: ${NODE_ENV}
   #     HOST: ${HOST}
-  #   command: sh -c "pnpm install && pnpm run start:dev"
+  #   command: sh -c "pnpm run start:dev"
 
   api:
-    build: docker/node
+    build:
+      context: ./back
+      target: backend
+      dockerfile: ../docker/node/Dockerfile
     container_name: api
     ports:
       - 3001:3001
