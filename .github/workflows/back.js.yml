@@ -12,6 +12,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+       run:
+         working-directory: ./back/
     strategy:
       matrix:
         node-version: [18.x]
@@ -22,8 +25,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: './back/package-lock.json'
     - run: |
-          cd back
           npm run lint
           npm run build
     env:
