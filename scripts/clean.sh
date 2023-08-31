@@ -7,7 +7,7 @@ function clean_docker() {
 	docker volume rm $(docker volume ls -q)
 
 	echo "Cleaning node_modules and dist folders"
-	rm -rf ./**/dist ./**/node_modules ./**/.pnpm-store/ ./**/dist/ ./**/package-lock.json
+	rm -rf ../**/dist ../**/node_modules ../**/.pnpm-store/ ../**/package-lock.json
 }
 
 function confirmation() {
