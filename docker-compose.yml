@@ -87,9 +87,9 @@ services:
       POSTGRES_ENABLED: ${POSTGRES_ENABLED}
       NODE_ENV: ${NODE_ENV}
       DATABASE_URL: ${DATABASE_URL}
-      HOST: ${HOST}
+      HOST: ${HOSTNAME}
     # command: sh -c "pnpm prismix && npx prisma migrate dev && tail -f /dev/null"
-    command: sh -c "npm i -g @nestjs/cli && tail -f /dev/null"
+    command: sh -c "npm i -g @nestjs/cli && pnpm db:migrate && tail -f /dev/null"
 
 volumes:
   modules:
