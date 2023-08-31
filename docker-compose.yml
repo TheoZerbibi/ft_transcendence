@@ -6,6 +6,8 @@ services:
     container_name: postgres
     volumes:
         - pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
       POSTGRES_DB: ${POSTGRES_DB}
@@ -23,55 +25,56 @@ services:
     volumes:
       - redisdata:/data
 
-  prisma:
-    container_name: prisma
-    build:
-      context: ./
-      dockerfile: ./docker/prisma/Dockerfile
-    ports:
-      - 5555:5555 # NE PAS EXPOSE EN PROD
-      - 5556:5556
-    depends_on:
-      - postgres
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      POSTGRES_ENABLED: ${POSTGRES_ENABLED}
-      NODE_ENV: ${NODE_ENV}
-      DATABASE_URL: ${DATABASE_URL}
-    command: sh -c "npm run start:prisma"
-    # command: sh -c "tail -f /dev/null"
+  # prisma:
+  #   container_name: prisma
+  #   build:
+  #     context: ./
+  #     dockerfile: ./docker/prisma/Dockerfile
+  #   ports:
+  #     - 5555:5555 # NE PAS EXPOSE EN PROD
+  #     - 5556:5556
+  #   depends_on:
+  #     - postgres
+  #   environment:
+  #     POSTGRES_DB: ${POSTGRES_DB}
+  #     POSTGRES_USER: ${POSTGRES_USER}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  #     POSTGRES_PORT: ${POSTGRES_PORT}
+  #     POSTGRES_ENABLED: ${POSTGRES_ENABLED}
+  #     NODE_ENV: ${NODE_ENV}
+  #     DATABASE_URL: ${DATABASE_URL}
+  #   command: sh -c "npm run start:prisma"
+  #   # command: sh -c "tail -f /dev/null"
 
-  socket:
-    build: docker/node
-    container_name: socket
-    ports:
-    - 4000:4000
-    volumes:
-      - ./socket:/home/node/app
-    depends_on:
-      - api
-      - redis
-    environment:
-      REDIS_HOST: ${REDIS_HOST}
-      REDIS_PORT: ${REDIS_PORT}
-      REDIS_PASS: ${REDIS_PASS}
-      REDIS_URL: ${REDIS_URL}
-      NODE_ENV: ${NODE_ENV}
-      HOST: ${HOST}
-    command: sh -c "pnpm install && pnpm run start:dev"
+  # socket:
+  #   build: docker/node
+  #   container_name: socket
+  #   ports:
+  #   - 4000:4000
+  #   volumes:
+  #     - ./socket:/home/node/app
+  #   depends_on:
+  #     - api
+  #     - redis
+  #   environment:
+  #     REDIS_HOST: ${REDIS_HOST}
+  #     REDIS_PORT: ${REDIS_PORT}
+  #     REDIS_PASS: ${REDIS_PASS}
+  #     REDIS_URL: ${REDIS_URL}
+  #     NODE_ENV: ${NODE_ENV}
+  #     HOST: ${HOST}
+  #   command: sh -c "pnpm install && pnpm run start:dev"
 
   api:
     build: docker/node
     container_name: api
-    expose:
-      - 3000
     ports:
-      - 3000:3000
+      - 3001:3001
     volumes:
         - ./back:/home/node/app
+        - modules:/home/node/app/node_modules
+        - build:/home/node/app/dist
+        - store:/home/node/app/.pnpm-store
     depends_on:
         - postgres
     environment:
@@ -83,7 +86,8 @@ services:
       NODE_ENV: ${NODE_ENV}
       DATABASE_URL: ${DATABASE_URL}
       HOST: ${HOST}
-    command: sh -c "pnpm prismix && npx prisma migrate dev && tail -f /dev/null"
+    # command: sh -c "pnpm prismix && npx prisma migrate dev && tail -f /dev/null"
+    command: sh -c "npm i -g @nestjs/cli && tail -f /dev/null"
 
 volumes:
   modules:

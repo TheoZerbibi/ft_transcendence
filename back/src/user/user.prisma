@@ -1,0 +1,8 @@
+model User {
+	id			Int	@id @default(autoincrement()) @unique
+	username	String
+	DAuth		Boolean
+	Avatar		String
+	createdAt	DateTime @default(now())
+	UpdatedAt	DateTime @updatedAt
+}
