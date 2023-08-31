@@ -50,51 +50,59 @@ services:
       DATABASE_URL: ${DATABASE_URL}
     command: sh -c "npm run start:prisma"
     # command: sh -c "tail -f /dev/null"
-         
-        #  socket:
-        #    build: docker/node
-        #    container_name: socket
-        #    ports:
-        #    - 4000:4000
-        #    volumes:
-        #      - ./socket:/home/node/app
-        #    depends_on:
-        #      - api
-        #      - redis
-        #    environment:
-        #      REDIS_HOST: ${REDIS_HOST}
-        #      REDIS_PORT: ${REDIS_PORT}
-        #      REDIS_PASS: ${REDIS_PASS}
-        #      REDIS_URL: ${REDIS_URL}
-        #      NODE_ENV: ${NODE_ENV}
-        #      HOST: ${HOST}
-        #    command: sh -c "pnpm install && pnpm run start:dev"
-        # 
-        #  api:
-        #    build: docker/node
-        #    container_name: api
-        #    expose:
-        #      - 3000
-        #    ports:
-        #      - 3000:3000
-        #    volumes:
-        #        - ./back:/home/node/app
-        #    depends_on:
-        #        - postgres
-        #    environment:
-        #      POSTGRES_DB: ${POSTGRES_DB}
-        #      POSTGRES_USER: ${POSTGRES_USER}
-        #      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-        #      POSTGRES_PORT: ${POSTGRES_PORT}
-        #      POSTGRES_ENABLED: ${POSTGRES_ENABLED}
-        #      NODE_ENV: ${NODE_ENV}
-        #      DATABASE_URL: ${DATABASE_URL}
-        #      HOST: ${HOST}
-        #    command: sh -c "pnpm prismix && npx prisma migrate dev && tail -f /dev/null"
+
+  socket:
+    build: docker/node
+    container_name: socket
+    ports:
+      - 4000:4000
+    volumes:
+      - ./socket:/home/node/app
+    depends_on:
+      - api
+      - redis
+    environment:
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PASS: ${REDIS_PASS}
+      REDIS_URL: ${REDIS_URL}
+      NODE_ENV: ${NODE_ENV}
+      HOST: ${HOST}
+    command: sh -c "pnpm install && pnpm run start:dev"
+      # 
+      #  api:
+      #    build: docker/node
+      #    container_name: api
+      #    expose:
+      #      - 3000
+      #    ports:
+      #      - 3000:3000
+      #    volumes:
+      #        - ./back:/home/node/app
+      #    depends_on:
+      #        - postgres
+      #    environment:
+      #      POSTGRES_DB: ${POSTGRES_DB}
+      #      POSTGRES_USER: ${POSTGRES_USER}
+      #      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      #      POSTGRES_PORT: ${POSTGRES_PORT}
+      #      POSTGRES_ENABLED: ${POSTGRES_ENABLED}
+      #      NODE_ENV: ${NODE_ENV}
+      #      DATABASE_URL: ${DATABASE_URL}
+      #      HOST: ${HOST}
+      #    command: sh -c "pnpm prismix && npx prisma migrate dev && tail -f /dev/null"
+
+  front:
+    build:
+      context: ./docker/front/
+    image: front
+    container_name: front
+    ports:
+      - "3000:80"
 
 volumes:
   modules:
-  build:
-  store:
-  redisdata:
-  pgdata:
+    build:
+      store:
+        redisdata:
+          pgdata:
