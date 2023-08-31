@@ -1,4 +1,5 @@
 #!/bin/bash
+FOLDER="${PWD##*/}"
 
 function clean_docker() {
 	docker-compose down --rmi all --volumes
@@ -21,6 +22,7 @@ function confirmation() {
 	done
 }
 
+if [[ "$FOLDER" == "scripts" ]]; then cd .. ;fi
 if [ -z "$1" ]; then
 	confirmation
 elif [[ $1 == "-f" ]]; then

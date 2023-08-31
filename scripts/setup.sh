@@ -44,8 +44,8 @@ function clean_docker() {
 }
 
 check_env
-cd ..
 clean_docker
+if [[ "$FOLDER" == "scripts" ]]; then cd .. ;fi
 if [[ ! -f .env ]]; then
 	copy_dist
 else
