@@ -1,95 +1,25 @@
 version: "3.9"
 
 services:
-  postgres:
-    image: postgres:15.2-alpine
-    container_name: postgres
-    volumes:
-        - pgdata:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
-    expose:
-      - 5432
-    environment:
-      PGDATA: /var/lib/postgresql/data/pgdata
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      POSTGRES_ENABLED: ${POSTGRES_ENABLED}
 
-  redis:
-    image: redis:7.0-alpine
-    container_name: redis
-    expose:
-      - '6379'
-    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASS}
-    volumes:
-      - redisdata:/data
-
-  # CONTAINER UNIQUEMENT DEV, NE PAS DEPLOY SUR LA PROD
-  prisma:
-    container_name: prisma
+  front:
     build:
-      context: ./
-      dockerfile: ./docker/prisma/Dockerfile
-    ports:
-      - 5555:5555
-    depends_on:
-      - postgres
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      POSTGRES_ENABLED: ${POSTGRES_ENABLED}
-      NODE_ENV: ${NODE_ENV}
-      DATABASE_URL: ${DATABASE_URL}
-    command: sh -c "npm run start:prisma"
-
-  # socket:
-  #   build: docker/node
-  #   container_name: socket
-  #   ports:
-  #   - 4000:4000
-  #   volumes:
-  #     - ./socket:/home/node/app
-  #   depends_on:
-  #     - api
-  #     - redis
-  #   environment:
-  #     REDIS_HOST: ${REDIS_HOST}
-  #     REDIS_PORT: ${REDIS_PORT}
-  #     REDIS_PASS: ${REDIS_PASS}
-  #     REDIS_URL: ${REDIS_URL}
-  #     NODE_ENV: ${NODE_ENV}
-  #     HOST: ${HOST}
-  #   command: sh -c "pnpm run start:dev"
-
-  api:
-    build:
-      context: ./back
-      target: backend
+      context: ./front
+      target: frontend
       dockerfile: ../docker/node/Dockerfile
-    container_name: api
+    container_name: front
     ports:
-      - 3001:3001
+      - 3000:3000
     volumes:
-        - ./back:/home/node/app
+        - ./front:/home/node/app
         - modules:/home/node/app/node_modules
         - store:/home/node/app/.pnpm-store
     depends_on:
         - postgres
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      POSTGRES_ENABLED: ${POSTGRES_ENABLED}
       NODE_ENV: ${NODE_ENV}
-      DATABASE_URL: ${DATABASE_URL}
       HOST: ${HOSTNAME}
-    command: sh -c "npm i -g @nestjs/cli && pnpm db:migrate && tail -f /dev/null"
+    command: sh -c "tail -f /dev/null" 
 
 volumes:
   modules:
