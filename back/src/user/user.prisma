@@ -1,8 +1,9 @@
 model User {
 	id			Int	@id @default(autoincrement()) @unique
 	username	String
-	DAuth		Boolean
-	Avatar		String
+	email		String
+	dAuth		Boolean @default(false)
+	avatar		String
 	createdAt	DateTime @default(now())
-	UpdatedAt	DateTime @updatedAt
+	updatedAt	DateTime @updatedAt
 }
