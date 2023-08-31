@@ -1,5 +1,6 @@
 #!/bin/bash
 
+FOLDER="${PWD##*/}"
 IGreen='\033[0;92m'
 Color_Off='\033[0m'
 
