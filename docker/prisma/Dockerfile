@@ -2,7 +2,7 @@ FROM node:18.14-alpine
 
 WORKDIR /home/node/app
 
-COPY ./back/src/models ./src/models
+COPY ./back/src/*/*.prisma ./src/
 COPY ./back/prisma ./prisma
 COPY ./docker/prisma/tsconfig.json .
 COPY ./docker/prisma/package.json .
