@@ -37,16 +37,16 @@ function clean_docker() {
 	while true; do
 		read -p "Do you wish to clean docker volume? [Y/n] " yn
 		case $yn in
-			[Yy]* ) bash ./clean.sh -f; break;;
+			[Yy]* ) bash ./scripts/clean.sh -f; break;;
 			[Nn]* ) break;;
 			* ) break;;
 		esac
 	done
 }
 
+if [[ "$FOLDER" == "scripts" ]]; then cd .. ;fi
 check_env
 clean_docker
-if [[ "$FOLDER" == "scripts" ]]; then cd .. ;fi
 if [[ ! -f .env ]]; then
 	copy_dist
 else

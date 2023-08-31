@@ -46,7 +46,6 @@ services:
       NODE_ENV: ${NODE_ENV}
       DATABASE_URL: ${DATABASE_URL}
     command: sh -c "npm run start:prisma"
-    # command: sh -c "tail -f /dev/null"
 
   # socket:
   #   build: docker/node
@@ -75,7 +74,6 @@ services:
     volumes:
         - ./back:/home/node/app
         - modules:/home/node/app/node_modules
-        - build:/home/node/app/dist
         - store:/home/node/app/.pnpm-store
     depends_on:
         - postgres
@@ -88,7 +86,6 @@ services:
       NODE_ENV: ${NODE_ENV}
       DATABASE_URL: ${DATABASE_URL}
       HOST: ${HOSTNAME}
-    # command: sh -c "pnpm prismix && npx prisma migrate dev && tail -f /dev/null"
     command: sh -c "npm i -g @nestjs/cli && pnpm db:migrate && tail -f /dev/null"
 
 volumes:
