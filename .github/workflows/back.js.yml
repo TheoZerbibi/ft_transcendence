@@ -24,11 +24,11 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        cache-dependency-path: '**/package-lock.json'
+        cache: 'pnpm'
+        cache-dependency-path: '**/pnpm-lock.yaml'
     - run: |
-          npm run lint
-          npm run build
+          pnpm lint
+          pnpm build
     env:
       POSTGRES_HOST: localhost
       POSTGRES_PORT: 5432
