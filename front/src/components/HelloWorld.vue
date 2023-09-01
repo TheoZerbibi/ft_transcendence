@@ -12,7 +12,7 @@
 
 		<v-col class="mb-4">
 			<h1 class="display-2 font-weight-bold mb-3">
-				Welcome to Vuetify 3 Beta
+				Welcome to NORMINET
 			</h1>
 
 			<h4>Vite Preview</h4>
