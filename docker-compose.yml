@@ -14,8 +14,8 @@ services:
         - ./front:/home/node/app
         - modules:/home/node/app/node_modules
         - store:/home/node/app/.pnpm-store
-    depends_on:
-        - postgres
+    # depends_on:
+    #     - api
     environment:
       NODE_ENV: ${NODE_ENV}
       HOST: ${HOSTNAME}

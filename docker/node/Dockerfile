@@ -14,6 +14,7 @@ EXPOSE 3001
 
 FROM common AS frontend
 COPY package.json .
+RUN npm i -g @vue/cli \
+  && pnpm install
 
-RUN pnpm install
 EXPOSE 3000
