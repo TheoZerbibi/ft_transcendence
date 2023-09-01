@@ -41,3 +41,57 @@
             Dans package.json remplacer "serve": "vue-cli-service serve" par "serve": "vue-cli-service serve --port 3000 --host 0.0.0.0"
         • ctrl + click sur http://localhost:3000/
     
+        • open VueProjects/my-one-page-website/src/App.vue
+            • delete all   
+            • type:
+                <template>
+                    <h>Hello World</h1>
+                </template>
+            • refresh page => Hello World
+            • Let's make the text dynamic
+                
+                <template>
+                <h1>Hello {{name}} World</h1>
+                </template>
+
+                <script>
+                  export default
+                  {
+                    data()
+                    {
+                      return { name: 'Norminet' }
+                    }
+                  }
+                </script>
+
+            • Let's add color
+
+                <template>
+                <h1>Hello {{name}} World</h1>
+                </template>
+
+                <script>
+                  export default
+                  {
+                    data()
+                    {
+                      return { name: 'Norminet' }
+                    }
+                  }
+                </script>
+
+                <style scoped>
+                  h1
+                  {
+                    color: orangered
+                  }
+                </style>
+
+            • <template> </template>, <script> </script> et <style> </style> sont des components single units that perform a single task
+            • components are combined into pages that later forms a fully functionnal vue application
+            • a component uses the .vue extension that is made up with 3 languages blocks
+                • template block    -> HTML Markup
+                • script block      -> Data & functionality
+                • style block       -> CSS Styling
+        
+    VIDEO #04
