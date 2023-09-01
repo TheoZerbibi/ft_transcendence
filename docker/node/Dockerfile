@@ -8,8 +8,7 @@ FROM common AS backend
 
 COPY package.json .
 RUN npm i -g @nestjs/cli \
-  && pnpm install \
-  && pnpm db:migrate
+  && pnpm install
 
 EXPOSE 3001
 

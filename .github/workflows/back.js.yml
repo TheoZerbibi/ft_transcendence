@@ -8,8 +8,8 @@ on:
     branches:
       - 'master'
       - 'develop'
-      - '*backend'
-      - 'backend*'
+      - '**backend'
+      - 'backend**'
   pull_request:
     branches:
       - 'master'
