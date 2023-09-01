@@ -10,12 +10,14 @@ on:
       - 'develop'
       - '**backend'
       - 'backend**'
+      - '**backend**'
   pull_request:
     branches:
       - 'master'
       - 'develop'
       - '**backend'
       - 'backend**'
+      - '**backend**'
 
 jobs:
   build:
