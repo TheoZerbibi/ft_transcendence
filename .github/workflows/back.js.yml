@@ -5,9 +5,15 @@ name: Backend CI
 
 on:
   push:
-    branches: [ "master", "develop", "core/backend" ]
+    branches:
+      - 'master'
+      - 'develop'
+      - '*backend*'
   pull_request:
-    branches: [ "master", "develop", "core/backend" ]
+    branches:
+      - 'master'
+      - 'develop'
+      - '*backend*'
 
 jobs:
   build:

@@ -89,7 +89,7 @@ services:
       NODE_ENV: ${NODE_ENV}
       DATABASE_URL: ${DATABASE_URL}
       HOST: ${HOSTNAME}
-    command: sh -c "npm i -g @nestjs/cli && pnpm db:migrate && tail -f /dev/null"
+    command: sh -c "tail -f /dev/null"
 
 volumes:
   modules:
