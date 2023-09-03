@@ -30,6 +30,11 @@
   <p> {{ number }} </p>
   <button v-on:click="increment">Increase number</button>
   <button v-on:click="decrement">Decrease number</button>
+
+  <!-- Use input and display it-->
+  <p>First name: <input type="text" @input="getFirstName"></p>
+  <p>Last name : <input type="text" @input="getLastName"></p>
+  <p>Your full name is: {{ fullName }}</p>
 </template>
 
 <script>
@@ -45,7 +50,9 @@
         msg: '<strong>BB chat</strong> (en gras hehe)',
         cat: '^ • ^',
         userName: 'grannou',
-        number: 0
+        number: 0,
+        firstName: '',
+        lastName: ''
       }
     },
     methods: 
@@ -65,15 +72,33 @@
       decrement()
       {
         this.number--
+      },
+      getFirstName(event)
+      {
+        this.firstName = event.target.value
+      },
+      getLastName(event)
+      {
+        this.lastName = event.target.value
+      }
+    },
+    computed:
+    {
+      fullName()
+      {
+        return this.firstName + ' ' + this.lastName
       }
     }
+
   }
 </script>
 
 <style scoped>
   h1
   {
-    color: green
+    color: green;
+    text-align: center;
+
   }
   h2
   {
