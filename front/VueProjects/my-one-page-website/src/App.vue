@@ -35,6 +35,51 @@
   <p>First name: <input type="text" @input="getFirstName"></p>
   <p>Last name : <input type="text" @input="getLastName"></p>
   <p>Your full name is: {{ fullName }}</p>
+
+  <!-- Use a button to change a variable-->
+  <button v-on:click="login = 'Akatsuki grannou'">Give power</button>
+  <p>{{ login }} </p>
+
+  <!-- Use a button to change a variable with method taking parameter-->
+  <button v-on:click="changeLogin('Akatsuki Philantropist grannou')">Give Super power</button>
+  <p>{{ login42 }} </p>
+
+  <!-- Use a button to change a variable with method taking parameter-->
+  <!-- Shortcut: v-on:click devient @click -->
+  <button @click="changeLogin('Akatsuki Philantropist grannou Kyubie'), changeStatus('Alumni')">Give Mega power</button>
+  <p>{{ login42 }} ({{ status}}) </p>
+
+  <!-- Display the text of an input field on the page-->
+  <p>Your favorite movie: {{ favoriteMovie }}</p>
+  <input type="text" @input="getInput">
+
+  <!-- Display the text of an input field on the page AND event has multiple paramters-->
+  <p>Your cat name: {{ catName }}</p>
+  <input type="text" @input="getCatNameInput($event, 'Meow')">
+
+  <!-- Display two buttons as counter and a submit button-->
+  <!-- that syntax to not loose counter to 0 when refreshing page-->
+  <p> {{ counter }}</p>
+  <button @click="incrementTemp">Increment Temperature</button>
+  <button @click="decrementTemp">Decrement Temperature</button>
+
+  <form @submit.prevent="submitForm"><p>
+    <button>Send to guardian</button>
+  </p></form>
+
+  <!-- Display an input string AFTER enter key is pressed -->
+  <p>Your secret code: {{ secretCode }}</p>
+  <input type="text" @keyup.enter="getSecretCode">
+
+  <!-- This will work even if Shift and another key is pressed-->
+  <p><button @click.shift="shiftAnyHandler">Shift + Any + Click</button></p>
+
+  <!-- This will only work when Shift and no other key are pressed-->
+  <p><button @click.shift.exact="shiftOnlyHandler">Shift + Click</button></p>
+
+  <!-- This will only work when no key modifiers are pressed-->
+  <p><button @click.shift="clickOnlyHandler">Click only</button></p>
+
 </template>
 
 <script>
@@ -52,7 +97,14 @@
         userName: 'grannou',
         number: 0,
         firstName: '',
-        lastName: ''
+        lastN42ame: '',
+        login: 'grannou',
+        login42: 'grannou',
+        status: 'student',
+        favoriteMovie: '',
+        catName: '',
+        counter: 0,
+        secretCode: ''
       }
     },
     methods: 
@@ -80,7 +132,37 @@
       getLastName(event)
       {
         this.lastName = event.target.value
-      }
+      },
+      changeLogin(loginName)
+      {
+        this.login42 = loginName
+      },
+      changeStatus(newStatus)
+      {
+        this.status = newStatus
+      },
+      getInput()
+      {
+        this.favoriteMovie = event.target.value
+      },
+      getCatNameInput(event, catLogin)
+      {
+        this.catName = event.target.value + ' ' + catLogin
+      },
+      submitForm()
+      {
+        alert('The form was submitted')
+      },
+      incrementTemp() { this.counter++ },
+      decrementTemp() { this.counter-- },
+      getSecretCode(event)
+      {
+        this.secretCode = event.target.value
+      },
+      shiftAnyHandler()   { alert('Shift + Any + Click') },
+      shiftOnlyHandler() { alert('Shift + Click Only')  },
+      clickOnlyHandler()  { alert('Click Only')          }
+
     },
     computed:
     {

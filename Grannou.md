@@ -847,16 +847,1323 @@
             }
           }
 
-          •
-          •
-          •
-          •
-          •
-          •
-          •
-          •
-          •
-          •
+          • Add a button that change a string variable
+
+            <template>
+              <!-- object values use dot notation -->
+              <h1>Hello {{ userObj.firstName }} {{ userObj.lastName }} </h1>
+
+              <!-- arrays use the indexer -->
+              <h2>Hello {{ userArr[0] }} {{ userArr[1] }}</h2>
+
+              <!-- including a link -->
+              <a v-bind:href="link">Jumping Norminet</a>
+
+              <!-- including a button with booelan attribute-->
+              <button :disabled="isDisabled">Press Me</button>
+
+              <!-- including data with html tags-->
+              <p v-html="msg"></p>
+
+              <p>Moustache syntax wraps the data property in double curly braces</p>
+              <p v-pre>Example: {{ cat }}</p>
+
+              <p>Th resulting output will be the value of th data property</p>
+              <p>Example: {{ cat }}</p>
+
+              <!-- Using a method to say hello -->
+              <h3>{{ greeting() }}</h3>
+
+              <!-- Using a method to say hello that take an argument-->
+              <h3>{{ bonjour('Tylung') }}</h3>
+
+              <!-- Event handling -->
+              <p> {{ number }} </p>
+              <button v-on:click="increment">Increase number</button>
+              <button v-on:click="decrement">Decrease number</button>
+
+              <!-- Use input and display it-->
+              <p>First name: <input type="text" @input="getFirstName"></p>
+              <p>Last name : <input type="text" @input="getLastName"></p>
+              <p>Your full name is: {{ fullName }}</p>
+
+              <!-- Use a button to change a variable-->
+              <button v-on:click="login = 'Akatsuki grannou'">Give power</button>
+              <p>{{ login }} </p>
+            </template>
+
+            <script>
+              export default
+              {
+                data()
+                {
+                  return {
+                    userObj: { firstName: 'Norminet', lastName: 'the prettiest'},
+                    userArr: ['Norminet', 'the prettiest'],
+                    link: 'https://www.facebook.com/42born2code/videos/lolcat-norminet-42/            1493963563969224/?locale=fr_FR',
+                    isDisabled: false,
+                    msg: '<strong>BB chat</strong> (en gras hehe)',
+                    cat: '^ • ^',
+                    userName: 'grannou',
+                    number: 0,
+                    firstName: '',
+                    lastName: '',
+                    login: 'grannou'
+                  }
+                },
+                methods: 
+                {
+                  greeting()
+                  {
+                    return 'Hello there ' + this.userName
+                  },
+                  bonjour(name)
+                  {
+                    return 'Hello my sweet ' + name
+                  },
+                  increment()
+                  {
+                    this.number++
+                  },
+                  decrement()
+                  {
+                    this.number--
+                  },
+                  getFirstName(event)
+                  {
+                    this.firstName = event.target.value
+                  },
+                  getLastName(event)
+                  {
+                    this.lastName = event.target.value
+                  }
+                },
+                computed:
+                {
+                  fullName()
+                  {
+                    return this.firstName + ' ' + this.lastName
+                  }
+                }
+
+              }
+            </script>
+
+            <style scoped>
+              h1
+              {
+                color: green;
+                text-align: center;
+
+              }
+              h2
+              {
+                color: pink
+              }
+              a
+              {
+                color: orangered;
+              }
+            </style>
+
+          • REFERENCE vs INVOKE
+
+            <template>
+              <!-- reference method without parameters -->
+              <element v-on:event_name="method_name"></element>
+
+              <!-- invoke method without parameters -->
+              <element v-on:event_name=¨method_name(param1, ...)"></element>
+            </template>
+
+          •  Add a button that change a string variable (with a method that takes parameters)
+
+            <template>
+              <!-- object values use dot notation -->
+              <h1>Hello {{ userObj.firstName }} {{ userObj.lastName }} </h1>
+
+              <!-- arrays use the indexer -->
+              <h2>Hello {{ userArr[0] }} {{ userArr[1] }}</h2>
+
+              <!-- including a link -->
+              <a v-bind:href="link">Jumping Norminet</a>
+
+              <!-- including a button with booelan attribute-->
+              <button :disabled="isDisabled">Press Me</button>
+
+              <!-- including data with html tags-->
+              <p v-html="msg"></p>
+
+              <p>Moustache syntax wraps the data property in double curly braces</p>
+              <p v-pre>Example: {{ cat }}</p>
+
+              <p>Th resulting output will be the value of th data property</p>
+              <p>Example: {{ cat }}</p>
+
+              <!-- Using a method to say hello -->
+              <h3>{{ greeting() }}</h3>
+
+              <!-- Using a method to say hello that take an argument-->
+              <h3>{{ bonjour('Tylung') }}</h3>
+
+              <!-- Event handling -->
+              <p> {{ number }} </p>
+              <button v-on:click="increment">Increase number</button>
+              <button v-on:click="decrement">Decrease number</button>
+
+              <!-- Use input and display it-->
+              <p>First name: <input type="text" @input="getFirstName"></p>
+              <p>Last name : <input type="text" @input="getLastName"></p>
+              <p>Your full name is: {{ fullName }}</p>
+
+              <!-- Use a button to change a variable-->
+              <button v-on:click="login = 'Akatsuki grannou'">Give power</button>
+              <p>{{ login }} </p>
+
+              <!-- Use a button to change a variable with method taking parameter-->
+              <button v-on:click="changeLogin('Akatsuki Philantropist grannou')">Give Super             power</button>
+              <p>{{ login42 }} </p>
+
+              <!-- Use a button to change a variable with method taking parameter-->
+              <button v-on:click="changeLogin('Akatsuki Philantropist grannou Kyubie'),             changeStatus('Alumni')">Give Mega power</button>
+              <p>{{ login42 }} ({{ status}}) </p>
+
+
+            </template>
+
+            <script>
+              export default
+              {
+                data()
+                {
+                  return {
+                    userObj: { firstName: 'Norminet', lastName: 'the prettiest'},
+                    userArr: ['Norminet', 'the prettiest'],
+                    link: 'https://www.facebook.com/42born2code/videos/lolcat-norminet-42/            1493963563969224/?locale=fr_FR',
+                    isDisabled: false,
+                    msg: '<strong>BB chat</strong> (en gras hehe)',
+                    cat: '^ • ^',
+                    userName: 'grannou',
+                    number: 0,
+                    firstName: '',
+                    lastN42ame: '',
+                    login: 'grannou',
+                    login42: 'grannou',
+                    status: 'student'
+                  }
+                },
+                methods: 
+                {
+                  greeting()
+                  {
+                    return 'Hello there ' + this.userName
+                  },
+                  bonjour(name)
+                  {
+                    return 'Hello my sweet ' + name
+                  },
+                  increment()
+                  {
+                    this.number++
+                  },
+                  decrement()
+                  {
+                    this.number--
+                  },
+                  getFirstName(event)
+                  {
+                    this.firstName = event.target.value
+                  },
+                  getLastName(event)
+                  {
+                    this.lastName = event.target.value
+                  },
+                  changeLogin(loginName)
+                  {
+                    this.login42 = loginName
+                  },
+                  changeStatus(newStatus)
+                  {
+                    this.status = newStatus
+                  }
+                },
+                computed:
+                {
+                  fullName()
+                  {
+                    return this.firstName + ' ' + this.lastName
+                  }
+                }
+
+              }
+            </script>
+
+            <style scoped>
+              h1
+              {
+                color: green;
+                text-align: center;
+
+              }
+              h2
+              {
+                color: pink
+              }
+              a
+              {
+                color: orangered;
+              }
+            </style>
+
+          • Display the text of an input on the page:
+
+            <template>
+              <!-- object values use dot notation -->
+              <h1>Hello {{ userObj.firstName }} {{ userObj.lastName }} </h1>
+
+              <!-- arrays use the indexer -->
+              <h2>Hello {{ userArr[0] }} {{ userArr[1] }}</h2>
+
+              <!-- including a link -->
+              <a v-bind:href="link">Jumping Norminet</a>
+
+              <!-- including a button with booelan attribute-->
+              <button :disabled="isDisabled">Press Me</button>
+
+              <!-- including data with html tags-->
+              <p v-html="msg"></p>
+
+              <p>Moustache syntax wraps the data property in double curly braces</p>
+              <p v-pre>Example: {{ cat }}</p>
+
+              <p>Th resulting output will be the value of th data property</p>
+              <p>Example: {{ cat }}</p>
+
+              <!-- Using a method to say hello -->
+              <h3>{{ greeting() }}</h3>
+
+              <!-- Using a method to say hello that take an argument-->
+              <h3>{{ bonjour('Tylung') }}</h3>
+
+              <!-- Event handling -->
+              <p> {{ number }} </p>
+              <button v-on:click="increment">Increase number</button>
+              <button v-on:click="decrement">Decrease number</button>
+
+              <!-- Use input and display it-->
+              <p>First name: <input type="text" @input="getFirstName"></p>
+              <p>Last name : <input type="text" @input="getLastName"></p>
+              <p>Your full name is: {{ fullName }}</p>
+
+              <!-- Use a button to change a variable-->
+              <button v-on:click="login = 'Akatsuki grannou'">Give power</button>
+              <p>{{ login }} </p>
+
+              <!-- Use a button to change a variable with method taking parameter-->
+              <button v-on:click="changeLogin('Akatsuki Philantropist grannou')">Give Super             power</button>
+              <p>{{ login42 }} </p>
+
+              <!-- Use a button to change a variable with method taking parameter-->
+              <!-- Shortcut: v-on:click devient @click -->
+              <button @click="changeLogin('Akatsuki Philantropist grannou Kyubie'),             changeStatus('Alumni')">Give Mega power</button>
+              <p>{{ login42 }} ({{ status}}) </p>
+
+              <!-- Display the text of an input field on the page-->
+              <p>Your favorite movie: {{ favoriteMovie }}</p>
+              <input type="text" @input="getInput">
+
+            </template>
+
+            <script>
+              export default
+              {
+                data()
+                {
+                  return {
+                    userObj: { firstName: 'Norminet', lastName: 'the prettiest'},
+                    userArr: ['Norminet', 'the prettiest'],
+                    link: 'https://www.facebook.com/42born2code/videos/lolcat-norminet-42/            1493963563969224/?locale=fr_FR',
+                    isDisabled: false,
+                    msg: '<strong>BB chat</strong> (en gras hehe)',
+                    cat: '^ • ^',
+                    userName: 'grannou',
+                    number: 0,
+                    firstName: '',
+                    lastN42ame: '',
+                    login: 'grannou',
+                    login42: 'grannou',
+                    status: 'student',
+                    favoriteMovie: ''
+                  }
+                },
+                methods: 
+                {
+                  greeting()
+                  {
+                    return 'Hello there ' + this.userName
+                  },
+                  bonjour(name)
+                  {
+                    return 'Hello my sweet ' + name
+                  },
+                  increment()
+                  {
+                    this.number++
+                  },
+                  decrement()
+                  {
+                    this.number--
+                  },
+                  getFirstName(event)
+                  {
+                    this.firstName = event.target.value
+                  },
+                  getLastName(event)
+                  {
+                    this.lastName = event.target.value
+                  },
+                  changeLogin(loginName)
+                  {
+                    this.login42 = loginName
+                  },
+                  changeStatus(newStatus)
+                  {
+                    this.status = newStatus
+                  },
+                  getInput()
+                  {
+                    this.favoriteMovie = event.target.value
+                  }
+                },
+                computed:
+                {
+                  fullName()
+                  {
+                    return this.firstName + ' ' + this.lastName
+                  }
+                }
+
+              }
+            </script>
+
+            <style scoped>
+              h1
+              {
+                color: green;
+                text-align: center;
+
+              }
+              h2
+              {
+                color: pink
+              }
+              a
+              {
+                color: orangered;
+              }
+            </style>
+
+          • Display the text of an input field on the page AND event has multiple paramters
+
+            <template>
+              <!-- object values use dot notation -->
+              <h1>Hello {{ userObj.firstName }} {{ userObj.lastName }} </h1>
+
+              <!-- arrays use the indexer -->
+              <h2>Hello {{ userArr[0] }} {{ userArr[1] }}</h2>
+
+              <!-- including a link -->
+              <a v-bind:href="link">Jumping Norminet</a>
+
+              <!-- including a button with booelan attribute-->
+              <button :disabled="isDisabled">Press Me</button>
+
+              <!-- including data with html tags-->
+              <p v-html="msg"></p>
+
+              <p>Moustache syntax wraps the data property in double curly braces</p>
+              <p v-pre>Example: {{ cat }}</p>
+
+              <p>Th resulting output will be the value of th data property</p>
+              <p>Example: {{ cat }}</p>
+
+              <!-- Using a method to say hello -->
+              <h3>{{ greeting() }}</h3>
+
+              <!-- Using a method to say hello that take an argument-->
+              <h3>{{ bonjour('Tylung') }}</h3>
+
+              <!-- Event handling -->
+              <p> {{ number }} </p>
+              <button v-on:click="increment">Increase number</button>
+              <button v-on:click="decrement">Decrease number</button>
+
+              <!-- Use input and display it-->
+              <p>First name: <input type="text" @input="getFirstName"></p>
+              <p>Last name : <input type="text" @input="getLastName"></p>
+              <p>Your full name is: {{ fullName }}</p>
+
+              <!-- Use a button to change a variable-->
+              <button v-on:click="login = 'Akatsuki grannou'">Give power</button>
+              <p>{{ login }} </p>
+
+              <!-- Use a button to change a variable with method taking parameter-->
+              <button v-on:click="changeLogin('Akatsuki Philantropist grannou')           ">Give Super power</button>
+              <p>{{ login42 }} </p>
+
+              <!-- Use a button to change a variable with method taking parameter-->
+              <!-- Shortcut: v-on:click devient @click -->
+              <button @click="changeLogin('Akatsuki Philantropist grannou Kyubie'),             changeStatus('Alumni')">Give Mega power</button>
+              <p>{{ login42 }} ({{ status}}) </p>
+
+              <!-- Display the text of an input field on the page-->
+              <p>Your favorite movie: {{ favoriteMovie }}</p>
+              <input type="text" @input="getInput">
+
+              <!-- Display the text of an input field on the page AND event has             multiple paramters-->
+              <p>Your cat name: {{ catName }}</p>
+              <input type="text" @input="getCatNameInput($event, 'Meow')">
+
+
+            </template>
+
+            <script>
+              export default
+              {
+                data()
+                {
+                  return {
+                    userObj: { firstName: 'Norminet', lastName: 'the prettiest'},
+                    userArr: ['Norminet', 'the prettiest'],
+                    link: 'https://www.facebook.com/42born2code/videos/           lolcat-norminet-42/1493963563969224/?locale=fr_FR',
+                    isDisabled: false,
+                    msg: '<strong>BB chat</strong> (en gras hehe)',
+                    cat: '^ • ^',
+                    userName: 'grannou',
+                    number: 0,
+                    firstName: '',
+                    lastN42ame: '',
+                    login: 'grannou',
+                    login42: 'grannou',
+                    status: 'student',
+                    favoriteMovie: '',
+                    catName: ''
+
+                  }
+                },
+                methods: 
+                {
+                  greeting()
+                  {
+                    return 'Hello there ' + this.userName
+                  },
+                  bonjour(name)
+                  {
+                    return 'Hello my sweet ' + name
+                  },
+                  increment()
+                  {
+                    this.number++
+                  },
+                  decrement()
+                  {
+                    this.number--
+                  },
+                  getFirstName(event)
+                  {
+                    this.firstName = event.target.value
+                  },
+                  getLastName(event)
+                  {
+                    this.lastName = event.target.value
+                  },
+                  changeLogin(loginName)
+                  {
+                    this.login42 = loginName
+                  },
+                  changeStatus(newStatus)
+                  {
+                    this.status = newStatus
+                  },
+                  getInput()
+                  {
+                    this.favoriteMovie = event.target.value
+                  },
+                  getCatNameInput(event, catLogin)
+                  {
+                    this.catName = event.target.value + ' ' + catLogin
+                  }
+                },
+                computed:
+                {
+                  fullName()
+                  {
+                    return this.firstName + ' ' + this.lastName
+                  }
+                }
+
+              }
+            </script>
+
+            <style scoped>
+              h1
+              {
+                color: green;
+                text-align: center;
+
+              }
+              h2
+              {
+                color: pink
+              }
+              a
+              {
+                color: orangered;
+              }
+            </style>            
+
+          • Create a counter with two button that keeps the score when submit form button
+
+            <template>
+              <!-- object values use dot notation -->
+              <h1>Hello {{ userObj.firstName }} {{ userObj.lastName }} </h1>
+
+              <!-- arrays use the indexer -->
+              <h2>Hello {{ userArr[0] }} {{ userArr[1] }}</h2>
+
+              <!-- including a link -->
+              <a v-bind:href="link">Jumping Norminet</a>
+
+              <!-- including a button with booelan attribute-->
+              <button :disabled="isDisabled">Press Me</button>
+
+              <!-- including data with html tags-->
+              <p v-html="msg"></p>
+
+              <p>Moustache syntax wraps the data property in double curly braces</p>
+              <p v-pre>Example: {{ cat }}</p>
+
+              <p>Th resulting output will be the value of th data property</p>
+              <p>Example: {{ cat }}</p>
+
+              <!-- Using a method to say hello -->
+              <h3>{{ greeting() }}</h3>
+
+              <!-- Using a method to say hello that take an argument-->
+              <h3>{{ bonjour('Tylung') }}</h3>
+
+              <!-- Event handling -->
+              <p> {{ number }} </p>
+              <button v-on:click="increment">Increase number</button>
+              <button v-on:click="decrement">Decrease number</button>
+
+              <!-- Use input and display it-->
+              <p>First name: <input type="text" @input="getFirstName"></p>
+              <p>Last name : <input type="text" @input="getLastName"></p>
+              <p>Your full name is: {{ fullName }}</p>
+
+              <!-- Use a button to change a variable-->
+              <button v-on:click="login = 'Akatsuki grannou'">Give power</button>
+              <p>{{ login }} </p>
+
+              <!-- Use a button to change a variable with method taking parameter-->
+              <button v-on:click="changeLogin('Akatsuki Philantropist grannou')           ">Give Super power</button>
+              <p>{{ login42 }} </p>
+
+              <!-- Use a button to change a variable with method taking parameter-->
+              <!-- Shortcut: v-on:click devient @click -->
+              <button @click="changeLogin('Akatsuki Philantropist grannou Kyubie'),             changeStatus('Alumni')">Give Mega power</button>
+              <p>{{ login42 }} ({{ status}}) </p>
+
+              <!-- Display the text of an input field on the page-->
+              <p>Your favorite movie: {{ favoriteMovie }}</p>
+              <input type="text" @input="getInput">
+
+              <!-- Display the text of an input field on the page AND event has             multiple paramters-->
+              <p>Your cat name: {{ catName }}</p>
+              <input type="text" @input="getCatNameInput($event, 'Meow')">
+
+              <!-- Display two buttons as counter and a submit button-->
+              <!-- that syntax to not loose counter to 0 when refreshing page-->
+              <p> {{ counter }}</p>
+              <button @click="incrementTemp">Increment Temperature</button>
+              <button @click="decrementTemp">Decrement Temperature</button>
+
+              <form @submit="submitForm"><p>
+                <button>Send to guardian</button>
+              </p></form>
+
+            </template>
+
+            <script>
+              export default
+              {
+                data()
+                {
+                  return {
+                    userObj: { firstName: 'Norminet', lastName: 'the prettiest'},
+                    userArr: ['Norminet', 'the prettiest'],
+                    link: 'https://www.facebook.com/42born2code/videos/           lolcat-norminet-42/1493963563969224/?locale=fr_FR',
+                    isDisabled: false,
+                    msg: '<strong>BB chat</strong> (en gras hehe)',
+                    cat: '^ • ^',
+                    userName: 'grannou',
+                    number: 0,
+                    firstName: '',
+                    lastN42ame: '',
+                    login: 'grannou',
+                    login42: 'grannou',
+                    status: 'student',
+                    favoriteMovie: '',
+                    catName: '',
+                    counter: 0
+                  }
+                },
+                methods: 
+                {
+                  greeting()
+                  {
+                    return 'Hello there ' + this.userName
+                  },
+                  bonjour(name)
+                  {
+                    return 'Hello my sweet ' + name
+                  },
+                  increment()
+                  {
+                    this.number++
+                  },
+                  decrement()
+                  {
+                    this.number--
+                  },
+                  getFirstName(event)
+                  {
+                    this.firstName = event.target.value
+                  },
+                  getLastName(event)
+                  {
+                    this.lastName = event.target.value
+                  },
+                  changeLogin(loginName)
+                  {
+                    this.login42 = loginName
+                  },
+                  changeStatus(newStatus)
+                  {
+                    this.status = newStatus
+                  },
+                  getInput()
+                  {
+                    this.favoriteMovie = event.target.value
+                  },
+                  getCatNameInput(event, catLogin)
+                  {
+                    this.catName = event.target.value + ' ' + catLogin
+                  },
+                  submitForm()
+                  {
+                    event.preventDefault()
+                    alert('The form was submitted')
+                  },
+                  incrementTemp() { this.counter++ },
+                  decrementTemp() { this.counter-- }
+                },
+                computed:
+                {
+                  fullName()
+                  {
+                    return this.firstName + ' ' + this.lastName
+                  }
+                }
+
+              }
+            </script>
+
+            <style scoped>
+              h1
+              {
+                color: green;
+                text-align: center;
+
+              }
+              h2
+              {
+                color: pink
+              }
+              a
+              {
+                color: orangered;
+              }
+            </style>
+
+          • SAME WITH SHORTER SYNTAX
+
+            <template>
+              <!-- object values use dot notation -->
+              <h1>Hello {{ userObj.firstName }} {{ userObj.lastName }} </h1>
+
+              <!-- arrays use the indexer -->
+              <h2>Hello {{ userArr[0] }} {{ userArr[1] }}</h2>
+
+              <!-- including a link -->
+              <a v-bind:href="link">Jumping Norminet</a>
+
+              <!-- including a button with booelan attribute-->
+              <button :disabled="isDisabled">Press Me</button>
+
+              <!-- including data with html tags-->
+              <p v-html="msg"></p>
+
+              <p>Moustache syntax wraps the data property in double curly braces</p>
+              <p v-pre>Example: {{ cat }}</p>
+
+              <p>Th resulting output will be the value of th data property</p>
+              <p>Example: {{ cat }}</p>
+
+              <!-- Using a method to say hello -->
+              <h3>{{ greeting() }}</h3>
+
+              <!-- Using a method to say hello that take an argument-->
+              <h3>{{ bonjour('Tylung') }}</h3>
+
+              <!-- Event handling -->
+              <p> {{ number }} </p>
+              <button v-on:click="increment">Increase number</button>
+              <button v-on:click="decrement">Decrease number</button>
+
+              <!-- Use input and display it-->
+              <p>First name: <input type="text" @input="getFirstName"></p>
+              <p>Last name : <input type="text" @input="getLastName"></p>
+              <p>Your full name is: {{ fullName }}</p>
+
+              <!-- Use a button to change a variable-->
+              <button v-on:click="login = 'Akatsuki grannou'">Give power</button>
+              <p>{{ login }} </p>
+
+              <!-- Use a button to change a variable with method taking parameter-->
+              <button v-on:click="changeLogin('Akatsuki Philantropist grannou')           ">Give Super power</button>
+              <p>{{ login42 }} </p>
+
+              <!-- Use a button to change a variable with method taking parameter-->
+              <!-- Shortcut: v-on:click devient @click -->
+              <button @click="changeLogin('Akatsuki Philantropist grannou Kyubie'),             changeStatus('Alumni')">Give Mega power</button>
+              <p>{{ login42 }} ({{ status}}) </p>
+
+              <!-- Display the text of an input field on the page-->
+              <p>Your favorite movie: {{ favoriteMovie }}</p>
+              <input type="text" @input="getInput">
+
+              <!-- Display the text of an input field on the page AND event has             multiple paramters-->
+              <p>Your cat name: {{ catName }}</p>
+              <input type="text" @input="getCatNameInput($event, 'Meow')">
+
+              <!-- Display two buttons as counter and a submit button-->
+              <!-- that syntax to not loose counter to 0 when refreshing page-->
+              <p> {{ counter }}</p>
+              <button @click="incrementTemp">Increment Temperature</button>
+              <button @click="decrementTemp">Decrement Temperature</button>
+
+              <form @submit.prevent="submitForm"><p>
+                <button>Send to guardian</button>
+              </p></form>
+
+            </template>
+
+            <script>
+              export default
+              {
+                data()
+                {
+                  return {
+                    userObj: { firstName: 'Norminet', lastName: 'the prettiest'},
+                    userArr: ['Norminet', 'the prettiest'],
+                    link: 'https://www.facebook.com/42born2code/videos/           lolcat-norminet-42/1493963563969224/?locale=fr_FR',
+                    isDisabled: false,
+                    msg: '<strong>BB chat</strong> (en gras hehe)',
+                    cat: '^ • ^',
+                    userName: 'grannou',
+                    number: 0,
+                    firstName: '',
+                    lastN42ame: '',
+                    login: 'grannou',
+                    login42: 'grannou',
+                    status: 'student',
+                    favoriteMovie: '',
+                    catName: '',
+                    counter: 0
+                  }
+                },
+                methods: 
+                {
+                  greeting()
+                  {
+                    return 'Hello there ' + this.userName
+                  },
+                  bonjour(name)
+                  {
+                    return 'Hello my sweet ' + name
+                  },
+                  increment()
+                  {
+                    this.number++
+                  },
+                  decrement()
+                  {
+                    this.number--
+                  },
+                  getFirstName(event)
+                  {
+                    this.firstName = event.target.value
+                  },
+                  getLastName(event)
+                  {
+                    this.lastName = event.target.value
+                  },
+                  changeLogin(loginName)
+                  {
+                    this.login42 = loginName
+                  },
+                  changeStatus(newStatus)
+                  {
+                    this.status = newStatus
+                  },
+                  getInput()
+                  {
+                    this.favoriteMovie = event.target.value
+                  },
+                  getCatNameInput(event, catLogin)
+                  {
+                    this.catName = event.target.value + ' ' + catLogin
+                  },
+                  submitForm()
+                  {
+                    alert('The form was submitted')
+                  },
+                  incrementTemp() { this.counter++ },
+                  decrementTemp() { this.counter-- }
+                },
+                computed:
+                {
+                  fullName()
+                  {
+                    return this.firstName + ' ' + this.lastName
+                  }
+                }
+
+              }
+            </script>
+
+            <style scoped>
+              h1
+              {
+                color: green;
+                text-align: center;
+
+              }
+              h2
+              {
+                color: pink
+              }
+              a
+              {
+                color: orangered;
+              }
+            </style>
+
+          • CLICK MODIFIERS
+
+            <template>
+              <element @click.left=""></element>
+              <element @click.right=""></element>
+              <element @click.middle=""></element>
+            </template>
+
+            click produce action with mouse left/right or middle click
+
+          • KEY PRESS MODIFIERS
+          example: input a name but wait user to press enter to display full name
+
+            <template>
+              <!-- object values use dot notation -->
+              <h1>Hello {{ userObj.firstName }} {{ userObj.lastName }} </h1>
+
+              <!-- arrays use the indexer -->
+              <h2>Hello {{ userArr[0] }} {{ userArr[1] }}</h2>
+
+              <!-- including a link -->
+              <a v-bind:href="link">Jumping Norminet</a>
+
+              <!-- including a button with booelan attribute-->
+              <button :disabled="isDisabled">Press Me</button>
+
+              <!-- including data with html tags-->
+              <p v-html="msg"></p>
+
+              <p>Moustache syntax wraps the data property in double curly braces</p>
+              <p v-pre>Example: {{ cat }}</p>
+
+              <p>Th resulting output will be the value of th data property</p>
+              <p>Example: {{ cat }}</p>
+
+              <!-- Using a method to say hello -->
+              <h3>{{ greeting() }}</h3>
+
+              <!-- Using a method to say hello that take an argument-->
+              <h3>{{ bonjour('Tylung') }}</h3>
+
+              <!-- Event handling -->
+              <p> {{ number }} </p>
+              <button v-on:click="increment">Increase number</button>
+              <button v-on:click="decrement">Decrease number</button>
+
+              <!-- Use input and display it-->
+              <p>First name: <input type="text" @input="getFirstName"></p>
+              <p>Last name : <input type="text" @input="getLastName"></p>
+              <p>Your full name is: {{ fullName }}</p>
+
+              <!-- Use a button to change a variable-->
+              <button v-on:click="login = 'Akatsuki grannou'">Give power</button>
+              <p>{{ login }} </p>
+
+              <!-- Use a button to change a variable with method taking parameter-->
+              <button v-on:click="changeLogin('Akatsuki Philantropist grannou')           ">Give Super power</button>
+              <p>{{ login42 }} </p>
+
+              <!-- Use a button to change a variable with method taking parameter-->
+              <!-- Shortcut: v-on:click devient @click -->
+              <button @click="changeLogin('Akatsuki Philantropist grannou Kyubie'),             changeStatus('Alumni')">Give Mega power</button>
+              <p>{{ login42 }} ({{ status}}) </p>
+
+              <!-- Display the text of an input field on the page-->
+              <p>Your favorite movie: {{ favoriteMovie }}</p>
+              <input type="text" @input="getInput">
+
+              <!-- Display the text of an input field on the page AND event has             multiple paramters-->
+              <p>Your cat name: {{ catName }}</p>
+              <input type="text" @input="getCatNameInput($event, 'Meow')">
+
+              <!-- Display two buttons as counter and a submit button-->
+              <!-- that syntax to not loose counter to 0 when refreshing page-->
+              <p> {{ counter }}</p>
+              <button @click="incrementTemp">Increment Temperature</button>
+              <button @click="decrementTemp">Decrement Temperature</button>
+
+              <form @submit.prevent="submitForm"><p>
+                <button>Send to guardian</button>
+              </p></form>
+
+              <!-- Display an input string AFTER enter key is pressed -->
+              <input type="text" @keyup.enter="getSecretCode">
+              <p>Your secret code: {{ secretCode }}</p>
+
+            </template>
+
+            <script>
+              export default
+              {
+                data()
+                {
+                  return {
+                    userObj: { firstName: 'Norminet', lastName: 'the prettiest'},
+                    userArr: ['Norminet', 'the prettiest'],
+                    link: 'https://www.facebook.com/42born2code/videos/           lolcat-norminet-42/1493963563969224/?locale=fr_FR',
+                    isDisabled: false,
+                    msg: '<strong>BB chat</strong> (en gras hehe)',
+                    cat: '^ • ^',
+                    userName: 'grannou',
+                    number: 0,
+                    firstName: '',
+                    lastN42ame: '',
+                    login: 'grannou',
+                    login42: 'grannou',
+                    status: 'student',
+                    favoriteMovie: '',
+                    catName: '',
+                    counter: 0,
+                    secretCode: ''
+                  }
+                },
+                methods: 
+                {
+                  greeting()
+                  {
+                    return 'Hello there ' + this.userName
+                  },
+                  bonjour(name)
+                  {
+                    return 'Hello my sweet ' + name
+                  },
+                  increment()
+                  {
+                    this.number++
+                  },
+                  decrement()
+                  {
+                    this.number--
+                  },
+                  getFirstName(event)
+                  {
+                    this.firstName = event.target.value
+                  },
+                  getLastName(event)
+                  {
+                    this.lastName = event.target.value
+                  },
+                  changeLogin(loginName)
+                  {
+                    this.login42 = loginName
+                  },
+                  changeStatus(newStatus)
+                  {
+                    this.status = newStatus
+                  },
+                  getInput()
+                  {
+                    this.favoriteMovie = event.target.value
+                  },
+                  getCatNameInput(event, catLogin)
+                  {
+                    this.catName = event.target.value + ' ' + catLogin
+                  },
+                  submitForm()
+                  {
+                    alert('The form was submitted')
+                  },
+                  incrementTemp() { this.counter++ },
+                  decrementTemp() { this.counter-- },
+                  getSecretCode(event)
+                  {
+                    this.secretCode = event.target.value
+                  }
+                },
+                computed:
+                {
+                  fullName()
+                  {
+                    return this.firstName + ' ' + this.lastName
+                  }
+                }
+
+              }
+            </script>
+
+            <style scoped>
+              h1
+              {
+                color: green;
+                text-align: center;
+
+              }
+              h2
+              {
+                color: pink
+              }
+              a
+              {
+                color: orangered;
+              }
+            </style>   
+
+          • THE EXACT MODIFIER
+
+            <template>
+              <!-- object values use dot notation -->
+              <h1>Hello {{ userObj.firstName }} {{ userObj.lastName }} </h1>
+
+              <!-- arrays use the indexer -->
+              <h2>Hello {{ userArr[0] }} {{ userArr[1] }}</h2>
+
+              <!-- including a link -->
+              <a v-bind:href="link">Jumping Norminet</a>
+
+              <!-- including a button with booelan attribute-->
+              <button :disabled="isDisabled">Press Me</button>
+
+              <!-- including data with html tags-->
+              <p v-html="msg"></p>
+
+              <p>Moustache syntax wraps the data property in double curly braces</p>
+              <p v-pre>Example: {{ cat }}</p>
+
+              <p>Th resulting output will be the value of th data property</p>
+              <p>Example: {{ cat }}</p>
+
+              <!-- Using a method to say hello -->
+              <h3>{{ greeting() }}</h3>
+
+              <!-- Using a method to say hello that take an argument-->
+              <h3>{{ bonjour('Tylung') }}</h3>
+
+              <!-- Event handling -->
+              <p> {{ number }} </p>
+              <button v-on:click="increment">Increase number</button>
+              <button v-on:click="decrement">Decrease number</button>
+
+              <!-- Use input and display it-->
+              <p>First name: <input type="text" @input="getFirstName"></p>
+              <p>Last name : <input type="text" @input="getLastName"></p>
+              <p>Your full name is: {{ fullName }}</p>
+
+              <!-- Use a button to change a variable-->
+              <button v-on:click="login = 'Akatsuki grannou'">Give power</button>
+              <p>{{ login }} </p>
+
+              <!-- Use a button to change a variable with method taking parameter-->
+              <button v-on:click="changeLogin('Akatsuki Philantropist grannou')           ">Give Super power</button>
+              <p>{{ login42 }} </p>
+
+              <!-- Use a button to change a variable with method taking parameter-->
+              <!-- Shortcut: v-on:click devient @click -->
+              <button @click="changeLogin('Akatsuki Philantropist grannou Kyubie'),             changeStatus('Alumni')">Give Mega power</button>
+              <p>{{ login42 }} ({{ status}}) </p>
+
+              <!-- Display the text of an input field on the page-->
+              <p>Your favorite movie: {{ favoriteMovie }}</p>
+              <input type="text" @input="getInput">
+
+              <!-- Display the text of an input field on the page AND event has             multiple paramters-->
+              <p>Your cat name: {{ catName }}</p>
+              <input type="text" @input="getCatNameInput($event, 'Meow')">
+
+              <!-- Display two buttons as counter and a submit button-->
+              <!-- that syntax to not loose counter to 0 when refreshing page-->
+              <p> {{ counter }}</p>
+              <button @click="incrementTemp">Increment Temperature</button>
+              <button @click="decrementTemp">Decrement Temperature</button>
+
+              <form @submit.prevent="submitForm"><p>
+                <button>Send to guardian</button>
+              </p></form>
+
+              <!-- Display an input string AFTER enter key is pressed -->
+              <p>Your secret code: {{ secretCode }}</p>
+              <input type="text" @keyup.enter="getSecretCode">
+
+              <!-- This will work even if Shift and another key is pressed-->
+              <p><button @click.shift="shiftAnyHandler">Shift + Any + Click</           button></p>
+
+              <!-- This will only work when Shift and no other key are pressed-->
+              <p><button @click.shift.exact="shiftOnlyHandler">Shift + Click</            button></p>
+
+              <!-- This will only work when no key modifiers are pressed-->
+              <p><button @click.shift="clickOnlyHandler">Click only</button></p>
+
+            </template>
+
+            <script>
+              export default
+              {
+                data()
+                {
+                  return {
+                    userObj: { firstName: 'Norminet', lastName: 'the prettiest'},
+                    userArr: ['Norminet', 'the prettiest'],
+                    link: 'https://www.facebook.com/42born2code/videos/           lolcat-norminet-42/1493963563969224/?locale=fr_FR',
+                    isDisabled: false,
+                    msg: '<strong>BB chat</strong> (en gras hehe)',
+                    cat: '^ • ^',
+                    userName: 'grannou',
+                    number: 0,
+                    firstName: '',
+                    lastN42ame: '',
+                    login: 'grannou',
+                    login42: 'grannou',
+                    status: 'student',
+                    favoriteMovie: '',
+                    catName: '',
+                    counter: 0,
+                    secretCode: ''
+                  }
+                },
+                methods: 
+                {
+                  greeting()
+                  {
+                    return 'Hello there ' + this.userName
+                  },
+                  bonjour(name)
+                  {
+                    return 'Hello my sweet ' + name
+                  },
+                  increment()
+                  {
+                    this.number++
+                  },
+                  decrement()
+                  {
+                    this.number--
+                  },
+                  getFirstName(event)
+                  {
+                    this.firstName = event.target.value
+                  },
+                  getLastName(event)
+                  {
+                    this.lastName = event.target.value
+                  },
+                  changeLogin(loginName)
+                  {
+                    this.login42 = loginName
+                  },
+                  changeStatus(newStatus)
+                  {
+                    this.status = newStatus
+                  },
+                  getInput()
+                  {
+                    this.favoriteMovie = event.target.value
+                  },
+                  getCatNameInput(event, catLogin)
+                  {
+                    this.catName = event.target.value + ' ' + catLogin
+                  },
+                  submitForm()
+                  {
+                    alert('The form was submitted')
+                  },
+                  incrementTemp() { this.counter++ },
+                  decrementTemp() { this.counter-- },
+                  getSecretCode(event)
+                  {
+                    this.secretCode = event.target.value
+                  },
+                  shiftAnyHandler()   { alert('Shift + Any + Click') },
+                  shiftOnlyHandler() { alert('Shift + Click Only')  },
+                  clickOnlyHandler()  { alert('Click Only')          }
+
+                },
+                computed:
+                {
+                  fullName()
+                  {
+                    return this.firstName + ' ' + this.lastName
+                  }
+                }
+
+              }
+            </script>
+
+            <style scoped>
+              h1
+              {
+                color: green;
+                text-align: center;
+
+              }
+              h2
+              {
+                color: pink
+              }
+              a
+              {
+                color: orangered;
+              }
+            </style>
+
+          VIDEO 06 LOCK CONTENT
+
+
           •
           •
           •
