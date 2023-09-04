@@ -170,6 +170,10 @@
     <button>Submit address</button>
   </form>
 
+  <!-- Use a getter and setter methods in an object so we can display a property and also change it -->
+  <p>Full Bike Model: {{ fullBikeModel }}</p>
+  <button @click="changeBikeModel">Change Bike Model</button>
+
 </template>
 
 <script>
@@ -212,7 +216,9 @@
         {
           streetNumber: '',
           streetName: ''
-        }
+        },
+        bikeBrand: 'Honda',
+        bikeModel: 'cbr600'
       }
     },
     methods: 
@@ -271,8 +277,11 @@
       shiftOnlyHandler()  { alert('Shift + Click Only')   },
       clickOnlyHandler()  { alert('Click Only')           },
       incrementGrade()    { this.grade++                  },
-      decrementGrade()    { this.grade--                  }
-
+      decrementGrade()    { this.grade--                  },
+      changeBikeModel()
+      {
+        this.fullBikeModel = 'Suzuki Hayabusa1300'
+      }
     },
     submitAddress()
     {
@@ -283,6 +292,19 @@
       fullName()
       {
         return this.firstName + ' ' + this.lastName
+      },
+      fullBikeModel:
+      {
+        get()
+        {
+          return this.bikeBrand + ' ' + this.bikeModel
+        },
+        set(value)
+        {
+          const names = value.split(' ')
+          this.bikeBrand = names[0]
+          this.bikeModel = names[1]
+        }
       }
     }
 

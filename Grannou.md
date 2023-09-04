@@ -2648,10 +2648,15 @@
             }
             </script>
 
-          •
-          
-            <template>
+          • COMPUTED PROPERTIES: they can be bound to the template like Data properties but also have logic like methods
+            • They are highly performant because they're cached
+            • A computed property is defined as a method in a computed option of the component configured object
+            • When you need to display a property but also change it, the easiest way is to us getter and setter. We change the method syntax to an object that contains two methods get() and set()
 
+            <template>
+              <!-- Use a getter and setter methods in an object so we can             display a property and also change it -->
+              <p>Full Bike Model: {{ fullBikeModel }}</p>
+              <button @click="changeBikeModel">Change Bike Model</button>
             </template>
 
             <script>
@@ -2659,7 +2664,34 @@
             {
               data: function()
               {
-                return {  }
+                return
+                {
+                  bikeBrand: 'Honda',
+                  bikeModel: 'cbr600'
+                }
+              },
+              methods:
+              {
+                changeBikeModel()
+                {
+                  this.fullBikeModel = 'Suzuki Hayabusa1300'
+                }
+              },
+              computed:
+              {
+                fullBikeModel:
+                {
+                  get()
+                  {
+                    return this.bikeBrand + ' ' + this.bikeModel
+                  },
+                  set(value)
+                  {
+                    const names = value.split(' ')
+                    this.bikeBrand = names[0]
+                    this.bikeModel = names[1]
+                  }
+                }
               }
             }
             </script>
