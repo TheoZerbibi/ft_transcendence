@@ -1046,7 +1046,7 @@
                     userName: 'grannou',
                     number: 0,
                     firstName: '',
-                    lastN42ame: '',
+                    lastName: '',
                     login: 'grannou',
                     login42: 'grannou',
                     status: 'student'
@@ -1189,7 +1189,7 @@
                     userName: 'grannou',
                     number: 0,
                     firstName: '',
-                    lastN42ame: '',
+                    lastName: '',
                     login: 'grannou',
                     login42: 'grannou',
                     status: 'student',
@@ -1342,7 +1342,7 @@
                     userName: 'grannou',
                     number: 0,
                     firstName: '',
-                    lastN42ame: '',
+                    lastName: '',
                     login: 'grannou',
                     login42: 'grannou',
                     status: 'student',
@@ -1510,7 +1510,7 @@
                     userName: 'grannou',
                     number: 0,
                     firstName: '',
-                    lastN42ame: '',
+                    lastName: '',
                     login: 'grannou',
                     login42: 'grannou',
                     status: 'student',
@@ -1685,7 +1685,7 @@
                     userName: 'grannou',
                     number: 0,
                     firstName: '',
-                    lastN42ame: '',
+                    lastName: '',
                     login: 'grannou',
                     login42: 'grannou',
                     status: 'student',
@@ -1874,7 +1874,7 @@
                     userName: 'grannou',
                     number: 0,
                     firstName: '',
-                    lastN42ame: '',
+                    lastName: '',
                     login: 'grannou',
                     login42: 'grannou',
                     status: 'student',
@@ -2066,7 +2066,7 @@
                     userName: 'grannou',
                     number: 0,
                     firstName: '',
-                    lastN42ame: '',
+                    lastName: '',
                     login: 'grannou',
                     login42: 'grannou',
                     status: 'student',
@@ -2270,7 +2270,7 @@
                     userName: 'grannou',
                     number: 0,
                     firstName: '',
-                    lastN42ame: '',
+                    lastName: '',
                     login: 'grannou',
                     login42: 'grannou',
                     status: 'student',
@@ -2510,10 +2510,14 @@
             }
             </script>
 
-          •
+          • RADIO BUTTON ELEMENT, works similarly as a text input field
           
             <template>
-
+              <!-- Radio button element -->
+              <p>Rate this lesson: {{ rating }}</p>
+              <label><input type="radio" name="rating" value="Bad" v-model="rating">Bad</           label><br>
+              <label><input type="radio" name="rating" value="Okay" v-model="rating">Okay</           label><br>
+              <label><input type="radio" name="rating" value="Good" v-model="rating">Good</           label><br>
             </template>
 
             <script>
@@ -2523,7 +2527,122 @@
               {
                 return
                 {
+                  rating: ''
+                }
+              }
+            }
+            </script>
 
+          • CHECK BOX works a little different
+            A single check box without a value attribute will return a boolean true or false
+          
+            <template>
+              <!-- Check box with single choice that return a boolean -->
+              <p>Subscribed: {{ subscribe }}</p>
+              <label>
+                Do you want to subscribe to our newsletter?
+                <input type="checkbox" v-model= "subscribe">
+              </label>
+            </template>
+
+            <script>
+            export default
+            {
+              data: function()
+              {
+                return
+                {
+                  subscribe: false
+                }
+              }
+            }
+            </script>
+
+          • SAME but we set the choice already checked, true by default
+          
+            <template>
+              <!-- Check box with single choice that return a boolean -->
+              <p>FoxFan: {{ foxFan }}</p>
+              <label>
+                Do you want a fox?
+                <input type="checkbox" v-model= "foxFan" checked>
+              </label>
+            </template>
+
+            <script>
+            export default
+            {
+              data: function()
+              {
+                return
+                {
+                  foxFan: true
+                }
+              }
+            }
+            </script>
+
+          • MULTIPLE CHECK BOXES: the content of their value property can be sent to an array if they are checked
+          
+            <template>
+              <!-- Multiple check boxes -> stored in an array -->
+              <p>To do list done: {{ toDoList.join(', ') }}</p>
+              <label><input type="checkbox" value="Frontend" v-model="toDoList">Frontend</label><br>
+              <label><input type="checkbox" value="Colors" v-model="toDoList">Colors</label><br>
+              <label><input type="checkbox" value="Emojis" v-model="toDoList">Emojis</label><br>
+              <label><input type="checkbox" value="Yatai Ramen Signature!" v-model="toDoList">Yatai Ramen Signature!</label>
+            </template>
+
+            <script>
+            export default
+            {
+              data: function()
+              {
+                return
+                {
+                  toDoList: []
+                }
+              }
+            }
+            </script>
+
+          • How to submit data
+          
+            <template>
+              <!-- Fill a form and submit it to console -->
+              <p>Full address: {{ fullAddress.streetNumber }} {{ fullAddress.streetName }}</p>
+              <form @submit.prevent="submitAddress">
+                <p>
+                  <label for="streetNumber">Street number:</label>
+                  <input id="streetNumber" type="text" v-model.lazy.trim="fullAddress.            streetNumber">
+                </p>
+                <p>
+                  <label for="streetName">Street name:</label>
+                  <input id="streetName" type="text" v-model.lazy.trim="fullAddress.            streetName">
+                </p>
+                <button>Submit address</button>
+              </form>
+            </template>
+
+            <script>
+            export default
+            {
+              data: function()
+              {
+                return
+                {
+                  fullAddress:
+                  {
+                    streetNumber: '',
+                    streetName: ''
+                  }
+                }
+              },
+              methods:
+              {
+                submitAddress()
+                {
+                  console.log('Form Data: ', this.fullAddress)
                 }
               }
             }
@@ -2540,17 +2659,44 @@
             {
               data: function()
               {
-                return
-                {
+                return {  }
+              }
+            }
+            </script>
 
-                }
+          •
+          
+            <template>
+
+            </template>
+
+            <script>
+            export default
+            {
+              data: function()
+              {
+                return {  }
+              }
+            }
+            </script>
+
+          •
+          
+            <template>
+
+            </template>
+
+            <script>
+            export default
+            {
+              data: function()
+              {
+                return {  }
               }
             }
             </script>
 
 
-
-          •
           •
           •
           •
