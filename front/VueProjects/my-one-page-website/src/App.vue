@@ -174,6 +174,10 @@
   <p>Full Bike Model: {{ fullBikeModel }}</p>
   <button @click="changeBikeModel">Change Bike Model</button>
 
+  <!-- Use a watcher that fire an alert when a count reachs a given value -->
+  <p>Cat Counter: {{ catTotal }}</p>
+  <button @click="catTotal++">One more cat</button>
+  <button @click="catTotal--">One less cat</button>
 </template>
 
 <script>
@@ -181,7 +185,7 @@
   {
     data()
     {
-      return {
+      return{
         userObj: { firstName: 'Norminet', lastName: 'the prettiest'},
         userArr: ['Norminet', 'the prettiest'],
         link: 'https://www.facebook.com/42born2code/videos/lolcat-norminet-42/1493963563969224/?locale=fr_FR',
@@ -218,7 +222,8 @@
           streetName: ''
         },
         bikeBrand: 'Honda',
-        bikeModel: 'cbr600'
+        bikeModel: 'cbr600',
+        catTotal: 0
       }
     },
     methods: 
@@ -306,8 +311,14 @@
           this.bikeModel = names[1]
         }
       }
+    },
+    watch:
+    {
+      catTotal(newValue)
+      {
+        if (newValue == 7) alert('value reached 7')
+      }
     }
-
   }
 </script>
 
