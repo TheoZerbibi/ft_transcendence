@@ -2696,10 +2696,18 @@
             }
             </script>
 
-          •
+          • WATCHERS
+            • A watcher allows to monitor a piece of data and execute code im response to a change in that data
+            • They are similar to Computed properties but have different use cases
           
-            <template>
+          • How tu use watchers
+            • exple: use a counter, buttons to in/decrement and a watcher that fire an alert when counter hits 7
 
+            <template>
+              <!-- Use a watcher that fire an alert when a count reachs a             given value -->
+              <p>Cat Counter: {{ catTotal }}</p>
+              <button @click="catTotal++">One more cat</button>
+              <button @click="catTotal--">One less cat</button>
             </template>
 
             <script>
@@ -2707,7 +2715,17 @@
             {
               data: function()
               {
-                return {  }
+                return
+                {
+                  catTotal: 0
+                }
+              },
+              watch:
+              {
+                catTotal(newValue)
+                {
+                  if (newValue == 7) alert('Value reached 7')
+                }
               }
             }
             </script>
@@ -2724,7 +2742,7 @@
               data: function()
               {
                 return {  }
-              }
+              },
             }
             </script>
 
