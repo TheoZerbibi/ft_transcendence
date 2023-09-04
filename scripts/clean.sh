@@ -8,7 +8,7 @@ function clean_docker() {
 	docker volume rm $(docker volume ls -q)
 
 	echo "Cleaning node_modules and dist folders"
-	rm -rf ../**/dist ../**/node_modules ../**/.pnpm-store/
+	rm -rf ./**/dist ./**/node_modules ./**/.pnpm-store/
 }
 
 function confirmation() {
