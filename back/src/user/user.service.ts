@@ -9,7 +9,7 @@ export class UserService {
 		const user = await this.prisma.user.findUnique({
 			where: {
 				id: userId,
-			}
+			},
 		});
 		return user;
 	}
