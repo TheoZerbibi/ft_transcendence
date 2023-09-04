@@ -80,6 +80,25 @@
   <!-- This will only work when no key modifiers are pressed-->
   <p><button @click.shift="clickOnlyHandler">Click only</button></p>
 
+  <!-- Display a counter and its initial value with only one variable -->
+  <p v-once>Initial grade: {{ grade }}</p>
+  <p>Updated grade: {{ grade }}</p>
+
+  <button @click="incrementGrade">Increment grade</button>
+  <button @click="decrementGrade">Decrement grade</button>
+
+  <!-- Input binding -->
+  <p>Prenom: {{ prenom }}</p>
+  <input type="text" v-model="prenom">
+
+  <!-- Input binding + lazy option (wait jump to next input to display previous-->
+  <p>Fruit: {{ fruit }}</p>
+  <input type="text" v-model.lazy="fruit">
+
+  <p>Legume: {{ legume }}</p>
+  <input type="text" v-model="legume">
+
+
 </template>
 
 <script>
@@ -104,7 +123,11 @@
         favoriteMovie: '',
         catName: '',
         counter: 0,
-        secretCode: ''
+        secretCode: '',
+        grade: 42,
+        prenom: '',
+        fruit: '',
+        legume: ''
       }
     },
     methods: 
@@ -159,9 +182,11 @@
       {
         this.secretCode = event.target.value
       },
-      shiftAnyHandler()   { alert('Shift + Any + Click') },
-      shiftOnlyHandler() { alert('Shift + Click Only')  },
-      clickOnlyHandler()  { alert('Click Only')          }
+      shiftAnyHandler()   { alert('Shift + Any + Click')  },
+      shiftOnlyHandler()  { alert('Shift + Click Only')   },
+      clickOnlyHandler()  { alert('Click Only')           },
+      incrementGrade()    { this.grade++                  },
+      decrementGrade()    { this.grade--                  }
 
     },
     computed:
