@@ -26,4 +26,5 @@ model User {
 	avatar		String
 	createdAt	DateTime @default(now())
 	updatedAt	DateTime @updatedAt
+	lastLogin	DateTime @default(now())
 }
