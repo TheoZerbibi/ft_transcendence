@@ -2388,7 +2388,7 @@
           • With lazy option
 
             <template>
-              <!-- Input binding + lazy option (wait jump to next input to display            previous-->
+              <!-- Input binding + lazy option (wait jump to next input to display previous)-->
               <p>Fruit: {{ fruit }}</p>
               <input type="text" v-model.lazy="fruit">
 
@@ -2409,6 +2409,145 @@
               }
             }
             </script>
+
+          • With lazy and trim option
+          
+            <template>
+              <!-- Input binding + lazy option (wait jump to next input to display            previous)-->
+              <!-- Input binding + trim option: remove outer whitespaces-->
+              <p>Signe astro: {{ signeAstro }}</p>
+              <input type="text" v-model.lazy.trim="signeAstro">
+
+              <p>Ascendant: {{ ascendant }}</p>
+              <input type="text" v-model.trim="ascendant">
+            </template>
+
+            <script>
+            export default
+            {
+              data: function()
+              {
+                return
+                {
+                  signeAstro: '',
+                  ascendant: ''
+                }
+              }
+            }
+            </script>
+
+          • Same with text area
+          
+            <template>
+              <!-- Same with lazy on text area -->
+              <p>Personal Profile: {{ profile }}</p>
+              <textarea cols="30" rows="10" v-model.lazy="profile"></textarea>
+            </template>
+
+            <script>
+            export default
+            {
+              data: function()
+              {
+                return
+                {
+                  profile: ''
+                }
+              }
+            }
+            </script>
+
+          • When using a group element, specify the v-model element on the parent select, option are the children
+          
+            <template>
+              <!-- v-model on a group element, specified on the parent -->
+              <p>Country: {{ country }}</p>
+              <select v-model="country">
+                <option value="">Please select your country</option>
+                <option value="UK">United Kingdom</option>
+                <option value="FR">France</option>
+                <option value="JP">Japan</option>
+                <option value="NZ">New Zealand</option>
+              </select>
+            </template>
+
+            <script>
+            export default
+            {
+              data: function()
+              {
+                return
+                {
+                  country: ''
+                }
+              }
+            }
+            </script>
+
+          • Same with multi selected (with ctrl or cmd) stored in an array
+          
+            <template>
+              <!-- Same on multiselection (with ctrl or cmd) stored in an array -->
+              <p>Countries visited: {{ visited.join(', ') }}</p>
+              <select multiple v-model="visited">
+                <option value="HY">Hyrule</option>
+                <option value="KM">Kaer Mohren</option>
+                <option value="F2">Forty 2</option>
+                <option value="SDF">Salle des fêtes</option>
+              </select>
+            </template>
+
+            <script>
+            export default
+            {
+              data: function()
+              {
+                return
+                {
+                  visited: []
+                }
+              }
+            }
+            </script>
+
+          •
+          
+            <template>
+
+            </template>
+
+            <script>
+            export default
+            {
+              data: function()
+              {
+                return
+                {
+
+                }
+              }
+            }
+            </script>
+
+          •
+          
+            <template>
+
+            </template>
+
+            <script>
+            export default
+            {
+              data: function()
+              {
+                return
+                {
+
+                }
+              }
+            }
+            </script>
+
 
 
           •
