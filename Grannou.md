@@ -2953,7 +2953,7 @@ export default {
             <template>
               <button @click="filmList.push('Aquaman')">Add film</button>
             </template>
-            
+
             <script>
             export default {
               data() {
@@ -2973,12 +2973,156 @@ export default {
             }
             </script>
 
-          •
-          •
-          •
-          •
-          •
-          •
+          • CONDITIONAL RENDERING VIDEO 11
+          • ITERATION RENDERING VIDEO 12
+
+          • How to iterate through nested arrays
+            Sometimes, an application will need to work with data where arrays are nested inside other arrays. To access nested arrays, we use nested loops.
+
+            For example, let’s say we have a social application and we want to display each user in             a card with the names of their friends. Each user is an object in an array that contains          a property with a nested array that contains their friends.
+
+            As mentioned before, we need to use nested loops. So let’s start with the outer loop            that iterates over the users.
+
+            NOTE To make the end result easier to visualize, we add some CSS styling that adds a            border around each person.
+           
+            <template>
+              <div class="card" v-for="person in people" :key="person.id">
+                <h2>{{ person.name }}</h2>
+              </div>
+            </template>
+
+            <script>
+            export default {
+              data() {
+                return {
+                  people: [
+                    { id: 0, name: 'John Doe', friends: ['Scott Lang', 'Tony Stark'] },
+                    { id: 1, name: 'Jane Doe', friends: ['Hope Van Dyne', 'Pepper Potts'] }
+                  ]
+                }
+              }
+            }
+            </script>
+
+            <style>
+            .card{width:30rem;margin:1rem auto;padding:.5rem;border:1px solid black}
+            </style>
+
+          When we run the example in the browser, we should see two cards with a border around them,          showing the names of the two people.
+          Now we want to show each person’s friends from the nested array inside their card. To do that we          use the person alias from the outer loop to access its properties. Then we access the friends         array with dot notation.
+
+            <template>
+              <div class="card" v-for="person in people" :key="person.id">
+                <h2>{{ person.name }}</h2>
+                <p class="card sub" v-for="friend in person.friends" :key="friend">
+                  {{ friend }}
+                </p>
+              </div>
+            </template>
+
+            <script>
+            export default {
+              data() {
+                return {
+                  people: [
+                    { id: 0, name: 'John Doe', friends: ['Scott Lang', 'Tony Stark'] },
+                    { id: 1, name: 'Jane Doe', friends: ['Hope Van Dyne', 'Pepper Potts'] }
+                  ]
+                }
+              }
+            }
+            </script>
+
+            <style>
+            .card{width:30rem;margin:1rem auto;padding:.5rem;border:1px solid black}
+            .sub {width:initial;margin:.5rem}
+            </style>
+
+          • How to iterate through a single object
+            Sometimes, the data we want to iterate over will be stored in a single object. In that case we            want to loop over each property just like we do with an array.
+
+            As an example, we’ll create an object with 3 properties and iterate it in a paragraph.
+          
+            <template>
+              <p v-for="value in info" :key="value">
+                {{ value }}
+              </p>
+            </template>
+
+            <script>
+            export default {
+              data() {
+                return {
+                  info: {
+                    name:     'John Doe',
+                    blogName: 'Mistaken Identity',
+                    url:      'https://doe-re-mi.com'
+                  }
+                }
+              }
+            }
+            </script>
+          
+          • How to get the object key in a v-for
+            When looping through object properties, Vue allows us to get not only the index, but also the             property name.
+
+            The property name is also known as the “key” because property:value is often referred to as             key:value. In this case when we refer to the key, we mean the property name and not the unique            identifier key.
+
+            We get the key the same way we get a list index, we define all the aliases in a parameter list            separated by a comma.
+
+              <template>
+                <p v-for="(value, key, i) in info" :key="value">
+                  {{ i }} - {{ key}}: {{ value }}
+                </p>
+              </template>
+
+              <script>
+              export default {
+                data() {
+                  return {
+                    info: {
+                      name:     'John Doe',
+                      blogName: 'Mistaken Identity',
+                      url:      'https://do-re-mi.com'
+                    }
+                  }
+                }
+              }
+              </script>
+
+          • Conditional looping with v-for, v-if and Computed Properties
+            There will be times where we need to loop through elements in a list and display them             conditionally.
+
+            As an example, let’s say we want to filter out all the users below the age of 18 in a voting app.             The first solution that comes to mind is using the v-for and v-if directives on the same element.
+
+            <template>
+              <p v-for="user in legalUsers" :key="user.name">
+                {{ user.name }}
+              </p>
+            </template>
+            
+            <script>
+            export default {
+              data() {
+                return {
+                  users: [
+                    { name: 'John', age: 33 },
+                    { name: 'Jane', age: 33 },
+                    { name: 'Jack', age: 17 },
+                    { name: 'Jill', age: 16 }
+                  ]
+                }
+              },
+              computed: {
+                legalUsers() {
+                  // for each item, filter it only if the age is >= 18
+                  // then return a new array with the results
+                  return this.users.filter(user => user.age >= 18);
+                }
+              }
+            }
+            </script>
+
           •
           •
           •
