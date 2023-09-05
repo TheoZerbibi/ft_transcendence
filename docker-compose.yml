@@ -47,24 +47,30 @@ services:
       DATABASE_URL: ${DATABASE_URL}
     command: sh -c "npm run start:prisma"
 
-  # socket:
-  #   build: docker/node
-  #   container_name: socket
-  #   ports:
-  #   - 4000:4000
-  #   volumes:
-  #     - ./socket:/home/node/app
-  #   depends_on:
-  #     - api
-  #     - redis
-  #   environment:
-  #     REDIS_HOST: ${REDIS_HOST}
-  #     REDIS_PORT: ${REDIS_PORT}
-  #     REDIS_PASS: ${REDIS_PASS}
-  #     REDIS_URL: ${REDIS_URL}
-  #     NODE_ENV: ${NODE_ENV}
-  #     HOST: ${HOST}
-  #   command: sh -c "pnpm run start:dev"
+  socket:
+    build:
+      context: ./socket
+      target: socket
+      dockerfile: ../docker/node/dev.Dockerfile
+    container_name: socket
+    ports:
+    - 4000:4000
+    volumes:
+      - ./socket:/home/node/app
+      - node_sock1:/home/node/app/node_modules
+      - store_sock1:/home/node/app/.pnpm-store
+    depends_on:
+      - api
+      - redis
+    environment:
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PASS: ${REDIS_PASS}
+      REDIS_URL: ${REDIS_URL}
+      NODE_ENV: ${NODE_ENV}
+      HOST: ${HOSTNAME}
+      PORT: 4000
+    command: sh -c "tail -f /dev/null"
 
   api:
     build:
@@ -76,8 +82,8 @@ services:
       - 3001:3001
     volumes:
         - ./back:/home/node/app
-        - node_modules:/home/node/app/node_modules
-        - store:/home/node/app/.pnpm-store
+        - node_api:/home/node/app/node_modules
+        - store_api:/home/node/app/.pnpm-store
     depends_on:
         - postgres
     environment:
@@ -89,11 +95,15 @@ services:
       NODE_ENV: ${NODE_ENV}
       DATABASE_URL: ${DATABASE_URL}
       HOST: ${HOSTNAME}
-    command: sh -c "pnpm db:deploy && tail -f /dev/null"
+    command: sh -c "pnpm db:migrate && tail -f /dev/null"
 
 volumes:
-  node_modules:
+  node_api:
+  node_sock1:
+  node_sock2:
+  store_api:
+  store_sock1:
+  store_sock2:
   build:
-  store:
   redisdata:
   pgdata:

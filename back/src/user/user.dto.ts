@@ -4,6 +4,5 @@ export class UserDto {
 	displayName: string;
 	avatar: string;
 	createdAt: Date;
-	updatedAt: Date;
 	lastLogin: Date;
 }
