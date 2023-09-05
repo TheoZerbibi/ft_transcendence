@@ -18,29 +18,82 @@ on:
       - '**backend'
       - 'backend**'
       - '**backend**'
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+
+#     services:
+#       postgres:
+#         image: postgres
+
+#         env:
+#           POSTGRES_PASSWORD: postgres
+#           POSTGRES_USER: postgres
+#           POSTGRES_DB: postgres
+
+#         options: >-
+#           --health-cmd pg_isready
+#           --health-interval 10s
+#           --health-timeout 5s
+#           --health-retries 5
+#         ports:
+#           - 5432:5432
+
+#     steps:
+#       # run steps required in the workflow
+#       - name: Checkout
+#         uses: actions/checkout@v3
+
+#       - name: Install Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 18
+#       - uses: pnpm/action-setup@v2
+#         name: Install pnpm
+#         with:
+#           version: 7
+#           run_install: false
+#       - name: Get pnpm store directory
+#         shell: bash
+#         run: |
+#           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+#       - uses: actions/cache@v3
+#         name: Setup pnpm cache
+#         with:
+#           path: ${{ env.STORE_PATH }}
+#           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+#           restore-keys: |
+#             ${{ runner.os }}-pnpm-store-
+
+#       - name: Install dependencies
+#         run: pnpm install
+
+#       - name: migrate database
+#         run: pnpm db:migrate
+#         env:
+#           DATABASE_URL: "postgresql://${{ vars.POSTGRES_USER }}:${{ vars.POSTGRES_PASSWORD }}@postgres:5432/${{ vars.POSTGRES_DB }}?schema=public"
+
 jobs:
   build:
     runs-on: ubuntu-latest
-
     services:
       postgres:
-        image: postgres
-
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-          POSTGRES_DB: postgres
-
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
+          image: postgres
+          options: >-
+            --health-cmd pg_isready
+            --health-interval 10s
+            --health-timeout 5s
+            --health-retries 5
+          ports:
+            - 5432:5432
+    defaults:
+      run:
+        working-directory: 'back'
+    strategy:
+      matrix:
+        node-version: [18.x]
     steps:
-      # run steps required in the workflow
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -67,89 +120,27 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: pnpm install
-
-      - name: migrate database
-        run: pnpm db:migrate
-        env:
-          DATABASE_URL: "postgresql://${{ vars.POSTGRES_USER }}:${{ vars.POSTGRES_PASSWORD }}@postgres:5432/${{ vars.POSTGRES_DB }}?schema=public"
-
-# jobs:
-#   Test:
-#     runs-on: ubuntu-latest
-#     services:
-#       postgres:
-#         image: postgres
-#         env:
-#           POSTGRES_HOST: postgres
-#           POSTGRES_PORT: 5432
-#           POSTGRES_USER: ${{ vars.POSTGRES_USER }}
-#           POSTGRES_PASSWORD: ${{ vars.POSTGRES_PASSWORD }}
-#           POSTGRES_DB: ${{ vars.POSTGRES_DB }}
-#           POSTGRES_ENABLED: true
-#         options: >-
-#           --health-cmd pg_isready
-#           --health-interval 10s
-#           --health-timeout 5s
-#           --health-retries 5
-#         ports:
-#         - 5432:5432
-#     # defaults:
-#     #   run:
-#     #     working-directory: 'back'
-#     # strategy:
-#     #   matrix:
-#     #     node-version: [18.x]
-    
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
-
-#       - name: Install Node.js
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: 18
-#       - uses: pnpm/action-setup@v2
-#         name: Install pnpm
-#         with:
-#           version: 7
-#           run_install: false
-#       - name: Get pnpm store directory
-#         shell: bash
-#         run: |
-#           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-#       - uses: actions/cache@v3
-#         name: Setup pnpm cache
-#         with:
-#           path: ${{ env.STORE_PATH }}
-#           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-#           restore-keys: |
-#             ${{ runner.os }}-pnpm-store-
-#       - name: Install dependencies
-#         run: |
-#           pnpm install --no-frozen-lockfile
-#           pnpm db:migrate
-#       - name: Launch linter
-#         run: pnpm lint
-#       - name: Build dependencies
-#         run: pnpm build
-#     env:
-#       POSTGRES_HOST: postgres
-#       POSTGRES_PORT: 5432
-#       POSTGRES_USER: ${{ vars.POSTGRES_USER }}
-#       POSTGRES_PASSWORD: ${{ vars.POSTGRES_PASSWORD }}
-#       POSTGRES_DB: ${{ vars.POSTGRES_DB }}
-#       POSTGRES_ENABLED: true
-#       DATABASE_URL: "postgresql://${{ vars.POSTGRES_USER }}:${{ vars.POSTGRES_PASSWORD }}@postgres:5432/${{ vars.POSTGRES_DB }}?schema=public"
-#       REDIS_HOST: redis
-#       REDIS_PORT: 6379
-#       REDIS_PASS: ${{ vars.REDIS_PASSWORD }}
-#       REDIS_URL: redis://redis:6379
-#       NODE_ENV: development
-#       API42_UID: ${{ secrets.API42_UID }}
-#       API42_SECRET: ${{ secrets.API42_SECRET }}
-#       HOSTNAME: localhost
-#       JWT_SECRET: github-action
+        run: pnpm install --no-frozen-lockfile && pnpm db:migrate
+      - name: Launch linter
+        run: pnpm lint
+      - name: Build dependencies
+        run: pnpm build
+    env:
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ vars.POSTGRES_PASSWORD }}
+      POSTGRES_DB: ${{ vars.POSTGRES_DB }}
+      POSTGRES_ENABLED: true
+      DATABASE_URL: "postgresql://${{ vars.POSTGRES_USER }}:${{ vars.POSTGRES_PASSWORD }}@localhost:5432/${{ vars.POSTGRES_DB }}?schema=public"
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASS: ${{ vars.REDIS_PASSWORD }}
+      REDIS_URL: redis://redis:6379
+      NODE_ENV: development
+      API42_UID: ${{ secrets.API42_UID }}
+      API42_SECRET: ${{ secrets.API42_SECRET }}
+      HOSTNAME: localhost
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
 
