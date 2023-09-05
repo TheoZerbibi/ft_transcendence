@@ -82,7 +82,7 @@ services:
       - 3001:3001
     volumes:
         - ./back:/home/node/app
-        # - node_api:/home/node/app/node_modules
+        - node_api:/home/node/app/node_modules
         - store_api:/home/node/app/.pnpm-store
     depends_on:
         - postgres

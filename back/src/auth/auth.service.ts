@@ -7,9 +7,12 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
+	constructor(
+		private prisma: PrismaService,
+		private jwt: JwtService,
+		private config: ConfigService,
+	) {}
 
-	constructor(private prisma: PrismaService, private jwt: JwtService, private config: ConfigService) {}
-	
 	async signup(dto: AuthDto) {
 		// const hash = await argon.hash(dto.password);
 		try {
@@ -19,7 +22,7 @@ export class AuthService {
 					displayName: dto.login,
 					email: `${dto.login}@student.42.fr`,
 					avatar: `https://cdn.intra.42.fr/users/${dto.login}.jpg`,
-				}
+				},
 			});
 			return this.signToken(user);
 		} catch (e) {
@@ -46,6 +49,6 @@ export class AuthService {
 		const token = await this.jwt.signAsync(payload, { expiresIn: '3h', secret: secret });
 		return {
 			access_token: token,
-		  };
+		};
 	}
 }

@@ -56,10 +56,10 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
-      - name: Build dependencies
-        run: pnpm build
       - name: Launch linter
         run: pnpm lint
+      - name: Build dependencies
+        run: pnpm build
     env:
       POSTGRES_HOST: localhost
       POSTGRES_PORT: 5432
