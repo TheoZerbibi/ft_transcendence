@@ -76,6 +76,7 @@ services:
       - 3001:3001
     volumes:
         - ./back:/home/node/app
+        - node_modules:/home/node/app/node_modules
         - store:/home/node/app/.pnpm-store
     depends_on:
         - postgres
@@ -91,6 +92,7 @@ services:
     command: sh -c "pnpm db:deploy && tail -f /dev/null"
 
 volumes:
+  node_modules:
   build:
   store:
   redisdata:
