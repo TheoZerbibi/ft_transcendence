@@ -53,11 +53,11 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
-
-      - name: Launch Postgres container
-        run: docker compose up postgres -d
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile && pnpm db:migrate
+        run: |
+          docker compose up postgres -d
+          pnpm install --no-frozen-lockfile
+          pnpm db:migrate
       - name: Launch linter
         run: pnpm lint
       - name: Build dependencies
