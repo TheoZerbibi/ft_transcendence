@@ -3,7 +3,7 @@
   <h1>Hello {{ userObj.firstName }} {{ userObj.lastName }} </h1>
 
   <!-- arrays use the indexer -->
-  <h2>Hello {{ userArr[0] }} {{ userArr[1] }}</h2>
+  <h2 class="pink">Hello {{ userArr[0] }} {{ userArr[1] }}</h2>
 
   <!-- including a link -->
   <a v-bind:href="link">Jumping Norminet</a>
@@ -178,12 +178,26 @@
   <p>Cat Counter: {{ catTotal }}</p>
   <button @click="catTotal++">One more cat</button>
   <button @click="catTotal--">One less cat</button>
+
+  <!-- iTERATE THROUGH NESTED ARRAYS -->
+  <div class="card" v-for="person in people" :key="person.id">
+    <h2 class="card">{{ person.name }}</h2>¨
+    <p class="card sub" v-for="friend in person.friends" :key="friend">{{ friend }}</p>
+  </div>
+
+  <!-- get an object in a v-for -->
+  <p v-for="(value, key, i) in player" :key="value">{{ i }} - {{ key }}: {{ value }}</p>
+
+  <!-- Conditional looping with v-for, v-if and computed properties -->
+  <p>Students above level 7:</p>
+  <p v-for="student in alumni" :key="student.level">{{ student.login }}</p>
+
 </template>
 
 <script>
   export default
   {
-    data()
+    data: function()
     {
       return{
         userObj: { firstName: 'Norminet', lastName: 'the prettiest'},
@@ -223,7 +237,26 @@
         },
         bikeBrand: 'Honda',
         bikeModel: 'cbr600',
-        catTotal: 0
+        catTotal: 0,
+        people:
+        [
+          { id: 0, name: 'Harry Potter', friends: ['Hermione Granger', 'Ron Wisley']  },
+          { id: 1, name: 'Geralt of Rivia', friends: ['Cirilla of Cintra', 'Yennefer from Vengerberg']  }
+        ],
+        player:
+        {
+          name: 'Ezio Auditore',
+          type: 'Assassin',
+          age: 52
+        },
+        students:
+        [
+          { login: 'Grannou'  , level: 8  },
+          { login: 'Norminet' , level: 21 },
+          { login: 'Newbie'   , level: 3  },
+          { login: 'thzeribi' , level: 12 },
+          { login: 'fcatinau' , level: 2  }
+        ]
       }
     },
     methods: 
@@ -310,6 +343,10 @@
           this.bikeBrand = names[0]
           this.bikeModel = names[1]
         }
+      },
+      alumni()
+      {
+        return this.students.filter(student => student.level >= 7)
       }
     },
     watch:
@@ -329,7 +366,7 @@
     text-align: center;
 
   }
-  h2
+  .pink
   {
     color: pink
   }
@@ -337,4 +374,13 @@
   {
     color: orangered;
   }
+
+  .card
+  {
+    width: 30rem;
+    margin: 1rem auto;
+    padding: .5rem;
+    border: 1px solid black;
+  }
+  .sub {width:initial;margin:.5rem}
 </style>
