@@ -2702,6 +2702,8 @@
           
           • How tu use watchers
             • exple: use a counter, buttons to in/decrement and a watcher that fire an alert when counter hits 7
+          
+          • A watcher can only monitor a single data property (so better use computed instead of multiple watchers)
 
             <template>
               <!-- Use a watcher that fire an alert when a count reachs a             given value -->
@@ -2730,29 +2732,247 @@
             }
             </script>
 
-          •
-          
-            <template>
+            • When to use a Watcher vs a Computed Property
+            Now that we know more about the differences, we can answer the question: when do we             actually use which?
 
+            Use Computed Properties when:
+
+            You need to compose new data from more than one existing data sources. An example would             be when we created a full name from the first and last name data properties.
+            You need to reduce the length of a variable. An example would be when we need to access             a deeply nested property in an object and bind it to the View. It will make our template            less cluttered.
+            Use Watchers when:
+
+            You want to check if a data or computed property has changed to a specific value in             order to know if you are ready to perform an action. An example would be when we            displayed an alert once the number in our counter reached 5.
+            You have to call an API in response to a change in data. An example would be a user             clicking a button to receive a new inspirational quote, or upcoming events in their area            etc.
+
+          • Let’s modify the example above and check if newValue is greater than oldValue . The message will display when the number reaches 5. But if we go past and decrease it again, the message won’t show.
+
+            <template>
+              <p>Counter: {{ count }}</p>
+
+              <button @click="count++">Increment</button>
+              <button @click="count--">Decrement</button>
             </template>
 
             <script>
-            export default
-            {
-              data: function()
-              {
-                return {  }
+            export default {
+              data() {
+                return {
+                  count: 0
+                }
               },
+              watch: {
+                count(newValue, oldValue) {
+                  if (newValue > oldValue && newValue === 5)
+                    alert('Increasing the volume past 5 may damage your hearing')
+                }
+              }
             }
             </script>
 
+          • How to run a Watcher on page load with immediate
+          By default, a watcher will not run when a page first loads. However, many times in an            application you will want to display data from an API immediately.
+          
+          As an example, let’s consider a film review application. Until the user performs a           search, we don’t know which film they want to see a review for. So we want to show the           most popular reviews of the latest film on the home page.
+          
+          Let’s create a simplified version of such an application and simulate the API call with            a console log.
+          
+            <template>
+              <p>Search for a film: <input type="text" v-model="filmName"></p>
+            </template>
 
-          •
-          •
-          •
-          •
-          •
-          •
+            <script>
+            export default {
+              data() {
+                return {
+                  filmName: ''
+                }
+              },
+              watch: {
+                filmName(newValue) {
+                  console.log('Calling API for ' + newValue)
+                }
+              }
+            }
+            </script>
+
+          • Now let’s add a default value to the filmName data property. The idea here is that because we use the v-model directive, the default value we specify will show up in the input field. And because it’s in the input field, it should activate the watcher and print the message to the console.
+
+<template>
+  <p>Search for a film: <input type="text" v-model="filmName"></p>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      filmName: 'Rabobi'
+    }
+  },
+  watch: {
+    filmName(newValue) {
+      console.log('Calling API for ' + newValue)
+    }
+  }
+}
+</script>
+
+
+          • If we run the example in the browser, the new default film name shows up in the input field. However, the console doesn’t display a message, indicating that the watcher didn’t activate.
+
+          That is the default behavior for a watcher. If we want it to run when the page loads, we          need to set the immediate option of the watcher to true.
+
+          This also means we need to change the syntax of the watcher method. The method becomes          an object with a function called handler that contains the watcher logic. Alongside the         handler we use the immediate property with a value of true.
+
+          watch: {
+            dataPropertyToWatch: {
+              handler(newValue) {
+                // watcher method logic
+              },
+              immediate: true
+            }
+          }
+
+            <template>
+              <p>Search for a film: <input type="text" v-model="filmName"></p>
+            </template>
+
+            <script>
+            export default {
+              data() {
+                return {
+                  filmName: 'Spiderman'
+                }
+              },
+              watch: {
+                filmName: {
+                  handler(newValue) {
+                    console.log('Calling API for ' + newValue)
+                  },
+                  immediate: true
+                }
+              }
+            }
+            </script>
+
+          • How to watch nested objects with deep
+            Many times in an application, you will want to watch a value in a nested object. But by             default, Vue doesn’t watch nested data properties and requires us to set the deep option            of the watcher to true.
+            watch: {
+              dataPropertyToWatch: {
+                handler(newValue) {
+                  // watcher method logic
+                },
+                deep: true
+              }
+            }
+
+              <template>
+                <p>Title:    <input type="text" v-model="film.title"></p>
+                <p>Director: <input type="text" v-model="film.director"></p>
+              </template>
+
+              <script>
+              export default {
+                data() {
+                  return {
+                    film: {
+                      title: '',
+                      director: ''
+                    }
+                  }
+                },
+                watch: {
+                  film: {
+                    handler(newValue) {
+                      console.log('Film: ' + newValue.title + ', directed by ' + newValue.director)
+                    },
+                    deep: true
+                  }
+                }
+              }
+              </script>
+
+          • Vue allows us to have both the deep and immediate properties active at the same time. It doesn’t matter in which order the properties are defined. As long as they exist, Vue can use them.
+
+            <template>
+              <p>Title:    <input type="text" v-model="film.title"></p>
+              <p>Director: <input type="text" v-model="film.director"></p>
+            </template>
+
+            <script>
+            export default {
+              data() {
+                return {
+                  film: {
+                    title: 'Spiderman',
+                    director: 'Jon Watts'
+                  }
+                }
+              },
+              watch: {
+                film: {
+                  handler(newValue) {
+                    console.log('Film: ' + newValue.title + ', directed by ' + newValue.director)
+                  },
+                  deep: true,
+                  immediate: true
+                }
+              }
+            }
+            </script>
+
+          • How to watch arrays with deep
+          Vue counts arrays as deeply nested. So when we’re working with an array, we also have to          specify and set the deep option to true.
+
+          As an example, let’s create an list of films in an array with the option to add more by           clicking a button. To keep things simple, we’ll use the Javascript array push method          directly in the click listener.
+
+           <template>
+             <button @click="filmList.push('Aquaman')">Add film</button>
+           </template>
+
+           <script>
+           export default {
+             data() {
+               return {
+                 filmList: ['Spiderman', 'Batman']
+               }
+             },
+             watch: {
+               filmList: {
+                 handler(newValue) {
+                   console.log('New list ' + newValue);
+                 },
+                 deep: true
+               }
+             }
+           }
+           </script>
+
+          • When we press the button, the new film is added to the array and logged in the console.
+          It’s worth it to note that if we add the immediate property, it will display the list           with default values only. It will not add “Aquaman” to the array until the click event          fires.
+
+            <template>
+              <button @click="filmList.push('Aquaman')">Add film</button>
+            </template>
+            
+            <script>
+            export default {
+              data() {
+                return {
+                  filmList: ['Spiderman', 'Batman']
+                };
+              },
+              watch: {
+                filmList: {
+                  handler(newValue) {
+                    console.log('New list ' + newValue);
+                  },
+                  deep: true,
+                  immediate: true
+                }
+              }
+            }
+            </script>
+
           •
           •
           •
