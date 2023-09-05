@@ -55,7 +55,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install --no-frozen-lockfile && pnpm db:migrate
       - name: Launch linter
         run: pnpm lint
       - name: Build dependencies
