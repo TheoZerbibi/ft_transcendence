@@ -77,5 +77,6 @@ jobs:
       NODE_ENV: development
       API42_UID: ${{ secrets.API42_UID }}
       API42_SECRET: ${{ secrets.API42_SECRET }}
-      HOST: localhost
+      HOSTNAME: localhost
+      JWT_SECRET: github-action
 
