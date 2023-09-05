@@ -20,7 +20,8 @@ datasource db {
 }
 model User {
 	id			Int	@id @default(autoincrement()) @unique
-	username	String
+	login		String @unique
+	displayName	String
 	email		String
 	dAuth		Boolean @default(false)
 	avatar		String

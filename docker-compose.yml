@@ -70,7 +70,7 @@ services:
     build:
       context: ./back
       target: backend
-      dockerfile: ../docker/node/Dockerfile
+      dockerfile: ../docker/node/dev.Dockerfile
     container_name: api
     ports:
       - 3001:3001
@@ -91,7 +91,6 @@ services:
     command: sh -c "pnpm db:deploy && tail -f /dev/null"
 
 volumes:
-  modules:
   build:
   store:
   redisdata:

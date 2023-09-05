@@ -9,27 +9,32 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 const users = [
 	{
-		username: 'Theo',
+		login: 'thzeribi',
+		displayName: 'Theo',
 		email: 'thzeribi@student.42.fr',
 		avatar: 'https://cdn.intra.42.fr/users/ef89183628c15b9229bf141ebd455ba9/thzeribi.jpg',
 	},
 	{
-		username: 'Ismael',
+		login: 'iguidado',
+		displayName: 'Ismael',
 		email: 'iguidado@student.42.fr ',
 		avatar: 'https://cdn.intra.42.fr/users/166ae900b2c48bda6db10199f5b1efb4/iguidado.jpg',
 	},
 	{
-		username: 'Gaëlle',
+		login: 'grannou',
+		displayName: 'Gaëlle',
 		email: 'grannou@student.42.fr',
 		avatar: 'https://cdn.intra.42.fr/users/c2b48b00d1529ccb8e7a4296ec23b8ee/grannou.jpg',
 	},
 	{
-		username: 'Semiha',
+		login: 'seozcan',
+		displayName: 'Semiha',
 		email: 'seozcan@student.42.fr',
 		avatar: 'https://cdn.intra.42.fr/users/d78eaeaafd38e03543f1c757ad8b070e/seozcan.jpg',
 	},
 	{
-		username: 'Noemi',
+		login: 'nfauconn',
+		displayName: 'Noemi',
 		email: 'nfauconn@student.42.fr',
 		avatar: 'https://cdn.intra.42.fr/users/96c6292bd2445ca46c9ce03ddb6f8572/nfauconn.jpg',
 	},

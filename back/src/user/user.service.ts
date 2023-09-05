@@ -5,12 +5,18 @@ import { PrismaService } from '../prisma/prisma.service';
 export class UserService {
 	constructor(private prisma: PrismaService) {}
 
-	async getUserById(userId: number) {
-		const user = await this.prisma.user.findUnique({
+	exclude<User>(user: User, keys: string[]) {
+		return Object.fromEntries(Object.entries(user).filter(([key]) => !keys.includes(key)));
+	}
+
+	async getUserByLogin(userLogin: string): Promise<any | undefined> {
+		const prismaUser = await this.prisma.user.findUnique({
 			where: {
-				id: userId,
+				login: userLogin,
 			},
 		});
+		if (!prismaUser) return undefined;
+		const user = this.exclude(prismaUser, ['dAuth', 'email']);
 		return user;
 	}
 }

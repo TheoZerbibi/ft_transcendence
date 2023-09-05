@@ -1,20 +1,24 @@
-import { Controller, Get, Param } from '@nestjs/common';
-import { User } from '@prisma/client';
-import { GetUser } from 'src/auth/decorator/get-user.decorator';
+import {
+	BadRequestException,
+	ClassSerializerInterceptor,
+	Controller,
+	Get,
+	Param,
+	UseInterceptors,
+} from '@nestjs/common';
 import { UserService } from './user.service';
+import { UserDto } from './user.dto';
 
 @Controller('users')
 export class UserController {
 	constructor(private userService: UserService) {}
-	// @UseGuards(JwtGuard)
-	@Get('me')
-	getMe(@GetUser() user: User) {
-		return user;
-	}
 
 	// @UseGuards(JwtGuard)
-	@Get(':id')
-	getUserById(@Param('id') userId: string) {
-		return this.userService.getUserById(parseInt(userId));
+	@Get(':login')
+	@UseInterceptors(ClassSerializerInterceptor)
+	async getUserByLogin(@Param('login') userLogin: string): Promise<UserDto | string> {
+		const user = await this.userService.getUserByLogin(userLogin);
+		if (!user) throw new BadRequestException('Invalid user');
+		return user;
 	}
 }
