@@ -80,6 +80,13 @@ jobs:
     services:
       postgres:
           image: postgres
+          env:
+            POSTGRES_HOST: localhost
+            POSTGRES_PORT: 5432
+            POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+            POSTGRES_PASSWORD: ${{ vars.POSTGRES_PASSWORD }}
+            POSTGRES_DB: ${{ vars.POSTGRES_DB }}
+            POSTGRES_ENABLED: true
           options: >-
             --health-cmd pg_isready
             --health-interval 10s
