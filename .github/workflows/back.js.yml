@@ -39,12 +39,12 @@ jobs:
           --health-retries 5
         ports:
         - 5432:5432
-    defaults:
-      run:
-        working-directory: 'back'
-    strategy:
-      matrix:
-        node-version: [18.x]
+    # defaults:
+    #   run:
+    #     working-directory: 'back'
+    # strategy:
+    #   matrix:
+    #     node-version: [18.x]
     
     steps:
       - name: Checkout
