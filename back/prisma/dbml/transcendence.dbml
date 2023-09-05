@@ -7,7 +7,7 @@ Project "Transcendence" {
   Note: 'Transcendence DBML file'
 }
 
-Table User {
+Table users {
   id Int [pk, increment]
   login String [unique, not null]
   displayName String [not null]
