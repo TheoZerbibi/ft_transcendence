@@ -3100,7 +3100,7 @@ export default {
                 {{ user.name }}
               </p>
             </template>
-            
+
             <script>
             export default {
               data() {
@@ -3144,3 +3144,32 @@ export default {
             </script>
 
 
+Vuex module file structure
+The whole point of using modules is to split our code into smaller, more manageable sections. If we have everything in our /src/main.js file, it will quickly become very large.
+
+Typically, a Vuex module file structure looks as follows.
+
+src/
+|
+├── assets				  // Project assets
+├── components			  // Project components
+|
+├── store/
+|   ├── module_name/
+|   |   ├── actions.js    // Module actions
+|   |   ├── getters.js    // Module getters
+|   |   ├── mutations.js  // Module mutations
+|   |   └── index.js      // Module state, namespace, export
+|   |
+|   ├── module_name/
+|   |   ├── actions.js    // Module actions
+|   |   ├── getters.js    // Module getters
+|   |   ├── mutations.js  // Module mutations
+|   |   └── index.js      // Module state, namespace, export
+|   |
+|   └── index.js 		  // Main object, modules, export
+|
+├── main.js				  // Main import, use store
+└── App.vue				  // Root component
+
+VIDEO 34
