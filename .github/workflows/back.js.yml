@@ -19,7 +19,7 @@ on:
       - 'backend**'
       - '**backend**'
 jobs:
-  Test:
+  build:
     runs-on: ubuntu-latest
 
     services:
