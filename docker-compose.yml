@@ -12,7 +12,7 @@ services:
       - 3000:3000
     volumes:
         - ./front:/home/node/app
-        # - node_front:/home/node/app/node_modules
+        - node_front:/home/node/app/node_modules
         - store_front:/home/node/app/.pnpm-store
     depends_on:
         - api
@@ -80,7 +80,7 @@ services:
     - 4000:4000
     volumes:
       - ./socket:/home/node/app
-      # - node_sock1:/home/node/app/node_modules
+      - node_sock1:/home/node/app/node_modules
       - store_sock1:/home/node/app/.pnpm-store
     depends_on:
       - api
@@ -107,7 +107,7 @@ services:
       - 3001:3001
     volumes:
         - ./back:/home/node/app
-        # - node_api:/home/node/app/node_modules
+        - node_api:/home/node/app/node_modules
         - store_api:/home/node/app/.pnpm-store
     depends_on:
         - postgres

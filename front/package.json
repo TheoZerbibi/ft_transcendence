@@ -9,7 +9,7 @@
         "test:unit": "vitest",
         "test:e2e": "start-server-and-test preview http://localhost:4173 'cypress run --e2e'",
         "lint": "eslint . --cache --cache-location ./node_modules/.vite/vite-plugin-eslint --no-error-on-unmatched-pattern && prettier . -w -u",
-        "lint:style": "stylelint \"./**/*.{css,sass,scss,htm,html,vue}\" --fix --cache-location ./node_modules/.vite/vite-plugin-stylelint && prettier \"./**/*.{css,sass,scss,htm,html,vue}\" -w -u",
+        "lint:style": "stylelint \"./**/*.{css,sass,scss,htm,html,vue}\" --cache-location ./node_modules/.vite/vite-plugin-stylelint && prettier \"./**/*.{css,sass,scss,htm,html,vue}\" -w -u",
         "build-only": "vite build",
         "dev": "vite --port 3000 --host",
         "format": "prettier --write src/",
@@ -19,6 +19,7 @@
     },
     "dependencies": {
         "@mdi/font": "7.2.96",
+        "gsap": "^3.12.2",
         "pinia": "^2.1.6",
         "roboto-fontface": "*",
         "vue": "^3.3.4",
