@@ -55,12 +55,12 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
+      - name: Build dependencies
+        run: pnpm build
       - name: Launch linter
         run: |
           pnpm lint
           pnpm lint:style
-      - name: Build dependencies
-        run: pnpm build
     env:
       NODE_ENV: development
       API42_UID: ${{ secrets.API42_UID }}
