@@ -7,12 +7,16 @@ on:
   push:
     branches:
       - '*'
+      - '**'
+      - '*/*'
       - '!**/frontend'
       - '!frontend/**'
       - '!**/frontend/**'
   pull_request:
     branches:
       - '*'
+      - '**'
+      - '*/*'
       - '!**/frontend'
       - '!frontend/**'
       - '!**/frontend/**'
