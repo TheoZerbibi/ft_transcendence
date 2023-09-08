@@ -52,8 +52,6 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
-      - uses: stefanoeb/eslint-action@1.0.2
-        name: Setup eslint
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
