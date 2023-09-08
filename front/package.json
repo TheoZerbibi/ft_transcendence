@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "preinstall": "npx only-allow pnpm",
-        "serve": "vite preview",
+        "serve": "vite preview --port 3000 --host",
         "build": "vite build",
         "test:unit": "vitest",
         "test:e2e": "start-server-and-test preview http://localhost:4173 'cypress run --e2e'",
@@ -13,7 +13,7 @@
         "build-only": "vite build",
         "dev": "vite --port 3000 --host",
         "format": "prettier --write src/",
-        "preview": "vite preview",
+        "preview": "vite preview --port 3000 --host",
         "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' http://localhost:4173 'cypress open --e2e'",
         "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false"
     },
