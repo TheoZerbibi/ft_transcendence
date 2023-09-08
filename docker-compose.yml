@@ -45,7 +45,8 @@ services:
       POSTGRES_ENABLED: ${POSTGRES_ENABLED}
       NODE_ENV: ${NODE_ENV}
       DATABASE_URL: ${DATABASE_URL}
-    command: sh -c "npm run start:prisma"
+      HOST: ${HOSTNAME}
+    command: sh -c "pnpm db:pull && pnpm start:prisma"
 
   socket:
     build:
@@ -57,7 +58,7 @@ services:
     - 4000:4000
     volumes:
       - ./socket:/home/node/app
-      - node_sock1:/home/node/app/node_modules
+      # - node_sock1:/home/node/app/node_modules
       - store_sock1:/home/node/app/.pnpm-store
     depends_on:
       - api
@@ -68,9 +69,10 @@ services:
       REDIS_PASS: ${REDIS_PASS}
       REDIS_URL: ${REDIS_URL}
       NODE_ENV: ${NODE_ENV}
+      DATABASE_URL: ${DATABASE_URL}
       HOST: ${HOSTNAME}
       PORT: 4000
-    command: sh -c "tail -f /dev/null"
+    command: sh -c "pnpm db:pull && tail -f /dev/null"
 
   api:
     build:
@@ -82,7 +84,7 @@ services:
       - 3001:3001
     volumes:
         - ./back:/home/node/app
-        - node_api:/home/node/app/node_modules
+        # - node_api:/home/node/app/node_modules
         - store_api:/home/node/app/.pnpm-store
     depends_on:
         - postgres
@@ -96,7 +98,7 @@ services:
       DATABASE_URL: ${DATABASE_URL}
       HOST: ${HOSTNAME}
       JWT_SECRET: ${JWT_SECRET}
-    command: sh -c "pnpm db:migrate && tail -f /dev/null"
+    command: sh -c "pnpm db:push && tail -f /dev/null"
 
 volumes:
   node_api:

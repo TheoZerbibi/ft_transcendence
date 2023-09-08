@@ -1,7 +1,7 @@
 {
 	"scripts": {
-		"prismix": "cat ./prisma/base.prisma ./src/*.prisma > ./prisma/schema.prisma 2>/dev/null && npx prisma generate",
-		"start:prisma": "npm run prismix && npx prisma studio"
+		"start:prisma": "npx prisma studio",
+		"db:pull": "npx prisma db pull && npx prisma generate"
 	},
 	"dependencies": {
 		"@prisma/client": "^5.2.0",

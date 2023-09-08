@@ -23,6 +23,8 @@ EXPOSE 3000
 FROM common AS socket
 
 COPY package.json .
+COPY prisma/ .
+
 RUN npm i -g @nestjs/cli \
 	&& pnpm install
 
