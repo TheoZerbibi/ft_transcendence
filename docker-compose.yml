@@ -1,6 +1,26 @@
 version: "3.9"
 
 services:
+
+  front:
+    build:
+      context: ./front
+      target: frontend
+      dockerfile: ../docker/node/dev.Dockerfile
+    container_name: front
+    ports:
+      - 3000:3000
+    volumes:
+        - ./front:/home/node/app
+        # - node_front:/home/node/app/node_modules
+        - store_front:/home/node/app/.pnpm-store
+    depends_on:
+        - api
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      HOST: ${HOSTNAME}
+    command: sh -c "tail -f /dev/null" 
+
   postgres:
     image: postgres:15.2-alpine
     container_name: postgres
@@ -74,6 +94,7 @@ services:
       PORT: 4000
     command: sh -c "pnpm db:pull && tail -f /dev/null"
 
+
   api:
     build:
       context: ./back
@@ -102,9 +123,11 @@ services:
 
 volumes:
   node_api:
+  node_front:
   node_sock1:
   node_sock2:
   store_api:
+  store_front:
   store_sock1:
   store_sock2:
   build:

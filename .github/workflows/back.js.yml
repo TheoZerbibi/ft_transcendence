@@ -6,18 +6,16 @@ name: Backend CI
 on:
   push:
     branches:
-      - 'master'
-      - 'develop'
-      - '**backend'
-      - 'backend**'
-      - '**backend**'
+      - '*'
+      - '!**/frontend'
+      - '!frontend/**'
+      - '!**/frontend/**'
   pull_request:
     branches:
-      - 'master'
-      - 'develop'
-      - '**backend'
-      - 'backend**'
-      - '**backend**'
+      - '*'
+      - '!**/frontend'
+      - '!frontend/**'
+      - '!**/frontend/**'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -71,7 +69,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile && pnpm db:migrate
+        run: pnpm install --no-frozen-lockfile && pnpm db:push
       - name: Launch linter
         run: pnpm lint
       - name: Build dependencies
