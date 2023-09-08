@@ -1,15 +1,15 @@
 customSyntax: postcss-html
 extends:
-  - stylelint-config-html/vue
-  - stylelint-config-recommended-scss
-  - stylelint-config-recommended-vue/scss
+    - stylelint-config-html/vue
+    - stylelint-config-recommended-scss
+    - stylelint-config-recommended-vue/scss
 plugins:
-  - stylelint-order
-  - stylelint-scss
+    - stylelint-order
+    - stylelint-scss
 ignoreFiles:
-  - 'dist/**/*'
+    - 'dist/**/*'
 rules:
-  color-function-notation: legacy
-  function-no-unknown: null
-  no-descending-specificity: null
-  scss/no-global-function-names: null
+    color-function-notation: legacy
+    function-no-unknown: null
+    no-descending-specificity: null
+    scss/no-global-function-names: null

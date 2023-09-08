@@ -2,14 +2,11 @@ env:
     browser: true
     es2021: true
 extends:
-    - plugin:vue/vue3-recommended
+    - plugin:vue/recommended
     - plugin:import/recommended
     - plugin:import/typescript
     - plugin:vuejs-accessibility/recommended
-    - plugin:vuetify/base
-    - plugin:yaml/recommended
     - '@vue/eslint-config-prettier'
-overrides: []
 parser: vue-eslint-parser
 parserOptions:
     ecmaVersion: latest
@@ -25,7 +22,7 @@ parserOptions:
 plugins:
     - import
     - tsdoc
-    - yaml
+    - html
     - vue
 rules:
     require-jsdoc: warn
@@ -53,11 +50,11 @@ rules:
         - groups: ['builtin', 'external', 'parent', 'sibling', 'index', 'object', 'type']
           pathGroups:
               # Vue Core
-              - pattern: '{vue,vue-router,vuex,@/store,vue-i18n,pinia,vite,vitest,vitest/**,@vitejs/**,@vue/**}'
+              - pattern: '{vue,vue-router,vuex,@/store,vue-i18n,pinia,vite,vitest,vitest/**,@vitejs/**,@vue/**,@logue/vue2-helpers}'
                 group: external
                 position: before
               # UI Library
-              - pattern: '{vuetify,vuetify/**}'
+              - pattern: '{vuetify,vuetify/**,@mdi/**,webfontloader}'
                 group: parent
                 position: before
               # Internal Codes
@@ -75,8 +72,6 @@ rules:
         - html:
               void: always
     vue/multi-word-component-names: warn # Mitigate non-multiword component name errors to warnings.
-    vue/no-template-shadow: off # Vuetify Fix
-    vuetify/no-deprecated-components: warn # for Vuetify Labs Fix (v-data-tables etc.)
 settings:
     import/parsers:
         '@typescript-eslint/parser':

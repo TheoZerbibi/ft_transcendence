@@ -1,7 +1,7 @@
 .husky/
 .vscode/
 .yarn/
-dist/
-coverage/
-public/assets/
 .pnpm-store/
+coverage/
+dist/
+public/assets/
