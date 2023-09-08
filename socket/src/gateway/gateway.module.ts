@@ -4,7 +4,4 @@ import { Gateway } from './gateway.websocket';
 @Module({
 	providers: [Gateway],
 })
-export class GatewayModule {
-
-}
-
+export class GatewayModule {}

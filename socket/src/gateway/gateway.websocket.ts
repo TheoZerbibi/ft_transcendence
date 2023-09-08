@@ -3,18 +3,16 @@ import {
 	SubscribeMessage,
 	WebSocketGateway,
 	WebSocketServer,
-	WsResponse,
-	OnGatewayInit,
 	OnGatewayConnection,
 	OnGatewayDisconnect,
 } from '@nestjs/websockets';
-import { Logger, OnModuleInit } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
 
 @WebSocketGateway({})
-export class Gateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
-
+export class Gateway implements OnGatewayConnection, OnGatewayDisconnect {
 	@WebSocketServer()
+	// eslint-disable-next-line
 	server: Server;
 
 	private logger: Logger = new Logger('MessageGateway');
@@ -24,18 +22,18 @@ export class Gateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDis
 		console.log(data);
 		this.server.emit('onMessage', {
 			msg: 'new Message',
-			content: data
+			content: data,
 		});
 	}
 
-	public afterInit(server: Server): void {
+	public afterInit(): void {
 		return this.logger.log('Init');
 	}
-	
+
 	public handleDisconnect(client: Socket): void {
 		return this.logger.log(`Client disconnected: ${client.id}`);
 	}
-	
+
 	public handleConnection(client: Socket): void {
 		return this.logger.log(`Client connected: ${client.id}`);
 	}
