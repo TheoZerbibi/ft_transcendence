@@ -3,10 +3,12 @@ FROM node:18.14-alpine AS common
 WORKDIR /home/node/app
 
 RUN npm i -g pnpm
+RUN apk add --update python3 make g++ && rm -rf /var/cache/apk/*
+
 
 FROM common AS backend
-
 COPY package.json .
+
 RUN npm i -g @nestjs/cli \
 	&& pnpm install
 

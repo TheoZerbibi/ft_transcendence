@@ -7,10 +7,9 @@ RUN mkdir src && touch src/main.ts \
 
 COPY ./docker/prisma/tsconfig.json .
 COPY ./docker/prisma/package.json .
-COPY ./docker/prisma/schema.prisma ./prisma
+COPY ./docker/prisma/schema.prisma ./prisma/schema.prisma
 
 RUN npm i -g pnpm && \
 	pnpm install
 
 EXPOSE 5555
-EXPOSE 5556
