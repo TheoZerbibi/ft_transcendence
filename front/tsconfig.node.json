@@ -1,16 +1,19 @@
 {
-  "extends": "@tsconfig/node18/tsconfig.json",
-  "include": [
-    "vite.config.*",
-    "vitest.config.*",
-    "cypress.config.*",
-    "nightwatch.conf.*",
-    "playwright.config.*"
-  ],
-  "compilerOptions": {
-    "composite": true,
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "types": ["node"]
-  }
+    "$schema": "https://json.schemastore.org/tsconfig.json",
+    "extends": "@tsconfig/node-lts/tsconfig.json",
+    "include": [
+        "vite.config.*",
+        "vitest.config.*",
+        "cypress.config.*",
+        "nightwatch.conf.*",
+        "playwright.config.*",
+        "package.json"
+    ],
+    "compilerOptions": {
+        "composite": true,
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "resolveJsonModule": true,
+        "types": ["node"]
+    }
 }

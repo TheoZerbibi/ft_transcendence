@@ -58,7 +58,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
       - name: Launch linter
-        run: pnpm lint
+        run: |
+          pnpm lint
+          pnpm lint:style
       - name: Build dependencies
         run: pnpm build
     env:
