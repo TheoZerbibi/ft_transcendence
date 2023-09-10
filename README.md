@@ -1,3 +1,9 @@
+#Setup
+
+- add `export HOSTNAME=$(hostname)` to your bashrc or zshrc, don't forget to source it afterward
+
+- Change .env.dist to .env file and add postgresql pass variable
+
 #todo
 - [ ] Setup docker  = {
 > - [x] postgres working,
