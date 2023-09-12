@@ -9,6 +9,13 @@ import {
 	UseGuards,
 	UseInterceptors,
 } from '@nestjs/common';
+import {
+	ApiBearerAuth,
+	ApiOperation,
+	ApiParam,
+	ApiResponse,
+	ApiTags,
+  } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 import { UserService } from './user.service';
 import { EditUserDto, UserDto } from './dto';
@@ -16,27 +23,35 @@ import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
 
 @Controller('users')
+@ApiBearerAuth()
+@ApiTags('users')
 export class UserController {
 	constructor(private userService: UserService) {}
 
 	@UseGuards(JwtGuard)
 	@Get('me')
-	getMe(@GetUser() user: User) {
+	@ApiOperation({ summary: 'Get personal information' })
+	@ApiBearerAuth('JWT-auth')
+	getMe(@GetUser() user: User): User {
 		return user;
 	}
 
 	@UseGuards(JwtGuard)
 	@Get(':login')
+	@ApiOperation({ summary: 'Get information for specify user' })
+	@ApiBearerAuth('JWT-auth')
 	@UseInterceptors(ClassSerializerInterceptor)
 	async getUserByLogin(@Param('login') userLogin: string): Promise<UserDto> {
-		const user = await this.userService.getUserByLogin(userLogin);
+		const user: UserDto | undefined = await this.userService.getUserByLogin(userLogin);
 		if (!user) throw new BadRequestException('Invalid user');
 		return user;
 	}
 
 	@UseGuards(JwtGuard)
 	@Patch()
-	editUser(@GetUser('id') userId: number, @Body() dto: EditUserDto) {
+	@ApiOperation({ summary: 'Change DisplayName or Avatar for the user' })
+	@ApiBearerAuth('JWT-auth')
+	editUser(@GetUser('id') userId: number, @Body() dto: EditUserDto): Promise<User> {
 		return this.userService.editUser(userId, dto);
 	}
 }
