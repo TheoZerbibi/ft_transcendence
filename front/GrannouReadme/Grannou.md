@@ -11,6 +11,9 @@
     • Dans le terminal du container lancer le site avec pnpm dev
     • ouvrir un autre terminal pour les git add / commit / push
 
+  OU cd VueProjects/my-one-page-website puis npm run serve (pour le training)
+
+
 
 *** DEVOIRS ***
 

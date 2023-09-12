@@ -12,18 +12,38 @@
 
 		<v-col class="mb-4">
 			<h1 class="display-2 font-weight-bold mb-3">
-				Welcome to NORMINET
+				Welcome to<br> ft_transcendence MEOW team
 			</h1>
 
-			<h4>Vite Preview</h4>
+			<h4>Starring:</h4>
 
 			<p class="subheading font-weight-regular">
-				For help and collaboration with other Vuetify developers,
-				<br>please join our online
+				Théo
 				<a
-					href="https://community.vuetifyjs.com"
+					href="https://profile.intra.42.fr/users/thzeribi"
 					target="_blank"
-				>Discord Community</a>
+				>(thzeribi 42 Intra profile)</a>
+				<br>Ismaël
+				<a
+					href="https://profile.intra.42.fr/users/iguidado"
+					target="_blank"
+				>(iguidado 42 Intra profile)</a>
+				<br>Gaëlle
+				<a
+					href="https://profile.intra.42.fr/users/grannou"
+					target="_blank"
+				>(grannou 42 Intra profile)</a>
+				<br>Semiha
+				<a
+					href="https://profile.intra.42.fr/users/seozcan"
+					target="_blank"
+				>(seozcan 42 Intra profile)</a>
+				<br>Noémi
+				<a
+					href="https://profile.intra.42.fr/users/nfauconn"
+					target="_blank"
+				>(nfauconn 42 Intra profile)</a>
+
 			</p>
 		</v-col>
 
@@ -97,7 +117,8 @@
 import { defineComponent } from 'vue'
 
 // Logo
-import logo from '../assets/logo.svg'
+// import logo from '../assets/logo.svg'
+import logo from '../assets/Scoubigang.jpeg'
 
 export default defineComponent({
   name: 'HelloWorld',
