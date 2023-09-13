@@ -8,6 +8,7 @@ model User {
 	createdAt	DateTime @default(now())
 	updatedAt	DateTime @updatedAt
 	lastLogin	DateTime @default(now())
+	GamePlayer 	GamePlayer[]
 
 	@@map("users")
 }

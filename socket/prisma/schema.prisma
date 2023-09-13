@@ -18,3 +18,20 @@ model users {
   updatedAt   DateTime
   lastLogin   DateTime @default(now())
 }
+
+model gamePlayers {
+  playerId Int
+  gameID   Int
+  isWin    Boolean?
+  isSpec   Boolean?
+
+  @@id([playerId, gameID])
+}
+
+model games {
+  id        Int       @id @unique @default(autoincrement())
+  uid       String    @unique
+  createdAt DateTime  @default(now())
+  startedAt DateTime?
+  endAt     DateTime?
+}
