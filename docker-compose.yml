@@ -146,8 +146,8 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       API42_UID: ${API42_UID}
       API42_SECRET: ${API42_SECRET}
-    # command: sh -c "pnpm db:migrate:dev && pnpm start:dev"
-    command: sh -c "pnpm db:migrate:dev && tail -f /dev/null"
+    command: sh -c "pnpm db:migrate:dev && pnpm start:dev"
+    # command: sh -c "pnpm db:migrate:dev && tail -f /dev/null"
     restart: always
 
 volumes:
