@@ -1,18 +1,15 @@
 <template>
 	<v-container class="backgroundWallpaper">
-		<v-row class="text-center">
-			<v-col class="mb-4">
-				<h1 class="display-2 font-weight-bold mb-3">
-					Welcome to<br> ft_transcendence MEOW team
-				</h1>
-			</v-col>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
+		<v-row class="Title">
+			<h1> Welcome to<br> ft_transcendence MEOW team </h1>
 		</v-row>
+
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
 		<v-col>
 			<v-img :src="logo" class="my-3" contain height="140"/>
 		</v-col>    
@@ -61,7 +58,7 @@ import logo from '../assets/Cats.jpg'
 import backgroundWallpaper from '../assets/PongWallpaper.jpg'
 
 export default defineComponent({
-  name: 'HelloWorld',
+  name: 'Homepage',
 
   data () {
 	return {
@@ -69,17 +66,21 @@ export default defineComponent({
 	  backgroundWallpaper,
 	  prenoms: ['Théo', 'Ismaël', 'Gaëlle', 'Semiha', 'Noémi'],
       qrCodesImgPath: [ 
-		'/mnt/nfs/homes/grannou/ft_transcendence/front/src/assets/QRcodeTheo.png',
-		'/mnt/nfs/homes/grannou/ft_transcendence/front/src/assets/QRcodeIsmael.png',
-		'/mnt/nfs/homes/grannou/ft_transcendence/front/src/assets/QRcodeGaelle.png',
-		'/mnt/nfs/homes/grannou/ft_transcendence/front/src/assets/QRcodeSemiha.png',
-		'/mnt/nfs/homes/grannou/ft_transcendence/front/src/assets/QRcodeNoemi.png']
+		'../assets/QRcodeTheo.png',
+		'../assets/QRcodeIsmael.png',
+		'../assets/QRcodeGaelle.png',
+		'../assets/QRcodeSemiha.png',
+		'../assets/QRcodeNoemi.png']
 	}
   },
 })
 </script>
 
 <style>
+	.title
+	{
+		color: white;
+	}
 	.backgroundWallpaper
 	{
   		background-image: url('/src/assets/PongWallpaper.jpg');
