@@ -41,9 +41,10 @@
 		<v-row>
 		    <v-col v-for="(qrCode, index) in qrCodesImgPath" :key="index" cols="2.5">
 		        <!-- Contenu de la colonne -->
-		        <v-card class="transparent-background">
+		        <v-card>
 		          <v-card-text>
-		            {{ qrCode }}
+					<img :src="qrCode" alt="Image" width="100%" />
+		            <!-- {{ qrCode }} -->
 		          </v-card-text>
 		        </v-card>
 		    </v-col>
@@ -57,6 +58,7 @@ import { defineComponent } from 'vue'
 
 // Logo
 import logo from '../assets/Scoubigang.jpeg'
+import backgroundWallpaper from '../assets/PongWallpaper.jpg'
 
 export default defineComponent({
   name: 'HelloWorld',
@@ -64,13 +66,13 @@ export default defineComponent({
   data () {
 	return {
 	  logo,
+	  backgroundWallpaper,
 	  prenoms: ['Théo', 'Ismaël', 'Gaëlle', 'Semiha', 'Noémi'],
-      qrCodesImgPath: [
-		'thzeribi',
-		'iguidado',
-		'grannou',
-		'seozcan',
-		'nfauconn']
+      qrCodesImgPath: [ '/mnt/nfs/homes/grannou/ft_transcendence/front/src/assets/QRcodeTheo.png',
+		'/mnt/nfs/homes/grannou/ft_transcendence/front/src/assets/QRcodeIsmael.png',
+		'/mnt/nfs/homes/grannou/ft_transcendence/front/src/assets/QRcodeGaelle.png',
+		'/mnt/nfs/homes/grannou/ft_transcendence/front/src/assets/QRcodeSemiha.png',
+		'/mnt/nfs/homes/grannou/ft_transcendence/front/src/assets/QRcodeNoemi.png']
 	}
   },
 })
