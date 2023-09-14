@@ -57,7 +57,7 @@
 import { defineComponent } from 'vue'
 
 // Logo
-import logo from '../assets/Scoubigang.jpeg'
+import logo from '../assets/Cats.jpg'
 import backgroundWallpaper from '../assets/PongWallpaper.jpg'
 
 export default defineComponent({
@@ -68,7 +68,8 @@ export default defineComponent({
 	  logo,
 	  backgroundWallpaper,
 	  prenoms: ['Théo', 'Ismaël', 'Gaëlle', 'Semiha', 'Noémi'],
-      qrCodesImgPath: [ '/mnt/nfs/homes/grannou/ft_transcendence/front/src/assets/QRcodeTheo.png',
+      qrCodesImgPath: [ 
+		'/mnt/nfs/homes/grannou/ft_transcendence/front/src/assets/QRcodeTheo.png',
 		'/mnt/nfs/homes/grannou/ft_transcendence/front/src/assets/QRcodeIsmael.png',
 		'/mnt/nfs/homes/grannou/ft_transcendence/front/src/assets/QRcodeGaelle.png',
 		'/mnt/nfs/homes/grannou/ft_transcendence/front/src/assets/QRcodeSemiha.png',
@@ -82,7 +83,8 @@ export default defineComponent({
 	.backgroundWallpaper
 	{
   		background-image: url('/src/assets/PongWallpaper.jpg');
-    	background-size: cover;
+    	background-size: 100% 100%;
+		margin: 0px auto;
     	background-repeat: no-repeat;
 		background-attachment: fixed;
 		background-position: center;
@@ -92,7 +94,7 @@ export default defineComponent({
 		justify-content: center;
 		align-items: center;
 		height: 100vh;
-		color: white;
+		color: black;
 	}
 	.transparent-background
 	{
