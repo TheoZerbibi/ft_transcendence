@@ -13,7 +13,7 @@ Table games {
   createdAt DateTime [default: `now()`, not null]
   startedAt DateTime
   endAt DateTime
-  GamePlayer gamePlayers [not null]
+  gamePlayer gamePlayers [not null]
 }
 
 Table gamePlayers {

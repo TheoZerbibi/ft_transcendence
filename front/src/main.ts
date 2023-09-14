@@ -9,8 +9,8 @@ import App from './App.vue';
 import router from './router';
 
 const vuetify = createVuetify({
-    components,
-    directives,
+	components,
+	directives,
 });
 
 loadFonts();

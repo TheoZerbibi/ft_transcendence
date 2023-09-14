@@ -1,5 +1,5 @@
 <template>
-	<v-app v-bind:style="{ backgroundColor: color}">
+	<v-app v-bind:style="{ backgroundColor: color }">
 		<v-main>
 			<router-view />
 		</v-main>

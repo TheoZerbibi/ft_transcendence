@@ -5,13 +5,12 @@
 </template>
 
 <script lang="ts">
-
 export default {
 	name: 'AboutView',
 	data() {
-		return {}
+		return {};
 	},
-}
+};
 </script>
 
 <style>

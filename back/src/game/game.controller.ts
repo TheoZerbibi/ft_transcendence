@@ -1,4 +1,4 @@
-import { Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GameService } from './game.service';
 import { JwtGuard } from 'src/auth/guard';
@@ -17,6 +17,18 @@ export class GameController {
 	@ApiBearerAuth('JWT-auth')
 	@HttpCode(HttpStatus.OK)
 	createNewGame(@GetUser() user: User) {
-		return this.gameService.createNewGame(user);
+		console.log(user);
+		return this.gameService.createNewGame();
+	}
+
+	@UseGuards(JwtGuard)
+	@Get(':uuid')
+	@ApiOperation({ summary: 'Join a Game' })
+	@ApiBearerAuth('JWT-auth')
+	@HttpCode(HttpStatus.OK)
+	joinGame(@GetUser() user: User, @Param('uuid') gameUUID: string) {
+		console.log('user', user);
+		console.log('gameUUID', gameUUID);
+		return this.gameService.joinGame(user, gameUUID);
 	}
 }

@@ -8,15 +8,16 @@ datasource db {
 }
 
 model users {
-  id          Int      @id @unique @default(autoincrement())
-  login       String   @unique
+  id          Int           @id @unique @default(autoincrement())
+  login       String        @unique
   displayName String
   email       String
-  dAuth       Boolean  @default(false)
+  dAuth       Boolean       @default(false)
   avatar      String
-  createdAt   DateTime @default(now())
+  createdAt   DateTime      @default(now())
   updatedAt   DateTime
-  lastLogin   DateTime @default(now())
+  lastLogin   DateTime      @default(now())
+  gamePlayers gamePlayers[]
 }
 
 model gamePlayers {
@@ -24,14 +25,17 @@ model gamePlayers {
   gameID   Int
   isWin    Boolean?
   isSpec   Boolean?
+  games    games    @relation(fields: [gameID], references: [id])
+  users    users    @relation(fields: [playerId], references: [id])
 
   @@id([playerId, gameID])
 }
 
 model games {
-  id        Int       @id @unique @default(autoincrement())
-  uid       String    @unique
-  createdAt DateTime  @default(now())
-  startedAt DateTime?
-  endAt     DateTime?
+  id          Int           @id @unique @default(autoincrement())
+  uid         String        @unique
+  createdAt   DateTime      @default(now())
+  startedAt   DateTime?
+  endAt       DateTime?
+  gamePlayers gamePlayers[]
 }

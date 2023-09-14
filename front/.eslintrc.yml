@@ -1,31 +1,32 @@
 env:
-  browser: true
-  es2021: true
+    browser: true
+    es2021: true
 extends:
-  - plugin:vue/recommended
-  - plugin:import/recommended
-  - plugin:import/typescript
-  - plugin:vuejs-accessibility/recommended
-  - '@vue/eslint-config-prettier'
-  - eslint:recommended
+    - plugin:vue/recommended
+    - plugin:import/recommended
+    - plugin:import/typescript
+    - plugin:vuejs-accessibility/recommended
+    - '@vue/eslint-config-prettier'
+    - eslint:recommended
 parser: vue-eslint-parser
 parserOptions:
-  ecmaVersion: latest
-  parser: '@typescript-eslint/parser'
-  sourceType: module
-  createDefaultProgram: true
-  project:
-    - ./tsconfig.app.json
-    - ./tsconfig.node.json
-    - ./tsconfig.vitest.json
-  extraFileExtensions:
-      - .vue
+    ecmaVersion: latest
+    parser: '@typescript-eslint/parser'
+    sourceType: module
+    createDefaultProgram: true
+    project:
+        - ./tsconfig.app.json
+        - ./tsconfig.node.json
+        - ./tsconfig.vitest.json
+    extraFileExtensions:
+        - .vue
 plugins:
     - import
     - tsdoc
     - html
     - vue
 rules:
+    "indent": ["error", 4]
     require-jsdoc: warn
     no-unused-vars: warn
     '@typescript-eslint/array-type':

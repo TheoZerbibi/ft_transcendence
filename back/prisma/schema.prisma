@@ -37,7 +37,7 @@ model Game {
 	createdAt	DateTime @default(now())
 	startedAt	DateTime?
 	endAt		DateTime?
-	GamePlayer 	GamePlayer[]
+	gamePlayer 	GamePlayer[]
 
 	@@map("games")
 }
