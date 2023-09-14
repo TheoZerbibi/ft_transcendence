@@ -1,49 +1,80 @@
 <template>
+	<div v-if="apiData === null || error">
+		<v-snackbar :timeout="5000" v-model="error" color="red">
+				{{ apiData }}
+		</v-snackbar>
+	</div>
+	<div v-if="apiData">
+		<div v-if="apiData.isSpec === true">
+			<v-snackbar :timeout="3000" v-model="success" color="orange">
+				Connecting to the game session.
+			</v-snackbar>
+		</div>
+		<div v-else> 
+			<v-snackbar :timeout="3000" v-model="success" color="green">
+				Joining game session.
+			</v-snackbar>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { ref } from "vue";
+import { useRoute } from 'vue-router';
+import { ref, onMounted } from "vue";
 export default defineComponent({
 	name: 'Game',
 
 	data() {
 		return {
 			gameUID: '',
-			error: 'error'
 		};
 	},
 	mounted() {
 		const route = useRoute()
 		this.gameUID = route.params.uid;
 	},
-	async setup() {
+	setup() {
 		const route = useRoute()
 		const uid = route.params.uid;
-		const error = ref(null);
-		const jwt_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTQ2ODQxMjcsImV4cCI6MTY5NDY5NDkyN30.sDKq0IqtjMadaqmB7v3ojLAp--1wkK-y8lxNLnjBrRo";
-
-		const requestOptions = {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${jwt_token}`,
-				'Access-Control-Allow-Origin': '*',
-			},
-		};
-		await fetch(`http://localhost:3001/game/${uid}`, requestOptions)
-			.then((response) => response.json())
-			.then((data) => {
-				if (data.statusCode == 401 || data.statusCode == 403 || data.statusCode == 500) {
-					throw new Error(data.message);
+		const jwt_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6Im5vcm1pbmV0Iiwic3ViIjo0LCJpYXQiOjE2OTQ3MDk0OTksImV4cCI6MTY5NDcyMDI5OX0.JAaxEpzkgukKaf_aLA3GMVR4sB4kUkUYSOsAV-ySmm8";
+		const apiData = ref(null);
+		const error = ref(false);
+		const success = ref(false);
+		const color = ref("green");
+	
+		onMounted(async () => {
+			const requestOptions = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${jwt_token}`,
+						'Access-Control-Allow-Origin': '*',
+					},
+				};
+			try {
+				const response = await fetch(`http://localhost:3001/game/${uid}`, requestOptions);
+				const data = await response.json();
+				if (!response.ok) {
+					console.log(data);
+					apiData.value = data.message;
+					error.value = true;
+					throw Error(data.message);
 				}
+				apiData.value = data;
+				success.value = true;
+				if (data.isSpecial) color.value = "orange";
+			
 				console.log(data);
-			})
-			.catch((error) => {
-				console.error(error.message);
-			});
-		console.log(uid);
-	}
+			} catch (error) {
+				console.error(error);
+			}
+		});
+		return {
+			apiData,
+			error,
+			success,
+		};
+	},
 });
 </script>

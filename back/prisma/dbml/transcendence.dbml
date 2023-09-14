@@ -44,4 +44,4 @@ Table users {
 
 Ref: gamePlayers.playerId > users.id
 
-Ref: gamePlayers.gameId > games.id
+Ref: gamePlayers.gameId > games.id [delete: Cascade]

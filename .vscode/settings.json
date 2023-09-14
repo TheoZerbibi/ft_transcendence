@@ -1,5 +1,8 @@
 {
 	"cSpell.enabled": false,
 	"npm.packageManager": "pnpm",
-	"cSpell.usePnP": true
+	"cSpell.usePnP": true,
+	"vetur.validation.template": false,
+	"vetur.validation.script": false,
+	"vetur.validation.style": false,
 }

@@ -11,14 +11,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onErrorCaptured } from 'vue';
+import { defineComponent } from 'vue';
 
 // Components
 import Game from '../components/Game.vue';
-
-onErrorCaptured((e, instance, info) => {
-	console.log(e, instance, info)
-})
 
 export default defineComponent({
 	name: 'GameView',

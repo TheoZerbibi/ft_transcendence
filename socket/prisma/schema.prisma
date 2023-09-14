@@ -22,13 +22,13 @@ model users {
 
 model gamePlayers {
   playerId Int
-  gameID   Int
   isWin    Boolean?
   isSpec   Boolean?
-  games    games    @relation(fields: [gameID], references: [id])
+  gameId   Int
+  games    games    @relation(fields: [gameId], references: [id])
   users    users    @relation(fields: [playerId], references: [id])
 
-  @@id([playerId, gameID])
+  @@id([playerId, gameId])
 }
 
 model games {

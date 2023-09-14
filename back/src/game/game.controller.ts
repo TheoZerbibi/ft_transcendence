@@ -22,6 +22,15 @@ export class GameController {
 	}
 
 	@UseGuards(JwtGuard)
+	@Get('getEmptyGame')
+	@ApiOperation({ summary: 'Get game wainting for a second opponant.' })
+	@ApiBearerAuth('JWT-auth')
+	@HttpCode(HttpStatus.OK)
+	getEmptyGame() {
+		return this.gameService.getEmptyGame();
+	}
+
+	@UseGuards(JwtGuard)
 	@Get(':uuid')
 	@ApiOperation({ summary: 'Join a Game' })
 	@ApiBearerAuth('JWT-auth')

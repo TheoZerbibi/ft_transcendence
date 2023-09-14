@@ -49,7 +49,22 @@ export class GameService {
 			throw e;
 		}
 	}
-	
+
+	private async getAllPlayer(game: GameDto,): Promise<Array<GamePlayerDto> | undefined> {
+		try {
+			const gamePlayer: Array<GamePlayerDto> = await this.prisma.gamePlayer.findMany({
+				where: {
+					gameId: game.id,
+				},
+			});
+			return gamePlayer;
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				if (e.code === 'P2002') throw new ForbiddenException('No Player Found');
+			}
+			throw e;
+		}
+	}
 
 	private async deleteGame(game: GameDto) {
 		try {
@@ -63,7 +78,6 @@ export class GameService {
 					id: game.id,
 				},
 			});
-
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				if (e.code === 'P2002') throw new ForbiddenException('No Player Found');
@@ -77,6 +91,7 @@ export class GameService {
 		user: User,
 		spec: boolean = false,
 	): Promise<GamePlayerDto | undefined> {
+		console.log('createGamePlayer');
 		try {
 			console.log(game);
 			const gamePlayer: GamePlayerDto = await this.prisma.gamePlayer.create({
@@ -115,6 +130,24 @@ export class GameService {
 		}
 	}
 
+	private async getGamePlayer(user: User, isWin: boolean = false): Promise<Array<any> | null> {
+		try {
+			const gamePlayer: Array<any> = await this.prisma.gamePlayer.findMany({
+				where: {
+					playerId: user.id,
+					isWin: isWin,
+				},
+				include: {
+					game: true,
+				},
+			});
+			if (!gamePlayer) return null;
+			return gamePlayer;
+		} catch (e) {
+			throw e;
+		}
+	}
+
 	async createNewGame(): Promise<GameDto> {
 		try {
 			const game: GameDto = await this.createGame();
@@ -130,16 +163,56 @@ export class GameService {
 
 	async joinGame(user: User, uid: string): Promise<GameDto> {
 		try {
+			let gamePlayer;
 			const game: GameDto = await this.getGame(uid as UUID);
-			const players = await this.getPlayer(game, false);
-			if (players.length >= 1) {
-				for (const player of players) {
-					if (player.playerId === user.id) throw new ForbiddenException('User already in game');
-				}
-				if (players.length >= 2) await this.createGamePlayer(game, user, true);
-			} else await this.createGamePlayer(game, user);
+			const gameHistory = await this.getGamePlayer(user);
+			const playersInGame = await this.getAllPlayer(game);
 
-			return game;
+			for (const player of playersInGame) {
+				if (player.playerId === user.id) throw new ForbiddenException('User already in this game.');
+			}
+			if (playersInGame.length >= 2) gamePlayer = await this.createGamePlayer(game, user, true);
+			else {
+				if (gameHistory.length > 0) {
+					console.log('Player : ', gameHistory);
+					for (const games of gameHistory) {
+						if (games.isWin === false || games.game.endAt === null)
+							await this.createGamePlayer(game, user, true);
+					}
+				} else if (playersInGame.length < 2) {
+					gamePlayer = await this.createGamePlayer(game, user);
+					if (playersInGame.length === 1) {
+						game.startedAt = new Date();
+						await this.prisma.game.update({
+							where: { id: game.id },
+							data: { startedAt: new Date() },
+						});
+					}
+				}
+			}
+			return { ...game, ...gamePlayer };
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	async getEmptyGame(): Promise<any> {
+		try {
+			const games: Array<GameDto> = await this.prisma.game.findMany({
+				where: {
+					endAt: null,
+				},
+			});
+			if (!games) return { uid: null };
+			games.forEach(async (game, index) => {
+				const playersInGame: Array<GamePlayerDto> = await this.getAllPlayer(game);
+
+				if (playersInGame) {
+					if (playersInGame.length >= 2) games.slice(index, 1);
+				}
+			});
+			if (games.length === 0) return { uid: null };
+			return games[0];
 		} catch (e) {
 			throw e;
 		}

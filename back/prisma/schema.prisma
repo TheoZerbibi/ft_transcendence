@@ -48,7 +48,7 @@ model GamePlayer {
 	isWin		Boolean?
 	isSpec		Boolean?
 	player		User	@relation(fields: [playerId], references: [id])
-	game		Game	@relation(fields: [gameId], references: [id])
+	game		Game	@relation(fields: [gameId], references: [id], onDelete: Cascade)
 
 	@@id([playerId, gameId])
 	@@map("gamePlayers")

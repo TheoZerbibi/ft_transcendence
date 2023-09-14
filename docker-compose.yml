@@ -24,8 +24,9 @@ services:
       HOST: ${HOSTNAME}
       API42_UID: ${API42_UID}
       API42_SECRET: ${API42_SECRET}
-    command: sh -c "pnpm dev"
     restart: always
+    command: sh -c "pnpm dev"
+    # command: sh -c "tail -f /dev/null"
 
   postgres:
     image: postgres:15.2-alpine
@@ -130,8 +131,8 @@ services:
     volumes:
       - ./back:/home/node/app
 
-      # - /home/node/app/node_modules
-      # - /home/node/app/.pnpm-store
+      - /home/node/app/node_modules
+      - /home/node/app/.pnpm-store
     depends_on:
       postgres:
         condition: service_healthy
@@ -147,7 +148,7 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       API42_UID: ${API42_UID}
       API42_SECRET: ${API42_SECRET}
-    command: sh -c "pnpm db:migrate:dev && pnpm start:dev"
+    command: sh -c "pnpm db:deploy && pnpm start:dev"
     # command: sh -c "pnpm db:migrate:dev && tail -f /dev/null"
     restart: always
 

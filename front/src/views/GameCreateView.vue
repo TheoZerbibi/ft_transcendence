@@ -5,7 +5,7 @@
 			dark
 			absolute
 			top:style="{left: '50%', transform:'translateX(-50%)'}"
-			v-on:click="createGame()"
+			v-on:click="checkExistingGame()"
 		>
 			Join Game
 		</v-btn>
@@ -20,7 +20,6 @@
 </template>
 
 <script lang="ts">
-import { useRoute } from 'vue-router';
 
 export default {
 	name: 'GameCreatorView',
@@ -28,7 +27,7 @@ export default {
 		return {
 			color: '#2e2e2e',
 			jwt_token:
-				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTQ2ODQxMjcsImV4cCI6MTY5NDY5NDkyN30.sDKq0IqtjMadaqmB7v3ojLAp--1wkK-y8lxNLnjBrRo',
+				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6Im5vcm1pbmV0Iiwic3ViIjo0LCJpYXQiOjE2OTQ3MDk0OTksImV4cCI6MTY5NDcyMDI5OX0.JAaxEpzkgukKaf_aLA3GMVR4sB4kUkUYSOsAV-ySmm8',
 			sendSnackbar: false,
 			successSnackbar: false,
 			failSnackbar: false,
@@ -36,6 +35,28 @@ export default {
 		};
 	},
 	methods: {
+		checkExistingGame: async function() {
+			const requestOptions = {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${this.jwt_token}`,
+					'Access-Control-Allow-Origin': '*',
+				},
+			};
+			try {
+				const response = await fetch('http://localhost:3001/game/getEmptyGame', requestOptions);
+				const data = await response.json();
+				if (!data.uid) this.createGame();
+				else if (!response.ok) {
+					this.errorMessage = data.message;
+					this.failSnackbar = true;
+					throw Error(response.statusText);
+				} else this.$router.push({ name: `Game`, params: { uid: data.uid } });
+			} catch (error) {
+				console.error(error);
+			}
+		},
 		createGame: async function () {
 			const requestOptions = {
 				method: 'POST',
@@ -47,22 +68,20 @@ export default {
 			};
 			this.sendSnackbar = true;
 
-			await fetch('http://localhost:3001/game/createGame', requestOptions)
-				.then((response) => response.json())
-				.then((data) => {
-					this.sendSnackbars = false;
-					console.log(data);
-					if (data.statusCode == 401 || data.statusCode == 403 || data.statusCode == 404) {
-						this.failSnackbar = true;
-						return ;
-					}
-						console.log(data.uid);
-						this.successSnackbar = true;
-						this.$router.push({ name: `Game`, params: { uid: data.uid } });
-				})
-				.catch((error) => {
-					console.error(error.message);
-				});
+			try {
+				const response = await fetch('http://localhost:3001/game/createGame', requestOptions)
+				this.sendSnackbars = false;
+				if (!response.ok) {
+					this.errorMessage = response.statusText;
+					this.failSnackbar = true;
+					throw Error(response.statusText);
+				}
+				this.successSnackbar = true;
+				const data = await response.json();
+				this.$router.push({ name: `Game`, params: { uid: data.uid } });
+			} catch (error) {
+				console.error(error);
+			}
 		},
 	},
 };
