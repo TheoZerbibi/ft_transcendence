@@ -1,89 +1,81 @@
 <template>
 	<v-container class="backgroundWallpaper">
-		<v-row class="Title">
-			<h1> Welcome to<br> ft_transcendence MEOW team </h1>
-		</v-row>
-
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-		<v-col>
-			<v-img :src="logo" class="my-3" contain height="140"/>
-		</v-col>    
-		<br>
-		    <br>
-			<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<h4>Starring</h4>
-
-		<!-- Première ligne -->
-		<v-row>
-		    <v-col v-for="(prenom, index) in prenoms" :key="index" cols="2.5">
-		        <!-- Contenu de la colonne -->
-		        <v-card class="transparent-background">
-		          <v-card-text>
-		            {{ prenom }}
-		          </v-card-text>
-		        </v-card>
-		      </v-col>
-		    </v-row>
-		
-		<!-- Deuxième ligne -->
-		<v-row>
-		    <v-col v-for="(qrCode, index) in qrCodesImgPath" :key="index" cols="2.5">
-		        <!-- Contenu de la colonne -->
-		        <v-card>
-		          <v-card-text>
-					<img :src="qrCode" alt="Image" width="100%" />
-		            <!-- {{ qrCode }} -->
-		          </v-card-text>
-		        </v-card>
-		    </v-col>
-		</v-row>
-
+		<v-col class="Title">
+			<h1> Welcome to ft_transcendence STING team </h1>
+			<h4>Starring</h4>
+			<v-row>
+			    <v-col v-for="(prenom, index) in prenoms" :key="index" cols="2.5">
+			        <v-card-text class="prenoms">
+			            {{ prenom }}
+			        </v-card-text>
+			    </v-col>
+			</v-row>
+			<v-row>
+				<v-col v-for="(login, index) in logins" :key="index" cols="2.5">
+			        <v-card-text class="logins">
+			    	    {{ login }}
+			        </v-card-text>
+			     </v-col>
+			</v-row>
+			<v-row>
+			    <v-col v-for="(qrcode, index) in qrCodes" :key="index">
+					<img class="intraLinks" width="100" :src="qrcode"/>
+			    </v-col>
+			</v-row>
+		</v-col>
 	</v-container>
 </template>
 
 <script lang='ts'>
 import { defineComponent } from 'vue'
-
-// Logo
-import logo from '../assets/Cats.jpg'
-import backgroundWallpaper from '../assets/PongWallpaper.jpg'
+import backgroundWallpaper from '../assets/OmoriTeam.svg'
+import QRcodeSemiha from '../assets/QRcodeSemiha.png'
+import QRcodeTheo from '../assets/QRcodeTheo.png'
+import QRcodeIsmael from '../assets/QRcodeIsmael.png'
+import QRcodeNoemi from '../assets/QRcodeNoemi.png'
+import QRcodeGaelle from '../assets/QRcodeGaelle.png'
 
 export default defineComponent({
   name: 'Homepage',
 
   data () {
 	return {
-	  logo,
 	  backgroundWallpaper,
-	  prenoms: ['Théo', 'Ismaël', 'Gaëlle', 'Semiha', 'Noémi'],
-      qrCodesImgPath: [ 
-		'../assets/QRcodeTheo.png',
-		'../assets/QRcodeIsmael.png',
-		'../assets/QRcodeGaelle.png',
-		'../assets/QRcodeSemiha.png',
-		'../assets/QRcodeNoemi.png']
+	  prenoms: ['Semiha', 'Theo', 'Ismaël', 'Noémi', 'Gaëlle'],
+	  logins: ['seozcan', 'thzeribi', 'iguidado', 'nfauconn', 'grannou'],
+      qrCodes: [QRcodeSemiha, QRcodeTheo, QRcodeIsmael, QRcodeNoemi, QRcodeGaelle]
 	}
   },
 })
 </script>
 
 <style>
-	.title
+	.Title
 	{
-		color: white;
+		font-size:larger;
+		text-align: center;
+		color: black;
+		text-shadow: 1px 1px 2px plum, 0 0 1em purple, 0 0 0.2em goldenrod;
+	}
+	.prenoms
+	{
+		font-size: medium;
+		color: black;
+		text-shadow: 1px 1px 2px plum, 0 0 1em purple, 0 0 0.2em goldenrod;
+	}
+	.prenoms::first-letter
+	{
+		color: purple;
+		font-size: 200%;
+	}
+	.logins
+	{
+		font-size: small;
+		color: black;
 	}
 	.backgroundWallpaper
 	{
-  		background-image: url('/src/assets/PongWallpaper.jpg');
+  		background-image: url('/src/assets/OmoriWallpaper00.jpg');
     	background-size: 100% 100%;
 		margin: 0px auto;
     	background-repeat: no-repeat;
@@ -97,11 +89,15 @@ export default defineComponent({
 		height: 100vh;
 		color: black;
 	}
-	.transparent-background
+	.presentation
 	{
 		background-color: transparent;
 		color: white;
 		text-align: center;
 
+	}
+	.intraLinks
+	{
+		background-color: transparent;
 	}
 </style>
