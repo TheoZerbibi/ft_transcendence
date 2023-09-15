@@ -46,6 +46,7 @@ services:
       NODE_ENV: ${NODE_ENV}
       DATABASE_URL: ${DATABASE_URL}
       HOST: ${HOSTNAME}
+        # command: tail -f /dev/null
     command: sh -c "pnpm db:pull && pnpm start:prisma"
 
   socket:
