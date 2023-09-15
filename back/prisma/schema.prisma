@@ -53,6 +53,7 @@ model GamePlayer {
 	@@id([playerId, gameId])
 	@@map("gamePlayers")
 }
+
 model User {
 	id			Int	@id @default(autoincrement()) @unique
 	login		String @unique

@@ -15,6 +15,14 @@
 				Joining game session.
 			</v-snackbar>
 		</div>
+		<v-card color="#1d2028" class="mx-auto" max-width="500">
+			<v-card-title>
+				{{ apiData.uid }}
+			</v-card-title>
+			<v-card-text>
+				{{ apiData.createdAt }}
+			</v-card-text>
+		</v-card>
 	</div>
 </template>
 
@@ -37,7 +45,7 @@ export default defineComponent({
 	setup() {
 		const route = useRoute()
 		const uid = route.params.uid;
-		const jwt_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6Im5vcm1pbmV0Iiwic3ViIjo0LCJpYXQiOjE2OTQ3MDk0OTksImV4cCI6MTY5NDcyMDI5OX0.JAaxEpzkgukKaf_aLA3GMVR4sB4kUkUYSOsAV-ySmm8";
+		const jwt_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6Im5vcm1pbmV0Iiwic3ViIjoyLCJpYXQiOjE2OTQ4MDYyNTcsImV4cCI6MTY5NDgxNzA1N30.pdJX73O7kh3MFl6b3W6GwgcEA12bvUZnIYFzmcxoua4";
 		const apiData = ref(null);
 		const error = ref(false);
 		const success = ref(false);
@@ -53,7 +61,7 @@ export default defineComponent({
 					},
 				};
 			try {
-				const response = await fetch(`http://localhost:3001/game/${uid}`, requestOptions);
+				const response = await fetch(`http://${HOST}:3001/game/${uid}`, requestOptions);
 				const data = await response.json();
 				if (!response.ok) {
 					console.log(data);

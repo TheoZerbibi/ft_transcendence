@@ -40,6 +40,7 @@
         "@vue/test-utils": "^2.4.1",
         "@vue/tsconfig": "^0.4.0",
         "cypress": "^13.1.0",
+        "dotenv": "^16.3.1",
         "eslint": "^8.48.0",
         "eslint-plugin-cypress": "^2.14.0",
         "eslint-plugin-html": "^7.1.0",
