@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsDate, IsInt, IsOptional } from 'class-validator';
-import { UUID } from 'crypto';
+import { IsBoolean, IsInt, IsOptional } from 'class-validator';
 
 export class GamePlayerDto {
 	@ApiProperty()

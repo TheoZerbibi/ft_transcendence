@@ -20,7 +20,6 @@
 </template>
 
 <script lang="ts">
-
 export default {
 	name: 'GameCreatorView',
 	data() {
@@ -35,7 +34,7 @@ export default {
 		};
 	},
 	methods: {
-		checkExistingGame: async function() {
+		checkExistingGame: async function () {
 			const requestOptions = {
 				method: 'GET',
 				headers: {
@@ -69,7 +68,7 @@ export default {
 			this.sendSnackbar = true;
 
 			try {
-				const response = await fetch(`http://${HOST}:3001/game/createGame`, requestOptions)
+				const response = await fetch(`http://${HOST}:3001/game/createGame`, requestOptions);
 				this.sendSnackbars = false;
 				if (!response.ok) {
 					this.errorMessage = response.statusText;
@@ -86,4 +85,3 @@ export default {
 	},
 };
 </script>
-<style></style>

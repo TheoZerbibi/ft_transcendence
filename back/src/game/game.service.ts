@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import { Prisma, User } from '@prisma/client';
 import { GameDto } from './dto/game.dto';
 import { GamePlayerDto } from './dto/game-player.dto';
@@ -9,7 +9,6 @@ import { UUID } from 'crypto';
 @Injectable()
 export class GameService {
 	constructor(private prisma: PrismaService) {}
-
 
 	private async createGame(): Promise<GameDto | undefined> {
 		try {
@@ -50,7 +49,7 @@ export class GameService {
 		}
 	}
 
-	private async getAllPlayer(game: GameDto,): Promise<Array<GamePlayerDto> | undefined> {
+	private async getAllPlayer(game: GameDto): Promise<Array<GamePlayerDto> | undefined> {
 		try {
 			const gamePlayer: Array<GamePlayerDto> = await this.prisma.gamePlayer.findMany({
 				where: {

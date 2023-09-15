@@ -26,7 +26,8 @@ plugins:
     - html
     - vue
 rules:
-    "indent": ["error", 4]
+    'indent': ['error', 'tab']
+    'no-tabs': [0]
     require-jsdoc: warn
     no-unused-vars: warn
     '@typescript-eslint/array-type':
