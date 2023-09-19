@@ -11,7 +11,7 @@
 		"db:mix": "cat ./prisma/base.prisma ./src/*/*.prisma > ./prisma/schema.prisma 2>/dev/null",
 		"db:push": "pnpm db:mix && npx prisma db push",
 		"db:migrate:dev": "pnpm db:mix && npx prisma migrate dev --preview-feature",
-		"db:deploy": "pnpm db:mix && npx prisma migrate deploy",
+		"db:deploy": "pnpm db:mix && npx prisma migrate deploy && npx prisma generate",
 		"db:pull": "npx prisma db pull && npx prisma generate",
 		"start": "nest start",
 		"start:dev": "nest start --watch",
