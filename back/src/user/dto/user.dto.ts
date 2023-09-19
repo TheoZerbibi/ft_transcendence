@@ -39,16 +39,16 @@ export class UserDto {
 	@ApiProperty()
 	@IsDate()
 	// eslint-disable-next-line
-	createdAt: Date;
+	created_at: Date;
 
 	@ApiProperty()
 	@IsDate()
 	@Exclude()
 	// eslint-disable-next-line
-	updatedAt: Date;
+	updated_at: Date;
 
 	@ApiProperty()
 	@IsDate()
 	// eslint-disable-next-line
-	lastLogin: Date;
+	last_login: Date;
 }

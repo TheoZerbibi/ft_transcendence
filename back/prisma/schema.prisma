@@ -18,46 +18,6 @@ datasource db {
 	provider	= "postgresql"
 	url			= env("DATABASE_URL")
 }
-// model Channel {
-// 	id			Int	@id @default(autoincrement()) @unique
-// 	name		String	@unique
-// 	public		Boolean	@default(true)
-// 	password	String?
-// 	createdAt	DateTime @default(now())
-// 	updatedAt	DateTime @updatedAt
-
-// 	channelUser		ChannelUser[]
-// 	channelMessage	ChannelMessage[]
-// 	@@map("channels")
-// }
-
-// model ChannelUser {
-// 	userId		Int
-// 	channelId	Int
-// 	isMuted		DateTime?
-// 	isBan		Boolean	@default(false)
-// 	isOwned		Boolean	@default(false)
-// 	isAdmin		Boolean	@default(false)
-// 	player		User	@relation(fields: [userId], references: [id])
-// 	channel		Channel	@relation(fields: [channelId], references: [id], onDelete: Cascade)
-
-// 	channelMessage	ChannelMessage[]
-
-// 	@@id([userId, channelId])
-// 	@@map("channel_users")
-// }
-
-// model ChannelMessage {
-	
-// 	userId		Int
-// 	channelId	Int
-// 	content		String
-// 	player		ChannelUser	@relation(fields: [userId], references: [userId], onDelete: Cascade)
-// 	channel		Channel		@relation(fields: [channelId], references: [id], onDelete: Cascade)
-
-// 	@@map("channel_messages")
-// }
-
 
 model Channel {
 	id			Int			@id @default(autoincrement())
@@ -92,7 +52,7 @@ model ChannelMessage {
 	user_id		Int
 	channel_id	Int
 	content		String
-	created_at	DateTime    @default(now())
+	created_at	DateTime	@default(now())
 	user		ChannelUser @relation(fields: [user_id, channel_id], references: [user_id, channel_id], onDelete: Cascade)
 
   @@map("channel_messages")
