@@ -46,7 +46,6 @@ export default defineComponent({
 		const apiData = ref(null);
 		const error = ref(false);
 		const success = ref(false);
-		const color = ref('green');
 
 		onMounted(async () => {
 			const requestOptions = {
@@ -68,7 +67,6 @@ export default defineComponent({
 				}
 				apiData.value = data;
 				success.value = true;
-				if (data.isSpecial) color.value = 'orange';
 
 				console.log(data);
 			} catch (error) {
