@@ -169,8 +169,7 @@ export class GameService {
 
 			for (const player of playersInGame) {
 				if (player.playerId === user.id) {
-					if (!player.isSpec)
-						throw new ForbiddenException('User already in this game.');
+					if (!player.isSpec) throw new ForbiddenException('User already in this game.');
 					else return { ...game, ...player };
 				}
 			}
