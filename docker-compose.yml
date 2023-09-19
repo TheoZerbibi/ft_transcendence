@@ -118,7 +118,6 @@ services:
     command: sh -c "pnpm db:pull && pnpm start:dev"
     restart: always
 
-
   api:
     build:
       context: ./back
@@ -153,4 +152,3 @@ services:
 volumes:
   redisdata:
   pgdata:
-
