@@ -42,7 +42,7 @@ export default defineComponent({
 		const route = useRoute();
 		const uid = route.params.uid;
 		const jwt_token =
-			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6Im5vcm1pbmV0Iiwic3ViIjoyLCJpYXQiOjE2OTQ4MDYyNTcsImV4cCI6MTY5NDgxNzA1N30.pdJX73O7kh3MFl6b3W6GwgcEA12bvUZnIYFzmcxoua4';
+			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6ImJhYmFjaGUiLCJzdWIiOjIsImlhdCI6MTY5NTA4NjQ0NCwiZXhwIjoxNjk1MDk3MjQ0fQ.YEOHpfEyWy2O7HMsG25LGUOdJu6Ss0x4W9xevPj6sHE';
 		const apiData = ref(null);
 		const error = ref(false);
 		const success = ref(false);

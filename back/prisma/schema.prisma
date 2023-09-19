@@ -18,19 +18,6 @@ datasource db {
 	provider	= "postgresql"
 	url			= env("DATABASE_URL")
 }
-// model Game {
-// 	id			Int	@id @default(autoincrement()) @unique
-// 	uid			String	@unique
-// 	player1		User @relation(fields: [playerId1], references: [id])
-// 	player2		User @relation(fields: [playerId2], references: [id])
-// 	winner		User? @relation(fields: [winnerId], references: [id])
-// 	createdAt	DateTime @default(now())
-// 	startedAt	DateTime?
-// 	endAt		DateTime?
-
-// 	@@map("games")
-// }
-
 model Game {
 	id			Int	@id @default(autoincrement()) @unique
 	uid			String	@unique
@@ -53,11 +40,10 @@ model GamePlayer {
 	@@id([playerId, gameId])
 	@@map("gamePlayers")
 }
-
 model User {
 	id			Int	@id @default(autoincrement()) @unique
 	login		String @unique
-	displayName	String
+	displayName	String @unique
 	email		String
 	dAuth		Boolean @default(false)
 	avatar		String

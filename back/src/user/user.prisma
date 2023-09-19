@@ -1,7 +1,7 @@
 model User {
 	id			Int	@id @default(autoincrement()) @unique
 	login		String @unique
-	displayName	String
+	displayName	String @unique
 	email		String
 	dAuth		Boolean @default(false)
 	avatar		String

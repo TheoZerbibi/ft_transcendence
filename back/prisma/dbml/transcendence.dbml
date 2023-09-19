@@ -32,7 +32,7 @@ Table gamePlayers {
 Table users {
   id Int [pk, increment]
   login String [unique, not null]
-  displayName String [not null]
+  displayName String [unique, not null]
   email String [not null]
   dAuth Boolean [not null, default: false]
   avatar String [not null]

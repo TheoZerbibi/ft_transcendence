@@ -168,7 +168,11 @@ export class GameService {
 			const playersInGame = await this.getAllPlayer(game);
 
 			for (const player of playersInGame) {
-				if (player.playerId === user.id) throw new ForbiddenException('User already in this game.');
+				if (player.playerId === user.id) {
+					if (!player.isSpec)
+						throw new ForbiddenException('User already in this game.');
+					else return { ...game, ...player };
+				}
 			}
 			if (playersInGame.length >= 2) gamePlayer = await this.createGamePlayer(game, user, true);
 			else {
@@ -176,7 +180,7 @@ export class GameService {
 					console.log('Player : ', gameHistory);
 					for (const games of gameHistory) {
 						if (games.isWin === false || games.game.endAt === null)
-							await this.createGamePlayer(game, user, true);
+							gamePlayer = await this.createGamePlayer(game, user, true);
 					}
 				} else if (playersInGame.length < 2) {
 					gamePlayer = await this.createGamePlayer(game, user);
@@ -199,7 +203,7 @@ export class GameService {
 		try {
 			const games: Array<GameDto> = await this.prisma.game.findMany({
 				where: {
-					endAt: null,
+					startedAt: null,
 				},
 			});
 			if (!games) return { uid: null };
