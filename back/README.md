@@ -135,7 +135,7 @@ The Api use JWT for security. When you create or signin into a account, the api 
     Connection: keep-alive
     Keep-Alive: timeout=5
 
-    {"id":1,"login":"Foo","displayName":"Bar","email":"Foo@Bar.fr","dAuth":false,"avatar":"https://cdn.Foo.fr/users/Bar.jpg","createdAt":"2023-09-11T10:46:26.229Z","updatedAt":"2023-09-11T10:46:26.229Z","lastLogin":"2023-09-11T10:46:26.229Z"}
+    {"id":1,"login":"Foo","display_name":"Bar","email":"Foo@Bar.fr","dAuth":false,"avatar":"https://cdn.Foo.fr/users/Bar.jpg","createdAt":"2023-09-11T10:46:26.229Z","updatedAt":"2023-09-11T10:46:26.229Z","lastLogin":"2023-09-11T10:46:26.229Z"}
 
 ### Get specific user
 
@@ -160,9 +160,9 @@ The Api use JWT for security. When you create or signin into a account, the api 
     Connection: keep-alive
     Keep-Alive: timeout=5
 
-    {"id":1,"login":"Foo","displayName":"Bar","avatar":"https://cdn.Foo.fr/users/Bar.jpg","createdAt":"2023-09-11T10:46:26.229Z","lastLogin":"2023-09-11T10:46:26.229Z"}
+    {"id":1,"login":"Foo","display_name":"Bar","avatar":"https://cdn.Foo.fr/users/Bar.jpg","createdAt":"2023-09-11T10:46:26.229Z","lastLogin":"2023-09-11T10:46:26.229Z"}
 
-### Change user avatar or displayName
+### Change user avatar or display_name
 
 ```http
   PATCH users
@@ -171,10 +171,10 @@ The Api use JWT for security. When you create or signin into a account, the api 
 | Parameter        | Type     | Description                          |
 | :--------------- | :------- | :----------------------------------- |
 |  `access_token`  | `string` | **Required**. A JWT access token.    |
-|  `displayName`   | `string` | A new displayName.                   |
+|  `display_name`   | `string` | A new display_name.                   |
 |  `avatar`        | `string` | A link to a image.                   |
 
-    curl --location --request PATCH 'http://localhost:3001/users' --header 'Authorization: Bearer ${access_token}' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'displayName=${displayName}' --data-urlencode 'avatar=${avatarLink}'`
+    curl --location --request PATCH 'http://localhost:3001/users' --header 'Authorization: Bearer ${access_token}' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'display_name=${display_name}' --data-urlencode 'avatar=${avatarLink}'`
 
 #### Response
 
@@ -187,7 +187,7 @@ The Api use JWT for security. When you create or signin into a account, the api 
     Connection: keep-alive
     Keep-Alive: timeout=5
 
-    {"id":1,"login":"Foo","displayName":"Wiz","email":"Foo@Bar.fr","dAuth":false,"avatar":"https://cdn.Foo.fr/users/Wiz.jpg","createdAt":"2023-09-11T10:46:26.229Z","updatedAt":"2023-09-11T10:54:35.764Z","lastLogin":"2023-09-11T10:46:26.229Z"}
+    {"id":1,"login":"Foo","display_name":"Wiz","email":"Foo@Bar.fr","dAuth":false,"avatar":"https://cdn.Foo.fr/users/Wiz.jpg","createdAt":"2023-09-11T10:46:26.229Z","updatedAt":"2023-09-11T10:54:35.764Z","lastLogin":"2023-09-11T10:46:26.229Z"}
 
 ## Environment Variables
 

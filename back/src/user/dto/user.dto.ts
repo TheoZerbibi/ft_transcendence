@@ -17,7 +17,7 @@ export class UserDto {
 	@IsString()
 	@IsOptional()
 	// eslint-disable-next-line
-	displayName: string;
+	display_name: string;
 
 	@ApiProperty()
 	@IsString()

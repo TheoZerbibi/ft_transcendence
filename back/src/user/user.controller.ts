@@ -43,7 +43,7 @@ export class UserController {
 
 	@UseGuards(JwtGuard)
 	@Patch()
-	@ApiOperation({ summary: 'Change DisplayName or Avatar for the user' })
+	@ApiOperation({ summary: 'Change display_name or Avatar for the user' })
 	@ApiBearerAuth('JWT-auth')
 	editUser(@GetUser('id') userId: number, @Body() dto: EditUserDto): Promise<User> {
 		return this.userService.editUser(userId, dto);

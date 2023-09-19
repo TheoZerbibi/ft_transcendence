@@ -19,7 +19,7 @@ export class AuthService {
 			const user = await this.prisma.user.create({
 				data: {
 					login: dto.login,
-					displayName: dto.login,
+					display_name: dto.login,
 					email: `${dto.login}@student.42.fr`,
 					avatar: `https://cdn.intra.42.fr/users/${dto.login}.jpg`,
 				},
