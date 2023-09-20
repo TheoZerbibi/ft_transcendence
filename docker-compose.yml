@@ -12,8 +12,8 @@ services:
       - 3000:3000
     volumes:
       - ./front:/home/node/app
-      - /home/node/app/node_modules
-      - /home/node/app/.pnpm-store
+      # - /home/node/app/node_modules
+      # - /home/node/app/.pnpm-store
     depends_on:
       api:
         condition: service_started
@@ -25,11 +25,11 @@ services:
       API42_UID: ${API42_UID}
       API42_SECRET: ${API42_SECRET}
     restart: always
-    command: sh -c "pnpm dev"
-    # command: sh -c "tail -f /dev/null"
+    # command: sh -c "pnpm dev"
+    command: sh -c "tail -f /dev/null"
 
   postgres:
-    image: postgres:15.2-alpine
+    image: postgres:16-alpine3.18
     container_name: postgres
     volumes:
         - pgdata:/var/lib/postgresql/data
@@ -52,11 +52,10 @@ services:
     restart: always
 
   redis:
-    image: redis:7.0-alpine
+    image: redis:7.2.1-alpine
     container_name: redis
     expose:
       - '6379'
-    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASS}
     volumes:
       - redisdata:/data
     healthcheck:
@@ -66,6 +65,7 @@ services:
       timeout: 2s
       retries: 21
     restart: always
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASS}
 
   # CONTAINER UNIQUEMENT DEV, NE PAS DEPLOY SUR LA PROD
   prisma:
@@ -130,10 +130,12 @@ services:
       - 3001:3001
     volumes:
       - ./back:/home/node/app
-      - /home/node/app/node_modules
-      - /home/node/app/.pnpm-store
+      # - /home/node/app/node_modules
+      # - /home/node/app/.pnpm-store
     depends_on:
       postgres:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
@@ -147,11 +149,16 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       API42_UID: ${API42_UID}
       API42_SECRET: ${API42_SECRET}
-    command: sh -c "pnpm db:deploy && pnpm start:dev"
-    # command: sh -c "pnpm db:migrate:dev && tail -f /dev/null"
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PASS: ${REDIS_PASS}
+      REDIS_URL: ${REDIS_URL}
+    # command: sh -c "pnpm db:deploy && pnpm start:dev"
+    command: sh -c "tail -f /dev/null"
     restart: always
 
 volumes:
   redisdata:
   pgdata:
+
 

@@ -1,15 +1,16 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { RedisIoAdapter } from './adapters/redis.adapter';
-import { NestExpressApplication } from '@nestjs/platform-express';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
-	const app = await NestFactory.create<NestExpressApplication>(AppModule);
-	const redisIoAdapter = new RedisIoAdapter(app);
+	const app = await NestFactory.create(AppModule);
+	const config = app.get(ConfigService);
+
+	const redisIoAdapter = new RedisIoAdapter(app, config);
 	await redisIoAdapter.connectToRedis();
 	app.useWebSocketAdapter(redisIoAdapter);
-	const port = parseInt(process.env.PORT);
-	await app.listen(port);
-}
 
+	await app.listen(config.get<number>('PORT'));
+}
 bootstrap();

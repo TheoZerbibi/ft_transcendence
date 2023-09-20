@@ -1,8 +1,9 @@
-FROM node:18.14-alpine AS common
+FROM node:20-alpine AS common
 
 WORKDIR /home/node/app
 
-RUN npm i -g pnpm
+RUN npm install -g npm@10.1.0 \
+	&& npm i -g pnpm
 RUN apk add --update python3 make g++ && rm -rf /var/cache/apk/*
 
 

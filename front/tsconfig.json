@@ -22,6 +22,10 @@
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"skipLibCheck": true,
-		"indent": ["error", 4]
+		"indent": ["error", 4],
+		"paths": {
+			"@/*": ["./*"]
+		},
+		"exclude": ["node_modules"]
 	}
 }

@@ -190,5 +190,6 @@ config.dev.json
 build/
 
 yarn.lock
+.nfs*
 
 # End of https://www.toptal.com/developers/gitignore/api/yarn,visualstudiocode,node

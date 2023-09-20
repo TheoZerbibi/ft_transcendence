@@ -1,15 +1,20 @@
-import { Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GameService } from './game.service';
 import { JwtGuard } from 'src/auth/guard';
 import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
+import { GameJoinDto } from './dto/game-join.dto';
+import { RedisService } from 'src/redis/redis.service';
 
 @Controller('game')
 @ApiBearerAuth()
 @ApiTags('Game')
 export class GameController {
-	constructor(private gameService: GameService) {}
+	constructor(
+		private gameService: GameService,
+		private readonly redisService: RedisService,
+	) {}
 
 	@UseGuards(JwtGuard)
 	@Post('createGame')
@@ -31,13 +36,19 @@ export class GameController {
 	}
 
 	@UseGuards(JwtGuard)
-	@Get(':uuid')
+	@Post(':uuid')
 	@ApiOperation({ summary: 'Join a Game' })
 	@ApiBearerAuth('JWT-auth')
 	@HttpCode(HttpStatus.OK)
-	joinGame(@GetUser() user: User, @Param('uuid') gameUUID: string) {
-		console.log('user', user);
-		console.log('gameUUID', gameUUID);
+	async joinGame(@GetUser() user: User, @Param('uuid') gameUUID: string, @Body() body: GameJoinDto) {
+		console.log('user ', user);
+		console.log('gameUUID ', gameUUID);
+		console.log('body', body);
+		console.log('socket', JSON.parse(body.socket));
+		const socket = JSON.parse(body.socket);
+		console.log(socket.id);
+		await this.redisService.connectClientToSocket(socket.id as string);
+
 		return this.gameService.joinGame(user, gameUUID);
 	}
 }

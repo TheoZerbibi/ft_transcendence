@@ -26,6 +26,8 @@
 import { defineComponent } from 'vue';
 import { useRoute } from 'vue-router';
 import { ref, onMounted } from 'vue';
+import io from 'socket.io-client';
+
 export default defineComponent({
 	name: 'Game',
 
@@ -42,36 +44,47 @@ export default defineComponent({
 		const route = useRoute();
 		const uid = route.params.uid;
 		const jwt_token =
-			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6ImJhYmFjaGUiLCJzdWIiOjIsImlhdCI6MTY5NTA4NjQ0NCwiZXhwIjoxNjk1MDk3MjQ0fQ.YEOHpfEyWy2O7HMsG25LGUOdJu6Ss0x4W9xevPj6sHE';
-		const apiData = ref(null);
-		const error = ref(false);
-		const success = ref(false);
+			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTUxOTU2MzEsImV4cCI6MTY5NTIwNjQzMX0.3sinu1r1aEXibiacpJDibG5k3z0uchuJMsGlbx7C3gA';
+		const apiData: any = ref(null);
+		const error: any = ref(false);
+		const success: any = ref(false);
 
 		onMounted(async () => {
+			const socket = io('http://localhost:3000');
+			const socketInfo = {
+				id: socket.ids,
+			};
+			const playerSocket: any = JSON.stringify(socketInfo);
+			console.log(socket);
 			const requestOptions = {
-				method: 'GET',
+				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${jwt_token}`,
 					'Access-Control-Allow-Origin': '*',
 				},
+				body: JSON.stringify({
+					playerId: 1,
+					socket: playerSocket,
+				}),
 			};
-			try {
-				const response = await fetch(`http://${HOST}:3001/game/${uid}`, requestOptions);
-				const data = await response.json();
-				if (!response.ok) {
-					console.log(data);
-					apiData.value = data.message;
-					error.value = true;
-					throw Error(data.message);
-				}
-				apiData.value = data;
-				success.value = true;
-
-				console.log(data);
-			} catch (error) {
-				console.error(error);
-			}
+			fetch(`http://${HOST}:3001/game/${uid}`, requestOptions)
+				.then(async (response) => {
+					if (!response.ok) {
+						const data = await response.json();
+						apiData.value = data.message;
+						error.value = true;
+						throw Error(data.message);
+					}
+					return response.json();
+				})
+				.then((data) => {
+					apiData.value = data;
+					success.value = true;
+				})
+				.catch((error) => {
+					console.error(error);
+				});
 		});
 		return {
 			apiData,

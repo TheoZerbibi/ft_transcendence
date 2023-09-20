@@ -1,7 +1,8 @@
-FROM node:18.14-alpine
+FROM node:20-alpine
 
 WORKDIR /home/node/app
 
+RUN npm install -g npm@10.1.0
 RUN mkdir src && touch src/main.ts \
 	&& mkdir -p ./prisma
 
