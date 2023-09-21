@@ -2,30 +2,30 @@ version: "3.9"
 
 services:
 
-  front:
-    build:
-      context: ./front
-      target: frontend
-      dockerfile: ../docker/node/dev.Dockerfile
-    container_name: front
-    ports:
-      - 3000:3000
-    volumes:
-      - ./front:/home/node/app
-      - /home/node/app/node_modules
-      - /home/node/app/.pnpm-store
-    depends_on:
-      api:
-        condition: service_started
-      socket:
-        condition: service_started
-    environment:
-      NODE_ENV: ${NODE_ENV}
-      HOST: ${HOSTNAME}
-      API42_UID: ${API42_UID}
-      API42_SECRET: ${API42_SECRET}
-    command: sh -c "pnpm dev"
-    restart: always
+  # front:
+  #   build:
+  #     context: ./front
+  #     target: frontend
+  #     dockerfile: ../docker/node/dev.Dockerfile
+  #   container_name: front
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - ./front:/home/node/app
+  #     - /home/node/app/node_modules
+  #     - /home/node/app/.pnpm-store
+  #   depends_on:
+  #     api:
+  #       condition: service_started
+  #     socket:
+  #       condition: service_started
+  #   environment:
+  #     NODE_ENV: ${NODE_ENV}
+  #     HOST: ${HOSTNAME}
+  #     API42_UID: ${API42_UID}
+  #     API42_SECRET: ${API42_SECRET}
+  #   command: sh -c "pnpm dev"
+  #   restart: always
 
   postgres:
     image: postgres:15.2-alpine

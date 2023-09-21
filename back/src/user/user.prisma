@@ -9,6 +9,17 @@ model User {
 	updated_at		DateTime @updatedAt
 	last_login		DateTime @default(now())
 	channelUser		ChannelUser[]
+	friends			Friends[]
 
 	@@map("users")
+}
+
+model Friends {
+	id		Int	@id @default(autoincrement)
+
+	user		User	@relation(fields: [userId, friendId], references: [id])
+	userId		Int	
+	friendId	Int
+
+	@@map("friends")
 }
