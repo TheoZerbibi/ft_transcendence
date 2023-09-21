@@ -1,14 +1,16 @@
 model User {
-	id			Int	@id @default(autoincrement()) @unique
-	login		String @unique
-	displayName	String @unique
-	email		String
-	dAuth		Boolean @default(false)
-	avatar		String
-	createdAt	DateTime @default(now())
-	updatedAt	DateTime @updatedAt
-	lastLogin	DateTime @default(now())
-	GamePlayer 	GamePlayer[]
+	id				Int	@id @default(autoincrement())
+	login			String @unique
+	display_name	String
+	email			String
+	dAuth			Boolean @default(false)
+	avatar			String
+	created_at		DateTime @default(now())
+	updated_at		DateTime @updatedAt
+	last_login		DateTime @default(now())
+	GamePlayer		GamePlayer[]
 
 	@@map("users")
 }
+
+

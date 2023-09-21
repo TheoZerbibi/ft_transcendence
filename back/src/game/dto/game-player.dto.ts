@@ -5,22 +5,22 @@ export class GamePlayerDto {
 	@ApiProperty()
 	@IsInt()
 	// eslint-disable-next-line
-	playerId: number;
+	player_id: number;
 
 	@ApiProperty()
 	@IsInt()
 	// eslint-disable-next-line
-	gameId?: number;
+	game_id?: number;
 
 	@ApiProperty()
 	@IsBoolean()
 	@IsOptional()
 	// eslint-disable-next-line
-	isWin:	Boolean;
+	is_win:	Boolean;
 
 	@ApiProperty()
 	@IsBoolean()
 	@IsOptional()
 	// eslint-disable-next-line
-	isSpec: Boolean;
+	is_spec: Boolean;
 }

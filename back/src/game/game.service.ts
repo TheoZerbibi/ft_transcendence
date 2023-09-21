@@ -10,12 +10,13 @@ import { UUID } from 'crypto';
 export class GameService {
 	constructor(private prisma: PrismaService) {}
 
-	private async createGame(): Promise<GameDto | undefined> {
+	private async createGame(isPrivate: boolean): Promise<GameDto | undefined> {
 		try {
-			const gameUUID = uuidv4();
+			const gameUID = uuidv4();
 			const game: GameDto = await this.prisma.game.create({
 				data: {
-					uid: gameUUID,
+					uid: gameUID,
+					is_private: isPrivate,
 				},
 			});
 			return game;
@@ -35,9 +36,9 @@ export class GameService {
 		try {
 			const gamePlayer: Array<GamePlayerDto> = await this.prisma.gamePlayer.findMany({
 				where: {
-					gameId: game.id,
-					isSpec: spec,
-					isWin: win,
+					game_id: game.id,
+					is_spec: spec,
+					is_win: win,
 				},
 			});
 			return gamePlayer;
@@ -53,7 +54,7 @@ export class GameService {
 		try {
 			const gamePlayer: Array<GamePlayerDto> = await this.prisma.gamePlayer.findMany({
 				where: {
-					gameId: game.id,
+					game_id: game.id,
 				},
 			});
 			return gamePlayer;
@@ -69,7 +70,7 @@ export class GameService {
 		try {
 			await this.prisma.gamePlayer.deleteMany({
 				where: {
-					gameId: game.id,
+					game_id: game.id,
 				},
 			});
 			await this.prisma.game.delete({
@@ -95,10 +96,10 @@ export class GameService {
 			console.log(game);
 			const gamePlayer: GamePlayerDto = await this.prisma.gamePlayer.create({
 				data: {
-					playerId: user.id,
-					gameId: game.id,
-					isSpec: spec,
-					isWin: false,
+					player_id: user.id,
+					game_id: game.id,
+					is_spec: spec,
+					is_win: false,
 				},
 			});
 			return gamePlayer;
@@ -133,8 +134,8 @@ export class GameService {
 		try {
 			const gamePlayer: Array<any> = await this.prisma.gamePlayer.findMany({
 				where: {
-					playerId: user.id,
-					isWin: isWin,
+					player_id: user.id,
+					is_win: isWin,
 				},
 				include: {
 					game: true,
@@ -149,7 +150,7 @@ export class GameService {
 
 	async createNewGame(): Promise<GameDto> {
 		try {
-			const game: GameDto = await this.createGame();
+			const game: GameDto = await this.createGame(false);
 			console.log(game);
 			return game;
 		} catch (e) {
@@ -168,8 +169,8 @@ export class GameService {
 			const playersInGame = await this.getAllPlayer(game);
 
 			for (const player of playersInGame) {
-				if (player.playerId === user.id) {
-					if (!player.isSpec) throw new ForbiddenException('User already in this game.');
+				if (player.player_id === user.id) {
+					if (!player.is_spec) throw new ForbiddenException('User already in this game.');
 					else return { ...game, ...player };
 				}
 			}
@@ -184,10 +185,10 @@ export class GameService {
 				} else if (playersInGame.length < 2) {
 					gamePlayer = await this.createGamePlayer(game, user);
 					if (playersInGame.length === 1) {
-						game.startedAt = new Date();
+						game.started_at = new Date();
 						await this.prisma.game.update({
 							where: { id: game.id },
-							data: { startedAt: new Date() },
+							data: { started_at: new Date() },
 						});
 					}
 				}
@@ -202,7 +203,8 @@ export class GameService {
 		try {
 			const games: Array<GameDto> = await this.prisma.game.findMany({
 				where: {
-					startedAt: null,
+					started_at: null,
+					is_private: false,
 				},
 			});
 			if (!games) return { uid: null };

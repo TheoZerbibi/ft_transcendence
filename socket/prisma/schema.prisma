@@ -22,9 +22,9 @@ model users {
 
 model gamePlayers {
   playerId Int
-  gameId   Int
   isWin    Boolean?
   isSpec   Boolean?
+  gameId   Int
   games    games    @relation(fields: [gameId], references: [id], onDelete: Cascade)
   users    users    @relation(fields: [playerId], references: [id])
 

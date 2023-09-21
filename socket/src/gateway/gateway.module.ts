@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { Gateway } from './gateway.websocket';
-import { EventsGateway } from './event.gateway';
+import { GameGateway } from './game.gateway';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
-	providers: [Gateway, EventsGateway],
+	providers: [Gateway, GameGateway, JwtService],
 })
 export class GatewayModule {}

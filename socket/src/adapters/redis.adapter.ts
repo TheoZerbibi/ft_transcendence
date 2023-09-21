@@ -1,50 +1,44 @@
 import { IoAdapter } from '@nestjs/platform-socket.io';
 import { ServerOptions } from 'socket.io';
-import { createAdapter } from '@socket.io/redis-adapter';
-import { createClient } from 'redis';
+import { Redis } from 'ioredis';
 import { ConfigService } from '@nestjs/config';
+import { Logger } from '@nestjs/common';
+import { GameGateway } from 'src/gateway/game.gateway';
+import { createAdapter } from '@socket.io/redis-adapter';
 
 export class RedisIoAdapter extends IoAdapter {
+	private readonly logger = new Logger(RedisIoAdapter.name);
 	private adapterConstructor: ReturnType<typeof createAdapter>;
 
 	constructor(
-		app,
+		private readonly app,
 		private readonly config: ConfigService,
 	) {
 		super(app);
 	}
 
-	async connectToRedis(): Promise<void> {
-		const pubClient = createClient({
-			socket: {
-				host: this.config.get('REDIS_HOST'),
-				port: this.config.get<number>('REDIS_PORT'),
-			},
+	async connectToRedis() {
+		const pubClient = new Redis({
+			host: this.config.get('REDIS_HOST'),
+			port: this.config.get<number>('REDIS_PORT'),
 			password: this.config.get('REDIS_PASS'),
-		});
-		pubClient.on('error', (err) => {
-			console.error('Erreur Redis:', err);
-		});
-
-		pubClient.on('connect', () => {
-			console.log('Redis connecté');
 		});
 		const subClient = pubClient.duplicate();
 
-		subClient.on('error', (err) => {
-			console.error('Erreur Redis:', err);
-		});
-
+		subClient.subscribe('new-connection');
+		subClient.subscribe('JWT-auth');
 		subClient.on('connect', () => {
-			console.log('Redis connecté');
+			this.logger.log('Redis subClient connected');
 		});
 
-		await Promise.all([pubClient.connect(), subClient.connect()]);
-
+		subClient.on('message', (channel, message) => {
+			if (channel === 'new-connection') this.app.get(GameGateway).handleRedisMessage(channel, message);
+			if (channel === 'JWT-auth') console.log(message);
+		});
 		this.adapterConstructor = createAdapter(pubClient, subClient);
 	}
 
-	createIOServer(port: number, options?: ServerOptions): any {
+	createIOServer(port: number, options?: ServerOptions) {
 		const server = super.createIOServer(port, options);
 		server.adapter(this.adapterConstructor);
 		return server;

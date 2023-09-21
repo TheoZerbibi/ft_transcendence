@@ -10,38 +10,39 @@ Project "Transcendence" {
 Table games {
   id Int [pk, increment]
   uid String [unique, not null]
-  createdAt DateTime [default: `now()`, not null]
-  startedAt DateTime
-  endAt DateTime
+  is_private Boolean [not null, default: false]
+  created_at DateTime [default: `now()`, not null]
+  started_at DateTime
+  end_at DateTime
   gamePlayer gamePlayers [not null]
 }
 
 Table gamePlayers {
-  playerId Int [not null]
-  gameId Int [not null]
-  isWin Boolean
-  isSpec Boolean
+  player_id Int [not null]
+  game_id Int [not null]
+  is_win Boolean
+  is_spec Boolean
   player users [not null]
   game games [not null]
 
   indexes {
-    (playerId, gameId) [pk]
+    (player_id, game_id) [pk]
   }
 }
 
 Table users {
   id Int [pk, increment]
   login String [unique, not null]
-  displayName String [unique, not null]
+  display_name String [not null]
   email String [not null]
   dAuth Boolean [not null, default: false]
   avatar String [not null]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [not null]
-  lastLogin DateTime [default: `now()`, not null]
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [not null]
+  last_login DateTime [default: `now()`, not null]
   GamePlayer gamePlayers [not null]
 }
 
-Ref: gamePlayers.playerId > users.id
+Ref: gamePlayers.player_id > users.id
 
-Ref: gamePlayers.gameId > games.id [delete: Cascade]
+Ref: gamePlayers.game_id > games.id [delete: Cascade]

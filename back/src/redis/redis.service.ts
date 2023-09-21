@@ -1,12 +1,16 @@
 import { Injectable, OnModuleDestroy } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as redis from 'redis';
+import { Logger } from '@nestjs/common';
 
 @Injectable()
 export class RedisService implements OnModuleDestroy {
 	private redisClient: any;
+	private readonly logger = new Logger(RedisService.name);
 
-	constructor(private config: ConfigService) {
+	constructor(private config: ConfigService) {}
+
+	async onModuleInit() {
 		this.redisClient = redis.createClient({
 			socket: {
 				host: this.config.get('REDIS_HOST'),
@@ -16,15 +20,12 @@ export class RedisService implements OnModuleDestroy {
 		});
 
 		this.redisClient.on('error', (err) => {
-			console.error('Erreur Redis:', err);
+			this.logger.log('Erreur Redis:', err);
 		});
 
 		this.redisClient.on('connect', () => {
-			console.log('Redis connecté');
+			this.logger.log('Redis connecté');
 		});
-	}
-
-	async onModuleInit() {
 		await this.redisClient.connect();
 	}
 
@@ -36,8 +37,13 @@ export class RedisService implements OnModuleDestroy {
 		await this.redisClient.publish(channel, message);
 	}
 
-	async connectClientToSocket(clientSocketId: string) {
-		if (clientSocketId !== null && clientSocketId !== undefined)
-			await this.redisClient.publish('events', clientSocketId.toString());
+	async sendJWT(JWT: string) {
+		if (JWT !== null && JWT !== undefined)
+			await this.redisClient.publish('JWT-auth', JSON.stringify({ access_token: JWT }));
+	}
+
+	async connectClientToSocket(gameUID: string) {
+		if (gameUID !== null && gameUID !== undefined)
+			await this.redisClient.publish('new-connection', JSON.stringify({ gameUID: gameUID }));
 	}
 }

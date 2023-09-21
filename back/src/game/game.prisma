@@ -1,22 +1,23 @@
 model Game {
 	id			Int	@id @default(autoincrement()) @unique
 	uid			String	@unique
-	createdAt	DateTime @default(now())
-	startedAt	DateTime?
-	endAt		DateTime?
+	is_private	Boolean	@default(false)
+	created_at	DateTime @default(now())
+	started_at	DateTime?
+	end_at		DateTime?
 	gamePlayer 	GamePlayer[]
 
 	@@map("games")
 }
 
 model GamePlayer {
-	playerId	Int
-	gameId		Int
-	isWin		Boolean?
-	isSpec		Boolean?
-	player		User	@relation(fields: [playerId], references: [id])
-	game		Game	@relation(fields: [gameId], references: [id], onDelete: Cascade)
+	player_id	Int
+	game_id		Int
+	is_win		Boolean?
+	is_spec		Boolean?
+	player		User	@relation(fields: [player_id], references: [id])
+	game		Game	@relation(fields: [game_id], references: [id], onDelete: Cascade)
 
-	@@id([playerId, gameId])
+	@@id([player_id, game_id])
 	@@map("gamePlayers")
 }

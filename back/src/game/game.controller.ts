@@ -44,11 +44,12 @@ export class GameController {
 		console.log('user ', user);
 		console.log('gameUUID ', gameUUID);
 		console.log('body', body);
-		console.log('socket', JSON.parse(body.socket));
-		const socket = JSON.parse(body.socket);
-		console.log(socket.id);
-		await this.redisService.connectClientToSocket(socket.id as string);
 
-		return this.gameService.joinGame(user, gameUUID);
+		const response = await this.gameService.joinGame(user, gameUUID);
+		if (response) {
+			await this.redisService.connectClientToSocket(gameUUID);
+			return response;
+		}
+		return { error: 'Game not found' };
 	}
 }

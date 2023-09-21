@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { EditUserDto, UserDto } from './dto';
-import { Prisma, User } from '@prisma/client';
-import { ForbiddenException } from '@nestjs/common';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UserService {
@@ -19,26 +18,19 @@ export class UserService {
 			},
 		});
 		if (!prismaUser) return undefined;
-		const user = this.exclude(prismaUser, ['dAuth', 'email', 'updatedAt']);
+		const user = this.exclude(prismaUser, ['dAuth', 'email', 'updated_at']);
 		return user as UserDto;
 	}
 
 	async editUser(userId: number, dto: EditUserDto): Promise<UserDto> {
-		try {
-			const user = await this.prisma.user.update({
-				where: {
-					id: userId,
-				},
-				data: {
-					...dto,
-				},
-			});
-			return user as UserDto;
-		} catch (e) {
-			if (e instanceof Prisma.PrismaClientKnownRequestError) {
-				if (e.code === 'P2002') throw new ForbiddenException('Display name already exists');
-			}
-			throw e;
-		}
+		const user = await this.prisma.user.update({
+			where: {
+				id: userId,
+			},
+			data: {
+				...dto,
+			},
+		});
+		return user as UserDto;
 	}
 }

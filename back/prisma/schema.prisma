@@ -21,36 +21,39 @@ datasource db {
 model Game {
 	id			Int	@id @default(autoincrement()) @unique
 	uid			String	@unique
-	createdAt	DateTime @default(now())
-	startedAt	DateTime?
-	endAt		DateTime?
+	is_private	Boolean	@default(false)
+	created_at	DateTime @default(now())
+	started_at	DateTime?
+	end_at		DateTime?
 	gamePlayer 	GamePlayer[]
 
 	@@map("games")
 }
 
 model GamePlayer {
-	playerId	Int
-	gameId		Int
-	isWin		Boolean?
-	isSpec		Boolean?
-	player		User	@relation(fields: [playerId], references: [id])
-	game		Game	@relation(fields: [gameId], references: [id], onDelete: Cascade)
+	player_id	Int
+	game_id		Int
+	is_win		Boolean?
+	is_spec		Boolean?
+	player		User	@relation(fields: [player_id], references: [id])
+	game		Game	@relation(fields: [game_id], references: [id], onDelete: Cascade)
 
-	@@id([playerId, gameId])
+	@@id([player_id, game_id])
 	@@map("gamePlayers")
 }
 model User {
-	id			Int	@id @default(autoincrement()) @unique
-	login		String @unique
-	displayName	String @unique
-	email		String
-	dAuth		Boolean @default(false)
-	avatar		String
-	createdAt	DateTime @default(now())
-	updatedAt	DateTime @updatedAt
-	lastLogin	DateTime @default(now())
-	GamePlayer 	GamePlayer[]
+	id				Int	@id @default(autoincrement())
+	login			String @unique
+	display_name	String
+	email			String
+	dAuth			Boolean @default(false)
+	avatar			String
+	created_at		DateTime @default(now())
+	updated_at		DateTime @updatedAt
+	last_login		DateTime @default(now())
+	GamePlayer		GamePlayer[]
 
 	@@map("users")
 }
+
+

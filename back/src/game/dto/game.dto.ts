@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsInt, IsOptional, IsUUID } from 'class-validator';
-import { UUID } from 'crypto';
+import { IsBoolean, IsDate, IsInt, IsOptional, IsUUID } from 'class-validator';
 
 export class GameDto {
 	@ApiProperty()
@@ -11,22 +10,27 @@ export class GameDto {
 	@ApiProperty()
 	@IsUUID()
 	// eslint-disable-next-line
-	avatar?: UUID;
+	uid: String;
+
+	@ApiProperty()
+	@IsBoolean()
+	// eslint-disable-next-line
+	is_private: boolean;
 
 	@ApiProperty()
 	@IsDate()
 	// eslint-disable-next-line
-	createdAt: Date;
+	created_at: Date;
 
 	@ApiProperty()
 	@IsDate()
 	@IsOptional()
 	// eslint-disable-next-line
-	startedAt: Date;
+	started_at: Date;
 
 	@ApiProperty()
 	@IsDate()
 	@IsOptional()
 	// eslint-disable-next-line
-	endAt: Date;
+	end_at: Date;
 }

@@ -26,7 +26,7 @@ export default {
 		return {
 			color: '#2e2e2e',
 			jwt_token:
-				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTUxOTU2MzEsImV4cCI6MTY5NTIwNjQzMX0.3sinu1r1aEXibiacpJDibG5k3z0uchuJMsGlbx7C3gA',
+				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoyLCJpYXQiOjE2OTUyNzc5NjEsImV4cCI6MTY5NTI4ODc2MX0.YEeyaSHec-jtbEoG3UpfrTgcexMk6qXkRnv6Cb5xA5w',
 			sendSnackbar: false,
 			successSnackbar: false,
 			failSnackbar: false,
