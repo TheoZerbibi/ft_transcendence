@@ -55,7 +55,7 @@ model ChannelMessage {
 	created_at	DateTime	@default(now())
 	user		ChannelUser @relation(fields: [user_id, channel_id], references: [user_id, channel_id], onDelete: Cascade)
 
-  @@map("channel_messages")
+	@@map("channel_messages")
 }
 model User {
 	id				Int	@id @default(autoincrement())
