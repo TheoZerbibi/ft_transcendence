@@ -7,7 +7,7 @@ import {
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { Logger } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { AuthService } from 'src/auth/auth.service';
 
 @WebSocketGateway({
 	cors: {
@@ -17,7 +17,7 @@ import { JwtService } from '@nestjs/jwt';
 export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	private logger: Logger = new Logger('TestGateway');
 
-	constructor(private jwt: JwtService) {}
+	constructor(private authService: AuthService) {}
 	@WebSocketServer() server: Server;
 
 	@SubscribeMessage('new-connection')
@@ -45,10 +45,11 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	}
 
 	public handleConnection(client: Socket): void {
-		console.log(client.handshake.headers.authorization);
-
 		try {
-			this.jwt.verify(client.handshake.headers.authorization);
+			if (!client.handshake.headers.authorization) throw new Error('Invalid token');
+			const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
+			this.authService.verifyToken({ access_token: token });
+			client.emit('test', 'Connection established');
 			return this.logger.log(`Client connected: ${client.id}`);
 		} catch (e) {
 			client.emit('error', 'Invalid token');

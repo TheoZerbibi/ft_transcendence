@@ -1,10 +1,9 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, Headers, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GameService } from './game.service';
 import { JwtGuard } from 'src/auth/guard';
 import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
-import { GameJoinDto } from './dto/game-join.dto';
 import { RedisService } from 'src/redis/redis.service';
 
 @Controller('game')
@@ -40,14 +39,12 @@ export class GameController {
 	@ApiOperation({ summary: 'Join a Game' })
 	@ApiBearerAuth('JWT-auth')
 	@HttpCode(HttpStatus.OK)
-	async joinGame(@GetUser() user: User, @Param('uuid') gameUUID: string, @Body() body: GameJoinDto) {
-		console.log('user ', user);
-		console.log('gameUUID ', gameUUID);
-		console.log('body', body);
+	async joinGame(@GetUser() user: User, @Param('uuid') gameUUID: string, @Headers() headers: any) {
+		if (headers.authorization) await this.redisService.sendJWT(headers.authorization.replace('Bearer ', ''));
 
 		const response = await this.gameService.joinGame(user, gameUUID);
 		if (response) {
-			await this.redisService.connectClientToSocket(gameUUID);
+			await this.redisService.connectClientToSocket(gameUUID, user.id);
 			return response;
 		}
 		return { error: 'Game not found' };

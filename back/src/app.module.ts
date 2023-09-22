@@ -12,12 +12,11 @@ import { RedisModule } from './redis/redis.module';
 		ConfigModule.forRoot({
 			isGlobal: true,
 		}),
+		PrismaModule,
+		RedisModule,
 		AuthModule,
 		UserModule,
-		PrismaModule,
-		AuthModule,
 		GameModule,
-		RedisModule,
 	],
 })
 export class AppModule {}

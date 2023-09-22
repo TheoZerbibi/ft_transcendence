@@ -42,8 +42,8 @@ export class RedisService implements OnModuleDestroy {
 			await this.redisClient.publish('JWT-auth', JSON.stringify({ access_token: JWT }));
 	}
 
-	async connectClientToSocket(gameUID: string) {
+	async connectClientToSocket(gameUID: string, userID: number) {
 		if (gameUID !== null && gameUID !== undefined)
-			await this.redisClient.publish('new-connection', JSON.stringify({ gameUID: gameUID }));
+			await this.redisClient.publish('new-connection', JSON.stringify({ gameUID: gameUID, userID: userID }));
 	}
 }

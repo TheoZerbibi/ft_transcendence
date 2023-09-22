@@ -114,6 +114,7 @@ services:
       REDIS_URL: ${REDIS_URL}
       NODE_ENV: ${NODE_ENV}
       DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
       HOST: ${HOSTNAME}
       PORT: 4000
     restart: always

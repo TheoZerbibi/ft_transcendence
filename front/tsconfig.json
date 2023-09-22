@@ -23,8 +23,9 @@
 		"forceConsistentCasingInFileNames": true,
 		"skipLibCheck": true,
 		"indent": ["error", 4],
+		"baseUrl": "./src",
 		"paths": {
-			"@/*": ["./*"]
+			"@/*": ["*"]
 		},
 		"exclude": ["node_modules"]
 	}

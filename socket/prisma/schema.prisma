@@ -8,34 +8,35 @@ datasource db {
 }
 
 model users {
-  id          Int           @id @unique @default(autoincrement())
-  login       String        @unique
-  displayName String        @unique
-  email       String
-  dAuth       Boolean       @default(false)
-  avatar      String
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime
-  lastLogin   DateTime      @default(now())
-  gamePlayers gamePlayers[]
+  id           Int           @id @default(autoincrement())
+  login        String        @unique
+  email        String
+  dAuth        Boolean       @default(false)
+  avatar       String
+  created_at   DateTime      @default(now())
+  display_name String
+  last_login   DateTime      @default(now())
+  updated_at   DateTime
+  gamePlayers  gamePlayers[]
 }
 
 model gamePlayers {
-  playerId Int
-  isWin    Boolean?
-  isSpec   Boolean?
-  gameId   Int
-  games    games    @relation(fields: [gameId], references: [id], onDelete: Cascade)
-  users    users    @relation(fields: [playerId], references: [id])
+  game_id   Int
+  is_spec   Boolean?
+  is_win    Boolean?
+  player_id Int
+  games     games    @relation(fields: [game_id], references: [id], onDelete: Cascade)
+  users     users    @relation(fields: [player_id], references: [id])
 
-  @@id([playerId, gameId])
+  @@id([player_id, game_id])
 }
 
 model games {
   id          Int           @id @unique @default(autoincrement())
   uid         String        @unique
-  createdAt   DateTime      @default(now())
-  startedAt   DateTime?
-  endAt       DateTime?
+  created_at  DateTime      @default(now())
+  end_at      DateTime?
+  is_private  Boolean       @default(false)
+  started_at  DateTime?
   gamePlayers gamePlayers[]
 }
