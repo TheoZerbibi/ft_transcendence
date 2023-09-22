@@ -9,17 +9,20 @@ model User {
 	updated_at		DateTime @updatedAt
 	last_login		DateTime @default(now())
 	channelUser		ChannelUser[]
-	friends			Friends[]
+
+
+	user			Friends[] @relation("user")
+	friends			Friends[] @relation("friends")
 
 	@@map("users")
 }
 
 model Friends {
-	id		Int	@id @default(autoincrement)
+	user		User	@relation("user", fields: [user_id], references: [id])
+	friends		User	@relation("friends", fields: [friend_id], references: [id])
+	user_id		Int	
+	friend_id	Int
 
-	user		User	@relation(fields: [userId, friendId], references: [id])
-	userId		Int	
-	friendId	Int
-
+	@@id([user_id, friend_id])
 	@@map("friends")
 }

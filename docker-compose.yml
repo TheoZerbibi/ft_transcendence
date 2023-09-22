@@ -146,6 +146,8 @@ services:
       API42_UID: ${API42_UID}
       API42_SECRET: ${API42_SECRET}
     command: sh -c "pnpm db:migrate:dev && pnpm start:dev"
+      #   command: sh -c "pnpm start:dev"
+      #command: sh -c "npm install -g prisma@latest && pnpm db:migrate:dev && pnpm start:dev"
     # command: sh -c "pnpm db:migrate:dev && tail -f /dev/null"
     restart: always
 

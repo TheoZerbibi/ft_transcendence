@@ -10,6 +10,7 @@ FROM common AS backend
 COPY package.json .
 
 RUN npm i -g @nestjs/cli \
+	&& npm i -g prisma@latest \
 	&& pnpm install
 
 EXPOSE 3001
