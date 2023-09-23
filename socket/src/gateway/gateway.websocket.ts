@@ -1,5 +1,4 @@
 import {
-	MessageBody,
 	SubscribeMessage,
 	WebSocketGateway,
 	WebSocketServer,
@@ -9,21 +8,31 @@ import {
 import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
 
-@WebSocketGateway({})
+type Payload = {
+	name: string;
+	text: string;
+};
+
+@WebSocketGateway({
+	cors: {
+		origin: '*',
+	},
+})
 export class Gateway implements OnGatewayConnection, OnGatewayDisconnect {
-	@WebSocketServer()
-	// eslint-disable-next-line
-	server: Server;
+	@WebSocketServer() server: Server;
 
 	private logger: Logger = new Logger('MessageGateway');
 
 	@SubscribeMessage('message')
-	public onNewMessage(@MessageBody() data: any) {
-		console.log(data);
-		this.server.emit('onMessage', {
-			msg: 'new Message',
-			content: data,
-		});
+	handleMessage(client: Socket, payload: any) {
+		console.log('Received WebSocket message:', payload);
+		this.server.emit('response', 'Hello from WebSocket Gateway!');
+	}
+
+	@SubscribeMessage('connectClientToSocket')
+	public onNewConnection(client: Socket, payload: Payload) {
+		console.log('Yep');
+		console.log(payload);
 	}
 
 	public afterInit(): void {

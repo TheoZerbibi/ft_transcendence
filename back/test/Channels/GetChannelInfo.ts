@@ -8,15 +8,6 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-interface Channel {
-	id: number;
-	name: string;
-	public: boolean;
-	password: string;
-	created_at: Date;
-	updated_at: Date;
-}
-
 async function main() {
 	const userId = 1;
 
@@ -28,8 +19,8 @@ async function main() {
 		LEFT JOIN users ON users.id = cu.user_id
 		WHERE users.id = $1
 		ORDER BY cm.created_at;`,
-		userId
-	)
+		userId,
+	);
 	console.log(result);
 }
 

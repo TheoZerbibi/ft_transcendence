@@ -8,6 +8,7 @@ datasource db {
 }
 
 model users {
+<<<<<<< HEAD
   id            Int             @id @default(autoincrement())
   login         String          @unique
   email         String
@@ -67,4 +68,37 @@ model channels {
   channel_users channel_users[]
 =======
 >>>>>>> 8d69780cc884219d5d873e1dc882667efcde88fe
+=======
+  id           Int           @id @default(autoincrement())
+  login        String        @unique
+  email        String
+  dAuth        Boolean       @default(false)
+  avatar       String
+  created_at   DateTime      @default(now())
+  display_name String
+  last_login   DateTime      @default(now())
+  updated_at   DateTime
+  gamePlayers  gamePlayers[]
+}
+
+model gamePlayers {
+  game_id   Int
+  is_spec   Boolean?
+  is_win    Boolean?
+  player_id Int
+  games     games    @relation(fields: [game_id], references: [id], onDelete: Cascade)
+  users     users    @relation(fields: [player_id], references: [id])
+
+  @@id([player_id, game_id])
+}
+
+model games {
+  id          Int           @id @unique @default(autoincrement())
+  uid         String        @unique
+  created_at  DateTime      @default(now())
+  end_at      DateTime?
+  is_private  Boolean       @default(false)
+  started_at  DateTime?
+  gamePlayers gamePlayers[]
+>>>>>>> features/pong
 }

@@ -43,6 +43,29 @@ Table channel_messages {
   channelUsers channel_users [not null]
 }
 
+Table games {
+  id Int [pk, increment]
+  uid String [unique, not null]
+  is_private Boolean [not null, default: false]
+  created_at DateTime [default: `now()`, not null]
+  started_at DateTime
+  end_at DateTime
+  gamePlayer gamePlayers [not null]
+}
+
+Table gamePlayers {
+  player_id Int [not null]
+  game_id Int [not null]
+  is_win Boolean
+  is_spec Boolean
+  player users [not null]
+  game games [not null]
+
+  indexes {
+    (player_id, game_id) [pk]
+  }
+}
+
 Table users {
   id Int [pk, increment]
   login String [unique, not null]
@@ -56,6 +79,7 @@ Table users {
   channelUser channel_users [not null]
   user friends [not null]
   friends friends [not null]
+  GamePlayer gamePlayers [not null]
 }
 
 Table friends {
@@ -74,6 +98,10 @@ Ref: channel_users.channel_id > channels.id [delete: Cascade]
 Ref: channel_users.user_id > users.id [delete: Cascade]
 
 Ref: channel_messages.channel_user_id > channel_users.id [delete: Cascade]
+
+Ref: gamePlayers.player_id > users.id
+
+Ref: gamePlayers.game_id > games.id [delete: Cascade]
 
 Ref: friends.user_id > users.id
 

@@ -1,33 +1,39 @@
 env:
-  browser: true
-  es2021: true
+    browser: true
+    es2021: true
 extends:
-  - plugin:vue/recommended
-  - plugin:import/recommended
-  - plugin:import/typescript
-  - plugin:vuejs-accessibility/recommended
-  - '@vue/eslint-config-prettier'
-  - eslint:recommended
+    - plugin:vue/recommended
+    - plugin:import/recommended
+    - plugin:import/typescript
+    - plugin:vuejs-accessibility/recommended
+    - plugin:@typescript-eslint/recommended
+    - '@vue/eslint-config-prettier'
+    - eslint:recommended
 parser: vue-eslint-parser
 parserOptions:
-  ecmaVersion: latest
-  parser: '@typescript-eslint/parser'
-  sourceType: module
-  createDefaultProgram: true
-  project:
-    - ./tsconfig.app.json
-    - ./tsconfig.node.json
-    - ./tsconfig.vitest.json
-  extraFileExtensions:
-      - .vue
+    ecmaVersion: latest
+    parser: '@typescript-eslint/parser'
+    sourceType: module
+    createDefaultProgram: true
+    ecmaFeatures:
+        jsx: true
+    project:
+        - ./tsconfig.app.json
+        - ./tsconfig.node.json
+        - ./tsconfig.vitest.json
+    extraFileExtensions:
+        - .vue
 plugins:
     - import
     - tsdoc
     - html
     - vue
 rules:
+    'indent': ['error', 'tab']
+    'no-tabs': [0]
     require-jsdoc: warn
     no-unused-vars: warn
+    '@typescript-eslint/no-explicit-any': 'off'
     '@typescript-eslint/array-type':
         - error
         - default: array # const lines: string[] = []; style
@@ -82,6 +88,12 @@ settings:
             - .vue
     import/resolver:
         typescript: true
+        'node':
+            extensions:
+                - .js
+                - .jsx
+                - .ts
+                - .tsx
         alias:
             map:
                 - ['@', './src']

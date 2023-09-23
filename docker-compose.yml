@@ -2,33 +2,34 @@ version: "3.9"
 
 services:
 
-  # front:
-  #   build:
-  #     context: ./front
-  #     target: frontend
-  #     dockerfile: ../docker/node/dev.Dockerfile
-  #   container_name: front
-  #   ports:
-  #     - 3000:3000
-  #   volumes:
-  #     - ./front:/home/node/app
-  #     - /home/node/app/node_modules
-  #     - /home/node/app/.pnpm-store
-  #   depends_on:
-  #     api:
-  #       condition: service_started
-  #     socket:
-  #       condition: service_started
-  #   environment:
-  #     NODE_ENV: ${NODE_ENV}
-  #     HOST: ${HOSTNAME}
-  #     API42_UID: ${API42_UID}
-  #     API42_SECRET: ${API42_SECRET}
-  #   command: sh -c "pnpm dev"
-  #   restart: always
+  front:
+    build:
+      context: ./front
+      target: frontend
+      dockerfile: ../docker/node/dev.Dockerfile
+    container_name: front
+    ports:
+      - 3000:3000
+    volumes:
+      - ./front:/home/node/app
+      - /home/node/app/node_modules
+      - /home/node/app/.pnpm-store
+    depends_on:
+      api:
+        condition: service_started
+      socket:
+        condition: service_started
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      HOST: ${HOSTNAME}
+      API42_UID: ${API42_UID}
+      API42_SECRET: ${API42_SECRET}
+    restart: always
+    command: sh -c "pnpm dev"
+    # command: sh -c "tail -f /dev/null"
 
   postgres:
-    image: postgres:15.2-alpine
+    image: postgres:16-alpine3.18
     container_name: postgres
     volumes:
         - pgdata:/var/lib/postgresql/data
@@ -51,11 +52,10 @@ services:
     restart: always
 
   redis:
-    image: redis:7.0-alpine
+    image: redis:7.2.1-alpine
     container_name: redis
     expose:
       - '6379'
-    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASS}
     volumes:
       - redisdata:/data
     healthcheck:
@@ -65,6 +65,7 @@ services:
       timeout: 2s
       retries: 21
     restart: always
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASS}
 
   # CONTAINER UNIQUEMENT DEV, NE PAS DEPLOY SUR LA PROD
   prisma:
@@ -99,7 +100,7 @@ services:
     - 4000:4000
     volumes:
       - ./socket:/home/node/app
-      - /home/node/app/node_modules
+      # - /home/node/app/node_modules
       - /home/node/app/.pnpm-store
     depends_on:
       api:
@@ -113,10 +114,12 @@ services:
       REDIS_URL: ${REDIS_URL}
       NODE_ENV: ${NODE_ENV}
       DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
       HOST: ${HOSTNAME}
       PORT: 4000
-    command: sh -c "pnpm db:pull && pnpm start:dev"
     restart: always
+    command: sh -c "pnpm db:pull && pnpm start:dev"
+    # command: sh -c "tail -f /dev/null"
 
   api:
     build:
@@ -133,6 +136,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -145,10 +150,12 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       API42_UID: ${API42_UID}
       API42_SECRET: ${API42_SECRET}
-    command: sh -c "pnpm db:migrate:dev && pnpm start:dev"
-      #   command: sh -c "pnpm start:dev"
-      #command: sh -c "npm install -g prisma@latest && pnpm db:migrate:dev && pnpm start:dev"
-    # command: sh -c "pnpm db:migrate:dev && tail -f /dev/null"
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PASS: ${REDIS_PASS}
+      REDIS_URL: ${REDIS_URL}
+    command: sh -c "pnpm db:deploy && pnpm start:dev"
+    # command: sh -c "tail -f /dev/null"
     restart: always
 
 volumes:

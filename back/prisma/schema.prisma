@@ -32,7 +32,7 @@ model Channel {
 }
 
 model ChannelUser {
-	id					Int					@id @default(autoincrement())
+	id					Int					@id(map: "channel_users_pk") @default(autoincrement())
 	channel_id			Int
 	user_id				Int
 	is_muted			DateTime?
@@ -44,7 +44,7 @@ model ChannelUser {
 	channel				Channel				@relation(fields: [channel_id], references: [id], onDelete: Cascade)
 	user				User				@relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-	@@unique([channel_id, user_id])
+	@@unique([channel_id, user_id], map: "channel_users_channel_id_user_id_uindex")
 	@@map("channel_users")
 }
 
@@ -57,6 +57,30 @@ model ChannelMessage {
 
 	@@map("channel_messages")
 }
+model Game {
+	id			Int	@id @default(autoincrement()) @unique
+	uid			String	@unique
+	is_private	Boolean	@default(false)
+	created_at	DateTime @default(now())
+	started_at	DateTime?
+	end_at		DateTime?
+	gamePlayer 	GamePlayer[]
+
+	@@map("games")
+}
+
+model GamePlayer {
+	player_id	Int
+	game_id		Int
+	is_win		Boolean?
+	is_spec		Boolean?
+	player		User	@relation(fields: [player_id], references: [id])
+	game		Game	@relation(fields: [game_id], references: [id], onDelete: Cascade)
+
+	@@id([player_id, game_id])
+	@@map("gamePlayers")
+}
+
 model User {
 	id				Int	@id @default(autoincrement())
 	login			String @unique
@@ -72,15 +96,16 @@ model User {
 
 	user			Friends[] @relation("user")
 	friends			Friends[] @relation("friends")
+	GamePlayer		GamePlayer[]
 
 	@@map("users")
 }
 
 model Friends {
-	user_id		Int
-	friend_id	Int
 	user		User	@relation("user", fields: [user_id], references: [id])
 	friends		User	@relation("friends", fields: [friend_id], references: [id])
+	user_id		Int	
+	friend_id	Int
 
 	@@id([user_id, friend_id])
 	@@map("friends")

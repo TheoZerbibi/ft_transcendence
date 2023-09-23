@@ -18,35 +18,38 @@ interface Channel {
 }
 
 async function main() {
-	await prisma.channel.create({
-		data: {
-			name: 'POISSON POISSON POISSON 🐟🐟🐟',
-		}
-	})
-	.then( async (channel: Channel) => {
-		const user = await prisma.user.create({
+	await prisma.channel
+		.create({
 			data: {
-				login: 'norminet',
-				display_name: 'Norminet',
-				email: 'norminet@student.42.fr',
-				avatar: 'https://i.redd.it/sky2ka084ns11.jpg',
-				channelUser: {
-					create: {
-						channel_id: channel.id,
-						is_owner: true,
-						is_admin: true,
-						channelMessage: {
-							create: {
-								content: 'I wan\'t some fish !',
-							}
-						}
-					}
-				}
+				name: 'POISSON POISSON POISSON 🐟🐟🐟',
 			},
-		}).catch(console.error);
-		console.log(user, channel);
-	})
-	.catch(console.error);
+		})
+		.then(async (channel: Channel) => {
+			const user = await prisma.user
+				.create({
+					data: {
+						login: 'norminet',
+						display_name: 'Norminet',
+						email: 'norminet@student.42.fr',
+						avatar: 'https://i.redd.it/sky2ka084ns11.jpg',
+						channelUser: {
+							create: {
+								channel_id: channel.id,
+								is_owner: true,
+								is_admin: true,
+								channelMessage: {
+									create: {
+										content: "I wan't some fish !",
+									},
+								},
+							},
+						},
+					},
+				})
+				.catch(console.error);
+			console.log(user, channel);
+		})
+		.catch(console.error);
 }
 
 main()
