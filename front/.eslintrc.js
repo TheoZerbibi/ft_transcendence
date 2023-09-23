@@ -8,6 +8,7 @@ module.exports = {
 		'plugin:import/recommended',
 		'plugin:import/typescript',
 		'plugin:vuejs-accessibility/recommended',
+		'plugin:@typescript-eslint/recommended',
 		'@vue/eslint-config-prettier',
 		'eslint:recommended',
 	],
@@ -22,7 +23,8 @@ module.exports = {
 	},
 	plugins: ['import', 'tsdoc', 'html', 'vue'],
 	rules: {
-		indent: ['error', 'tab'],
+		'indent': ['error', 'tab'],
+		'@typescript-eslint/no-explicit-any': 'off',
 		'no-tabs': [0],
 		'require-jsdoc': 'warn',
 		'no-unused-vars': 'warn',

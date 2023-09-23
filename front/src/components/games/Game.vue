@@ -1,18 +1,21 @@
 <template>
-	<Snackbar />
-	<div v-if="apiData">
-		<v-card color="#1d2028" class="mx-auto" max-width="500">
-			<v-card-title>
-				{{ apiData.uid }}
-			</v-card-title>
-			<v-card-text>
-				{{ apiData.created_at }}
-			</v-card-text>
-		</v-card>
+	<div>
+		<div v-if="apiData">
+			<v-card color="#1d2028" class="mx-auto" max-width="500">
+				<v-card-title>
+					{{ apiData.uid }}
+				</v-card-title>
+				<v-card-text>
+					{{ apiData.created_at }}
+				</v-card-text>
+			</v-card>
+		</div>
+		<Snackbar />
 	</div>
 </template>
 
 <script lang="ts">
+import { Socket } from 'dgram';
 import { useRoute } from 'vue-router';
 import { webSocketService } from '../../services/WebSocketService';
 import { useSnackbarStore } from '../../stores/snackbar';
@@ -30,16 +33,18 @@ export default {
 	},
 	data() {
 		return {
-			apiData: null,
-			socket: null,
-			gameUID: null,
+			apiData: null as any,
+			socket: null as Socket | null,
+			gameUID: null as string | null,
 			jwt_token:
-				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InN0cmluZyIsInN1YiI6MywiaWF0IjoxNjk1MzY3MzY1LCJleHAiOjE2OTUzNzgxNjV9.cYrw5Gj6DRX2yizOfXBVT68_G3tba2b4FCBkY4cDP2I',
+				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTU1MDAxODcsImV4cCI6MTY5NTUxMDk4N30.Ct0wg9kj-o7hgCJmnVknU4IU3i2SlcDX_VNMsr1TcjM' as string,
 		};
 	},
 	async beforeMount() {
 		const route = useRoute();
 		this.gameUID = route.params.uid;
+		if (!this.gameUID) return;
+
 		const requestOptions = {
 			method: 'POST',
 			headers: {

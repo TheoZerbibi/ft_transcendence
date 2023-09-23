@@ -31,6 +31,11 @@ const router = createRouter({
 			name: 'SnackbarExemple',
 			component: () => import('../components/exemples/SnackbarExemple.vue'),
 		},
+		{
+			path: '/exemples/websocket',
+			name: 'WebsocketExemple',
+			component: () => import('../components/exemples/WebsocketExemple.vue'),
+		},
 	],
 });
 

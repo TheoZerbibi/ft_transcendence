@@ -1,16 +1,18 @@
 <template>
-	<v-card class="d-flex align-center justify-center" min-height="100%" v-bind:style="{ backgroundColor: color }">
-		<v-btn
-			color="primary"
-			dark
-			absolute
-			top:style="{left: '50%', transform:'translateX(-50%)'}"
-			:click="checkExistingGame()"
-		>
-			Join Game
-		</v-btn>
-	</v-card>
-	<Snackbar />
+	<div>
+		<v-card class="d-flex align-center justify-center" min-height="100%" :style="{ backgroundColor: color }">
+			<v-btn
+				color="primary"
+				dark
+				absolute
+				top:style="{left: '50%', transform:'translateX(-50%)'}"
+				@click="checkExistingGame()"
+			>
+				Join Game
+			</v-btn>
+		</v-card>
+		<Snackbar />
+	</div>
 </template>
 
 <script lang="ts">
@@ -30,7 +32,7 @@ export default {
 		return {
 			color: '#2e2e2e',
 			jwt_token:
-				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InN0cmluZyIsInN1YiI6MywiaWF0IjoxNjk1MzY3MzY1LCJleHAiOjE2OTUzNzgxNjV9.cYrw5Gj6DRX2yizOfXBVT68_G3tba2b4FCBkY4cDP2I',
+				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTU1MDAxODcsImV4cCI6MTY5NTUxMDk4N30.Ct0wg9kj-o7hgCJmnVknU4IU3i2SlcDX_VNMsr1TcjM',
 		};
 	},
 	methods: {
