@@ -23,6 +23,11 @@ const snackbarStore = useSnackbarStore();
 export default {
 	name: 'Game',
 	components: { Snackbar },
+	beforeRouteLeave(to: any, from: any, next: any) {
+		if (this.socket.connected) this.socket.disconnect();
+		snackbarStore.hideSnackbar();
+		next();
+	},
 	data() {
 		return {
 			apiData: null,
@@ -74,11 +79,6 @@ export default {
 	},
 	mounted() {
 		console.log(this.apiData);
-	},
-	beforeRouteLeave(to: any, from: any, next: any) {
-		if (this.socket.connected) this.socket.disconnect();
-		snackbarStore.hideSnackbar();
-		next();
 	},
 };
 </script>

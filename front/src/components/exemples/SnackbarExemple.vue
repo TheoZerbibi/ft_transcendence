@@ -1,18 +1,3 @@
-<template>
-	<v-card class="d-flex align-center justify-center" min-height="100%" v-bind:style="{ backgroundColor: color }">
-		<v-btn
-			color="primary"
-			dark
-			absolute
-			top:style="{left: '50%', transform:'translateX(-50%)'}"
-			v-on:click="active()"
-		>
-			Snackbar
-		</v-btn>
-	</v-card>
-	<Snackbar />
-</template>
-
 <script>
 import { defineComponent } from 'vue';
 import Snackbar from '../utils/Snackbar.vue';
@@ -35,3 +20,12 @@ export default defineComponent({
 	},
 });
 </script>
+
+<template>
+	<v-card class="d-flex align-center justify-center" min-height="100%" :style="{ backgroundColor: color }">
+		<v-btn color="primary" dark absolute top:style="{left: '50%', transform:'translateX(-50%)'}" @:click="active()">
+			Snackbar
+		</v-btn>
+	</v-card>
+	<Snackbar />
+</template>

@@ -5,7 +5,7 @@
 			dark
 			absolute
 			top:style="{left: '50%', transform:'translateX(-50%)'}"
-			v-on:click="checkExistingGame()"
+			:click="checkExistingGame()"
 		>
 			Join Game
 		</v-btn>
@@ -22,6 +22,10 @@ const snackbarStore = useSnackbarStore();
 export default {
 	name: 'GameCreatorView',
 	components: { Snackbar },
+	beforeRouteLeave(to: any, from: any, next: any) {
+		snackbarStore.hideSnackbar();
+		next();
+	},
 	data() {
 		return {
 			color: '#2e2e2e',
@@ -74,10 +78,6 @@ export default {
 				console.error(error);
 			}
 		},
-	},
-	beforeRouteLeave(to: any, from: any, next: any) {
-		snackbarStore.hideSnackbar();
-		next();
 	},
 };
 </script>

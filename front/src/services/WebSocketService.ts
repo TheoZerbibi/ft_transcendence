@@ -1,5 +1,6 @@
 import { io, Socket } from 'socket.io-client';
 
+// eslint-disable-next-line no-undef
 const serverURL = `http://${HOST}:4000`;
 
 class WebSocketService {
