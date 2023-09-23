@@ -78,7 +78,7 @@ model GamePlayer {
 	game		Game	@relation(fields: [game_id], references: [id], onDelete: Cascade)
 
 	@@id([player_id, game_id])
-	@@map("gamePlayers")
+	@@map("game_players")
 }
 
 model User {

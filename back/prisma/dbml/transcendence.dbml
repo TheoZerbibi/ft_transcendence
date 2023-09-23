@@ -50,10 +50,10 @@ Table games {
   created_at DateTime [default: `now()`, not null]
   started_at DateTime
   end_at DateTime
-  gamePlayer gamePlayers [not null]
+  gamePlayer game_players [not null]
 }
 
-Table gamePlayers {
+Table game_players {
   player_id Int [not null]
   game_id Int [not null]
   is_win Boolean
@@ -79,7 +79,7 @@ Table users {
   channelUser channel_users [not null]
   user friends [not null]
   friends friends [not null]
-  GamePlayer gamePlayers [not null]
+  GamePlayer game_players [not null]
 }
 
 Table friends {
@@ -99,9 +99,9 @@ Ref: channel_users.user_id > users.id [delete: Cascade]
 
 Ref: channel_messages.channel_user_id > channel_users.id [delete: Cascade]
 
-Ref: gamePlayers.player_id > users.id
+Ref: game_players.player_id > users.id
 
-Ref: gamePlayers.game_id > games.id [delete: Cascade]
+Ref: game_players.game_id > games.id [delete: Cascade]
 
 Ref: friends.user_id > users.id
 
