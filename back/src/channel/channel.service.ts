@@ -1,5 +1,6 @@
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdateChannelDto } from './dto/update-channel.dto';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class ChannelService {
