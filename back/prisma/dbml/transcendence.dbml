@@ -10,36 +10,37 @@ Project "Transcendence" {
 Table channels {
   id Int [pk, increment]
   name String [not null]
-  password String
   public Boolean [not null, default: true]
+  password String
   created_at DateTime [default: `now()`, not null]
-  update_at DateTime [default: `now()`, not null]
+  updated_at DateTime [default: `now()`, not null]
   channelUser channel_users [not null]
 }
 
 Table channel_users {
-  user_id Int [not null]
+  id Int [pk, increment]
   channel_id Int [not null]
+  user_id Int [not null]
   is_muted DateTime
   is_owner Boolean [not null, default: false]
   is_admin Boolean [not null, default: false]
   is_ban Boolean [not null, default: false]
+  created_at DateTime [default: `now()`, not null]
   channelMessage channel_messages [not null]
-  user users [not null]
   channel channels [not null]
+  user users [not null]
 
   indexes {
-    (user_id, channel_id) [pk]
+    (channel_id, user_id) [unique]
   }
 }
 
 Table channel_messages {
   id Int [pk, increment]
-  user_id Int [not null]
-  channel_id Int [not null]
   content String [not null]
   created_at DateTime [default: `now()`, not null]
-  user channel_users [not null]
+  channel_user_id Int [not null]
+  channelUsers channel_users [not null]
 }
 
 Table users {
@@ -55,8 +56,8 @@ Table users {
   channelUser channel_users [not null]
 }
 
-Ref: channel_users.user_id > users.id [delete: Cascade]
-
 Ref: channel_users.channel_id > channels.id [delete: Cascade]
 
-Ref: channel_messages.(user_id, channel_id) > channel_users.(user_id, channel_id) [delete: Cascade]
+Ref: channel_users.user_id > users.id [delete: Cascade]
+
+Ref: channel_messages.channel_user_id > channel_users.id [delete: Cascade]
