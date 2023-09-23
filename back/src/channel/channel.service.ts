@@ -19,7 +19,8 @@ export class ChannelService {
 	// 					data : {
 	// 						channel_id: channel.id,
 	// 						user_id: userId,
-	// 						is_owner: true
+	// 						is_owner: true,
+	//						is_admin: true
 	// 					}
 	// 				})
 	// 				return channel;
