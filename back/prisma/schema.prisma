@@ -32,7 +32,7 @@ model Channel {
 }
 
 model ChannelUser {
-	id					Int					@id(map: "channel_users_pk") @default(autoincrement())
+	id					Int					@id @default(autoincrement())
 	channel_id			Int
 	user_id				Int
 	is_muted			DateTime?
@@ -44,7 +44,7 @@ model ChannelUser {
 	channel				Channel				@relation(fields: [channel_id], references: [id], onDelete: Cascade)
 	user				User				@relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-	@@unique([channel_id, user_id], map: "channel_users_channel_id_user_id_uindex")
+	@@unique([channel_id, user_id])
 	@@map("channel_users")
 }
 
@@ -69,5 +69,19 @@ model User {
 	last_login		DateTime @default(now())
 	channelUser		ChannelUser[]
 
+
+	user			Friends[] @relation("user")
+	friends			Friends[] @relation("friends")
+
 	@@map("users")
+}
+
+model Friends {
+	user		User	@relation("user", fields: [user_id], references: [id])
+	friends		User	@relation("friends", fields: [friend_id], references: [id])
+	user_id		Int	
+	friend_id	Int
+
+	@@id([user_id, friend_id])
+	@@map("friends")
 }

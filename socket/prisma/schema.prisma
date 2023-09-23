@@ -20,6 +20,19 @@ model users {
   channel_users channel_users[]
 }
 
+<<<<<<< HEAD
+=======
+model channels {
+  id            Int             @id @default(autoincrement())
+  name          String
+  public        Boolean         @default(true)
+  password      String?
+  created_at    DateTime        @default(now())
+  update_at     DateTime        @default(now())
+  channel_users channel_users[]
+}
+
+>>>>>>> 8d69780cc884219d5d873e1dc882667efcde88fe
 model channel_messages {
   id            Int           @id @default(autoincrement())
   user_id       Int
@@ -41,6 +54,7 @@ model channel_users {
   users            users              @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@id([user_id, channel_id])
+<<<<<<< HEAD
 }
 
 model channels {
@@ -51,4 +65,6 @@ model channels {
   created_at    DateTime        @default(now())
   update_at     DateTime        @default(now())
   channel_users channel_users[]
+=======
+>>>>>>> 8d69780cc884219d5d873e1dc882667efcde88fe
 }
