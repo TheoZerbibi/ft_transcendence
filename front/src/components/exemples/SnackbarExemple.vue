@@ -1,17 +1,13 @@
-<script>
+<script lang="ts">
 import { defineComponent } from 'vue';
-import Snackbar from '../utils/Snackbar.vue';
+
 import { useSnackbarStore } from '../../stores/snackbar';
+import Snackbar from '../utils/Snackbar.vue';
 
 const snackbarStore = useSnackbarStore();
 
 export default defineComponent({
 	components: { Snackbar },
-	data() {
-		return {
-			color: '#2e2e2e',
-		};
-	},
 	methods: {
 		active: function () {
 			if (snackbarStore.snackbar == false) snackbarStore.showSnackbar('Hello World!', 5000, 'purple');
@@ -22,10 +18,10 @@ export default defineComponent({
 </script>
 
 <template>
-	<v-card class="d-flex align-center justify-center" min-height="100%" :style="{ backgroundColor: color }">
+	<v-card class="d-flex align-center justify-center" min-height="100%" color="transparent">
 		<v-btn color="primary" dark absolute top:style="{left: '50%', transform:'translateX(-50%)'}" @:click="active()">
 			Snackbar
 		</v-btn>
+		<Snackbar />
 	</v-card>
-	<Snackbar />
 </template>

@@ -8,7 +8,7 @@
 		"build": "vite build",
 		"test:unit": "vitest",
 		"test:e2e": "start-server-and-test preview http://localhost:4173 'cypress run --e2e'",
-		"lint": "eslint src/ --fix --cache --cache-location ./node_modules/.vite/vite-plugin-eslint --no-error-on-unmatched-pattern && prettier . -w -u",
+		"lint": "eslint src/ --cache --cache-location ./node_modules/.vite/vite-plugin-eslint --no-error-on-unmatched-pattern && prettier . -w -u",
 		"lint:style": "stylelint \"./**/*.{css,sass,scss,htm,html,vue}\" --cache-location ./node_modules/.vite/vite-plugin-stylelint && prettier \"./**/*.{css,sass,scss,htm,html,vue}\" -w -u",
 		"build-only": "vite build",
 		"dev": "vite --port 3000 --host",
