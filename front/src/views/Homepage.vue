@@ -1,5 +1,5 @@
 <template>
-	<v-container class="backgroundWallpaper">
+	<v-card class="backgroundWallpaper">
 		<v-col class="Title">
 			<h1> Welcome to ft_transcendence STING team </h1>
 			<h4>Starring</h4>
@@ -23,7 +23,7 @@
 			    </v-col>
 			</v-row>
 		</v-col>
-	</v-container>
+	</v-card>
 </template>
 
 <script lang='ts'>
