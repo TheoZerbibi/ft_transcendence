@@ -24,6 +24,7 @@ module.exports = {
 	plugins: ['import', 'tsdoc', 'html', 'vue'],
 	rules: {
 		indent: ['error', 'tab'],
+		'import/order': 'off',
 		'@typescript-eslint/no-explicit-any': 'off',
 		'no-tabs': [0],
 		'require-jsdoc': 'warn',

@@ -5,7 +5,6 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
-	private static users: Map<number, string> = new Map();
 
 	constructor(
 		private prisma: PrismaService,
@@ -27,32 +26,9 @@ export class AuthService {
 			throw new ForbiddenException('Invalid token');
 		}
 	}
-	private getToken(userId: number) {
-		return AuthService.users.get(userId);
-	}
-
-	private tokenExists(userId: number) {
-		return AuthService.users.has(userId);
-	}
-
-	async saveToken(token: { access_token: string }) {
-		const decodedToken = this.jwt.decode(token.access_token);
-		if (!decodedToken) return;
-		console.log(decodedToken);
-
-		const userId = decodedToken['sub'];
-		if (this.tokenExists(userId)) {
-			const enregistredToken = this.getToken(userId);
-
-			if (enregistredToken === token.access_token) return;
-			console.log(`Replace existing JWT Token`);
-		}
-		AuthService.users.set(userId, token.access_token);
-	}
 
 	verifyToken(token: { access_token: string }): number {
 		try {
-			console.log('JWT Token registred : ', AuthService.users.size);
 			const decodedToken = this.jwt.decode(token.access_token);
 			if (!decodedToken) throw new ForbiddenException('Invalid token');
 			console.log(decodedToken);

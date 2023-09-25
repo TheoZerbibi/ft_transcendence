@@ -4,13 +4,17 @@ import { computed, defineComponent } from 'vue';
 import { useSocketStore } from '../../stores/websocket';
 
 export default defineComponent({
+	beforeRouteLeave(to: any, from: any, next: any) {
+		if (this.isConnected) this.disconnect();
+		next();
+	},
 	setup() {
 		const webSocketStore = useSocketStore();
 
 		const isConnected = computed(() => webSocketStore.isConnected);
 		const socket = computed(() => webSocketStore.getSocket);
 		const JWT =
-			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTU2MzEyMDgsImV4cCI6MTY5NTY0MjAwOH0.6109jAWMRor5ffccaVL34Eov5ZRrhlhSOemHHdSZHXE';
+			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTU2NDA5MTYsImV4cCI6MTY5NTY1MTcxNn0.o2826Xn47KFYR_4gv9ULHS0FomXs0ZVXtBJ0fJhQH3o';
 
 		const connect = async () => {
 			await webSocketStore.connect(JWT);

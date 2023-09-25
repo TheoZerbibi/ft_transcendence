@@ -9,7 +9,6 @@ export const useSocketStore = defineStore('webSocket', {
 	state: () => ({
 		socket: null as Socket | null,
 	}),
-
 	getters: {
 		isConnected: (state) => {
 			if (!state.socket) return false;
@@ -18,7 +17,6 @@ export const useSocketStore = defineStore('webSocket', {
 		},
 		getSocket: (state) => state.socket,
 	},
-
 	actions: {
 		async connect(JWT: string): Promise<Socket> {
 			if (!this.isConnected) {

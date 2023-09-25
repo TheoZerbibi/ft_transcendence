@@ -4,7 +4,6 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { RedisService } from 'src/redis/redis.service';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +11,6 @@ export class AuthService {
 		private prisma: PrismaService,
 		private jwt: JwtService,
 		private config: ConfigService,
-		private readonly redisService: RedisService,
 	) {}
 
 	async signup(dto: AuthDto) {
@@ -48,7 +46,6 @@ export class AuthService {
 		const payload = { login: user.login, sub: user.id };
 		const secret = this.config.get<string>('JWT_SECRET');
 		const token = await this.jwt.signAsync(payload, { expiresIn: '3h', secret: secret });
-		await this.redisService.sendJWT(token);
 		return {
 			access_token: token,
 		};

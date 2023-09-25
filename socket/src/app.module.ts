@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { GatewayModule } from './gateway/gateway.module';
+import { GameModule } from './game/game.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 
@@ -9,7 +9,7 @@ import { AuthModule } from './auth/auth.module';
 		ConfigModule.forRoot({
 			isGlobal: true,
 		}),
-		GatewayModule,
+		GameModule,
 		PrismaModule,
 		AuthModule,
 	],
