@@ -1,4 +1,4 @@
-FROM node:18.14-alpine AS common
+FROM node:18.18-alpine AS common
 
 WORKDIR /home/node/app
 
