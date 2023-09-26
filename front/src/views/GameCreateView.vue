@@ -30,7 +30,7 @@ export default {
 		return {
 			color: '#2e2e2e',
 			jwt_token:
-				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6Im5vcm1pbmV0Iiwic3ViIjoyLCJpYXQiOjE2OTU2NTQ3OTcsImV4cCI6MTY5NTY2NTU5N30.5-uXPhWIrV_1tUn8vCDOjs75FWTNqz2G7bd8slcgYq8',
+				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTU3MzU4NjcsImV4cCI6MTY5NTc0NjY2N30.HnUQLo4YLbs2zKzsN_yfdhPWF3Jn5s4CwSxP5vxkYmw',
 		};
 	},
 	methods: {

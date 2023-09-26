@@ -2,10 +2,10 @@
 	<v-container>
 		<div v-if="apiData">
 			<v-card color="#1d2028" class="mx-auto" max-width="500">
-				<v-card-title class="d-flex align-center justify-center">
+				<v-card-title class="d-flex align-center justify-center" :style="{ backgroundColor: '#191b22' }">
 					<p>Game info</p>
 				</v-card-title>
-				<v-card-text>
+				<v-card-text class="px-5">
 					<span>GameUID : </span>
 					<span class="font-weight-bold">
 						{{ apiData.uid }}
@@ -73,7 +73,7 @@ export default {
 			apiData: null as any,
 			gameUID: null as string | null,
 			jwt_token:
-				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6Im5vcm1pbmV0Iiwic3ViIjoyLCJpYXQiOjE2OTU2NTQ3OTcsImV4cCI6MTY5NTY2NTU5N30.5-uXPhWIrV_1tUn8vCDOjs75FWTNqz2G7bd8slcgYq8' as string,
+				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTU3MzU4NjcsImV4cCI6MTY5NTc0NjY2N30.HnUQLo4YLbs2zKzsN_yfdhPWF3Jn5s4CwSxP5vxkYmw' as string,
 		};
 	},
 	beforeUnmount() {

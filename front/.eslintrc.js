@@ -18,8 +18,9 @@ module.exports = {
 		parser: '@typescript-eslint/parser',
 		sourceType: 'module',
 		createDefaultProgram: true,
-		project: ['./tsconfig.app.json', './tsconfig.node.json', './tsconfig.vitest.json'],
+		project: ['./tsconfig.app.json', './tsconfig.node.json', './tsconfig.vitest.json', './volar.config.js'],
 		extraFileExtensions: ['.vue'],
+		tsconfigRootDir: __dirname,
 	},
 	plugins: ['import', 'tsdoc', 'html', 'vue'],
 	rules: {

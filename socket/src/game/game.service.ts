@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
-import { GameJoinDto } from "./dto/game-join.dto";
-import { Socket } from "socket.io";
+import { Injectable } from '@nestjs/common';
+import { GameJoinDto } from './dto/game-join.dto';
+import { Socket } from 'socket.io';
 
 @Injectable()
 export class GameService {

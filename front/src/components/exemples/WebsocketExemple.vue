@@ -14,7 +14,7 @@ export default defineComponent({
 		const isConnected = computed(() => webSocketStore.isConnected);
 		const socket = computed(() => webSocketStore.getSocket);
 		const JWT =
-			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTU2NDA5MTYsImV4cCI6MTY5NTY1MTcxNn0.o2826Xn47KFYR_4gv9ULHS0FomXs0ZVXtBJ0fJhQH3o';
+			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTU3MjQ5MjcsImV4cCI6MTY5NTczNTcyN30.F7RrnKLovxoLqchNPlQOb4ARHBxfKGhoA_Ewoc0CRNs';
 
 		const connect = async () => {
 			await webSocketStore.connect(JWT);
