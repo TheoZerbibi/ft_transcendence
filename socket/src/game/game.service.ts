@@ -19,9 +19,6 @@ export class GameService {
 	}
 
 	public isUserWaiting(gameUID: string, userID: number): GameJoinDto | null {
-		console.log(this.waitingConnections);
-		console.log(userID);
-		console.log(gameUID);
 		if (!this.waitingConnections.has(userID)) return null;
 		const wainting = this.waitingConnections.get(userID);
 		if (wainting.gameUID !== gameUID) return null;
@@ -58,13 +55,32 @@ export class GameService {
 			isSpec: isSpec,
 		};
 		game.addUser(gameUser);
-		const gameUser2: IUser = {
-			user: { id: 2, login: 'norminet', displayName: 'Norminet', avatar: 'null' },
-			socketID: 'null',
-			isSpec: true,
-		};
-		if (game.userIsInGame(2)) return true;
-		game.addUser(gameUser2);
 		return true;
+	}
+
+	public removeUserFromGame(client: Socket): void {
+		console.log('removeUserFromGame');
+		const user: users = this.authService.getAuthentifiedUser(client.id);
+		if (!user) return;
+		console.log('user : ', user);
+		const game: IGame = this.getGameFromUserID(user.id);
+		if (!game) return;
+		console.log('game : ', game);
+		const gameUser = game.getUser(user.id);
+		if (!gameUser) return;
+		game.removeUser(gameUser);
+
+		if (game.getUsersInGame.length === 0) {
+			game.endGame();
+		}
+	}
+
+	public getGameFromUserID(userID: number): IGame | undefined {
+		for (const game of this.games.values()) {
+			if (game.userIsInGame(userID) && !game.isEnded() && !game.userIsSpectator(userID)) {
+				return game;
+			}
+		}
+		return undefined;
 	}
 }

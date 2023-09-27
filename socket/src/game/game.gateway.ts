@@ -11,6 +11,8 @@ import { AuthService } from 'src/auth/auth.service';
 import { GameJoinDto } from './dto/game-join.dto';
 import { GameService } from './game.service';
 import { IGame } from './impl/interfaces/IGame';
+import { IUser } from './impl/interfaces/IUser';
+import { uniqueNamesGenerator, names } from 'unique-names-generator';
 
 @WebSocketGateway({
 	cors: {
@@ -31,44 +33,68 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		this.handleRedisMessage(client, data);
 	}
 
+	@SubscribeMessage('session-join-test')
+	handleSessionJoinTest(client: Socket, game: GameJoinDto) {
+		const gameUID: string = game.gameUID;
+		const randomName = uniqueNamesGenerator({
+			dictionaries: [names],
+			length: 1,
+		});
+		let id = 1;
+
+		const gameS: IGame = this.gameService.getGame(gameUID);
+		for (; gameS.userIsInGame(id); id++);
+
+		const gameUser: IUser = {
+			user: {
+				id: id,
+				login: randomName,
+				displayName: randomName.charAt(0).toUpperCase() + randomName.slice(1),
+				avatar: 'null',
+			},
+			socketID: 'null',
+			isSpec: true,
+		};
+		gameS.addUser(gameUser);
+		this.server.to(gameUID).emit('session-info', gameS.getAllUsersInGame());
+	}
+
 	@SubscribeMessage('session-join')
 	handleSessionJoin(client: Socket, game: GameJoinDto) {
 		const gameUID: string = game.gameUID;
 		const userID: number = game.userID;
-		this.logger.log(`Client WebSocket ${client.id} demande à rejoindre la session : ${gameUID}`);
-		const wainting: GameJoinDto = this.gameService.isUserWaiting(gameUID, userID);
-		if (!wainting) {
+		this.logger.debug(`Client WebSocket ${client.id} demande à rejoindre la session : ${gameUID}`);
+		const waiting: GameJoinDto = this.gameService.isUserWaiting(gameUID, userID);
+		if (!waiting) {
 			client.emit('game_error', 'Error during session join');
-			console.log('Error during session join');
 			client.disconnect();
 			return;
 		}
 		if (this.gameService.gameExists(gameUID)) {
 			const game: IGame = this.gameService.getGame(gameUID);
-			if (this.gameService.addUserToGame(game, client, wainting.isSpec)) {
+			if (game.isEnded()) {
+				client.emit('game_end', 'Game is ended');
+				client.disconnect();
+				return;
+			}
+			if (this.gameService.addUserToGame(game, client, waiting.isSpec)) {
 				client.join(gameUID);
-				console.log('session-info', game.getAllUserInGame());
-				this.server.to(gameUID).emit('session-info', game.getAllUserInGame());
-				if (!game.isInProgress() && game.getUserInGame().length === 2) game.startGame();
-				console.log(game);
+				this.server.to(gameUID).emit('session-info', game.getAllUsersInGame());
+				if (!game.isInProgress() && game.getUsersInGame().length === 2) game.startGame();
 			} else client.disconnect();
 		} else {
 			const game: IGame = this.gameService.createGame(gameUID);
-			if (this.gameService.addUserToGame(game, client, wainting.isSpec)) {
+			if (this.gameService.addUserToGame(game, client, waiting.isSpec)) {
 				client.join(gameUID);
-				console.log('session-info', game.getAllUserInGame());
-				this.server.to(gameUID).emit('session-info', game.getAllUserInGame());
-				if (!game.isInProgress() && game.getUserInGame().length === 2) game.startGame();
-				console.log(game);
+				this.server.to(gameUID).emit('session-info', game.getAllUsersInGame());
 			} else client.disconnect();
 		}
 	}
 
 	handleRedisMessage(channel: string, message: any): void {
 		const data = JSON.parse(message);
-		console.log('userID : ', data.userID);
 		this.gameService.addWaitingConnection(data);
-		return this.logger.log('redis-message', channel, data);
+		return this.logger.debug(`New redis-message, user ${data.userID} is waiting for game ${data.gameUID}`);
 	}
 
 	public afterInit() {
@@ -76,8 +102,9 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	}
 
 	public handleDisconnect(client: Socket): void {
+		this.gameService.removeUserFromGame(client);
 		this.authService.removeUser(client.id);
-		return this.logger.log(`Client disconnected: ${client.id}`);
+		return this.logger.debug(`Client disconnected: ${client.id}`);
 	}
 
 	public async handleConnection(client: Socket): Promise<void> {
@@ -86,7 +113,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
 			this.authService.verifyToken({ access_token: token });
 			await this.authService.addUser(client.id, { access_token: token });
-			return this.logger.log(`Client connected: ${client.id}`);
+			return this.logger.debug(`Client connected: ${client.id}`);
 		} catch (e) {
 			client.emit('error', 'Invalid token');
 			client.disconnect();

@@ -1,15 +1,25 @@
-import { users } from "@prisma/client"
-import { IUser } from "./IUser";
+import { IUser } from './IUser';
 
 export interface IGame {
 	inProgress: boolean;
+	isEnd: boolean;
 
 	isInProgress: () => boolean;
+	isEnded: () => boolean;
+
 	getGameUID: () => string;
+
 	addUser: (user: IUser) => void;
-	getAllUserInGame: () => Array<IUser>;
-	getUserInGame: () => Array<IUser>;
-	getSpectatorInGame: () => Array<IUser>;
+	removeUser: (user: IUser) => void;
+
+	getUser: (userID: number) => IUser | undefined;
+	getAllUsersInGame: () => Array<IUser>;
+	getUsersInGame: () => Array<IUser>;
+	getSpectatorsInGame: () => Array<IUser>;
+
 	userIsInGame: (userId: number) => boolean;
+	userIsSpectator: (userId: number) => boolean;
+
 	startGame: () => void;
+	endGame: () => void;
 }

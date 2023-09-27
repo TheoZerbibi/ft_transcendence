@@ -24,30 +24,35 @@
 					</span>
 				</v-card-text>
 			</v-card>
-			<v-card v-if="players.length > 0" color="#272b35" class="mx-auto" max-width="500">
+
+			<v-card v-if="players.length > 0" color="#272b35" class="mx-auto mt-3" max-width="500">
 				<v-card-title class="d-flex align-center justify-center" :style="{ backgroundColor: '#21242d' }">
 					<span>Players in Game</span>
 				</v-card-title>
-				<v-card-text class="px-5" :style="{ backgroundColor : 'transparent' }">
-					<v-list dense :style="{ backgroundColor : 'transparent', color: 'white' }">
+				<v-card-text class="px-5" :style="{ backgroundColor: 'transparent' }">
+					<v-list dense :style="{ backgroundColor: 'transparent', color: 'white' }">
 						<v-list-item v-for="player in players" :key="player.id">
-							<v-list-item-content>
-								<v-list-item-title>
-									<span>
-										{{ player.id }} - {{ player.displayName }} :
-										<span
-											:style="{ color: `${player.isSpec ? '#00E676' : '#D50000'}` }"
-											class="font-weight-bold"
-										>
-											Spectator
-										</span>
-									</span>
-								</v-list-item-title>
-							</v-list-item-content>
+							{{ player.id }} - {{ player.displayName }} :
+							<span
+								:style="{ color: `${player.isSpec ? '#00E676' : '#D50000'}` }"
+								class="font-weight-bold"
+							>
+								Spectator
+							</span>
 						</v-list-item>
 					</v-list>
 				</v-card-text>
 			</v-card>
+			<v-btn
+				color="primary"
+				dark
+				absolute
+				class="d-flex mx-auto align-center justify-center mt-3"
+				top:style="{left: '50%', transform:'translateX(-50%)'}"
+				@click="test()"
+			>
+				Connect FakeUser
+			</v-btn>
 		</div>
 		<Snackbar />
 	</v-container>
@@ -71,7 +76,6 @@ export default {
 
 		const isConnected = computed(() => webSocketStore.isConnected);
 		const socket = computed(() => webSocketStore.getSocket);
-		let users: any;
 
 		const connect = async (JWT: string) => {
 			await webSocketStore.connect(JWT);
@@ -84,12 +88,6 @@ export default {
 		const socketListen = () => {
 			console.log('socket : ', socket.value);
 			if (socket.value) {
-				// socket.value.on('session-info', (data) => {
-				// 	console.log('Données reçues du canal session-info :', data);
-				// 	// users = data[0].user;
-				// 	users = "hello";
-				// 	console.log('users : ', users);
-				// });
 				socket.value.on('game_error', (data) => {
 					disconnect();
 					snackbarStore.showSnackbar(data, 3000, 'red');
@@ -112,8 +110,13 @@ export default {
 			players: [] as any[],
 		};
 	},
-	beforeUnmount() {
-		if (this.isConnected) this.disconnect();
+	async beforeUnmount() {
+		if (this.isConnected) {
+			await this.socket.emit('session-leave', {
+				gameUID: this.gameUID,
+			});
+			this.disconnect();
+		}
 		if (snackbarStore.snackbar) snackbarStore.hideSnackbar();
 	},
 	async beforeMount() {
@@ -146,13 +149,19 @@ export default {
 						console.log('connected');
 						this.socketListen();
 						this.socket.on('session-info', (data: any) => {
+							this.players = [];
 							console.log('Données reçues du canal session-info :', data);
 							for (let i = 0; i < data.length; i++) {
 								data[i].user.isSpec = data[i].isSpec;
 								if (data[i].user) this.players.push(data[i].user);
 								console.log(data[i].user);
 							}
-							console.log('users : ', this.players);
+						});
+						this.socket.on('game_end', (data: any) => {
+							console.log('game_end');
+							this.disconnect();
+							snackbarStore.showSnackbar(data, 3000, 'primary');
+							console.log('Données reçues du canal game_end :', data);
 						});
 						this.socket.emit('session-join', {
 							gameUID: this.gameUID,
@@ -172,6 +181,16 @@ export default {
 			.catch((error) => {
 				console.error(error);
 			});
+	},
+	methods: {
+		test() {
+			console.log(this.isConnected);
+			if (this.isConnected) {
+				this.socket.emit('session-join-test', {
+					gameUID: this.gameUID,
+				});
+			}
+		},
 	},
 };
 </script>
