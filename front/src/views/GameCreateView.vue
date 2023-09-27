@@ -29,8 +29,6 @@ export default {
 	data() {
 		return {
 			color: '#2e2e2e',
-			jwt_token:
-				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTU3MzU4NjcsImV4cCI6MTY5NTc0NjY2N30.HnUQLo4YLbs2zKzsN_yfdhPWF3Jn5s4CwSxP5vxkYmw',
 		};
 	},
 	methods: {
@@ -39,7 +37,7 @@ export default {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `Bearer ${this.jwt_token}`,
+					Authorization: `Bearer ${JWT}`,
 					'Access-Control-Allow-Origin': '*',
 				},
 			};
@@ -58,7 +56,7 @@ export default {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `Bearer ${this.jwt_token}`,
+					Authorization: `Bearer ${JWT}`,
 					'Access-Control-Allow-Origin': '*',
 				},
 			};

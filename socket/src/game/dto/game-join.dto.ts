@@ -1,13 +1,18 @@
-import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber, IsBoolean } from 'class-validator';
 
 export class GameJoinDto {
 	@IsString()
 	@IsNotEmpty()
 	// eslint-disable-next-line
-	uid: string;
+	gameUID: string;
 
 	@IsNumber()
 	@IsNotEmpty()
 	// eslint-disable-next-line
-	userID: string;
+	userID: number;
+
+	@IsBoolean()
+	@IsNotEmpty()
+	// eslint-disable-next-line
+	isSpec: boolean;
 }

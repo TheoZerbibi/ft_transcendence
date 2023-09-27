@@ -1,69 +1,70 @@
 import { Injectable } from '@nestjs/common';
 import { GameJoinDto } from './dto/game-join.dto';
+import { Game } from './impl/Game';
+import { IGame } from './impl/interfaces/IGame';
+import { users } from '@prisma/client';
+import { IUser } from './impl/interfaces/IUser';
 import { Socket } from 'socket.io';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class GameService {
-	private games: Map<string, any> = new Map<string, any>();
-	private clients: Map<Socket, string> = new Map<Socket, string>();
+	private waitingConnections: Map<number, GameJoinDto> = new Map<number, GameJoinDto>();
+	private games: Map<string, Game> = new Map<string, Game>();
 
-	public joinGame(client: Socket, game: GameJoinDto): string | undefined {
-		const gameUID = game.uid;
-		const userID = game.userID;
-		const gameInstance = this.games.get(gameUID);
-		if (gameInstance === undefined) {
-			return undefined;
-		}
-		const player = gameInstance.players.get(userID);
-		if (player === undefined) {
-			return undefined;
-		}
-		return player.uid;
+	constructor(private authService: AuthService) {}
+
+	public addWaitingConnection(joinUser: GameJoinDto) {
+		this.waitingConnections.set(joinUser.userID, joinUser);
 	}
 
-	public createGame(gameUID: string): string | undefined {
-		const gameInstance = this.games.get(gameUID);
-		if (gameInstance === undefined) {
-			this.games.set(gameUID, {
-				players: new Map<string, any>(),
-			});
-			return gameUID;
-		}
-		return undefined;
+	public isUserWaiting(gameUID: string, userID: number): GameJoinDto | null {
+		console.log(this.waitingConnections);
+		console.log(userID);
+		console.log(gameUID);
+		if (!this.waitingConnections.has(userID)) return null;
+		const wainting = this.waitingConnections.get(userID);
+		if (wainting.gameUID !== gameUID) return null;
+		return wainting;
 	}
 
-	public getGameInfo(gameUID: string): any | undefined {
-		const gameInstance = this.games.get(gameUID);
-		if (gameInstance === undefined) {
-			return undefined;
-		}
-		return gameInstance;
+	public gameExists(gameUID: string): boolean {
+		return this.games.has(gameUID);
 	}
 
-	public gameExist(gameUID: string): boolean {
-		const gameInstance = this.games.get(gameUID);
-		if (gameInstance === undefined) return false;
-		return true;
+	public getGame(gameUID: string): IGame {
+		return this.games.get(gameUID);
 	}
 
-	public removePlayer(client: Socket): void {
-		const gameUID = this.clients.get(client);
-		if (gameUID === undefined) return;
-		const gameInstance = this.games.get(gameUID);
-		if (gameInstance === undefined) return;
-		const playerUID = this.clients.get(client);
-		if (playerUID === undefined) return;
-		gameInstance.players.delete(playerUID);
-		this.clients.delete(client);
-		console.log(client);
+	public createGame(gameUID: string): IGame {
+		const game = new Game(gameUID);
+		this.games.set(gameUID, game);
+		return game;
 	}
 
-	public deleteGame(gameUID: string): boolean {
-		const gameInstance = this.games.get(gameUID);
-		if (gameInstance === undefined) {
+	public addUserToGame(game: IGame, client: Socket, isSpec: boolean): boolean {
+		const user: users = this.authService.getAuthentifiedUser(client.id);
+		if (!user) {
+			client.emit('game_error', 'Unverified user');
 			return false;
 		}
-		this.games.delete(gameUID);
+		if (game.userIsInGame(user.id)) {
+			// client.emit('game_error', 'Already in Game session');
+			return true;
+		}
+		const gameUser: IUser = {
+			user: { id: user.id, login: user.login, displayName: user.display_name, avatar: user.avatar },
+			socketID: client.id,
+			isSpec: isSpec,
+		};
+		game.addUser(gameUser);
+		const gameUser2: IUser = {
+			user: { id: 2, login: 'norminet', displayName: 'Norminet', avatar: 'null' },
+			socketID: 'null',
+			isSpec: true,
+		};
+		if (game.userIsInGame(2)) return true;
+		game.addUser(gameUser2);
 		return true;
 	}
 }

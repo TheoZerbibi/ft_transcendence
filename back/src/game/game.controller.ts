@@ -42,7 +42,7 @@ export class GameController {
 	async joinGame(@GetUser() user: User, @Param('uuid') gameUUID: string) {
 		const response = await this.gameService.joinGame(user, gameUUID);
 		if (response) {
-			await this.redisService.connectClientToSocket(gameUUID, user.id);
+			await this.redisService.connectClientToSocket(gameUUID, user.id, response.is_spec);
 			return response;
 		}
 		return { error: 'Game not found' };

@@ -91,9 +91,7 @@ export class GameService {
 		user: User,
 		spec: boolean = false,
 	): Promise<GamePlayerDto | undefined> {
-		console.log('createGamePlayer');
 		try {
-			console.log(game);
 			const gamePlayer: GamePlayerDto = await this.prisma.gamePlayer.create({
 				data: {
 					player_id: user.id,
@@ -151,7 +149,6 @@ export class GameService {
 	async createNewGame(): Promise<GameDto> {
 		try {
 			const game: GameDto = await this.createGame(false);
-			console.log(game);
 			return game;
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -161,7 +158,7 @@ export class GameService {
 		}
 	}
 
-	async joinGame(user: User, uid: string): Promise<GameDto> {
+	async joinGame(user: User, uid: string): Promise<any> {
 		try {
 			let gamePlayer;
 			const game: GameDto = await this.getGame(uid as UUID);
@@ -177,7 +174,6 @@ export class GameService {
 			if (playersInGame.length >= 2) gamePlayer = await this.createGamePlayer(game, user, true);
 			else {
 				if (gameHistory.length > 0) {
-					console.log('Player : ', gameHistory);
 					for (const games of gameHistory) {
 						if (games.isWin === false || games.game.endAt === null)
 							gamePlayer = await this.createGamePlayer(game, user, true);
