@@ -3,7 +3,6 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { users } from '@prisma/client';
-import { setTimeout } from 'timers/promises';
 
 @Injectable()
 export class AuthService {
@@ -12,9 +11,6 @@ export class AuthService {
 		private jwt: JwtService,
 		private config: ConfigService,
 	) {}
-
-	private static authentifiedUsers: Map<string, users> = new Map<string, users>();
-
 	public async getUser(token: string): Promise<users | undefined> {
 		try {
 			const userId = this.verifyToken({ access_token: token });
@@ -29,22 +25,6 @@ export class AuthService {
 			console.log(e);
 			throw new ForbiddenException('Invalid token');
 		}
-	}
-
-	public getAuthentifiedUser(socketID: string): users {
-		return AuthService.authentifiedUsers.get(socketID);
-	}
-
-	removeUser(socketID: string): void {
-		AuthService.authentifiedUsers.delete(socketID);
-	}
-
-	async addUser(socketID, token: { access_token: string }) {
-		if (AuthService.authentifiedUsers.has(socketID)) return;
-		const user: users = await this.getUser(token.access_token);
-		if (!user) return;
-		AuthService.authentifiedUsers.set(socketID, user);
-		await setTimeout(2000);
 	}
 
 	verifyToken(token: { access_token: string }): number {

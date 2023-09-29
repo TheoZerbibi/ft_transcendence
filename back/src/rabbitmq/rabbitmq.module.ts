@@ -1,6 +1,6 @@
-import { Global, Module } from "@nestjs/common";
-import { RabbitmqService } from "./rabbitmq.service";
-import { ClientsModule, Transport } from "@nestjs/microservices";
+import { Global, Module } from '@nestjs/common';
+import { RabbitmqService } from './rabbitmq.service';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Global()
 @Module({

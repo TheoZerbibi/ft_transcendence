@@ -39,12 +39,7 @@ export class GameService {
 		return game;
 	}
 
-	public addUserToGame(game: IGame, client: Socket, isSpec: boolean): boolean {
-		const user: users = this.authService.getAuthentifiedUser(client.id);
-		if (!user) {
-			client.emit('game_error', 'Unverified user');
-			return false;
-		}
+	public addUserToGame(game: IGame, client: Socket, user: users, isSpec: boolean): boolean {
 		if (game.userIsInGame(user.id)) {
 			// client.emit('game_error', 'Already in Game session');
 			return true;
@@ -58,9 +53,9 @@ export class GameService {
 		return true;
 	}
 
-	public removeUserFromGame(client: Socket): void {
+	public removeUserFromGame(client: Socket | any): void {
 		console.log('removeUserFromGame');
-		const user: users = this.authService.getAuthentifiedUser(client.id);
+		const user: users = client.handshake.user;
 		if (!user) return;
 		console.log('user : ', user);
 		const game: IGame = this.getGameFromUserID(user.id);

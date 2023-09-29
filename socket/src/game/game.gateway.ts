@@ -4,6 +4,8 @@ import {
 	WebSocketServer,
 	OnGatewayConnection,
 	OnGatewayDisconnect,
+	ConnectedSocket,
+	MessageBody,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { Logger, UseGuards } from '@nestjs/common';
@@ -14,14 +16,16 @@ import { IGame } from './impl/interfaces/IGame';
 import { IUser } from './impl/interfaces/IUser';
 import { uniqueNamesGenerator, names } from 'unique-names-generator';
 import { JwtGuard } from 'src/auth/guard';
+import { users } from '@prisma/client';
 
 @WebSocketGateway({
 	cors: {
 		origin: '*',
+		credentials: true,
 	},
 })
 export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
-	private logger: Logger = new Logger('TestGateway');
+	private logger: Logger = new Logger('GameGateway');
 
 	constructor(
 		private authService: AuthService,
@@ -35,7 +39,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	}
 
 	@SubscribeMessage('session-join-test')
-	handleSessionJoinTest(client: Socket, game: GameJoinDto) {
+	handleSessionJoinTest(@MessageBody() game: GameJoinDto) {
 		const gameUID: string = game.gameUID;
 		const randomName = uniqueNamesGenerator({
 			dictionaries: [names],
@@ -60,12 +64,19 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		this.server.to(gameUID).emit('session-info', gameS.getAllUsersInGame());
 	}
 
-	@UseGuards(JwtGuard)
 	@SubscribeMessage('session-join')
-	handleSessionJoin(client: Socket, game: GameJoinDto) {
+	@UseGuards(JwtGuard)
+	handleSessionJoin(@ConnectedSocket() client: Socket | any, @MessageBody() game: GameJoinDto) {
+		const user: users = client.handshake.user;
+		if (!user) {
+			client.emit('error', 'Invalid token');
+			client.disconnect();
+			return;
+		}
 		const gameUID: string = game.gameUID;
-		const userID: number = game.userID;
-		this.logger.debug(`Client WebSocket ${client.id} demande à rejoindre la session : ${gameUID}`);
+		const userID: number = user.id;
+
+		this.logger.debug(`Client WebSocket ${user.login} demande à rejoindre la session : ${gameUID}`);
 		const waiting: GameJoinDto = this.gameService.isUserWaiting(gameUID, userID);
 		if (!waiting) {
 			client.emit('game_error', 'Error during session join');
@@ -79,14 +90,14 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				client.disconnect();
 				return;
 			}
-			if (this.gameService.addUserToGame(game, client, waiting.isSpec)) {
+			if (this.gameService.addUserToGame(game, client, user, waiting.isSpec)) {
 				client.join(gameUID);
 				this.server.to(gameUID).emit('session-info', game.getAllUsersInGame());
 				if (!game.isInProgress() && game.getUsersInGame().length === 2) game.startGame();
 			} else client.disconnect();
 		} else {
 			const game: IGame = this.gameService.createGame(gameUID);
-			if (this.gameService.addUserToGame(game, client, waiting.isSpec)) {
+			if (this.gameService.addUserToGame(game, client, user, waiting.isSpec)) {
 				client.join(gameUID);
 				this.server.to(gameUID).emit('session-info', game.getAllUsersInGame());
 			} else client.disconnect();
@@ -105,7 +116,6 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 	public handleDisconnect(client: Socket): void {
 		this.gameService.removeUserFromGame(client);
-		this.authService.removeUser(client.id);
 		return this.logger.debug(`Client disconnected: ${client.id}`);
 	}
 
@@ -114,7 +124,6 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			if (!client.handshake.headers.authorization) throw new Error('Invalid token');
 			const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
 			this.authService.verifyToken({ access_token: token });
-			await this.authService.addUser(client.id, { access_token: token });
 			return this.logger.debug(`Client connected: ${client.id}`);
 		} catch (e) {
 			client.emit('error', 'Invalid token');
