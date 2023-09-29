@@ -44,6 +44,7 @@
 				</v-card-text>
 			</v-card>
 			<v-btn
+				v-if="isConnected"
 				color="primary"
 				dark
 				absolute

@@ -49,12 +49,13 @@ export class AuthService {
 
 	verifyToken(token: { access_token: string }): number {
 		try {
+			this.jwt.verify(token.access_token, { secret: this.config.get('JWT_SECRET') });
+
 			const decodedToken = this.jwt.decode(token.access_token);
 			if (!decodedToken) throw new ForbiddenException('Invalid token');
 			const userId = decodedToken['sub'];
 			if (!userId) throw new ForbiddenException('Invalid token');
 
-			this.jwt.verify(token.access_token, { secret: this.config.get('JWT_SECRET') });
 			return userId;
 		} catch (e) {
 			console.log(e);

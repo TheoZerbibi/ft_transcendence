@@ -6,13 +6,14 @@ import {
 	OnGatewayDisconnect,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { GameJoinDto } from './dto/game-join.dto';
 import { GameService } from './game.service';
 import { IGame } from './impl/interfaces/IGame';
 import { IUser } from './impl/interfaces/IUser';
 import { uniqueNamesGenerator, names } from 'unique-names-generator';
+import { JwtGuard } from 'src/auth/guard';
 
 @WebSocketGateway({
 	cors: {
@@ -59,6 +60,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		this.server.to(gameUID).emit('session-info', gameS.getAllUsersInGame());
 	}
 
+	@UseGuards(JwtGuard)
 	@SubscribeMessage('session-join')
 	handleSessionJoin(client: Socket, game: GameJoinDto) {
 		const gameUID: string = game.gameUID;

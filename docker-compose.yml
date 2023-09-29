@@ -51,6 +51,26 @@ services:
       retries: 3
     restart: always
 
+
+  rabbitmq:
+    image: rabbitmq:3.12.6-alpine
+    container_name: rabbitmq
+    ports:
+      - 15672:15672
+      - 5672:5672
+    expose:
+      - 15672
+      - 5672
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    restart: always
+
   redis:
     image: redis:7.2.1-alpine
     container_name: redis
@@ -117,6 +137,9 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       HOST: ${HOSTNAME}
       PORT: 4000
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+      RABBITMQ_URL: ${RABBITMQ_URL}
     restart: always
     # command: sh -c "pnpm db:pull && pnpm start:dev"
     command: sh -c "tail -f /dev/null"
@@ -154,6 +177,9 @@ services:
       REDIS_PORT: ${REDIS_PORT}
       REDIS_PASS: ${REDIS_PASS}
       REDIS_URL: ${REDIS_URL}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+      RABBITMQ_URL: ${RABBITMQ_URL}
     # command: sh -c "pnpm db:deploy && pnpm start:dev"
     command: sh -c "tail -f /dev/null"
     restart: always

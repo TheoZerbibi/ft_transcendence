@@ -5,6 +5,7 @@ import { JwtGuard } from 'src/auth/guard';
 import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { RedisService } from 'src/redis/redis.service';
+import { RabbitmqService } from 'src/rabbitmq/rabbitmq.service';
 
 @Controller('game')
 @ApiBearerAuth()
@@ -13,6 +14,7 @@ export class GameController {
 	constructor(
 		private gameService: GameService,
 		private readonly redisService: RedisService,
+		private readonly rabbitMqService: RabbitmqService,
 	) {}
 
 	@UseGuards(JwtGuard)
@@ -40,6 +42,7 @@ export class GameController {
 	@ApiBearerAuth('JWT-auth')
 	@HttpCode(HttpStatus.OK)
 	async joinGame(@GetUser() user: User, @Param('uuid') gameUUID: string) {
+		// this.rabbitMqService.hello();
 		const response = await this.gameService.joinGame(user, gameUUID);
 		if (response) {
 			await this.redisService.connectClientToSocket(gameUUID, user.id, response.is_spec);
