@@ -64,10 +64,11 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		this.server.to(gameUID).emit('session-info', gameS.getAllUsersInGame());
 	}
 
-	@SubscribeMessage('session-join')
 	@UseGuards(JwtGuard)
-	handleSessionJoin(@ConnectedSocket() client: Socket | any, @MessageBody() game: GameJoinDto) {
+	@SubscribeMessage('session-join')
+	async handleSessionJoin(@ConnectedSocket() client: Socket | any, @MessageBody() game: GameJoinDto) {
 		const user: users = client.handshake.user;
+		console.log(user.id, ' want to join');
 		if (!user) {
 			client.emit('error', 'Invalid token');
 			client.disconnect();
@@ -80,11 +81,14 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		const waiting: GameJoinDto = this.gameService.isUserWaiting(gameUID, userID);
 		if (!waiting) {
 			client.emit('game_error', 'Error during session join');
+			console.log('Error during session join');
 			client.disconnect();
 			return;
 		}
+		console.log('find');
 		if (this.gameService.gameExists(gameUID)) {
 			const game: IGame = this.gameService.getGame(gameUID);
+			console.log('Game already exists');
 			if (game.isEnded()) {
 				client.emit('game_end', 'Game is ended');
 				client.disconnect();
@@ -93,19 +97,24 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			if (this.gameService.addUserToGame(game, client, user, waiting.isSpec)) {
 				client.join(gameUID);
 				this.server.to(gameUID).emit('session-info', game.getAllUsersInGame());
+				console.log('user join game');
 				if (!game.isInProgress() && game.getUsersInGame().length === 2) game.startGame();
 			} else client.disconnect();
 		} else {
+			console.log('Game not exists');
 			const game: IGame = this.gameService.createGame(gameUID);
 			if (this.gameService.addUserToGame(game, client, user, waiting.isSpec)) {
 				client.join(gameUID);
 				this.server.to(gameUID).emit('session-info', game.getAllUsersInGame());
+				console.log('user join game');
 			} else client.disconnect();
 		}
 	}
 
 	handleRedisMessage(channel: string, message: any): void {
 		const data = JSON.parse(message);
+		console.log(data);
+		if (data.isEnded) this.gameService.createGame(data.gameUID, data.isEnded);
 		this.gameService.addWaitingConnection(data);
 		return this.logger.debug(`New redis-message, user ${data.userID} is waiting for game ${data.gameUID}`);
 	}
@@ -115,6 +124,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	}
 
 	public handleDisconnect(client: Socket): void {
+		console.log('disconnect');
 		this.gameService.removeUserFromGame(client);
 		return this.logger.debug(`Client disconnected: ${client.id}`);
 	}

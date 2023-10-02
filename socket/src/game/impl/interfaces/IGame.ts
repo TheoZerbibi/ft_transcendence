@@ -2,7 +2,6 @@ import { IUser } from './IUser';
 
 export interface IGame {
 	inProgress: boolean;
-	isEnd: boolean;
 
 	isInProgress: () => boolean;
 	isEnded: () => boolean;

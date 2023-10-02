@@ -44,8 +44,11 @@ export class GameController {
 	async joinGame(@GetUser() user: User, @Param('uuid') gameUUID: string) {
 		// this.rabbitMqService.hello();
 		const response = await this.gameService.joinGame(user, gameUUID);
+		console.log('Join');
 		if (response) {
-			await this.redisService.connectClientToSocket(gameUUID, user.id, response.is_spec);
+			const isEnded: boolean = response.end_at ? true : false;
+			console.log(response);
+			await this.redisService.connectClientToSocket(gameUUID, user.id, response.is_spec, isEnded);
 			return response;
 		}
 		return { error: 'Game not found' };

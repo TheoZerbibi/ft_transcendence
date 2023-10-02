@@ -5,20 +5,20 @@ import { IGame } from './impl/interfaces/IGame';
 import { users } from '@prisma/client';
 import { IUser } from './impl/interfaces/IUser';
 import { Socket } from 'socket.io';
-import { AuthService } from 'src/auth/auth.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class GameService {
 	private waitingConnections: Map<number, GameJoinDto> = new Map<number, GameJoinDto>();
-	private games: Map<string, Game> = new Map<string, Game>();
 
-	constructor(private authService: AuthService) {}
+	constructor(private prismaService: PrismaService) {}
 
 	public addWaitingConnection(joinUser: GameJoinDto) {
 		this.waitingConnections.set(joinUser.userID, joinUser);
 	}
 
 	public isUserWaiting(gameUID: string, userID: number): GameJoinDto | null {
+		console.log(`isUserWaiting :`, this.waitingConnections);
 		if (!this.waitingConnections.has(userID)) return null;
 		const wainting = this.waitingConnections.get(userID);
 		if (wainting.gameUID !== gameUID) return null;
@@ -26,16 +26,17 @@ export class GameService {
 	}
 
 	public gameExists(gameUID: string): boolean {
-		return this.games.has(gameUID);
+		return Game.getGamesFromUID(gameUID) !== undefined;
 	}
 
 	public getGame(gameUID: string): IGame {
-		return this.games.get(gameUID);
+		return Game.getGamesFromUID(gameUID);
 	}
 
-	public createGame(gameUID: string): IGame {
-		const game = new Game(gameUID);
-		this.games.set(gameUID, game);
+	public createGame(gameUID: string, isEnded: boolean = false): IGame {
+		console.log('new game : ', gameUID, ' isEnded :', isEnded);
+		const game = new Game(gameUID, this.prismaService, isEnded);
+		console.log('new game created');
 		return game;
 	}
 
@@ -56,11 +57,11 @@ export class GameService {
 	public removeUserFromGame(client: Socket | any): void {
 		console.log('removeUserFromGame');
 		const user: users = client.handshake.user;
-		if (!user) return;
 		console.log('user : ', user);
-		const game: IGame = this.getGameFromUserID(user.id);
+		if (!user) return;
+		console.log('user : ', user.id);
+		const game: IGame = Game.getGamesFromUser(user.id);
 		if (!game) return;
-		console.log('game : ', game);
 		const gameUser = game.getUser(user.id);
 		if (!gameUser) return;
 		game.removeUser(gameUser);
@@ -68,14 +69,5 @@ export class GameService {
 		if (game.getUsersInGame.length === 0) {
 			game.endGame();
 		}
-	}
-
-	public getGameFromUserID(userID: number): IGame | undefined {
-		for (const game of this.games.values()) {
-			if (game.userIsInGame(userID) && !game.isEnded() && !game.userIsSpectator(userID)) {
-				return game;
-			}
-		}
-		return undefined;
 	}
 }
