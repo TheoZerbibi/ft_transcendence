@@ -29,11 +29,11 @@
 <script lang='ts'>
 import { defineComponent } from 'vue'
 import backgroundWallpaper from '../assets/OmoriTeam.svg'
-import QRcodeSemiha from '../assets/QRcodeSemiha.png'
-import QRcodeTheo from '../assets/QRcodeTheo.png'
-import QRcodeIsmael from '../assets/QRcodeIsmael.png'
-import QRcodeNoemi from '../assets/QRcodeNoemi.png'
-import QRcodeGaelle from '../assets/QRcodeGaelle.png'
+import QRcodeSemiha from '../assets/QRcodesIntra/QRcodeSemiha.png'
+import QRcodeTheo from '../assets/QRcodesIntra/QRcodeTheo.png'
+import QRcodeIsmael from '../assets/QRcodesIntra/QRcodeIsmael.png'
+import QRcodeNoemi from '../assets/QRcodesIntra/QRcodeNoemi.png'
+import QRcodeGaelle from '../assets/QRcodesIntra/QRcodeGaelle.png'
 
 export default defineComponent({
   name: 'Homepage',
