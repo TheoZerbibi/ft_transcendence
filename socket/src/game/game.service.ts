@@ -35,7 +35,7 @@ export class GameService {
 
 	public createGame(gameUID: string, isEnded: boolean = false): IGame {
 		console.log('new game : ', gameUID, ' isEnded :', isEnded);
-		const game = new Game(gameUID, this.prismaService, isEnded);
+		const game = new Game(this.prismaService, gameUID, isEnded);
 		console.log('new game created');
 		return game;
 	}

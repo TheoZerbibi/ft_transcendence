@@ -11,8 +11,8 @@ export class Game implements IGame {
 	private static games: Map<string, any> = new Map<string, any>();
 
 	constructor(
-		private gameUID: string,
 		private prismaService: PrismaService,
+		private gameUID: string,
 		private isEnd: boolean,
 	) {
 		try {
@@ -39,7 +39,6 @@ export class Game implements IGame {
 	public static getGamesFromUser(userID: number): IGame {
 		console.log(userID);
 		for (const game of this.games.values()) {
-			// console.log(game);
 			if (game.userIsInGame(userID)) return game;
 		}
 		console.log('after');
@@ -78,10 +77,17 @@ export class Game implements IGame {
 		return this.usersInGame;
 	}
 
-	startGame(): void {
+	async startGame(): Promise<void> {
 		this.inProgress = true;
 		console.log('Game started');
-		// throw new Error('Method not implemented.');
+		await this.prismaService.games.update({
+			where: {
+				uid: this.gameUID,
+			},
+			data: {
+				started_at: new Date(),
+			},
+		});
 	}
 
 	async endGame(): Promise<void> {
@@ -95,7 +101,6 @@ export class Game implements IGame {
 				end_at: new Date(),
 			},
 		});
-		// throw new Error('Method not implemented.');
 	}
 
 	userIsInGame(userId: number): boolean {

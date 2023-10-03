@@ -201,6 +201,7 @@ export class GameService {
 			const games: Array<GameDto> = await this.prisma.game.findMany({
 				where: {
 					started_at: null,
+					end_at: null,
 					is_private: false,
 				},
 			});

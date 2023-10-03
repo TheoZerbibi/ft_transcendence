@@ -58,10 +58,12 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				avatar: 'null',
 			},
 			socketID: 'null',
-			isSpec: true,
+			isSpec: false,
 		};
+		if (gameS.isInProgress() && !game.isSpec) gameUser.isSpec = true;
 		gameS.addUser(gameUser);
 		this.server.to(gameUID).emit('session-info', gameS.getAllUsersInGame());
+		if (!gameS.isInProgress() && gameS.getUsersInGame().length === 2) this.startGame(gameS);
 	}
 
 	@UseGuards(JwtGuard)
@@ -81,42 +83,29 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		const waiting: GameJoinDto = this.gameService.isUserWaiting(gameUID, userID);
 		if (!waiting) {
 			client.emit('game_error', 'Error during session join');
-			console.log('Error during session join');
 			client.disconnect();
 			return;
 		}
-		console.log('find');
 		if (this.gameService.gameExists(gameUID)) {
 			const game: IGame = this.gameService.getGame(gameUID);
-			console.log('Game already exists');
 			if (game.isEnded()) {
 				client.emit('game_end', 'Game is ended');
 				client.disconnect();
 				return;
 			}
+			if (game.isInProgress() && !waiting.isSpec) waiting.isSpec = true;
 			if (this.gameService.addUserToGame(game, client, user, waiting.isSpec)) {
 				client.join(gameUID);
 				this.server.to(gameUID).emit('session-info', game.getAllUsersInGame());
-				console.log('user join game');
-				if (!game.isInProgress() && game.getUsersInGame().length === 2) game.startGame();
+				if (!game.isInProgress() && game.getUsersInGame().length === 2) this.startGame(game);
 			} else client.disconnect();
 		} else {
-			console.log('Game not exists');
 			const game: IGame = this.gameService.createGame(gameUID);
 			if (this.gameService.addUserToGame(game, client, user, waiting.isSpec)) {
 				client.join(gameUID);
 				this.server.to(gameUID).emit('session-info', game.getAllUsersInGame());
-				console.log('user join game');
 			} else client.disconnect();
 		}
-	}
-
-	handleRedisMessage(channel: string, message: any): void {
-		const data = JSON.parse(message);
-		console.log(data);
-		if (data.isEnded) this.gameService.createGame(data.gameUID, data.isEnded);
-		this.gameService.addWaitingConnection(data);
-		return this.logger.debug(`New redis-message, user ${data.userID} is waiting for game ${data.gameUID}`);
 	}
 
 	public afterInit() {
@@ -139,5 +128,18 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			client.emit('error', 'Invalid token');
 			client.disconnect();
 		}
+	}
+
+	public handleRedisMessage(channel: string, message: any): void {
+		const data = JSON.parse(message);
+		console.log(data);
+		if (data.isEnded) this.gameService.createGame(data.gameUID, data.isEnded);
+		this.gameService.addWaitingConnection(data);
+		return this.logger.debug(`New redis-message, user ${data.userID} is waiting for game ${data.gameUID}`);
+	}
+
+	private startGame(game: IGame): void {
+		game.startGame();
+		this.server.to(game.getGameUID()).emit('game_start', 'Game started');
 	}
 }

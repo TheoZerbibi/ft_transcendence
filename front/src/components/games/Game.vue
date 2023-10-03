@@ -16,6 +16,18 @@
 						{{ apiData.created_at }}
 					</span>
 					<br />
+					<div v-if="apiData.started_at">
+						<span>Started Date : </span>
+						<span class="font-weight-bold">
+							{{ apiData.started_at }}
+						</span>
+					</div>
+					<div v-if="apiData.end_at">
+						<span>Ended Date : </span>
+						<span class="font-weight-bold">
+							{{ apiData.end_at }}
+						</span>
+					</div>
 					<span>
 						Socket Connection :
 						<span :style="{ color: `${isConnected ? '#00E676' : '#D50000'}` }" class="font-weight-bold">
@@ -54,6 +66,9 @@
 			>
 				Connect FakeUser
 			</v-btn>
+			<div v-if="isConnected">
+				<GameCanvas />
+			</div>
 		</div>
 		<Snackbar />
 	</v-container>
@@ -67,11 +82,13 @@ import { useSnackbarStore } from '../../stores/snackbar';
 import { useSocketStore } from '../../stores/websocket';
 import Snackbar from '../utils/Snackbar.vue';
 
+import GameCanvas from './GameCanvas.vue';
+
 const snackbarStore = useSnackbarStore();
 
 export default {
-	name: 'Game',
-	components: { Snackbar },
+	name: 'PongGame',
+	components: { Snackbar, GameCanvas },
 	setup() {
 		const webSocketStore = useSocketStore();
 
@@ -158,6 +175,12 @@ export default {
 								console.log(data[i].user);
 							}
 						});
+						this.socket.on('game_start', (data: any) => {
+							console.log('game_start');
+							snackbarStore.showSnackbar(data, 3000, 'green');
+							this.apiData.started_at = new Date();
+							console.log('Données reçues du canal game_start :', data);
+						});
 						this.socket.on('game_end', (data: any) => {
 							console.log('game_end');
 							this.disconnect();
@@ -183,6 +206,7 @@ export default {
 				console.error(error);
 			});
 	},
+	mounted() {},
 	methods: {
 		test() {
 			console.log(this.isConnected);

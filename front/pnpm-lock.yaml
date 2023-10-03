@@ -13,6 +13,9 @@ importers:
             gsap:
                 specifier: ^3.12.2
                 version: 3.12.2
+            p5:
+                specifier: ^1.7.0
+                version: 1.7.0
             pinia:
                 specifier: ^2.1.6
                 version: 2.1.6(typescript@5.2.2)(vue@3.3.4)
@@ -6288,6 +6291,13 @@ packages:
                 integrity: sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==,
             }
         engines: { node: '>=6' }
+
+    /p5@1.7.0:
+        resolution:
+            {
+                integrity: sha512-qrbT/44Dwm63ZtOKX/mp61pw+5yj6ijYLOmRv7p6zcfjbo83Vb0gVFEvW0kTLFu7hceWCig0HONo9F1bSlqbsQ==,
+            }
+        dev: false
 
     /parent-module@1.0.1:
         resolution:

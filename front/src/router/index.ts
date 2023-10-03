@@ -14,6 +14,11 @@ const router = createRouter({
 			component: () => import('../views/AboutView.vue'),
 		},
 		{
+			path: '/test',
+			name: 'Test',
+			component: () => import('../views/TestView.vue'),
+		},
+		{
 			path: '/game',
 			name: 'GameCreator',
 			component: () => import('../views/GameCreateView.vue'),
@@ -32,6 +37,11 @@ const router = createRouter({
 			path: '/exemples/websocket',
 			name: 'WebsocketExemple',
 			component: () => import('../components/exemples/WebsocketExemple.vue'),
+		},
+		{
+			path: '/exemples/p5',
+			name: 'P5Exemple',
+			component: () => import('../components/exemples/P5Exemple.vue'),
 		},
 	],
 });

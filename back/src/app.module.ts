@@ -8,7 +8,6 @@ import { ChatModule } from './chat/chat.module';
 import { ChannelModule } from './channel/channel.module';
 import { GameModule } from './game/game.module';
 import { RedisModule } from './redis/redis.module';
-import { RabbitmqModule } from './rabbitmq/rabbitmq.module';
 
 @Module({
 	imports: [
@@ -22,7 +21,6 @@ import { RabbitmqModule } from './rabbitmq/rabbitmq.module';
 		ChatModule,
 		ChannelModule,
 		GameModule,
-		RabbitmqModule,
 	],
 })
 export class AppModule {}
