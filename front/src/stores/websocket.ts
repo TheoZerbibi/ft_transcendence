@@ -18,13 +18,13 @@ export const useSocketStore = defineStore('webSocket', {
 		getSocket: (state) => state.socket,
 	},
 	actions: {
-		async connect(JWT: string): Promise<Socket> {
+		async connect(jwt: string): Promise<Socket> {
 			if (!this.isConnected) {
 				console.log('Connecting to socket');
 				this.socket = await new Promise((resolve, reject) => {
 					const socket = io(serverURL, {
 						extraHeaders: {
-							Authorization: `Bearer ${JWT}`,
+							Authorization: `Bearer ${jwt}`,
 						},
 					});
 					socket.on('connect', () => {
