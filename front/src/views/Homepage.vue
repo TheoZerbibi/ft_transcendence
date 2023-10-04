@@ -5,7 +5,7 @@
 
 <script lang='ts'>
 import { defineComponent } from 'vue'
-import backgroundWallpaper from '../assets/OmoriWallpapers/OmoriWallpaper011.png'
+import backgroundWallpaper from '/src/assets/OmoriWallpapers/OmoriWallpaper011.png'
 
 export default defineComponent({
   name: 'Homepage',
@@ -21,7 +21,7 @@ export default defineComponent({
 <style>
 	.backgroundWallpaper
 	{
-  		background-image: url('../assets/OmoriWallpapers/OmoriWallpaper011.png');
+  		background-image: url('/src/assets/OmoriWallpapers/OmoriWallpaper011.png');
     	background-size: 100% 100%;
 		margin: 0px auto;
     	background-repeat: no-repeat;

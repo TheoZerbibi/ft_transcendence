@@ -11,13 +11,39 @@ const router = createRouter({
 		{
 			path: '/secret',
 			name: 'secret',
-			component: () => import('../views/Secret.vue'),
+			component: () => import('../views/SecretView.vue'),
 		},
 		{
 			path: '/team',
 			name: 'team',
-			component: () => import('../views/Team.vue'),
+			component: () => import('../views/TeamView.vue'),
 		},
+		{
+			path: '/team/grannou',
+			name: 'grannou',
+			component: () => import('../views/GrannouView.vue'),
+		},
+		{
+			path: '/team/thzeribi',
+			name: 'thzeribi',
+			component: () => import('../views/ThzeribiView.vue'),
+		},
+		{
+			path: '/team/iguidado',
+			name: 'iguidado',
+			component: () => import('../views/IguidadoView.vue'),
+		},
+		{
+			path: '/team/seozcan',
+			name: 'seozcan',
+			component: () => import('../views/SeozcanView.vue'),
+		},
+		{
+			path: '/team/nfauconn',
+			name: 'nfauconn',
+			component: () => import('../views/NfauconnView.vue'),
+		}
+
 	],
 });
 
