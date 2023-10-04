@@ -48,6 +48,11 @@ const router = createRouter({
 			name: 'P5Exemple',
 			component: () => import('../components/exemples/P5Exemple.vue'),
 		},
+		{
+			path: '/team',
+			name: 'team',
+			component: () => import('../views/Team.vue'),
+		},
 	],
 });
 
