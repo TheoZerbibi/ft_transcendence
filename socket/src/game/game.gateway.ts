@@ -141,5 +141,16 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	private startGame(game: IGame): void {
 		game.startGame();
 		this.server.to(game.getGameUID()).emit('game_start', 'Game started');
+
+		let countdown = 4;
+		const countdownInterval = setInterval(() => {
+			if (countdown > 0) {
+				this.server.to(game.getGameUID()).emit('countdown', countdown);
+				countdown--;
+			} else {
+				this.server.to(game.getGameUID()).emit('countdown', 0);
+				clearInterval(countdownInterval);
+			}
+		}, 1000);
 	}
 }
