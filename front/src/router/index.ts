@@ -78,7 +78,6 @@ const router = createRouter({
 			name: 'nfauconn',
 			component: () => import('../views/NfauconnView.vue'),
 		}
-
 	],
 });
 
