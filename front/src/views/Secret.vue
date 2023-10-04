@@ -1,6 +1,6 @@
 <template>
-    <v-container class="backgroundWallpaper">
-    </v-container>
+    <v-card class="backgroundWallpaper">
+    </v-card>
 </template>
 
 <script>
@@ -8,7 +8,6 @@
 
 <script lang='ts'>
 import { defineComponent } from 'vue'
-
 import backgroundWallpaper from '../assets/OmoriWallpaper05.jpg'
 
 export default defineComponent({
@@ -18,7 +17,7 @@ export default defineComponent({
   {
 	return
     {
-	  backgroundWallpaper;
+		backgroundWallpaper
     }
 }
 })
