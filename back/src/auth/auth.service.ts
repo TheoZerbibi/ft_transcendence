@@ -45,7 +45,7 @@ export class AuthService {
 	async signToken(user: Prisma.UserGetPayload<{}>): Promise<{ access_token: string }> {
 		const payload = { login: user.login, sub: user.id };
 		const secret = this.config.get<string>('JWT_SECRET');
-		const token = await this.jwt.signAsync(payload, { expiresIn: '3h', secret: secret });
+		const token = await this.jwt.signAsync(payload, { expiresIn: '1d', secret: secret });
 		return {
 			access_token: token,
 		};
