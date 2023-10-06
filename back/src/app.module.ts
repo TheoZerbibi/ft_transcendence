@@ -4,7 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { PrismaModule } from './prisma/prisma.module';
-import { ChatModule } from './chat/chat.module';
+//import { ChatModule } from './chat/chat.module';
 import { ChannelModule } from './channel/channel.module';
 import { GameModule } from './game/game.module';
 import { RedisModule } from './redis/redis.module';
@@ -18,7 +18,7 @@ import { RedisModule } from './redis/redis.module';
 		RedisModule,
 		AuthModule,
 		UserModule,
-		ChatModule,
+		//ChatModule,
 		ChannelModule,
 		GameModule,
 	],
