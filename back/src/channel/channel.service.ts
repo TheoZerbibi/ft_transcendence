@@ -22,25 +22,6 @@ export class ChannelService {
 		return channelDto;
 	}
 
-	//	async isAdmin(user_name: string, channel:string) : Promise<boolean>
-	//	{
-	//
-	//		const channelDto = this.getChannel(channel);
-	//	const userDto = this.getChannelUser(channelDto.id
-	//		try {
-	//
-	//
-	//			const userDto = await this.prisma.channelUser.findUnique({
-	//				where : {
-	//					user_id: user_name,
-	//					channel_id: channel
-	//				}
-	//			});
-	//		} catch (e) {
-	//			return undefined
-	//		}
-	//}
-
 	async create(dto: CreateChannelDto, userId: number) {
 		try {
 			const channel = await this.prisma.channel.create({
@@ -67,6 +48,39 @@ export class ChannelService {
 			}
 		}
 	}
+
+	// Need to implement
+	// 	User update with dto : controller shall call kick, ban or mute route, can only be performed by higher grade channel_user
+	//	Channel deletion: Only owner can do it
+	//
+	//	Channel update: Setting, mod and delete password
+	//	Quitting channel:  if (owner need to set a new owner)
+
+	//
+
+	// Tools : fetching user status on channel
+	// 		fetching channel by name
+	// 		fetching user by name
+	// 		fetching channel_user by channel and user
+
+	//	async isAdmin(user_name: string, channel:string) : Promise<boolean>
+	//	{
+	//
+	//		const channelDto = this.getChannel(channel);
+	//	const userDto = this.getChannelUser(channelDto.id
+	//		try {
+	//
+	//
+	//			const userDto = await this.prisma.channelUser.findUnique({
+	//				where : {
+	//					user_id: user_name,
+	//					channel_id: channel
+	//				}
+	//			});
+	//		} catch (e) {
+	//			return undefined
+	//		}
+	//}
 
 	findAll() {
 		return `This action returns all channel`;
