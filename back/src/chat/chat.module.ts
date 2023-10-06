@@ -7,8 +7,8 @@ import { JwtStrategy } from '../auth/strategy';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  controllers: [ChatController],
-  imports: [JwtModule.register({})],
-  providers: [ChatService, JwtStrategy]
+	controllers: [ChatController],
+	imports: [JwtModule.register({})],
+	providers: [ChatService, JwtStrategy],
 })
 export class ChatModule {}

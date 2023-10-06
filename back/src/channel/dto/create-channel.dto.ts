@@ -1,9 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
-import { Exclude } from 'class-transformer';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+//import { Exclude } from 'class-transformer';
 
-export class CreateChannelDto
-{
+export class CreateChannelDto {
 	@ApiProperty()
 	@IsString()
 	// eslint-disable-next-line
@@ -22,18 +21,20 @@ export class CreateChannelDto
 	is_public: boolean;
 }
 
-export class CreateChannelUserDto
-{
+export class CreateChannelUserDto {
 	@ApiProperty()
 	@IsNumber()
+	// eslint-disable-next-line
 	user_id: number;
 
 	@ApiProperty()
 	@IsNumber()
+	// eslint-disable-next-line
 	channel_id: number;
 
 	@ApiProperty()
 	@IsOptional()
 	@IsBoolean()
+	// eslint-disable-next-line
 	is_owner: boolean;
 }
