@@ -24,9 +24,9 @@ services:
       HOST: ${HOSTNAME}
       API42_UID: ${API42_UID}
       API42_SECRET: ${API42_SECRET}
-    restart: always
     command: sh -c "pnpm dev"
-    # command: sh -c "tail -f /dev/null"b671008db2a3477d93cb926972925b245dbd3a
+    # command: sh -c "tail -f /dev/null"
+    restart: always
 
   postgres:
     image: postgres:16-alpine3.18
