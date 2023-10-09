@@ -1,10 +1,10 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
-//import { UpdateChannelDto } from './dto/update-channel.dto';
 //import { ConfigService } from '@nestjs/config';
 //import { JwtService } from '@nestjs/jwt';
 import { CreateChannelDto } from './dto/create-channel.dto';
+import { UpdateChannelDto } from './dto/update-channel.dto';
 
 @Injectable()
 export class ChannelService {
@@ -42,6 +42,43 @@ export class ChannelService {
 			});
 
 			return channel;
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				if (e.code === 'P2002') throw new ForbiddenException('Channel name taken');
+			}
+		}
+	}
+
+	async	getChannelUser(username: string, channel_name: string)
+	{
+		try {
+			const channel = await this.prisma.channel.findUnique(
+				{
+					where: {
+						name: channel_name,
+					},
+				});
+				if (!channel) throw new ForbiddenException('Channel don\'t exist');
+				//
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+
+	// Need to check if user is admin
+	async	updateChannelUser(dto: UpdateChannelDto)
+	{
+		try {
+			//	const user = this.prisma.channel_users.findMany({
+			const user = await this.prisma.user.findUnique(
+				{
+					where: {
+						login: dto.name,
+					},
+				});
+				//
+				return user;
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				if (e.code === 'P2002') throw new ForbiddenException('Channel name taken');

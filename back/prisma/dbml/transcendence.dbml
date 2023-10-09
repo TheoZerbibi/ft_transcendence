@@ -9,24 +9,24 @@ Project "Transcendence" {
 
 Table channels {
   id Int [pk, increment]
-  name String [not null]
-  public Boolean [not null, default: true]
+  name String [unique, not null]
   password String
+  public Boolean [not null, default: true]
   created_at DateTime [default: `now()`, not null]
   update_at DateTime [default: `now()`, not null]
   channelUser channel_users [not null]
 }
 
 Table channel_users {
-  channel_id Int [not null]
   user_id Int [not null]
+  channel_id Int [not null]
   is_muted DateTime
   is_owner Boolean [not null, default: false]
   is_admin Boolean [not null, default: false]
   is_ban Boolean [not null, default: false]
   channelMessage channel_messages [not null]
-  channel channels [not null]
   user users [not null]
+  channel channels [not null]
 
   indexes {
     (user_id, channel_id) [pk]
@@ -45,18 +45,35 @@ Table channel_messages {
 Table users {
   id Int [pk, increment]
   login String [unique, not null]
+  display_name String [not null]
   email String [not null]
   dAuth Boolean [not null, default: false]
   avatar String [not null]
   created_at DateTime [default: `now()`, not null]
-  display_name String [not null]
   updated_at DateTime [not null]
   last_login DateTime [default: `now()`, not null]
   channelUser channel_users [not null]
+  user friends [not null]
+  friends friends [not null]
 }
 
-Ref: channel_users.channel_id > channels.id [delete: Cascade]
+Table friends {
+  user users [not null]
+  friends users [not null]
+  user_id Int [not null]
+  friend_id Int [not null]
+
+  indexes {
+    (user_id, friend_id) [pk]
+  }
+}
 
 Ref: channel_users.user_id > users.id [delete: Cascade]
 
+Ref: channel_users.channel_id > channels.id [delete: Cascade]
+
 Ref: channel_messages.(user_id, channel_id) > channel_users.(user_id, channel_id) [delete: Cascade]
+
+Ref: friends.user_id > users.id
+
+Ref: friends.friend_id > users.id
