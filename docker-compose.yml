@@ -26,11 +26,7 @@ services:
       API42_SECRET: ${API42_SECRET}
     restart: always
     command: sh -c "pnpm dev"
-<<<<<<< HEAD
     # command: sh -c "tail -f /dev/null"
-=======
-      # command: sh -c "tail -f /dev/null"
->>>>>>> 4fb671008db2a3477d93cb926972925b245dbd3a
 
   postgres:
     image: postgres:16-alpine3.18
@@ -124,12 +120,7 @@ services:
       PORT: 4000
     restart: always
     command: sh -c "pnpm db:pull && pnpm start:dev"
-<<<<<<< HEAD
     # command: sh -c "tail -f /dev/null"
-
-=======
-      # command: sh -c "tail -f /dev/null"
->>>>>>> 4fb671008db2a3477d93cb926972925b245dbd3a
 
   api:
     build:
