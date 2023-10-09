@@ -54,17 +54,56 @@ model ChannelMessage {
   @@map("channel_messages")
 }
 
-model User {
-  id           Int           @id @default(autoincrement())
-  login        String        @unique
-  email        String
-  dAuth        Boolean       @default(false)
-  avatar       String
-  created_at   DateTime      @default(now())
-  display_name String
-  updated_at   DateTime      @updatedAt
-  last_login   DateTime      @default(now())
-  channelUser  ChannelUser[]
+model Game {
+	id			Int	@id @default(autoincrement()) @unique
+	uid			String	@unique
+	is_private	Boolean	@default(false)
+	created_at	DateTime @default(now())
+	started_at	DateTime?
+	end_at		DateTime?
+	gamePlayer 	GamePlayer[]
 
-  @@map("users")
+	@@map("games")
+}
+
+model GamePlayer {
+	player_id	Int
+	game_id		Int
+	is_win		Boolean?
+	is_spec		Boolean?
+	player		User	@relation(fields: [player_id], references: [id])
+	game		Game	@relation(fields: [game_id], references: [id], onDelete: Cascade)
+
+	@@id([player_id, game_id])
+	@@map("game_players")
+}
+
+model User {
+		id           Int           @id @default(autoincrement())
+		login        String        @unique
+		email        String
+		dAuth        Boolean       @default(false)
+		avatar       String
+		created_at   DateTime      @default(now())
+		display_name String
+		updated_at   DateTime      @updatedAt
+		last_login   DateTime      @default(now())
+		channelUser  ChannelUser[]
+
+
+		user			Friends[] @relation("user")
+		friends			Friends[] @relation("friends")
+		GamePlayer		GamePlayer[]
+
+		@@map("users")
+}
+
+model Friends {
+	user		User	@relation("user", fields: [user_id], references: [id])
+		friends		User	@relation("friends", fields: [friend_id], references: [id])
+		user_id		Int	
+		friend_id	Int
+
+		@@id([user_id, friend_id])
+		@@map("friends")
 }

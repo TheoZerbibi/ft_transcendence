@@ -4,36 +4,37 @@ model Channel {
 	name		String		@unique
 	password	String?
 	public		Boolean		@default(true)
+	password	String?
 	created_at	DateTime	@default(now())
-	update_at 	DateTime	@updatedAt @default(now())
+	updated_at	DateTime	@default(now()) @updatedAt
+	channelUser	ChannelUser[]
 
-	channelUser		ChannelUser[]
 	@@map("channels")
 }
 
 model ChannelUser {
-	user_id		Int
-	channel_id	Int
-	is_muted	DateTime?
-	is_owner	Boolean	@default(false)
-	is_admin	Boolean	@default(false)
-	is_ban		Boolean	@default(false)
-	channelMessage	ChannelMessage[]
+	id					Int					@id(map: "channel_users_pk") @default(autoincrement())
+	channel_id			Int
+	user_id				Int
+	is_muted			DateTime?
+	is_owner			Boolean				@default(false)
+	is_admin			Boolean				@default(false)
+	is_ban				Boolean				@default(false)
+	created_at			DateTime			@default(now())
+	channelMessage		ChannelMessage[]
+	channel				Channel				@relation(fields: [channel_id], references: [id], onDelete: Cascade)
+	user				User				@relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-	user		User		@relation(fields: [user_id], references: [id], onDelete: Cascade)
-	channel		Channel		@relation(fields: [channel_id], references: [id], onDelete: Cascade)
-
-	@@id([user_id, channel_id])
+	@@unique([channel_id, user_id], map: "channel_users_channel_id_user_id_uindex")
 	@@map("channel_users")
 }
 
 model ChannelMessage {
-	id			Int			@id @default(autoincrement())
-	user_id		Int
-	channel_id	Int
-	content		String
-	created_at	DateTime	@default(now())
-	user		ChannelUser @relation(fields: [user_id, channel_id], references: [user_id, channel_id], onDelete: Cascade)
+	id				Int			@id @default(autoincrement())
+	content			String
+	created_at		DateTime	@default(now())
+	channel_user_id	Int
+	channelUsers	ChannelUser	@relation(fields: [channel_user_id], references: [id], onDelete: Cascade)
 
 	@@map("channel_messages")
 }

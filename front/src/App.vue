@@ -1,20 +1,20 @@
 <template>
-    <v-app>
-        <v-main>
-            <router-view />
-        </v-main>
-    </v-app>
+	<v-app :style="{ backgroundColor: color }">
+		<v-main>
+			<router-view />
+		</v-main>
+	</v-app>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-    name: 'App',
-    data() {
-        return {
-            //
-        };
-    },
+	name: 'App',
+	data() {
+		return {
+			color: '#2e2e2e',
+		};
+	},
 });
 </script>

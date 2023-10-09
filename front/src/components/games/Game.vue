@@ -1,0 +1,84 @@
+<template>
+	<Snackbar />
+	<div v-if="apiData">
+		<v-card color="#1d2028" class="mx-auto" max-width="500">
+			<v-card-title>
+				{{ apiData.uid }}
+			</v-card-title>
+			<v-card-text>
+				{{ apiData.created_at }}
+			</v-card-text>
+		</v-card>
+	</div>
+</template>
+
+<script lang="ts">
+import { useRoute } from 'vue-router';
+import { webSocketService } from '../../services/WebSocketService';
+import { useSnackbarStore } from '../../stores/snackbar';
+import Snackbar from '../utils/Snackbar.vue';
+
+const snackbarStore = useSnackbarStore();
+
+export default {
+	name: 'Game',
+	components: { Snackbar },
+	beforeRouteLeave(to: any, from: any, next: any) {
+		if (this.socket.connected) this.socket.disconnect();
+		snackbarStore.hideSnackbar();
+		next();
+	},
+	data() {
+		return {
+			apiData: null,
+			socket: null,
+			gameUID: null,
+			jwt_token:
+				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InN0cmluZyIsInN1YiI6MywiaWF0IjoxNjk1MzY3MzY1LCJleHAiOjE2OTUzNzgxNjV9.cYrw5Gj6DRX2yizOfXBVT68_G3tba2b4FCBkY4cDP2I',
+		};
+	},
+	async beforeMount() {
+		const route = useRoute();
+		this.gameUID = route.params.uid;
+		const requestOptions = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${this.jwt_token}`,
+				'Access-Control-Allow-Origin': '*',
+			},
+		};
+		await fetch(`http://${HOST}:3001/game/${this.gameUID}`, requestOptions)
+			.then(async (response) => {
+				if (!response.ok) {
+					const data = await response.json();
+					snackbarStore.showSnackbar(data.message, 3000, 'red');
+					return;
+				}
+				return response.json();
+			})
+			.then(async (data) => {
+				this.socket = webSocketService.connect(this.jwt_token);
+				this.socket.on('connect', () => {
+					console.log('connected');
+					this.socket.emit('joinGame', { uid: this.gameUID });
+				});
+				this.socket.on('error', (error: any) => {
+					snackbarStore.showSnackbar(error, 3000, 'red');
+					console.log('error : ', error);
+					return;
+				});
+				if (data.isSpec) snackbarStore.showSnackbar('Connecting to the game session.', 3000, 'orange');
+				else snackbarStore.showSnackbar('Joining game session.', 3000, 'green');
+				this.apiData = data;
+				this.success = true;
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	},
+	mounted() {
+		console.log(this.apiData);
+	},
+};
+</script>

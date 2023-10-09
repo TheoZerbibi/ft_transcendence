@@ -7,17 +7,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model users {
-  id            Int             @id @default(autoincrement())
-  login         String          @unique
-  email         String
-  dAuth         Boolean         @default(false)
-  avatar        String
-  created_at    DateTime        @default(now())
-  display_name  String
-  updated_at    DateTime
-  last_login    DateTime        @default(now())
-  channel_users channel_users[]
+model channel_messages {
+  id              Int           @id @default(autoincrement())
+  content         String
+  created_at      DateTime      @default(now())
+  channel_user_id Int
+  channel_users   channel_users @relation(fields: [channel_user_id], references: [id], onDelete: Cascade)
+}
+
+model channel_users {
+  id               Int                @id(map: "channel_users_pk") @default(autoincrement())
+  channel_id       Int
+  user_id          Int
+  is_muted         DateTime?
+  is_owner         Boolean            @default(false)
+  is_admin         Boolean            @default(false)
+  is_ban           Boolean            @default(false)
+  created_at       DateTime           @default(now())
+  channel_messages channel_messages[]
+  channels         channels           @relation(fields: [channel_id], references: [id], onDelete: Cascade)
+  users            users              @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([channel_id, user_id], map: "channel_users_channel_id_user_id_uindex")
 }
 
 model channels {
@@ -26,29 +37,52 @@ model channels {
   public        Boolean         @default(true)
   password      String?
   created_at    DateTime        @default(now())
-  update_at     DateTime        @default(now())
+  updated_at    DateTime        @default(now())
   channel_users channel_users[]
 }
 
-model channel_messages {
-  id            Int           @id @default(autoincrement())
-  user_id       Int
-  channel_id    Int
-  content       String
-  created_at    DateTime      @default(now())
-  channel_users channel_users @relation(fields: [user_id, channel_id], references: [user_id, channel_id], onDelete: Cascade)
+model friends {
+  user_id                        Int
+  friend_id                      Int
+  users_friends_friend_idTousers users @relation("friends_friend_idTousers", fields: [friend_id], references: [id])
+  users_friends_user_idTousers   users @relation("friends_user_idTousers", fields: [user_id], references: [id])
+
+  @@id([user_id, friend_id])
 }
 
-model channel_users {
-  channel_id       Int
-  user_id          Int
-  is_muted         DateTime?
-  is_owner         Boolean            @default(false)
-  is_admin         Boolean            @default(false)
-  is_ban           Boolean            @default(false)
-  channel_messages channel_messages[]
-  channels         channels           @relation(fields: [channel_id], references: [id], onDelete: Cascade)
-  users            users              @relation(fields: [user_id], references: [id], onDelete: Cascade)
+model game_players {
+  player_id Int
+  game_id   Int
+  is_win    Boolean?
+  is_spec   Boolean?
+  games     games    @relation(fields: [game_id], references: [id], onDelete: Cascade)
+  users     users    @relation(fields: [player_id], references: [id])
 
-  @@id([user_id, channel_id])
+  @@id([player_id, game_id])
+}
+
+model games {
+  id           Int            @id @unique @default(autoincrement())
+  uid          String         @unique
+  is_private   Boolean        @default(false)
+  created_at   DateTime       @default(now())
+  started_at   DateTime?
+  end_at       DateTime?
+  game_players game_players[]
+}
+
+model users {
+  id                               Int             @id @default(autoincrement())
+  login                            String          @unique
+  display_name                     String
+  email                            String
+  dAuth                            Boolean         @default(false)
+  avatar                           String
+  created_at                       DateTime        @default(now())
+  updated_at                       DateTime
+  last_login                       DateTime        @default(now())
+  channel_users                    channel_users[]
+  friends_friends_friend_idTousers friends[]       @relation("friends_friend_idTousers")
+  friends_friends_user_idTousers   friends[]       @relation("friends_user_idTousers")
+  game_players                     game_players[]
 }

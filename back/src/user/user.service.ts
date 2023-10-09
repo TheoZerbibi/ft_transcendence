@@ -18,7 +18,7 @@ export class UserService {
 			},
 		});
 		if (!prismaUser) return undefined;
-		const user = this.exclude(prismaUser, ['dAuth', 'email', 'updatedAt']);
+		const user = this.exclude(prismaUser, ['dAuth', 'email', 'updated_at']);
 		return user as UserDto;
 	}
 

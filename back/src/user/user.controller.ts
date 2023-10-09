@@ -18,7 +18,7 @@ import { GetUser } from 'src/auth/decorator/get-user.decorator';
 
 @Controller('users')
 @ApiBearerAuth()
-@ApiTags('users')
+@ApiTags('Users')
 export class UserController {
 	constructor(private userService: UserService) {}
 
