@@ -1,17 +1,23 @@
 <template>
-	<v-card class="backgroundWallpaper"> </v-card>
+	<v-card class="d-flex align-center justify-center backgroundWallpaper" min-height="100%" color="transparent">
+		<v-card-title class="text-center">Team Profile</v-card-title>
+		<v-card-text class="text-center">
+			{{ login }}
+		</v-card-text>
+	</v-card>
 </template>
+
+<script></script>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import backgroundWallpaper from '/src/assets/OmoriWallpapers/OmoriWallpaper011.png';
 
 export default defineComponent({
-	name: 'Homepage',
+	name: 'GrannouProfile',
 
 	data() {
 		return {
-			backgroundWallpaper,
+			login: 'grannou' as string,
 		};
 	},
 });
@@ -19,7 +25,7 @@ export default defineComponent({
 
 <style>
 .backgroundWallpaper {
-	background-image: url('/src/assets/OmoriWallpapers/OmoriWallpaper011.png');
+	background-image: url('/src/assets/OmoriWallpapers/OmoriWallpaper008.png');
 	background-size: 100% 100%;
 	margin: 0px auto;
 	background-repeat: no-repeat;

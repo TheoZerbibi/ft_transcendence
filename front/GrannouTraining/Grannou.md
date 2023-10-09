@@ -1,8 +1,8 @@
-*** WORK ROUTINE ***
+**_ WORK ROUTINE _**
 
     • aller dans folder ft_transcendence (ou le git clone si perdu)
         => ft_transcendence git: (features/frontend/grannou)
-            si pas ca faire git checkout features/frontend/grannou 
+            si pas ca faire git checkout features/frontend/grannou
     • GIT PULL
     • ouvrir dans VsCode avec code .
     • lancer le script ./scripts/setup.sh
@@ -11,11 +11,9 @@
     • Dans le terminal du container lancer le site avec pnpm dev
     • ouvrir un autre terminal pour les git add / commit / push
 
-  OU cd VueProjects/my-one-page-website puis npm run serve (pour le training)
+OU cd VueProjects/my-one-page-website puis npm run serve (pour le training)
 
-
-
-*** DEVOIRS ***
+**_ DEVOIRS _**
 
     - trouver le shortcut de • (en attendant crl shift u 2022 espace)
 
@@ -24,7 +22,7 @@
     • Faire un site onepage avec plusieurs onglets et un menu qui switch d'un à l'autre
     • Learn: https://www.youtube.com/watch?v=j3GHwTq0I7k&list=PLFAU47Id44XG48v5dPPTGMgJfjMnsU8Bw&index=2
         version doc https://www.koderhq.com/tutorial/vue/
-    
+
         • an API is a way to interact or communicate with an application
         • Vue language: JS or Typescript
         • Install node js
@@ -43,16 +41,16 @@
             • Si error c'est quíl faut changer dans le fichier de config le port et l'ip
             Dans package.json remplacer "serve": "vue-cli-service serve" par "serve": "vue-cli-service serve --port 3000 --host 0.0.0.0"
         • ctrl + click sur http://localhost:3000/
-    
+
         • open VueProjects/my-one-page-website/src/App.vue
-            • delete all   
+            • delete all
             • type:
                 <template>
                     <h>Hello World</h1>
                 </template>
             • refresh page => Hello World
             • Let's make the text dynamic
-                
+
                 <template>
                 <h1>Hello {{name}} World</h1>
                 </template>
@@ -96,7 +94,7 @@
                 • template block    -> HTML Markup
                 • script block      -> Data & functionality
                 • style block       -> CSS Styling
-        
+
           • a vue app starts its life in the main.js file with "createApp(App).   mount('#app') that set up and configure the instance
           • Vue looks inside the component script block for the config objects    used for the configuration then it mounts that componenent with an    element of the DOM
           • When we use the Application API, the convention is to use the <div    id="app"> element but it can be anything you want, like <article    class="my-app"> .
@@ -135,7 +133,7 @@
                 {
                   return {
                     userObj: { firstName: 'Norminet', lastName: 'the prettiest'},
-                    userArr: ['Norminet', 'the prettiest'] 
+                    userArr: ['Norminet', 'the prettiest']
                   }
                 }
               }
@@ -169,7 +167,7 @@
                   }
                 }
               </script>
-              **************************************************            
+              **************************************************
               <template>
                 <!-- object values use dot notation -->
                 <h1>Hello {{ userObj.firstName }} {{ userObj.lastName }} </h1>
@@ -209,7 +207,7 @@
                   color: orangered;
                 }
               </style>
-          
+
           • Binding boolean attribute
               <template>
                 <!-- object values use dot notation -->
@@ -254,7 +252,7 @@
                   color: orangered;
                 }
               </style>
-          
+
           • Binding data with html tags (execute the html tags)
 
             <template>
@@ -402,7 +400,7 @@
                     cat: '^ • ^'
                   }
                 },
-                methods: 
+                methods:
                 {
                   greeting()
                   {
@@ -470,7 +468,7 @@
                     userName: 'grannou'
                   }
                 },
-                methods: 
+                methods:
                 {
                   greeting()
                   {
@@ -543,7 +541,7 @@
                     userName: 'grannou'
                   }
                 },
-                methods: 
+                methods:
                 {
                   greeting()
                   {
@@ -691,7 +689,7 @@
                     number: 0
                   }
                 },
-                methods: 
+                methods:
                 {
                   greeting()
                   {
@@ -787,7 +785,7 @@
                     lastName: ''
                   }
                 },
-                methods: 
+                methods:
                 {
                   greeting()
                   {
@@ -840,11 +838,11 @@
               }
             </style>
 
-        BETTER PRACTICE to write 
+        BETTER PRACTICE to write
 
           data: function
           {
-            return 
+            return
             {
               blabla
             }
@@ -914,7 +912,7 @@
                     login: 'grannou'
                   }
                 },
-                methods: 
+                methods:
                 {
                   greeting()
                   {
@@ -1055,7 +1053,7 @@
                     status: 'student'
                   }
                 },
-                methods: 
+                methods:
                 {
                   greeting()
                   {
@@ -1199,7 +1197,7 @@
                     favoriteMovie: ''
                   }
                 },
-                methods: 
+                methods:
                 {
                   greeting()
                   {
@@ -1354,7 +1352,7 @@
 
                   }
                 },
-                methods: 
+                methods:
                 {
                   greeting()
                   {
@@ -1423,7 +1421,7 @@
               {
                 color: orangered;
               }
-            </style>            
+            </style>
 
           • Create a counter with two button that keeps the score when submit form button
 
@@ -1522,7 +1520,7 @@
                     counter: 0
                   }
                 },
-                methods: 
+                methods:
                 {
                   greeting()
                   {
@@ -1697,7 +1695,7 @@
                     counter: 0
                   }
                 },
-                methods: 
+                methods:
                 {
                   greeting()
                   {
@@ -1887,7 +1885,7 @@
                     secretCode: ''
                   }
                 },
-                methods: 
+                methods:
                 {
                   greeting()
                   {
@@ -1966,7 +1964,7 @@
               {
                 color: orangered;
               }
-            </style>   
+            </style>
 
           • THE EXACT MODIFIER
 
@@ -2079,7 +2077,7 @@
                     secretCode: ''
                   }
                 },
-                methods: 
+                methods:
                 {
                   greeting()
                   {
@@ -2284,7 +2282,7 @@
                     grade: 42
                   }
                 },
-                methods: 
+                methods:
                 {
                   greeting()
                   {
@@ -2369,7 +2367,7 @@
               {
                 color: orangered;
               }
-            </style>            
+            </style>
 
           • INPUT BINDING (two-way databinding)
 
@@ -2404,7 +2402,7 @@
             {
               data: function()
               {
-                return 
+                return
                 {
                   fruit: '',
                   legume: ''
@@ -2414,7 +2412,7 @@
             </script>
 
           • With lazy and trim option
-          
+
             <template>
               <!-- Input binding + lazy option (wait jump to next input to display            previous)-->
               <!-- Input binding + trim option: remove outer whitespaces-->
@@ -2440,7 +2438,7 @@
             </script>
 
           • Same with text area
-          
+
             <template>
               <!-- Same with lazy on text area -->
               <p>Personal Profile: {{ profile }}</p>
@@ -2461,7 +2459,7 @@
             </script>
 
           • When using a group element, specify the v-model element on the parent select, option are the children
-          
+
             <template>
               <!-- v-model on a group element, specified on the parent -->
               <p>Country: {{ country }}</p>
@@ -2488,7 +2486,7 @@
             </script>
 
           • Same with multi selected (with ctrl or cmd) stored in an array
-          
+
             <template>
               <!-- Same on multiselection (with ctrl or cmd) stored in an array -->
               <p>Countries visited: {{ visited.join(', ') }}</p>
@@ -2514,7 +2512,7 @@
             </script>
 
           • RADIO BUTTON ELEMENT, works similarly as a text input field
-          
+
             <template>
               <!-- Radio button element -->
               <p>Rate this lesson: {{ rating }}</p>
@@ -2538,7 +2536,7 @@
 
           • CHECK BOX works a little different
             A single check box without a value attribute will return a boolean true or false
-          
+
             <template>
               <!-- Check box with single choice that return a boolean -->
               <p>Subscribed: {{ subscribe }}</p>
@@ -2562,7 +2560,7 @@
             </script>
 
           • SAME but we set the choice already checked, true by default
-          
+
             <template>
               <!-- Check box with single choice that return a boolean -->
               <p>FoxFan: {{ foxFan }}</p>
@@ -2586,7 +2584,7 @@
             </script>
 
           • MULTIPLE CHECK BOXES: the content of their value property can be sent to an array if they are checked
-          
+
             <template>
               <!-- Multiple check boxes -> stored in an array -->
               <p>To do list done: {{ toDoList.join(', ') }}</p>
@@ -2610,7 +2608,7 @@
             </script>
 
           • How to submit data
-          
+
             <template>
               <!-- Fill a form and submit it to console -->
               <p>Full address: {{ fullAddress.streetNumber }} {{ fullAddress.streetName }}</p>
@@ -2702,10 +2700,10 @@
           • WATCHERS
             • A watcher allows to monitor a piece of data and execute code im response to a change in that data
             • They are similar to Computed properties but have different use cases
-          
+
           • How tu use watchers
             • exple: use a counter, buttons to in/decrement and a watcher that fire an alert when counter hits 7
-          
+
           • A watcher can only monitor a single data property (so better use computed instead of multiple watchers)
 
             <template>
@@ -2774,11 +2772,11 @@
 
           • How to run a Watcher on page load with immediate
           By default, a watcher will not run when a page first loads. However, many times in an            application you will want to display data from an API immediately.
-          
+
           As an example, let’s consider a film review application. Until the user performs a           search, we don’t know which film they want to see a review for. So we want to show the           most popular reviews of the latest film on the home page.
-          
+
           Let’s create a simplified version of such an application and simulate the API call with            a console log.
-          
+
             <template>
               <p>Search for a film: <input type="text" v-model="filmName"></p>
             </template>
@@ -2818,7 +2816,6 @@ export default {
   }
 }
 </script>
-
 
           • If we run the example in the browser, the new default film name shows up in the input field. However, the console doesn’t display a message, indicating that the watcher didn’t activate.
 
@@ -2987,7 +2984,7 @@ export default {
             As mentioned before, we need to use nested loops. So let’s start with the outer loop            that iterates over the users.
 
             NOTE To make the end result easier to visualize, we add some CSS styling that adds a            border around each person.
-           
+
             <template>
               <div class="card" v-for="person in people" :key="person.id">
                 <h2>{{ person.name }}</h2>
@@ -3045,7 +3042,7 @@ export default {
             Sometimes, the data we want to iterate over will be stored in a single object. In that case we            want to loop over each property just like we do with an array.
 
             As an example, we’ll create an object with 3 properties and iterate it in a paragraph.
-          
+
             <template>
               <p v-for="value in info" :key="value">
                 {{ value }}
@@ -3065,7 +3062,7 @@ export default {
               }
             }
             </script>
-          
+
           • How to get the object key in a v-for
             When looping through object properties, Vue allows us to get not only the index, but also the             property name.
 
@@ -3131,7 +3128,7 @@ export default {
           •
           •
           •
-          
+
             <template>
 
             </template>
@@ -3146,7 +3143,6 @@ export default {
             }
             </script>
 
-
 Vuex module file structure
 The whole point of using modules is to split our code into smaller, more manageable sections. If we have everything in our /src/main.js file, it will quickly become very large.
 
@@ -3154,25 +3150,25 @@ Typically, a Vuex module file structure looks as follows.
 
 src/
 |
-├── assets				  // Project assets
-├── components			  // Project components
+├── assets // Project assets
+├── components // Project components
 |
 ├── store/
-|   ├── module_name/
-|   |   ├── actions.js    // Module actions
-|   |   ├── getters.js    // Module getters
-|   |   ├── mutations.js  // Module mutations
-|   |   └── index.js      // Module state, namespace, export
-|   |
-|   ├── module_name/
-|   |   ├── actions.js    // Module actions
-|   |   ├── getters.js    // Module getters
-|   |   ├── mutations.js  // Module mutations
-|   |   └── index.js      // Module state, namespace, export
-|   |
-|   └── index.js 		  // Main object, modules, export
+| ├── module_name/
+| | ├── actions.js // Module actions
+| | ├── getters.js // Module getters
+| | ├── mutations.js // Module mutations
+| | └── index.js // Module state, namespace, export
+| |
+| ├── module_name/
+| | ├── actions.js // Module actions
+| | ├── getters.js // Module getters
+| | ├── mutations.js // Module mutations
+| | └── index.js // Module state, namespace, export
+| |
+| └── index.js // Main object, modules, export
 |
-├── main.js				  // Main import, use store
-└── App.vue				  // Root component
+├── main.js // Main import, use store
+└── App.vue // Root component
 
 VIDEO 34
