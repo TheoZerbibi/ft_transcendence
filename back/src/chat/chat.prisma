@@ -2,7 +2,6 @@
 model Channel {
 	id			Int	@id @default(autoincrement())
 	name		String		@unique
-	password	String?
 	public		Boolean		@default(true)
 	password	String?
 	created_at	DateTime	@default(now())

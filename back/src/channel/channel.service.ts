@@ -4,7 +4,7 @@ import { Prisma } from '@prisma/client';
 //import { JwtService } from '@nestjs/jwt';
 import { CreateChannelDto } from './dto/create-channel.dto';
 import { UpdateChannelDto } from './dto/update-channel.dto';
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class ChannelService {
@@ -67,7 +67,7 @@ export class ChannelService {
 			}
 		}
 	}
-=======
+
 	// async create(dto: CreateChannelDto, userId: number) {
 	// 			try {
 	// 				const	channel = await this.prisma.channel.create({

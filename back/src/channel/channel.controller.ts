@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import {
 	Body,
 	Post,
