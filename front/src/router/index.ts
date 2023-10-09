@@ -6,15 +6,17 @@ const router = createRouter({
 		{
 			path: '/',
 			name: 'Home',
-			component: () => import('../views/HomeView.vue'),
+			component: () => import('../views/Homepage.vue'),
 		},
 		{
-			path: '/about',
-			name: 'About',
-			// route level code-splitting
-			// this generates a separate chunk (About.[hash].js) for this route
-			// which is lazy-loaded when the route is visited.
-			component: () => import('../views/AboutView.vue'),
+			path: '/secret',
+			name: 'secret',
+			component: () => import('../views/SecretView.vue'),
+		},
+		{
+			path: '/test',
+			name: 'Test',
+			component: () => import('../views/TestView.vue'),
 		},
 		{
 			path: '/game',
@@ -30,6 +32,31 @@ const router = createRouter({
 			path: '/exemples/snackbar',
 			name: 'SnackbarExemple',
 			component: () => import('../components/exemples/SnackbarExemple.vue'),
+		},
+		{
+			path: '/exemples/websocket',
+			name: 'WebsocketExemple',
+			component: () => import('../components/exemples/WebsocketExemple.vue'),
+		},
+		{
+			path: '/exemples/p5',
+			name: 'P5Exemple',
+			component: () => import('../components/exemples/P5Exemple.vue'),
+		},
+		{
+			path: '/secret',
+			name: 'secret',
+			component: () => import('../views/SecretView.vue'),
+		},
+		{
+			path: '/team',
+			name: 'team',
+			component: () => import('../views/TeamView.vue'),
+		},
+		{
+			path: '/team/:login',
+			name: 'TeamProfile',
+			component: () => import('../views/TeamProfileView.vue'),
 		},
 	],
 });

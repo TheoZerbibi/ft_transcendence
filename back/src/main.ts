@@ -24,7 +24,7 @@ async function bootstrap() {
 		)
 		.build();
 	const document = SwaggerModule.createDocument(app, config);
-	SwaggerModule.setup('api', app, document, {
+	SwaggerModule.setup('docs', app, document, {
 		customCss: readFileSync('./swagger-ui/SwaggerDark.css', 'utf-8'),
 	});
 	app.useGlobalPipes(

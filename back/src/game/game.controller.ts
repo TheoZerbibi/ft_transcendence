@@ -1,4 +1,4 @@
-import { Controller, Get, Headers, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GameService } from './game.service';
 import { JwtGuard } from 'src/auth/guard';
@@ -39,12 +39,13 @@ export class GameController {
 	@ApiOperation({ summary: 'Join a Game' })
 	@ApiBearerAuth('JWT-auth')
 	@HttpCode(HttpStatus.OK)
-	async joinGame(@GetUser() user: User, @Param('uuid') gameUUID: string, @Headers() headers: any) {
-		if (headers.authorization) await this.redisService.sendJWT(headers.authorization.replace('Bearer ', ''));
-
+	async joinGame(@GetUser() user: User, @Param('uuid') gameUUID: string) {
 		const response = await this.gameService.joinGame(user, gameUUID);
+		console.log('Join');
 		if (response) {
-			await this.redisService.connectClientToSocket(gameUUID, user.id);
+			const isEnded: boolean = response.end_at ? true : false;
+			console.log(response);
+			await this.redisService.connectClientToSocket(gameUUID, user.id, response.is_spec, isEnded);
 			return response;
 		}
 		return { error: 'Game not found' };

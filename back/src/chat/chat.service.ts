@@ -31,9 +31,8 @@ export class ChatService {
 	//
 	//		const	channel_user = await this.prisma.channelUser.create({
 	//			data : {
-	//				channel_id: channel.id,
-	//				user_id: id,
-	//				is_owner: true
+	//				channel_id: chann>>>>>>> 4fb671008db2a3477d93cb926972925b245dbd3a
+
 	//			}
 	//		});
 	//
@@ -46,5 +45,4 @@ export class ChatService {
 	//		}
 	//	}
 	//}
-
 }

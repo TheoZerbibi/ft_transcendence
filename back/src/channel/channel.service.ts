@@ -46,7 +46,7 @@ export class ChannelService {
 			const channel = await this.prisma.channel.create({
 				data: {
 					name: dto.name,
-					password: dto.password,
+					password: dto.password as string,
 					public: dto.is_public,
 				},
 			});
@@ -81,7 +81,8 @@ export class ChannelService {
 	// 					data : {
 	// 						channel_id: channel.id,
 	// 						user_id: userId,
-	// 						is_owner: true
+	// 						is_owner: true,
+	//						is_admin: true
 	// 					}
 	// 				})
 	// 				return channel;
