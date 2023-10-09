@@ -1,8 +1,10 @@
 import { PrismaService } from 'src/prisma/prisma.service';
-import { UpdateChannelDto } from './dto/update-channel.dto';
-import { Injectable, ForbiddenException } from '@nestjs/common';
-import { CreateChannelDto } from './dto/create-channel.dto';
 import { Prisma } from '@prisma/client';
+//import { ConfigService } from '@nestjs/config';
+//import { JwtService } from '@nestjs/jwt';
+import { CreateChannelDto } from './dto/create-channel.dto';
+import { UpdateChannelDto } from './dto/update-channel.dto';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class ChannelService {
@@ -40,31 +42,30 @@ export class ChannelService {
 	//}
 
 	async create(dto: CreateChannelDto, userId: number) {
-		// try {
-		// 	const channel = await this.prisma.channel.create({
-		// 		data: {
-		// 			name: dto.name,
-		// 			password: dto.password,
-		// 			public: dto.is_public,
-		// 		},
-		// 	});
+		try {
+			const channel = await this.prisma.channel.create({
+				data: {
+					name: dto.name,
+					password: dto.password as string,
+					public: dto.is_public,
+				},
+			});
 
-		// 	await this.prisma.channelUser.create({
-		// 		data: {
-		// 			channel_id: channel.id,
-		// 			user_id: userId,
-		// 			is_owner: true,
-		// 			is_admin: true,
-		// 		},
-		// 	});
+			await this.prisma.channelUser.create({
+				data: {
+					channel_id: channel.id,
+					user_id: userId,
+					is_owner: true,
+					is_admin: true,
+				},
+			});
 
-		// 	return channel;
-		// } catch (e) {
-		// 	if (e instanceof Prisma.PrismaClientKnownRequestError) {
-		// 		if (e.code === 'P2002') throw new ForbiddenException('Channel name taken');
-		// 	}
-		// }
-		return null;
+			return channel;
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				if (e.code === 'P2002') throw new ForbiddenException('Channel name taken');
+			}
+		}
 	}
 
 	// async create(dto: CreateChannelDto, userId: number) {
@@ -80,7 +81,8 @@ export class ChannelService {
 	// 					data : {
 	// 						channel_id: channel.id,
 	// 						user_id: userId,
-	// 						is_owner: true
+	// 						is_owner: true,
+	//						is_admin: true
 	// 					}
 	// 				})
 	// 				return channel;
