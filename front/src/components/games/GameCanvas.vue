@@ -53,7 +53,7 @@ export default {
 			let textOffsetY: number = 10;
 
 			p5.setup = () => {
-				const canvas = p5.createCanvas(700, 400);
+				const canvas = p5.createCanvas(1200, 900);
 				canvas.parent('game-canvas');
 				gameData.ball = new Ball(p5, p5.width / 2, p5.height / 2, 10, 10);
 				gameData.p1 = new Paddle(p5, 20, p5.height / 2 - 50, 10, 100);

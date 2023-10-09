@@ -27,6 +27,6 @@ export default defineConfig({
 	},
 	define: {
 		HOST: `"${process.env.HOST}"`,
-		JWT: '"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTY4NzgyNjgsImV4cCI6MTY5Njk2NDY2OH0.h4-UO1xmRO5ZjgEBSMVCToew-en8bZ6NSdjGzFvjBZQ"',
+		JWT: '"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTY4ODUzODYsImV4cCI6MTY5Njk3MTc4Nn0.rz8liWyXiI6CI9g3ua2Jy-JXU7GA_qlU1KMWgWUHY9g"',
 	},
 });
