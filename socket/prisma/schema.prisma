@@ -50,17 +50,6 @@ model friends {
   @@id([user_id, friend_id])
 }
 
-model game_players {
-  player_id Int
-  game_id   Int
-  is_win    Boolean?
-  is_spec   Boolean?
-  games     games    @relation(fields: [game_id], references: [id], onDelete: Cascade)
-  users     users    @relation(fields: [player_id], references: [id])
-
-  @@id([player_id, game_id])
-}
-
 model games {
   id           Int            @id @unique @default(autoincrement())
   uid          String         @unique
@@ -85,4 +74,15 @@ model users {
   friends_friends_friend_idTousers friends[]       @relation("friends_friend_idTousers")
   friends_friends_user_idTousers   friends[]       @relation("friends_user_idTousers")
   game_players                     game_players[]
+}
+
+model game_players {
+  player_id Int
+  game_id   Int
+  is_win    Boolean?
+  is_spec   Boolean?
+  games     games    @relation(fields: [game_id], references: [id], onDelete: Cascade)
+  users     users    @relation(fields: [player_id], references: [id])
+
+  @@id([player_id, game_id])
 }
