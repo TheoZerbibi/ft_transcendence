@@ -49,6 +49,11 @@ const router = createRouter({
 			component: () => import('../components/exemples/P5Exemple.vue'),
 		},
 		{
+			path: '/secret',
+			name: 'secret',
+			component: () => import('../views/SecretView.vue'),
+		},
+		{
 			path: '/team',
 			name: 'team',
 			component: () => import('../views/TeamView.vue'),
@@ -77,7 +82,7 @@ const router = createRouter({
 			path: '/team/nfauconn',
 			name: 'nfauconn',
 			component: () => import('../views/NfauconnView.vue'),
-		}
+		},
 	],
 });
 
