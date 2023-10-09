@@ -27,7 +27,7 @@ export class GameController {
 
 	@UseGuards(JwtGuard)
 	@Get('getEmptyGame')
-	@ApiOperation({ summary: 'Get game wainting for a second opponant.' })
+	@ApiOperation({ summary: 'Get game waiting for a second opponent.' })
 	@ApiBearerAuth('JWT-auth')
 	@HttpCode(HttpStatus.OK)
 	getEmptyGame() {
