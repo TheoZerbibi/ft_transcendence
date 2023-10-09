@@ -40,30 +40,31 @@ export class ChannelService {
 	//}
 
 	async create(dto: CreateChannelDto, userId: number) {
-		try {
-			const channel = await this.prisma.channel.create({
-				data: {
-					name: dto.name,
-					password: dto.password,
-					public: dto.is_public,
-				},
-			});
+		// try {
+		// 	const channel = await this.prisma.channel.create({
+		// 		data: {
+		// 			name: dto.name,
+		// 			password: dto.password,
+		// 			public: dto.is_public,
+		// 		},
+		// 	});
 
-			await this.prisma.channelUser.create({
-				data: {
-					channel_id: channel.id,
-					user_id: userId,
-					is_owner: true,
-					is_admin: true,
-				},
-			});
+		// 	await this.prisma.channelUser.create({
+		// 		data: {
+		// 			channel_id: channel.id,
+		// 			user_id: userId,
+		// 			is_owner: true,
+		// 			is_admin: true,
+		// 		},
+		// 	});
 
-			return channel;
-		} catch (e) {
-			if (e instanceof Prisma.PrismaClientKnownRequestError) {
-				if (e.code === 'P2002') throw new ForbiddenException('Channel name taken');
-			}
-		}
+		// 	return channel;
+		// } catch (e) {
+		// 	if (e instanceof Prisma.PrismaClientKnownRequestError) {
+		// 		if (e.code === 'P2002') throw new ForbiddenException('Channel name taken');
+		// 	}
+		// }
+		return null;
 	}
 
 	// async create(dto: CreateChannelDto, userId: number) {
