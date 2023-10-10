@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@mdi/font':
-        specifier: 7.2.96
-        version: 7.2.96
       gsap:
         specifier: ^3.12.2
         version: 3.12.2
@@ -39,6 +36,9 @@ importers:
       '@fortawesome/fontawesome-free':
         specifier: ^6.4.2
         version: 6.4.2
+      '@mdi/font':
+        specifier: 7.2.96
+        version: 7.2.96
       '@rushstack/eslint-patch':
         specifier: ^1.5.1
         version: 1.5.1
@@ -820,7 +820,7 @@ packages:
 
   /@mdi/font@7.2.96:
     resolution: {integrity: sha512-e//lmkmpFUMZKhmCY9zdjRe4zNXfbOIJnn6xveHbaV2kSw5aJ5dLXUxcRt1Gxfi7ZYpFLUWlkG2MGSFAiqAu7w==}
-    dev: false
+    dev: true
 
   /@microsoft/tsdoc-config@0.16.2:
     resolution: {integrity: sha512-OGiIzzoBLgWWR0UdRJX98oYO+XKGf7tiK4Zk6tQ/E4IJqGCe7dvkTvgDZV5cFJUzLGDOjeAXrnZoA6QkVySuxw==}

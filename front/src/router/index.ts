@@ -5,7 +5,7 @@ const router = createRouter({
 	routes: [
 		{
 			path: '/',
-			name: 'Home',
+			name: 'home',
 			component: () => import('../views/HomeView.vue'),
 		},
 		{
@@ -42,11 +42,6 @@ const router = createRouter({
 			path: '/exemples/p5',
 			name: 'P5Exemple',
 			component: () => import('../components/exemples/P5Exemple.vue'),
-		},
-		{
-			path: '/secret',
-			name: 'secret',
-			component: () => import('../views/SecretView.vue'),
 		},
 		{
 			path: '/team',
