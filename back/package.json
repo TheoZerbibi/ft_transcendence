@@ -18,6 +18,8 @@
 		"start:debug": "nest start --debug --watch",
 		"start:prod": "node dist/main",
 		"lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
+		"prettier": "prettier --cache --check '**/*.{ts,js,mjs,json,md,yml}'",
+		"prettier-fix": "prettier --write --cache '**/*.{ts,js,mjs,json,md,yml}'",
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"test:cov": "jest --coverage",

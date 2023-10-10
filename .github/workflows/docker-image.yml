@@ -12,6 +12,30 @@ on:
       - '**'
       - '*/*'
 
+env:
+  DEFAULT_BRANCH: master
+  NODE_VERSION: 20
+  REDIS_PASS: ${{ vars.REDIS_PASSWORD }}
+  DATABASE_URL: "postgresql://${{ vars.POSTGRES_USER }}:${{ vars.POSTGRES_PASSWORD }}@localhost:5432/${{ vars.POSTGRES_DB }}?schema=public"
+  HOSTNAME: localhost
+  POSTGRES_HOST: localhost
+  POSTGRES_PORT: 5432
+  POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+  POSTGRES_PASSWORD: ${{ vars.POSTGRES_PASSWORD }}
+  POSTGRES_DB: ${{ vars.POSTGRES_DB }}
+  POSTGRES_ENABLED: true
+  NODE_ENV: development
+  REDIS_HOST: redis
+  REDIS_PORT: 6379
+  REDIS_URL: redis://redis:6379
+  API42_UID: ${{ secrets.API42_UID }}
+  API42_SECRET: ${{ secrets.API42_SECRET }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  FRONT_PORT: 3000
+  API_PORT: 3001
+  GAME_SOCKET_PORT: 4000
+  CHAT_SOCKET_PORT: 4001
+
 jobs:
   build:
     runs-on: ubuntu-latest
