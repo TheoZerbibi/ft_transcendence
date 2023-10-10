@@ -27,6 +27,10 @@ export default defineConfig({
 	},
 	define: {
 		HOST: `"${process.env.HOST}"`,
-		JWT: '"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTY4ODUzODYsImV4cCI6MTY5Njk3MTc4Nn0.rz8liWyXiI6CI9g3ua2Jy-JXU7GA_qlU1KMWgWUHY9g"',
+		PORT: `"${process.env.PORT}"`,
+		API: `"${process.env.API_PORT}"`,
+		GAME_SOCKET: `"${process.env.GAME_SOCKET}"`,
+		CHAT_SOCKET: `"${process.env.CHAT_SOCKET}"`,
+		JWT: '"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTY5Mjc4MjUsImV4cCI6MTY5NzAxNDIyNX0.ZfjYmb1Q9BwaH_8T6WeAekdz_ZE2E6lCrhWXMDSzGWo"',
 	},
 });
