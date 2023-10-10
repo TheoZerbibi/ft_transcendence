@@ -13,7 +13,7 @@ export default defineComponent({
 	name: 'App',
 	data() {
 		return {
-			color: '#2e2e2e',
+			// color: '#2e2e2e',
 		};
 	},
 });

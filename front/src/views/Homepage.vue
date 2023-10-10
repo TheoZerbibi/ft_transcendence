@@ -7,7 +7,7 @@ import { defineComponent } from 'vue';
 import backgroundWallpaper from '/src/assets/OmoriWallpapers/OmoriWallpaper011.png';
 
 export default defineComponent({
-	name: 'Homepage',
+	name: 'Home',
 
 	data() {
 		return {
