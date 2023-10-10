@@ -19,7 +19,7 @@ runs:
   using: 'composite'
   steps:
     - name: Calculate `CACHE_KEY`
-      working-directory: ${{ inputs.working-directory }}
+      # working-directory: ${{ inputs.working-directory }}
       shell: bash
       run: |
         echo 'CACHE_KEY=node_modules-${{
@@ -31,7 +31,7 @@ runs:
         }}' >> "$GITHUB_ENV"
 
     - name: Restore `node_modules`
-      working-directory: ${{ inputs.working-directory }}
+      # working-directory: ${{ inputs.working-directory }}
       id: node-modules-restore
       uses: actions/cache/restore@704facf57e6136b1bc63b828d79edcd491f0ee84 # v3.3.2
       with:
@@ -40,27 +40,22 @@ runs:
         enableCrossOsArchive: true
 
     - name: Calculate `CACHE_HIT`
-      working-directory: ${{ inputs.working-directory }}
+      # working-directory: ${{ inputs.working-directory }}
       shell: bash
       run: |
         echo 'CACHE_HIT=${{
           (steps.node-modules-restore.outputs.cache-hit == 'true') && 'true' || ''
         }}' >> "$GITHUB_ENV"
 
-    - name: Enable corepack
-      working-directory: ${{ inputs.working-directory }}
-      shell: bash
-      run: corepack enable
-
     - name: Setup Node
-      working-directory: ${{ inputs.working-directory }}
+      # working-directory: ${{ inputs.working-directory }}
       uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3.8.1
       with:
         node-version: ${{ inputs.node-version }}
         cache: ${{ env.CACHE_HIT != 'true' && 'pnpm' || '' }}
 
     - name: Install dependencies
-      working-directory: ${{ inputs.working-directory }}
+      # working-directory: ${{ inputs.working-directory }}
       uses: nick-fields/retry@14672906e672a08bd6eeb15720e9ed3ce869cdd4 # v2.9.0
       if: env.CACHE_HIT != 'true'
       with:
@@ -69,21 +64,13 @@ runs:
         command: pnpm install
 
     - name: Write `node_modules` cache
-      working-directory: ${{ inputs.working-directory }}
+      # working-directory: ${{ inputs.working-directory }}
       if: inputs.save-cache == 'true' && env.CACHE_HIT != 'true'
       uses: actions/cache/save@704facf57e6136b1bc63b828d79edcd491f0ee84 # v3.3.2
       with:
         path: node_modules
         key: ${{ env.CACHE_KEY }}
         enableCrossOsArchive: true
-
-    - name: Generate files
-      working-directory: ${{ inputs.working-directory }}
-      shell: bash
-      run: >
-        if [[ -d lib ]]; then
-          pnpm prepare:generate;
-        fi
 
     - name: Git config
       shell: bash
