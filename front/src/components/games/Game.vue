@@ -106,7 +106,7 @@ export default {
 		const socketListen = () => {
 			console.log('socket : ', socket.value);
 			if (socket.value) {
-				socket.value.on('game_error', (data) => {
+				socket.value.on('game_error', (data: any) => {
 					disconnect();
 					snackbarStore.showSnackbar(data, 3000, 'red');
 					console.log('Données reçues du canal game_error :', data);
@@ -130,9 +130,6 @@ export default {
 	},
 	async beforeUnmount() {
 		if (this.isConnected) {
-			await this.socket.emit('session-leave', {
-				gameUID: this.gameUID,
-			});
 			this.disconnect();
 		}
 		if (snackbarStore.snackbar) snackbarStore.hideSnackbar();
@@ -152,7 +149,7 @@ export default {
 			},
 		};
 		// eslint-disable-next-line no-undef
-		await fetch(`http://${HOST}:3001/game/${this.gameUID}`, requestOptions)
+		await fetch(`http://${HOST}:${API}/game/${this.gameUID}`, requestOptions)
 			.then(async (response) => {
 				if (!response.ok) {
 					const data = await response.json();
