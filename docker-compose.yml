@@ -17,13 +17,19 @@ services:
     depends_on:
       api:
         condition: service_started
-      socket:
+      game:
+        condition: service_started
+      chat:
         condition: service_started
     environment:
       NODE_ENV: ${NODE_ENV}
       HOST: ${HOSTNAME}
       API42_UID: ${API42_UID}
       API42_SECRET: ${API42_SECRET}
+      PORT: ${FRONT_PORT}
+      API_PORT: ${API_PORT}
+      GAME_SOCKET: ${GAME_SOCKET_PORT}
+      CHAT_SOCKET: ${CHAT_SOCKET_PORT}
     # command: sh -c "pnpm dev"
     command: sh -c "tail -f /dev/null"
     restart: always
@@ -91,16 +97,16 @@ services:
   #   #command: sh -c "pnpm start:prisma"
   #   restart: always
 
-  socket:
+  game:
     build:
-      context: ./socket
+      context: ./socket/game
       target: socket
-      dockerfile: ../docker/node/dev.Dockerfile
-    container_name: socket
+      dockerfile: ../../docker/node/dev.Dockerfile
+    container_name: game
     ports:
-    - 4000:4000
+    - ${GAME_SOCKET_PORT}:${GAME_SOCKET_PORT}
     volumes:
-      - ./socket:/home/node/app
+      - ./socket/game:/home/node/app
       # - /home/node/app/node_modules
       - /home/node/app/.pnpm-store
     depends_on:
@@ -117,7 +123,38 @@ services:
       DATABASE_URL: ${DATABASE_URL}
       JWT_SECRET: ${JWT_SECRET}
       HOST: ${HOSTNAME}
-      PORT: 4000
+      PORT: ${GAME_SOCKET_PORT}
+    # command: sh -c "pnpm db:pull && pnpm start:dev"
+    command: sh -c "tail -f /dev/null"
+    restart: always
+
+  chat:
+    build:
+      context: ./socket/chat
+      target: socket
+      dockerfile: ../../docker/node/dev.Dockerfile
+    container_name: chat
+    ports:
+    - ${CHAT_SOCKET_PORT}:${CHAT_SOCKET_PORT}
+    volumes:
+      - ./socket/chat:/home/node/app
+      # - /home/node/app/node_modules
+      - /home/node/app/.pnpm-store
+    depends_on:
+      api:
+        condition: service_started
+      redis:
+        condition: service_healthy
+    environment:
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PASS: ${REDIS_PASS}
+      REDIS_URL: ${REDIS_URL}
+      NODE_ENV: ${NODE_ENV}
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      HOST: ${HOSTNAME}
+      PORT: ${CHAT_SOCKET_PORT}
     # command: sh -c "pnpm db:pull && pnpm start:dev"
     command: sh -c "tail -f /dev/null"
     restart: always
@@ -148,6 +185,7 @@ services:
       NODE_ENV: ${NODE_ENV}
       DATABASE_URL: ${DATABASE_URL}
       HOST: ${HOSTNAME}
+      PORT: ${API_PORT}
       JWT_SECRET: ${JWT_SECRET}
       API42_UID: ${API42_UID}
       API42_SECRET: ${API42_SECRET}

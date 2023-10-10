@@ -3,10 +3,13 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { readFileSync } from 'fs';
+import { config } from './config/config';
 
 async function bootstrap() {
+	const appConfig = config().app;
+	const port = appConfig.port;
 	const app = await NestFactory.create(AppModule);
-	const config = new DocumentBuilder()
+	const swaggerConfig = new DocumentBuilder()
 		.setTitle('Transcendence - MEWO')
 		.setDescription('Transcendence - API')
 		.setVersion('1.0')
@@ -23,7 +26,7 @@ async function bootstrap() {
 			'JWT-auth',
 		)
 		.build();
-	const document = SwaggerModule.createDocument(app, config);
+	const document = SwaggerModule.createDocument(app, swaggerConfig);
 	SwaggerModule.setup('docs', app, document, {
 		customCss: readFileSync('./swagger-ui/SwaggerDark.css', 'utf-8'),
 	});
@@ -37,6 +40,6 @@ async function bootstrap() {
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
 		credentials: true,
 	});
-	await app.listen(3001);
+	await app.listen(port | 3001);
 }
 bootstrap();
