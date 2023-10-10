@@ -89,7 +89,6 @@ jobs:
           echo 'os-matrix-is-full=${{ env.IS_FULL }}' >> "$GITHUB_OUTPUT"
 
       - name: Calculate `os-matrix` output
-        # working-directory: 'back'
         id: os-matrix
         env:
           OS_ALL: '["ubuntu-latest", "macos-latest", "windows-latest"]'
@@ -100,7 +99,6 @@ jobs:
           }}' >> "$GITHUB_OUTPUT"
 
       - name: Detect changed files
-        # working-directory: 'back'
         if: ${{ github.event_name == 'pull_request' }}
         id: changed-files
         env:
@@ -119,14 +117,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
         with:
-          # working-directory: 'back'
           sparse-checkout: ${{ env.SPARSE_CHECKOUT }}
 
       - name: Calculate matrix for `node_modules` prefetch
         uses: ./.github/actions/calculate-prefetch-matrix
         id: os-matrix-prefetch
         with:
-          # working-directory: 'back'
           repo: ${{ github.event.repository.full_name }}
           token: ${{ github.token }}
           node-version: ${{ env.NODE_VERSION }}
