@@ -19,8 +19,8 @@ services:
         condition: service_started
       game:
         condition: service_started
-      chat:
-        condition: service_started
+      # chat:
+      #   condition: service_started
     environment:
       NODE_ENV: ${NODE_ENV}
       HOST: ${HOSTNAME}
