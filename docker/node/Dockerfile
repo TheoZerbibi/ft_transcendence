@@ -8,7 +8,8 @@ RUN apk add --update python3 make g++ && rm -rf /var/cache/apk/*
 
 
 FROM common AS backend
-COPY package.json .
+COPY package*.json .
+COPY pnpm-lock.yaml .
 
 RUN npm i -g @nestjs/cli \
 	&& npm i -g prisma@latest \
@@ -18,7 +19,8 @@ EXPOSE 3001
 
 FROM common AS frontend
 
-COPY package.json .
+COPY package*.json .
+COPY pnpm-lock.yaml .
 RUN npm i -g @vue/cli \
 	&& pnpm install
 
@@ -34,3 +36,24 @@ RUN npm i -g @nestjs/cli \
 
 EXPOSE 4000
 EXPOSE 4001
+
+FROM common AS build
+COPY package*.json .
+COPY pnpm-lock.yaml .
+
+RUN pnpm install
+
+COPY . .
+
+RUN pnpm db:deploy \
+	&& pnpm build
+
+FROM common AS production
+COPY package*.json .
+COPY pnpm-lock.yaml .
+
+RUN pnpm install --prod
+
+COPY --from=build /usr/src/app/dist ./dist
+
+CMD [ "node", "dist/main.js" ]

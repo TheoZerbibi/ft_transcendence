@@ -6,7 +6,7 @@ services:
     build:
       context: ./front
       target: frontend
-      dockerfile: ../docker/node/dev.Dockerfile
+      dockerfile: ../docker/node/Dockerfile
     container_name: front
     ports:
       - 3000:3000
@@ -101,7 +101,7 @@ services:
     build:
       context: ./socket/game
       target: socket
-      dockerfile: ../../docker/node/dev.Dockerfile
+      dockerfile: ../../docker/node/Dockerfile
     container_name: game
     ports:
     - ${GAME_SOCKET_PORT}:${GAME_SOCKET_PORT}
@@ -132,7 +132,7 @@ services:
   #   build:
   #     context: ./socket/chat
   #     target: socket
-  #     dockerfile: ../../docker/node/dev.Dockerfile
+  #     dockerfile: ../../docker/node/Dockerfile
   #   container_name: chat
   #   ports:
   #   - ${CHAT_SOCKET_PORT}:${CHAT_SOCKET_PORT}
@@ -163,7 +163,7 @@ services:
     build:
       context: ./back
       target: backend
-      dockerfile: ../docker/node/dev.Dockerfile
+      dockerfile: ../docker/node/Dockerfile
     container_name: api
     ports:
       - 3001:3001
