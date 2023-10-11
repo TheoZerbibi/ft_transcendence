@@ -165,5 +165,5 @@ jobs:
       HOSTNAME: localhost
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       GITHUB_TOKEN: ${{ secrets.CR_PAT }}
-      DOCKER_REGISTRY: ghcr.io/theozerbibi
+      DOCKER_REGISTRY: ghcr.io/ft_transcendence
       PORT: 3001
