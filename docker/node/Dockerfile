@@ -39,6 +39,8 @@ EXPOSE 4001
 
 FROM common AS build
 
+ARG DATABASE_URL=$DATABASE_URL
+
 COPY package*.json .
 COPY pnpm-lock.yaml .
 
@@ -50,6 +52,7 @@ RUN pnpm db:deploy \
 	&& pnpm build
 
 FROM common AS production
+
 COPY package*.json .
 COPY pnpm-lock.yaml .
 
