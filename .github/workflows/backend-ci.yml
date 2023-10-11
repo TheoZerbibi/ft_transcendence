@@ -81,23 +81,6 @@ jobs:
   build-backend:
     needs: [setup]
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: 5432
-          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ vars.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
-          POSTGRES_ENABLED: true
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
     timeout-minutes: 5
     steps:
       - name: Checkout
@@ -113,8 +96,8 @@ jobs:
           cache-dependency-path: back/pnpm-lock.yaml
       - name: Install deps
         run: pnpm install
-      - name: Deploy db
-        run: pnpm db:deploy
+      - name: Generate Prisma Client
+        run: npx prisma generate
       - name: Build
         run: pnpm build
     env:
@@ -143,34 +126,20 @@ jobs:
       - lint-prettier
       - build-backend
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: 5432
-          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ vars.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
-          POSTGRES_ENABLED: true
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
     if: ${{ github.ref == 'refs/heads/features/pong' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Build and push Docker image for production stage
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{env.GITHUB_TOKEN}}
+      - name: Build and push Docker image
         run: |
           echo "Building Docker image..."
-          docker build -t ${{ env.DOCKER_REGISTRY }}/back-image:latest -f ../docker/node/Dockerfile --target production --build-arg DATABASE_URL=$DATABASE_URL .
-
-          echo "Logging in to GitHub Container Registry..."
-          echo ${{ env.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          docker build -t ${{ env.DOCKER_REGISTRY }}/back-image:latest -f ../docker/node/Dockerfile --target production .
 
           echo "Pushing Docker image to GitHub Container Registry..."
           docker push ${{ env.DOCKER_REGISTRY }}/back-image:latest

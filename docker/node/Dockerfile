@@ -39,8 +39,6 @@ EXPOSE 4001
 
 FROM common AS build
 
-ARG DATABASE_URL=$DATABASE_URL
-
 COPY package*.json .
 COPY pnpm-lock.yaml .
 
