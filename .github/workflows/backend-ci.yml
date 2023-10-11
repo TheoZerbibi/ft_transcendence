@@ -148,6 +148,7 @@ jobs:
         run: |
           echo "Building Docker image..."
           ls
+          pwd
           docker build -t ${{ env.DOCKER_REGISTRY }}/back-image:latest -f Dockerfile .
 
           echo "Logging in to GitHub Container Registry..."
