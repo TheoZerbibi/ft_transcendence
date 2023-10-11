@@ -163,6 +163,6 @@ jobs:
       API42_SECRET: ${{ secrets.API42_SECRET }}
       HOSTNAME: localhost
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      GITHUB_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
-      DOCKER_REGISTRY: ghcr.io/omori_transcendence
+      GITHUB_TOKEN: ${{ secrets.CR_PAT }}
+      DOCKER_REGISTRY: ghcr.io/theozerbibi
       PORT: 3001
