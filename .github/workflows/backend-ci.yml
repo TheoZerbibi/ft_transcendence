@@ -1,7 +1,6 @@
 name: Backend CI
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - "*"
@@ -24,6 +23,7 @@ on:
       - ".github/**"
       - "back/**"
       - "docker/**"
+  workflow_dispatch:
 
 env:
   NODE_VERSION: 20
