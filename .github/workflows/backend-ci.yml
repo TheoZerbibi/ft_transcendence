@@ -51,8 +51,10 @@ jobs:
           cache: 'pnpm'
           cache-dependency-path: back/pnpm-lock.yaml
       - name: Install deps
+        working-directory: ./back
         run: pnpm install
       - name: Lint
+        working-directory: ./back
         run: pnpm lint
 
   lint-prettier:
@@ -71,8 +73,10 @@ jobs:
           cache: 'pnpm'
           cache-dependency-path: back/pnpm-lock.yaml
       - name: Install deps
+        working-directory: ./back
         run: pnpm install
       - name: Prettier
+        working-directory: ./back
         run: pnpm prettier
 
   build-backend:
@@ -109,13 +113,13 @@ jobs:
           cache: 'pnpm'
           cache-dependency-path: back/pnpm-lock.yaml
       - name: Install deps
-        working-directory: back
+        working-directory: ./back
         run: pnpm install
       - name: Deploy db
-        working-directory: back
+        working-directory: ./back
         run: pnpm db:deploy
       - name: Build
-        working-directory: back
+        working-directory: ./back
         run: pnpm build
     env:
       POSTGRES_HOST: localhost
