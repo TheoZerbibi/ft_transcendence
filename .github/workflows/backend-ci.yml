@@ -128,7 +128,7 @@ jobs:
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       PORT: 3001
 
-  push-registry:
+  build-and-push-registry:
     needs:
       - setup
       - lint-eslint
@@ -137,20 +137,32 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/features/pong' }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v2
+      - name: Build and push Docker image for production stage
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
-          version: 8
-      - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-          cache-dependency-path: back/pnpm-lock.yaml
-      - name: Install deps
-        run: pnpm install
-      - name: Deploy db
-        run: pnpm db:deploy
-      - name: Build prof
-        run: echo "Build production"
+          context: .
+          file: ../docker/node/Dockerfile
+          push: true
+          targets: production
+          tags: ${{ env.DOCKER_REGISTRY }}/ft_transcendence:latest
+          labels: "org.opencontainers.image.description=My multi-arch production image"
+    env:
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ vars.POSTGRES_PASSWORD }}
+      POSTGRES_DB: ${{ vars.POSTGRES_DB }}
+      POSTGRES_ENABLED: true
+      DATABASE_URL: "postgresql://${{ vars.POSTGRES_USER }}:${{ vars.POSTGRES_PASSWORD }}@localhost:5432/${{ vars.POSTGRES_DB }}?schema=public"
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASS: ${{ vars.REDIS_PASSWORD }}
+      REDIS_URL: redis://redis:6379
+      NODE_ENV: production
+      API42_UID: ${{ secrets.API42_UID }}
+      API42_SECRET: ${{ secrets.API42_SECRET }}
+      HOSTNAME: localhost
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      GITHUB_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
+      DOCKER_REGISTRY: ghcr.io/TheoZerbibi/ft_transcendence
+      PORT: 3001
