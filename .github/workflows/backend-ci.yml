@@ -101,24 +101,6 @@ jobs:
         run: npx prisma generate
       - name: Build
         run: pnpm build
-    env:
-      POSTGRES_HOST: localhost
-      POSTGRES_PORT: 5432
-      POSTGRES_USER: ${{ vars.POSTGRES_USER }}
-      POSTGRES_PASSWORD: ${{ vars.POSTGRES_PASSWORD }}
-      POSTGRES_DB: ${{ vars.POSTGRES_DB }}
-      POSTGRES_ENABLED: true
-      DATABASE_URL: "postgresql://${{ vars.POSTGRES_USER }}:${{ vars.POSTGRES_PASSWORD }}@localhost:5432/${{ vars.POSTGRES_DB }}?schema=public"
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      REDIS_PASS: ${{ vars.REDIS_PASSWORD }}
-      REDIS_URL: redis://redis:6379
-      NODE_ENV: development
-      API42_UID: ${{ secrets.API42_UID }}
-      API42_SECRET: ${{ secrets.API42_SECRET }}
-      HOSTNAME: localhost
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      PORT: 3001
 
   build-and-push-in-registry:
     needs:
@@ -148,22 +130,6 @@ jobs:
           echo "Pushing Docker image to GitHub Container Registry..."
           docker push ${{ env.DOCKER_REGISTRY }}/back-image:latest
     env:
-      POSTGRES_HOST: localhost
-      POSTGRES_PORT: 5432
-      POSTGRES_USER: ${{ vars.POSTGRES_USER }}
-      POSTGRES_PASSWORD: ${{ vars.POSTGRES_PASSWORD }}
-      POSTGRES_DB: ${{ vars.POSTGRES_DB }}
-      POSTGRES_ENABLED: true
-      DATABASE_URL: "postgresql://${{ vars.POSTGRES_USER }}:${{ vars.POSTGRES_PASSWORD }}@localhost:5432/${{ vars.POSTGRES_DB }}?schema=public"
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      REDIS_PASS: ${{ vars.REDIS_PASSWORD }}
-      REDIS_URL: redis://redis:6379
       NODE_ENV: production
-      API42_UID: ${{ secrets.API42_UID }}
-      API42_SECRET: ${{ secrets.API42_SECRET }}
-      HOSTNAME: localhost
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
       GITHUB_TOKEN: ${{ secrets.CR_PAT }}
       DOCKER_REGISTRY: ghcr.io/theozerbibi
-      PORT: 3001
