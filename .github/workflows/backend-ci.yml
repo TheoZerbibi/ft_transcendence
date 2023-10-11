@@ -9,12 +9,16 @@ on:
       - '!**/frontend'
       - '!frontend/**'
       - '!**/frontend/**'
+    paths:
+      - 'back/**'
   pull_request:
     types:
       - opened
       - synchronize
       - reopened
       - ready_for_review
+    paths:
+      - 'back/**'
 
 env:
   NODE_VERSION: 20
@@ -143,8 +147,8 @@ jobs:
           context: .
           file: ../docker/node/Dockerfile
           push: true
-          targets: production
-          tags: ${{ env.DOCKER_REGISTRY }}/ft_transcendence:latest
+          target: production
+          tags: ${{ env.DOCKER_REGISTRY }}/back-image:latest
           labels: "org.opencontainers.image.description=My multi-arch production image"
     env:
       POSTGRES_HOST: localhost
