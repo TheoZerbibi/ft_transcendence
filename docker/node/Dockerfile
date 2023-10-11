@@ -36,24 +36,3 @@ RUN npm i -g @nestjs/cli \
 
 EXPOSE 4000
 EXPOSE 4001
-
-FROM common AS build
-COPY package*.json .
-COPY pnpm-lock.yaml .
-
-RUN pnpm install
-
-COPY . .
-
-RUN pnpm db:deploy \
-	&& pnpm build
-
-FROM common AS production
-COPY package*.json .
-COPY pnpm-lock.yaml .
-
-RUN pnpm install --prod
-
-COPY --from=build /usr/src/app/dist ./dist
-
-CMD [ "node", "dist/main.js" ]
