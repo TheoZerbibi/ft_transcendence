@@ -148,30 +148,30 @@ jobs:
         run: |
           echo "Building Docker image..."
           echo $DATABASE_URL
-          docker build -t ${{ env.DOCKER_REGISTRY }}/back-image:latest -f ../docker/node/Dockerfile --target production .
+          docker build -t ${{ env.DOCKER_REGISTRY }}/back-image:latest -f ../docker/node/Dockerfile --target production --build-arg DATABASE_URL=$DATABASE_URL .
 
           echo "Logging in to GitHub Container Registry..."
           echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
           echo "Pushing Docker image to GitHub Container Registry..."
           docker push ${{ env.DOCKER_REGISTRY }}/back-image:latest
-        env:
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: 5432
-          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ vars.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
-          POSTGRES_ENABLED: true
-          DATABASE_URL: "postgresql://${{ vars.POSTGRES_USER }}:${{ vars.POSTGRES_PASSWORD }}@localhost:5432/${{ vars.POSTGRES_DB }}?schema=public"
-          REDIS_HOST: redis
-          REDIS_PORT: 6379
-          REDIS_PASS: ${{ vars.REDIS_PASSWORD }}
-          REDIS_URL: redis://redis:6379
-          NODE_ENV: production
-          API42_UID: ${{ secrets.API42_UID }}
-          API42_SECRET: ${{ secrets.API42_SECRET }}
-          HOSTNAME: localhost
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          GITHUB_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
-          DOCKER_REGISTRY: ghcr.io/ft_transcendence
-          PORT: 3001
+    env:
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ vars.POSTGRES_PASSWORD }}
+      POSTGRES_DB: ${{ vars.POSTGRES_DB }}
+      POSTGRES_ENABLED: true
+      DATABASE_URL: "postgresql://${{ vars.POSTGRES_USER }}:${{ vars.POSTGRES_PASSWORD }}@localhost:5432/${{ vars.POSTGRES_DB }}?schema=public"
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASS: ${{ vars.REDIS_PASSWORD }}
+      REDIS_URL: redis://redis:6379
+      NODE_ENV: production
+      API42_UID: ${{ secrets.API42_UID }}
+      API42_SECRET: ${{ secrets.API42_SECRET }}
+      HOSTNAME: localhost
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      GITHUB_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
+      DOCKER_REGISTRY: ghcr.io/ft_transcendence
+      PORT: 3001
