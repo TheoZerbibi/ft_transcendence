@@ -99,14 +99,14 @@ services:
 
   game:
     build:
-      context: ./socket/game
+      context: ./sockets/game
       target: socket
       dockerfile: ../../docker/node/Dockerfile
     container_name: game
     ports:
     - ${GAME_SOCKET_PORT}:${GAME_SOCKET_PORT}
     volumes:
-      - ./socket/game:/home/node/app
+      - ./sockets/game:/home/node/app
       # - /home/node/app/node_modules
       - /home/node/app/.pnpm-store
     depends_on:
@@ -130,14 +130,14 @@ services:
 
   # chat:
   #   build:
-  #     context: ./socket/chat
+  #     context: ./sockets/chat
   #     target: socket
   #     dockerfile: ../../docker/node/Dockerfile
   #   container_name: chat
   #   ports:
   #   - ${CHAT_SOCKET_PORT}:${CHAT_SOCKET_PORT}
   #   volumes:
-  #     - ./socket/chat:/home/node/app
+  #     - ./sockets/chat:/home/node/app
   #     # - /home/node/app/node_modules
   #     - /home/node/app/.pnpm-store
   #   depends_on:
