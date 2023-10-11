@@ -164,5 +164,5 @@ jobs:
       HOSTNAME: localhost
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       GITHUB_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
-      DOCKER_REGISTRY: ghcr.io/ft_transcendence
+      DOCKER_REGISTRY: ghcr.io/omori_transcendence
       PORT: 3001
