@@ -48,7 +48,7 @@ RUN pnpm install
 
 COPY . .
 
-RUN pnpm db:deploy \
+RUN npx prisma generate \
 	&& pnpm build
 
 FROM common AS production

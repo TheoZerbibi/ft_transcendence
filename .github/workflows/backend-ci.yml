@@ -3,15 +3,15 @@ name: Backend CI
 on:
   push:
     branches:
-      - '*'
-      - '**'
-      - '*/*'
-      - '!**/frontend'
-      - '!frontend/**'
-      - '!**/frontend/**'
+      - "*"
+      - "**"
+      - "*/*"
+      - "!**/frontend"
+      - "!frontend/**"
+      - "!**/frontend/**"
     paths:
-      - '.github/**'
-      - 'back/**'
+      - ".github/**"
+      - "back/**"
   pull_request:
     types:
       - opened
@@ -19,7 +19,7 @@ on:
       - reopened
       - ready_for_review
     paths:
-      - 'back/**'
+      - "back/**"
 
 env:
   NODE_VERSION: 20
@@ -48,7 +48,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: "pnpm"
           cache-dependency-path: back/pnpm-lock.yaml
       - name: Install deps
         run: pnpm install
@@ -68,7 +68,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: "pnpm"
           cache-dependency-path: back/pnpm-lock.yaml
       - name: Install deps
         run: pnpm install
@@ -106,7 +106,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: "pnpm"
           cache-dependency-path: back/pnpm-lock.yaml
       - name: Install deps
         run: pnpm install
@@ -164,7 +164,6 @@ jobs:
       - name: Build and push Docker image for production stage
         run: |
           echo "Building Docker image..."
-          echo $DATABASE_URL
           docker build -t ${{ env.DOCKER_REGISTRY }}/back-image:latest -f ../docker/node/Dockerfile --target production --build-arg DATABASE_URL=$DATABASE_URL .
 
           echo "Logging in to GitHub Container Registry..."
