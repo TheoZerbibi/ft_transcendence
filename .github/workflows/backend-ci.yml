@@ -2,10 +2,13 @@ name: Backend CI
 
 on:
   push:
-    # paths:
-    #   - front/**
-    # branches:
-    #   - master
+    branches:
+      - '*'
+      - '**'
+      - '*/*'
+      - '!**/frontend'
+      - '!frontend/**'
+      - '!**/frontend/**'
   pull_request:
     types:
       - opened
@@ -14,7 +17,7 @@ on:
       - ready_for_review
 
 env:
-  NODE_VERSION: 18
+  NODE_VERSION: 20
 
 defaults:
   run:
@@ -124,3 +127,30 @@ jobs:
       HOSTNAME: localhost
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       PORT: 3001
+
+  push-registry:
+    needs:
+      - setup
+      - lint-eslint
+      - lint-prettier
+      - build-backend
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/features/pong' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+          cache-dependency-path: back/pnpm-lock.yaml
+      - name: Install deps
+        run: pnpm install
+      - name: Deploy db
+        run: pnpm db:deploy
+      - name: Build prof
+        run: echo "Build production"
