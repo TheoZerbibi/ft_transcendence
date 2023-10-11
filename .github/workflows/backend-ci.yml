@@ -12,6 +12,7 @@ on:
     paths:
       - ".github/**"
       - "back/**"
+      - "docker/**"
   pull_request:
     types:
       - opened
@@ -19,7 +20,9 @@ on:
       - reopened
       - ready_for_review
     paths:
+      - ".github/**"
       - "back/**"
+      - "docker/**"
 
 env:
   NODE_VERSION: 20

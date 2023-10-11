@@ -12,6 +12,7 @@ on:
       - 'front/**'
       - 'sockets/game/**'
       - 'sockets/chat/**'
+      - "docker/**"
   pull_request:
     branches:
       - '*'
@@ -23,6 +24,7 @@ on:
       - 'front/**'
       - 'sockets/game/**'
       - 'sockets/chat/**'
+      - "docker/**"
 
 env:
   DEFAULT_BRANCH: master
