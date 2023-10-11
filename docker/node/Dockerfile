@@ -58,6 +58,6 @@ COPY pnpm-lock.yaml .
 
 RUN pnpm install --prod
 
-COPY --from=build /usr/src/app/dist ./dist
+COPY --from=build /home/node/app/dist ./dist
 
 CMD [ "node", "dist/main.js" ]
