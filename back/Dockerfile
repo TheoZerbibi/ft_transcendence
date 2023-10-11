@@ -16,7 +16,7 @@ COPY . .
 RUN pnpm db:deploy \
 	&& pnpm build
 
-FROM common AS production
+FROM node:20-alpine AS production
 COPY package*.json .
 COPY pnpm-lock.yaml .
 
