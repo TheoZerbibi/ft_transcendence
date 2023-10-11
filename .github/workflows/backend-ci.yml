@@ -147,9 +147,8 @@ jobs:
       - name: Build and push Docker image for production stage
         run: |
           echo "Building Docker image..."
-          ls
-          pwd
-          docker build -t ${{ env.DOCKER_REGISTRY }}/back-image:latest -f Dockerfile .
+          echo $DATABASE_URL
+          docker build -t ${{ env.DOCKER_REGISTRY }}/back-image:latest -f ../docker/node/Dockerfile --target production .
 
           echo "Logging in to GitHub Container Registry..."
           echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
