@@ -10,6 +10,7 @@ on:
       - '!frontend/**'
       - '!**/frontend/**'
     paths:
+      - '.github/**'
       - 'back/**'
   pull_request:
     types:

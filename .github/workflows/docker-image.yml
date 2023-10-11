@@ -6,11 +6,23 @@ on:
       - '*'
       - '**'
       - '*/*'
+    paths:
+      - '!.github/**'
+      - 'back/**'
+      - 'front/**'
+      - 'sockets/game/**'
+      - 'sockets/chat/**'
   pull_request:
     branches:
       - '*'
       - '**'
       - '*/*'
+    paths:
+      - '!.github/**'
+      - 'back/**'
+      - 'front/**'
+      - 'sockets/game/**'
+      - 'sockets/chat/**'
 
 env:
   DEFAULT_BRANCH: master
