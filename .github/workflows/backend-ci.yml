@@ -24,9 +24,9 @@ on:
 env:
   NODE_VERSION: 20
 
-defaults:
-  run:
-    working-directory: back
+# defaults:
+#   run:
+#     working-directory: back
 
 jobs:
   setup:
@@ -109,10 +109,13 @@ jobs:
           cache: 'pnpm'
           cache-dependency-path: back/pnpm-lock.yaml
       - name: Install deps
+        working-directory: back
         run: pnpm install
       - name: Deploy db
+        working-directory: back
         run: pnpm db:deploy
       - name: Build
+        working-directory: back
         run: pnpm build
     env:
       POSTGRES_HOST: localhost
@@ -133,7 +136,7 @@ jobs:
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       PORT: 3001
 
-  build-and-push-registry:
+  build-and-push-in-registry:
     needs:
       - setup
       - lint-eslint
@@ -145,7 +148,7 @@ jobs:
       - name: Build and push Docker image for production stage
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
-          context: .
+          context: back
           file: docker/node/Dockerfile
           push: true
           target: production
