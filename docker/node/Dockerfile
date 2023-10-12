@@ -49,8 +49,9 @@ COPY pnpm-lock.yaml .
 RUN pnpm install
 
 COPY . .
-RUN if [[ -d "src/swagger-ui/" ]]; then cp -r src/swagger-ui/ dist/src/swagger-ui/; fi
-RUN if [[ ! -d "prisma/" ]]; then mkdir -p prisma; fi
+RUN ls -la
+RUN if [[ -d "./src/swagger-ui/" ]]; then cp -r src/swagger-ui/ dist/src/swagger-ui/; fi
+RUN if [[ ! -d "./prisma/" ]]; then mkdir -p prisma; fi
 
 RUN pnpm build
 
