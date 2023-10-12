@@ -9,7 +9,7 @@ Project "Transcendence" {
 
 Table channels {
   id Int [pk, increment]
-  name String [not null]
+  name String [unique, not null]
   public Boolean [not null, default: true]
   password String
   created_at DateTime [default: `now()`, not null]

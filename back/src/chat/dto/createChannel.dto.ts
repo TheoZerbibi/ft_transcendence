@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+	IsBoolean,
+	//IsDate,
+	IsNumber,
+	IsOptional,
+	IsString,
+} from 'class-validator';
+//import { Exclude } from 'class-transformer';
 
 export class ChannelDto {
 	@ApiProperty()

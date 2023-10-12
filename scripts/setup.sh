@@ -17,16 +17,18 @@ function copy_dist() {
 	cat .env
 	echo ""
 	echo ".env does not exist, copy dist env file."
-	echo "Please modify the .env file manually."
+	echo "Please modify the '.env' file manually."
 	echo ""
 }
 
+
 function launch_app() {
+	bash ./scripts/pull_image.sh
 	echo ".env exists, project is ready."
 	while true; do
 		read -p "Do you wish to run docker compose? [Y/n] " yn
 		case $yn in
-			[Yy]* ) docker compose up -d; break;;
+			[Yy]* ) docker compose -f dev.docker-compose.yml up -d --build; break;;
 			[Nn]* ) break;;
 			* ) break;;
 		esac

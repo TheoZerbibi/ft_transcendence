@@ -1,0 +1,202 @@
+version: "3.9"
+
+services:
+
+  front:
+    build:
+      context: ./front
+      target: frontend
+      dockerfile: ../docker/node/Dockerfile
+    container_name: front
+    ports:
+      - ${FRONT_PORT}:${FRONT_PORT}
+    volumes:
+      - ./front:/home/node/app
+      - /home/node/app/node_modules
+      - /home/node/app/.pnpm-store
+    depends_on:
+      api:
+        condition: service_started
+      game:
+        condition: service_started
+      chat:
+        condition: service_started
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      HOST: ${HOSTNAME}
+      API42_UID: ${API42_UID}
+      API42_SECRET: ${API42_SECRET}
+      PORT: ${FRONT_PORT}
+      API_PORT: ${API_PORT}
+      GAME_SOCKET: ${GAME_SOCKET_PORT}
+      CHAT_SOCKET: ${CHAT_SOCKET_PORT}
+    command: sh -c "pnpm start:dev"
+    # command: sh -c "tail -f /dev/null"
+    restart: always
+
+  postgres:
+    image: postgres:16-alpine3.18
+    container_name: postgres
+    volumes:
+        - pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_ENABLED: ${POSTGRES_ENABLED}
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    restart: always
+
+  redis:
+    image: redis:7.2.1-alpine
+    container_name: redis
+    expose:
+      - '6379'
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      start_period: 1m
+      interval: 5s
+      timeout: 2s
+      retries: 21
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASS}
+    restart: always
+
+  # CONTAINER UNIQUEMENT DEV, NE PAS DEPLOY SUR LA PROD
+  # prisma:
+  #   container_name: prisma
+  #   build:
+  #     context: ./
+  #     dockerfile: ./docker/prisma/Dockerfile
+  #   ports:
+  #     - 5555:5555
+  #   depends_on:
+  #     api:
+  #       condition: service_started
+  #   environment:
+  #     POSTGRES_DB: ${POSTGRES_DB}
+  #     POSTGRES_USER: ${POSTGRES_USER}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  #     POSTGRES_PORT: ${POSTGRES_PORT}
+  #     POSTGRES_ENABLED: ${POSTGRES_ENABLED}
+  #     NODE_ENV: ${NODE_ENV}
+  #     DATABASE_URL: ${DATABASE_URL}
+  #     HOST: ${HOSTNAME}
+  #   command: sh -c "pnpm db:pull && pnpm start:prisma"
+  #   #command: sh -c "pnpm start:prisma"
+  #   restart: always
+
+  game:
+    build:
+      context: ./sockets/game
+      target: socket
+      dockerfile: ../../docker/node/Dockerfile
+    container_name: game
+    ports:
+    - ${GAME_SOCKET_PORT}:${GAME_SOCKET_PORT}
+    volumes:
+      - ./sockets/game:/home/node/app
+      - /home/node/app/node_modules
+      - /home/node/app/.pnpm-store
+    depends_on:
+      api:
+        condition: service_started
+      redis:
+        condition: service_healthy
+    environment:
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PASS: ${REDIS_PASS}
+      REDIS_URL: ${REDIS_URL}
+      NODE_ENV: ${NODE_ENV}
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      HOST: ${HOSTNAME}
+      PORT: ${GAME_SOCKET_PORT}
+    command: sh -c "pnpm db:pull && pnpm start:dev"
+    # command: sh -c "tail -f /dev/null"
+    restart: always
+
+  chat:
+    build:
+      context: ./sockets/chat
+      target: socket
+      dockerfile: ../../docker/node/Dockerfile
+    container_name: chat
+    ports:
+    - ${CHAT_SOCKET_PORT}:${CHAT_SOCKET_PORT}
+    volumes:
+      - ./sockets/chat:/home/node/app
+      - /home/node/app/node_modules
+      - /home/node/app/.pnpm-store
+    depends_on:
+      api:
+        condition: service_started
+      redis:
+        condition: service_healthy
+    environment:
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PASS: ${REDIS_PASS}
+      REDIS_URL: ${REDIS_URL}
+      NODE_ENV: ${NODE_ENV}
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      HOST: ${HOSTNAME}
+      PORT: ${CHAT_SOCKET_PORT}
+    command: sh -c "pnpm db:pull && pnpm start:dev"
+    # command: sh -c "tail -f /dev/null"
+    restart: always
+
+  api:
+    build:
+      context: ./back
+      target: backend
+      dockerfile: ../docker/node/Dockerfile
+    container_name: api
+    ports:
+     - ${API_PORT}:${API_PORT}
+    volumes:
+      - ./back:/home/node/app
+      - /home/node/app/node_modules
+      - /home/node/app/.pnpm-store
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_ENABLED: ${POSTGRES_ENABLED}
+      NODE_ENV: ${NODE_ENV}
+      DATABASE_URL: ${DATABASE_URL}
+      HOST: ${HOSTNAME}
+      PORT: ${API_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      API42_UID: ${API42_UID}
+      API42_SECRET: ${API42_SECRET}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PASS: ${REDIS_PASS}
+      REDIS_URL: ${REDIS_URL}
+    command: sh -c "pnpm db:deploy && pnpm start:dev"
+    # command: sh -c "tail -f /dev/null"
+    restart: always
+
+volumes:
+  redisdata:
+  pgdata:
