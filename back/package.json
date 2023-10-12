@@ -12,7 +12,7 @@
 		"db:push": "pnpm db:mix && npx prisma db push",
 		"db:migrate:dev": "pnpm db:mix && npx prisma migrate dev --preview-feature",
 		"db:deploy": "pnpm db:mix && npx prisma migrate deploy && npx prisma generate",
-		"db:deploy:prod":  "npx prisma migrate deploy && npx prisma generate",
+		"db:deploy:prod": "npx prisma migrate deploy && npx prisma generate",
 		"db:pull": "npx prisma db pull && npx prisma generate",
 		"start": "nest start",
 		"start:prod": "node dist/main",
