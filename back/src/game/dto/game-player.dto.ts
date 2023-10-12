@@ -16,7 +16,7 @@ export class GamePlayerDto {
 	@IsBoolean()
 	@IsOptional()
 	// eslint-disable-next-line
-	is_win:	Boolean;
+	is_win: Boolean;
 
 	@ApiProperty()
 	@IsBoolean()
