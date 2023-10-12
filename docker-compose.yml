@@ -151,7 +151,7 @@ services:
     networks:
       - default
       - project
-    command: sh -c "pnpm db:deploy"
+    command: sh -c "pnpm db:deploy:prod"
     restart: always
 
 volumes:
