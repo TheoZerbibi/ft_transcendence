@@ -50,10 +50,11 @@ RUN pnpm install
 
 COPY . .
 RUN ls -la
-RUN if [[ -d "./swagger-ui/" ]]; then cp -r ./swagger-ui/ dist/swagger-ui/; fi
-RUN if [[ ! -d "./prisma/" ]]; then mkdir -p prisma; fi
 
 RUN pnpm build
+
+RUN if [[ -d "./swagger-ui/" ]]; then cp -r ./swagger-ui/ dist/swagger-ui/; fi
+RUN if [[ ! -d "./prisma/" ]]; then mkdir -p prisma; fi
 
 FROM common AS production
 
