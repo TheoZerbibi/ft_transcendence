@@ -49,7 +49,7 @@ COPY pnpm-lock.yaml .
 RUN pnpm install
 
 COPY . .
-COPY src/swagger-ui* dist/swagger-ui
+RUN if [[ -d "src/swagger-ui" ]]; then cp -r src/swagger-ui dist/swagger-ui; fi
 
 RUN pnpm build
 
@@ -62,5 +62,3 @@ RUN pnpm install --prod
 
 COPY --from=build /home/node/app/dist ./dist
 COPY --from=build /home/node/app/prisma ./prisma
-
-CMD [ "pnpm", "start:prod" ]
