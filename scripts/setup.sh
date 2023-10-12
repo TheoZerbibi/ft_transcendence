@@ -21,7 +21,9 @@ function copy_dist() {
 	echo ""
 }
 
+
 function launch_app() {
+	bash ./scripts/pull_image.sh
 	echo ".env exists, project is ready."
 	while true; do
 		read -p "Do you wish to run docker compose? [Y/n] " yn

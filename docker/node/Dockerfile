@@ -54,10 +54,16 @@ RUN pnpm build
 
 FROM common AS production
 
+ARG APP
+
 COPY package*.json .
 COPY pnpm-lock.yaml .
 
 RUN pnpm install --prod
+RUN echo "app : $APP"
+
+RUN if [[ "$APP" == "back" ]] && pnpm db:deploy
+RUN if [[ "$APP" == "socket" ]] && pnpm db:pull
 
 COPY --from=build /home/node/app/dist ./dist
 
