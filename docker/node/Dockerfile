@@ -53,7 +53,7 @@ RUN ls -la
 
 RUN pnpm build
 
-RUN if [[ -d "./swagger-ui/" ]]; then cp -r ./swagger-ui/ dist/swagger-ui/; fi
+RUN if [[ ! -d "./swagger-ui/" ]]; then mkdir -p swagger-ui; fi
 RUN if [[ ! -d "./prisma/" ]]; then mkdir -p prisma; fi
 
 FROM common AS production
@@ -65,3 +65,4 @@ RUN pnpm install --prod
 
 COPY --from=build /home/node/app/dist ./dist
 COPY --from=build /home/node/app/prisma ./prisma
+COPY --from=build /home/node/app/swagger-ui ./swagger-ui
