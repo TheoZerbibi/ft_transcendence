@@ -49,7 +49,7 @@ COPY pnpm-lock.yaml .
 RUN pnpm install
 
 COPY . .
-COPY src/config dist/config
+COPY src/swagger-ui* dist/swagger-ui
 
 RUN pnpm build
 
