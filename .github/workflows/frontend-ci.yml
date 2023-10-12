@@ -10,7 +10,7 @@ on:
       - '!backend/**'
       - '!**/backend/**'
     paths:
-      - ".github/**"
+      - ".github/workflows/frontend-ci"
       - "front/**"
       - "docker/node/**"
   pull_request:
@@ -20,7 +20,7 @@ on:
       - reopened
       - ready_for_review
     paths:
-      - ".github/**"
+      - ".github/workflows/frontend-ci"
       - "front/**"
       - "docker/node/**"
   workflow_dispatch:

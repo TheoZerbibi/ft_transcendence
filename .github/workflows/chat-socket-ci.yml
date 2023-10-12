@@ -10,7 +10,7 @@ on:
       - "!frontend/**"
       - "!**/frontend/**"
     paths:
-      - ".github/**"
+      - ".github/workflows/chat-socket-ci"
       - "sockets/chat/**"
       - "docker/node/**"
   pull_request:
@@ -20,7 +20,7 @@ on:
       - reopened
       - ready_for_review
     paths:
-      - ".github/**"
+      - ".github/workflows/chat-socket-ci"
       - "sockets/chat/**"
       - "docker/node/**"
   workflow_dispatch:

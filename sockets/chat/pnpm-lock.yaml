@@ -38,6 +38,12 @@ dependencies:
   '@types/passport':
     specifier: ^1.0.13
     version: 1.0.13
+  class-transformer:
+    specifier: ^0.5.1
+    version: 0.5.1
+  class-validator:
+    specifier: ^0.14.0
+    version: 0.14.0
   ioredis:
     specifier: ^5.3.2
     version: 5.3.2
@@ -94,12 +100,6 @@ devDependencies:
   '@typescript-eslint/parser':
     specifier: ^6.7.5
     version: 6.7.5(eslint@8.51.0)(typescript@5.2.2)
-  class-transformer:
-    specifier: ^0.5.1
-    version: 0.5.1
-  class-validator:
-    specifier: ^0.14.0
-    version: 0.14.0
   eslint:
     specifier: ^8.51.0
     version: 8.51.0
