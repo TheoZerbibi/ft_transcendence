@@ -123,7 +123,7 @@ jobs:
       - name: Build and push Docker image
         run: |
           echo "Building Docker image..."
-          docker build -t ${{ env.DOCKER_REGISTRY }}/front-image:latest -f ../docker/node/Dockerfile --target production .
+          docker build -t ${{ env.DOCKER_REGISTRY }}/front-image:latest -f ../docker/node/Dockerfile --target production --build-arg APP=front .
 
           echo "Pushing Docker image to GitHub Container Registry..."
           docker push ${{ env.DOCKER_REGISTRY }}/front-image:latest
