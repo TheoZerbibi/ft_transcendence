@@ -104,7 +104,7 @@ jobs:
     needs:
       - setup
       - lint-eslint
-      - lint-prettier
+      - lint-style
       - build-frontend
     runs-on: ubuntu-latest
     permissions:
