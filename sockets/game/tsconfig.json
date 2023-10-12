@@ -1,7 +1,4 @@
 {
-	"paths": {
-		"@/*": ["src/*"]
-	},
 	"compilerOptions": {
 		"module": "commonjs",
 		"declaration": true,
@@ -19,7 +16,6 @@
 		"noImplicitAny": false,
 		"strictBindCallApply": false,
 		"forceConsistentCasingInFileNames": false,
-		"noFallthroughCasesInSwitch": false,
-		"strict": true
+		"noFallthroughCasesInSwitch": false
 	}
 }

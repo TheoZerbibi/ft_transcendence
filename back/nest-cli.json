@@ -8,12 +8,10 @@
 			{
 				"name": "@nestjs/swagger/plugin",
 				"options": {
-					"dtoFileNameSuffix": [
-						".dto.ts"
-					],
+					"dtoFileNameSuffix": [".dto.ts"],
 					"classValidatorShim": false
 				}
 			}
-		  ]
+		]
 	}
 }

@@ -59,17 +59,15 @@ $ pnpm run test:e2e
 
 The Api use JWT for security. When you create or signin into a account, the api return a `access_token`.
 
-
 ### Create new user
 
 ```http
   POST auth/signup
 ```
 
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-|  `login`  | `string` | **Required**. A login.     |
-
+| Parameter | Type     | Description            |
+| :-------- | :------- | :--------------------- |
+| `login`   | `string` | **Required**. A login. |
 
     curl -i --location 'http://localhost:3001/auth/signup' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'login=${login}
 
@@ -92,10 +90,9 @@ The Api use JWT for security. When you create or signin into a account, the api 
   POST auth/signin
 ```
 
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-|  `login`  | `string` | **Required**. A login.     |
-
+| Parameter | Type     | Description            |
+| :-------- | :------- | :--------------------- |
+| `login`   | `string` | **Required**. A login. |
 
     curl -i --location 'http://localhost:3001/auth/signin' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'login=${login}'
 
@@ -118,9 +115,9 @@ The Api use JWT for security. When you create or signin into a account, the api 
   GET users/me
 ```
 
-| Parameter        | Type     | Description                          |
-| :--------------- | :------- | :----------------------------------- |
-|  `access_token`  | `string` | **Required**. A JWT access token.    |
+| Parameter      | Type     | Description                       |
+| :------------- | :------- | :-------------------------------- |
+| `access_token` | `string` | **Required**. A JWT access token. |
 
     curl -i --location 'http://localhost:3001/users/me' --header 'Authorization: Bearer ${access_token}'
 
@@ -143,9 +140,9 @@ The Api use JWT for security. When you create or signin into a account, the api 
   GET users/${login}
 ```
 
-| Parameter        | Type     | Description                          |
-| :--------------- | :------- | :----------------------------------- |
-|  `access_token`  | `string` | **Required**. A JWT access token.    |
+| Parameter      | Type     | Description                       |
+| :------------- | :------- | :-------------------------------- |
+| `access_token` | `string` | **Required**. A JWT access token. |
 
     curl --location 'http://localhost:3001/users/${login} --header 'Authorization: Bearer ${access_token}'
 
@@ -168,11 +165,11 @@ The Api use JWT for security. When you create or signin into a account, the api 
   PATCH users
 ```
 
-| Parameter        | Type     | Description                          |
-| :--------------- | :------- | :----------------------------------- |
-|  `access_token`  | `string` | **Required**. A JWT access token.    |
-|  `display_name`   | `string` | A new display_name.                   |
-|  `avatar`        | `string` | A link to a image.                   |
+| Parameter      | Type     | Description                       |
+| :------------- | :------- | :-------------------------------- |
+| `access_token` | `string` | **Required**. A JWT access token. |
+| `display_name` | `string` | A new display_name.               |
+| `avatar`       | `string` | A link to a image.                |
 
     curl --location --request PATCH 'http://localhost:3001/users' --header 'Authorization: Bearer ${access_token}' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'display_name=${display_name}' --data-urlencode 'avatar=${avatarLink}'`
 
@@ -192,6 +189,7 @@ The Api use JWT for security. When you create or signin into a account, the api 
 ## Environment Variables
 
 ### POSTGRES
+
 `POSTGRES_HOST` : The host for postgres container.
 `POSTGRES_PORT` : The port for postgres container.
 `POSTGRES_USER` : The admin user for postgres container.
@@ -200,19 +198,23 @@ The Api use JWT for security. When you create or signin into a account, the api 
 `DATABASE_URL` : The full URL for prisma. See [database connection reference](https://www.prisma.io/docs/reference/database-reference/connection-urls) on Prisma docs.
 
 ### REDIS
+
 `REDIS_HOST` : The host for redis container.
 `REDIS_PORT` : The port for redis container.
 `REDIS_PASS` : The password for redis container.
 `REDIS_URL` : The full URL of Redis. See [Redis URI](https://redis.io/docs/ui/cli/) on redis docs.
 
 ### ENVIRONMENT
+
 `NODE_ENV` : The node env for NodeJS (production, development or test). See [VueJS mode and env](https://cli.vuejs.org/guide/mode-and-env.html) docs or [NestJS configuration](https://docs.nestjs.com/techniques/configuration) docs.
 `JWT_SECRET` : The secret for JWT. See [JWT Introduction](https://jwt.io/introduction) for more information.
 
 ### 42API
+
 `API42_UID`, `API42_SECRET` : The credential for 42 API. See [42's API Guide](https://api.intra.42.fr/apidoc/guides/getting_started) for more information.
 
 ### OTHER
+
 `HOST` : The Host using for request to the back or socket server. By default is the result of `hostname` bash command.
 
 ## License
