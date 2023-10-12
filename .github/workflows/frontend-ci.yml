@@ -12,7 +12,7 @@ on:
     paths:
       - ".github/**"
       - "front/**"
-      - "docker/**"
+      - "docker/node/**"
   pull_request:
     types:
       - opened
@@ -22,7 +22,7 @@ on:
     paths:
       - ".github/**"
       - "front/**"
-      - "docker/**"
+      - "docker/node/**"
   workflow_dispatch:
 
 env:

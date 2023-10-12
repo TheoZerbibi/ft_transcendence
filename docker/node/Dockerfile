@@ -50,8 +50,7 @@ RUN pnpm install
 
 COPY . .
 
-RUN npx prisma generate \
-	&& pnpm build
+RUN pnpm build
 
 FROM common AS production
 
@@ -62,4 +61,4 @@ RUN pnpm install --prod
 
 COPY --from=build /home/node/app/dist ./dist
 
-CMD [ "node", "dist/main.js" ]
+CMD [ "pnpm", "start:prod" ]

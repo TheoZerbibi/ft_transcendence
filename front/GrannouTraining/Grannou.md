@@ -8,7 +8,7 @@
     • lancer le script ./scripts/setup.sh
         il check le hostname, clear les volumes, check si .env ou le crée etc
     • docker exec -it front sh
-    • Dans le terminal du container lancer le site avec pnpm dev
+    • Dans le terminal du container lancer le site avec pnpm start:dev
     • ouvrir un autre terminal pour les git add / commit / push
 
 OU cd VueProjects/my-one-page-website puis npm run serve (pour le training)
