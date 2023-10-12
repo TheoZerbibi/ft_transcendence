@@ -125,7 +125,7 @@ jobs:
       - name: Build and push Docker image
         run: |
           echo "Building Docker image..."
-          docker build -t ${{ env.DOCKER_REGISTRY }}/chat-socket-image:latest -f ../../docker/node/Dockerfile --target production --build-arg APP=socket .
+          docker build -t ${{ env.DOCKER_REGISTRY }}/chat-socket-image:latest -f ../../docker/node/Dockerfile --target productio .
 
           echo "Pushing Docker image to GitHub Container Registry..."
           docker push ${{ env.DOCKER_REGISTRY }}/chat-socket-image:latest

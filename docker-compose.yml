@@ -23,9 +23,9 @@ services:
   #     API_PORT: ${API_PORT}
   #     GAME_SOCKET: ${GAME_SOCKET_PORT}
   #     CHAT_SOCKET: ${CHAT_SOCKET_PORT}
-    # networks:
-    #   - default
-    #   - project
+  #   networks:
+  #     - default
+  #     - project
   #   restart: always
 
   postgres:
@@ -92,6 +92,7 @@ services:
     networks:
       - default
       - project
+    command: sh -c "pnpm db:pull"
     restart: always
 
   chat:
@@ -117,6 +118,7 @@ services:
     networks:
       - default
       - project
+    command: sh -c "pnpm db:pull"
     restart: always
 
   api:
@@ -149,6 +151,7 @@ services:
     networks:
       - default
       - project
+    command: sh -c "pnpm db:deploy"
     restart: always
 
 volumes:

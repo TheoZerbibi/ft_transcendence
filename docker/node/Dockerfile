@@ -54,19 +54,12 @@ RUN pnpm build
 
 FROM common AS production
 
-ARG APP
-
 COPY package*.json .
 COPY pnpm-lock.yaml .
 
 RUN pnpm install --prod
-RUN echo "app : $APP"
-
 
 COPY --from=build /home/node/app/dist ./dist
 COPY --from=build /home/node/app/prisma ./prisma
-
-RUN if [ "$APP" == "back" ]; then pnpm db:deploy; fi
-RUN if [ "$APP" == "socket" ]; then pnpm db:pull; fi
 
 CMD [ "pnpm", "start:prod" ]
