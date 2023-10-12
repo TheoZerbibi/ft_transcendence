@@ -49,6 +49,7 @@ COPY pnpm-lock.yaml .
 RUN pnpm install
 
 COPY . .
+COPY src/config dist/config
 
 RUN pnpm build
 

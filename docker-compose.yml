@@ -92,7 +92,7 @@ services:
     networks:
       - default
       - project
-    command: sh -c "pnpm db:pull"
+    command: sh -c "pnpm db:pull && pnpm start:prod"
     restart: always
 
   chat:
@@ -118,7 +118,7 @@ services:
     networks:
       - default
       - project
-    command: sh -c "pnpm db:pull"
+    command: sh -c "pnpm db:pull && pnpm start:prod"
     restart: always
 
   api:
@@ -151,7 +151,7 @@ services:
     networks:
       - default
       - project
-    command: sh -c "pnpm db:deploy:prod"
+    command: sh -c "pnpm db:deploy:prod && pnpm start:prod"
     restart: always
 
 volumes:
