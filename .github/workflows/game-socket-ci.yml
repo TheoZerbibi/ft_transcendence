@@ -11,7 +11,7 @@ on:
       - "!**/frontend/**"
     paths:
       - ".github/**"
-      - "socket/**"
+      - "sockets/**"
       - "docker/**"
   pull_request:
     types:
@@ -21,7 +21,7 @@ on:
       - ready_for_review
     paths:
       - ".github/**"
-      - "socket/**"
+      - "sockets/**"
       - "docker/**"
   workflow_dispatch:
 
@@ -30,7 +30,7 @@ env:
 
 defaults:
   run:
-    working-directory: socket/game
+    working-directory: sockets/game
 
 jobs:
   setup:
@@ -53,7 +53,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
-          cache-dependency-path: socket/game/pnpm-lock.yaml
+          cache-dependency-path: sockets/game/pnpm-lock.yaml
       - name: Install deps
         run: pnpm install
       - name: Lint
@@ -73,7 +73,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
-          cache-dependency-path: socket/game/pnpm-lock.yaml
+          cache-dependency-path: sockets/game/pnpm-lock.yaml
       - name: Install deps
         run: pnpm install
       - name: Prettier
@@ -94,7 +94,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
-          cache-dependency-path: socket/game/pnpm-lock.yaml
+          cache-dependency-path: sockets/game/pnpm-lock.yaml
       - name: Install deps
         run: pnpm install
       - name: Generate Prisma Client
