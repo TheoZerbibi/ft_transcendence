@@ -4,11 +4,19 @@ import { Prisma } from '@prisma/client';
 //import { JwtService } from '@nestjs/jwt';
 import { CreateChannelDto } from './dto/create-channel.dto';
 import { UpdateChannelDto } from './dto/update-channel.dto';
+import { User } from '@prisma/client';
 
 import {
-	ForbiddenException,
+	BadRequestException,
 	Injectable,
 } from '@nestjs/common';
+
+enum PrivilegeStatus {
+	NOTHING = -1,
+	USER,
+	ADMIN,
+	OWNER,
+};
 
 @Injectable()
 export class ChannelService {
@@ -24,6 +32,51 @@ export class ChannelService {
 		});
 		console.log(typeof channelDto);
 		return channelDto;
+	}
+
+	async	getChannelUser(user: User, channel_name: string)
+	{
+		try {
+			const channel = await this.prisma.channel.findUnique({
+				where: {
+					name: channel_name,
+				},
+			});
+
+			if (!channel) throw new BadRequestException('Channel don\'t exist');
+
+			const userDto = this.prisma.user.findUnique({
+				where: {
+					login: user.login,
+				}
+			});
+			if (!channel) throw new BadRequestException('You are not registered as a user');
+
+			const channelUserDto = null;
+
+			return channelUserDto;
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	async userPrivilegeLevel(user: User, channel_name: string)
+	{
+		try {
+			const myChannelUserDto = this.getChannelUser(user, channel_name);
+			if (!myChannelUserDto)
+				return (PrivilegeStatus.NOTHING);
+
+			if (myChannelUserDto.is_owner === true)
+				return (PrivilegeStatus.OWNER);
+			else if (myChannelUserDto.is_admin === true)
+				return (PrivilegeStatus.ADMIN);
+			else
+				return (PrivilegeStatus.USER);
+		} catch (e) {
+			console.log(e);
+		}
+
 	}
 
 	async create(dto: CreateChannelDto, userId: number) {
@@ -48,7 +101,7 @@ export class ChannelService {
 			return channel;
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
-				if (e.code === 'P2002') throw new ForbiddenException('Channel name taken');
+				if (e.code === 'P2002') throw new BadRequestException('Channel name taken');
 			}
 		}
 	}
@@ -75,28 +128,11 @@ export class ChannelService {
 	// 				if (e instanceof Prisma.PrismaClientKnownRequestError)
 	// 					{
 	// 						if (e.code === 'P2002')
-	// 							throw new ForbiddenException('Channel name taken');
+	// 							throw new BadRequestException('Channel name taken');
 	// 					}
 	// 			}
 	// }
 	//
-
-	async	getChannelUser(username: string, channel_name: string)
-	{
-		try {
-			const channel = await this.prisma.channel.findUnique(
-				{
-					where: {
-						name: channel_name,
-					},
-				});
-				if (!channel) throw new ForbiddenException('Channel don\'t exist');
-				//
-		} catch (e) {
-			console.log(e);
-		}
-	}
-
 
 	update(id: number, updateChannelDto: UpdateChannelDto) {
 		console.log(updateChannelDto);
@@ -119,7 +155,7 @@ export class ChannelService {
 				return user;
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
-				if (e.code === 'P2002') throw new ForbiddenException('Channel name taken');
+				if (e.code === 'P2002') throw new BadRequestException('Channel name taken');
 			}
 		}
 	}
@@ -137,26 +173,6 @@ export class ChannelService {
 	// 		fetching channel by name
 	// 		fetching user by name
 	// 		fetching channel_user by channel and user
-
-	//	async isAdmin(user_name: string, channel:string) : Promise<boolean>
-	//	{
-	//
-	//		const channelDto = this.getChannel(channel);
-	//	const userDto = this.getChannelUser(channelDto.id
-	//		try {
-	//
-	//
-	//			const userDto = await this.prisma.channelUser.findUnique({
-	//				where : {
-	//					user_id: user_name,
-	//					channel_id: channel
-	//				}
-	//			});
-	//		} catch (e) {
-	//			return undefined
-	//		}
-	//}
-
 	findAll() {
 		return `This action returns all channel`;
 	}
