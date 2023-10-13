@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import { io, Socket } from 'socket.io-client';
 
 // eslint-disable-next-line no-undef
-const serverURL = `http://${HOST}:${GAME_SOCKET}`;
+const serverURL = `http://${VITE_HOST}:${VITE_GAME_SOCKET_PORT}`;
 
 export const useSocketStore = defineStore('webSocket', {
 	state: () => ({

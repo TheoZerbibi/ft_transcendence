@@ -2,38 +2,6 @@ version: "3.9"
 
 services:
 
-  front:
-    build:
-      context: ./front
-      target: frontend
-      dockerfile: ../docker/node/Dockerfile
-    container_name: front
-    ports:
-      - ${FRONT_PORT}:${FRONT_PORT}
-    volumes:
-      - ./front:/home/node/app
-      - /home/node/app/node_modules
-      - /home/node/app/.pnpm-store
-    depends_on:
-      api:
-        condition: service_started
-      game:
-        condition: service_started
-      chat:
-        condition: service_started
-    environment:
-      NODE_ENV: ${NODE_ENV}
-      HOST: ${HOSTNAME}
-      API42_UID: ${API42_UID}
-      API42_SECRET: ${API42_SECRET}
-      PORT: ${FRONT_PORT}
-      API_PORT: ${API_PORT}
-      GAME_SOCKET: ${GAME_SOCKET_PORT}
-      CHAT_SOCKET: ${CHAT_SOCKET_PORT}
-    command: sh -c "pnpm start:dev"
-    # command: sh -c "tail -f /dev/null"
-    restart: always
-
   postgres:
     image: postgres:16-alpine3.18
     container_name: postgres
@@ -96,6 +64,38 @@ services:
   #   command: sh -c "pnpm db:pull && pnpm start:prisma"
   #   #command: sh -c "pnpm start:prisma"
   #   restart: always
+
+  front:
+    build:
+      context: ./front
+      target: frontend
+      dockerfile: ../docker/node/Dockerfile
+    container_name: front
+    ports:
+      - ${FRONT_PORT}:${FRONT_PORT}
+    volumes:
+      - ./front:/home/node/app
+      # - /home/node/app/node_modules
+      - /home/node/app/.pnpm-store
+    # depends_on:
+      # api:
+      #   condition: service_started
+      # game:
+      #   condition: service_started
+      # chat:
+      #   condition: service_started
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      VITE_HOST: ${HOSTNAME}
+      VITE_API42_UID: ${API42_UID}
+      VITE_API42_SECRET: ${API42_SECRET}
+      VITE_PORT: ${FRONT_PORT}
+      VITE_API_PORT: ${API_PORT}
+      VITE_GAME_SOCKET_PORT: ${GAME_SOCKET_PORT}
+      VITE_CHAT_SOCKET_PORT: ${CHAT_SOCKET_PORT}
+    # command: sh -c "pnpm start:dev"
+    command: sh -c "tail -f /dev/null"
+    restart: always
 
   game:
     build:

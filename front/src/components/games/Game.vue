@@ -149,7 +149,7 @@ export default {
 			},
 		};
 		// eslint-disable-next-line no-undef
-		await fetch(`http://${HOST}:${API}/game/${this.gameUID}`, requestOptions)
+		await fetch(`http://${VITE_HOST}:${VITE_API_PORT}/game/${this.gameUID}`, requestOptions)
 			.then(async (response) => {
 				if (!response.ok) {
 					const data = await response.json();

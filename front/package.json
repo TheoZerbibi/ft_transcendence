@@ -10,10 +10,10 @@
 		"lint": "eslint src/ --cache --cache-location ./node_modules/.vite/vite-plugin-eslint --no-error-on-unmatched-pattern && prettier . -w -u",
 		"lint:style": "stylelint \"./**/*.{css,sass,scss,htm,html,vue}\" --cache-location ./node_modules/.vite/vite-plugin-stylelint && prettier \"./**/*.{css,sass,scss,htm,html,vue}\" -w -u",
 		"build-only": "vite build",
-		"start:prod": "vite preview --port ${PORT} --host",
-		"start:dev": "vite --port ${PORT} --host",
+		"start:prod": "vite preview --port ${VITE_PORT} --host",
+		"start:dev": "vite --port ${VITE_PORT} --host",
 		"format": "prettier --write src/",
-		"preview": "vite preview --port ${PORT} --host",
+		"preview": "vite preview --port ${VITE_PORT} --host",
 		"test:e2e:dev": "start-server-and-test 'vite dev --port 4173' http://localhost:4173 'cypress open --e2e'",
 		"type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false"
 	},
