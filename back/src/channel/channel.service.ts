@@ -64,24 +64,6 @@ export class ChannelService {
 		}
 	}
 
-	// Need to check if user is admin
-	async updateChannelUser(dto: UpdateChannelDto) {
-		try {
-			//	const user = this.prisma.channel_users.findMany({
-			const user = await this.prisma.user.findUnique({
-				where: {
-					login: dto.name,
-				},
-			});
-			//
-			return user;
-		} catch (e) {
-			if (e instanceof Prisma.PrismaClientKnownRequestError) {
-				if (e.code === 'P2002') throw new ForbiddenException('Channel name taken');
-			}
-		}
-	}
-
 	// Need to implement
 	// 	User update with dto : controller shall call kick, ban or mute route, can only be performed by higher grade channel_user
 	//	Channel deletion: Only owner can do it
