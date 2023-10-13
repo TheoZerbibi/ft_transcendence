@@ -1,0 +1,264 @@
+name: Backend CI
+
+on:
+  push:
+    branches:
+      - "develop"
+  pull_request:
+    branches:
+      - "develop"
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: 20
+
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+  backend-tester:
+    needs: [setup]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: back
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+          cache-dependency-path: back/pnpm-lock.yaml
+      - name: Install deps
+        run: pnpm install
+      - name: Lint
+        run: pnpm lint
+      - name: Prettier
+        run: pnpm prettier
+
+  frontend-tester:
+    needs: [setup]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: front
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+          cache-dependency-path: front/pnpm-lock.yaml
+      - name: Install deps
+        run: pnpm install
+      - name: Lint
+        run: pnpm lint
+      - name: Lint style
+        run: pnpm lint:style
+
+  game-socket-tester:
+    needs: [setup]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sockets/game
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+          cache-dependency-path: sockets/game/pnpm-lock.yaml
+      - name: Install deps
+        run: pnpm install
+      - name: Lint
+        run: pnpm lint
+      - name: Prettier
+        run: pnpm prettier
+
+  chat-socket-tester:
+    needs: [setup]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sockets/chat
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+          cache-dependency-path: sockets/chat/pnpm-lock.yaml
+      - name: Install deps
+        run: pnpm install
+      - name: Lint
+        run: pnpm lint
+      - name: Prettier
+        run: pnpm prettier
+
+  build-backend:
+    needs: [setup]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: back
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+          cache-dependency-path: back/pnpm-lock.yaml
+      - name: Install deps
+        run: pnpm install
+      - name: Generate Prisma Client
+        run: npx prisma generate
+      - name: Build
+        run: pnpm build
+
+  build-frontend:
+    needs: [setup]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: front
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+          cache-dependency-path: front/pnpm-lock.yaml
+      - name: Install deps
+        run: pnpm install
+      - name: Build
+        run: pnpm build
+
+  build-game-socket:
+    needs: [setup]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sockets/game
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+          cache-dependency-path: sockets/game/pnpm-lock.yaml
+      - name: Install deps
+        run: pnpm install
+      - name: Generate Prisma Client
+        run: npx prisma generate
+      - name: Build
+        run: pnpm build
+
+  build-chat-socket:
+    needs: [setup]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sockets/chat
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+          cache-dependency-path: sockets/chat/pnpm-lock.yaml
+      - name: Install deps
+        run: pnpm install
+      - name: Generate Prisma Client
+        run: npx prisma generate
+      - name: Build
+        run: pnpm build
+  build-docker:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: docker compose -f dev.docker-compose.yml build
+
+  release:
+    # if: github.event.pull_request.merged == true
+    needs:
+    - backend-tester
+    - frontend-tester
+    - game-socket-tester
+    - chat-socket-tester
+    - build-backend
+    - build-frontend
+    - build-game-socket
+    - build-chat-socket
+    - build-docker
+    runs-on: ubuntu-latest
+    outputs:
+      new_release_published: ${{ steps.semantic.outputs.new_release_published }}
+      new_release_version: ${{ steps.semantic.outputs.new_release_version }}
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@v4
+        id: semantic
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

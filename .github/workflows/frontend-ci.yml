@@ -6,6 +6,7 @@ on:
       - '*'
       - '**'
       - '*/*'
+      - '!master' 
       - '!**/backend'
       - '!backend/**'
       - '!**/backend/**'
@@ -14,6 +15,14 @@ on:
       - "front/**"
       - "docker/node/**"
   pull_request:
+    branches:
+      - '*'
+      - '**'
+      - '*/*'
+      - '!master' 
+      - '!**/backend'
+      - '!backend/**'
+      - '!**/backend/**'
     types:
       - opened
       - synchronize
