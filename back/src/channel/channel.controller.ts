@@ -8,7 +8,7 @@ import {
 	UseGuards,
 	//ClassSerializerInterceptor,
 	//BadRequestException,
-	//Patch,
+	Patch,
 	//UseInterceptors,
 	//Delete,
 } from '@nestjs/common';
@@ -50,8 +50,9 @@ export class ChannelController {
 	//@Get('create')
 	@ApiOperation({ summary: 'mod Channel' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async create(@Body() createChannelDto: CreateChannelDto, @GetUser() user: User) {
-			
+
+	async modChannel(@Body() createChannelDto: CreateChannelDto, @GetUser() user: User) {
+		return null;
 	}
 
 	//@Patch('kick')
