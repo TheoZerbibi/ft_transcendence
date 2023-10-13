@@ -3,14 +3,16 @@ version: "3.9"
 services:
 
   front:
-    image: ghcr.io/theozerbibi/front-image:latest
+    image: ghcr.io/theozerbibi/front-image:latest 
     container_name: front
     ports:
       - ${FRONT_PORT}:${FRONT_PORT}
     depends_on:
       api:
         condition: service_started
-      socket:
+      game:
+        condition: service_started
+      chat:
         condition: service_started
     environment:
       NODE_ENV: production

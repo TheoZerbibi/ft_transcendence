@@ -50,8 +50,9 @@ export class ChannelController {
 	//@Get('create')
 	@ApiOperation({ summary: 'mod Channel' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-
 	async modChannel(@Body() createChannelDto: CreateChannelDto, @GetUser() user: User) {
+		console.log(createChannelDto);
+		console.log(user);
 		return null;
 	}
 
