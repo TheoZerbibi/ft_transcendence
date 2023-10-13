@@ -253,7 +253,7 @@ jobs:
       CHAT_SOCKET_PORT: 4001
 
   release:
-    # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     needs:
     - backend-tester
     - frontend-tester
