@@ -2,69 +2,6 @@ version: "3.9"
 
 services:
 
-  postgres:
-    image: postgres:16-alpine3.18
-    container_name: postgres
-    volumes:
-        - pgdata:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
-    expose:
-      - 5432
-    environment:
-      PGDATA: /var/lib/postgresql/data/pgdata
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      POSTGRES_ENABLED: ${POSTGRES_ENABLED}
-    healthcheck:
-      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
-      interval: 10s
-      timeout: 3s
-      retries: 3
-    restart: always
-
-  redis:
-    image: redis:7.2.1-alpine
-    container_name: redis
-    expose:
-      - '6379'
-    volumes:
-      - redisdata:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      start_period: 1m
-      interval: 5s
-      timeout: 2s
-      retries: 21
-    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASS}
-    restart: always
-
-  # CONTAINER UNIQUEMENT DEV, NE PAS DEPLOY SUR LA PROD
-  # prisma:
-  #   container_name: prisma
-  #   build:
-  #     context: ./
-  #     dockerfile: ./docker/prisma/Dockerfile
-  #   ports:
-  #     - 5555:5555
-  #   depends_on:
-  #     api:
-  #       condition: service_started
-  #   environment:
-  #     POSTGRES_DB: ${POSTGRES_DB}
-  #     POSTGRES_USER: ${POSTGRES_USER}
-  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-  #     POSTGRES_PORT: ${POSTGRES_PORT}
-  #     POSTGRES_ENABLED: ${POSTGRES_ENABLED}
-  #     NODE_ENV: ${NODE_ENV}
-  #     DATABASE_URL: ${DATABASE_URL}
-  #     HOST: ${HOSTNAME}
-  #   command: sh -c "pnpm db:pull && pnpm start:prisma"
-  #   #command: sh -c "pnpm start:prisma"
-  #   restart: always
-
   front:
     build:
       context: ./front
@@ -195,6 +132,69 @@ services:
       REDIS_URL: ${REDIS_URL}
     command: sh -c "pnpm db:deploy && pnpm start:dev"
     # command: sh -c "tail -f /dev/null"
+    restart: always
+
+  postgres:
+    image: postgres:16-alpine3.18
+    container_name: postgres
+    volumes:
+        - pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_ENABLED: ${POSTGRES_ENABLED}
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    restart: always
+
+  # CONTAINER UNIQUEMENT DEV, NE PAS DEPLOY SUR LA PROD
+  # prisma:
+  #   container_name: prisma
+  #   build:
+  #     context: ./
+  #     dockerfile: ./docker/prisma/Dockerfile
+  #   ports:
+  #     - 5555:5555
+  #   depends_on:
+  #     api:
+  #       condition: service_started
+  #   environment:
+  #     POSTGRES_DB: ${POSTGRES_DB}
+  #     POSTGRES_USER: ${POSTGRES_USER}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  #     POSTGRES_PORT: ${POSTGRES_PORT}
+  #     POSTGRES_ENABLED: ${POSTGRES_ENABLED}
+  #     NODE_ENV: ${NODE_ENV}
+  #     DATABASE_URL: ${DATABASE_URL}
+  #     HOST: ${HOSTNAME}
+  #   command: sh -c "pnpm db:pull && pnpm start:prisma"
+  #   #command: sh -c "pnpm start:prisma"
+  #   restart: always
+
+  redis:
+    image: redis:7.2.1-alpine
+    container_name: redis
+    expose:
+      - '6379'
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      start_period: 1m
+      interval: 5s
+      timeout: 2s
+      retries: 21
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASS}
     restart: always
 
 volumes:
