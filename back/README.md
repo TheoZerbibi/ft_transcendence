@@ -192,10 +192,9 @@ The Api use JWT for security. When you create or signin into a account, the api 
   POST /game/createGame
 ```
 
-| Parameter        | Type     | Description                          |
-| :--------------- | :------- | :----------------------------------- |
-|  `access_token`  | `string` | **Required**. A JWT access token.    |
-
+| Parameter      | Type     | Description                       |
+| :------------- | :------- | :-------------------------------- |
+| `access_token` | `string` | **Required**. A JWT access token. |
 
     curl -X 'POST' 'http://localhost:3001/game/createGame' -H 'accept: application/json' -H 'Authorization: Bearer ${access_token}'
 
@@ -209,7 +208,7 @@ The Api use JWT for security. When you create or signin into a account, the api 
     date: Fri,13 Oct 2023 17:38:54 GMT
     etag: W/"2b-dGnJzt6gv1nJjX6DJ9RztDWptng"
     keep-alive: timeout=5
-    x-powered-by: Express 
+    x-powered-by: Express
 
     { "id": 1, "uid": "4e3bf9fc-4702-4693-82e4-c8c801e7f11a", "is_private": false, "created_at", "2023-10-13T17:33:08.769Z", "started_at": null, "end_at": null }
 
@@ -219,10 +218,9 @@ The Api use JWT for security. When you create or signin into a account, the api 
   GET /game/getEmptyGame
 ```
 
-| Parameter        | Type     | Description                          |
-| :--------------- | :------- | :----------------------------------- |
-|  `access_token`  | `string` | **Required**. A JWT access token.    |
-
+| Parameter      | Type     | Description                       |
+| :------------- | :------- | :-------------------------------- |
+| `access_token` | `string` | **Required**. A JWT access token. |
 
     curl -X 'GET' 'http://localhost:3001/game/getEmptyGame' -H 'accept: application/json' -H 'Authorization: Bearer ${access_token}'
 
@@ -236,7 +234,7 @@ The Api use JWT for security. When you create or signin into a account, the api 
     date: Fri,13 Oct 2023 17:45:28 GMT
     etag: W/"90-45qCZbc8skNBIQQ5jAthKgMJCuM"
     keep-alive: timeout=5
-    x-powered-by: Express 
+    x-powered-by: Express
 
     { "id": 1, "uid": "4e3bf9fc-4702-4693-82e4-c8c801e7f11a", "is_private": false, "created_at": "2023-10-13T17:45:23.851Z", "started_at": null, "end_at": null }
     or
@@ -248,11 +246,11 @@ The Api use JWT for security. When you create or signin into a account, the api 
   POST /game/${uuid}
 ```
 
-| Parameter        | Type     | Description                          |
-| :--------------- | :------- | :----------------------------------- |
-|  `access_token`  | `string` | **Required**. A JWT access token.    |
+| Parameter      | Type     | Description                       |
+| :------------- | :------- | :-------------------------------- |
+| `access_token` | `string` | **Required**. A JWT access token. |
 
-  curl -X 'POST' 'http://localhost:3001/game/4e3bf9fc-4702-4693-82e4-c8c801e7f11a' -H 'accept: application/json' -H 'Authorization: Bearer ${access_token}'
+curl -X 'POST' 'http://localhost:3001/game/4e3bf9fc-4702-4693-82e4-c8c801e7f11a' -H 'accept: application/json' -H 'Authorization: Bearer ${access_token}'
 
 #### Response :
 
@@ -268,10 +266,10 @@ The Api use JWT for security. When you create or signin into a account, the api 
 
     { "id": 1, "uid": "4e3bf9fc-4702-4693-82e4-c8c801e7f11a", "is_private": false, "created_at": "2023-10-13T17:45:23.851Z", "started_at": null, "end_at": null, "player_id": 1, "game_id": 1, "is_win": false, "is_spec": false }
 
-
 ## Environment Variables
 
 ### POSTGRES
+
 `POSTGRES_HOST` : The host for postgres container.
 `POSTGRES_PORT` : The port for postgres container.
 `POSTGRES_USER` : The admin user for postgres container.
@@ -280,12 +278,14 @@ The Api use JWT for security. When you create or signin into a account, the api 
 `DATABASE_URL` : The full URL for prisma. See [database connection reference](https://www.prisma.io/docs/reference/database-reference/connection-urls) on Prisma docs.
 
 ### REDIS
+
 `REDIS_HOST` : The host for redis container.
 `REDIS_PORT` : The port for redis container.
 `REDIS_PASS` : The password for redis container.
 `REDIS_URL` : The full URL of Redis. See [Redis URI](https://redis.io/docs/ui/cli/) on redis docs.
 
 ### ENVIRONMENT
+
 `NODE_ENV` : The node env for NodeJS (production, development or test). See [VueJS mode and env](https://cli.vuejs.org/guide/mode-and-env.html) docs or [NestJS configuration](https://docs.nestjs.com/techniques/configuration) docs.
 `JWT_SECRET` : The secret for JWT. See [JWT Introduction](https://jwt.io/introduction) for more information.
 `FRONT_PORT` : Port for the frontend.
@@ -294,9 +294,11 @@ The Api use JWT for security. When you create or signin into a account, the api 
 `CHAT_SOCKET_PORT` : Port for the Chat Socket server.
 
 ### 42API
+
 `API42_UID`, `API42_SECRET` : The credential for 42 API. See [42's API Guide](https://api.intra.42.fr/apidoc/guides/getting_started) for more information.
 
 ### OTHER
+
 `HOST` : The Host using for request to the back or socket server. By default is the result of `hostname` bash command.
 
 ## License
