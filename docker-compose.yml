@@ -2,72 +2,30 @@ version: "3.9"
 
 services:
 
-  # front:
-  #   image:ghcr.io/theozerbibi/front-image:latest
-  #   container_name: front
-  #   ports:
-  #     ${FRONT_PORT}:${FRONT_PORT}
-  #   depends_on:
-  #     api:
-  #       condition: service_started
-  #     game:
-  #       condition: service_started
-  #     chat:
-  #       condition: service_started
-  #   environment:
-  #     NODE_ENV: production
-  #     HOST: ${HOSTNAME}
-  #     API42_UID: ${API42_UID}
-  #     API42_SECRET: ${API42_SECRET}
-  #     PORT: ${FRONT_PORT}
-  #     API_PORT: ${API_PORT}
-  #     GAME_SOCKET: ${GAME_SOCKET_PORT}
-  #     CHAT_SOCKET: ${CHAT_SOCKET_PORT}
-  #   networks:
-  #     - default
-  #     - project
-  #   restart: always
-
-  postgres:
-    image: postgres:16-alpine3.18
-    container_name: postgres
-    volumes:
-        - pgdata:/var/lib/postgresql/data
-    expose:
-      - 5432
+  front:
+    image: ghcr.io/theozerbibi/front-image:latest 
+    container_name: front
+    ports:
+      - ${FRONT_PORT}:${FRONT_PORT}
+    depends_on:
+      api:
+        condition: service_started
+      game:
+        condition: service_started
+      chat:
+        condition: service_started
     environment:
-      PGDATA: /var/lib/postgresql/data/pgdata
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      POSTGRES_ENABLED: ${POSTGRES_ENABLED}
-    healthcheck:
-      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
-      interval: 10s
-      timeout: 3s
-      retries: 3
-    networks:
-      - project
+      NODE_ENV: production
+      VITE_HOST: ${HOSTNAME}
+      VITE_API42_UID: ${API42_UID}
+      VITE_API42_SECRET: ${API42_SECRET}
+      VITE_PORT: ${FRONT_PORT}
+      VITE_API_PORT: ${API_PORT}
+      VITE_GAME_SOCKET_PORT: ${GAME_SOCKET_PORT}
+      VITE_CHAT_SOCKET_PORT: ${CHAT_SOCKET_PORT}
+    command: sh -c "pnpm start:prod"
     restart: always
 
-  redis:
-    image: redis:7.2.1-alpine
-    container_name: redis
-    expose:
-      - '6379'
-    volumes:
-      - redisdata:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      start_period: 1m
-      interval: 5s
-      timeout: 2s
-      retries: 21
-    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASS}
-    networks:
-      - project
-    restart: always
 
   game:
     image: ghcr.io/theozerbibi/game-socket-image:latest
@@ -152,6 +110,47 @@ services:
       - default
       - project
     command: sh -c "pnpm db:deploy:prod && pnpm start:prod"
+    restart: always
+
+  postgres:
+    image: postgres:16-alpine3.18
+    container_name: postgres
+    volumes:
+        - pgdata:/var/lib/postgresql/data
+    expose:
+      - 5432
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_ENABLED: ${POSTGRES_ENABLED}
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      - project
+    restart: always
+
+  redis:
+    image: redis:7.2.1-alpine
+    container_name: redis
+    expose:
+      - '6379'
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      start_period: 1m
+      interval: 5s
+      timeout: 2s
+      retries: 21
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASS}
+    networks:
+      - project
     restart: always
 
 volumes:
