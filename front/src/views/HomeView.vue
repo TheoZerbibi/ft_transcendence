@@ -3,7 +3,16 @@
 		<NavBar>
 			<v-container fluid>
 				<div class="head">
-
+					<v-row>
+						<v-col cols="5">
+							<div style="position: relative" clas="mt-16">
+								<h1 class="text-grey">Hello,</h1>
+								<h1 class="text-grey">Welcome to ft_transcendence of</h1>
+								<span class="text-grey">Théo, Gaëlle, Semiha, Noémie and ?</span><br />
+								<v-btn title dark class="text-yellow mt-8" variant="outlined"></v-btn>
+							</div>
+						</v-col>
+					</v-row>
 				</div>
 			</v-container>
 		</NavBar>
@@ -47,5 +56,15 @@ export default defineComponent({
 	width: 50%;
 	background: black;
 	transform: skew(0deg, 6deg);
+}
+.head.after{
+	content: " ";
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100%;
+	width: 50%;
+	background: black;
+	transform: skew(0deg, -6deg);
 }
 </style>
