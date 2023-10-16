@@ -42,6 +42,7 @@ EXPOSE 4000
 EXPOSE 4001
 
 FROM common AS build
+ARG VITE_API_PORT=test1
 
 COPY package*.json .
 COPY pnpm-lock.yaml .
@@ -57,11 +58,13 @@ RUN if [[ ! -d "./swagger-ui/" ]]; then mkdir -p swagger-ui; fi
 RUN if [[ ! -d "./prisma/" ]]; then mkdir -p prisma; fi
 
 FROM common AS production
+ARG VITE_API_PORT=test2
 
 COPY package*.json .
 COPY pnpm-lock.yaml .
 
 RUN pnpm install --prod
+
 
 COPY --from=build /home/node/app/dist ./dist
 COPY --from=build /home/node/app/prisma ./prisma
