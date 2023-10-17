@@ -8,7 +8,7 @@
 						<div style="position: relative" clas="mt-16">
 							<h1 class="text-grey">Hello,</h1>
 							<h1 class="text-white">Welcome to ft_transcendence of</h1>
-							<span class="text-grey">Théo, Gaëlle, Semiha, Noémie and Norminet</span><br />
+							<span class="text-grey">Théo, Gaëlle, Semiha, Noémi and Norminet</span><br />
 							<v-btn title dark class="text-yellow mt-8" variant="outlined">Contact us</v-btn>
 						</div>
 					</v-col>
@@ -114,7 +114,7 @@
 			</v-col>
 			<v-col cols="12" sm="12">
 				<div class="d-flex jusify-center mb-6">
-					<v-btn color="#FBDF7E" class="mt-4">Lead More</v-btn>
+					<v-btn color="#FBDF7E" class="mt-4">Load More</v-btn>
 				</div>
 			</v-col>
 			<v-col cols="12" id="page">
