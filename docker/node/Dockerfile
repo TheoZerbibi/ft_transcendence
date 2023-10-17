@@ -37,29 +37,3 @@ RUN npm i -g @nestjs/cli \
 
 EXPOSE 4000
 EXPOSE 4001
-
-FROM common AS build
-ARG VITE_HOST=bess-f2r1s6.clusters.42paris.fr
-ARG VITE_PORT=3000
-ARG VITE_API_PORT=3001
-ARG VITE_GAME_SOCKET_PORT=4000
-ARG VITE_CHAT_SOCKET_PORT4001
-
-COPY --chown=node:node package*.json .
-COPY --chown=node:node pnpm-lock.yaml .
-
-RUN pnpm install --prod
-
-COPY --chown=node:node . .
-
-RUN pnpm build
-
-RUN if [[ ! -d "./swagger-ui/" ]]; then mkdir -p swagger-ui; fi
-RUN if [[ ! -d "./prisma/" ]]; then mkdir -p prisma; fi
-
-FROM common AS production
-
-COPY --chown=node:node --from=build /home/node/app/dist ./dist
-COPY --chown=node:node --from=build /home/node/app/node_modules ./node_modules
-COPY --chown=node:node --from=build /home/node/app/prisma ./prisma
-COPY --chown=node:node --from=build /home/node/app/swagger-ui ./swagger-ui
