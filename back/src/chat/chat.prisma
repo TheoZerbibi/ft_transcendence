@@ -1,0 +1,39 @@
+
+model Channel {
+	id			Int	@id @default(autoincrement())
+	name		String		@unique
+	public		Boolean		@default(true)
+	password	String?
+	created_at	DateTime	@default(now())
+	updated_at	DateTime	@default(now()) @updatedAt
+	channelUser	ChannelUser[]
+
+	@@map("channels")
+}
+
+model ChannelUser {
+	id					Int					@id @default(autoincrement())
+	channel_id			Int
+	user_id				Int
+	is_muted			DateTime?
+	is_owner			Boolean				@default(false)
+	is_admin			Boolean				@default(false)
+	is_ban				Boolean				@default(false)
+	created_at			DateTime			@default(now())
+	channelMessage		ChannelMessage[]
+	channel				Channel				@relation(fields: [channel_id], references: [id], onDelete: Cascade)
+	user				User				@relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+	@@unique([channel_id, user_id])
+	@@map("channel_users")
+}
+
+model ChannelMessage {
+	id				Int			@id @default(autoincrement())
+	content			String
+	created_at		DateTime	@default(now())
+	channel_user_id	Int
+	channelUsers	ChannelUser	@relation(fields: [channel_user_id], references: [id], onDelete: Cascade)
+
+	@@map("channel_messages")
+}

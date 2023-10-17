@@ -3,37 +3,114 @@ version: "3.9"
 services:
 
   front:
-    build:
-      context: ./front
-      target: frontend
-      dockerfile: ../docker/node/dev.Dockerfile
+    image: ghcr.io/theozerbibi/front-image:latest
     container_name: front
     ports:
-      - 3000:3000
-    volumes:
-      - ./front:/home/node/app
-      - /home/node/app/node_modules
-      - /home/node/app/.pnpm-store
+      - ${FRONT_PORT}:${FRONT_PORT}
     depends_on:
       api:
         condition: service_started
-      socket:
+      game:
+        condition: service_started
+      chat:
         condition: service_started
     environment:
-      NODE_ENV: ${NODE_ENV}
+      NODE_ENV: production
+      VITE_PORT: ${FRONT_PORT}
+    command: sh -c "pnpm start:prod"
+    restart: always
+
+
+  game:
+    image: ghcr.io/theozerbibi/game-socket-image:latest
+    container_name: game
+    ports:
+    - ${GAME_SOCKET_PORT}:${GAME_SOCKET_PORT}
+    depends_on:
+      api:
+        condition: service_started
+      redis:
+        condition: service_healthy
+    environment:
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PASS: ${REDIS_PASS}
+      REDIS_URL: ${REDIS_URL}
+      NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
       HOST: ${HOSTNAME}
+      PORT: ${GAME_SOCKET_PORT}
+    networks:
+      - default
+      - project
+    command: sh -c "pnpm db:pull && pnpm start:prod"
+    restart: always
+
+  chat:
+    image: ghcr.io/theozerbibi/chat-socket-image:latest
+    container_name: chat
+    ports:
+    - ${CHAT_SOCKET_PORT}:${CHAT_SOCKET_PORT}
+    depends_on:
+      api:
+        condition: service_started
+      redis:
+        condition: service_healthy
+    environment:
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PASS: ${REDIS_PASS}
+      REDIS_URL: ${REDIS_URL}
+      NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      HOST: ${HOSTNAME}
+      PORT: ${CHAT_SOCKET_PORT}
+    networks:
+      - default
+      - project
+    command: sh -c "pnpm db:pull && pnpm start:prod"
+    restart: always
+
+  api:
+    image: ghcr.io/theozerbibi/back-image:latest
+    container_name: api
+    ports:
+      - ${API_PORT}:${API_PORT}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_ENABLED: ${POSTGRES_ENABLED}
+      NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL}
+      HOST: ${HOSTNAME}
+      PORT: ${API_PORT}
+      JWT_SECRET: ${JWT_SECRET}
       API42_UID: ${API42_UID}
       API42_SECRET: ${API42_SECRET}
-    command: sh -c "pnpm dev"
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PASS: ${REDIS_PASS}
+      REDIS_URL: ${REDIS_URL}
+    networks:
+      - default
+      - project
+    command: sh -c "pnpm db:deploy:prod && pnpm start:prod"
     restart: always
 
   postgres:
-    image: postgres:15.2-alpine
+    image: postgres:16-alpine3.18
     container_name: postgres
     volumes:
         - pgdata:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
     expose:
       - 5432
     environment:
@@ -48,14 +125,15 @@ services:
       interval: 10s
       timeout: 3s
       retries: 3
+    networks:
+      - project
     restart: always
 
   redis:
-    image: redis:7.0-alpine
+    image: redis:7.2.1-alpine
     container_name: redis
     expose:
       - '6379'
-    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASS}
     volumes:
       - redisdata:/data
     healthcheck:
@@ -64,92 +142,16 @@ services:
       interval: 5s
       timeout: 2s
       retries: 21
-    restart: always
-
-  # CONTAINER UNIQUEMENT DEV, NE PAS DEPLOY SUR LA PROD
-  prisma:
-    container_name: prisma
-    build:
-      context: ./
-      dockerfile: ./docker/prisma/Dockerfile
-    ports:
-      - 5555:5555
-    depends_on:
-      api:
-        condition: service_started
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      POSTGRES_ENABLED: ${POSTGRES_ENABLED}
-      NODE_ENV: ${NODE_ENV}
-      DATABASE_URL: ${DATABASE_URL}
-      HOST: ${HOSTNAME}
-    command: sh -c "pnpm db:pull && pnpm start:prisma"
-    restart: always
-
-  socket:
-    build:
-      context: ./socket
-      target: socket
-      dockerfile: ../docker/node/dev.Dockerfile
-    container_name: socket
-    ports:
-    - 4000:4000
-    volumes:
-      - ./socket:/home/node/app
-      - /home/node/app/node_modules
-      - /home/node/app/.pnpm-store
-    depends_on:
-      api:
-        condition: service_started
-      redis:
-        condition: service_healthy
-    environment:
-      REDIS_HOST: ${REDIS_HOST}
-      REDIS_PORT: ${REDIS_PORT}
-      REDIS_PASS: ${REDIS_PASS}
-      REDIS_URL: ${REDIS_URL}
-      NODE_ENV: ${NODE_ENV}
-      DATABASE_URL: ${DATABASE_URL}
-      HOST: ${HOSTNAME}
-      PORT: 4000
-    command: sh -c "pnpm db:pull && pnpm start:dev"
-    restart: always
-
-
-  api:
-    build:
-      context: ./back
-      target: backend
-      dockerfile: ../docker/node/dev.Dockerfile
-    container_name: api
-    ports:
-      - 3001:3001
-    volumes:
-      - ./back:/home/node/app
-      - /home/node/app/node_modules
-      - /home/node/app/.pnpm-store
-    depends_on:
-      postgres:
-        condition: service_healthy
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      POSTGRES_ENABLED: ${POSTGRES_ENABLED}
-      NODE_ENV: ${NODE_ENV}
-      DATABASE_URL: ${DATABASE_URL}
-      HOST: ${HOSTNAME}
-      JWT_SECRET: ${JWT_SECRET}
-      API42_UID: ${API42_UID}
-      API42_SECRET: ${API42_SECRET}
-    command: sh -c "pnpm db:migrate:dev && pnpm start:dev"
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASS}
+    networks:
+      - project
     restart: always
 
 volumes:
   redisdata:
   pgdata:
 
+networks:
+  default:
+  project:
+    internal: true

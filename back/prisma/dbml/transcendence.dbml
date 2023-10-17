@@ -7,14 +7,102 @@ Project "Transcendence" {
   Note: 'Transcendence DBML file'
 }
 
+Table channels {
+  id Int [pk, increment]
+  name String [unique, not null]
+  public Boolean [not null, default: true]
+  password String
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [default: `now()`, not null]
+  channelUser channel_users [not null]
+}
+
+Table channel_users {
+  id Int [pk, increment]
+  channel_id Int [not null]
+  user_id Int [not null]
+  is_muted DateTime
+  is_owner Boolean [not null, default: false]
+  is_admin Boolean [not null, default: false]
+  is_ban Boolean [not null, default: false]
+  created_at DateTime [default: `now()`, not null]
+  channelMessage channel_messages [not null]
+  channel channels [not null]
+  user users [not null]
+
+  indexes {
+    (channel_id, user_id) [unique]
+  }
+}
+
+Table channel_messages {
+  id Int [pk, increment]
+  content String [not null]
+  created_at DateTime [default: `now()`, not null]
+  channel_user_id Int [not null]
+  channelUsers channel_users [not null]
+}
+
+Table games {
+  id Int [pk, increment]
+  uid String [unique, not null]
+  is_private Boolean [not null, default: false]
+  created_at DateTime [default: `now()`, not null]
+  started_at DateTime
+  end_at DateTime
+  gamePlayer game_players [not null]
+}
+
+Table game_players {
+  player_id Int [not null]
+  game_id Int [not null]
+  is_win Boolean
+  is_spec Boolean
+  player users [not null]
+  game games [not null]
+
+  indexes {
+    (player_id, game_id) [pk]
+  }
+}
+
 Table users {
   id Int [pk, increment]
   login String [unique, not null]
-  displayName String [not null]
+  display_name String [not null]
   email String [not null]
   dAuth Boolean [not null, default: false]
   avatar String [not null]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [not null]
-  lastLogin DateTime [default: `now()`, not null]
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [not null]
+  last_login DateTime [default: `now()`, not null]
+  channelUser channel_users [not null]
+  user friends [not null]
+  friends friends [not null]
+  GamePlayer game_players [not null]
 }
+
+Table friends {
+  user users [not null]
+  friends users [not null]
+  user_id Int [not null]
+  friend_id Int [not null]
+
+  indexes {
+    (user_id, friend_id) [pk]
+  }
+}
+
+Ref: channel_users.channel_id > channels.id [delete: Cascade]
+
+Ref: channel_users.user_id > users.id [delete: Cascade]
+
+Ref: channel_messages.channel_user_id > channel_users.id [delete: Cascade]
+
+Ref: game_players.player_id > users.id
+
+Ref: game_players.game_id > games.id [delete: Cascade]
+
+Ref: friends.user_id > users.id
+
+Ref: friends.friend_id > users.id

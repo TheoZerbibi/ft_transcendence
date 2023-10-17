@@ -14,12 +14,11 @@ export class AuthService {
 	) {}
 
 	async signup(dto: AuthDto) {
-		// const hash = await argon.hash(dto.password);
 		try {
 			const user = await this.prisma.user.create({
 				data: {
 					login: dto.login,
-					displayName: dto.login,
+					display_name: dto.login,
 					email: `${dto.login}@student.42.fr`,
 					avatar: `https://cdn.intra.42.fr/users/${dto.login}.jpg`,
 				},
@@ -46,7 +45,7 @@ export class AuthService {
 	async signToken(user: Prisma.UserGetPayload<{}>): Promise<{ access_token: string }> {
 		const payload = { login: user.login, sub: user.id };
 		const secret = this.config.get<string>('JWT_SECRET');
-		const token = await this.jwt.signAsync(payload, { expiresIn: '3h', secret: secret });
+		const token = await this.jwt.signAsync(payload, { expiresIn: '1d', secret: secret });
 		return {
 			access_token: token,
 		};

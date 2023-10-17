@@ -59,17 +59,15 @@ $ pnpm run test:e2e
 
 The Api use JWT for security. When you create or signin into a account, the api return a `access_token`.
 
-
 ### Create new user
 
 ```http
   POST auth/signup
 ```
 
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-|  `login`  | `string` | **Required**. A login.     |
-
+| Parameter | Type     | Description            |
+| :-------- | :------- | :--------------------- |
+| `login`   | `string` | **Required**. A login. |
 
     curl -i --location 'http://localhost:3001/auth/signup' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'login=${login}
 
@@ -92,10 +90,9 @@ The Api use JWT for security. When you create or signin into a account, the api 
   POST auth/signin
 ```
 
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-|  `login`  | `string` | **Required**. A login.     |
-
+| Parameter | Type     | Description            |
+| :-------- | :------- | :--------------------- |
+| `login`   | `string` | **Required**. A login. |
 
     curl -i --location 'http://localhost:3001/auth/signin' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'login=${login}'
 
@@ -118,9 +115,9 @@ The Api use JWT for security. When you create or signin into a account, the api 
   GET users/me
 ```
 
-| Parameter        | Type     | Description                          |
-| :--------------- | :------- | :----------------------------------- |
-|  `access_token`  | `string` | **Required**. A JWT access token.    |
+| Parameter      | Type     | Description                       |
+| :------------- | :------- | :-------------------------------- |
+| `access_token` | `string` | **Required**. A JWT access token. |
 
     curl -i --location 'http://localhost:3001/users/me' --header 'Authorization: Bearer ${access_token}'
 
@@ -135,7 +132,7 @@ The Api use JWT for security. When you create or signin into a account, the api 
     Connection: keep-alive
     Keep-Alive: timeout=5
 
-    {"id":1,"login":"Foo","displayName":"Bar","email":"Foo@Bar.fr","dAuth":false,"avatar":"https://cdn.Foo.fr/users/Bar.jpg","createdAt":"2023-09-11T10:46:26.229Z","updatedAt":"2023-09-11T10:46:26.229Z","lastLogin":"2023-09-11T10:46:26.229Z"}
+    {"id":1,"login":"Foo","display_name":"Bar","email":"Foo@Bar.fr","dAuth":false,"avatar":"https://cdn.Foo.fr/users/Bar.jpg","createdAt":"2023-09-11T10:46:26.229Z","updatedAt":"2023-09-11T10:46:26.229Z","lastLogin":"2023-09-11T10:46:26.229Z"}
 
 ### Get specific user
 
@@ -143,9 +140,9 @@ The Api use JWT for security. When you create or signin into a account, the api 
   GET users/${login}
 ```
 
-| Parameter        | Type     | Description                          |
-| :--------------- | :------- | :----------------------------------- |
-|  `access_token`  | `string` | **Required**. A JWT access token.    |
+| Parameter      | Type     | Description                       |
+| :------------- | :------- | :-------------------------------- |
+| `access_token` | `string` | **Required**. A JWT access token. |
 
     curl --location 'http://localhost:3001/users/${login} --header 'Authorization: Bearer ${access_token}'
 
@@ -160,21 +157,21 @@ The Api use JWT for security. When you create or signin into a account, the api 
     Connection: keep-alive
     Keep-Alive: timeout=5
 
-    {"id":1,"login":"Foo","displayName":"Bar","avatar":"https://cdn.Foo.fr/users/Bar.jpg","createdAt":"2023-09-11T10:46:26.229Z","lastLogin":"2023-09-11T10:46:26.229Z"}
+    {"id":1,"login":"Foo","display_name":"Bar","avatar":"https://cdn.Foo.fr/users/Bar.jpg","createdAt":"2023-09-11T10:46:26.229Z","lastLogin":"2023-09-11T10:46:26.229Z"}
 
-### Change user avatar or displayName
+### Change user avatar or display_name
 
 ```http
   PATCH users
 ```
 
-| Parameter        | Type     | Description                          |
-| :--------------- | :------- | :----------------------------------- |
-|  `access_token`  | `string` | **Required**. A JWT access token.    |
-|  `displayName`   | `string` | A new displayName.                   |
-|  `avatar`        | `string` | A link to a image.                   |
+| Parameter      | Type     | Description                       |
+| :------------- | :------- | :-------------------------------- |
+| `access_token` | `string` | **Required**. A JWT access token. |
+| `display_name` | `string` | A new display_name.               |
+| `avatar`       | `string` | A link to a image.                |
 
-    curl --location --request PATCH 'http://localhost:3001/users' --header 'Authorization: Bearer ${access_token}' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'displayName=${displayName}' --data-urlencode 'avatar=${avatarLink}'`
+    curl --location --request PATCH 'http://localhost:3001/users' --header 'Authorization: Bearer ${access_token}' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'display_name=${display_name}' --data-urlencode 'avatar=${avatarLink}'`
 
 #### Response
 
@@ -187,11 +184,92 @@ The Api use JWT for security. When you create or signin into a account, the api 
     Connection: keep-alive
     Keep-Alive: timeout=5
 
-    {"id":1,"login":"Foo","displayName":"Wiz","email":"Foo@Bar.fr","dAuth":false,"avatar":"https://cdn.Foo.fr/users/Wiz.jpg","createdAt":"2023-09-11T10:46:26.229Z","updatedAt":"2023-09-11T10:54:35.764Z","lastLogin":"2023-09-11T10:46:26.229Z"}
+    {"id":1,"login":"Foo","display_name":"Wiz","email":"Foo@Bar.fr","dAuth":false,"avatar":"https://cdn.Foo.fr/users/Wiz.jpg","createdAt":"2023-09-11T10:46:26.229Z","updatedAt":"2023-09-11T10:54:35.764Z","lastLogin":"2023-09-11T10:46:26.229Z"}
+
+### Create new game
+
+```http
+  POST /game/createGame
+```
+
+| Parameter      | Type     | Description                       |
+| :------------- | :------- | :-------------------------------- |
+| `access_token` | `string` | **Required**. A JWT access token. |
+
+    curl -X 'POST' 'http://localhost:3001/game/createGame' -H 'accept: application/json' -H 'Authorization: Bearer ${access_token}'
+
+#### Response :
+
+    access-control-allow-credentials: true
+    access-control-allow-origin: *
+    connection: keep-alive
+    content-length: 43
+    content-type: application/json; charset=utf-8
+    date: Fri,13 Oct 2023 17:38:54 GMT
+    etag: W/"2b-dGnJzt6gv1nJjX6DJ9RztDWptng"
+    keep-alive: timeout=5
+    x-powered-by: Express
+
+    { "id": 1, "uid": "4e3bf9fc-4702-4693-82e4-c8c801e7f11a", "is_private": false, "created_at", "2023-10-13T17:33:08.769Z", "started_at": null, "end_at": null }
+
+### Log into a user
+
+```http
+  GET /game/getEmptyGame
+```
+
+| Parameter      | Type     | Description                       |
+| :------------- | :------- | :-------------------------------- |
+| `access_token` | `string` | **Required**. A JWT access token. |
+
+    curl -X 'GET' 'http://localhost:3001/game/getEmptyGame' -H 'accept: application/json' -H 'Authorization: Bearer ${access_token}'
+
+#### Response :
+
+    access-control-allow-credentials: true
+    access-control-allow-origin: *
+    connection: keep-alive
+    content-length: 144
+    content-type: application/json; charset=utf-8
+    date: Fri,13 Oct 2023 17:45:28 GMT
+    etag: W/"90-45qCZbc8skNBIQQ5jAthKgMJCuM"
+    keep-alive: timeout=5
+    x-powered-by: Express
+
+    { "id": 1, "uid": "4e3bf9fc-4702-4693-82e4-c8c801e7f11a", "is_private": false, "created_at": "2023-10-13T17:45:23.851Z", "started_at": null, "end_at": null }
+    or
+    {"uid": null}
+
+### Get user information
+
+```http
+  POST /game/${uuid}
+```
+
+| Parameter      | Type     | Description                       |
+| :------------- | :------- | :-------------------------------- |
+| `access_token` | `string` | **Required**. A JWT access token. |
+
+curl -X 'POST' 'http://localhost:3001/game/4e3bf9fc-4702-4693-82e4-c8c801e7f11a' -H 'accept: application/json' -H 'Authorization: Bearer ${access_token}'
+
+#### Response :
+
+    access-control-allow-credentials: true
+    access-control-allow-origin: *
+    connection: keep-alive
+    content-length: 201
+    content-type: application/json; charset=utf-8
+    date: Fri,13 Oct 2023 17:49:53 GMT
+    etag: W/"c9-uQOKO6YOJInpnJetM6N0tFkZcUA"
+    keep-alive: timeout=5
+    x-powered-by: Express
+
+    { "id": 1, "uid": "4e3bf9fc-4702-4693-82e4-c8c801e7f11a", "is_private": false, "created_at": "2023-10-13T17:45:23.851Z", "started_at": null, "end_at": null, "player_id": 1, "game_id": 1, "is_win": false, "is_spec": false }
 
 ## Environment Variables
 
 ### POSTGRES
+
 `POSTGRES_HOST` : The host for postgres container.
 `POSTGRES_PORT` : The port for postgres container.
 `POSTGRES_USER` : The admin user for postgres container.
@@ -200,19 +278,27 @@ The Api use JWT for security. When you create or signin into a account, the api 
 `DATABASE_URL` : The full URL for prisma. See [database connection reference](https://www.prisma.io/docs/reference/database-reference/connection-urls) on Prisma docs.
 
 ### REDIS
+
 `REDIS_HOST` : The host for redis container.
 `REDIS_PORT` : The port for redis container.
 `REDIS_PASS` : The password for redis container.
 `REDIS_URL` : The full URL of Redis. See [Redis URI](https://redis.io/docs/ui/cli/) on redis docs.
 
 ### ENVIRONMENT
+
 `NODE_ENV` : The node env for NodeJS (production, development or test). See [VueJS mode and env](https://cli.vuejs.org/guide/mode-and-env.html) docs or [NestJS configuration](https://docs.nestjs.com/techniques/configuration) docs.
 `JWT_SECRET` : The secret for JWT. See [JWT Introduction](https://jwt.io/introduction) for more information.
+`FRONT_PORT` : Port for the frontend.
+`API_PORT` : Port or the backend.
+`GAME_SOCKET_PORT` : Port for the Game Socket server.
+`CHAT_SOCKET_PORT` : Port for the Chat Socket server.
 
 ### 42API
+
 `API42_UID`, `API42_SECRET` : The credential for 42 API. See [42's API Guide](https://api.intra.42.fr/apidoc/guides/getting_started) for more information.
 
 ### OTHER
+
 `HOST` : The Host using for request to the back or socket server. By default is the result of `hostname` bash command.
 
 ## License

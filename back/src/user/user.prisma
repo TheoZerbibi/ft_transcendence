@@ -1,13 +1,30 @@
+
 model User {
-	id			Int	@id @default(autoincrement()) @unique
-	login		String @unique
-	displayName	String
-	email		String
-	dAuth		Boolean @default(false)
-	avatar		String
-	createdAt	DateTime @default(now())
-	updatedAt	DateTime @updatedAt
-	lastLogin	DateTime @default(now())
+	id				Int	@id @default(autoincrement())
+	login			String @unique
+	display_name	String
+	email			String
+	dAuth			Boolean @default(false)
+	avatar			String
+	created_at		DateTime @default(now())
+	updated_at		DateTime @updatedAt
+	last_login		DateTime @default(now())
+	channelUser		ChannelUser[]
+
+
+	user			Friends[] @relation("user")
+	friends			Friends[] @relation("friends")
+	GamePlayer		GamePlayer[]
 
 	@@map("users")
+}
+
+model Friends {
+	user		User	@relation("user", fields: [user_id], references: [id])
+	friends		User	@relation("friends", fields: [friend_id], references: [id])
+	user_id		Int	
+	friend_id	Int
+
+	@@id([user_id, friend_id])
+	@@map("friends")
 }

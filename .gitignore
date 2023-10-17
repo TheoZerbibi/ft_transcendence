@@ -78,7 +78,7 @@ web_modules/
 
 # dotenv environment variable files
 .env
-.env.development.local
+.env.dev
 .env.test.local
 .env.production.local
 .env.local
@@ -190,5 +190,6 @@ config.dev.json
 build/
 
 yarn.lock
+.nfs*
 
 # End of https://www.toptal.com/developers/gitignore/api/yarn,visualstudiocode,node
