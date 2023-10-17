@@ -51,7 +51,7 @@
 	</v-footer>
 =======
 	<v-app id="home">
-		<NavBa />
+		<NavBar />
 		<v-container fluid>
 			<div class="head">
 				<v-row>
