@@ -145,3 +145,4 @@ jobs:
       NODE_ENV: production
       GITHUB_TOKEN: ${{ secrets.CR_PAT }}
       DOCKER_REGISTRY: ghcr.io/theozerbibi
+      DATABASE_URL: "postgresql://${{ vars.POSTGRES_USER }}:${{ vars.POSTGRES_PASSWORD }}@localhost:5432/${{ vars.POSTGRES_DB }}?schema=public"
