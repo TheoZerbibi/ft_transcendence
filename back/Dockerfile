@@ -18,6 +18,7 @@ RUN pnpm install --prod
 COPY --chown=node:node . .
 
 RUN pnpm db:mix \
+	&& npm i -g @nestjs/cli \
 	&& pnpm build
 
 FROM common AS production
