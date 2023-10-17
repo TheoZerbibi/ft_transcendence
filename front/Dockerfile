@@ -31,5 +31,3 @@ FROM common AS production
 COPY --chown=node:node --from=build /home/node/app/package*.json .
 COPY --chown=node:node --from=build /home/node/app/dist ./dist
 COPY --chown=node:node --from=build /home/node/app/node_modules ./node_modules
-
-CMD [ "pnpm", "start:prod" ]
