@@ -28,6 +28,3 @@ COPY --chown=node:node --from=build /home/node/app/dist ./dist
 COPY --chown=node:node --from=build /home/node/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /home/node/app/prisma ./prisma
 COPY --chown=node:node --from=build /home/node/app/swagger-ui ./swagger-ui
-
-RUN pnpm db:deploy:prod
-CMD [ "pnpm", "start:prod" ]
