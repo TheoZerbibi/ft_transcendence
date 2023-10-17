@@ -154,7 +154,6 @@ services:
       DATABASE_URL: ${DATABASE_URL}
       HOST: ${HOSTNAME}
     command: sh -c "pnpm db:pull && pnpm start:prisma"
-    #command: sh -c "pnpm start:prisma"
     restart: always
 
   postgres:
