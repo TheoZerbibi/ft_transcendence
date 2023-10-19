@@ -1,1 +1,6 @@
 ### TRANSCENDENCE
+
+# Chat
+
+feature 
+> - [ ] 

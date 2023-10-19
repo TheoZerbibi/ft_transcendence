@@ -35,6 +35,7 @@
 		"vite-plugin-vuetify": "^1.0.2",
 		"volar-service-vetur": "^0.0.14",
 		"vue": "^3.3.4",
+		"vue-advanced-chat": "^2.0.7",
 		"vue-cli-plugin-vuetify": "~2.5.8",
 		"vue-router": "^4.2.5",
 		"vuetify": "^3.3.21",
