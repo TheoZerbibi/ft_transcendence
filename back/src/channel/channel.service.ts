@@ -1,10 +1,12 @@
+import { ForbiddenException } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 //import { ConfigService } from '@nestjs/config';
 //import { JwtService } from '@nestjs/jwt';
 import { CreateChannelDto } from './dto/create-channel.dto';
 import { UpdateChannelDto } from './dto/update-channel.dto';
-import { User } from '@prisma/client';
+import { ChannelDto, ChannelUserDto } from './dto/channel.dto';
+import { User, Channel, ChannelUser } from '@prisma/client';
 
 import {
 	BadRequestException,
@@ -24,52 +26,55 @@ export class ChannelService {
 
 	//Create channels : can be public, private or protected by a password
 	//
-	async getChannel(channel_name: string) {
-		const channelDto = await this.prisma.channel.findMany({
+	async getChannel(channel_name: string): Promise<ChannelDto | undefined> {
+		const channelDto : Channel = await this.prisma.channel.findUnique({
 			where: {
 				name: channel_name,
 			},
 		});
-		console.log(typeof channelDto);
+		if (!channelDto) return undefined;
 		return channelDto;
 	}
 
-	async	getChannelUser(user: User, channel_name: string)
+
+	// Fectch a channel user status, you can't fetch data on a channel if you are banned from it
+	async	getChannelUser(user: User, channel_name: string): Promise<ChannelUser | undefined>
 	{
 		try {
-			const channel = await this.prisma.channel.findUnique({
+			const channel: Channel = await this.prisma.channel.findUnique({
 				where: {
 					name: channel_name,
 				},
 			});
 
-			if (!channel) throw new BadRequestException('Channel don\'t exist');
+			if (!channel) return undefined;
 
-			const userDto = this.prisma.user.findUnique({
+			const prismaUser: User = await this.prisma.user.findUnique({
 				where: {
 					login: user.login,
 				}
 			});
-			if (!channel) throw new BadRequestException('You are not registered as a user');
+			if (!prismaUser) return undefined
 
-			const channelUserDto = null;
+				const channelUserDto: ChannelUser = null;
 
-			return channelUserDto;
+				return channelUserDto;
 		} catch (e) {
 			console.log(e);
 		}
 	}
 
-	async userPrivilegeLevel(user: User, channel_name: string)
+	// Get level of privilege of a user on a given channel, you can't fetch data on a protected channel without password
+	async userPrivilegeLevel(user: User, channel_name: string): Promise<PrivilegeStatus>
 	{
 		try {
-			const myChannelUserDto = this.getChannelUser(user, channel_name);
-			if (!myChannelUserDto)
+			const channelUser: ChannelUser = await this.getChannelUser(user, channel_name);
+			if (!channelUser)
 				return (PrivilegeStatus.NOTHING);
 
-			if (myChannelUserDto.is_owner === true)
+			if (channelUser.is_owner === true)
 				return (PrivilegeStatus.OWNER);
-			else if (myChannelUserDto.is_admin === true)
+			else if (channelUser.is_admin === true)
 				return (PrivilegeStatus.ADMIN);
 			else
 				return (PrivilegeStatus.USER);
@@ -89,7 +94,7 @@ export class ChannelService {
 				},
 			});
 
-			await this.prisma.channelUser.create({
+			const channel_user = await this.prisma.channelUser.create({
 				data: {
 					channel_id: channel.id,
 					user_id: userId,
@@ -98,7 +103,8 @@ export class ChannelService {
 				},
 			});
 
-			return channel;
+			const channels = await this.prisma.channelUser.findMany();
+			return channels;
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				if (e.code === 'P2002') throw new BadRequestException('Channel name taken');
@@ -106,39 +112,97 @@ export class ChannelService {
 		}
 	}
 
-	// async create(dto: CreateChannelDto, userId: number) {
-	// 			try {
-	// 				const	channel = await this.prisma.channel.create({
-	// 					data : {
-	// 						name: dto.name,
-	// 						password: dto.password,
-	// 						public: dto.is_public
-	// 					},
-	// 				})
-	// 				const	channel_user = await this.prisma.channelUser.create({
-	// 					data : {
-	// 						channel_id: channel.id,
-	// 						user_id: userId,
-	// 						is_owner: true,
-	//						is_admin: true
-	// 					}
-	// 				})
-	// 				return channel;
-	// 			} catch (e) {
-	// 				if (e instanceof Prisma.PrismaClientKnownRequestError)
-	// 					{
-	// 						if (e.code === 'P2002')
-	// 							throw new BadRequestException('Channel name taken');
-	// 					}
-	// 			}
-	// }
-	//
+	async test()
+	{
+		return this.prisma.channel.findMany({
+			where: {
+				public: true,
+			},
+		});
+	}
+
+	async getChannelUsers(user: User, channel_name: string): Promise<ChannelUser[] | null>
+	{
+		const channel: Channel | null = await this.prisma.channel.findUnique({
+			where : {
+				name: channel_name,
+			}
+		});
+		if (!channel) throw new BadRequestException('this channel don\'t exist \n');
+
+		//TODO : change from findMany to findUnique
+		const me: ChannelUser | null = await this.prisma.channelUser.findFirst({
+			where: {
+	//			channel_user : { channel_id: channel.id, user_id: user.id },
+//				channel_id: channel.id,
+				user_id: user.id,
+			},
+		});
+
+		//	if (!channel.public && !me) throw new ForbiddenException('You don\'t have access to this channel');
+
+		const users: ChannelUser[] | null = await this.prisma.channelUser.findMany({
+			where: {
+				channel_id: channel.id,
+			},
+		});
+		return users;
+	}
+
+	async findAll()
+	{
+		return this.prisma.channel.findMany({
+			where: {
+				public: true,
+			},
+		});
+	}
+
+	//	const channels = await this.prisma.channel.findMany( {
+	//		where: {
+	//			public: true,
+	//		},
+	//	});
+
+	//	return (channels);
+
+	//	if (!channels) return null;
+
+	//	const myChannels = await this.prisma.channelUser.findMany({
+	//		where: {
+	//			user_id: user.id,
+	//		},
+	//	});
+	//	if (!myChannels) return channels;
+
+	//	let i: number = 0;
+	//	let tmp_channel: Channel | null;
+	//	while (myChannels[i]) {
+	//		tmp_channel = await this.prisma.channel.findUnique({
+	//				where: {
+	//					id: myChannels[i].id,
+	//					public: false,
+	//				},
+	//		});
+
+	//		if (tmp_channel)
+	//			channels.push(tmp_channel);
+	//		i++;
+	//	}
+	//	return channels;
+
+	async getAllUser()
+	{
+		const users: ChannelUser[] = await this.prisma.channelUser.findMany();
+		return [ {  name: "lol" } ]
+		if (!users) return { name: "lol" } 
+		return users;
+	}
 
 	update(id: number, updateChannelDto: UpdateChannelDto) {
 		console.log(updateChannelDto);
 		return `This action updates a #${id} channel`;
 	}
-
 
 	// Need to check if user is admin
 	async	updateChannelUser(dto: UpdateChannelDto)
@@ -173,15 +237,5 @@ export class ChannelService {
 	// 		fetching channel by name
 	// 		fetching user by name
 	// 		fetching channel_user by channel and user
-	findAll() {
-		return `This action returns all channel`;
-	}
 
-	findOne(id: number) {
-		return `This action returns a #${id} channel`;
-	}
-
-	remove(id: number) {
-		return `This action removes a #${id} channel`;
-	}
 }

@@ -15,9 +15,11 @@ import {
 import { JwtGuard } from 'src/auth/guard';
 import { ChannelService } from './channel.service';
 import { CreateChannelDto } from './dto/create-channel.dto';
-import { User } from '@prisma/client';
+import { User, ChannelUser } from '@prisma/client';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ForbiddenException } from '@nestjs/common';
+import { ChannelDto, ChannelUserDto } from './dto/channel.dto';
 //import { UserService } from '../user/user.service';
 //import { UpdateChannelDto } from './dto/update-channel.dto';
 
@@ -27,34 +29,74 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 export class ChannelController {
 	constructor(private channelService: ChannelService) {}
 
-	@Get(':name')
-	@UseGuards(JwtGuard) // Needed to access user attribute
-	@ApiOperation({ summary: 'get channel by name' })
-	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async fetch(@Param('name') channel_name: string) {
-		return this.channelService.getChannel(channel_name);
-	}
-
-	@Get(':channel/user')
-	@UseGuards(JwtGuard) // Needed to access user attribute
-	@ApiOperation({ summary: 'retrieve user of channel' })
-	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async	allChannelUsers(@Param('channel') channel_name: string, @GetUser() user: User)
-	{
-		const channel: channelDto = this.channelService.getChannel(channel_name);
-
-		if (!channel) throw new BadRequestException('Channel don\'t exist\n');
-		return this.channelService.getChannelUser(user, channel);
-	}
-
 	@Post('create')
 	@UseGuards(JwtGuard) // Needed to access user attribute
-	//@Get('create')
 	@ApiOperation({ summary: 'Create channel' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
 	async create(@Body() createChannelDto: CreateChannelDto, @GetUser() user: User) {
 		const id: number = user.id;
 		return this.channelService.create(createChannelDto, id);
+	}
+
+	@Get('test')
+	@UseGuards(JwtGuard) // Needed to access user attribute
+	@ApiOperation({ summary: 'Create channel' })
+	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
+	async	test()
+	{
+		return this.channelService.test();
+	}	
+
+	@Get('user')
+	@UseGuards(JwtGuard) // Needed to access user attribute
+	@ApiOperation({ summary: 'fetch all user' })
+	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
+	async	user()
+	{
+		return this.channelService.findAll();
+	}	
+
+	@Get('all')
+	@UseGuards(JwtGuard) // Needed to access user attribute
+	@ApiOperation({ summary: 'Create channel' })
+	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
+	async all() {
+		return await this.channelService.findAll();
+	}
+
+	@Get(':channel/users')
+	async getChannelUsers(@GetUser() user: User, @Param('channel') channel_name: string)
+	{
+		return await this.channelService.getChannelUsers(user, channel_name);
+	}
+
+	@Get(':name')
+	@UseGuards(JwtGuard) // Needed to access user attribute
+	@ApiOperation({ summary: 'Create channel' })
+	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
+	async fetch(@Param('name') channel_name: string) {
+		return this.channelService.getChannel(channel_name);
+	}
+
+	@Get('allUser')
+	@UseGuards(JwtGuard) // Needed to access user attribute
+	@ApiOperation({ summary: 'Get all accessible channel user' })
+	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
+	async allUsers() {
+		return this.channelService.getAllUser();
+	}
+
+
+	//Get all user in a channel
+	@Get(':channel/user')
+	@UseGuards(JwtGuard) // Needed to access user attribute
+	@ApiOperation({ summary: 'retrieve user of channel' })
+	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
+	async	allChannelUsers(@Param('channel') channel_name: string, @GetUser() user: User): Promise<ChannelUser>
+	{
+		const channel: ChannelDto | undefined = await this.channelService.getChannel(channel_name);
+		if (!channel) throw new BadRequestException('Channel don\'t exist\n');
+		return  this.channelService.getChannelUser(user, channel.name);
 	}
 
 	@Patch('mod/:channel')
@@ -66,40 +108,15 @@ export class ChannelController {
 			return null;
 	}
 
-	//@Patch('kick')
-	//async kick(@Body() dto: UpdateChannelDto, @GetUser() user: User) {
-	//	const channel_id = await this.channelService.prisma.channel.findUnique({
-	//		where: {
-	//			name: channel,
-	//		},
-	//	});
-	//	if (!channel_id) throw new BadRequestException('Invalid channel');
-	//
-	//	const target_id = await this.userService.prisma.user.findUnique({
-	//		where: {
-	//			login: target,
-	//		},
-	//	});
-	//	if (!channel_id) throw new BadRequestException('Invalid user');
-	//
-	//
-	//	}
-	//	const target_id = await this.channelService.prisma.channel_users.findUnique({
-	//		where: {
-	//			channel_id: channel_id,
-	//			user: channel,
-	//		},
-	//	});
-	//	return this.channelService.kick(channel_id,
-	//}
+	@Patch(':mod/:user/')
+	@UseGuards(JwtGuard) // Needed to access user attribute
+	@ApiOperation({ summary: 'Get all accessible channel' })
+	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
+	updateUser(@GetUser() user: User, @Param('user') target: string, @Param('mod') mod: string)
+	{
+		if (mod !== "kick" && mod !== "mute" && mod !== "ban") throw new ForbiddenException(mod + ': Unknown channel moderation on a user');
 
-	findAll() {
-		return this.channelService.findAll();
-	}
-
-	@Get(':id')
-	findOne(@Param('id') id: string) {
-		return this.channelService.findOne(+id);
+		return null;
 	}
 
 	//@Patch(':id')
