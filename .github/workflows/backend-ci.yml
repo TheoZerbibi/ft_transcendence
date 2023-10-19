@@ -6,6 +6,7 @@ on:
       - "*"
       - "**"
       - "*/*"
+      - '!master'
       - "!**/frontend"
       - "!frontend/**"
       - "!**/frontend/**"
@@ -14,6 +15,14 @@ on:
       - "back/**"
       - "docker/node/**"
   pull_request:
+    branches:
+      - "*"
+      - "**"
+      - "*/*"
+      - '!master'
+      - "!**/frontend"
+      - "!frontend/**"
+      - "!**/frontend/**"
     types:
       - opened
       - synchronize
@@ -125,7 +134,10 @@ jobs:
       - name: Build and push Docker image
         run: |
           echo "Building Docker image..."
-          docker build -t ${{ env.DOCKER_REGISTRY }}/back-image:latest -f ../docker/node/Dockerfile --target production .
+          docker build \
+          -t ${{ env.DOCKER_REGISTRY }}/back-image:latest \
+          -f ./Dockerfile \
+          --target production .
 
           echo "Pushing Docker image to GitHub Container Registry..."
           docker push ${{ env.DOCKER_REGISTRY }}/back-image:latest
@@ -133,3 +145,4 @@ jobs:
       NODE_ENV: production
       GITHUB_TOKEN: ${{ secrets.CR_PAT }}
       DOCKER_REGISTRY: ghcr.io/theozerbibi
+      DATABASE_URL: "postgresql://${{ vars.POSTGRES_USER }}:${{ vars.POSTGRES_PASSWORD }}@localhost:5432/${{ vars.POSTGRES_DB }}?schema=public"

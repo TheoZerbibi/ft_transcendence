@@ -6,6 +6,7 @@ on:
       - "*"
       - "**"
       - "*/*"
+      - '!master'
       - "!**/frontend"
       - "!frontend/**"
       - "!**/frontend/**"
@@ -14,6 +15,14 @@ on:
       - "sockets/chat/**"
       - "docker/node/**"
   pull_request:
+    branches:
+      - "*"
+      - "**"
+      - "*/*"
+      - '!master'
+      - "!**/frontend"
+      - "!frontend/**"
+      - "!**/frontend/**"
     types:
       - opened
       - synchronize
@@ -125,7 +134,10 @@ jobs:
       - name: Build and push Docker image
         run: |
           echo "Building Docker image..."
-          docker build -t ${{ env.DOCKER_REGISTRY }}/chat-socket-image:latest -f ../../docker/node/Dockerfile --target production .
+          docker build \
+          -t ${{ env.DOCKER_REGISTRY }}/chat-socket-image:latest \
+          -f ./Dockerfile \
+          --target production .
 
           echo "Pushing Docker image to GitHub Container Registry..."
           docker push ${{ env.DOCKER_REGISTRY }}/chat-socket-image:latest

@@ -6,6 +6,7 @@ on:
       - '*'
       - '**'
       - '*/*'
+      - '!master' 
       - '!**/backend'
       - '!backend/**'
       - '!**/backend/**'
@@ -14,6 +15,14 @@ on:
       - "front/**"
       - "docker/node/**"
   pull_request:
+    branches:
+      - '*'
+      - '**'
+      - '*/*'
+      - '!master' 
+      - '!**/backend'
+      - '!backend/**'
+      - '!**/backend/**'
     types:
       - opened
       - synchronize
@@ -123,7 +132,17 @@ jobs:
       - name: Build and push Docker image
         run: |
           echo "Building Docker image..."
-          docker build -t ${{ env.DOCKER_REGISTRY }}/front-image:latest -f ../docker/node/Dockerfile --target production .
+          docker build \
+          -t ${{ env.DOCKER_REGISTRY }}/front-image:latest \
+          -f ./Dockerfile \
+          --build-arg VITE_HOST=${{ env.VITE_HOST }} \
+          --build-arg VITE_PORT=${{ env.VITE_PORT }} \
+          --build-arg VITE_API42_UID=${{ env.VITE_API42_UID }} \
+          --build-arg VITE_API42_SECRET=${{ env.VITE_API42_SECRET }} \
+          --build-arg VITE_API_PORT=${{ env.VITE_API_PORT }} \
+          --build-arg VITE_GAME_SOCKET_PORT=${{ env.VITE_GAME_SOCKET_PORT }} \
+          --build-arg VITE_CHAT_SOCKET_PORT=${{ env.VITE_CHAT_SOCKET_PORT }} \
+          --target production .
 
           echo "Pushing Docker image to GitHub Container Registry..."
           docker push ${{ env.DOCKER_REGISTRY }}/front-image:latest
@@ -131,3 +150,11 @@ jobs:
       NODE_ENV: production
       GITHUB_TOKEN: ${{ secrets.CR_PAT }}
       DOCKER_REGISTRY: ghcr.io/theozerbibi
+      VITE_HOST: ${{ vars.HOST }}
+      VITE_API42_UID: ${{ secrets.API42_UID }}
+      VITE_API42_SECRET: ${{ secrets.API42_SECRET }}
+      VITE_PORT: 3000
+      VITE_API_PORT: 3001
+      VITE_GAME_SOCKET_PORT: 4000
+      VITE_CHAT_SOCKET_PORT: 4001
+

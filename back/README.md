@@ -186,6 +186,86 @@ The Api use JWT for security. When you create or signin into a account, the api 
 
     {"id":1,"login":"Foo","display_name":"Wiz","email":"Foo@Bar.fr","dAuth":false,"avatar":"https://cdn.Foo.fr/users/Wiz.jpg","createdAt":"2023-09-11T10:46:26.229Z","updatedAt":"2023-09-11T10:54:35.764Z","lastLogin":"2023-09-11T10:46:26.229Z"}
 
+### Create new game
+
+```http
+  POST /game/createGame
+```
+
+| Parameter      | Type     | Description                       |
+| :------------- | :------- | :-------------------------------- |
+| `access_token` | `string` | **Required**. A JWT access token. |
+
+    curl -X 'POST' 'http://localhost:3001/game/createGame' -H 'accept: application/json' -H 'Authorization: Bearer ${access_token}'
+
+#### Response :
+
+    access-control-allow-credentials: true
+    access-control-allow-origin: *
+    connection: keep-alive
+    content-length: 43
+    content-type: application/json; charset=utf-8
+    date: Fri,13 Oct 2023 17:38:54 GMT
+    etag: W/"2b-dGnJzt6gv1nJjX6DJ9RztDWptng"
+    keep-alive: timeout=5
+    x-powered-by: Express
+
+    { "id": 1, "uid": "4e3bf9fc-4702-4693-82e4-c8c801e7f11a", "is_private": false, "created_at", "2023-10-13T17:33:08.769Z", "started_at": null, "end_at": null }
+
+### Log into a user
+
+```http
+  GET /game/getEmptyGame
+```
+
+| Parameter      | Type     | Description                       |
+| :------------- | :------- | :-------------------------------- |
+| `access_token` | `string` | **Required**. A JWT access token. |
+
+    curl -X 'GET' 'http://localhost:3001/game/getEmptyGame' -H 'accept: application/json' -H 'Authorization: Bearer ${access_token}'
+
+#### Response :
+
+    access-control-allow-credentials: true
+    access-control-allow-origin: *
+    connection: keep-alive
+    content-length: 144
+    content-type: application/json; charset=utf-8
+    date: Fri,13 Oct 2023 17:45:28 GMT
+    etag: W/"90-45qCZbc8skNBIQQ5jAthKgMJCuM"
+    keep-alive: timeout=5
+    x-powered-by: Express
+
+    { "id": 1, "uid": "4e3bf9fc-4702-4693-82e4-c8c801e7f11a", "is_private": false, "created_at": "2023-10-13T17:45:23.851Z", "started_at": null, "end_at": null }
+    or
+    {"uid": null}
+
+### Get user information
+
+```http
+  POST /game/${uuid}
+```
+
+| Parameter      | Type     | Description                       |
+| :------------- | :------- | :-------------------------------- |
+| `access_token` | `string` | **Required**. A JWT access token. |
+
+curl -X 'POST' 'http://localhost:3001/game/4e3bf9fc-4702-4693-82e4-c8c801e7f11a' -H 'accept: application/json' -H 'Authorization: Bearer ${access_token}'
+
+#### Response :
+
+    access-control-allow-credentials: true
+    access-control-allow-origin: *
+    connection: keep-alive
+    content-length: 201
+    content-type: application/json; charset=utf-8
+    date: Fri,13 Oct 2023 17:49:53 GMT
+    etag: W/"c9-uQOKO6YOJInpnJetM6N0tFkZcUA"
+    keep-alive: timeout=5
+    x-powered-by: Express
+
+    { "id": 1, "uid": "4e3bf9fc-4702-4693-82e4-c8c801e7f11a", "is_private": false, "created_at": "2023-10-13T17:45:23.851Z", "started_at": null, "end_at": null, "player_id": 1, "game_id": 1, "is_win": false, "is_spec": false }
+
 ## Environment Variables
 
 ### POSTGRES
@@ -208,6 +288,10 @@ The Api use JWT for security. When you create or signin into a account, the api 
 
 `NODE_ENV` : The node env for NodeJS (production, development or test). See [VueJS mode and env](https://cli.vuejs.org/guide/mode-and-env.html) docs or [NestJS configuration](https://docs.nestjs.com/techniques/configuration) docs.
 `JWT_SECRET` : The secret for JWT. See [JWT Introduction](https://jwt.io/introduction) for more information.
+`FRONT_PORT` : Port for the frontend.
+`API_PORT` : Port or the backend.
+`GAME_SOCKET_PORT` : Port for the Game Socket server.
+`CHAT_SOCKET_PORT` : Port for the Chat Socket server.
 
 ### 42API
 

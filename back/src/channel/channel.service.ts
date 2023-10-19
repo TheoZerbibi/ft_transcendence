@@ -10,6 +10,7 @@ import { User, Channel, ChannelUser } from '@prisma/client';
 
 import {
 	BadRequestException,
+	ForbiddenException,
 	Injectable,
 } from '@nestjs/common';
 
@@ -199,24 +200,43 @@ export class ChannelService {
 		return users;
 	}
 
-	update(id: number, updateChannelDto: UpdateChannelDto) {
-		console.log(updateChannelDto);
-		return `This action updates a #${id} channel`;
-	}
+	//
+
+	// Tools : fetching user status on channel
+	// 		fetching channel by name
+	// 		fetching user by name
+	// 		fetching channel_user by channel and user
+
+	//	async isAdmin(user_name: string, channel:string) : Promise<boolean>
+	//	{
+	//
+	//		const channelDto = this.getChannel(channel);
+	//	const userDto = this.getChannelUser(channelDto.id
+	//		try {
+	//
+	//
+	//			const userDto = await this.prisma.channelUser.findUnique({
+	//				where : {
+	//					user_id: user_name,
+	//					channel_id: channel
+	//				}
+	//			});
+	//		} catch (e) {
+	//			return undefined
+	//		}
+	//}
 
 	// Need to check if user is admin
-	async	updateChannelUser(dto: UpdateChannelDto)
-	{
+	async updateChannelUser(dto: UpdateChannelDto) {
 		try {
 			//	const user = this.prisma.channel_users.findMany({
-			const user = await this.prisma.user.findUnique(
-				{
-					where: {
-						login: dto.name,
-					},
-				});
-				//
-				return user;
+			const user = await this.prisma.user.findUnique({
+				where: {
+					login: dto.name,
+				},
+			});
+			//
+			return user;
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				if (e.code === 'P2002') throw new BadRequestException('Channel name taken');
