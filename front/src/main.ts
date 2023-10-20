@@ -11,6 +11,9 @@ import { loadFonts } from './plugins/webfontloader';
 import router from './router';
 
 const vuetify = createVuetify({
+	theme: {
+		defaultTheme: "dark",
+	},
 	components,
 	directives,
 });

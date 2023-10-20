@@ -19,8 +19,8 @@ services:
         condition: service_started
       game:
         condition: service_started
-      chat:
-        condition: service_started
+      # chat:
+        # condition: service_started
     environment:
       NODE_ENV: ${NODE_ENV}
       VITE_HOST: ${HOSTNAME}
@@ -65,36 +65,36 @@ services:
     # command: sh -c "tail -f /dev/null"
     restart: always
 
-  chat:
-    build:
-      context: ./sockets/chat
-      target: socket
-      dockerfile: ../../docker/node/Dockerfile
-    container_name: chat
-    ports:
-    - ${CHAT_SOCKET_PORT}:${CHAT_SOCKET_PORT}
-    volumes:
-      - ./sockets/chat:/home/node/app
-      - /home/node/app/node_modules
-      - /home/node/app/.pnpm-store
-    depends_on:
-      api:
-        condition: service_started
-      redis:
-        condition: service_healthy
-    environment:
-      REDIS_HOST: ${REDIS_HOST}
-      REDIS_PORT: ${REDIS_PORT}
-      REDIS_PASS: ${REDIS_PASS}
-      REDIS_URL: ${REDIS_URL}
-      NODE_ENV: ${NODE_ENV}
-      DATABASE_URL: ${DATABASE_URL}
-      JWT_SECRET: ${JWT_SECRET}
-      HOST: ${HOSTNAME}
-      PORT: ${CHAT_SOCKET_PORT}
-    command: sh -c "pnpm db:pull && pnpm start:dev"
+  # chat:
+    # build:
+      # context: ./sockets/chat
+      # target: socket
+      # dockerfile: ../../docker/node/Dockerfile
+    # container_name: chat
+    # ports:
+    # - ${CHAT_SOCKET_PORT}:${CHAT_SOCKET_PORT}
+    # volumes:
+      # - ./sockets/chat:/home/node/app
+      # - /home/node/app/node_modules
+      # - /home/node/app/.pnpm-store
+    # depends_on:
+      # api:
+        # condition: service_started
+      # redis:
+        # condition: service_healthy
+    # environment:
+      # REDIS_HOST: ${REDIS_HOST}
+      # REDIS_PORT: ${REDIS_PORT}
+      # REDIS_PASS: ${REDIS_PASS}
+      # REDIS_URL: ${REDIS_URL}
+      # NODE_ENV: ${NODE_ENV}
+      # DATABASE_URL: ${DATABASE_URL}
+      # JWT_SECRET: ${JWT_SECRET}
+      # HOST: ${HOSTNAME}
+      # PORT: ${CHAT_SOCKET_PORT}
+    # command: sh -c "pnpm db:pull && pnpm start:dev"
     # command: sh -c "tail -f /dev/null"
-    restart: always
+    # restart: always
 
   api:
     build:
@@ -134,27 +134,27 @@ services:
     # command: sh -c "tail -f /dev/null"
     restart: always
 
-  prisma:
-    container_name: prisma
-    build:
-      context: ./
-      dockerfile: ./docker/prisma/Dockerfile
-    ports:
-      - 5555:5555
-    depends_on:
-      api:
-        condition: service_started
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      POSTGRES_ENABLED: ${POSTGRES_ENABLED}
-      NODE_ENV: ${NODE_ENV}
-      DATABASE_URL: ${DATABASE_URL}
-      HOST: ${HOSTNAME}
-    command: sh -c "pnpm db:pull && pnpm start:prisma"
-    restart: always
+  # prisma:
+    # container_name: prisma
+    # build:
+      # context: ./
+      # dockerfile: ./docker/prisma/Dockerfile
+    # ports:
+      # - 5555:5555
+    # depends_on:
+      # api:
+        # condition: service_started
+    # environment:
+      # POSTGRES_DB: ${POSTGRES_DB}
+      # POSTGRES_USER: ${POSTGRES_USER}
+      # POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      # POSTGRES_PORT: ${POSTGRES_PORT}
+      # POSTGRES_ENABLED: ${POSTGRES_ENABLED}
+      # NODE_ENV: ${NODE_ENV}
+      # DATABASE_URL: ${DATABASE_URL}
+      # HOST: ${HOSTNAME}
+    # command: sh -c "pnpm db:pull && pnpm start:prisma"
+    # restart: always
 
   postgres:
     image: postgres:16-alpine3.18
