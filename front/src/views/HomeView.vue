@@ -55,27 +55,27 @@
 		<v-container fluid>
 			<div class="head">
 				<v-row>
-				<v-col cols="5">
-					<div style="position: relative" clas="mt-16">
-						<br />
-						<h1 class="text-white">Welcome</h1>
-						<h1 class="text-grey">to</h1>
-						<h1 class="text-white">ft_transcendence</h1>
-						<h1 class="text-grey">of</h1>
-						<span class="text-grey">Théo, Gaëlle, Semiha, Noémi and Ismaël</span><br />
-						<v-btn title dark class="text-orange mt-8" variant="outlined" rounded>Contact us</v-btn>
-					</div>
-				</v-col>
-				<v-col cols="2">
-					<div style="position: absolute;z-index: 9999;bottom: 0;margin-left: auto;margin-right: 0;left: 0;right: 0;text-align: center;">
-						<v-icon>fas fa-angle-double-down</v-icon>
-					</div>
-				</v-col>
-				<v-col cols="5">
-					<div style="position: relative;z-index: 9999;" class="mt-16">
-						<v-img src="CatsRounded.png" contain max-height="300" ></v-img>
-					</div>
-				</v-col>
+					<v-col cols="5">
+						<div style="position: relative" clas="mt-16">
+							<br />
+							<h1 class="text-white">Welcome</h1>
+							<h1 class="text-orange">to</h1>
+							<h1 class="text-white">ft_transcendence</h1>
+							<h1 class="text-orange">of</h1>
+							<span class="text-grey">Théo, Gaëlle, Semiha, Noémi and Ismaël</span><br />
+							<v-btn title dark class="text-orange mt-8" variant="outlined" rounded>Contact us</v-btn>
+						</div>
+					</v-col>
+					<v-col cols="2">
+						<div style="position: absolute;z-index: 9999;bottom: 0;margin-left: auto;margin-right: 0;left: 0;right: 0;text-align: center;">
+							<v-icon>fas fa-paw</v-icon>
+						</div>
+					</v-col>
+					<v-col cols="5">
+						<div style="position: relative;z-index: 9999;" class="mt-16">
+							<v-img src="CatsRounded.png" contain max-height="300" ></v-img>
+						</div>
+					</v-col>
 				</v-row>
 			</div>
 			<v-col cols="12" class="mt-16" id="about">
