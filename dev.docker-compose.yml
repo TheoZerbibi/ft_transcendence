@@ -12,7 +12,7 @@ services:
       - ${FRONT_PORT}:${FRONT_PORT}
     volumes:
       - ./front:/home/node/app
-      - /home/node/app/node_modules
+      #- /home/node/app/node_modules
       - /home/node/app/.pnpm-store
     depends_on:
       api:
@@ -31,7 +31,7 @@ services:
       VITE_GAME_SOCKET_PORT: ${GAME_SOCKET_PORT}
       VITE_CHAT_SOCKET_PORT: ${CHAT_SOCKET_PORT}
     command: sh -c "pnpm start:dev"
-    # command: sh -c "tail -f /dev/null"
+    #command: sh -c "tail -f /dev/null"
     restart: always
 
   game:
