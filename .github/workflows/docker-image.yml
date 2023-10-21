@@ -30,7 +30,7 @@ on:
 
 env:
   DEFAULT_BRANCH: master
-  NODE_VERSION: 20
+  NODE_VERSION: 21
   REDIS_PASS: ${{ vars.REDIS_PASSWORD }}
   DATABASE_URL: "postgresql://${{ vars.POSTGRES_USER }}:${{ vars.POSTGRES_PASSWORD }}@localhost:5432/${{ vars.POSTGRES_DB }}?schema=public"
   HOSTNAME: localhost
