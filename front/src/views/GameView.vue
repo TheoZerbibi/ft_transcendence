@@ -1,13 +1,13 @@
 <template>
-	<Suspense>
-		<template #default>
-			<game />
-		</template>
+<Suspense>
+<template #default>
+<game />
+</template>
 
-		<template #fallback>
-			<p>Loading Game</p>
-		</template>
-	</Suspense>
+<template #fallback>
+<p>Loading Game</p>
+</template>
+</Suspense>
 </template>
 
 <script lang="ts">
@@ -17,8 +17,8 @@ import { defineComponent } from 'vue';
 import Game from '../components/games/Game.vue';
 
 export default defineComponent({
-	name: 'GameView',
+name: 'GameView',
 
-	components: { Game },
+components: { Game },
 });
 </script>

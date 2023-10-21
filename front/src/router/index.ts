@@ -58,6 +58,11 @@ const router = createRouter({
 			name: 'TeamProfile',
 			component: () => import('../views/TeamProfileView.vue'),
 		},
+		{
+			path: '/chat/',
+			name: 'chat',
+			component: () => import('../views/ChatView.vue'),
+		},
 	],
 });
 
