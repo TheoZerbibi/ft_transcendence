@@ -43,7 +43,9 @@ export default {
 	},
 	mounted() {
 		const gameData = {
+			start: false,
 			go: false,
+			vel: null as P5.Vector | null,
 			p1: null as Paddle | null,
 			p2: null as Paddle | null,
 			ball: null as Ball | null,
@@ -55,7 +57,10 @@ export default {
 			p5.setup = () => {
 				const canvas = p5.createCanvas(900, 700);
 				canvas.parent('game-canvas');
-				gameData.ball = new Ball(p5, p5.width / 2, p5.height / 2, 10, 10);
+				const angle = p5.random(-Math.PI / 4, Math.PI / 4);
+				gameData.vel = P5.Vector.fromAngle(angle, 5);
+				if (p5.random(1) > 0.5) gameData.vel.x *= -1;
+				gameData.ball = new Ball(p5, p5.width / 2, p5.height / 2, 10, gameData.vel, 5);
 				gameData.p1 = new Paddle(p5, 20, p5.height / 2 - 50, 10, 100);
 				gameData.p2 = new Paddle(p5, p5.width - 30, p5.height / 2 - 50, 10, 100);
 			};
@@ -81,7 +86,7 @@ export default {
 					}, 1000);
 				}
 
-				if (gameData.go) gameData.ball.update();
+				if (gameData.go && gameData.start) gameData.ball.update();
 				gameData.ball.hit(gameData.p1, gameData.p2);
 				gameData.ball.show();
 			};
@@ -90,7 +95,7 @@ export default {
 			 * Function for moving the player Paddle.
 			 */
 			function movePaddles() {
-				if (!gameData.p1 || !gameData.p2 || !gameData.ball || !gameData.go) return;
+				if (!gameData.p1 || !gameData.p2 || !gameData.ball || !gameData.start) return;
 				// 65 = 'a'
 				if (p5.keyIsDown(65)) {
 					gameData.p1.move(-5);
@@ -142,7 +147,7 @@ export default {
 				if (p5.key == 'r') {
 					gameData.p1.score = 0;
 					gameData.p2.score = 0;
-					gameData.ball.resetball();
+					gameData.ball.oldreset();
 					gameData.go = false;
 				}
 
@@ -165,10 +170,15 @@ export default {
 			countdownStore.setSeconds(data);
 			if (data <= 0) {
 				this.showCountdown = false;
+				gameData.start = true;
 				setTimeout(() => {
 					gameData.go = true;
 				}, 1000);
 			}
+		});
+
+		this.socket.on('game_update', (data: any) => {
+			console.log('Données reçues du canal game_update :', data);
 		});
 	},
 };
