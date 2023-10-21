@@ -3,18 +3,18 @@ module.exports = {
 		browser: true,
 		es2021: true,
 	},
-	extends: [
-		'plugin:vue/recommended',
-		'plugin:import/recommended',
-		'plugin:import/typescript',
-		'plugin:vuejs-accessibility/recommended',
-		'plugin:@typescript-eslint/recommended',
-		'@vue/eslint-config-prettier',
-		'eslint:recommended',
-	],
 	parser: 'vue-eslint-parser',
+	extends: [
+		'plugin:vue/base',
+		'eslint:recommended',
+		'plugin:vue/vue3-recommended',
+		'plugin:vue/essential',
+		'plugin:@typescript-eslint/recommended',
+		'plugin:prettier/recommended',
+		'eslint-config-prettier'
+   ],
 	parserOptions: {
-		ecmaVersion: 'latest',
+		ecmaVersion: 2023,
 		parser: '@typescript-eslint/parser',
 		sourceType: 'module',
 		createDefaultProgram: true,

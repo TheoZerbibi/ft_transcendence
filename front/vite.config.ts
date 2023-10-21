@@ -22,6 +22,6 @@ export default defineConfig({
 		},
 	},
 	define: {
-		JWT: '"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTc4MTk2NTIsImV4cCI6MTY5NzkwNjA1Mn0.4oSbb5pFteyUotBaHOOr0VM8xaQs4XIhI36L74WZzVE"',
+		JWT: '"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTc4NDc4MjcsImV4cCI6MTY5NzkzNDIyN30.3uKebqTESOY7YlTx1oSFJxvUsMCteBuvVZLp44Yhwlw"',
 	},
 });

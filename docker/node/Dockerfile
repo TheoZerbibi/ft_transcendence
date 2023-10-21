@@ -9,8 +9,8 @@ RUN npm install -g npm@latest \
 RUN apk add --update python3 make g++ && rm -rf /var/cache/apk/*
 
 FROM common AS backend
-COPY --chown=node:node package*.json .
-COPY --chown=node:node pnpm-lock.yaml .
+COPY package*.json .
+COPY pnpm-lock.yaml .
 
 RUN npm i -g @nestjs/cli \
 	&& npm i -g prisma@latest \
@@ -20,8 +20,8 @@ EXPOSE 3001
 
 FROM common AS frontend
 
-COPY --chown=node:node package*.json .
-COPY --chown=node:node pnpm-lock.yaml .
+COPY package*.json .
+COPY pnpm-lock.yaml .
 RUN npm i -g @vue/cli \
 	&& pnpm install
 
@@ -29,8 +29,8 @@ EXPOSE 3000
 
 FROM common AS socket
 
-COPY --chown=node:node package.json .
-COPY --chown=node:node prisma/ .
+COPY package.json .
+COPY prisma/ .
 
 RUN npm i -g @nestjs/cli \
 	&& pnpm install
