@@ -52,7 +52,6 @@
 <!-- 
 
 
-<!--
     <v-app-bar>
 
       <v-app-bar-title>Application</v-app-bar-title>
@@ -92,7 +91,6 @@ hello world !
   const drawer = ref(null)
 </script>
 
-
 <script>
 export default {
   data() {
@@ -113,6 +111,7 @@ export default {
   },
 };
 </script>
+
 //	export default {
 //	  data() {
 //	    return {
