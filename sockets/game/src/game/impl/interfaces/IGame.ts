@@ -1,7 +1,9 @@
+import { IGameData } from './IGameData';
 import { IUser } from './IUser';
 
 export interface IGame {
 	inProgress: boolean;
+	gameData: IGameData;
 
 	isInProgress: () => boolean;
 	isEnded: () => boolean;
@@ -21,4 +23,7 @@ export interface IGame {
 
 	startGame: () => void;
 	endGame: () => void;
+
+	startGameLoop: () => void;
+	getGameData: () => IGameData;
 }
