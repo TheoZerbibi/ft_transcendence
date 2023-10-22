@@ -11,8 +11,8 @@ module.exports = {
 		'plugin:vue/essential',
 		'plugin:@typescript-eslint/recommended',
 		'plugin:prettier/recommended',
-		'eslint-config-prettier'
-   ],
+		'eslint-config-prettier',
+	],
 	parserOptions: {
 		ecmaVersion: 2023,
 		parser: '@typescript-eslint/parser',

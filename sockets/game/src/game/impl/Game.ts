@@ -2,11 +2,15 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { IGame } from './interfaces/IGame';
 import { IUser } from './interfaces/IUser';
 import { Logger } from '@nestjs/common';
+import { IGameData } from './interfaces/IGameData';
+import { Ball } from '../engine/Ball';
 
 export class Game implements IGame {
 	private logger: Logger = new Logger('GameClass');
 	private usersInGame: Array<IUser> = [];
+	private loop: boolean = false;
 	public inProgress: boolean = false;
+	public gameData: IGameData = { ball: new Ball(900, 700, 10, 5) };
 
 	private static games: Map<string, any> = new Map<string, any>();
 
@@ -18,7 +22,7 @@ export class Game implements IGame {
 		try {
 			this.logger.debug('Before set:', Game.games.get(this.gameUID));
 			Game.games.set(this.gameUID, this);
-			this.logger.debug('After set: ', Game.games.get(this.gameUID));
+			this.logger.debug(this.gameData.ball);
 		} catch (err) {
 			this.logger.error(err);
 		}
@@ -109,5 +113,25 @@ export class Game implements IGame {
 
 	userIsSpectator(userId: number): boolean {
 		return this.usersInGame.some((user) => user.user.id === userId && user.isSpec);
+	}
+
+	getGameData() {
+		return this.gameData;
+	}
+
+	startGameLoop() {
+		if (this.loop) return;
+		this.loop = true;
+		this.gameLoop();
+	}
+
+	private gameLoop() {
+		const loop = setInterval(() => {
+			if (!this.isEnded()) {
+				this.gameData.ball.update();
+			} else {
+				clearInterval(loop);
+			}
+		}, 1);
 	}
 }

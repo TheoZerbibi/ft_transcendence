@@ -49,6 +49,7 @@ export default {
 			p1: null as Paddle | null,
 			p2: null as Paddle | null,
 			ball: null as Ball | null,
+			pos: { x: 0, y: 0 } as { x: number; y: number },
 		};
 		const script = function (p5: any) {
 			let textOffsetX: number = 50;
@@ -72,22 +73,22 @@ export default {
 				gameData.p1.show();
 				gameData.p2.show();
 
-				let oob = gameData.ball.outOfBounds();
-				if (oob) {
-					// the ball stays at spawn till go = true
-					gameData.go = false;
-					if (oob == 'right') {
-						gameData.p1.score++;
-					} else {
-						gameData.p2.score++;
-					}
-					setTimeout(() => {
-						gameData.go = true;
-					}, 1000);
-				}
+				// let oob = gameData.ball.outOfBounds();
+				// if (oob) {
+				// 	// the ball stays at spawn till go = true
+				// 	gameData.go = false;
+				// 	if (oob == 'right') {
+				// 		gameData.p1.score++;
+				// 	} else {
+				// 		gameData.p2.score++;
+				// 	}
+				// 	setTimeout(() => {
+				// 		gameData.go = true;
+				// 	}, 1000);
+				// }
 
-				if (gameData.go && gameData.start) gameData.ball.update();
-				gameData.ball.hit(gameData.p1, gameData.p2);
+				if (gameData.go && gameData.start) gameData.ball.update(gameData.pos.x, gameData.pos.y);
+				// gameData.ball.hit(gameData.p1, gameData.p2);
 				gameData.ball.show();
 			};
 
@@ -179,6 +180,8 @@ export default {
 
 		this.socket.on('game_update', (data: any) => {
 			console.log('Données reçues du canal game_update :', data);
+			gameData.pos = data.position;
+			// console.log(gameData.pos);
 		});
 	},
 };

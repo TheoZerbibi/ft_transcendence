@@ -1,3 +1,5 @@
+import { Ball } from 'src/game/engine/Ball';
+
 export interface IGameData {
-	test: string;
+	ball: Ball;
 }
