@@ -50,18 +50,23 @@ export default {
 			p2: null as Paddle | null,
 			ball: null as Ball | null,
 			pos: { x: 0, y: 0 } as { x: number; y: number },
+			speed: 5,
+			radius: 5,
 		};
 		const script = function (p5: any) {
 			let textOffsetX: number = 50;
 			let textOffsetY: number = 10;
+			const cDiv = document.getElementById('game-canvas');
 
 			p5.setup = () => {
-				const canvas = p5.createCanvas(900, 700);
+				if (!cDiv) return;
+				console.log(cDiv.offsetWidth, (9 / 16) * cDiv.offsetWidth);
+				const canvas = p5.createCanvas(cDiv.offsetWidth, (9 / 16) * cDiv.offsetWidth);
 				canvas.parent('game-canvas');
 				const angle = p5.random(-Math.PI / 4, Math.PI / 4);
 				gameData.vel = P5.Vector.fromAngle(angle, 5);
 				if (p5.random(1) > 0.5) gameData.vel.x *= -1;
-				gameData.ball = new Ball(p5, p5.width / 2, p5.height / 2, 10, gameData.vel, 5);
+				gameData.ball = new Ball(p5, p5.width / 2, p5.height / 2, gameData.vel);
 				gameData.p1 = new Paddle(p5, 20, p5.height / 2 - 50, 10, 100);
 				gameData.p2 = new Paddle(p5, p5.width - 30, p5.height / 2 - 50, 10, 100);
 			};
@@ -89,7 +94,7 @@ export default {
 
 				if (gameData.go && gameData.start) gameData.ball.update(gameData.pos.x, gameData.pos.y);
 				// gameData.ball.hit(gameData.p1, gameData.p2);
-				gameData.ball.show();
+				gameData.ball.show(gameData.radius);
 			};
 
 			/**
@@ -145,15 +150,14 @@ export default {
 					gameData.go = true;
 				}
 
-				if (p5.key == 'r') {
-					gameData.p1.score = 0;
-					gameData.p2.score = 0;
-					gameData.ball.oldreset();
-					gameData.go = false;
-				}
-
 				// for safety
 				return false;
+			};
+
+			p5.windowResized = () => {
+				if (!cDiv) return;
+				console.log('windowResized');
+				p5.resizeCanvas(cDiv.offsetWidth, (9 / 16) * cDiv.offsetWidth);
 			};
 		};
 		new P5(script);
@@ -179,8 +183,11 @@ export default {
 		});
 
 		this.socket.on('game_update', (data: any) => {
-			console.log('Données reçues du canal game_update :', data);
+			// console.log('Données reçues du canal game_update :', data);
 			gameData.pos = data.position;
+			gameData.vel = data.velocity;
+			gameData.speed = data.speed;
+			gameData.radius = data.radius;
 			// console.log(gameData.pos);
 		});
 	},

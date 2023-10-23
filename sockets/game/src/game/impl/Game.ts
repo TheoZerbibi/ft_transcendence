@@ -10,7 +10,7 @@ export class Game implements IGame {
 	private usersInGame: Array<IUser> = [];
 	private loop: boolean = false;
 	public inProgress: boolean = false;
-	public gameData: IGameData = { ball: new Ball(900, 700, 10, 5) };
+	public gameData: IGameData = { ball: new Ball() };
 
 	private static games: Map<string, any> = new Map<string, any>();
 
