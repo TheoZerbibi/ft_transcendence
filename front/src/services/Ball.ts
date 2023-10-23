@@ -12,27 +12,16 @@ export class Ball {
 		private p5: any,
 		private x: number,
 		private y: number,
-		private r: number,
 		vel: P5.Vector,
-		speed = 5,
 	) {
 		this.spawn = p5.createVector(x, y);
 		console.log('vec : ', this.spawn);
-		this.speed = speed;
-		this.r = r;
 		this.pos = this.spawn.copy();
 		this.vel = vel;
 	}
 
 	resetball(vel: P5.Vector) {
 		this.vel = vel;
-	}
-
-	oldreset() {
-		this.pos = this.spawn.copy();
-		const angle = this.p5.random(-Math.PI / 4, Math.PI / 4);
-		this.vel = P5.Vector.fromAngle(angle, this.speed);
-		if (this.p5.random(1) > 0.5) this.vel.x *= -1;
 	}
 
 	// outOfBounds() {
@@ -87,12 +76,14 @@ export class Ball {
 	// }
 
 	update(x: number, y: number) {
-		this.pos.set(x, y);
+		console.log('x : ', ((x / 100) * this.p5.width * 70) / 100);
+		console.log('y : ', ((y / 100) * this.p5.width * 70) / 100);
+		this.pos.set(((x / 100) * this.p5.width * 70) / 100, ((y / 100) * this.p5.width * 70) / 100);
 	}
 
-	show() {
+	show(radius: number) {
 		this.p5.fill(255);
 		this.p5.noStroke();
-		this.p5.ellipse(this.pos.x, this.pos.y, this.r * 2);
+		this.p5.ellipse(this.pos.x, this.pos.y, ((radius / 100) * this.p5.width * 70) / 100);
 	}
 }

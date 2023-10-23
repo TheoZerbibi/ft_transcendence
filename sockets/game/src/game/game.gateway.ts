@@ -160,7 +160,12 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		const gameLoop = setInterval(() => {
 			if (!game.isEnded()) {
 				this.logger.debug(game.getGameData());
-				this.server.to(game.getGameUID()).emit('game_update', { position: game.getGameData().ball.pos });
+				this.server.to(game.getGameUID()).emit('game_update', {
+					position: game.getGameData().ball.pos,
+					velocity: game.getGameData().ball.vel,
+					speed: game.getGameData().ball.speed,
+					radius: game.getGameData().ball.r,
+				});
 			} else {
 				this.server.to(game.getGameUID()).emit('game_end', 'Game is ended');
 				clearInterval(gameLoop);
