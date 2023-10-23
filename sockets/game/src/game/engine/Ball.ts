@@ -90,45 +90,39 @@ import { IVector } from './interfaces/IVector';
 // }
 
 export class Ball {
-	private spawn: IVector; // IVector représente { x: number, y: number }
-	private r: number;
+	private spawn: IVector;
+	r: number;
 	vel: IVector;
 	speed: number;
 	pos: IVector;
 
-	constructor(
-		private x: number,
-		private y: number,
-		r: number,
-		speed = 10,
-	) {
-		this.spawn = { x: x / 2, y: y / 2 };
-		this.speed = speed;
-		this.r = r;
+	constructor() {
+		this.spawn = { x: 100 / 2, y: 100 / 2 };
+		this.speed = ((9 / 16) * 100) / 125;
+		this.r = ((9 / 16) * 100) / 75;
 		this.pos = this.spawn;
+		console.log(this.pos);
 		this.resetBall();
 	}
 
 	public update() {
 		// Mettre à jour la position de la balle en fonction de la vitesse
-		this.pos.x += this.vel.x;
-		this.pos.y += this.vel.y;
-
-		// Gérer la collision avec les bords de l'arène
-		if (this.pos.y + this.r >= this.spawn.y || this.pos.y - this.r <= 0) {
-			this.vel.y *= -1;
-		}
-
-		if (this.pos.x + this.r >= this.spawn.x || this.pos.x - this.r <= 0) {
-			this.vel.x *= -1;
-		}
+		// this.pos.x += this.vel.x;
+		// this.pos.y += this.vel.y;
+		// // Gérer la collision avec les bords de l'arène
+		// if (this.pos.y + this.r >= this.spawn.y || this.pos.y - this.r <= 0) {
+		// 	this.vel.y *= -1;
+		// }
+		// if (this.pos.x + this.r >= this.spawn.x || this.pos.x - this.r <= 0) {
+		// 	this.vel.x *= -1;
+		// }
 	}
 
 	public resetBall() {
 		this.pos = this.spawn;
-		const angle = (Math.random() * Math.PI) / 2 - Math.PI / 4;
-		const speed = this.speed;
-		this.vel = { x: speed * Math.cos(angle), y: speed * Math.sin(angle) };
-		if (Math.random() > 0.5) this.vel.x *= -1;
+		// const angle = (Math.random() * Math.PI) / 2 - Math.PI / 4;
+		// const speed = this.speed;
+		// this.vel = { x: speed * Math.cos(angle), y: speed * Math.sin(angle) };
+		// if (Math.random() > 0.5) this.vel.x *= -1;
 	}
 }
