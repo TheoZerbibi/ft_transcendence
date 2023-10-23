@@ -88,6 +88,7 @@
 							</div>
 						</v-col>
 						<v-col cols="12" sm="6">
+							<h2 class="text-orange">The project</h2>
 							<h5 class="mt-16">ft_transcendence</h5>
 							<div style="width: 120px">
 								<v-slider color="orange" >
@@ -99,19 +100,15 @@
 								It will provide you a nice user interface, a chat, and real-time multiplayer online games!
 							</p>
 							<br />
-							<router-link to="/secret" tag="v-btn">
-					            <v-btn class="text-capitalize" rounded color=orange>
-									Display the project subject
+					            <v-btn class="text-capitalize" rounded color=orange href="https://cdn.intra.42.fr/pdf/pdf/103402/en.subject.pdf" target="_blank">
+									Open the intra project subject
 								</v-btn>
-					        </router-link>
-
-
 						</v-col>
 					</v-row>
 				</div>
 			</v-col>
 			<div class="text-center mt-4">
-				<h2>Tools of our projects</h2>
+				<h2 class="text-yellow">The tools of our projects</h2>
 				<div style="width: 120px; margin: 0 auto;">
 					<v-slider color="orange"></v-slider>
 				</div>
@@ -161,29 +158,53 @@
 					<v-divider></v-divider>
 				</div>
 			</v-col>
-			<v-col cols="12" sm="12" id="team">
-				<div class="d-flex justify-center mb-6">
-					<v-btn color=orange class="text-capitalize" variant="outlined" rounded>Starring:</v-btn>
-					<v-btn color=orange class="text-capitalize" variant="outlined" rounded >Semiha</v-btn>
-					<v-btn color=orange class="text-capitalize" variant="outlined" rounded>Théo</v-btn>
-					<v-btn color=orange class="text-capitalize" variant="outlined" rounded>Ismaël</v-btn>
-					<v-btn color=orange class="text-capitalize" variant="outlined" rounded>Noémi</v-btn>
-					<v-btn color=orange class="text-capitalize" variant="outlined" rounded>Gaëlle</v-btn>
-				</div>
-			</v-col>
-			<v-col cols="12" class="imgHover">
-				<v-row class="fill-height" text-align="center" justify="center">
-					<template v-for="(item, i) in items" :key="i">
-						<v-col cols="12" md="4">
-							<v-hover v-slot="{isHovering, props}">
-								<v-card :elevation="isHovering ? 12: 2" :class="{'on-hover' : isHovering}" v-bind="props">
-									<v-img :src="item.img" height="225px" cover></v-img>
-								</v-card>
-							</v-hover>
-						</v-col>
-					</template> 
-				</v-row>
-			</v-col>
+			<div class="text-center mt-4">
+				<h2 class="text-green">The team</h2>
+				<v-col cols="12" sm="12" id="team">
+					<div class="d-flex justify-center mb-6">
+						<v-btn color=green class="text-capitalize" variant="outlined" rounded>Starring:</v-btn>
+						<v-btn color=orange class="text-capitalize" variant="outlined" rounded >Semiha</v-btn>
+						<v-btn color=orange class="text-capitalize" variant="outlined" rounded>Théo</v-btn>
+						<v-btn color=orange class="text-capitalize" variant="outlined" rounded>Ismaël</v-btn>
+						<v-btn color=orange class="text-capitalize" variant="outlined" rounded>Noémi</v-btn>
+						<v-btn color=orange class="text-capitalize" variant="outlined" rounded>Gaëlle</v-btn>
+					</div>
+				</v-col>
+				<!-- <v-col cols="12" class="IntraPictures"> -->
+
+
+
+					<!-- <div style="margin-top: 5px;width: 100%;"> -->
+						<!-- <ul  style="display: grid;grid-template-columns:repeat(5,1fr);"> -->
+							<!-- <li v-for="(item,index) in intraPictures" style="width: 20%;display: inline" > -->
+							  <!-- <img v-bind:src="item.photo"> -->
+							<!-- </li> -->
+						<!-- </ul> -->
+					<!-- </div> -->
+
+
+					<!-- <v-row class="fill-height" text-align="center" justify="center"> -->
+						<!-- <template v-for="(intraPictures, i) in intraPictures" :key="i"> -->
+							<!-- <v-col cols="12" md="4"> -->
+								<!-- <v-hover v-slot="{isHovering, props}"> -->
+									<!-- <v-card :elevation="isHovering ? 12: 2" :class="{'on-hover' : isHovering}" v-bind="props"> -->
+										<!-- <v-img :src="item.photo" alt="Image" height="225px" cover></v-img> -->
+									<!-- </v-card> -->
+								<!-- </v-hover> -->
+							<!-- </v-col> -->
+						<!-- </template>  -->
+					<!-- </v-row> -->
+
+
+
+
+
+
+
+
+
+				<!-- </v-col> -->
+			</div>
 			<v-col cols="12" sm="12">
 				<div class="d-flex jusify-center mb-6">
 					<v-btn color=orange class="mt-4" rounded>Load More</v-btn>
@@ -302,22 +323,27 @@ export default defineComponent({
 =======
 	setup(){
 		return {
-			slider2: 50, 
-			items: [
+			slider2: 50,
+			intraPictures: [
 				{
-					img: "Cats.jpg",
+					id: 1,
+					picture: "https://cdn.intra.42.fr/users/d78eaeaafd38e03543f1c757ad8b070e/seozcan.jpg",
 				},
 				{
-					img: "OmoriWallpaper00.jpg"
+					id: 2,
+					img: "https://cdn.intra.42.fr/users/ef89183628c15b9229bf141ebd455ba9/thzeribi.jpg",
 				},
 				{
-					img: "OmoriWallpaper01.jpg"
+					id: 3,
+					img: "https://cdn.intra.42.fr/users/166ae900b2c48bda6db10199f5b1efb4/iguidado.jpg",
 				},
 				{
-					img: "OmoriWallpaper02.jpg"
+					id: 4,
+					img: "https://cdn.intra.42.fr/users/96c6292bd2445ca46c9ce03ddb6f8572/nfauconn.jpg"
 				},
 				{
-					img: "OmoriWallpaper03.jpg"
+					id: 5,
+					img: "https://cdn.intra.42.fr/users/c2b48b00d1529ccb8e7a4296ec23b8ee/grannou.jpg"
 				},
 			],
 		}
@@ -522,7 +548,7 @@ a {
 	text-align: center;
 	margin-right: 8px;
 }
-.imgHover{
+.IntraPictures{
 	padding: 0 200px;
 }
 .pre{
