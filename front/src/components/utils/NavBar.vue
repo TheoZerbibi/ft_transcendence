@@ -17,7 +17,7 @@
         <v-btn text @click="scroll('project')" class="text-orange">The project</v-btn>
         <v-btn text @click="scroll('tools')" class="text-yellow">The tools</v-btn>
         <v-btn text @click="scroll('team')" class="text-green">The team</v-btn>
-        <v-btn text @click="scroll('page')" class="text-blue">Page</v-btn>
+        <v-btn text @click="scroll('game')" class="text-blue">The game</v-btn>
         <v-btn text @click="scroll('blog')" class="text-purple">Blog</v-btn>
         <v-btn text @click="scroll('contact')" class="text-pink">Contact</v-btn>
     </v-app-bar>
