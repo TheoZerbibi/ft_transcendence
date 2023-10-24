@@ -82,9 +82,4 @@ export class ChannelUserDto{
 	@IsBoolean()
 	// eslint-disable-next-line
 	is_ban: boolean;
-
-	@ApiProperty()
-	@IsDate()
-	created_at: Date;
 }
-

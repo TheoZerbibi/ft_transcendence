@@ -22,6 +22,17 @@ export class UserService {
 		return user as UserDto;
 	}
 
+	async getUserById(userId: number): Promise<UserDto | undefined> {
+		const prismaUser: User = await this.prisma.user.findUnique({
+			where: {
+				id: userId,
+			},
+		});
+		if (!prismaUser) return undefined;
+		const user = this.exclude(prismaUser, ['dAuth', 'email', 'updated_at']);
+		return user as UserDto;
+	}
+
 	async editUser(userId: number, dto: EditUserDto): Promise<UserDto> {
 		const user = await this.prisma.user.update({
 			where: {

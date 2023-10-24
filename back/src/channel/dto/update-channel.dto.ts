@@ -12,12 +12,18 @@ import { CreateChannelDto } from './create-channel.dto';
 
 export class UpdateChannelDto extends PartialType(CreateChannelDto) {}
 
+
 export class UpdateChannelUserDto {
 	@ApiProperty()
-	@IsOptional()
-	@IsBoolean()
+	@IsNumber()
 	// eslint-disable-next-line
-	name: string;
+	user_id: number;
+
+	
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	channel_id: number;
 
 	@ApiProperty()
 	@IsOptional()
