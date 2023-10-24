@@ -4,24 +4,57 @@ import P5 from 'p5';
 
 export class Ball {
 	private spawn: P5.Vector;
-	vel: P5.Vector;
-	speed: number;
-	pos: P5.Vector;
+	private pos: P5.Vector;
+	private vel: P5.Vector;
 
 	constructor(
 		private p5: any,
 		private x: number,
 		private y: number,
-		vel: P5.Vector,
+		private r: number,
+		private speed: number = 5,
 	) {
+		this.r = r;
 		this.spawn = p5.createVector(x, y);
-		console.log('vec : ', this.spawn);
 		this.pos = this.spawn.copy();
+		this.vel = P5.Vector.fromAngle(p5.random(-Math.PI / 4, Math.PI / 4), speed);
+	}
+
+	resetball() {
+		this.pos = this.spawn.copy();
+		const angle = this.p5.random(-Math.PI / 4, Math.PI / 4);
+		this.vel = P5.Vector.fromAngle(angle, 5);
+		if (this.p5.random(1) > 0.5) this.vel.x *= -1;
+	}
+
+	setVel(vel: P5.Vector) {
 		this.vel = vel;
 	}
 
-	resetball(vel: P5.Vector) {
-		this.vel = vel;
+	getVel(): P5.Vector {
+		return this.vel;
+	}
+
+	setPos(pos: P5.Vector) {
+		this.pos = pos;
+	}
+
+	getPos(): P5.Vector {
+		return this.pos;
+	}
+
+	getRadius(): number {
+		return this.r;
+	}
+
+	setRadius(radius: number) {
+		this.r = radius;
+	}
+
+	resizeUpdate(ratio: number, width: number, height: number, oldWidth: number, oldHeight: number) {
+		this.r = (this.r * ratio * width) / oldHeight - 10;
+		this.pos.x = (this.pos.x * width) / oldWidth;
+		this.pos.y = (this.pos.y * height) / oldHeight;
 	}
 
 	// outOfBounds() {
@@ -81,9 +114,9 @@ export class Ball {
 		this.pos.set(((x / 100) * this.p5.width * 70) / 100, ((y / 100) * this.p5.width * 70) / 100);
 	}
 
-	show(radius: number) {
+	show() {
 		this.p5.fill(255);
 		this.p5.noStroke();
-		this.p5.ellipse(this.pos.x, this.pos.y, ((radius / 100) * this.p5.width * 70) / 100);
+		this.p5.ellipse(this.pos.x, this.pos.y, this.r * 2);
 	}
 }

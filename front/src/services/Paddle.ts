@@ -20,6 +20,13 @@ export class Paddle {
 		console.log(p5.width, p5.height);
 	}
 
+	resizeUpdate(ratio: number, width: number, height: number, oldWidth: number, oldHeight: number) {
+		this.pos.y = 20;
+		this.pos.x = (this.pos.x * ratio * width) / oldWidth;
+		console.log(oldHeight);
+		console.log(height);
+	}
+
 	move(amt: number) {
 		this.pos.y += amt;
 		this.pos.y = this.p5.constrain(this.pos.y, 10, this.p5.height - 10 - this.h);
