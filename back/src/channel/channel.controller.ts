@@ -50,7 +50,7 @@ export class ChannelController {
 	@UseGuards(JwtGuard) // Needed to access user attribute
 	@ApiOperation({ summary: 'Create channel' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async fetch(@Param('name') channel_name: string) {
+	async getChannelByName(@Param('name') channel_name: string) {
 		return this.channelService.getChannel(channel_name);
 	}
 

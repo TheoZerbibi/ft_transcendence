@@ -1,6 +1,6 @@
 <template>
-<Discord></Discord>
-<!--
+	<Discord></Discord>
+	<!--
 	<v-expansion-panels>
 	<v-expansion-panel>
 	<v-expansion-panel-header>Chat</v-expansion-panel-header>
@@ -9,8 +9,7 @@
 	</v-expansion-panel-content>
 	</v-expansion-panel>
 	</v-expansion-panels>
--->
-</template>
+--></template>
 
 <script>
 import Chat from '../components/chat/Chat.vue'; // Adjust the path as needed
@@ -19,12 +18,11 @@ import ChatBox from '../components/chat/ChatBox.vue'; // Adjust the path as need
 import ChatBox1 from '../components/chat/ChatBox1.vue';
 
 export default {
-components: {
-		    Chat,
-		    'chat-box': ChatBox,
-			ChatBox1,
-			Discord,
-	    },
+	components: {
+		Chat,
+		'chat-box': ChatBox,
+		ChatBox1,
+		Discord,
+	},
 };
-
 </script>
