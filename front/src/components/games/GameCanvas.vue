@@ -14,6 +14,7 @@ import P5 from 'p5';
 
 import { Ball } from '../../services/Ball';
 import { Paddle } from '../../services/Paddle';
+import { SIDE } from '../../services/enums/Side';
 import { useCountdownStore } from '../../stores/countdown';
 import { useSocketStore } from '../../stores/websocket';
 import CountdownOverlay from '../utils/Countdown.vue';
@@ -48,12 +49,13 @@ export default {
 			p1: null as Paddle | null,
 			p2: null as Paddle | null,
 			ball: null as Ball | null,
+			ratio: (9 / 20) as number,
 		};
 		const script = function (p5: any) {
 			const cDiv = document.getElementById('game-canvas');
 			const textOffsetX: number = 50;
 			const textOffsetY: number = 10;
-			const ratio: number = 9 / 20;
+			const ratio: number = gameData.ratio;
 			let width: number, height: number;
 
 			p5.setup = () => {
@@ -158,13 +160,24 @@ export default {
 			}
 		});
 
-		this.socket.on('game_update', () => {
+		this.socket.on('game_update', (data: any) => {
 			// console.log('Données reçues du canal game_update :', data);
-			// gameData.pos = data.position;
-			// gameData.vel = data.velocity;
-			// gameData.speed = data.speed;
-			// gameData.radius = data.radius;
-			// console.log(gameData.pos);
+			gameData.ball?.update(data.position, data.velocity, data.speed, data.radius);
+			gameData.ratio = data.ratio;
+		});
+
+		this.socket.on('player_moove', (data: any) => {
+			gameData.p1?.update(data.p1Position);
+			gameData.p2?.update(data.p2Position);
+		});
+
+		this.socket.on('new_point', (data: any) => {
+			if (data == SIDE.LEFT) {
+				gameData.p1?.addPoint();
+			} else if (data == SIDE.RIGHT) {
+				gameData.p2?.addPoint();
+			}
+			console.log(data);
 		});
 	},
 };
