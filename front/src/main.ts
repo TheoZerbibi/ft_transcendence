@@ -1,6 +1,7 @@
 import 'vuetify/styles';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
+// import { appInjectKey } from 'vue3-pixi';
 
 import { createVuetify } from 'vuetify';
 import * as components from 'vuetify/components';

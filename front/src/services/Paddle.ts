@@ -1,6 +1,8 @@
 import P5 from 'p5';
 
 export class Paddle {
+	private y: number;
+	private x: number;
 	pos: P5.Vector;
 	score: number;
 	w: number;
@@ -9,22 +11,26 @@ export class Paddle {
 	constructor(
 		private p5: any,
 		private x: number,
-		private y: number,
-		w: number,
-		h: number,
+		ratio: number,
 	) {
-		this.pos = this.p5.createVector(x, y);
-		this.w = w;
-		this.h = h;
+		this.x = x;
+		this.y = (((ratio * 100) / 2 / 100) * window.innerWidth * 70) / 90;
+		this.pos = this.p5.createVector(x, this.y);
+		this.w = ((100 / 75 / 100) * window.innerWidth * 70) / 100;
+		this.h = (((ratio * 100) / 5 / 100) * window.innerWidth * 70) / 90;
 		this.score = 0;
 		console.log(p5.width, p5.height);
 	}
 
-	resizeUpdate(ratio: number, width: number, height: number, oldWidth: number, oldHeight: number) {
-		this.pos.y = 20;
-		this.pos.x = (this.pos.x * ratio * width) / oldWidth;
-		console.log(oldHeight);
-		console.log(height);
+	resizeUpdate(ratio: number, width: number, oldWidth: number, oldHeight: number) {
+		this.x = this.pos.x;
+		this.pos.y = (this.pos.y * ratio * width) / oldHeight;
+		this.w = (this.w * width) / oldWidth;
+		this.h = (this.h * ratio * width) / oldHeight;
+	}
+
+	updateScore(score: number) {
+		this.score = score;
 	}
 
 	move(amt: number) {

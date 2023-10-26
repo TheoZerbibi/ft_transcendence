@@ -3,6 +3,7 @@ import P5 from 'p5';
 // import type { Paddle } from './Paddle';
 
 export class Ball {
+	private r: number;
 	private spawn: P5.Vector;
 	private pos: P5.Vector;
 	private vel: P5.Vector;
@@ -11,10 +12,10 @@ export class Ball {
 		private p5: any,
 		private x: number,
 		private y: number,
-		private r: number,
+		private ratio: number,
 		private speed: number = 5,
 	) {
-		this.r = r;
+		this.r = (((ratio * 100) / 75 / 100) * window.innerWidth * 70) / 50;
 		this.spawn = p5.createVector(x, y);
 		this.pos = this.spawn.copy();
 		this.vel = P5.Vector.fromAngle(p5.random(-Math.PI / 4, Math.PI / 4), speed);
@@ -52,7 +53,7 @@ export class Ball {
 	}
 
 	resizeUpdate(ratio: number, width: number, height: number, oldWidth: number, oldHeight: number) {
-		this.r = (this.r * ratio * width) / oldHeight - 10;
+		this.r = (this.r * ratio * width) / oldHeight;
 		this.pos.x = (this.pos.x * width) / oldWidth;
 		this.pos.y = (this.pos.y * height) / oldHeight;
 	}
