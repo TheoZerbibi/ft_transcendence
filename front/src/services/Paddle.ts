@@ -2,7 +2,6 @@ import P5 from 'p5';
 
 export class Paddle {
 	private y: number;
-	private x: number;
 	pos: P5.Vector;
 	score: number;
 	w: number;
@@ -29,8 +28,12 @@ export class Paddle {
 		this.h = (this.h * ratio * width) / oldHeight;
 	}
 
-	updateScore(score: number) {
-		this.score = score;
+	addPoint() {
+		this.score++;
+	}
+
+	update(pos: { x: number; y: number }) {
+		this.pos.y = ((pos.y / 100) * window.innerWidth * 70) / 90;
 	}
 
 	move(amt: number) {

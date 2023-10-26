@@ -10,7 +10,8 @@ export class Game implements IGame {
 	private usersInGame: Array<IUser> = [];
 	private loop: boolean = false;
 	public inProgress: boolean = false;
-	public gameData: IGameData = { ball: new Ball() };
+	public gameData: IGameData = { ball: new Ball(9 / 20), ratio: 9 / 20, startingDate: null, endingDate: null };
+	public pause: boolean = false;
 
 	private static games: Map<string, any> = new Map<string, any>();
 
@@ -20,9 +21,7 @@ export class Game implements IGame {
 		private isEnd: boolean,
 	) {
 		try {
-			this.logger.debug('Before set:', Game.games.get(this.gameUID));
 			Game.games.set(this.gameUID, this);
-			this.logger.debug(this.gameData.ball);
 		} catch (err) {
 			this.logger.error(err);
 		}
@@ -58,6 +57,7 @@ export class Game implements IGame {
 	}
 
 	addUser(user: IUser): void {
+		console.log(user);
 		this.usersInGame.push(user);
 	}
 
@@ -70,26 +70,31 @@ export class Game implements IGame {
 	}
 
 	getUsersInGame(): Array<IUser> {
-		return this.usersInGame.filter((user) => !user.isSpec);
+		return this.usersInGame
+			.filter((user) => !user.isSpec)
+			.map(({ user, isSpec, playerData }) => ({ user, isSpec, playerData, socketID: 'null' }));
 	}
 
 	getSpectatorsInGame(): Array<IUser> {
-		return this.usersInGame.filter((user) => user.isSpec);
+		return this.usersInGame
+			.filter((user) => user.isSpec)
+			.map(({ user, isSpec, playerData }) => ({ user, isSpec, playerData, socketID: 'null' }));
 	}
 
 	getAllUsersInGame(): Array<IUser> {
-		return this.usersInGame;
+		return this.usersInGame.map(({ user, isSpec, playerData }) => ({ user, isSpec, playerData, socketID: 'null' }));
 	}
 
 	async startGame(): Promise<void> {
 		this.inProgress = true;
 		console.log('Game started');
+		this.gameData.startingDate = new Date();
 		await this.prismaService.games.update({
 			where: {
 				uid: this.gameUID,
 			},
 			data: {
-				started_at: new Date(),
+				started_at: this.gameData.startingDate,
 			},
 		});
 	}
@@ -97,12 +102,13 @@ export class Game implements IGame {
 	async endGame(): Promise<void> {
 		this.isEnd = true;
 		console.log('Game ended');
+		this.gameData.endingDate = new Date();
 		await this.prismaService.games.update({
 			where: {
 				uid: this.gameUID,
 			},
 			data: {
-				end_at: new Date(),
+				end_at: this.gameData.endingDate,
 			},
 		});
 	}
@@ -125,13 +131,32 @@ export class Game implements IGame {
 		this.gameLoop();
 	}
 
+	setPause(pause: boolean, time: number) {
+		this.pause = pause;
+		setTimeout(() => {
+			this.pause = false;
+		}, time);
+	}
+
+	isIntPause(): boolean {
+		return this.pause;
+	}
+
+	isInPause(): boolean {
+		return this.pause;
+	}
+
 	private gameLoop() {
 		const loop = setInterval(() => {
 			if (!this.isEnded()) {
-				this.gameData.ball.update();
+				if (!this.pause) this.gameData.ball.update();
 			} else {
 				clearInterval(loop);
 			}
 		}, 1);
+	}
+
+	private exclude<IUser>(user: IUser, keys: string[]) {
+		return Object.fromEntries(Object.entries(user).filter(([key]) => !keys.includes(key)));
 	}
 }

@@ -21,6 +21,9 @@ export interface IGame {
 	userIsInGame: (userId: number) => boolean;
 	userIsSpectator: (userId: number) => boolean;
 
+	setPause: (pause: boolean, time: number) => void;
+	isIntPause: () => boolean;
+
 	startGame: () => void;
 	endGame: () => void;
 
