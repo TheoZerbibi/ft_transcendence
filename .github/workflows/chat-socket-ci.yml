@@ -14,25 +14,6 @@ on:
       - ".github/workflows/chat-socket-ci.yml"
       - "sockets/chat/**"
       - "docker/node/**"
-  pull_request:
-    branches:
-      - "*"
-      - "**"
-      - "*/*"
-      - '!master'
-      - "!**/frontend"
-      - "!frontend/**"
-      - "!**/frontend/**"
-    types:
-      - opened
-      - synchronize
-      - reopened
-      - ready_for_review
-    paths:
-      - ".github/workflows/chat-socket-ci.yml"
-      - "sockets/chat/**"
-      - "docker/node/**"
-  workflow_dispatch:
 
 env:
   NODE_VERSION: 21
