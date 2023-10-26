@@ -4,8 +4,8 @@
 		"db:pull": "npx prisma db pull && npx prisma generate"
 	},
 	"dependencies": {
-		"@prisma/client": "^5.5.0",
-		"prisma": "^5.5.0",
+		"@prisma/client": "^5.5.2",
+		"prisma": "^5.5.2",
 		"prisma-dbml-generator": "^0.10.0"
 	}
 }
