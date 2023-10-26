@@ -50,9 +50,9 @@ export default {
 			ball: null as Ball | null,
 		};
 		const script = function (p5: any) {
+			const cDiv = document.getElementById('game-canvas');
 			const textOffsetX: number = 50;
 			const textOffsetY: number = 10;
-			const cDiv = document.getElementById('game-canvas');
 			const ratio: number = 9 / 20;
 			let width: number, height: number;
 
@@ -64,12 +64,13 @@ export default {
 				const canvas = p5.createCanvas(width, height);
 				canvas.parent('game-canvas');
 
-				gameData.ball = new Ball(p5, p5.width / 2, p5.height / 2, 12);
-				gameData.p1 = new Paddle(p5, 20, p5.height / 2 - 50, 10, 100);
-				gameData.p2 = new Paddle(p5, p5.width - 30, p5.height / 2 - 50, 10, 100);
+				gameData.ball = new Ball(p5, width / 2, height / 2, ratio);
+				gameData.p1 = new Paddle(p5, width / 75, ratio);
+				gameData.p2 = new Paddle(p5, width - (width / 75) * 2, ratio);
 			};
 			p5.draw = () => {
 				p5.background(51);
+				movePaddles();
 				backdrop();
 				if (!gameData.p1 || !gameData.p2 || !gameData.ball) return;
 				gameData.p1.show();
@@ -81,6 +82,7 @@ export default {
 			 * Function for moving the player Paddle.
 			 */
 			function backdrop() {
+				if (!gameData.p1 || !gameData.p2) return;
 				p5.stroke(80);
 				p5.strokeWeight(8);
 
@@ -93,16 +95,36 @@ export default {
 					y += dottedLength * 2;
 				}
 
-				p5.textSize(100);
+				const _r = width / 1736;
+				const _size = 100 * _r;
+				p5.textSize(_size);
 				p5.noStroke();
 				p5.fill(80);
 
 				p5.textAlign(p5.RIGHT, p5.TOP);
+				p5.text(gameData.p1.score, width / 2 - textOffsetX, textOffsetY);
+
 				p5.textAlign(p5.LEFT);
+				p5.text(gameData.p2.score, width / 2 + textOffsetX, textOffsetY);
+			}
+
+			/**
+			 * Function for moving the player Paddle.
+			 */
+			function movePaddles() {
+				if (!gameData.p1 || !gameData.p2 || !gameData.ball) return;
+				// 65 = 'a'
+				if (p5.keyIsDown(65)) {
+					gameData.p1.move(-5);
+				}
+
+				// 90 = 'z'
+				if (p5.keyIsDown(90)) {
+					gameData.p1.move(5);
+				}
 			}
 
 			p5.windowResized = () => {
-				console.log('windowResized');
 				if (!cDiv || !gameData.ball || !gameData.p1 || !gameData.p2) return;
 				const oldWidth: number = width;
 				const oldHeight: number = height;
@@ -110,8 +132,8 @@ export default {
 				height = ratio * cDiv.offsetWidth;
 				p5.resizeCanvas(width, height);
 				gameData.ball.resizeUpdate(ratio, width, height, oldWidth, oldHeight);
-				gameData.p1.resizeUpdate(ratio, width, height, oldWidth, oldHeight);
-				gameData.p2.resizeUpdate(ratio, width, height, oldWidth, oldHeight);
+				gameData.p1.resizeUpdate(ratio, width, oldWidth, oldHeight);
+				gameData.p2.resizeUpdate(ratio, width, oldWidth, oldHeight);
 			};
 		};
 		new P5(script);
@@ -136,7 +158,7 @@ export default {
 			}
 		});
 
-		this.socket.on('game_update', (data: any) => {
+		this.socket.on('game_update', () => {
 			// console.log('Données reçues du canal game_update :', data);
 			// gameData.pos = data.position;
 			// gameData.vel = data.velocity;
