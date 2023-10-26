@@ -6,6 +6,8 @@ import { users } from '@prisma/client';
 import { IUser } from './impl/interfaces/IUser';
 import { Socket } from 'socket.io';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { PlayerData } from './engine/PlayerData';
+import { SIDE } from './engine/enums/Side';
 
 @Injectable()
 export class GameService {
@@ -45,10 +47,16 @@ export class GameService {
 			// client.emit('game_error', 'Already in Game session');
 			return true;
 		}
+		let side: SIDE;
+		if (game.getUsersInGame().length === 0) side = SIDE.LEFT;
+		else if (game.getUsersInGame().length === 1) side = SIDE.RIGHT;
+		else side = SIDE.SPECTATOR;
+		if (isSpec) side = SIDE.SPECTATOR;
 		const gameUser: IUser = {
 			user: { id: user.id, login: user.login, displayName: user.display_name, avatar: user.avatar },
 			socketID: client.id,
 			isSpec: isSpec,
+			playerData: new PlayerData(game.gameData.ratio, side),
 		};
 		game.addUser(gameUser);
 		return true;

@@ -173,18 +173,18 @@ export default {
 								data[i].user.isSpec = data[i].isSpec;
 								if (data[i].user) this.players.push(data[i].user);
 								console.log(data[i].user);
+								console.log(data[i].playerData);
 							}
 						});
 						this.socket.on('game_start', (data: any) => {
 							console.log('game_start');
-							snackbarStore.showSnackbar(data, 3000, 'green');
-							this.apiData.started_at = new Date();
-							console.log('Données reçues du canal game_start :', data);
+							snackbarStore.showSnackbar('Game Starting !', 3000, 'green');
+							this.apiData.started_at = data.startDate;
 						});
 						this.socket.on('game_end', (data: any) => {
 							console.log('game_end');
 							this.disconnect();
-							snackbarStore.showSnackbar(data, 3000, 'primary');
+							snackbarStore.showSnackbar('Game is ended', 3000, 'primary');
 							console.log('Données reçues du canal game_end :', data);
 						});
 						this.socket.emit('session-join', {

@@ -17,6 +17,7 @@ import { IUser } from './impl/interfaces/IUser';
 import { uniqueNamesGenerator, names } from 'unique-names-generator';
 import { JwtGuard } from 'src/auth/guard';
 import { users } from '@prisma/client';
+import { SIDE } from './engine/enums/Side';
 
 @WebSocketGateway({
 	cors: {
@@ -59,6 +60,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			},
 			socketID: 'null',
 			isSpec: false,
+			playerData: null,
 		};
 		if (gameS.isInProgress() && !game.isSpec) gameUser.isSpec = true;
 		gameS.addUser(gameUser);
@@ -140,7 +142,12 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 	private startGame(game: IGame): void {
 		game.startGame();
-		this.server.to(game.getGameUID()).emit('game_start', 'Game started');
+		this.server.to(game.getGameUID()).emit('game_start', {
+			ball: game.getGameData().ball,
+			players: game.getUsersInGame(),
+			ratio: game.getGameData().ratio,
+			startDate: game.getGameData().startingDate,
+		});
 
 		let countdown = 4;
 		const countdownInterval = setInterval(() => {
@@ -159,15 +166,28 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		game.startGameLoop();
 		const gameLoop = setInterval(() => {
 			if (!game.isEnded()) {
-				this.logger.debug(game.getGameData());
 				this.server.to(game.getGameUID()).emit('game_update', {
 					position: game.getGameData().ball.pos,
 					velocity: game.getGameData().ball.vel,
 					speed: game.getGameData().ball.speed,
 					radius: game.getGameData().ball.r,
+					ratio: game.getGameData().ratio,
 				});
+				if (game.getGameData().ball.playerLHasHit) {
+					this.server.to(game.getGameUID()).emit('new_point', SIDE.LEFT);
+					game.getGameData().ball.playerLHasHit = false;
+					game.setPause(true, 3000);
+				}
+				if (game.getGameData().ball.playerRHasHit) {
+					this.server.to(game.getGameUID()).emit('new_point', SIDE.RIGHT);
+					game.getGameData().ball.playerRHasHit = false;
+					game.setPause(true, 3000);
+				}
 			} else {
-				this.server.to(game.getGameUID()).emit('game_end', 'Game is ended');
+				this.server.to(game.getGameUID()).emit('game_end', {
+					startDate: game.getGameData().startingDate,
+					endingDate: game.getGameData().endingDate,
+				});
 				clearInterval(gameLoop);
 			}
 		}, 1);
