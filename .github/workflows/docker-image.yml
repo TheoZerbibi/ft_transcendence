@@ -3,10 +3,8 @@ name: Docker Build CI
 on:
   push:
     branches:
-      - '*'
-      - '**'
-      - '*/*'
-      - '!master'
+      - 'develop'
+      - 'master'
     paths:
       - '!.github/**'
       - 'back/**'
@@ -16,10 +14,7 @@ on:
       - "docker/node/**"
   pull_request:
     branches:
-      - '*'
-      - '**'
-      - '*/*'
-      - '!master'
+      - 'develop'
     paths:
       - '!.github/**'
       - 'back/**'

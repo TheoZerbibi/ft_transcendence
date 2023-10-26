@@ -14,25 +14,6 @@ on:
       - ".github/workflows/frontend-ci.yml"
       - "front/**"
       - "docker/node/**"
-  pull_request:
-    branches:
-      - '*'
-      - '**'
-      - '*/*'
-      - '!master' 
-      - '!**/backend'
-      - '!backend/**'
-      - '!**/backend/**'
-    types:
-      - opened
-      - synchronize
-      - reopened
-      - ready_for_review
-    paths:
-      - ".github/workflows/frontend-ci.yml"
-      - "front/**"
-      - "docker/node/**"
-  workflow_dispatch:
 
 env:
   NODE_VERSION: 21
