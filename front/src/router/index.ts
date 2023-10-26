@@ -9,11 +9,6 @@ const router = createRouter({
 			component: () => import('../views/HomeView.vue'),
 		},
 		{
-			path: '/secret',
-			name: 'secret',
-			component: () => import('../views/SecretView.vue'),
-		},
-		{
 			path: '/test',
 			name: 'Test',
 			component: () => import('../views/TestView.vue'),
@@ -52,6 +47,16 @@ const router = createRouter({
 			path: '/team/:login',
 			name: 'TeamProfile',
 			component: () => import('../views/TeamProfileView.vue'),
+		},
+		{
+			path: '/secret',
+			name: 'secret',
+			component: () => import('../views/SecretView.vue'),
+		},
+		{
+			path: '/portfolio',
+			name: 'portfolio',
+			component: () => import('../views/PortfolioView.vue'),
 		},
 	],
 });
