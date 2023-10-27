@@ -20,7 +20,6 @@ export class GameService {
 	}
 
 	public isUserWaiting(gameUID: string, userID: number): GameJoinDto | null {
-		console.log(`isUserWaiting :`, this.waitingConnections);
 		if (!this.waitingConnections.has(userID)) return null;
 		const wainting = this.waitingConnections.get(userID);
 		if (wainting.gameUID !== gameUID) return null;
@@ -36,9 +35,7 @@ export class GameService {
 	}
 
 	public createGame(gameUID: string, isEnded: boolean = false): IGame {
-		console.log('new game : ', gameUID, ' isEnded :', isEnded);
 		const game = new Game(this.prismaService, gameUID, isEnded);
-		console.log('new game created');
 		return game;
 	}
 
@@ -63,11 +60,8 @@ export class GameService {
 	}
 
 	public removeUserFromGame(client: Socket | any): void {
-		console.log('removeUserFromGame');
 		const user: users = client.handshake.user;
-		console.log('user : ', user);
 		if (!user) return;
-		console.log('user : ', user.id);
 		const game: IGame = Game.getGamesFromUser(user.id);
 		if (!game) return;
 		const gameUser = game.getUser(user.id);
