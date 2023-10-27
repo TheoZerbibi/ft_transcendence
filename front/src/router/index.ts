@@ -16,8 +16,9 @@ const router = createRouter({
 		{
 			path: '/game',
 			name: 'GameCreator',
-			component: () => import('../views/GameCreateView.vue'),
+			component: () => import('../views/GameMenuView.vue'),
 		},
+		// PAS TOUCHE a /game:uid
 		{
 			path: '/game/:uid',
 			name: 'Game',
@@ -37,6 +38,11 @@ const router = createRouter({
 			path: '/exemples/p5',
 			name: 'P5Exemple',
 			component: () => import('../components/exemples/P5Exemple.vue'),
+		},
+		{
+			path: '/chat',
+			name: 'chat',
+			component: () => import('../views/ChatView.vue'),
 		},
 		{
 			path: '/team',
