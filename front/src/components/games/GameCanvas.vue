@@ -118,11 +118,19 @@ export default {
 				// 65 = 'a'
 				if (p5.keyIsDown(65)) {
 					gameData.p1.move(-5);
+					// this.socket.emit('player-move', {
+					// 	gameUID: this.gameUID,
+					// 	position: gameData.p1.pos,
+					// });
 				}
 
 				// 90 = 'z'
 				if (p5.keyIsDown(90)) {
 					gameData.p1.move(5);
+					// this.socket.emit('player-move', {
+					// 	gameUID: this.gameUID,
+					// 	position: gameData.p1.pos,
+					// });
 				}
 			}
 
@@ -166,9 +174,10 @@ export default {
 			gameData.ratio = data.ratio;
 		});
 
-		this.socket.on('player_moove', (data: any) => {
-			gameData.p1?.update(data.p1Position);
-			gameData.p2?.update(data.p2Position);
+		this.socket.on('player_move', (data: any) => {
+			console.log(data.p1);
+			if (data.p1) gameData.p1?.update(data.p1.position, data.p1.width, data.p1.height);
+			if (data.p2) gameData.p2?.update(data.p2.position, data.p2.width, data.p2.height);
 		});
 
 		this.socket.on('new_point', (data: any) => {

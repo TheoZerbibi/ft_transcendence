@@ -4,6 +4,7 @@ import { IUser } from './interfaces/IUser';
 import { Logger } from '@nestjs/common';
 import { IGameData } from './interfaces/IGameData';
 import { Ball } from '../engine/Ball';
+import { SIDE } from '../engine/enums/Side';
 
 export class Game implements IGame {
 	private logger: Logger = new Logger('GameClass');
@@ -59,6 +60,7 @@ export class Game implements IGame {
 	addUser(user: IUser): void {
 		console.log(user);
 		this.usersInGame.push(user);
+		if (user.playerData.side !== SIDE.SPECTATOR) this.gameData.ball.setPlayerSide(user.playerData);
 	}
 
 	removeUser(user: IUser): void {
@@ -83,6 +85,10 @@ export class Game implements IGame {
 
 	getAllUsersInGame(): Array<IUser> {
 		return this.usersInGame.map(({ user, isSpec, playerData }) => ({ user, isSpec, playerData, socketID: 'null' }));
+	}
+
+	getPlayerBySide(side: SIDE): IUser {
+		return this.usersInGame.find((user) => user.playerData && user.playerData.side === side);
 	}
 
 	async startGame(): Promise<void> {

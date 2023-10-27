@@ -18,6 +18,8 @@ import { uniqueNamesGenerator, names } from 'unique-names-generator';
 import { JwtGuard } from 'src/auth/guard';
 import { users } from '@prisma/client';
 import { SIDE } from './engine/enums/Side';
+import { PlayerData } from './engine/PlayerData';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @WebSocketGateway({
 	cors: {
@@ -31,6 +33,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	constructor(
 		private authService: AuthService,
 		private gameService: GameService,
+		private prismaService: PrismaService,
 	) {}
 	@WebSocketServer() server: Server;
 
@@ -60,9 +63,12 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			},
 			socketID: 'null',
 			isSpec: false,
-			playerData: null,
+			playerData: new PlayerData(this.prismaService, gameS.getGameData().ratio, SIDE.RIGHT),
 		};
-		if (gameS.isInProgress() && !game.isSpec) gameUser.isSpec = true;
+		if (gameS.isInProgress() && !game.isSpec) {
+			gameUser.playerData.side = SIDE.SPECTATOR;
+			gameUser.isSpec = true;
+		}
 		gameS.addUser(gameUser);
 		this.server.to(gameUID).emit('session-info', gameS.getAllUsersInGame());
 		if (!gameS.isInProgress() && gameS.getUsersInGame().length === 2) this.startGame(gameS);
@@ -107,6 +113,39 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				client.join(gameUID);
 				this.server.to(gameUID).emit('session-info', game.getAllUsersInGame());
 			} else client.disconnect();
+		}
+	}
+
+	@UseGuards(JwtGuard)
+	@SubscribeMessage('player-move')
+	handlePlayerMove(@ConnectedSocket() client: Socket | any, @MessageBody() data: any) {
+		const user: users = client.handshake.user;
+		if (!user) {
+			client.emit('error', 'Invalid token');
+			client.disconnect();
+			return;
+		}
+		const gameUID: string = data.gameUID;
+		const userID: number = user.id;
+		const game: IGame = this.gameService.getGame(gameUID);
+		if (!game) {
+			client.emit('game_error', 'Game Error');
+			client.disconnect();
+			return;
+		}
+		if (!game.userIsInGame(userID)) {
+			client.emit('game_error', 'User is not in the game');
+			client.disconnect();
+			return;
+		}
+		const player = game.getUser(userID);
+		if (!player) {
+			client.emit('game_error', 'User is not in the game');
+			client.disconnect();
+			return;
+		}
+		if (player.playerData.side === SIDE.LEFT) {
+			if (game.getPlayerBySide(SIDE.LEFT).user.login != player.user.login) return;
 		}
 	}
 
@@ -164,6 +203,20 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 	private gameUpdate(game: IGame): void {
 		game.startGameLoop();
+		console.log(game.getPlayerBySide(SIDE.LEFT));
+		console.log(game.getPlayerBySide(SIDE.RIGHT));
+		this.server.to(game.getGameUID()).emit('player_move', {
+			p1: {
+				position: game.getPlayerBySide(SIDE.LEFT).playerData.y,
+				width: game.getPlayerBySide(SIDE.LEFT).playerData.w,
+				height: game.getPlayerBySide(SIDE.LEFT).playerData.h,
+			},
+			// p2: {
+			// 	position: game.getPlayerBySide(SIDE.RIGHT).playerData.y,
+			// 	width: game.getPlayerBySide(SIDE.RIGHT).playerData.w,
+			// 	height: game.getPlayerBySide(SIDE.RIGHT).playerData.h,
+			// },
+		});
 		const gameLoop = setInterval(() => {
 			if (!game.isEnded()) {
 				this.server.to(game.getGameUID()).emit('game_update', {
