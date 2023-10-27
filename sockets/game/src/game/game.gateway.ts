@@ -78,7 +78,6 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	@SubscribeMessage('session-join')
 	async handleSessionJoin(@ConnectedSocket() client: Socket | any, @MessageBody() game: GameJoinDto) {
 		const user: users = client.handshake.user;
-		console.log(user.id, ' want to join');
 		if (!user) {
 			client.emit('error', 'Invalid token');
 			client.disconnect();
@@ -154,7 +153,6 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	}
 
 	public handleDisconnect(client: Socket): void {
-		console.log('disconnect');
 		this.gameService.removeUserFromGame(client);
 		return this.logger.debug(`Client disconnected: ${client.id}`);
 	}
@@ -173,7 +171,6 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 	public handleRedisMessage(channel: string, message: any): void {
 		const data = JSON.parse(message);
-		console.log(data);
 		if (data.isEnded) this.gameService.createGame(data.gameUID, data.isEnded);
 		this.gameService.addWaitingConnection(data);
 		return this.logger.debug(`New redis-message, user ${data.userID} is waiting for game ${data.gameUID}`);
