@@ -41,11 +41,9 @@ export class Game implements IGame {
 	}
 
 	public static getGamesFromUser(userID: number): IGame {
-		console.log(userID);
 		for (const game of this.games.values()) {
 			if (game.userIsInGame(userID)) return game;
 		}
-		console.log('after');
 		return null;
 	}
 
@@ -58,7 +56,6 @@ export class Game implements IGame {
 	}
 
 	addUser(user: IUser): void {
-		console.log(user);
 		this.usersInGame.push(user);
 		if (user.playerData.side !== SIDE.SPECTATOR) this.gameData.ball.setPlayerSide(user.playerData);
 	}
@@ -93,7 +90,6 @@ export class Game implements IGame {
 
 	async startGame(): Promise<void> {
 		this.inProgress = true;
-		console.log('Game started');
 		this.gameData.startingDate = new Date();
 		await this.prismaService.games.update({
 			where: {
@@ -107,7 +103,6 @@ export class Game implements IGame {
 
 	async endGame(): Promise<void> {
 		this.isEnd = true;
-		console.log('Game ended');
 		this.gameData.endingDate = new Date();
 		await this.prismaService.games.update({
 			where: {
