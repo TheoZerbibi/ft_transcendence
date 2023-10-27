@@ -9,6 +9,7 @@
 		<button class="button button4">12px</button>
 		<button class="button button5">50%</button>
 	</div>
+	
 </template>
 
 <script lang="ts">
