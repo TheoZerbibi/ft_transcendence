@@ -30,19 +30,14 @@ const router = createRouter({
 			component: () => import('../components/exemples/SnackbarExemple.vue'),
 		},
 		{
-			path: '/exemples/websocket',
-			name: 'WebsocketExemple',
-			component: () => import('../components/exemples/WebsocketExemple.vue'),
-		},
-		{
-			path: '/exemples/p5',
-			name: 'P5Exemple',
-			component: () => import('../components/exemples/P5Exemple.vue'),
-		},
-		{
 			path: '/chat',
 			name: 'chat',
 			component: () => import('../views/ChatView.vue'),
+		},
+		{
+			path: '/profile',
+			name: 'profile',
+			component: () => import('../views/ProfileView.vue'),
 		},
 		{
 			path: '/team',
@@ -63,6 +58,16 @@ const router = createRouter({
 			path: '/portfolio',
 			name: 'portfolio',
 			component: () => import('../views/PortfolioView.vue'),
+		},
+		{
+			path: '/exemples/websocket',
+			name: 'WebsocketExemple',
+			component: () => import('../components/exemples/WebsocketExemple.vue'),
+		},
+		{
+			path: '/exemples/p5',
+			name: 'P5Exemple',
+			component: () => import('../components/exemples/P5Exemple.vue'),
 		},
 	],
 });
