@@ -56,7 +56,7 @@ export class GameService {
 			user: { id: user.id, login: user.login, displayName: user.display_name, avatar: user.avatar },
 			socketID: client.id,
 			isSpec: isSpec,
-			playerData: new PlayerData(game.gameData.ratio, side),
+			playerData: new PlayerData(this.prismaService, game.gameData.ratio, side),
 		};
 		game.addUser(gameUser);
 		return true;

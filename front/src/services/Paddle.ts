@@ -18,7 +18,6 @@ export class Paddle {
 		this.w = ((100 / 75 / 100) * window.innerWidth * 70) / 100;
 		this.h = (((ratio * 100) / 5 / 100) * window.innerWidth * 70) / 90;
 		this.score = 0;
-		console.log(p5.width, p5.height);
 	}
 
 	resizeUpdate(ratio: number, width: number, oldWidth: number, oldHeight: number) {
@@ -32,8 +31,10 @@ export class Paddle {
 		this.score++;
 	}
 
-	update(pos: { x: number; y: number }) {
-		this.pos.y = ((pos.y / 100) * window.innerWidth * 70) / 90;
+	update(pos: number, width: number, height: number) {
+		this.pos.y = ((pos / 100) * window.innerWidth * 70) / 90;
+		this.w = ((width / 100) * window.innerWidth * 70) / 100;
+		this.h = ((height / 100) * window.innerWidth * 70) / 90;
 	}
 
 	move(amt: number) {
