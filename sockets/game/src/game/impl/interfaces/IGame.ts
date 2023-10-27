@@ -1,3 +1,4 @@
+import { SIDE } from 'src/game/engine/enums/Side';
 import { IGameData } from './IGameData';
 import { IUser } from './IUser';
 
@@ -17,6 +18,7 @@ export interface IGame {
 	getAllUsersInGame: () => Array<IUser>;
 	getUsersInGame: () => Array<IUser>;
 	getSpectatorsInGame: () => Array<IUser>;
+	getPlayerBySide: (side: SIDE) => IUser;
 
 	userIsInGame: (userId: number) => boolean;
 	userIsSpectator: (userId: number) => boolean;
