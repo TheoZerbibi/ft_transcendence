@@ -1,15 +1,32 @@
 <template>
-	<div>
-		<h1>Home Page</h1>
-		<v-btn @click="$router.push('/portfolio')" class="text-capitalize" rounded color=orange variant="outlined">Go to portfolio</v-btn>
-		<br />
-		<button class="button button1">2px</button>
-		<button class="button button2">4px</button>
-		<button class="button button3">8px</button>
-		<button class="button button4">12px</button>
-		<button class="button button5">50%</button>
-	</div>
-	
+	<v-container class="fill-height">
+		<v-row align="center" justify="center" class="fill-height">
+			<v-col cols="12" sm="4">
+				<h1 class="neonPolice">Welcome to 
+				<br />STING team's
+				<br />ft_transcendence</h1>
+				<br />
+				<br />
+				<br />
+				<v-btn
+					prepend-icon="mdi-check-circle"
+					class="text-capitalize" 
+					rounded="xl"
+					color=#3EBBB9
+					variant="outlined"
+					size="x-large"
+					href="https://intra.42.fr"
+					target="_blank">
+					<template v-slot:prepend>
+    				    <v-icon color="success"></v-icon>
+      				</template>
+						<div class ="neonPolice">
+						Sign in with 42
+						</div>
+				</v-btn>
+			</v-col>
+		</v-row>
+	</v-container>
 </template>
 
 <script lang="ts">
@@ -21,35 +38,25 @@ export default defineComponent({
 </script>
 
 <style scoped>
-	.button {
-	  background-color: orange;
-	  border: none;
-	  color: black;
-	  padding: 20px;
-	  text-align: center;
-	  text-decoration: none;
-	  display: inline-block;
-	  font-size: 16px;
-	  margin: 4px 2px;
-	}
+.neonPolice {
+	font-family: 'Dancing Script Variable', sans-serif;
+	font-size: xx-large;
+	text-align: center;
+	color: black;
+	text-shadow:
+		1px 1px 2px plum,
+		0 0 1em purple,
+		0 0 0.2em goldenrod;
+}
 
-	.button1 {border-radius: 2px;}
-	.button2 {border-radius: 4px;}
-	.button3 {border-radius: 8px;}
-	.button4 {border-radius: 12px;}
-	.button5 {border-radius: 50%;}
+/* dancing-script-latin-wght-normal */
+@font-face {
+  font-family: 'Dancing Script Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 700;
+  src: url(https://cdn.jsdelivr.net/fontsource/fonts/dancing-script:vf@latest/latin-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
 </style>
-
-
-<!-- Vue3 shapes: 
-	v-rect, 
-	v-circle, 
-	v-ellipse, 
-	v-line, 
-	v-image, 
-	v-text, 
-	v-text-path, 
-	v-star, 
-	v-label, 
-	v-path, 
-	v-regular-polygon -->

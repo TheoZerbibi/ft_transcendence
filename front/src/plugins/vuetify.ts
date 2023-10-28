@@ -4,6 +4,7 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import { fa } from "vuetify/iconsets/fa";
 import { aliases, mdi } from "vuetify/lib/iconsets/mdi";
 import "vuetify/styles";
+import '@fontsource-variable/dancing-script';
 
 // Vuetify
 import { createVuetify } from "vuetify"
