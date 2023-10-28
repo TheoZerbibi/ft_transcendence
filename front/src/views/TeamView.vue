@@ -1,7 +1,7 @@
 <template>
 	<div class="customBackground">
 		<v-card class="blurred-card">
-			<v-col class="Title">
+			<v-col class="title">
 				<h1>Welcome to ft_transcendence STING team</h1>
 				<h4>Starring</h4>
 				<v-row>
@@ -58,7 +58,7 @@ export default defineComponent({
 </script>
 
 <style>
-.Title {
+.title {
 	font-size: larger;
 	text-align: center;
 	color: black;
