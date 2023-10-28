@@ -1,31 +1,22 @@
 <template>
-	<v-container class="fill-height">
-		<v-row align="center" justify="center" class="fill-height">
-			<v-col cols="12" sm="4">
-				<h1 class="neonPolice">Welcome to 
-				<br />STING team's
-				<br />ft_transcendence</h1>
-				<br />
-				<br />
-				<br />
-				<v-btn
-					prepend-icon="mdi-check-circle"
-					class="text-capitalize" 
-					rounded="xl"
-					color=#3EBBB9
-					variant="outlined"
-					size="x-large"
-					href="https://intra.42.fr"
-					target="_blank">
-					<template v-slot:prepend>
-    				    <v-icon color="success"></v-icon>
-      				</template>
-						<div class ="neonPolice">
-						Sign in with 42
-						</div>
-				</v-btn>
-			</v-col>
-		</v-row>
+	<v-container class="homepage">
+			<h1 class="neonPolice">Welcome to STING team's ft_transcendence</h1>
+			<v-btn
+				prepend-icon="mdi-check-circle"
+				class="text-capitalize" 
+				rounded="xl"
+				color=#3EBBB9
+				variant="outlined"
+				size="x-large"
+				href="https://intra.42.fr"
+				target="_blank">
+				<template v-slot:prepend>
+    			    <v-icon color="success"></v-icon>
+      			</template>
+					<div class ="neonPolice">
+					Sign in with 42
+					</div>
+			</v-btn>
 	</v-container>
 </template>
 
@@ -38,10 +29,16 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.homepage  {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-direction: column;	
+}
+
 .neonPolice {
 	font-family: 'Dancing Script Variable', sans-serif;
 	font-size: xx-large;
-	text-align: center;
 	color: black;
 	text-shadow:
 		1px 1px 2px plum,
