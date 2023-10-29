@@ -1,20 +1,22 @@
 <template>
-	<div class="d-flex justify-center">
-		<v-card class="homepage"  variant="tonal" color="green darken-4" width="600" >
+		<v-row align="center" justify="center" class="fill-height">
+		<v-card class="homepage text-center rounded-card"  variant="tonal" color="green darken-4" width="600">
 			<v-card-item>	
 				<v-card-title class="title">	
 					<p class="neonPolice">Welcome to STING's ft_transcendence</p>
+					<br />
+					<br />
 				</v-card-title>
 
 				<v-img src="CatsRounded.png" contain max-height="300" ></v-img>
 
-				<v-card-subtitle >
+				<v-card-subtitle>
 					Gaëlle, Ismaël, Théo, Semiha, Noé
 				</v-card-subtitle>
 			</v-card-item>
 
 			<v-card-text>
-				This is the project
+				students of 42 paris
 			</v-card-text>
 
 			<v-card-actions>
@@ -31,12 +33,12 @@
     				    <v-icon color="success"></v-icon>
     	  			</template>
 						<div class ="neonPolice">
-						Sign in with 42
+						Authenticate with 42
 						</div>
 				</v-btn>
 			</v-card-actions>
 		</v-card>
-	</div>
+	</v-row>
 </template>
 
 <script lang="ts">
@@ -51,9 +53,10 @@ export default defineComponent({
 .homepage  {
 	display: flex;
 	align-items: center;
-	/* justify-content: space-around; */
 	flex-direction: column;
-		
+}
+.rounded-card{
+    border-radius:50px;
 }
 
 .title {
