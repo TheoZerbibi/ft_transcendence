@@ -1,9 +1,10 @@
 <template>
 	<div class="customBackground">
-		<v-card class="blurred-card">
-			<v-col class="title">
-				<h1>Welcome to ft_transcendence STING team</h1>
+		<v-card class="blurred-card rounded-card">
+			<v-col class="largerSize neonPolice">
+				<h1>The STING team</h1>
 				<h4>Starring</h4>
+				<br />
 				<v-row>
 					<v-col v-for="(prenom, index) in prenoms" :key="index" cols="2.5">
 						<v-card-text class="prenoms">
@@ -13,7 +14,7 @@
 				</v-row>
 				<v-row>
 					<v-col v-for="(login, index) in logins" :key="index" cols="2.5">
-						<v-card-text class="logins" @click="redirect(login)">
+						<v-card-text class="largerSize logins" @click="redirect(login)">
 							{{ login }}
 						</v-card-text>
 					</v-col>
@@ -44,7 +45,7 @@ export default defineComponent({
 	data() {
 		return {
 			backgroundWallpaper,
-			prenoms: ['Semiha', 'Theo', 'Ismaël', 'Noémi', 'Gaëlle'],
+			prenoms: ['Semiha', 'Théo', 'Ismaël', 'Noé', 'Gaëlle'],
 			logins: ['seozcan', 'thzeribi', 'iguidado', 'nfauconn', 'grannou'],
 			qrCodes: [QRcodeSemiha, QRcodeTheo, QRcodeIsmael, QRcodeNoemi, QRcodeGaelle],
 		};
@@ -58,23 +59,12 @@ export default defineComponent({
 </script>
 
 <style>
-.title {
+.largerSize {
 	font-size: larger;
-	text-align: center;
-	color: black;
-	text-shadow:
-		1px 1px 2px plum,
-		0 0 1em purple,
-		0 0 0.2em goldenrod;
 }
 
 .prenoms {
-	font-size: medium;
-	color: black;
-	text-shadow:
-		1px 1px 2px plum,
-		0 0 1em purple,
-		0 0 0.2em goldenrod;
+	font-size: larger;
 }
 
 .prenoms::first-letter {
@@ -83,22 +73,21 @@ export default defineComponent({
 }
 
 .logins {
-	font-size: small;
-	color: black;
 	cursor: pointer;
 }
 
 .customBackground {
 	background-image: url('/src/assets/OmoriWallpaper00.jpg');
-	background-size: 100% 100%;
+	/* background-size: 100% 100%; */
+	background-size: 70% 70%;
 	margin: 0px auto;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
-	background-position: center;
+	background-position: bottom;
 	background-color: black;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: center;
 	height: 100vh;
 	color: black;
@@ -119,4 +108,5 @@ export default defineComponent({
 .intraLinks {
 	background-color: transparent;
 }
+
 </style>
