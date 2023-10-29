@@ -1,23 +1,42 @@
 <template>
-	<v-container class="homepage">
-			<h1 class="neonPolice">Welcome to STING team's ft_transcendence</h1>
-			<v-btn
-				prepend-icon="mdi-check-circle"
-				class="text-capitalize" 
-				rounded="xl"
-				color=#3EBBB9
-				variant="outlined"
-				size="x-large"
-				href="https://intra.42.fr"
-				target="_blank">
-				<template v-slot:prepend>
-    			    <v-icon color="success"></v-icon>
-      			</template>
-					<div class ="neonPolice">
-					Sign in with 42
-					</div>
-			</v-btn>
-	</v-container>
+	<div class="d-flex justify-center">
+		<v-card class="homepage"  variant="tonal" color="green darken-4" width="600" >
+			<v-card-item>	
+				<v-card-title class="title">	
+					<p class="neonPolice">Welcome to STING's ft_transcendence</p>
+				</v-card-title>
+
+				<v-img src="CatsRounded.png" contain max-height="300" ></v-img>
+
+				<v-card-subtitle >
+					Gaëlle, Ismaël, Théo, Semiha, Noé
+				</v-card-subtitle>
+			</v-card-item>
+
+			<v-card-text>
+				This is the project
+			</v-card-text>
+
+			<v-card-actions>
+				<v-btn
+					prepend-icon="mdi-check-circle"
+					class="text-capitalize" 
+					rounded="xl"
+					color="green darken-4"
+					variant="outlined"
+					size="x-large"
+					href="https://intra.42.fr"
+					target="_blank">
+					<template v-slot:prepend>
+    				    <v-icon color="success"></v-icon>
+    	  			</template>
+						<div class ="neonPolice">
+						Sign in with 42
+						</div>
+				</v-btn>
+			</v-card-actions>
+		</v-card>
+	</div>
 </template>
 
 <script lang="ts">
@@ -32,8 +51,20 @@ export default defineComponent({
 .homepage  {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
-	flex-direction: column;	
+	/* justify-content: space-around; */
+	flex-direction: column;
+		
+}
+
+.title {
+	display: flex;
+	align-items: flex-start;
+}
+
+.button {
+	display: flex;
+
+	justify-content: flex-end;
 }
 
 .neonPolice {
