@@ -16,8 +16,11 @@ export default {
 	computed: {
 		getComponent() {
 			const componentsMapping = {
-				grannou: defineAsyncComponent(() => import('../components/team/GrannouProfile.vue')),
+				thzeribi: defineAsyncComponent(() => import('../components/team/SeozcanProfile.vue')),
 				thzeribi: defineAsyncComponent(() => import('../components/team/ThzeribiProfile.vue')),
+				thzeribi: defineAsyncComponent(() => import('../components/team/IguidadoProfile.vue')),
+				thzeribi: defineAsyncComponent(() => import('../components/team/NfauconnProfile.vue')),
+				grannou: defineAsyncComponent(() => import('../components/team/GrannouProfile.vue')),
 			};
 			return componentsMapping[this.login as keyof typeof componentsMapping] || null;
 		},
