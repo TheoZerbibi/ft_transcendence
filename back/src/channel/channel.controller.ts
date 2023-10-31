@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard';
 import { ChannelService } from './channel.service';
-import { CreateChannelDto } from './dto/create-channel.dto';
+import { CreateChannelDto, CreateChannelMessageDto } from './dto/create-channel.dto';
 import { User, ChannelUser } from '@prisma/client';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -38,6 +38,16 @@ export class ChannelController {
 		return this.channelService.create(createChannelDto, id);
 	}
 
+	@Post('msg')
+	@UseGuards(JwtGuard) // Needed to access user attribute
+	@ApiOperation({ summary: 'Post-message' })
+	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
+	async message(@GetUser() me: User, @Body()dto: CreateChannelMessageDto)
+	{
+
+		return await this.channelService.postMessage(me, dto.channel_id, dto.content);
+	}
+
 	@Get('all')
 	@UseGuards(JwtGuard) // Needed to access user attribute
 	@ApiOperation({ summary: 'FetchAllChannel' })
@@ -48,10 +58,18 @@ export class ChannelController {
 
 	@Get(':name')
 	@UseGuards(JwtGuard) // Needed to access user attribute
-	@ApiOperation({ summary: 'Create channel' })
+	@ApiOperation({ summary: 'Get channel by Name' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
 	async getChannelByName(@Param('name') channel_name: string) {
 		return this.channelService.getChannel(channel_name);
+	}
+
+	@Get(':id')
+	@UseGuards(JwtGuard) // Needed to access user attribute
+	@ApiOperation({ summary: 'Get channel by Id' })
+	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
+	async getChannelById(@Param('id') channel_id: number, @GetUser() user: User) {
+		return this.channelService.getChannelById(channel_id);
 	}
 
 
@@ -61,25 +79,34 @@ export class ChannelController {
 		return await this.channelService.getChannelUsers(user, channel_name);
 	}
 
+	//Get all user in a channel
+	@Get(':channel/user')
+	@UseGuards(JwtGuard) // Needed to access user attribute
+	@ApiOperation({ summary: 'retrieve user of channel' })
+	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
+	async	allChannelUsers(@Param('channel') channel_name: string, @GetUser() user: User): Promise<ChannelUser[] | null>
+	{
+		const channel: ChannelDto | undefined = await this.channelService.getChannel(channel_name);
+
+		if (!channel) throw new BadRequestException('Channel don\'t exist\n');
+		return  this.channelService.getChannelUsers(user, channel.name);
+	}
+
+
+	//Get all msg in a channel (for debbugging purpose only)
+	@Get(':channel/msg')
+	@UseGuards(JwtGuard) // Needed to access user attribute
+	@ApiOperation({ summary: 'Get all accessible channel user' })
+	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
+	async getChannelMsg()
+	
+
 	@Get('allUser')
 	@UseGuards(JwtGuard) // Needed to access user attribute
 	@ApiOperation({ summary: 'Get all accessible channel user' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
 	async allUsers() {
 		return this.channelService.getAllUser();
-	}
-
-
-	//Get all user in a channel
-	@Get(':channel/user')
-	@UseGuards(JwtGuard) // Needed to access user attribute
-	@ApiOperation({ summary: 'retrieve user of channel' })
-	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async	allChannelUsers(@Param('channel') channel_name: string, @GetUser() user: User): Promise<ChannelUser>
-	{
-		const channel: ChannelDto | undefined = await this.channelService.getChannel(channel_name);
-		if (!channel) throw new BadRequestException('Channel don\'t exist\n');
-		return  this.channelService.getChannelUser(user, channel.name);
 	}
 
 	@Patch('mod/:channel')
@@ -104,11 +131,16 @@ export class ChannelController {
 		return null;
 	}
 
+	//POST MESSAGE
+	//
+	//
+	//
+	//
+	//
 	//@Patch(':id')
 	//update(@Param('id') id: string, @Body() updateChannelDto: UpdateChannelDto) {
 	//  return this.channelService.update(+id, updateChannelDto);
 	//}
-
 	//	@Delete('delete/:channel')
 	//	remove(@Param('channel') name: string) {
 	//	return this.channelService.remove(+name);
