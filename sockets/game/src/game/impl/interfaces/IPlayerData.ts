@@ -6,4 +6,6 @@ export interface IPlayerData {
 	w: number;
 	h: number;
 	side: SIDE;
+
+	move: (direction: number) => void;
 }

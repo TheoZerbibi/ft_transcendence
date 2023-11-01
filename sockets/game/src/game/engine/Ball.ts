@@ -15,8 +15,8 @@ export class Ball {
 	playerRHasHit: boolean = false;
 
 	constructor(ratio: number) {
-		this.pos = { x: 100 / 2, y: (this.ratio * 100) / 2 };
-		this.speed = (ratio * 100) / 500;
+		this.pos = { x: 50, y: (this.ratio * 100) / 2 };
+		this.speed = (ratio * 100) / 900;
 		this.r = (ratio * 100) / 75;
 		this.ratio = ratio;
 		this.resetBall();
