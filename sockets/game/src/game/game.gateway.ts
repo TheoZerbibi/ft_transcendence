@@ -63,7 +63,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			},
 			socketID: 'null',
 			isSpec: false,
-			playerData: new PlayerData(this.prismaService, gameS.getGameData().ratio, SIDE.RIGHT),
+			playerData: new PlayerData(gameS.getGameData().ratio, SIDE.RIGHT),
 		};
 		if (gameS.isInProgress() && !game.isSpec) {
 			gameUser.playerData.side = SIDE.SPECTATOR;
@@ -103,14 +103,26 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			if (game.isInProgress() && !waiting.isSpec) waiting.isSpec = true;
 			if (this.gameService.addUserToGame(game, client, user, waiting.isSpec)) {
 				client.join(gameUID);
-				this.server.to(gameUID).emit('session-info', game.getAllUsersInGame());
+				const allUsers = game.getAllUsersInGame();
+				if (!allUsers) {
+					client.emit('game_error', 'Error during session join');
+					client.disconnect();
+					return;
+				}
+				this.server.to(gameUID).emit('session-info', allUsers);
 				if (!game.isInProgress() && game.getUsersInGame().length === 2) this.startGame(game);
 			} else client.disconnect();
 		} else {
 			const game: IGame = this.gameService.createGame(gameUID);
 			if (this.gameService.addUserToGame(game, client, user, waiting.isSpec)) {
 				client.join(gameUID);
-				this.server.to(gameUID).emit('session-info', game.getAllUsersInGame());
+				const allUsers = game.getAllUsersInGame();
+				if (!allUsers) {
+					client.emit('game_error', 'Error during session join');
+					client.disconnect();
+					return;
+				}
+				return this.server.to(gameUID).emit('session-info', allUsers);
 			} else client.disconnect();
 		}
 	}
@@ -208,11 +220,11 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				width: game.getPlayerBySide(SIDE.LEFT).playerData.w,
 				height: game.getPlayerBySide(SIDE.LEFT).playerData.h,
 			},
-			// p2: {
-			// 	position: game.getPlayerBySide(SIDE.RIGHT).playerData.y,
-			// 	width: game.getPlayerBySide(SIDE.RIGHT).playerData.w,
-			// 	height: game.getPlayerBySide(SIDE.RIGHT).playerData.h,
-			// },
+			p2: {
+				position: game.getPlayerBySide(SIDE.RIGHT).playerData.y,
+				width: game.getPlayerBySide(SIDE.RIGHT).playerData.w,
+				height: game.getPlayerBySide(SIDE.RIGHT).playerData.h,
+			},
 		});
 		const gameLoop = setInterval(() => {
 			if (!game.isEnded()) {
@@ -240,6 +252,6 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				});
 				clearInterval(gameLoop);
 			}
-		}, 1);
+		}, 10);
 	}
 }

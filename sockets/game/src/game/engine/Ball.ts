@@ -1,12 +1,12 @@
 // import P5 from 'p5';
-import { PlayerData } from './PlayerData';
+import { IPlayerData } from '../impl/interfaces/IPlayerData';
 import { SIDE } from './enums/Side';
 import { IVector } from './interfaces/IVector';
 
 export class Ball {
 	private ratio;
-	private rightUser: PlayerData;
-	private leftUser: PlayerData;
+	private rightUser: IPlayerData;
+	private leftUser: IPlayerData;
 	r: number;
 	vel: IVector;
 	speed: number;
@@ -22,7 +22,7 @@ export class Ball {
 		this.resetBall();
 	}
 
-	setPlayerSide(player: PlayerData) {
+	setPlayerSide(player: IPlayerData) {
 		if (player.side === SIDE.LEFT) this.leftUser = player;
 		else if (player.side === SIDE.RIGHT) this.rightUser = player;
 	}

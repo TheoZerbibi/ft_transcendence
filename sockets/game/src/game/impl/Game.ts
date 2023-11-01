@@ -139,10 +139,6 @@ export class Game implements IGame {
 		}, time);
 	}
 
-	isIntPause(): boolean {
-		return this.pause;
-	}
-
 	isInPause(): boolean {
 		return this.pause;
 	}
