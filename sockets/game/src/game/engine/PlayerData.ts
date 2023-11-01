@@ -1,6 +1,5 @@
 import { SIDE } from './enums/Side';
 import { IPlayerData } from '../impl/interfaces/IPlayerData';
-import { PrismaService } from 'src/prisma/prisma.service';
 
 export class PlayerData implements IPlayerData {
 	y: number;
@@ -10,7 +9,6 @@ export class PlayerData implements IPlayerData {
 	h: number;
 
 	constructor(
-		private prismaService: PrismaService,
 		private ratio: number,
 		side: SIDE,
 	) {

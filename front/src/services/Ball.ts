@@ -17,10 +17,7 @@ export class Ball {
 	) {
 		this.r = (((ratio * 100) / 75 / 100) * window.innerWidth * 70) / 50;
 		console.log('ball : ', x, ' ', y);
-		this.spawn = p5.createVector(
-			((50 / 100) * window.innerWidth * 70) / 77.5,
-			((22.5 / 100) * window.innerWidth * 70) / 77.5,
-		);
+		this.spawn = p5.createVector(p5.width / 2, ((22.5 / 100) * window.innerWidth * 70) / 77.5);
 		this.pos = this.spawn.copy();
 		this.vel = P5.Vector.fromAngle(p5.random(-Math.PI / 4, Math.PI / 4), speed);
 	}
