@@ -9,6 +9,7 @@
 
 <script lang="ts">
 import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 
 import P5 from 'p5';
 
@@ -43,13 +44,18 @@ export default {
 		};
 	},
 	mounted() {
+		const route = useRoute();
+		console.log('uid : ', route.params.uid);
 		const gameData = {
 			start: false as boolean,
 			go: false as boolean,
 			p1: null as Paddle | null,
 			p2: null as Paddle | null,
+			player: null as Paddle | null,
 			ball: null as Ball | null,
 			ratio: (9 / 20) as number,
+			socket: this.socket as any,
+			gameUID: route.params.uid as string,
 		};
 		const script = function (p5: any) {
 			const cDiv = document.getElementById('game-canvas');
@@ -67,8 +73,8 @@ export default {
 				canvas.parent('game-canvas');
 
 				gameData.ball = new Ball(p5, width / 2, height / 2, ratio);
-				gameData.p1 = new Paddle(p5, width / 75, ratio);
-				gameData.p2 = new Paddle(p5, width - (width / 75) * 2, ratio);
+				gameData.p1 = new Paddle(p5, width / 75, SIDE.LEFT, ratio);
+				gameData.p2 = new Paddle(p5, width - (width / 75) * 2, SIDE.RIGHT, ratio);
 			};
 			p5.draw = () => {
 				p5.background(51);
@@ -114,23 +120,42 @@ export default {
 			 * Function for moving the player Paddle.
 			 */
 			function movePaddles() {
-				if (!gameData.p1 || !gameData.p2 || !gameData.ball) return;
+				if (!gameData.ball || !gameData.socket) return;
+				if (!gameData.player || !gameData.start) {
+					localMovePaddles();
+					return;
+				}
 				// 65 = 'a'
-				if (p5.keyIsDown(65)) {
+				if (p5.keyIsDown(83)) {
+					// gameData.player.move(-5);
+					gameData.socket.emit('player-move', {
+						gameUID: gameData.gameUID,
+						direction: 0,
+					});
+				}
+
+				if (p5.keyIsDown(87)) {
+					// gameData.player.move(5);
+					gameData.socket.emit('player-move', {
+						gameUID: gameData.gameUID,
+						direction: 1,
+					});
+				}
+			}
+
+			/**
+			 * Function for moving the player Paddle in local.
+			 */
+			function localMovePaddles() {
+				if (!gameData.ball || !gameData.p1) return;
+				// 65 = 'a'
+				if (p5.keyIsDown(87)) {
 					gameData.p1.move(-5);
-					// this.socket.emit('player-move', {
-					// 	gameUID: this.gameUID,
-					// 	position: gameData.p1.pos,
-					// });
 				}
 
 				// 90 = 'z'
-				if (p5.keyIsDown(90)) {
+				if (p5.keyIsDown(83)) {
 					gameData.p1.move(5);
-					// this.socket.emit('player-move', {
-					// 	gameUID: this.gameUID,
-					// 	position: gameData.p1.pos,
-					// });
 				}
 			}
 
@@ -150,6 +175,7 @@ export default {
 
 		this.socket.on('game_start', (data: any) => {
 			console.log('game_start');
+			gameData.socket = this.socket;
 			countdownStore.setSeconds(5);
 			this.showCountdown = true;
 			console.log('Données reçues du canal game_start :', data);
@@ -187,6 +213,20 @@ export default {
 				gameData.p2?.addPoint();
 			}
 			console.log(data);
+		});
+
+		this.socket.on('player_side', (data: any) => {
+			console.log('Données reçues du canal player_side :', data);
+			if (data.side == SIDE.LEFT) {
+				console.log('LEFT');
+				gameData.player = gameData.p1;
+				gameData.player?.setSide(SIDE.LEFT);
+			} else if (data.side == SIDE.RIGHT) {
+				console.log('RIGHT');
+				gameData.player = gameData.p2;
+				gameData.player?.setSide(SIDE.RIGHT);
+			}
+			gameData.player?.update(data.position, data.width, data.height);
 		});
 	},
 };
