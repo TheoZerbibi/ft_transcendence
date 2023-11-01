@@ -138,9 +138,10 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		}
 		const gameUID: string = data.gameUID;
 		const userID: number = user.id;
+		console.log(data);
 		const game: IGame = this.gameService.getGame(gameUID);
 		if (!game) {
-			client.emit('game_error', 'Game Error');
+			client.emit('game_error', 'Game Error, no game found');
 			client.disconnect();
 			return;
 		}
@@ -157,7 +158,25 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		}
 		if (player.playerData.side === SIDE.LEFT) {
 			if (game.getPlayerBySide(SIDE.LEFT).user.login != player.user.login) return;
+			player.playerData.move(data.direction);
+			game.getPlayerBySide(SIDE.RIGHT).playerData.move(data.direction);
+		} else if (player.playerData.side === SIDE.RIGHT) {
+			if (game.getPlayerBySide(SIDE.RIGHT).user.login != player.user.login) return;
+			player.playerData.move(data.direction);
+			game.getPlayerBySide(SIDE.LEFT).playerData.move(data.direction);
 		}
+		this.server.to(game.getGameUID()).emit('player_move', {
+			p1: {
+				position: game.getPlayerBySide(SIDE.LEFT).playerData.y,
+				width: game.getPlayerBySide(SIDE.LEFT).playerData.w,
+				height: game.getPlayerBySide(SIDE.LEFT).playerData.h,
+			},
+			p2: {
+				position: game.getPlayerBySide(SIDE.RIGHT).playerData.y,
+				width: game.getPlayerBySide(SIDE.RIGHT).playerData.w,
+				height: game.getPlayerBySide(SIDE.RIGHT).playerData.h,
+			},
+		});
 	}
 
 	public afterInit() {
@@ -191,10 +210,23 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	private startGame(game: IGame): void {
 		game.startGame();
 		this.server.to(game.getGameUID()).emit('game_start', {
-			ball: game.getGameData().ball,
+			ball: game.getGameData().ball.pos,
 			players: game.getUsersInGame(),
 			ratio: game.getGameData().ratio,
 			startDate: game.getGameData().startingDate,
+		});
+
+		this.server.to(game.getPlayerBySide(SIDE.LEFT).socketID).emit('player_side', {
+			side: SIDE.LEFT,
+			position: game.getPlayerBySide(SIDE.LEFT).playerData.y,
+			width: game.getPlayerBySide(SIDE.LEFT).playerData.w,
+			height: game.getPlayerBySide(SIDE.LEFT).playerData.h,
+		});
+		this.server.to(game.getPlayerBySide(SIDE.RIGHT).socketID).emit('player_side', {
+			side: SIDE.RIGHT,
+			position: game.getPlayerBySide(SIDE.RIGHT).playerData.y,
+			width: game.getPlayerBySide(SIDE.RIGHT).playerData.w,
+			height: game.getPlayerBySide(SIDE.RIGHT).playerData.h,
 		});
 
 		let countdown = 4;
@@ -212,20 +244,6 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 	private gameUpdate(game: IGame): void {
 		game.startGameLoop();
-		console.log(game.getPlayerBySide(SIDE.LEFT));
-		console.log(game.getPlayerBySide(SIDE.RIGHT));
-		this.server.to(game.getGameUID()).emit('player_move', {
-			p1: {
-				position: game.getPlayerBySide(SIDE.LEFT).playerData.y,
-				width: game.getPlayerBySide(SIDE.LEFT).playerData.w,
-				height: game.getPlayerBySide(SIDE.LEFT).playerData.h,
-			},
-			p2: {
-				position: game.getPlayerBySide(SIDE.RIGHT).playerData.y,
-				width: game.getPlayerBySide(SIDE.RIGHT).playerData.w,
-				height: game.getPlayerBySide(SIDE.RIGHT).playerData.h,
-			},
-		});
 		const gameLoop = setInterval(() => {
 			if (!game.isEnded()) {
 				this.server.to(game.getGameUID()).emit('game_update', {
