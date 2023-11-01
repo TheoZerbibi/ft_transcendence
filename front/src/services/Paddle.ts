@@ -21,7 +21,7 @@ export class Paddle {
 	}
 
 	resizeUpdate(ratio: number, width: number, oldWidth: number, oldHeight: number) {
-		this.x = this.pos.x;
+		this.pos.x = (this.pos.x * width) / oldWidth;
 		this.pos.y = (this.pos.y * ratio * width) / oldHeight;
 		this.w = (this.w * width) / oldWidth;
 		this.h = (this.h * ratio * width) / oldHeight;
