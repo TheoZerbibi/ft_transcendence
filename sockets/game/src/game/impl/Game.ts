@@ -18,6 +18,7 @@ export class Game implements IGame {
 
 	constructor(
 		private prismaService: PrismaService,
+		private id: number,
 		private gameUID: string,
 		private isEnd: boolean,
 	) {
@@ -53,6 +54,10 @@ export class Game implements IGame {
 
 	getGameUID(): string {
 		return this.gameUID;
+	}
+
+	getGameID(): number {
+		return this.id;
 	}
 
 	addUser(user: IUser): void {

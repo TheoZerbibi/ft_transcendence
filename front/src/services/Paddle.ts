@@ -29,8 +29,8 @@ export class Paddle {
 		this.h = (this.h * ratio * width) / oldHeight;
 	}
 
-	addPoint() {
-		this.score++;
+	setPoint(score: number) {
+		this.score = score;
 	}
 
 	update(pos: number, width: number, height: number) {

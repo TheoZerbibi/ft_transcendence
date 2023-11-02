@@ -113,17 +113,9 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				if (!game.isInProgress() && game.getUsersInGame().length === 2) this.startGame(game);
 			} else client.disconnect();
 		} else {
-			const game: IGame = this.gameService.createGame(gameUID);
-			if (this.gameService.addUserToGame(game, client, user, waiting.isSpec)) {
-				client.join(gameUID);
-				const allUsers = game.getAllUsersInGame();
-				if (!allUsers) {
-					client.emit('game_error', 'Error during session join');
-					client.disconnect();
-					return;
-				}
-				return this.server.to(gameUID).emit('session-info', allUsers);
-			} else client.disconnect();
+			client.emit('game_error', 'Game not found.');
+			client.disconnect();
+			return;
 		}
 	}
 
@@ -199,7 +191,8 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 	public handleRedisMessage(channel: string, message: any): void {
 		const data = JSON.parse(message);
-		if (data.isEnded) this.gameService.createGame(data.gameUID, data.isEnded);
+		if (!this.gameService.gameExists(data.gameUID))
+			this.gameService.createGame(data.gameID, data.gameUID, data.isEnded);
 		this.gameService.addWaitingConnection(data);
 		return this.logger.debug(`New redis-message, user ${data.userID} is waiting for game ${data.gameUID}`);
 	}
@@ -241,7 +234,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 	private gameUpdate(game: IGame): void {
 		game.startGameLoop();
-		const gameLoop = setInterval(() => {
+		const gameLoop = setInterval(async () => {
 			if (!game.isEnded()) {
 				this.server.to(game.getGameUID()).emit('game_update', {
 					position: game.getGameData().ball.pos,
@@ -251,12 +244,20 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 					ratio: game.getGameData().ratio,
 				});
 				if (game.getGameData().ball.playerLHasHit) {
-					this.server.to(game.getGameUID()).emit('new_point', SIDE.LEFT);
+					const player: IUser = game.getPlayerBySide(SIDE.LEFT);
+					await this.gameService.addPoint(game, player);
+					this.server
+						.to(game.getGameUID())
+						.emit('new_point', { side: SIDE.LEFT, score: player.playerData.score });
 					game.getGameData().ball.playerLHasHit = false;
 					game.setPause(true, 3000);
 				}
 				if (game.getGameData().ball.playerRHasHit) {
-					this.server.to(game.getGameUID()).emit('new_point', SIDE.RIGHT);
+					const player: IUser = game.getPlayerBySide(SIDE.LEFT);
+					await this.gameService.addPoint(game, player);
+					this.server
+						.to(game.getGameUID())
+						.emit('new_point', { side: SIDE.RIGHT, score: player.playerData.score });
 					game.getGameData().ball.playerRHasHit = false;
 					game.setPause(true, 3000);
 				}

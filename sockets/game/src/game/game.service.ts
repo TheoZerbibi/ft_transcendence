@@ -8,6 +8,7 @@ import { Socket } from 'socket.io';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { PlayerData } from './engine/PlayerData';
 import { SIDE } from './engine/enums/Side';
+import { IPlayerData } from './impl/interfaces/IPlayerData';
 
 @Injectable()
 export class GameService {
@@ -34,8 +35,8 @@ export class GameService {
 		return Game.getGamesFromUID(gameUID);
 	}
 
-	public createGame(gameUID: string, isEnded: boolean = false): IGame {
-		const game = new Game(this.prismaService, gameUID, isEnded);
+	public createGame(gameID: number, gameUID: string, isEnded: boolean = false): IGame {
+		const game = new Game(this.prismaService, gameID, gameUID, isEnded);
 		return game;
 	}
 
@@ -68,8 +69,39 @@ export class GameService {
 		if (!gameUser) return;
 		game.removeUser(gameUser);
 
-		if (game.getUsersInGame.length === 0) {
+		if (game.getUsersInGame.length <= 1) {
+			if (gameUser.playerData.side === SIDE.LEFT) this.winGame(game, gameUser);
+			else if (gameUser.playerData.side === SIDE.RIGHT) this.winGame(game, gameUser);
 			game.endGame();
 		}
+	}
+
+	public async addPoint(game: IGame, user: IUser) {
+		user.playerData.score++;
+		await this.prismaService.game_players.update({
+			where: {
+				player_id_game_id: {
+					game_id: game.getGameID(),
+					player_id: user.user.id,
+				},
+			},
+			data: {
+				score: user.playerData.score,
+			},
+		});
+	}
+
+	public async winGame(game: IGame, user: IUser) {
+		await this.prismaService.game_players.update({
+			where: {
+				player_id_game_id: {
+					game_id: game.getGameID(),
+					player_id: user.user.id,
+				},
+			},
+			data: {
+				is_win: true,
+			},
+		});
 	}
 }
