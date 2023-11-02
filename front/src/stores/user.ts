@@ -2,14 +2,17 @@ import { defineStore } from 'pinia';
 
 export const useUser = defineStore('user', {
 	state: () => ({
-		isLoggedIn: false,
+		JWT: null as string | null,
 	}),
-	actions: {
-		login() {
-			this.isLoggedIn = true;
-		},
-		logout() {
-			this.isLoggedIn = false;
+	getters: {
+		getJWT: (state) => {
+			return state.JWT;
 		},
 	},
+	actions: {
+		setJWT(jwt: string) {
+			this.JWT = jwt;
+		},
+	},
+	persist: true,
 });

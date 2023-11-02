@@ -46,6 +46,9 @@ export class GameController {
 			const isEnded: boolean = response.end_at ? true : false;
 			console.log(response);
 			await this.redisService.connectClientToSocket(gameUUID, user.id, response.is_spec, isEnded);
+			if (isEnded) {
+				return response;
+			}
 			return response;
 		}
 		return { error: 'Game not found' };

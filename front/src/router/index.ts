@@ -53,6 +53,11 @@ const router = createRouter({
 			name: 'TeamProfile',
 			component: () => import('../views/TeamProfileView.vue'),
 		},
+		{
+			path: '/auth',
+			name: 'Auth',
+			component: () => import('../views/AuthView.vue'),
+		},
 	],
 });
 

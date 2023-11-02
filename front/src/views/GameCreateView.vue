@@ -14,8 +14,10 @@
 </template>
 
 <script lang="ts">
+import { computed } from 'vue';
 import Snackbar from '../components/utils/Snackbar.vue';
 import { useSnackbarStore } from '../stores/snackbar';
+import { useUser } from '../stores/user';
 
 const snackbarStore = useSnackbarStore();
 
@@ -25,6 +27,13 @@ export default {
 	beforeRouteLeave(to: any, from: any, next: any) {
 		snackbarStore.hideSnackbar();
 		next();
+	},
+	setup() {
+		const userStore = useUser();
+		const JWT = computed(() => userStore.getJWT);
+		return {
+			JWT,
+		};
 	},
 	data() {
 		return {
@@ -37,7 +46,7 @@ export default {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `Bearer ${JWT}`,
+					Authorization: `Bearer ${this.JWT}`,
 					'Access-Control-Allow-Origin': '*',
 				},
 			};
@@ -59,7 +68,7 @@ export default {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `Bearer ${JWT}`,
+					Authorization: `Bearer ${this.JWT}`,
 					'Access-Control-Allow-Origin': '*',
 				},
 			};

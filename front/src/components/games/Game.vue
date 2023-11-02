@@ -79,6 +79,7 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { useSnackbarStore } from '../../stores/snackbar';
+import { useUser } from '../../stores/user';
 import { useSocketStore } from '../../stores/websocket';
 import Snackbar from '../utils/Snackbar.vue';
 
@@ -91,9 +92,11 @@ export default {
 	components: { Snackbar, GameCanvas },
 	setup() {
 		const webSocketStore = useSocketStore();
+		const userStore = useUser();
 
 		const isConnected = computed(() => webSocketStore.isConnected);
 		const socket = computed(() => webSocketStore.getSocket);
+		const JWT = computed(() => userStore.getJWT);
 
 		const connect = async (JWT: string) => {
 			await webSocketStore.connect(JWT);
@@ -109,7 +112,6 @@ export default {
 				socket.value.on('game_error', (data: any) => {
 					disconnect();
 					snackbarStore.showSnackbar(data, 3000, 'red');
-					console.log('Données reçues du canal game_error :', data);
 				});
 			}
 		};
@@ -119,6 +121,7 @@ export default {
 			connect,
 			disconnect,
 			socketListen,
+			JWT,
 		};
 	},
 	data() {
@@ -144,7 +147,7 @@ export default {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${JWT}`,
+				Authorization: `Bearer ${this.JWT}`,
 				'Access-Control-Allow-Origin': '*',
 			},
 		};
@@ -162,13 +165,12 @@ export default {
 				return response.json();
 			})
 			.then(async (data) => {
-				await this.connect(JWT)
+				await this.connect(this.JWT)
 					.then(() => {
 						console.log('connected');
 						this.socketListen();
 						this.socket.on('session-info', (data: any) => {
 							this.players = [];
-							console.log('Données reçues du canal session-info :', data);
 							for (let i = 0; i < data.length; i++) {
 								data[i].user.isSpec = data[i].isSpec;
 								if (data[i].user) this.players.push(data[i].user);
@@ -177,15 +179,12 @@ export default {
 							}
 						});
 						this.socket.on('game_start', (data: any) => {
-							console.log('game_start');
 							snackbarStore.showSnackbar('Game Starting !', 3000, 'green');
 							this.apiData.started_at = data.startDate;
 						});
-						this.socket.on('game_end', (data: any) => {
-							console.log('game_end');
+						this.socket.on('game_end', () => {
 							this.disconnect();
 							snackbarStore.showSnackbar('Game is ended', 3000, 'primary');
-							console.log('Données reçues du canal game_end :', data);
 						});
 						this.socket.emit('session-join', {
 							gameUID: this.gameUID,
@@ -206,7 +205,9 @@ export default {
 				console.error(error);
 			});
 	},
-	mounted() {},
+	mounted() {
+		console.log('JWT : ', this.JWT);
+	},
 	methods: {
 		test() {
 			console.log(this.isConnected);
