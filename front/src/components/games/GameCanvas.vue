@@ -201,12 +201,11 @@ export default {
 		});
 
 		this.socket.on('new_point', (data: any) => {
-			if (data == SIDE.LEFT) {
-				gameData.p1?.addPoint();
-			} else if (data == SIDE.RIGHT) {
-				gameData.p2?.addPoint();
+			if (data.side == SIDE.LEFT) {
+				gameData.p1?.setPoint(data.score);
+			} else if (data.side == SIDE.RIGHT) {
+				gameData.p2?.setPoint(data.score);
 			}
-			console.log(data);
 		});
 
 		this.socket.on('player_side', (data: any) => {
