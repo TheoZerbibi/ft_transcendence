@@ -21,7 +21,7 @@
 
 			<v-card-actions>
 				<v-btn
-					prepend-icon="$vuetify"
+					prepend-icon="&#129418"
 					class="text-capitalize" 
 					rounded="xl"
 					color="green darken-4"
@@ -29,11 +29,8 @@
 					size="x-large"
 					href="https://intra.42.fr"
 					target="_blank">
-					<template v-slot:prepend>
-    				    <v-icon color="success"></v-icon>
-    	  			</template>
 						<div class ="neonPolice">
-						Authenticate with 42
+							&#129418; Authenticate with 42
 						</div>
 				</v-btn>
 			</v-card-actions>
