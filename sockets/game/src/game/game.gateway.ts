@@ -89,14 +89,14 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		this.logger.debug(`Client WebSocket ${user.login} demande à rejoindre la session : ${gameUID}`);
 		const waiting: GameJoinDto = this.gameService.isUserWaiting(gameUID, userID);
 		if (!waiting) {
-			client.emit('game_error', 'Error during session join');
+			client.emit('game-error', 'Error during session join');
 			client.disconnect();
 			return;
 		}
 		if (this.gameService.gameExists(gameUID)) {
 			const game: IGame = this.gameService.getGame(gameUID);
 			if (game.isEnded()) {
-				client.emit('game_end', 'Game is ended');
+				client.emit('game-end', 'Game is ended');
 				client.disconnect();
 				return;
 			}
@@ -105,15 +105,19 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				client.join(gameUID);
 				const allUsers = game.getAllUsersInGame();
 				if (!allUsers) {
-					client.emit('game_error', 'Error during session join');
+					client.emit('game-error', 'Error during session join');
 					client.disconnect();
 					return;
 				}
 				this.server.to(gameUID).emit('session-info', allUsers);
+				this.server.to(client.id).emit('game-score', {
+					p1: game.getPlayerBySide(SIDE.LEFT).playerData.score,
+					p2: game.getPlayerBySide(SIDE.RIGHT).playerData.score,
+				});
 				if (!game.isInProgress() && game.getUsersInGame().length === 2) this.startGame(game);
 			} else client.disconnect();
 		} else {
-			client.emit('game_error', 'Game not found.');
+			client.emit('game-error', 'Game not found.');
 			client.disconnect();
 			return;
 		}
@@ -132,21 +136,22 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		const userID: number = user.id;
 		const game: IGame = this.gameService.getGame(gameUID);
 		if (!game) {
-			client.emit('game_error', 'Game Error, no game found');
+			client.emit('game-error', 'Game Error, no game found');
 			client.disconnect();
 			return;
 		}
 		if (!game.userIsInGame(userID)) {
-			client.emit('game_error', 'User is not in the game');
+			client.emit('game-error', 'User is not in the game');
 			client.disconnect();
 			return;
 		}
 		const player = game.getUser(userID);
 		if (!player) {
-			client.emit('game_error', 'User is not in the game');
+			client.emit('game-error', 'User is not in the game');
 			client.disconnect();
 			return;
 		}
+		if (player.isSpec) return;
 		if (player.playerData.side === SIDE.LEFT) {
 			if (game.getPlayerBySide(SIDE.LEFT).user.login != player.user.login) return;
 			player.playerData.move(data.direction);
@@ -154,7 +159,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			if (game.getPlayerBySide(SIDE.RIGHT).user.login != player.user.login) return;
 			player.playerData.move(data.direction);
 		}
-		this.server.to(game.getGameUID()).emit('player_move', {
+		this.server.to(game.getGameUID()).emit('player-moved', {
 			p1: {
 				position: game.getPlayerBySide(SIDE.LEFT).playerData.y,
 				width: game.getPlayerBySide(SIDE.LEFT).playerData.w,
@@ -173,7 +178,8 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	}
 
 	public handleDisconnect(client: Socket): void {
-		this.gameService.removeUserFromGame(client);
+		const game = this.gameService.removeUserFromGame(client);
+		if (game) this.server.to(game.getGameUID()).emit('session-info', game.getAllUsersInGame());
 		return this.logger.debug(`Client disconnected: ${client.id}`);
 	}
 
@@ -199,20 +205,20 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 	private startGame(game: IGame): void {
 		game.startGame();
-		this.server.to(game.getGameUID()).emit('game_start', {
+		this.server.to(game.getGameUID()).emit('game-start', {
 			ball: game.getGameData().ball.pos,
 			players: game.getUsersInGame(),
 			ratio: game.getGameData().ratio,
 			startDate: game.getGameData().startingDate,
 		});
 
-		this.server.to(game.getPlayerBySide(SIDE.LEFT).socketID).emit('player_side', {
+		this.server.to(game.getPlayerBySide(SIDE.LEFT).socketID).emit('player-side', {
 			side: SIDE.LEFT,
 			position: game.getPlayerBySide(SIDE.LEFT).playerData.y,
 			width: game.getPlayerBySide(SIDE.LEFT).playerData.w,
 			height: game.getPlayerBySide(SIDE.LEFT).playerData.h,
 		});
-		this.server.to(game.getPlayerBySide(SIDE.RIGHT).socketID).emit('player_side', {
+		this.server.to(game.getPlayerBySide(SIDE.RIGHT).socketID).emit('player-side', {
 			side: SIDE.RIGHT,
 			position: game.getPlayerBySide(SIDE.RIGHT).playerData.y,
 			width: game.getPlayerBySide(SIDE.RIGHT).playerData.w,
@@ -236,7 +242,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		game.startGameLoop();
 		const gameLoop = setInterval(async () => {
 			if (!game.isEnded()) {
-				this.server.to(game.getGameUID()).emit('game_update', {
+				this.server.to(game.getGameUID()).emit('game-update', {
 					position: game.getGameData().ball.pos,
 					velocity: game.getGameData().ball.vel,
 					speed: game.getGameData().ball.speed,
@@ -248,7 +254,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 					await this.gameService.addPoint(game, player);
 					this.server
 						.to(game.getGameUID())
-						.emit('new_point', { side: SIDE.LEFT, score: player.playerData.score });
+						.emit('new-point', { side: SIDE.LEFT, score: player.playerData.score });
 					game.getGameData().ball.playerLHasHit = false;
 					game.setPause(true, 3000);
 				}
@@ -257,12 +263,12 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 					await this.gameService.addPoint(game, player);
 					this.server
 						.to(game.getGameUID())
-						.emit('new_point', { side: SIDE.RIGHT, score: player.playerData.score });
+						.emit('new-point', { side: SIDE.RIGHT, score: player.playerData.score });
 					game.getGameData().ball.playerRHasHit = false;
 					game.setPause(true, 3000);
 				}
 			} else {
-				this.server.to(game.getGameUID()).emit('game_end', {
+				this.server.to(game.getGameUID()).emit('game-end', {
 					startDate: game.getGameData().startingDate,
 					endingDate: game.getGameData().endingDate,
 				});
