@@ -109,7 +109,7 @@ export default {
 		const socketListen = () => {
 			console.log('socket : ', socket.value);
 			if (socket.value) {
-				socket.value.on('game_error', (data: any) => {
+				socket.value.on('game-error', (data: any) => {
 					disconnect();
 					snackbarStore.showSnackbar(data, 3000, 'red');
 				});
@@ -178,11 +178,11 @@ export default {
 								console.log(data[i].playerData);
 							}
 						});
-						this.socket.on('game_start', (data: any) => {
+						this.socket.on('game-start', (data: any) => {
 							snackbarStore.showSnackbar('Game Starting !', 3000, 'green');
 							this.apiData.started_at = data.startDate;
 						});
-						this.socket.on('game_end', () => {
+						this.socket.on('game-end', () => {
 							this.disconnect();
 							snackbarStore.showSnackbar('Game is ended', 3000, 'primary');
 						});

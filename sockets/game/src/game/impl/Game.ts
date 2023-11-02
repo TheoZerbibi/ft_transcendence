@@ -157,8 +157,4 @@ export class Game implements IGame {
 			}
 		}, 1);
 	}
-
-	private exclude<IUser>(user: IUser, keys: string[]) {
-		return Object.fromEntries(Object.entries(user).filter(([key]) => !keys.includes(key)));
-	}
 }

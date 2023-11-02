@@ -145,7 +145,7 @@ export default {
 			 * Function for moving the player Paddle in local.
 			 */
 			function localMovePaddles() {
-				if (!gameData.ball || !gameData.p1) return;
+				if (!gameData.ball || !gameData.p1 || gameData.start) return;
 				// 65 = 'a'
 				if (p5.keyIsDown(87)) {
 					gameData.p1.move(-5);
@@ -171,7 +171,7 @@ export default {
 		};
 		new P5(script);
 
-		this.socket.on('game_start', () => {
+		this.socket.on('game-start', () => {
 			gameData.socket = this.socket;
 			countdownStore.setSeconds(5);
 			this.showCountdown = true;
@@ -188,19 +188,19 @@ export default {
 			}
 		});
 
-		this.socket.on('game_update', (data: any) => {
+		this.socket.on('game-update', (data: any) => {
 			gameData.ball?.update(data.position, data.velocity, data.speed, data.radius);
 			gameData.ratio = data.ratio;
 		});
 
-		this.socket.on('player_move', (data: any) => {
+		this.socket.on('player-moved', (data: any) => {
 			console.log(data.p1);
 			console.log(data.p2);
 			if (data.p1) gameData.p1?.update(data.p1.position, data.p1.width, data.p1.height);
 			if (data.p2) gameData.p2?.update(data.p2.position, data.p2.width, data.p2.height);
 		});
 
-		this.socket.on('new_point', (data: any) => {
+		this.socket.on('new-point', (data: any) => {
 			if (data.side == SIDE.LEFT) {
 				gameData.p1?.setPoint(data.score);
 			} else if (data.side == SIDE.RIGHT) {
@@ -208,7 +208,13 @@ export default {
 			}
 		});
 
-		this.socket.on('player_side', (data: any) => {
+		this.socket.on('game-score', (data: any) => {
+			gameData.p1?.setPoint(data.p1);
+			gameData.p2?.setPoint(data.p2);
+			console.log(data);
+		});
+
+		this.socket.on('player-side', (data: any) => {
 			if (data.side == SIDE.LEFT) {
 				gameData.player = gameData.p1;
 				gameData.player?.setSide(SIDE.LEFT);

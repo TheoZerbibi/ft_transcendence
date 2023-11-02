@@ -42,7 +42,7 @@ export class GameService {
 
 	public addUserToGame(game: IGame, client: Socket, user: users, isSpec: boolean): boolean {
 		if (game.userIsInGame(user.id)) {
-			// client.emit('game_error', 'Already in Game session');
+			// client.emit('game-error', 'Already in Game session');
 			return true;
 		}
 		let side: SIDE;
@@ -60,7 +60,7 @@ export class GameService {
 		return true;
 	}
 
-	public removeUserFromGame(client: Socket | any): void {
+	public removeUserFromGame(client: Socket | any): IGame | null {
 		const user: users = client.handshake.user;
 		if (!user) return;
 		const game: IGame = Game.getGamesFromUser(user.id);
@@ -69,11 +69,13 @@ export class GameService {
 		if (!gameUser) return;
 		game.removeUser(gameUser);
 
-		if (game.getUsersInGame.length <= 1) {
+		if (!gameUser.isSpec) {
 			if (gameUser.playerData.side === SIDE.LEFT) this.winGame(game, gameUser);
 			else if (gameUser.playerData.side === SIDE.RIGHT) this.winGame(game, gameUser);
 			game.endGame();
+			return null;
 		}
+		return game;
 	}
 
 	public async addPoint(game: IGame, user: IUser) {
