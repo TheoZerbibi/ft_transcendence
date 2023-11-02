@@ -1,7 +1,8 @@
 import 'vuetify/styles';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
-// import { appInjectKey } from 'vue3-pixi';
+
+import piniaPluginPersistedState from 'pinia-plugin-persistedstate';
 
 import { createVuetify } from 'vuetify';
 import * as components from 'vuetify/components';
@@ -18,4 +19,7 @@ const vuetify = createVuetify({
 
 loadFonts();
 
-createApp(App).use(router).use(vuetify).use(createPinia()).mount('#app');
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedState);
+
+createApp(App).use(router).use(vuetify).use(pinia).mount('#app');
