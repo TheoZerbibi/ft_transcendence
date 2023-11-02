@@ -175,9 +175,11 @@ export class GameService {
 			if (playersInGame.length >= 2) gamePlayer = await this.createGamePlayer(game, user, true);
 			else {
 				if (gameHistory.length > 0) {
+					console.log('here');
 					for (const games of gameHistory) {
 						if (games.isWin === false || games.game.endAt === null)
 							gamePlayer = await this.createGamePlayer(game, user, true);
+						else gamePlayer = await this.createGamePlayer(game, user);
 					}
 				} else if (playersInGame.length < 2) {
 					gamePlayer = await this.createGamePlayer(game, user);

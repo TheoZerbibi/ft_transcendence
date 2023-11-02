@@ -10,6 +10,7 @@ export interface IGame {
 	isEnded: () => boolean;
 
 	getGameUID: () => string;
+	getGameID: () => number;
 
 	addUser: (user: IUser) => void;
 	removeUser: (user: IUser) => void;
