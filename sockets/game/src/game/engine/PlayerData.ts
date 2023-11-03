@@ -3,35 +3,28 @@ import { IPlayerData } from '../impl/interfaces/IPlayerData';
 import { IVector } from './interfaces/IVector';
 
 export class PlayerData implements IPlayerData {
-	y: number;
-	score: number;
-	side: SIDE;
+	private width: number = 4700;
+	private height: number = 4400;
+
+	pos: IVector;
 	w: number;
 	h: number;
+	side: SIDE;
+	score: number;
 
-	constructor(
-		private ratio: number,
-		side: SIDE,
-	) {
-		this.y = (ratio * 100) / 2;
+	constructor(x: number, y: number, h: number, w: number, side: SIDE) {
+		this.pos = { x: x, y: y };
 		this.score = 0;
 		this.side = side;
-		this.w = 100 / 70;
-		this.h = (ratio * 100) / 5;
+		this.w = w;
+		this.h = h;
 	}
 
 	move(direction: number) {
-		const speed: number = (this.ratio * 100) / 100;
-
-		direction ? (this.y -= speed) : (this.y += speed);
-
-		if (this.y < (this.ratio * 100) / 100) {
-			// this.y = (this.ratio * 100) / 100;
-			this.y++;
-		} else if (this.y > this.ratio * 100 - (this.ratio * 100) / 100 - this.h) {
-			console.log(--this.y);
-			this.y--;
-			// this.y = this.ratio * 100 - (this.ratio * 100) / 150 - this.h;
+		if (direction === 1) {
+			if (this.pos.y > 0) this.pos.y -= 10;
+		} else if (direction === 2) {
+			if (this.pos.y + this.h < this.height) this.pos.y += 10;
 		}
 	}
 }

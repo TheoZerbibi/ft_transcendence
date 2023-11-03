@@ -11,7 +11,7 @@ export class Game implements IGame {
 	private usersInGame: Array<IUser> = [];
 	private loop: boolean = false;
 	public inProgress: boolean = false;
-	public gameData: IGameData = { ball: new Ball(9 / 20), ratio: 9 / 20, startingDate: null, endingDate: null };
+	public gameData: IGameData = { ball: new Ball(), startingDate: null, endingDate: null };
 	public pause: boolean = false;
 
 	private static games: Map<string, any> = new Map<string, any>();
