@@ -50,11 +50,15 @@ export class GameService {
 		else if (game.getUsersInGame().length === 1) side = SIDE.RIGHT;
 		else side = SIDE.SPECTATOR;
 		if (isSpec) side = SIDE.SPECTATOR;
+		let playerData: IPlayerData = null;
+		if (side === SIDE.LEFT) playerData = new PlayerData(20, 150, 10, 100, SIDE.LEFT);
+		else if (side === SIDE.RIGHT) playerData = new PlayerData(670, 150, 10, 100, SIDE.RIGHT);
+		else playerData = new PlayerData(0, 0, 0, 0, SIDE.SPECTATOR);
 		const gameUser: IUser = {
 			user: { id: user.id, login: user.login, displayName: user.display_name, avatar: user.avatar },
 			socketID: client.id,
 			isSpec: isSpec,
-			playerData: new PlayerData(game.gameData.ratio, side),
+			playerData: playerData,
 		};
 		game.addUser(gameUser);
 		return true;
