@@ -16,7 +16,10 @@
 			</v-card-item>
 
 			<v-card-text>
-				students of 42 paris
+				students of 42 paris<br />
+				<!-- <strong>students of 42 paris (en gras)</strong><br /> -->
+				<!-- <mark>students of 42 paris (en surligne)</mark><br /> -->
+				<!-- <em>students of 42 paris (en italique)</em><br /> -->
 			</v-card-text>
 
 			<v-card-actions>
