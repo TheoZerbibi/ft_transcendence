@@ -8,7 +8,7 @@
 					<br />
 				</v-card-title>
 
-				<v-img src="CatsRounded.png" contain max-height="300" ></v-img>
+				<v-img src="CatsRounded.png" contain max-height="300" alt="These are cute kittens"></v-img>
 
 				<v-card-subtitle>
 					Gaëlle, Ismaël, Théo, Semiha, Noé
