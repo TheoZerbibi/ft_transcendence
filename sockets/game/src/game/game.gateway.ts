@@ -64,7 +64,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			},
 			socketID: 'null',
 			isSpec: false,
-			playerData: new PlayerData(gameS.getGameData().ratio, SIDE.RIGHT),
+			playerData: new PlayerData(670, 150, 10, 100, SIDE.RIGHT),
 		};
 		if (gameS.isInProgress() && !game.isSpec) {
 			gameUser.playerData.side = SIDE.SPECTATOR;
@@ -113,7 +113,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				this.server.to(gameUID).emit('session-info', allUsers);
 				if (!game.isInProgress() && game.getUsersInGame().length === 2) this.startGame(game);
 				if (!game.getPlayerBySide(SIDE.RIGHT) || !game.getPlayerBySide(SIDE.LEFT)) return;
-				if (!game.inProgress) return;
+				if (!game.isInProgress()) return;
 				this.server.to(client.id).emit('game-score', {
 					p1: game.getPlayerBySide(SIDE.LEFT).playerData.score,
 					p2: game.getPlayerBySide(SIDE.RIGHT).playerData.score,
@@ -164,12 +164,12 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		}
 		this.server.to(game.getGameUID()).emit('player-moved', {
 			p1: {
-				position: game.getPlayerBySide(SIDE.LEFT).playerData.y,
+				position: game.getPlayerBySide(SIDE.LEFT).playerData.pos.y,
 				width: game.getPlayerBySide(SIDE.LEFT).playerData.w,
 				height: game.getPlayerBySide(SIDE.LEFT).playerData.h,
 			},
 			p2: {
-				position: game.getPlayerBySide(SIDE.RIGHT).playerData.y,
+				position: game.getPlayerBySide(SIDE.RIGHT).playerData.pos.y,
 				width: game.getPlayerBySide(SIDE.RIGHT).playerData.w,
 				height: game.getPlayerBySide(SIDE.RIGHT).playerData.h,
 			},
@@ -213,21 +213,20 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	private startGame(game: IGame): void {
 		game.startGame();
 		this.server.to(game.getGameUID()).emit('game-start', {
-			ball: game.getGameData().ball.pos,
+			ball: game.getGameData().ball.getPos(),
 			players: game.getUsersInGame(),
-			ratio: game.getGameData().ratio,
 			startDate: game.getGameData().startingDate,
 		});
 
 		this.server.to(game.getPlayerBySide(SIDE.LEFT).socketID).emit('player-side', {
 			side: SIDE.LEFT,
-			position: game.getPlayerBySide(SIDE.LEFT).playerData.y,
+			position: game.getPlayerBySide(SIDE.LEFT).playerData.pos.y,
 			width: game.getPlayerBySide(SIDE.LEFT).playerData.w,
 			height: game.getPlayerBySide(SIDE.LEFT).playerData.h,
 		});
 		this.server.to(game.getPlayerBySide(SIDE.RIGHT).socketID).emit('player-side', {
 			side: SIDE.RIGHT,
-			position: game.getPlayerBySide(SIDE.RIGHT).playerData.y,
+			position: game.getPlayerBySide(SIDE.RIGHT).playerData.pos.y,
 			width: game.getPlayerBySide(SIDE.RIGHT).playerData.w,
 			height: game.getPlayerBySide(SIDE.RIGHT).playerData.h,
 		});
@@ -250,11 +249,10 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		const gameLoop = setInterval(async () => {
 			if (!game.isEnded()) {
 				this.server.to(game.getGameUID()).emit('game-update', {
-					position: game.getGameData().ball.pos,
-					velocity: game.getGameData().ball.vel,
-					speed: game.getGameData().ball.speed,
-					radius: game.getGameData().ball.r,
-					ratio: game.getGameData().ratio,
+					position: game.getGameData().ball.getPos(),
+					velocity: game.getGameData().ball.getVel(),
+					speed: game.getGameData().ball.getSpeed(),
+					radius: game.getGameData().ball.getRadius(),
 				});
 				if (game.getGameData().ball.playerLHasHit) {
 					const player: IUser = game.getPlayerBySide(SIDE.LEFT);

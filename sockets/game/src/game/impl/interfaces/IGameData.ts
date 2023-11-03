@@ -4,5 +4,4 @@ export interface IGameData {
 	ball: Ball;
 	startingDate: Date;
 	endingDate: Date;
-	ratio: number;
 }

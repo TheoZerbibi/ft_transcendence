@@ -1,0 +1,60 @@
+import P5 from 'p5';
+import { SIDE } from './enums/Side';
+
+export class Paddle {
+	pos: P5.Vector;
+	score: number;
+	w: number;
+	h: number;
+
+	constructor(
+		private p5: any,
+		x: number,
+		y: number,
+		w: number,
+		h: number,
+		private side: SIDE,
+	) {
+		this.pos = p5.createVector(x, y);
+		this.w = w;
+		this.h = h;
+		this.score = 0;
+	}
+
+	resizeUpdate(height: number, width: number, oldWidth: number, oldHeight: number) {
+		this.pos.x = (this.pos.x / oldWidth) * width;
+		this.pos.y = (this.pos.y / oldHeight) * height;
+		this.w = (this.w / oldWidth) * width;
+		this.h = (this.h / oldHeight) * height;
+	}
+
+	setPoint(score: number) {
+		this.score = score;
+	}
+
+	update(pos: number, width: number, height: number) {
+		console.log('Paddle Update');
+		console.log(pos);
+		console.log(width);
+		console.log(height);
+	}
+
+	move(amt: number) {
+		this.pos.y += amt;
+		this.pos.y = this.p5.constrain(this.pos.y, 10, this.p5.height - 10 - this.h);
+	}
+
+	show() {
+		this.p5.noStroke();
+		this.p5.fill(255);
+		this.p5.rect(this.pos.x, this.pos.y, this.w, this.h);
+	}
+
+	getSide() {
+		return this.side;
+	}
+
+	setSide(side: SIDE) {
+		this.side = side;
+	}
+}

@@ -13,9 +13,9 @@ import { useRoute } from 'vue-router';
 
 import P5 from 'p5';
 
-import { Ball } from '../../services/Ball';
-import { Paddle } from '../../services/Paddle';
-import { SIDE } from '../../services/enums/Side';
+import { Ball } from '../../plugins/game/Ball';
+import { Paddle } from '../../plugins/game/Paddle';
+import { SIDE } from '../../plugins/game/enums/Side';
 import { useCountdownStore } from '../../stores/countdown';
 import { useSocketStore } from '../../stores/websocket';
 import CountdownOverlay from '../utils/Countdown.vue';
@@ -44,7 +44,6 @@ export default {
 	},
 	mounted() {
 		const route = useRoute();
-		console.log('uid : ', route.params.uid);
 		const gameData = {
 			start: false as boolean,
 			go: false as boolean,
@@ -60,26 +59,32 @@ export default {
 			const cDiv = document.getElementById('game-canvas');
 			const textOffsetX: number = 50;
 			const textOffsetY: number = 10;
-			const ratio: number = gameData.ratio;
-			let width: number, height: number;
+			let width: number, height: number, retroFont: string;
+
+			p5.preload = () => {
+				retroFont = p5.loadFont('../../../public/fonts/ARCADECLASSIC.TTF');
+			};
 
 			p5.setup = () => {
 				if (!cDiv) return;
 				width = cDiv.offsetWidth;
-				height = ratio * cDiv.offsetWidth;
-				console.log(width, height);
+				height = cDiv.offsetWidth / 2;
 				const canvas = p5.createCanvas(width, height);
 				canvas.parent('game-canvas');
 
-				gameData.ball = new Ball(p5, width / 2, height / 2, ratio);
-				gameData.p1 = new Paddle(p5, width / 75, SIDE.LEFT, ratio);
-				gameData.p2 = new Paddle(p5, width - (width / 75) * 2, SIDE.RIGHT, ratio);
+				gameData.ball = new Ball(p5, width / 2, height / 2, 10);
+				gameData.p1 = new Paddle(p5, 20, height / 2 - 50, 10, 100, SIDE.LEFT);
+				gameData.p2 = new Paddle(p5, width - 30, height / 2 - 50, 10, 100, SIDE.RIGHT);
 			};
+
 			p5.draw = () => {
 				p5.background(51);
 				movePaddles();
 				backdrop();
 				if (!gameData.p1 || !gameData.p2 || !gameData.ball) return;
+				gameData.ball.outOfBounds();
+				if (gameData.go) gameData.ball.update();
+				gameData.ball.hit(gameData.p1, gameData.p2);
 				gameData.p1.show();
 				gameData.p2.show();
 				gameData.ball.show();
@@ -103,6 +108,7 @@ export default {
 
 				const _r = width / 1736;
 				const _size = 100 * _r;
+				p5.textFont(retroFont);
 				p5.textSize(_size);
 				p5.noStroke();
 				p5.fill(80);
@@ -162,11 +168,11 @@ export default {
 				const oldWidth: number = width;
 				const oldHeight: number = height;
 				width = cDiv.offsetWidth;
-				height = ratio * cDiv.offsetWidth;
+				height = cDiv.offsetWidth / 2;
 				p5.resizeCanvas(width, height);
-				gameData.ball.resizeUpdate(ratio, width, height, oldWidth, oldHeight);
-				gameData.p1.resizeUpdate(ratio, width, oldWidth, oldHeight);
-				gameData.p2.resizeUpdate(ratio, width, oldWidth, oldHeight);
+				gameData.ball.resizeUpdate(width, height, oldWidth, oldHeight);
+				gameData.p1.resizeUpdate(height, width, oldWidth, oldHeight);
+				gameData.p2.resizeUpdate(height, width, oldWidth, oldHeight);
 			};
 		};
 		new P5(script);
@@ -189,8 +195,7 @@ export default {
 		});
 
 		this.socket.on('game-update', (data: any) => {
-			gameData.ball?.update(data.position, data.velocity, data.speed, data.radius);
-			gameData.ratio = data.ratio;
+			gameData.ball?.serverUpdate(data.position, data.velocity, data.speed);
 		});
 
 		this.socket.on('player-moved', (data: any) => {
@@ -229,6 +234,11 @@ export default {
 </script>
 
 <style scoped>
+@font-face {
+	font-family: 'Arcade Classic';
+	src: url('../../../public/fonts/ARCADECLASSIC.TTF');
+}
+
 body,
 html {
 	margin: 0;
@@ -252,5 +262,10 @@ html {
 	height: 500px;
 	border-radius: 20px;
 	overflow: hidden;
+}
+
+canvas {
+	width: 100% !important;
+	height: 100px !important;
 }
 </style>
