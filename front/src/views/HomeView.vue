@@ -59,7 +59,8 @@ export default defineComponent({
 }
 
 #authButton {
-	box-shadow: 6px 6px 0px rgba(0, 0, 0);
+	/* box-shadow: 6px 6px 0px rgba(0, 0, 0);  Button with shadow non gradient*/
+	box-shadow: 6px 6px 25px rgba(0, 0, 0, 0.5);
 	border: double;
 }
 </style>
