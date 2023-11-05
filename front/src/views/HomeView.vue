@@ -20,11 +20,13 @@
 			</v-card-text>
 			<v-card-actions>
 				<v-btn
+					id="authButton"
 					class="text-capitalize"
 					rounded="xl"
 					color="green darken-4"
 					variant="outlined"
 					size="x-large"
+					border="doted"
 					href="https://intra.42.fr"
 					target="_blank"
 				>
@@ -48,6 +50,7 @@ export default defineComponent({
 	display: flex;
 	align-items: center;
 	flex-direction: column;
+	background: linear-gradient(90deg, #8360c3, #2ebf91);
 }
 
 .title {
@@ -55,8 +58,8 @@ export default defineComponent({
 	align-items: flex-start;
 }
 
-.button {
-	display: flex;
-	justify-content: flex-end;
+#authButton {
+	box-shadow: 6px 6px 0px rgba(0, 0, 0);
+	border: double;
 }
 </style>
