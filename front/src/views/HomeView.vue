@@ -30,7 +30,7 @@
 					href="https://intra.42.fr"
 					target="_blank"
 				>
-					<div class="neonPolice">&#129418; Authenticate with 42</div>
+					<div class="neonPolice">&#129418; <span class="auth">Authenticate with 42</span></div>
 				</v-btn>
 			</v-card-actions>
 		</v-card>
@@ -58,9 +58,18 @@ export default defineComponent({
 	align-items: flex-start;
 }
 
-#authButton {
+.teamLeader {
+	font-weight: bold;
+	color: darkmagenta;
+}
+
+#authButton:hover {
 	/* box-shadow: 6px 6px 0px rgba(0, 0, 0);  Button with shadow non gradient*/
 	box-shadow: 6px 6px 25px rgba(0, 0, 0, 0.5);
 	border: double;
+}
+
+.auth:hover {
+	color: darkmagenta;
 }
 </style>
