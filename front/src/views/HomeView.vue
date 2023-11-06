@@ -1,4 +1,7 @@
 <template>
+	<header>
+		<p>This is a header, can be a navbar menu</p>
+	</header>
 	<v-row align="center" justify="center" class="fill-height" id="background">
 		<v-card class="homepage text-center rounded-card" variant="tonal" color="green darken-4" width="700">
 			<v-card-item>
@@ -35,6 +38,9 @@
 			</v-card-actions>
 		</v-card>
 	</v-row>
+	<footer>
+		<p>This is a footer</p>
+	</footer>
 </template>
 
 <script lang="ts">
