@@ -2,6 +2,9 @@
 	<header>
 		<p>This is a header, can be a navbar menu</p>
 	</header>
+	<nav>
+		<p>This is a navbar to display after authentification, vertically left better?</p>
+	</nav>
 	<v-row align="center" justify="center" class="fill-height" id="background">
 		<v-card class="homepage text-center rounded-card" variant="tonal" color="green darken-4" width="700">
 			<v-card-item>
