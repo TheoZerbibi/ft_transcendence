@@ -69,37 +69,39 @@ export class ChannelController {
 		return this.channelService.getAllUser();
 	}
 
-
 	//Get all user in a channel
 	@Get(':channel/user')
 	@UseGuards(JwtGuard) // Needed to access user attribute
 	@ApiOperation({ summary: 'retrieve user of channel' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async	allChannelUsers(@Param('channel') channel_name: string, @GetUser() user: User): Promise<ChannelUser>
+	async	allChannelUsers(@GetUser(@Param('channel'), channel_name: string) user: User): Promise<ChannelUser>
 	{
 		const channel: ChannelDto | undefined = await this.channelService.getChannel(channel_name);
 		if (!channel) throw new BadRequestException('Channel don\'t exist\n');
 		return  this.channelService.getChannelUser(user, channel.name);
 	}
 
-	@Patch('mod/:channel')
-	@UseGuards(JwtGuard) // Needed to access user attribute
-	//@Get('create')
-	@ApiOperation({ summary: 'mod Channel' })
-	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async modChannel(@Body() createChannelDto: CreateChannelDto, @GetUser() user: User) {
-		console.log(createChannelDto);
-		console.log(user);
-		return null;
-	}
-
-	@Patch(':mod/:user/')
+	@Patch('mod/:user/')
 	@UseGuards(JwtGuard) // Needed to access user attribute
 	@ApiOperation({ summary: 'Get all accessible channel' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	updateUser(@GetUser() user: User, @Param('user') target: string, @Param('mod') mod: string)
+	updateUser(@Body() dto: updateChannelUserDto, @GetUser() user: User, @Param('user') target: string)
 	{
 		if (mod !== "kick" && mod !== "mute" && mod !== "ban") throw new ForbiddenException(mod + ': Unknown channel moderation on a user');
+
+		return null;
+	}
+
+	//Need to implement service
+	@Patch('mod/:channel')
+	@UseGuards(JwtGuard) // Needed to access user attribute
+	@ApiOperation({ summary: 'mod Channel' })
+	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
+	async modChannel(@Body() createChannelDto: CreateChannelDto, @GetUser() user: User) {
+
+
+		console.log(createChannelDto);
+		console.log(user);
 
 		return null;
 	}

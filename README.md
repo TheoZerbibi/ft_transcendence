@@ -3,41 +3,79 @@
 b: implemented in back-end
 f: Implemented in front
 x: Implemented in both
+~1-9: priorities of implementation
 
 # Chat features
 
-# Access Channel
+## Access Channel
 - [b] Add channel
 
+- [ ] Get public channel ~1
 
-- [ ] Get public channel
-- [ ] Get channels on which i am
+- [ ] Get priv conversation on which i am
+
+- [ ] Get channels on which i am "myChannels"  ~1
+> - [ ] Get Allowed channels (public channel + private channel on which i am) ~4
+
+- [b] Join Channel
+- [ ] Quit Channel
 
 - [ ] Separate private conversation (privmsg) from channels (chnls)
-> - [ ]	Get channels last activity ( back only )
-> - [ ] Sort my channel list by last activity
+> - [ ] Sort my channel list by last activity ~1
 
-- [ ] Join Channel
+- [ ] Start Conversation ~1
+> - [ ] Get userlist or ping user from a prompt
+> - [ ] Create conversation
 
 
+- [ ] Display last/all conversation ~3
+> - [ ] Get Conversations sorted by last activities
+> - [ ] Get conversation message sorted by last activites
 
-# User Interaction
-- [ ] Start conversation (Add privmsg channel)
 
+# Operation on Channel (require channel to perform) (Channel component for the front)
+
+- [ ] post message on a channel ~1
+
+- [ ] fetch all message of channel ~1
+
+- [b] Mod Channel (require to be channel Admin or above, don't work on privmsg) ~1
+> - [ ] Change password (owner only) : hash them with argon2
+> - [ ] Delete Channel (owner only)
+
+- [b] get userList of channel
+
+-------------------------------------
+
+# Socket
 - [ ] Through socket: get users connected
 
 - [ ] Challenge user to pong game (see with game implementation)
 >	User should be connected
 
+----
 
-# Operation on Channel (require channel to perform)
-- [ ] post message on a channel
+# User interface (front end)
 
-- [ ] Mod Channel (require to be channel Admin or above, don't work on privmsg)
-> - [ ] Change password
-> - [ ] Delete Channel
+- [ ] Friends list / user list
+---
+- [ ] Last channel/conversation list by activities
+> - [ ] Open channel
 
-- [b] get userList of channel
+---
+
+- [ ] New Channel button (btn/icon/avatar)
+> - [ ] Public channel list  (main)
+> > - [ ] Join channel
+> - [ ] Create channel
+---
+- [ ] All Channels button "myChannels"
+> - [ ] All Channels List 
+> - [ ] See Channels chat (main)
+> - [ ] Send message to channels
+---
+- [ ] All Conversation button
+> - [ ] All my Conversation List
 
 
 # To Design
