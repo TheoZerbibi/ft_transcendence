@@ -1,6 +1,6 @@
 <template>
 	<header>
-		<p>This is a header, can be a navbar menu</p>
+		<p>This is a header</p>
 	</header>
 	<nav>
 		<p>This is a navbar to display after authentification, vertically left better?</p>
@@ -11,8 +11,6 @@
 			<v-card-item>
 				<v-card-title class="title">
 					<p class="neonPolice">Welcome to STING's ft_transcendence</p>
-					<br />
-					<br />
 				</v-card-title>
 				<v-img src="CatsRounded.png" contain max-height="300" alt="These are cute kittens" />
 				<v-card-subtitle class="neonPolice text homeSubtitles">
