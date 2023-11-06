@@ -17,17 +17,29 @@
 
 .neonPolice {
 	/* font-family: 'Dancing Script Variable', sans-serif; */
-	font-family: 'Pixelify Sans Variable', sans-serif;
+	/* font-family: 'Pixelify Sans Variable', sans-serif; */
+	font-family: 'OMORI_MAIN';
 
 	font-size: xx-large;
 	text-align: center;
-	color: black;
+	color: white;
 	text-shadow:
 		1px 1px 2px plum,
 		0 0 1em purple,
 		0 0 0.2em goldenrod;
 		margin: auto;
 }
+
+@font-face {
+	font-family: 'OMORI_MAIN';
+	src: url('./fonts/OMORI_GAME.ttf') format('truetype-variations');
+}
+
+@font-face {
+	font-family: 'OMORI_DISTURBED';
+	src: url('./fonts/OMORI_GAME2.ttf') format('truetype-variations');
+}
+
 
 .homeSubtitles {
 	font-style: italic;
