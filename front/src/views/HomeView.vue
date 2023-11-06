@@ -8,13 +8,14 @@
 	</nav>
 	<v-row align="center" justify="center" class="fill-height" id="background">
 		<v-card class="homepage text-center rounded-card" variant="tonal" color="green darken-4" width="700">
+			<p>Find the omori wallpaper purple with drawings</p>
 			<v-card-item>
 				<v-card-title class="title">
 					<p class="neonPolice">Welcome to STING's ft_transcendence</p>
 				</v-card-title>
 				<v-img src="CatsRounded.png" contain max-height="300" alt="These are cute kittens" />
-				<v-card-subtitle class="neonPolice text homeSubtitles">
-					<br />Gaëlle, Ismaël, <span class="teamLeader">Théo</span>, Semiha, Noé
+				<v-card-subtitle class="neonPolice homeSubtitles">
+					<br />Gaelle, Ismael, <span class="teamLeader">Théo</span>, Semiha, Noe
 				</v-card-subtitle>
 			</v-card-item>
 			<v-card-text class="neonPolice text homeSubtitles">
@@ -72,21 +73,6 @@ export default defineComponent({
 	align-items: flex-start;
 	margin: 20px;
 	padding: 20px;
-}
-
-.text {
-	font-family: 'OMORI_MAIN';
-	font-size: 30px;
-}
-
-@font-face {
-	font-family: 'OMORI_MAIN';
-	src: url('../assets/fonts/OMORI_GAME.ttf') format('truetype-variations');
-}
-
-@font-face {
-	font-family: 'OMORI_DISTURBED';
-	src: url('../assets/fonts/OMORI_GAME2.ttf') format('truetype-variations');
 }
 
 .teamLeader {
