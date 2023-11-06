@@ -8,9 +8,9 @@
 				<v-card>
 					<v-btn class="neonPolice" @click="$router.push('chat')">Chat &#129418;</v-btn>
 				</v-card>
-				<v-card>Card 1</v-card>
-				<v-card>Card 2</v-card>
-				<v-card>Card 3</v-card>
+				<v-card class="insideBox01">Card 1</v-card>
+				<v-card class="insideBox02">Card 2</v-card>
+				<v-card class="insideBox03">Card 3</v-card>
 			</v-container>
 		</section>
 	</main>
@@ -44,5 +44,19 @@ export default defineComponent({
 	justify-content: space-around;
 	height: 600px;
 	align-items: center;
+	gap: 10px;
 }
+
+.insideBox01 {
+	order: 1;
+}
+
+.insideBox02 {
+	order: 2;
+}
+
+.insideBox03 {
+	order: 3;
+}
+
 </style>
