@@ -40,6 +40,9 @@
 	</v-row>
 	<footer>
 		<p>This is a footer</p>
+		<a href="https://www.instagram.com" target="_blank">Instagram </a>
+		<a href="https://www.facebook.com" target="_blank">Facebook </a>
+		<a href="https://www.twitter.com" target="_blank">Twitter </a>
 	</footer>
 </template>
 
