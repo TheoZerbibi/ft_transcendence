@@ -62,7 +62,7 @@ export default {
 			let width: number, height: number, retroFont: string;
 
 			p5.preload = () => {
-				retroFont = p5.loadFont('../../../public/fonts/ARCADECLASSIC.TTF');
+				retroFont = p5.loadFont('/fonts/ARCADECLASSIC.TTF');
 			};
 
 			p5.setup = () => {
@@ -236,7 +236,7 @@ export default {
 <style scoped>
 @font-face {
 	font-family: 'Arcade Classic';
-	src: url('../../../public/fonts/ARCADECLASSIC.TTF');
+	src: url('/fonts/ARCADECLASSIC.TTF');
 }
 
 body,
