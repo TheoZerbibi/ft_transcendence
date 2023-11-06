@@ -4,6 +4,7 @@
 	</header>
 	<nav>
 		<p>This is a navbar to display after authentification, vertically left better?</p>
+		<!--Cf ul and li balises-->
 	</nav>
 	<v-row align="center" justify="center" class="fill-height" id="background">
 		<v-card class="homepage text-center rounded-card" variant="tonal" color="green darken-4" width="700">
@@ -41,6 +42,9 @@
 			</v-card-actions>
 		</v-card>
 	</v-row>
+	<aside>
+		<p>This is an aside section</p>
+	</aside>
 	<footer>
 		<p>This is a footer</p>
 		<a href="https://www.instagram.com" target="_blank">Instagram </a>
@@ -68,6 +72,8 @@ export default defineComponent({
 .title {
 	display: flex;
 	align-items: flex-start;
+	margin: 20px;
+	padding: 20px;
 }
 
 .teamLeader {
