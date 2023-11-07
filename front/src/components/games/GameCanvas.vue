@@ -67,9 +67,10 @@ export default {
 
 			p5.setup = () => {
 				if (!cDiv) return;
-				width = cDiv.offsetWidth;
-				height = cDiv.offsetWidth / 2;
+				width = 700;//cDiv.offsetWidth;
+				height = 400;//cDiv.offsetWidth / 2;
 				const canvas = p5.createCanvas(width, height);
+				console.log(width, 'x', height);
 				canvas.parent('game-canvas');
 
 				gameData.ball = new Ball(p5, width / 2, height / 2, 10);
@@ -82,9 +83,9 @@ export default {
 				movePaddles();
 				backdrop();
 				if (!gameData.p1 || !gameData.p2 || !gameData.ball) return;
-				gameData.ball.outOfBounds();
-				if (gameData.go) gameData.ball.update();
-				gameData.ball.hit(gameData.p1, gameData.p2);
+				// gameData.ball.outOfBounds();
+				// if (gameData.go) gameData.ball.update();
+				// gameData.ball.hit(gameData.p1, gameData.p2);
 				gameData.p1.show();
 				gameData.p2.show();
 				gameData.ball.show();
@@ -129,20 +130,20 @@ export default {
 					localMovePaddles();
 					return;
 				}
-				// 65 = 'a'
-				if (p5.keyIsDown(83)) {
-					// gameData.player.move(-5);
-					gameData.socket.emit('player-move', {
-						gameUID: gameData.gameUID,
-						direction: 0,
-					});
-				}
 
 				if (p5.keyIsDown(87)) {
-					// gameData.player.move(5);
+					gameData.player.move(-5);
 					gameData.socket.emit('player-move', {
 						gameUID: gameData.gameUID,
 						direction: 1,
+					});
+				}
+
+				if (p5.keyIsDown(83)) {
+					gameData.player.move(5);
+					gameData.socket.emit('player-move', {
+						gameUID: gameData.gameUID,
+						direction: 0,
 					});
 				}
 			}
@@ -152,12 +153,10 @@ export default {
 			 */
 			function localMovePaddles() {
 				if (!gameData.ball || !gameData.p1 || gameData.start) return;
-				// 65 = 'a'
 				if (p5.keyIsDown(87)) {
 					gameData.p1.move(-5);
 				}
 
-				// 90 = 'z'
 				if (p5.keyIsDown(83)) {
 					gameData.p1.move(5);
 				}
@@ -195,6 +194,7 @@ export default {
 		});
 
 		this.socket.on('game-update', (data: any) => {
+			// console.log(data);
 			gameData.ball?.serverUpdate(data.position, data.velocity, data.speed);
 		});
 
