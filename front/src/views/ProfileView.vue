@@ -9,8 +9,8 @@
 	<main>
 		<section>
 			<v-container class="profileHome">
-				<div class="¨box zero">
-					<v-btn class=" box zero neonPolice" @click="$router.push('chat')">Chat &#128062;</v-btn>
+				<div class="box zero">
+					<v-btn class="chatButtom neonPolice" @click="$router.push('chat')">Chat &#128062;</v-btn>
 				</div>
 				<div class="box one">Box 1 &#128001</div>
 				<div class="box two">Box 2 &#128048</div>
@@ -49,39 +49,37 @@ export default defineComponent({
 	display:grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr;
 	grid-template-rows: 100px 100px 100px 100px 100px;
-	/* align-items: center; */
 	gap: 10px;
 }
 
+.box {
+	background-color: darkgreen;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
 .zero {
 	grid-column: 1 / 2;
 	grid-row: 1 / 6;
-	background-color: green;
 }
 .one {
 	grid-column: 2 / 7;
-	background-color: green;
 }
 .two {
 	/* grid-column: 2 / 3; */
 	grid-row: 2 / 4;
-	background-color: green;
 }
 .three {
 	grid-column: 3 / 4;
-	background-color: green;
 }
 .four {
 	grid-column: 4 / 7;
-	background-color: green;
 }
 .five {
 	grid-column: 3 / 7;
-	background-color: green;
 }
 .six {
 	grid-column: 2 / 4;
-	background-color: green;
 }
 .seven {
 	grid-column: 4 / 7;
