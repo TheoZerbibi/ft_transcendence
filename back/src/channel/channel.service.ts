@@ -312,10 +312,10 @@ export class ChannelService {
 	//Need to end implementing User modding
 
 
-	async modChannel(dto: CreateChannelDto,  me: User):Promise<ChannelUser | null>
+	async modChannel(dto: UpdateChannelDto,  me: User)
 	{
 
-		const isOwner: boolean = this.isOwner(me, dto.name);
+		const isOwner: boolean = await this.isOwner(me, dto.name);
 
 		if (!isOwner) throw new ForbiddenException('You are not authorized to operate on this channel');
 
@@ -324,8 +324,7 @@ export class ChannelService {
 					id: dto.id,
 			},
 			data: {
-				name: dto.name,
-				password: dto.password,
+				...dto,
 			},
 
 		});

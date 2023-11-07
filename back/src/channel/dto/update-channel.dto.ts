@@ -10,8 +10,19 @@ import {
 
 import { CreateChannelDto } from './create-channel.dto';
 
-export class UpdateChannelDto extends PartialType(CreateChannelDto) {}
+export class UpdateChannelDto extends PartialType(CreateChannelDto) {
+	@ApiProperty()
+	@IsNumber()
+	// eslint-disable-next-line
+	id: number;
 
+	@ApiProperty()
+	@IsString()
+	@IsOptional()
+	// eslint-disable-next-line
+	name: string;
+
+}
 
 export class UpdateChannelUserDto {
 	@ApiProperty()

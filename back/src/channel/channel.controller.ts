@@ -3,14 +3,13 @@ import {
 	Post,
 	Controller,
 	Get,
-	//BadRequestException,
 	Param,
 	UseGuards,
 	//ClassSerializerInterceptor,
 	BadRequestException,
 	Patch,
 	//UseInterceptors,
-	//Delete,
+	Delete,
 } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard';
 import { ChannelService } from './channel.service';
@@ -21,6 +20,7 @@ import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ForbiddenException } from '@nestjs/common';
 import { ChannelDto, ChannelUserDto } from './dto/channel.dto';
+import { UpdateChannelDto, UpdateChannelUserDto } from './dto/update-channel.dto';
 //import { UserService } from '../user/user.service';
 //import { UpdateChannelDto } from './dto/update-channel.dto';
 
@@ -99,22 +99,22 @@ export class ChannelController {
 	}
 
 
-	@Get(':channel/user')
-	@UseGuards(JwtGuard) // Needed to access user attribute
-	@ApiOperation({ summary: 'retrieve user of channel' })
-	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async	allChannelUsers(@GetUser(@Param('channel'), channel_name: string) user: User): Promise<ChannelUser>
-	{
-		const channel: ChannelDto | undefined = await this.channelService.getChannel(channel_name);
-		if (!channel) throw new BadRequestException('Channel don\'t exist\n');
-		return  await this.channelService.getChannelUser(user, channel.name);
-	}
+//	@Get(':channel/user')
+//	@UseGuards(JwtGuard) // Needed to access user attribute
+//	@ApiOperation({ summary: 'retrieve user of channel' })
+//	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
+//	async	allChannelUsers(@GetUser() user: User, @Param('channel') channel_name: string): Promise<ChannelUser>
+//	{
+//		const channel: ChannelDto | undefined = await this.channelService.getChannel(channel_name);
+//		if (!channel) throw new BadRequestException('Channel don\'t exist\n');
+//		return  await this.channelService.getChannelUser(user, channel.name);
+//	}
 
 	@Patch('mod/channel')
 	@UseGuards(JwtGuard) // Needed to access user attribute
 	@ApiOperation({ summary: 'mod Channel' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async modChannel(@Body() dto: CreateChannelDto, @GetUser() me: User) {
+	async modChannel(@Body() dto: UpdateChannelDto, @GetUser() me: User) {
 
 		return await this.channelService.modChannel(dto, me);
 	}
@@ -126,7 +126,7 @@ export class ChannelController {
 	@UseGuards(JwtGuard) // Needed to access user attribute
 	@ApiOperation({ summary: 'Get all accessible channel' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	updateUser(@Body() dto: updateChannelUserDto, @GetUser() user: User): Promise<boolean>
+	updateUser(@Body() dto: UpdateChannelUserDto, @GetUser() user: User): Promise<boolean>
 	{
 		return null;
 	}
@@ -166,9 +166,8 @@ export class ChannelController {
 	@UseGuards(JwtGuard) // Needed to access user attribute
 	@ApiOperation({ summary: 'Get all accessible channel user' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async getChannelMsg(@GetUser() me: User, @Body() channel: ChannelDto): Promise<channelMessage[] | null>
+	async getChannelMsg(@GetUser() me: User, @Body() channel: ChannelDto): Promise<ChannelMessage[] | null>
 	{
-		//
 		return null;
 	}
 

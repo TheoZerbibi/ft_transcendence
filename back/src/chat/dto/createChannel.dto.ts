@@ -53,7 +53,7 @@ export class ChannelUserDto {
 export class joinChannelDto extends ChannelUserDto {
 	@ApiProperty()
 	@IsString()
-	@IsOptionnal()
+	@IsOptional()
 	chan_password: string;
 }
 
