@@ -33,10 +33,8 @@ export class Paddle {
 	}
 
 	update(pos: number, width: number, height: number) {
-		console.log('Paddle Update');
-		console.log(pos);
-		console.log(width);
-		console.log(height);
+		this.pos.y = pos;
+		// this.h = (this.h / width) * this.p5.width;
 	}
 
 	move(amt: number) {

@@ -129,6 +129,7 @@ export default {
 			apiData: null as any,
 			gameUID: null as string | null,
 			players: [] as any[],
+			port: import.meta.env.VITE_GAME_SOCKET_PORT as number,
 		};
 	},
 	async beforeUnmount() {
@@ -165,7 +166,8 @@ export default {
 				return response.json();
 			})
 			.then(async (data) => {
-				await this.connect(this.JWT)
+				console.log('port : ', this.port);
+				await this.connect(this.JWT, 'AAAAAAA')
 					.then(() => {
 						console.log('connected');
 						this.socketListen();

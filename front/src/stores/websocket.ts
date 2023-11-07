@@ -2,9 +2,6 @@ import { defineStore } from 'pinia';
 
 import { io, Socket } from 'socket.io-client';
 
-// eslint-disable-next-line no-undef
-const serverURL = `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_GAME_SOCKET_PORT}`;
-
 export const useSocketStore = defineStore('webSocket', {
 	state: () => ({
 		socket: null as Socket | null,
@@ -18,9 +15,11 @@ export const useSocketStore = defineStore('webSocket', {
 		getSocket: (state) => state.socket,
 	},
 	actions: {
-		async connect(jwt: string): Promise<Socket> {
+		async connect(jwt: string, port: any): Promise<Socket> {
+			console.log(port);
+			const serverURL = `http://${import.meta.env.VITE_HOST}:4000`;
 			if (!this.isConnected) {
-				console.log('Connecting to socket');
+				console.log('Connecting to socket ', serverURL);
 				this.socket = await new Promise((resolve, reject) => {
 					const socket = io(serverURL, {
 						extraHeaders: {

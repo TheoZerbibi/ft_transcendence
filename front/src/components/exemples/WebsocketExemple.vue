@@ -15,7 +15,7 @@ export default defineComponent({
 		const socket = computed(() => webSocketStore.getSocket);
 
 		const connect = async () => {
-			await webSocketStore.connect(JWT);
+			await webSocketStore.connect(JWT, import.meta.env.VITE_GAME_SOCKET_PORT);
 		};
 
 		const disconnect = () => {

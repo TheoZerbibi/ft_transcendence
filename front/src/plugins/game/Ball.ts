@@ -156,22 +156,13 @@ export class Ball {
 	}
 
 	serverUpdate(pos: { x: number; y: number }, vel: { x: number; y: number }, speed: number) {
-		this.pos.x = (pos.x / 4700) * this.p5.width;
-		this.pos.y = (pos.y / 4400) * this.p5.height;
+		this.pos.x = (pos.x / 700) * this.p5.width;
+		this.pos.y = (pos.y / 400) * this.p5.height;
+		// console.log(pos.x, pos.y);
 		// this.pos.x = pos.x;
 		// this.pos.y = pos.y;
 		this.vel.x = vel.x;
 		this.vel.y = vel.y;
-
-		// Calcul des proportions de la taille actuelle par rapport à la taille de base
-		const widthRatio = this.p5.width / 4700;
-		const heightRatio = this.p5.height / 4400;
-
-		// Calcul du facteur de changement de vitesse en fonction des proportions
-		const speedFactor = (widthRatio + heightRatio) / 2; // Vous pouvez adapter cette formule selon votre logique spécifique
-
-		// Ajustement de la vitesse en fonction du facteur de changement
-		this.speed = speed * speedFactor;
 	}
 
 	resizeUpdate(width: number, height: number, oldWidth: number, oldHeight: number) {
