@@ -171,18 +171,18 @@ export default defineComponent({
 	<main>
 		<section>
 			<v-container class="profileHome">
-				<!-- <div class="¨boxZero"> -->
-					<v-btn class="boxZero neonPolice" @click="$router.push('chat')">Chat &#128062;</v-btn>
-				<!-- </div> -->
-				<div class="boxOne">Box 1 &#128001</div>
-				<div class="boxTwo">Box 2 &#128048</div>
-				<div class="boxThree">Box 3 &#129418</div>
-				<div class="boxFour">Box 4 &#128013</div>
-				<div class="boxFive">Box 5 &#128014</div>
-				<div class="boxSix">Box 6 &#128025</div>
-				<div class="boxSeven">Box 7 &#128029</div>
-				<div class="boxEight">Box 8 &#128030</div>
-				<div class="boxNine">Box 9 &#128060</div>
+				<div class="¨box zero">
+					<v-btn class="neonPolice" @click="$router.push('chat')">Chat &#128062;</v-btn>
+				</div>
+				<div class="box one">Box 1 &#128001</div>
+				<div class="box two">Box 2 &#128048</div>
+				<div class="box three">Box 3 &#129418</div>
+				<div class="box four">Box 4 &#128013</div>
+				<div class="box five">Box 5 &#128014</div>
+				<div class="box six">Box 6 &#128025</div>
+				<div class="box seven">Box 7 &#128029</div>
+				<div class="box eight">Box 8 &#128030</div>
+				<div class="box nine">Box 9 &#128060</div>
 
 			</v-container>
 		</section>
@@ -210,60 +210,54 @@ export default defineComponent({
 <style scoped>
 .profileHome{
 	display:grid;
-	/* grid-template-columns: 250px 250px 250px 250px; */
-	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-	/* grid-template-rows: 150px 300px; */
-	grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-	align-items: center;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-template-rows: 100px 100px 100px 100px 100px;
+	/* align-items: center; */
 	gap: 10px;
 }
-.box {
-	margin:auto;
-}
 
-.boxZero {
-	grid-column-start: 1;
-	grid-column-end: 2;
-	grid-row-start: 1;
-	grid-row-end: 6;
+.zero {
+	grid-column: 1 / 2;
+	grid-row: 1 / 6;
+	background-color: green;
 }
-.boxOne {
-	grid-column-start: 1;
-	grid-column-end: 7;
+.one {
+	grid-column: 2 / 7;
+	background-color: green;
 }
-.boxTwo {
-	grid-column-start: 1;
-	grid-column-end: 2;
+.two {
+	/* grid-column: 2 / 3; */
+	grid-row: 2 / 4;
+	background-color: green;
 }
-.boxThree {
-	grid-column-start: 2;
-	grid-column-end: 4;
+.three {
+	grid-column: 3 / 4;
+	background-color: green;
 }
-.boxFour {
-	grid-column-start: 4;
-	grid-column-end: 6;
+.four {
+	grid-column: 4 / 7;
+	background-color: green;
 }
-.boxFive {
-	grid-column-start: 2;
-	grid-column-end: 6;
+.five {
+	grid-column: 3 / 7;
+	background-color: green;
 }
-.boxSix {
-	grid-column-start: 1;
-	grid-column-end: 4;
+.six {
+	grid-column: 2 / 4;
+	background-color: green;
 }
-.boxSeven {
-	grid-column-start: 4;
-	grid-column-end: 6;
+.seven {
+	grid-column: 4 / 7;
+	background-color: green;
 }
-.boxEight {
-	grid-column-start: 1;
-	grid-column-end: 3;
+.eight {
+	grid-column: 2 / 3;
+	background-color: green;
 }
-.boxNine {
-	grid-column-start: 3;
-	grid-column-end: 6;
+.nine {
+	grid-column: 3 / 7;
+	background-color: green;
 }
-
 
 </style>
 <<<<<<< HEAD
