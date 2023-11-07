@@ -54,8 +54,8 @@ importers:
         specifier: ^1.0.2
         version: 1.0.2(vite@4.4.11)(vue@3.3.4)(vuetify@3.3.21)
       volar-service-vetur:
-        specifier: ^0.0.15
-        version: 0.0.15
+        specifier: ^0.0.17
+        version: 0.0.17
       vue:
         specifier: ^3.3.4
         version: 3.3.4
@@ -5918,10 +5918,10 @@ packages:
       - supports-color
     dev: false
 
-  /volar-service-vetur@0.0.15:
-    resolution: {integrity: sha512-1aByo6pG8YOscHz86WqqsWfYrlKJRDl6nHSSxCFC9SZcKcb9W0dpsG4RCpZFHlPFJxCj+TBISmPZmnjp3I1FiA==}
+  /volar-service-vetur@0.0.17:
+    resolution: {integrity: sha512-lTZTmk6H3IhE8YXUG/9eUtApxyiJid2+3wVOn6vrFl4ho4o4B2pRm7EtbxbXMj/dtABi4UMm2Tqi6SCjVqmbgA==}
     peerDependencies:
-      '@volar/language-service': ~1.10.0
+      '@volar/language-service': ~1.11.0
     peerDependenciesMeta:
       '@volar/language-service':
         optional: true
