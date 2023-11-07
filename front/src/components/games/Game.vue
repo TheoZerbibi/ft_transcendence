@@ -96,7 +96,7 @@ export default {
 		const socket = computed(() => webSocketStore.getSocket);
 
 		const connect = async (JWT: string) => {
-			await webSocketStore.connect(JWT);
+			await webSocketStore.connect(JWT, import.meta.env.VITE_GAME_SOCKET_PORT);
 		};
 
 		const disconnect = () => {
@@ -162,7 +162,7 @@ export default {
 				return response.json();
 			})
 			.then(async (data) => {
-				await this.connect(JWT)
+				await this.connect(JWT, import.meta.env.VITE_GAME_SOCKET_PORT)
 					.then(() => {
 						console.log('connected');
 						this.socketListen();
