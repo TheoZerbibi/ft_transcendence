@@ -28,9 +28,9 @@ export class ChannelService {
 	/*********************************************/
 	/* 					Creation				 */
 	/*********************************************/
-	async create(dto: CreateChannelDto, userId: number): Promise<ChannelUser[] | null> {
+	async create(dto: CreateChannelDto, userId: number): Promise<ChannelDto | null> {
 		try {
-			const channel = await this.prisma.channel.create({
+			const channel: Channel = await this.prisma.channel.create({
 				data: {
 					name: dto.name,
 					password: dto.password as string,
@@ -46,9 +46,8 @@ export class ChannelService {
 					is_admin: true,
 				},
 			});
-
-			const channels = await this.prisma.channelUser.findMany();
-			return channels;
+			const channelDto: ChannelDto = channel;
+			return channelDto;
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				if (e.code === 'P2002') throw new BadRequestException('Channel name taken');
