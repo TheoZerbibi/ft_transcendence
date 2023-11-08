@@ -3,8 +3,6 @@ import { IPlayerData } from '../impl/interfaces/IPlayerData';
 import { Vector } from './utils/Vector';
 
 export class PlayerData implements IPlayerData {
-	private width: number = 700;
-	private height: number = 400;
 
 	pos: Vector;
 	w: number;
@@ -12,7 +10,15 @@ export class PlayerData implements IPlayerData {
 	side: SIDE;
 	score: number;
 
-	constructor(x: number, y: number, h: number, w: number, side: SIDE) {
+	constructor(
+		private width: number,
+		private height: number,
+		x: number,
+		y: number,
+		w: number,
+		h: number,
+		side: SIDE,
+	) {
 		this.pos = new Vector(x, y);
 		this.score = 0;
 		this.side = side;

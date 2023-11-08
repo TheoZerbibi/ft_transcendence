@@ -10,8 +10,11 @@ export class Game implements IGame {
 	private logger: Logger = new Logger('GameClass');
 	private usersInGame: Array<IUser> = [];
 	private loop: boolean = false;
+	private width: number = 700;
+	private height: number = 400;
+
 	public inProgress: boolean = false;
-	public gameData: IGameData = { ball: new Ball(), startingDate: null, endingDate: null };
+	public gameData: IGameData = { ball: new Ball(this.width, this.height), startingDate: null, endingDate: null };
 	public pause: boolean = false;
 
 	private static games: Map<string, any> = new Map<string, any>();
@@ -50,6 +53,14 @@ export class Game implements IGame {
 
 	isEnded(): boolean {
 		return this.isEnd;
+	}
+
+	getHeight(): number {
+		return this.height;
+	}
+
+	getWidth(): number {
+		return this.width;
 	}
 
 	getGameUID(): string {

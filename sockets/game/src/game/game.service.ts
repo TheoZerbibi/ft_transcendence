@@ -64,9 +64,27 @@ export class GameService {
 		if (isSpec) side = SIDE.SPECTATOR;
 
 		let playerData: IPlayerData = null;
-		if (side === SIDE.LEFT) playerData = new PlayerData(20, 150, 10, 100, SIDE.LEFT);
-		else if (side === SIDE.RIGHT) playerData = new PlayerData(670, 150, 10, 100, SIDE.RIGHT);
-		else playerData = new PlayerData(0, 0, 0, 0, SIDE.SPECTATOR);
+		if (side === SIDE.LEFT)
+			playerData = new PlayerData(
+				game.getWidth(),
+				game.getHeight(),
+				20,
+				game.getHeight() / 2 - 50,
+				10,
+				100,
+				SIDE.LEFT,
+			);
+		else if (side === SIDE.RIGHT)
+			playerData = new PlayerData(
+				game.getWidth(),
+				game.getHeight(),
+				game.getWidth() - 30,
+				game.getHeight() / 2 - 50,
+				10,
+				100,
+				SIDE.RIGHT,
+			);
+		else playerData = new PlayerData(game.getWidth(), game.getHeight(), 0, 0, 0, 0, SIDE.SPECTATOR);
 
 		const gameUser: IUser = {
 			user: { id: user.id, login: user.login, displayName: user.display_name, avatar: user.avatar },
