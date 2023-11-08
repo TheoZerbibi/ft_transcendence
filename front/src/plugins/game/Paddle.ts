@@ -32,8 +32,11 @@ export class Paddle {
 		this.score = score;
 	}
 
-	update(pos: number, width: number, height: number) {
-		this.pos.y = pos;
+	update(pos: { x: number; y: number }, width: number, height: number) {
+		this.pos.y = pos.y;
+		this.pos.x = pos.x;
+		this.h = height;
+		this.w = width;
 		// this.h = (this.h / width) * this.p5.width;
 	}
 

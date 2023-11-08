@@ -67,8 +67,8 @@ export default {
 
 			p5.setup = () => {
 				if (!cDiv) return;
-				width = 700;//cDiv.offsetWidth;
-				height = 400;//cDiv.offsetWidth / 2;
+				width = 700; //cDiv.offsetWidth;
+				height = 400; //cDiv.offsetWidth / 2;
 				const canvas = p5.createCanvas(width, height);
 				console.log(width, 'x', height);
 				canvas.parent('game-canvas');
