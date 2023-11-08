@@ -16,14 +16,24 @@ export class GameService {
 
 	constructor(private prismaService: PrismaService) {}
 
+	public handleRedisMessage(channel: string, message: any): void {
+		const data = JSON.parse(message);
+		if (!this.gameExists(data.gameUID)) this.createGame(data.gameID, data.gameUID, data.isEnded);
+		this.addWaitingConnection(data);
+	}
+
 	public addWaitingConnection(joinUser: GameJoinDto) {
 		this.waitingConnections.set(joinUser.userID, joinUser);
 	}
 
-	public isUserWaiting(gameUID: string, userID: number): GameJoinDto | null {
+	public isUserWaiting(client: Socket, gameUID: string, userID: number): GameJoinDto | null {
 		if (!this.waitingConnections.has(userID)) return null;
 		const wainting = this.waitingConnections.get(userID);
-		if (wainting.gameUID !== gameUID) return null;
+		if (wainting.gameUID !== gameUID) {
+			client.emit('game-error', 'Error during session join');
+			client.disconnect();
+			return null;
+		}
 		return wainting;
 	}
 
@@ -45,15 +55,19 @@ export class GameService {
 			// client.emit('game-error', 'Already in Game session');
 			return true;
 		}
+
 		let side: SIDE;
 		if (game.getUsersInGame().length === 0) side = SIDE.LEFT;
 		else if (game.getUsersInGame().length === 1) side = SIDE.RIGHT;
 		else side = SIDE.SPECTATOR;
+
 		if (isSpec) side = SIDE.SPECTATOR;
+
 		let playerData: IPlayerData = null;
 		if (side === SIDE.LEFT) playerData = new PlayerData(20, 150, 10, 100, SIDE.LEFT);
 		else if (side === SIDE.RIGHT) playerData = new PlayerData(670, 150, 10, 100, SIDE.RIGHT);
 		else playerData = new PlayerData(0, 0, 0, 0, SIDE.SPECTATOR);
+
 		const gameUser: IUser = {
 			user: { id: user.id, login: user.login, displayName: user.display_name, avatar: user.avatar },
 			socketID: client.id,
@@ -109,5 +123,36 @@ export class GameService {
 				is_win: true,
 			},
 		});
+	}
+
+	public gameVerification(client: Socket, gameUID: string, userID: number): IUser | null {
+		const game: IGame = this.getGame(gameUID);
+		if (!game) {
+			client.emit('game-error', 'Game Error, no game found');
+			client.disconnect();
+			return null;
+		}
+		if (!game.userIsInGame(userID)) {
+			client.emit('game-error', 'User is not in the game');
+			client.disconnect();
+			return null;
+		}
+		const player = game.getUser(userID);
+		if (!player) {
+			client.emit('game-error', 'User is not in the game');
+			client.disconnect();
+			return null;
+		}
+		return player;
+	}
+
+	public getUserFromRequest(client: Socket | any): users | null {
+		const user: users = client.handshake.user;
+		if (!user) {
+			client.emit('error', 'Invalid token');
+			client.disconnect();
+			return null;
+		}
+		return user;
 	}
 }
