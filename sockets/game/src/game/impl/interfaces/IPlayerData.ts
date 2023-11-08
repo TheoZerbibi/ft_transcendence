@@ -1,8 +1,8 @@
 import { SIDE } from "src/game/engine/enums/Side";
-import { IVector } from "src/game/engine/interfaces/IVector";
+import { Vector } from "src/game/engine/utils/Vector";
 
 export interface IPlayerData {
-	pos: IVector;
+	pos: Vector;
 	w: number;
 	h: number;
 	side: SIDE;
