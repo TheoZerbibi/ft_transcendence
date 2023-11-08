@@ -1,53 +1,31 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { PartialType } from '@nestjs/swagger';
-import {
-	IsBoolean,
-	IsNumber,
-	IsOptional,
-	IsString,
-	IsDate,
-} from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 
-import { CreateChannelDto } from './create-channel.dto';
-
-export class ChannelDto{
+export class ChannelDto {
 	@ApiProperty()
-	@IsOptional()
 	@IsNumber()
 	// eslint-disable-next-line
 	id: number;
 
 	@ApiProperty()
-	@IsOptional()
-	@IsBoolean()
+	@IsString()
 	// eslint-disable-next-line
 	name: string;
 
 	@ApiProperty()
-	@IsBoolean()
-	// eslint-disable-next-line
-	public: boolean;
-
-	@ApiProperty()
-	@IsOptional()
 	@IsString()
+	@IsOptional()
 	// eslint-disable-next-line
 	password: string;
 
 	@ApiProperty()
+	@IsBoolean()
 	@IsOptional()
-	@IsDate()
 	// eslint-disable-next-line
-	created_at: Date;
-
-	@ApiProperty()
-	@IsOptional()
-	@IsDate()
-	// eslint-disable-next-line
-	updated_at: Date;
+	public: boolean;
 }
 
-export class ChannelUserDto{
+export class ChannelUserDto {
 	@ApiProperty()
 	@IsNumber()
 	// eslint-disable-next-line
@@ -59,7 +37,7 @@ export class ChannelUserDto{
 	user_id: number;
 
 	@ApiProperty()
-	@IsBoolean()
+	@IsString()
 	// eslint-disable-next-line
 	name: string;
 
@@ -82,4 +60,12 @@ export class ChannelUserDto{
 	@IsBoolean()
 	// eslint-disable-next-line
 	is_ban: boolean;
+}
+
+export class joinChannelDto extends ChannelUserDto {
+	@ApiProperty()
+	@IsString()
+	@IsOptional()
+	// eslint-disable-next-line
+	chan_password: string;
 }
