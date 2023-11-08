@@ -3,8 +3,8 @@ import { ServerOptions } from 'socket.io';
 import { Redis } from 'ioredis';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
-import { GameGateway } from 'src/game/game.gateway';
 import { createAdapter } from '@socket.io/redis-adapter';
+import { GameService } from 'src/game/game.service';
 
 export class RedisIoAdapter extends IoAdapter {
 	private readonly logger = new Logger(RedisIoAdapter.name);
@@ -31,7 +31,7 @@ export class RedisIoAdapter extends IoAdapter {
 		});
 
 		subClient.on('message', (channel, message) => {
-			if (channel === 'new-connection') this.app.get(GameGateway).handleRedisMessage(channel, message);
+			if (channel === 'new-connection') this.app.get(GameService).handleRedisMessage(channel, message);
 		});
 		this.adapterConstructor = createAdapter(pubClient, subClient);
 	}

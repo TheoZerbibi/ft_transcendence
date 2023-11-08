@@ -34,14 +34,8 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	constructor(
 		private authService: AuthService,
 		private gameService: GameService,
-		private prismaService: PrismaService,
 	) {}
 	@WebSocketServer() server: Server;
-
-	@SubscribeMessage('new-connection')
-	newConnection(client: any, data: any): void {
-		this.handleRedisMessage(client, data);
-	}
 
 	@SubscribeMessage('session-join-test')
 	handleSessionJoinTest(@MessageBody() game: GameJoinDto) {
@@ -78,22 +72,14 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	@UseGuards(JwtGuard)
 	@SubscribeMessage('session-join')
 	async handleSessionJoin(@ConnectedSocket() client: Socket | any, @MessageBody() game: GameJoinDto) {
-		const user: users = client.handshake.user;
-		if (!user) {
-			client.emit('error', 'Invalid token');
-			client.disconnect();
-			return;
-		}
+		const user: users = this.gameService.getUserFromRequest(client);
 		const gameUID: string = game.gameUID;
-		const userID: number = user.id;
+		if (!user || !gameUID) return;
 
 		this.logger.debug(`Client WebSocket ${user.login} demande à rejoindre la session : ${gameUID}`);
-		const waiting: GameJoinDto = this.gameService.isUserWaiting(gameUID, userID);
-		if (!waiting) {
-			client.emit('game-error', 'Error during session join');
-			client.disconnect();
-			return;
-		}
+		const waiting: GameJoinDto = this.gameService.isUserWaiting(client, gameUID, user.id);
+		if (!waiting) return;
+
 		if (this.gameService.gameExists(gameUID)) {
 			const game: IGame = this.gameService.getGame(gameUID);
 			if (game.isEnded()) {
@@ -129,31 +115,13 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	@UseGuards(JwtGuard)
 	@SubscribeMessage('player-move')
 	handlePlayerMove(@ConnectedSocket() client: Socket | any, @MessageBody() data: any) {
-		const user: users = client.handshake.user;
-		if (!user) {
-			client.emit('error', 'Invalid token');
-			client.disconnect();
-			return;
-		}
+		const user: users = this.gameService.getUserFromRequest(client);
 		const gameUID: string = data.gameUID;
-		const userID: number = user.id;
+		if (!user || !gameUID) return;
+
 		const game: IGame = this.gameService.getGame(gameUID);
-		if (!game) {
-			client.emit('game-error', 'Game Error, no game found');
-			client.disconnect();
-			return;
-		}
-		if (!game.userIsInGame(userID)) {
-			client.emit('game-error', 'User is not in the game');
-			client.disconnect();
-			return;
-		}
-		const player = game.getUser(userID);
-		if (!player) {
-			client.emit('game-error', 'User is not in the game');
-			client.disconnect();
-			return;
-		}
+		const player = this.gameService.gameVerification(client, gameUID, user.id);
+		if (!player) return;
 		if (player.isSpec) return;
 		if (player.playerData.side === SIDE.LEFT) {
 			if (game.getPlayerBySide(SIDE.LEFT).user.login != player.user.login) return;
@@ -248,15 +216,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		}, 1);
 	}
 
-	public handleRedisMessage(channel: string, message: any): void {
-		const data = JSON.parse(message);
-		if (!this.gameService.gameExists(data.gameUID))
-			this.gameService.createGame(data.gameID, data.gameUID, data.isEnded);
-		this.gameService.addWaitingConnection(data);
-		return this.logger.debug(`New redis-message, user ${data.userID} is waiting for game ${data.gameUID}`);
-	}
-
-	afterInit() {
+	public afterInit() {
 		instrument(this.server, {
 			auth: false,
 			mode: 'development',
@@ -281,5 +241,4 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			client.disconnect();
 		}
 	}
-
 }
