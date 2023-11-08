@@ -12,6 +12,9 @@ export interface IGame {
 	getGameUID: () => string;
 	getGameID: () => number;
 
+	getWidth: () => number;
+	getHeight: () => number;
+
 	addUser: (user: IUser) => void;
 	removeUser: (user: IUser) => void;
 

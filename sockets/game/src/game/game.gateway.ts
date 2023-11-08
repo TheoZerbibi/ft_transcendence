@@ -58,7 +58,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			},
 			socketID: 'null',
 			isSpec: false,
-			playerData: new PlayerData(670, 150, 10, 100, SIDE.RIGHT),
+			playerData: new PlayerData(gameS.getWidth(), gameS.getHeight(), 670, 150, 10, 100, SIDE.RIGHT),
 		};
 		if (gameS.isInProgress() && !game.isSpec) {
 			gameUser.playerData.side = SIDE.SPECTATOR;
@@ -132,12 +132,12 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		}
 		this.server.to(game.getGameUID()).emit('player-moved', {
 			p1: {
-				position: game.getPlayerBySide(SIDE.LEFT).playerData.pos.y,
+				position: game.getPlayerBySide(SIDE.LEFT).playerData.pos.toObject(),
 				width: game.getPlayerBySide(SIDE.LEFT).playerData.w,
 				height: game.getPlayerBySide(SIDE.LEFT).playerData.h,
 			},
 			p2: {
-				position: game.getPlayerBySide(SIDE.RIGHT).playerData.pos.y,
+				position: game.getPlayerBySide(SIDE.RIGHT).playerData.pos.toObject(),
 				width: game.getPlayerBySide(SIDE.RIGHT).playerData.w,
 				height: game.getPlayerBySide(SIDE.RIGHT).playerData.h,
 			},
@@ -189,20 +189,20 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 					radius: game.getGameData().ball.getRadius(),
 				});
 				if (game.getGameData().ball.playerLHasHit) {
-					const player: IUser = game.getPlayerBySide(SIDE.LEFT);
-					await this.gameService.addPoint(game, player);
-					this.server
-						.to(game.getGameUID())
-						.emit('new-point', { side: SIDE.LEFT, score: player.playerData.score });
+					// const player: IUser = game.getPlayerBySide(SIDE.LEFT);
+					// await this.gameService.addPoint(game, player);
+					// this.server
+					// 	.to(game.getGameUID())
+					// 	.emit('new-point', { side: SIDE.LEFT, score: player.playerData.score });
 					game.getGameData().ball.playerLHasHit = false;
 					game.setPause(true, 3000);
 				}
 				if (game.getGameData().ball.playerRHasHit) {
-					const player: IUser = game.getPlayerBySide(SIDE.LEFT);
-					await this.gameService.addPoint(game, player);
-					this.server
-						.to(game.getGameUID())
-						.emit('new-point', { side: SIDE.RIGHT, score: player.playerData.score });
+					// const player: IUser = game.getPlayerBySide(SIDE.LEFT);
+					// await this.gameService.addPoint(game, player);
+					// this.server
+					// 	.to(game.getGameUID())
+					// 	.emit('new-point', { side: SIDE.RIGHT, score: player.playerData.score });
 					game.getGameData().ball.playerRHasHit = false;
 					game.setPause(true, 3000);
 				}

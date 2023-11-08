@@ -64,7 +64,7 @@ export class Vector {
 	 * @memberof Vector
 	 */
 	setMagnitude(magnitude: number) {
-		let direction = this.getDirection();
+		const direction = this.getDirection();
 		this.x = Math.cos(direction) * magnitude;
 		this.y = Math.sin(direction) * magnitude;
 	}
@@ -75,7 +75,7 @@ export class Vector {
 	 * @memberof Vector
 	 */
 	normalize() {
-		let magnitude = this.getMagnitude();
+		const magnitude = this.getMagnitude();
 		this.x /= magnitude;
 		this.y /= magnitude;
 	}
@@ -183,6 +183,18 @@ export class Vector {
 		return this.x * v2.x + this.y * v2.y;
 	}
 
+	rotate(angle: number) {
+		const cosA = Math.cos(angle);
+		const sinA = Math.sin(angle);
+		this.x = this.x * cosA - this.y * sinA;
+		this.y = this.x * sinA + this.y * cosA;
+	}
+
+	heading() {
+		const h = Math.atan2(this.y, this.x);
+		return h;
+	}
+
 	/**
 	 * Finds the cross product of this vector and another vector
 	 *
@@ -217,9 +229,17 @@ export class Vector {
 	 * @memberof Vector
 	 */
 	setDirection(direction: number) {
-		let magnitude = this.getMagnitude();
+		const magnitude = this.getMagnitude();
 		this.x = Math.cos(direction) * magnitude;
 		this.y = Math.sin(direction) * magnitude;
+	}
+
+	limit(max: number) {
+		const magnitude = this.getMagnitude();
+		if (magnitude > max) {
+			const ratio = max / magnitude;
+			this.multiplyBy(ratio);
+		}
 	}
 
 	/**
