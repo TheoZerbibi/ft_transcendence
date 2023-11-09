@@ -5,8 +5,9 @@ import { JwtGuard } from 'src/auth/guard';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
 // PRISMA
-import { User, ChannelUser, ChannelMessage } from '@prisma/client';
+import { Channel, User, ChannelUser, ChannelMessage } from '@prisma/client';
 // DTO
+import { ChannelUserDto } from './dto/channel.dto';
 import { CreateChannelDto } from './dto/create-channel.dto';
 import { MessageDto } from './dto/message.dto';
 // SERVICES
@@ -22,21 +23,22 @@ export class ChannelController {
 		private userService: UserService,
 	) {}
 
-	/*********************************************/
-	/* 					Creation				 */
-	/*********************************************/
+	/***********************************************/
+	/* 					Creation				   */
+	/***********************************************/
 	@Post('create')
 	@UseGuards(JwtGuard) // Needed to access user attribute
 	@ApiOperation({ summary: 'Create channel' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async create(@GetUser() user: User, @Body() dto: CreateChannelDto) {
+	async create(@GetUser() user: ChannelUserDto, @Body() dto: CreateChannelDto) {
 		return await this.channelService.create(dto, user.id);
 	}
 
-	/*********************************************/
-	/* 					Message					 */
-	/*********************************************/
+	/***********************************************/
+	/* 					Message					   */
+	/***********************************************/
 
+	/*
 	@Post('msg')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Post message' })
@@ -44,51 +46,71 @@ export class ChannelController {
 	async message(@GetUser() user: User, @Body() dto: MessageDto) {
 		return await this.channelService.postMessage(user, dto.channel_id, dto.content);
 	}
+	*/
 
-	/*********************************************/
-	/* 					Getters					 */
-	/*********************************************/
+	/***********************************************/
+	/* 					Getters					   */
+	/***********************************************/
 
+	// DEBUG ONLY
+	@Get('allDebug')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'For debugging purpose only : Get all channels' })
+	@ApiBearerAuth('JWT-auth')
+	async getAllChannels() {
+		return await this.channelService.getAllChannels();
+	}
+
+	// Get all public channels
+	@Get('discover')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'Get all public channels' })
+	@ApiBearerAuth('JWT-auth')
+	async getAllPublicChannels(): Promise<Channel[]> {
+		return await this.channelService.getAllPublicChannels();
+	}
+
+	//Get all channels on which user is
+	@Get('all')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: "Get all user's channels" })
+	@ApiBearerAuth('JWT-auth')
+	async getJoinedChannels(@GetUser() user: ChannelUserDto): Promise<ChannelUser[] | null> {
+		return await this.channelService.getJoinedChannels(user);
+	}
+
+	// Will show the public infos of the channel and possibility to join it BUT not if you are banned / is private
 	@Get(':name')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Get channel by Name' })
+	@ApiOperation({ summary: 'Get a channel by its name' })
 	@ApiBearerAuth('JWT-auth')
-	async getChannelByName(@Param('name') channel_name: string) {
-		return await this.channelService.getChannelByName(channel_name);
+	async getChannelByNameIfAllowed(@GetUser() user: ChannelUserDto, @Param('name') channel_name: string) {
+		return await this.channelService.getChannelByNameIfAllowed(user, channel_name);
 	}
 
-	/*
+	// Will show the public infos of the channel and possibility to join it BUT not if you are banned / is private
 	@Get(':id')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Get channel by Id' })
+	@ApiOperation({ summary: 'Get a channel by its id' })
 	@ApiBearerAuth('JWT-auth')
-	async getChannelById(@Param('id') channel_id: number, @GetUser() user: User) {
-		return await this.channelService.getChannelById(channel_id);
+	async getChannelByIdIfAllowed(@GetUser() user: ChannelUserDto, @Param('id') channel_id: number) {
+		return await this.channelService.getChannelByIdIfAllowed(user, channel_id);
 	}
 
-	//Get all user in a channel
+	//Get all users in a channel
 	@Get(':channel/users')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Get all accessible channel user' })
+	@ApiOperation({ summary: 'Get all channel users' })
 	@ApiBearerAuth('JWT-auth')
-	async allUsers() {
-		return await this.channelService.getChannelUsers();
-	}
-
-	//Get all user in a channel
-	@Get(':channel/user')
-	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'retrieve user of channel' })
-	@ApiBearerAuth('JWT-auth')
-	async allChannelUsers(
+	async getChannelUsers(
+		@GetUser() user: ChannelUserDto,
 		@Param('channel') channel_name: string,
-		@GetUser() user: User,
 	): Promise<ChannelUser[] | null> {
-		const channel: ChannelDto | null = await this.channelService.getChannelByName(channel_name);
-
-		if (!channel) throw new BadRequestException("Channel doesn't exist\n");
-		return await this.channelService.getChannelUsers(user, channel.name);
+		return await this.channelService.getChannelUsers(user, channel_name);
 	}
+
+	/****************** Users **********************/
+	/*
 
 	@Patch('mod/channel')
 	@UseGuards(JwtGuard)
@@ -156,22 +178,6 @@ export class ChannelController {
 	@ApiBearerAuth('JWT-auth')
 	async leave(@GetUser() user: User, @Body() channel: ChannelDto): Promise<boolean> {
 		return false;
-	}
-	*/
-
-	/*********************************************/
-	/*											 */
-	/* 			Debugging purpose only			 */
-	/*											 */
-	/*********************************************/
-
-	/*
-	@Get('all')
-	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'FetchAllChannel: for debugging purpose only' })
-	@ApiBearerAuth('JWT-auth')
-	async all() {
-		return await this.channelService.findAllPublic();
 	}
 	*/
 }

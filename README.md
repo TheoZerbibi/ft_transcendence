@@ -9,9 +9,16 @@ x: Implemented in both
 
 ## Access Channel
 - [b] Add channel
+- [b] Get public channels ("discover")
+- [ ] Get joined channels
+- [b] Get a channel by name
+- [b] Get a channel by id
 
-- [ ] Get public channel ~1
+## Access Users
+- [ ] Get users of a channel
+>	  If is in chan + not banned
 
+## Access messages
 - [ ] Get priv conversation on which i am
 
 - [ ] Get channels on which i am "myChannels"  ~1

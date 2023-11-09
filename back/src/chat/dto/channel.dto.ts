@@ -29,12 +29,12 @@ export class ChannelUserDto {
 	@ApiProperty()
 	@IsNumber()
 	// eslint-disable-next-line
-	channel_id: number;
+	id: number;
 
 	@ApiProperty()
 	@IsNumber()
 	// eslint-disable-next-line
-	user_id: number;
+	channel_id: number;
 
 	@ApiProperty()
 	@IsString()

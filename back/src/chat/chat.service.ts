@@ -6,7 +6,7 @@ import { Prisma, User, Channel, ChannelUser } from '@prisma/client';
 import { ChannelDto, ChannelUserDto } from './dto/channel.dto';
 import { CreateChannelDto } from './dto/create-channel.dto';
 import { UpdateChannelDto, UpdateChannelUserDto } from './dto/update-channel.dto';
-import { UserDto } from '../user/dto';
+import { ChannelUserDto } from '../user/dto';
 // SERVICES
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserService } from '../user/user.service';
@@ -25,10 +25,10 @@ export class ChannelService {
 		private userService: UserService,
 	) {}
 
-	/*********************************************/
-	/* 					Creation				 */
-	/*********************************************/
-	async create(dto: CreateChannelDto, userId: number): Promise<ChannelDto | null> {
+	/***********************************************/
+	/* 					Creation				   */
+	/***********************************************/
+	async create(dto: CreateChannelDto, userId: number): Promise<Channel | null> {
 		try {
 			const channel: Channel = await this.prisma.channel.create({
 				data: {
@@ -46,8 +46,7 @@ export class ChannelService {
 					is_admin: true,
 				},
 			});
-			const channelDto: ChannelDto = channel;
-			return channelDto;
+			return channel;
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				if (e.code === 'P2002') throw new BadRequestException('Channel name taken');
@@ -56,10 +55,11 @@ export class ChannelService {
 		}
 	}
 
-	/*********************************************/
-	/* 					Message					 */
-	/*********************************************/
+	/***********************************************/
+	/* 					Message					   */
+	/***********************************************/
 
+	/*
 	async postMessage(user: User, channel_id: number, content: string) {
 		const channel: Channel = await this.getChannelById(channel_id);
 		// if channel doesn't exist && discussion is private : create channel
@@ -79,66 +79,107 @@ export class ChannelService {
 			data: {
 				content: content,
 				channel_user_id: channel.id,
-				user_id: user.id,
 			},
 		});
 	}
+	*/
 
-	/*********************************************/
-	/* 					Getters					 */
-	/*********************************************/
+	/***********************************************/
+	/* 					Getters					   */
+	/***********************************************/
 
-	/***************** Channels ******************/
-	async getChannelByName(channel_name: string): Promise<Channel | null> {
-		try {
-			const channel: Channel | null = await this.prisma.channel.findUnique({
-				where: {
-					name: channel_name,
+	/***************** Channels ********************/
+	//DEBUG ONLY
+	async getAllChannels(): Promise<Channel[]> {
+		return await this.prisma.channel.findMany();
+	}
+	//*********/
+
+	async getAllPublicChannels(): Promise<Channel[] | null> {
+		const channels: Channel[] = await this.prisma.channel.findMany({
+			where: {
+				public: true,
+			},
+		});
+		return channels.length ? channels : null;
+	}
+
+	async getJoinedChannels(user: ChannelUserDto): Promise<Channel[] | null> {
+		const channels: Channel[] = await this.prisma.channel.findMany({
+			where: {
+				channel_users: {
+					some: {
+						user_id: user.id,
+					},
 				},
-			});
-			return channel;
-		} catch (e) {
-			if (e instanceof Prisma.PrismaClientKnownRequestError) {
-				// TODO : handle Prisma errors (except from not found which will return null	)
-			}
-			throw new BadRequestException(e);
-		}
+			},
+		});
+		return channels.length ? channels : null;
+	}
+
+	async getChannelByNameIfAllowed(user: ChannelUserDto, channel_name: string): Promise<Channel | null> {
+		if (user.is_ban) throw new ForbiddenException('You are banned from this channel');
+		const channel: Channel | null = await this.prisma.channel.findUnique({
+			where: {
+				name: channel_name,
+			},
+		});
+		if (!channel.is_public && !this.isOnChannel(user, channel))
+			throw new ForbiddenException('You cannot access to this channel');
+		return channel;
+	}
+
+	async getChannelByIdIfAllowed(user: ChannelUserDto, channel_id: number): Promise<Channel | null> {
+		const channel: Channel | null = await this.prisma.channel.findUnique({
+			where: {
+				id: channel_id,
+			},
+		});
+		if (!channel.is_public && !this.isOnChannel(user, channel))
+			throw new ForbiddenException('You cannot access to this channel');
+		if (channel.user.is_ban) throw new ForbiddenException('You are banned from this channel');
+		return channel;
+	}
+
+	async getChannelByName(channel_name: string): Promise<Channel | null> {
+		const channel: Channel | null = await this.prisma.channel.findUnique({
+			where: {
+				name: channel_name,
+			},
+		});
+		return channel;
 	}
 
 	async getChannelById(channel_id: number): Promise<Channel | null> {
-		try {
-			const channel: Channel | null = await this.prisma.channel.findUnique({
-				where: {
-					id: channel_id,
-				},
-			});
-			return channel;
-		} catch (e) {
-			if (e instanceof Prisma.PrismaClientKnownRequestError) {
-				// TODO : handle Prisma errors (except from not found)
-			}
-			throw new BadRequestException(e);
-		}
+		const channel: Channel | null = await this.prisma.channel.findUnique({
+			where: {
+				id: channel_id,
+			},
+		});
+		return channel;
 	}
 
-	//**************** ChannelUsers ***************/
-
-	async getChannelUser(user: User, channel_name: string): Promise<ChannelUser[] | null> {
+	//******************* Users ********************/
+ 	// get all user in a channel : if you are { banned / not in the channel / if channel is private } you can't access it
+	async getChannelUsers(user: ChannelUserDto, channel_name: string): Promise<ChannelUser[] | null> {
 		const channel: Channel | null = await this.getChannelByName(channel_name);
-		if (!channel) throw new BadRequestException("This channel doesn't exist \n");
+		if (!channel) throw new BadRequestException("This channel doesn't exist");
 
-		try {
-			const target: ChannelUser | null = await this.prisma.channelUser.findFirst({
-				where: {
-					channel_id: channel.id,
-					user_id: user.id,
+		// Check if the user is banned
+		const userInChannel = await this.prisma.channelUser.findUnique({
+			where: {
+				userId_channelId: {
+					userId: user.id,
+					channelId: channel.id,
 				},
-			});
+			},
+		});
 
-			if (!channel.public && !target) throw new ForbiddenException("You don't have access to this channel");
-		} catch (e) {
-			console.log(e);
+		if (userInChannel && userInChannel.is_banned) {
+			throw new BadRequestException('You are banned from this channel');
 		}
+
+		// Rest of the function...
 
 		//		const users: ChannelUser[] | null = await this.prisma.channelUser.findMany({
 		//			where: {
@@ -149,9 +190,10 @@ export class ChannelService {
 		return null;
 	}
 
-	/*********************************************/
-	/* 				Modification				 */
-	/*********************************************/
+	/***********************************************/
+	/* 					Modification			   */
+	/***********************************************/
+	/*
 	async modChannel(dto: UpdateChannelDto, me: User) {
 		try {
 			const isOwner: boolean = await this.isOwner(await this.getPrivilegesLvl(me, dto.name));
@@ -174,10 +216,12 @@ export class ChannelService {
 			throw new BadRequestException(e);
 		}
 	}
+	*/
 
+	/*
 	async updateChannelUser(dto: UpdateChannelUserDto, user: User) {
 		try {
-			const target: UserDto = await this.userService.getUserById(dto.user_id);
+			const target: ChannelUserDto = await this.userService.getUserById(dto.user_id);
 			if (!target) throw new BadRequestException("User doesn't exist");
 			const channel: Channel = await this.getChannelById(dto.channel_id);
 			if (!channel) throw new BadRequestException("Channel doesn't exist");
@@ -203,12 +247,13 @@ export class ChannelService {
 			throw new BadRequestException(e);
 		}
 	}
+	*/
 
-	/*********************************************************************/
-	/* 								Utils								 */
-	/*********************************************************************/
+	/***********************************************/
+	/* 					Utils					   */
+	/***********************************************/
 
-	/********************** Permissions ******************/
+	/*************** Permissions ****I**************/
 	async channelIsAllowed(user: User, channel: Channel): Promise<boolean> {
 		if (!channel.public) {
 			return this.isOnChannel(user, channel);
@@ -228,15 +273,13 @@ export class ChannelService {
 		return channel_user ? true : false;
 	}
 
-	/********************** Privileges ******************/
+	/***************** Privileges ******************/
 	async getPrivilegesLvl(user: User, channel_name: string): Promise<PrivilegeStatus | null> {
 		try {
 			const channelDto: ChannelDto = await this.getChannelByName(channel_name);
 			if (!channelDto) throw new BadRequestException("Channel doesn't exist");
-			const userDto: UserDto = await this.userService.getUserByLogin(user.login);
-			if (!userDto) throw new BadRequestException("User doesn't exist in database");
 			const channelUser: ChannelUser = await this.prisma.channelUser.findFirst({
-				where: { user_id: userDto.id, channel_id: channelDto.id },
+				where: { user_id: user.id, channel_id: channelDto.id },
 			});
 			if (!channelUser) return null;
 			if (channelUser.is_owner) return PrivilegeStatus.OWNER;
@@ -324,14 +367,6 @@ export class ChannelService {
 		}
 	}
 	
-	async findAllPublicChannels() {
-		return this.prisma.channel.findMany({
-			where: {
-				public: true,
-			},
-		});
-	}
-
 	async findAllChannelUsers(): Promise<ChannelUser[] | null> {
 		return await this.prisma.channelUser.findMany();
 	}
