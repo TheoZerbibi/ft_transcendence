@@ -19,12 +19,23 @@ enum PrivilegeStatus {
 
 @Injectable()
 export class ChannelService {
+	localChannels: ChannelDto[] = [];
+
 	constructor(
 		private prisma: PrismaService,
 		private userService: UserService,
-	) {}
+	) {
+		this.initLocalChannels();
+	}
 
-	//channels: ChannelDto[];
+	private async initLocalChannels(): Promise<void> {
+		try {
+			const channels = await this.prisma.channel.findMany();
+			this.localChannels = channels as ChannelDto[];
+		} catch (e) {
+			console.error('Failed to initialize local channels:', e);
+		}
+	}
 
 	/***********************************************/
 	/* 					Creation				   */
@@ -50,6 +61,7 @@ export class ChannelService {
 					});
 					return channel;
 				});
+			this.localChannels.push(channel);
 			return channel as ChannelDto;
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -95,7 +107,8 @@ export class ChannelService {
 	/***************** Channels ********************/
 	//DEBUG ONLY
 	async getAllChannels(): Promise<Channel[]> {
-		return await this.prisma.channel.findMany();
+		return this.localChannels;
+		//return await this.prisma.channel.findMany();
 	}
 	//*********/
 
