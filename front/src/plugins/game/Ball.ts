@@ -158,9 +158,8 @@ export class Ball {
 	serverUpdate(pos: { x: number; y: number }, vel: { x: number; y: number }, speed: number) {
 		this.pos.x = (pos.x / 700) * this.p5.width;
 		this.pos.y = (pos.y / 400) * this.p5.height;
-		// console.log(pos.x, pos.y);
-		// this.pos.x = pos.x;
-		// this.pos.y = pos.y;
+		this.speed = speed;
+		this.r = this.p5.width / 50;
 		this.vel.x = vel.x;
 		this.vel.y = vel.y;
 	}
