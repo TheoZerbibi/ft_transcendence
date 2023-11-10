@@ -1,9 +1,10 @@
 import { SIDE } from './enums/Side';
 import { IPlayerData } from '../impl/interfaces/IPlayerData';
 import { Vector } from './utils/Vector';
+import { constrain } from './utils/MathUtils';
+import { DIRECTION } from './enums/Direction';
 
 export class PlayerData implements IPlayerData {
-
 	pos: Vector;
 	w: number;
 	h: number;
@@ -26,11 +27,9 @@ export class PlayerData implements IPlayerData {
 		this.h = h;
 	}
 
-	move(direction: number) {
-		if (direction === 1) {
-			if (this.pos.y > 0 && this.pos.y + this.h < this.height) this.pos.y -= 5;
-		} else if (direction === 0) {
-			if (this.pos.y + this.h < this.height) this.pos.y += 5;
-		}
+	move(direction: DIRECTION) {
+		if (direction === DIRECTION.UP) this.pos.y += 5;
+		else if (direction === DIRECTION.DOWN) this.pos.y -= 5;
+		this.pos.y = constrain(this.pos.y, 0, this.height - this.h);
 	}
 }

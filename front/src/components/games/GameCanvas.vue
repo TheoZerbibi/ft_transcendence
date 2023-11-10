@@ -15,6 +15,7 @@ import P5 from 'p5';
 
 import { Ball } from '../../plugins/game/Ball';
 import { Paddle } from '../../plugins/game/Paddle';
+import { DIRECTION } from '../../plugins/game/enums/Direction';
 import { SIDE } from '../../plugins/game/enums/Side';
 import { useCountdownStore } from '../../stores/countdown';
 import { useSocketStore } from '../../stores/websocket';
@@ -67,10 +68,9 @@ export default {
 
 			p5.setup = () => {
 				if (!cDiv) return;
-				width = 700; //cDiv.offsetWidth;
-				height = 400; //cDiv.offsetWidth / 2;
+				width = cDiv.offsetWidth;
+				height = cDiv.offsetWidth / 2;
 				const canvas = p5.createCanvas(width, height);
-				console.log(width, 'x', height);
 				canvas.parent('game-canvas');
 
 				gameData.ball = new Ball(p5, width / 2, height / 2, 10);
@@ -83,9 +83,9 @@ export default {
 				movePaddles();
 				backdrop();
 				if (!gameData.p1 || !gameData.p2 || !gameData.ball) return;
-				// gameData.ball.outOfBounds();
-				// if (gameData.go) gameData.ball.update();
-				// gameData.ball.hit(gameData.p1, gameData.p2);
+				gameData.ball.outOfBounds();
+				if (gameData.go) gameData.ball.update();
+				gameData.ball.hit(gameData.p1, gameData.p2);
 				gameData.p1.show();
 				gameData.p2.show();
 				gameData.ball.show();
@@ -121,6 +121,28 @@ export default {
 				p5.text(gameData.p2.score, width / 2 + textOffsetX, textOffsetY);
 			}
 
+			p5.windowResized = () => {
+				if (!cDiv || !gameData.ball || !gameData.p1 || !gameData.p2) return;
+				const oldWidth: number = width;
+				const oldHeight: number = height;
+				width = cDiv.offsetWidth;
+				height = cDiv.offsetWidth / 2;
+				p5.resizeCanvas(width, height);
+				gameData.ball.resizeUpdate(width, height, oldWidth, oldHeight);
+				gameData.p1.resizeUpdate(height, width, oldWidth, oldHeight);
+				gameData.p2.resizeUpdate(height, width, oldWidth, oldHeight);
+			};
+
+			p5.mouseMoved = () => {
+				if (!gameData.ball || !gameData.socket) return;
+				if (!gameData.player || !gameData.start) {
+					if (!gameData.p1 || !gameData.p1.pos || gameData.start) return;
+					if (p5.mouseY + gameData.p1.h >= p5.height) gameData.p1.pos.y = p5.height - gameData.p1.h;
+					else gameData.p1.pos.y = Math.max(0, Math.min(p5.height, p5.mouseY));
+					return;
+				}
+			};
+
 			/**
 			 * Function for moving the player Paddle.
 			 */
@@ -132,18 +154,18 @@ export default {
 				}
 
 				if (p5.keyIsDown(87)) {
-					gameData.player.move(-5);
+					// gameData.player.move(-5);
 					gameData.socket.emit('player-move', {
 						gameUID: gameData.gameUID,
-						direction: 1,
+						direction: DIRECTION.DOWN,
 					});
 				}
 
 				if (p5.keyIsDown(83)) {
-					gameData.player.move(5);
+					// gameData.player.move(5);
 					gameData.socket.emit('player-move', {
 						gameUID: gameData.gameUID,
-						direction: 0,
+						direction: DIRECTION.UP,
 					});
 				}
 			}
@@ -161,18 +183,6 @@ export default {
 					gameData.p1.move(5);
 				}
 			}
-
-			p5.windowResized = () => {
-				if (!cDiv || !gameData.ball || !gameData.p1 || !gameData.p2) return;
-				const oldWidth: number = width;
-				const oldHeight: number = height;
-				width = cDiv.offsetWidth;
-				height = cDiv.offsetWidth / 2;
-				p5.resizeCanvas(width, height);
-				gameData.ball.resizeUpdate(width, height, oldWidth, oldHeight);
-				gameData.p1.resizeUpdate(height, width, oldWidth, oldHeight);
-				gameData.p2.resizeUpdate(height, width, oldWidth, oldHeight);
-			};
 		};
 		new P5(script);
 
