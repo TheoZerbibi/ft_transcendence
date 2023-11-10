@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class ChannelDto {
 	@ApiProperty()
@@ -39,7 +39,7 @@ export class ChannelUserDto {
 	@ApiProperty()
 	@IsString()
 	// eslint-disable-next-line
-	user_id: string;
+	name: string;
 
 	@ApiProperty()
 	@IsBoolean()
@@ -60,23 +60,12 @@ export class ChannelUserDto {
 	@IsBoolean()
 	// eslint-disable-next-line
 	is_ban: boolean;
-
-	@ApiProperty()
-	// eslint-disable-next-line
-	channel: ChannelDto;
 }
 
-export class JoinChannelDto extends ChannelUserDto {
+export class joinChannelDto extends ChannelUserDto {
 	@ApiProperty()
 	@IsString()
 	@IsOptional()
 	// eslint-disable-next-line
 	chan_password: string;
-}
-
-export class ChannelWithUsersDto extends ChannelDto {
-	@ApiProperty()
-	@IsArray()
-	// eslint-disable-next-line
-	users: ChannelUserDto[];
 }

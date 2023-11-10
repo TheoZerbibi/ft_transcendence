@@ -25,6 +25,8 @@ export class ChannelService {
 		private userService: UserService,
 	) {}
 
+	//channels: ChannelDto[];
+
 	/***********************************************/
 	/* 					Creation				   */
 	/***********************************************/

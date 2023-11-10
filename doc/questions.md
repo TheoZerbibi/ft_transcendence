@@ -21,6 +21,7 @@
 ___
 
 - what about channel sans nom
-- dto : a quoi servent is_owner etc (le front aura ces infos ? il faut rechecker a chaque fois anyway non ? ou c'est juste pour avoir des variables a remplir?)
+- comment acceder aux foreign keys en tant que variables
+- qui s'occupe des friends
 - comment recaster
 

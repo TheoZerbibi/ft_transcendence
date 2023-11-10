@@ -30,7 +30,7 @@ export class ChannelController {
 	@UseGuards(JwtGuard) // Needed to access user attribute
 	@ApiOperation({ summary: 'Create channel' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async create(@GetUser() user: ChannelUserDto, @Body() dto: CreateChannelDto) {
+	async create(@GetUser() user: User, @Body() dto: CreateChannelDto) {
 		return await this.channelService.create(dto, user.id);
 	}
 
@@ -75,7 +75,7 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: "Get all user's channels" })
 	@ApiBearerAuth('JWT-auth')
-	async getJoinedChannels(@GetUser() user: ChannelUserDto): Promise<ChannelUser[] | null> {
+	async getJoinedChannels(@GetUser() user: User): Promise<ChannelUser[] | null> {
 		return await this.channelService.getJoinedChannels(user);
 	}
 
@@ -84,7 +84,7 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get a channel by its name' })
 	@ApiBearerAuth('JWT-auth')
-	async getChannelByNameIfAllowed(@GetUser() user: ChannelUserDto, @Param('name') channel_name: string) {
+	async getChannelByNameIfAllowed(@GetUser() user: User, @Param('name') channel_name: string) {
 		return await this.channelService.getChannelByNameIfAllowed(user, channel_name);
 	}
 
@@ -93,7 +93,7 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get a channel by its id' })
 	@ApiBearerAuth('JWT-auth')
-	async getChannelByIdIfAllowed(@GetUser() user: ChannelUserDto, @Param('id') channel_id: number) {
+	async getChannelByIdIfAllowed(@GetUser() user: User, @Param('id') channel_id: number) {
 		return await this.channelService.getChannelByIdIfAllowed(user, channel_id);
 	}
 
@@ -103,7 +103,7 @@ export class ChannelController {
 	@ApiOperation({ summary: 'Get all channel users' })
 	@ApiBearerAuth('JWT-auth')
 	async getChannelUsers(
-		@GetUser() user: ChannelUserDto,
+		@GetUser() user: User,
 		@Param('channel') channel_name: string,
 	): Promise<ChannelUser[] | null> {
 		return await this.channelService.getChannelUsers(user, channel_name);
