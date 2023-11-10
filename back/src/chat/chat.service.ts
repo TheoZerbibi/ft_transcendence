@@ -3,7 +3,7 @@ import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/com
 // PRISMA
 import { Prisma, User, Channel, ChannelUser } from '@prisma/client';
 // DTO
-import { ChannelDto, CreateChannelDto } from './dto/channel.dto';
+import { ChannelDto, ChannelNameDto, CreateChannelDto } from './dto/channel.dto';
 import { ChannelUserDto, CreateChannelUserDto } from './dto/channel-user.dto';
 
 // SERVICES
@@ -19,7 +19,7 @@ enum PrivilegeStatus {
 
 @Injectable()
 export class ChannelService {
-	localChannels: ChannelDto[] = [];
+	localChannels: Channel[] = [];
 
 	constructor(
 		private prisma: PrismaService,
@@ -30,8 +30,7 @@ export class ChannelService {
 
 	private async initLocalChannels(): Promise<void> {
 		try {
-			const channels = await this.prisma.channel.findMany();
-			this.localChannels = channels as ChannelDto[];
+			this.localChannels = await this.prisma.channel.findMany();
 		} catch (e) {
 			console.error('Failed to initialize local channels:', e);
 		}
@@ -106,9 +105,18 @@ export class ChannelService {
 
 	/***************** Channels ********************/
 	//DEBUG ONLY
+	/*
+	async getAllChannels(): Promise<ChannelNameDto[]> {
+		return this.localChannels.map((channel) => this.toChannelNameDto(channel)) as unknown as ChannelNameDto[];
+	}
+	async toChannelNameDto(channel: Channel): Promise<ChannelNameDto> {
+		return {
+			name: channel.name,
+		} as ChannelNameDto;
+	}
+	*/
 	async getAllChannels(): Promise<Channel[]> {
 		return this.localChannels;
-		//return await this.prisma.channel.findMany();
 	}
 	//*********/
 

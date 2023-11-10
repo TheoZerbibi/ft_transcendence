@@ -2,16 +2,18 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsBoolean, IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 import { ChannelUserDto } from './channel-user.dto';
 
-export class ChannelDto {
-	@ApiProperty()
-	@IsNumber()
-	// eslint-disable-next-line
-	id: number;
-
+export class ChannelNameDto {
 	@ApiProperty()
 	@IsString()
 	// eslint-disable-next-line
 	name: string;
+}
+
+export class ChannelDto extends ChannelNameDto {
+	@ApiProperty()
+	@IsNumber()
+	// eslint-disable-next-line
+	id: number;
 
 	@ApiProperty()
 	@IsBoolean()

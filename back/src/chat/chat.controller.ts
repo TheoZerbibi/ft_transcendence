@@ -7,7 +7,7 @@ import { GetUser } from 'src/auth/decorator/get-user.decorator';
 // PRISMA
 import { Channel, User, ChannelUser, ChannelMessage } from '@prisma/client';
 // DTO
-import { ChannelDto, CreateChannelDto } from './dto/channel.dto';
+import { ChannelDto, ChannelNameDto, CreateChannelDto } from './dto/channel.dto';
 // SERVICES
 import { ChannelService } from './chat.service';
 import { UserService } from '../user/user.service';
@@ -55,7 +55,7 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'For debugging purpose only : Get all channels' })
 	@ApiBearerAuth('JWT-auth')
-	async getAllChannels() {
+	async getAllChannels(): Promise<ChannelNameDto[]> {
 		return await this.channelService.getAllChannels();
 	}
 
