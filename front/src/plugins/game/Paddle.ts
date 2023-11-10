@@ -33,11 +33,10 @@ export class Paddle {
 	}
 
 	update(pos: { x: number; y: number }, width: number, height: number) {
-		this.pos.y = pos.y;
-		this.pos.x = pos.x;
-		this.h = height;
-		this.w = width;
-		// this.h = (this.h / width) * this.p5.width;
+		this.pos.x = (pos.x / 700) * this.p5.width;
+		this.pos.y = (pos.y / 400) * this.p5.height;
+		this.w = (width / 700) * this.p5.width - 50;
+		this.h = (height / 400) * this.p5.height;
 	}
 
 	move(amt: number) {

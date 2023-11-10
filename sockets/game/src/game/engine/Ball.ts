@@ -2,7 +2,6 @@
 import { IPlayerData } from '../impl/interfaces/IPlayerData';
 import { Vector } from './utils/Vector';
 import { SIDE } from './enums/Side';
-import { IVector } from './interfaces/IVector';
 import { constrain } from './utils/MathUtils';
 
 export class Ball {
@@ -77,7 +76,7 @@ export class Ball {
 						const a = this.vel.heading();
 						this.vel = Vector.fromAngle(Math.PI + a / 2, 10);
 					}
-					this.vel.divideBy(10);
+					this.vel.divideBy(20);
 				}
 			}
 		}
