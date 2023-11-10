@@ -3,10 +3,9 @@ import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/com
 // PRISMA
 import { Prisma, User, Channel, ChannelUser } from '@prisma/client';
 // DTO
-import { ChannelDto, ChannelUserDto } from './dto/channel.dto';
-import { CreateChannelDto } from './dto/create-channel.dto';
-import { UpdateChannelDto, UpdateChannelUserDto } from './dto/update-channel.dto';
-import { ChannelUserDto } from '../user/dto';
+import { ChannelDto, CreateChannelDto } from './dto/channel.dto';
+import { ChannelUserDto, CreateChannelUserDto } from './dto/channel-user.dto';
+
 // SERVICES
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserService } from '../user/user.service';
@@ -30,25 +29,28 @@ export class ChannelService {
 	/***********************************************/
 	/* 					Creation				   */
 	/***********************************************/
-	async create(dto: CreateChannelDto, userId: number): Promise<Channel | null> {
+	async create(dto: CreateChannelDto, userId: number): Promise<ChannelDto> {
 		try {
-			const channel: Channel = await this.prisma.channel.create({
-				data: {
-					name: dto.name,
-					password: dto.password as string,
-					public: dto.is_public,
-				},
-			});
-
-			await this.prisma.channelUser.create({
-				data: {
-					channel_id: channel.id,
-					user_id: userId,
-					is_owner: true,
-					is_admin: true,
-				},
-			});
-			return channel;
+			const channel: ChannelDto = await this.prisma.channel
+				.create({
+					data: {
+						name: dto.name,
+						password: dto.password as string,
+						public: dto.is_public,
+					},
+				})
+				.then(async (channel: Channel) => {
+					await this.prisma.channelUser.create({
+						data: {
+							channel_id: channel.id,
+							user_id: userId,
+							is_owner: true,
+							is_admin: true,
+						},
+					});
+					return channel;
+				});
+			return channel as ChannelDto;
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				if (e.code === 'P2002') throw new BadRequestException('Channel name taken');
@@ -97,16 +99,17 @@ export class ChannelService {
 	}
 	//*********/
 
-	async getAllPublicChannels(): Promise<Channel[] | null> {
+	/*
+	async getAllPublicChannels(): Promise<ChannelDto[] | null> {
 		const channels: Channel[] = await this.prisma.channel.findMany({
 			where: {
 				public: true,
 			},
 		});
-		return channels.length ? channels : null;
+		return channels.length ? (channels as ChannelDto[]) : null;
 	}
 
-	async getJoinedChannels(user: ChannelUserDto): Promise<Channel[] | null> {
+	async getJoinedChannels(user: User): Promise<ChannelDto[] | null> {
 		const channels: Channel[] = await this.prisma.channel.findMany({
 			where: {
 				channel_users: {
@@ -115,11 +118,14 @@ export class ChannelService {
 					},
 				},
 			},
+			orderBy: {
+				updated_at: 'desc',
+			},
 		});
-		return channels.length ? channels : null;
+		return channels.length ? (channels as ChannelDto[]) : null;
 	}
 
-	async getChannelByNameIfAllowed(user: ChannelUserDto, channel_name: string): Promise<Channel | null> {
+	async getChannelByNameIfAllowed(user: User, channel_name: string): Promise<Channel | null> {
 		if (user.is_ban) throw new ForbiddenException('You are banned from this channel');
 		const channel: Channel | null = await this.prisma.channel.findUnique({
 			where: {
@@ -131,7 +137,7 @@ export class ChannelService {
 		return channel;
 	}
 
-	async getChannelByIdIfAllowed(user: ChannelUserDto, channel_id: number): Promise<Channel | null> {
+	async getChannelByIdIfAllowed(user: User, channel_id: number): Promise<Channel | null> {
 		const channel: Channel | null = await this.prisma.channel.findUnique({
 			where: {
 				id: channel_id,
@@ -160,10 +166,12 @@ export class ChannelService {
 		});
 		return channel;
 	}
+	*/
 
 	//******************* Users ********************/
+	/*
  	// get all user in a channel : if you are { banned / not in the channel / if channel is private } you can't access it
-	async getChannelUsers(user: ChannelUserDto, channel_name: string): Promise<ChannelUser[] | null> {
+	async getChannelUsers(user: User, channel_name: string): Promise<ChannelUser[] | null> {
 		const channel: Channel | null = await this.getChannelByName(channel_name);
 		if (!channel) throw new BadRequestException("This channel doesn't exist");
 
@@ -191,6 +199,7 @@ export class ChannelService {
 		//		return users;
 		return null;
 	}
+	*/
 
 	/***********************************************/
 	/* 					Modification			   */
@@ -256,6 +265,7 @@ export class ChannelService {
 	/***********************************************/
 
 	/*************** Permissions ****I**************/
+	/*
 	async channelIsAllowed(user: User, channel: Channel): Promise<boolean> {
 		if (!channel.public) {
 			return this.isOnChannel(user, channel);
@@ -274,8 +284,10 @@ export class ChannelService {
 		});
 		return channel_user ? true : false;
 	}
+	*/
 
 	/***************** Privileges ******************/
+	/*
 	async getPrivilegesLvl(user: User, channel_name: string): Promise<PrivilegeStatus | null> {
 		try {
 			const channelDto: ChannelDto = await this.getChannelByName(channel_name);
@@ -307,6 +319,7 @@ export class ChannelService {
 		if (targetPrivileges === null) throw new BadRequestException('Target is not on this channel');
 		return userPrivileges > targetPrivileges;
 	}
+	*/
 }
 
 /* 	async getChannelUserByNames(user_name: string, channel_name: string) {
@@ -319,19 +332,19 @@ export class ChannelService {
 
 			if (!channel) throw new BadRequestException("Channel doesn't exist");
 
-			const prismaUser: User = await this.prisma.user.findUnique({
+			const user: User = await this.prisma.channelUser.findUnique({
 				where: {
 					login: user_name,
 				},
 			});
 
-			if (!prismaUser) throw new BadRequestException("User doesn't exist");
+			if (!user) throw new BadRequestException("User doesn't exist");
 
 			const channel_user: ChannelUser = await this.prisma.channelUser.findUnique({
 				where: {
 					channel_id_user_id: {
 						channel_id: channel.id,
-						user_id: prismaUser.id,
+						user_id: user.id,
 					},
 				},
 			});

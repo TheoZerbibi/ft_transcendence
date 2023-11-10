@@ -7,9 +7,7 @@ import { GetUser } from 'src/auth/decorator/get-user.decorator';
 // PRISMA
 import { Channel, User, ChannelUser, ChannelMessage } from '@prisma/client';
 // DTO
-import { ChannelUserDto } from './dto/channel.dto';
-import { CreateChannelDto } from './dto/create-channel.dto';
-import { MessageDto } from './dto/message.dto';
+import { ChannelDto, CreateChannelDto } from './dto/channel.dto';
 // SERVICES
 import { ChannelService } from './chat.service';
 import { UserService } from '../user/user.service';
@@ -30,7 +28,7 @@ export class ChannelController {
 	@UseGuards(JwtGuard) // Needed to access user attribute
 	@ApiOperation({ summary: 'Create channel' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async create(@GetUser() user: User, @Body() dto: CreateChannelDto) {
+	async create(@GetUser() user: User, @Body() dto: CreateChannelDto): Promise<ChannelDto> {
 		return await this.channelService.create(dto, user.id);
 	}
 
@@ -61,12 +59,13 @@ export class ChannelController {
 		return await this.channelService.getAllChannels();
 	}
 
+	/*
 	// Get all public channels
 	@Get('discover')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get all public channels' })
 	@ApiBearerAuth('JWT-auth')
-	async getAllPublicChannels(): Promise<Channel[]> {
+	async getAllPublicChannels(): Promise<ChannelDto[]> {
 		return await this.channelService.getAllPublicChannels();
 	}
 
@@ -75,7 +74,7 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: "Get all user's channels" })
 	@ApiBearerAuth('JWT-auth')
-	async getJoinedChannels(@GetUser() user: User): Promise<ChannelUser[] | null> {
+	async getJoinedChannels(@GetUser() user: User): Promise<ChannelDto[] | null> {
 		return await this.channelService.getJoinedChannels(user);
 	}
 
@@ -108,6 +107,7 @@ export class ChannelController {
 	): Promise<ChannelUser[] | null> {
 		return await this.channelService.getChannelUsers(user, channel_name);
 	}
+	*/
 
 	/****************** Users **********************/
 	/*

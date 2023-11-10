@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
+import { ChannelUserDto } from './channel-user.dto';
 
 export class ChannelDto {
 	@ApiProperty()
@@ -13,65 +14,28 @@ export class ChannelDto {
 	name: string;
 
 	@ApiProperty()
+	@IsBoolean()
+	@IsOptional()
+	// eslint-disable-next-line
+	public: boolean;
+
+	@ApiProperty()
 	@IsString()
 	@IsOptional()
 	// eslint-disable-next-line
 	password: string;
 
 	@ApiProperty()
-	@IsBoolean()
+	@IsDate()
 	@IsOptional()
 	// eslint-disable-next-line
-	public: boolean;
-}
-
-export class ChannelUserDto {
-	@ApiProperty()
-	@IsNumber()
-	// eslint-disable-next-line
-	id: number;
+	created_at: Date;
 
 	@ApiProperty()
-	@IsNumber()
-	// eslint-disable-next-line
-	channel_id: number;
-
-	@ApiProperty()
-	@IsString()
-	// eslint-disable-next-line
-	user_id: string;
-
-	@ApiProperty()
-	@IsBoolean()
-	// eslint-disable-next-line
-	is_owner: boolean;
-
-	@ApiProperty()
-	@IsBoolean()
-	// eslint-disable-next-line
-	is_admin: boolean;
-
-	@ApiProperty()
-	@IsNumber()
-	// eslint-disable-next-line
-	is_muted: number;
-
-	@ApiProperty()
-	@IsBoolean()
-	// eslint-disable-next-line
-	is_ban: boolean;
-
-	@ApiProperty()
-	// eslint-disable-next-line
-	channel: ChannelDto;
-}
-
-export class JoinChannelDto extends ChannelUserDto {
-	@ApiProperty()
-	@IsString()
+	@IsDate()
 	@IsOptional()
 	// eslint-disable-next-line
-	chan_password: string;
+	updated_at: Date;
 }
 
 export class ChannelWithUsersDto extends ChannelDto {
@@ -79,4 +43,22 @@ export class ChannelWithUsersDto extends ChannelDto {
 	@IsArray()
 	// eslint-disable-next-line
 	users: ChannelUserDto[];
+}
+
+export class CreateChannelDto {
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	name: string;
+
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	password: string;
+
+	@ApiProperty()
+	@IsBoolean()
+	@IsOptional()
+	// eslint-disable-next-line
+	is_public: boolean;
 }

@@ -6,15 +6,15 @@
 - check blocked
 - check friend
 - promises
-- joint channel
+- join channel
 - delete channel (only owner)
 - quit channel (if owner: he has to set new owner)
 - channel update : settings, pwd (mod / delete)
 - mp
+- check longueur des strings pour /dev/random
 
 
 ## TOFIX
-- twice same name : seems to work alors que devrait pas 
 - 
 
 
