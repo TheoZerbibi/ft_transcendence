@@ -6,7 +6,8 @@ export interface IGame {
 	inProgress: boolean;
 	newPoint: boolean;
 	gameData: IGameData;
-	winnerSide: SIDE;
+	winner: IUser;
+	looser: IUser;
 
 	isInProgress: () => boolean;
 	isEnded: () => boolean;
@@ -36,6 +37,7 @@ export interface IGame {
 
 	startGame: () => void;
 	endGame: () => void;
+	winGame: (winner: IUser, looser: IUser) => void;
 
 	startGameLoop: () => void;
 	getGameData: () => IGameData;
