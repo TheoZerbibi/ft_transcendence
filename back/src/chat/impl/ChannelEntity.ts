@@ -1,6 +1,9 @@
+import { Channel, ChannelUser, ChannelMessage } from '@prisma/client';
 import { IChannel } from './interfaces/IChannel';
 import { IChannelUser } from './interfaces/IChannelUser';
 import { IChannelMessage } from './interfaces/IChannelMessage';
+import { ChannelUserEntity } from './ChannelUserEntity';
+import { ChannelMessageEntity } from './ChannelMessageEntity';
 
 export class ChannelEntity implements IChannel {
 	private id: number;
@@ -12,22 +15,18 @@ export class ChannelEntity implements IChannel {
 	private users: IChannelUser[] = [];
 	private messages: IChannelMessage[] = [];
 
-	constructor(
-		id: number,
-		name: string,
-		isPublic: boolean,
-		created_at: Date,
-		updated_at: Date,
-		users: IChannelUser[],
-		messages: IChannelMessage[],
-	) {
-		this.id = id;
-		this.name = name;
-		this.isPublic = isPublic;
-		this.created_at = created_at;
-		this.updated_at = updated_at;
-		this.users = users;
-		this.messages = messages;
+	constructor(channel: Channel, channelUsers: ChannelUser[], channelMessages?: ChannelMessage[]) {
+		this.id = channel.id;
+		this.name = channel.name;
+		this.isPublic = channel.public;
+		this.created_at = channel.created_at;
+		this.updated_at = channel.updated_at;
+		this.users = channelUsers.map((channelUser) => new ChannelUserEntity(channelUser));
+		if (channelMessages) {
+			this.messages = channelMessages.map((channelMessage) => new ChannelMessageEntity(channelMessage));
+		} else {
+			this.messages = [];
+		}
 
 		this.password = '';
 	}
@@ -105,5 +104,13 @@ export class ChannelEntity implements IChannel {
 		this.updated_at = new Date();
 	}
 
-	// MISSING: add and remove
+	public removeUser(user: IChannelUser): void {
+		this.users = this.users.filter((u) => u.getId() !== user.getId());
+		this.updated_at = new Date();
+	}
+
+	public removeMessage(message: IChannelMessage): void {
+		this.messages = this.messages.filter((m) => m.getId() !== message.getId());
+		this.updated_at = new Date();
+	}
 }

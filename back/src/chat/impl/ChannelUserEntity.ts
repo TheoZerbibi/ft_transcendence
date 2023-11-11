@@ -1,30 +1,23 @@
+import { ChannelUser } from '@prisma/client';
 import { IChannelUser } from './interfaces/IChannelUser';
 
 export class ChannelUserEntity implements IChannelUser {
 	private id: number;
 	private channel_id: number;
-	private user_id: string;
+	private user_id: number;
 	private is_owner: boolean;
 	private is_admin: boolean;
-	private is_muted: number;
+	private is_muted: Date;
 	private is_ban: boolean;
 
-	constructor(
-		id: number,
-		channel_id: number,
-		user_id: string,
-		is_owner: boolean,
-		is_admin: boolean,
-		is_muted: number,
-		is_ban: boolean,
-	) {
-		this.id = id;
-		this.channel_id = channel_id;
-		this.user_id = user_id;
-		this.is_owner = is_owner;
-		this.is_admin = is_admin;
-		this.is_muted = is_muted;
-		this.is_ban = is_ban;
+	constructor(channelUser: ChannelUser) {
+		this.id = channelUser.id;
+		this.channel_id = channelUser.channel_id;
+		this.user_id = channelUser.user_id;
+		this.is_owner = channelUser.is_owner;
+		this.is_admin = channelUser.is_admin;
+		this.is_muted = channelUser.is_muted;
+		this.is_ban = channelUser.is_ban;
 	}
 
 	/*************************************************************************/
@@ -38,7 +31,7 @@ export class ChannelUserEntity implements IChannelUser {
 		return this.channel_id;
 	}
 
-	public getUserId(): string {
+	public getUserId(): number {
 		return this.user_id;
 	}
 
@@ -50,7 +43,7 @@ export class ChannelUserEntity implements IChannelUser {
 		return this.is_admin;
 	}
 
-	public getIsMuted(): number {
+	public getIsMuted(): Date {
 		return this.is_muted;
 	}
 
@@ -69,7 +62,7 @@ export class ChannelUserEntity implements IChannelUser {
 		this.is_admin = isAdmin;
 	}
 
-	public setIsMuted(isMuted: number): void {
+	public setIsMuted(isMuted: Date): void {
 		this.is_muted = isMuted;
 	}
 

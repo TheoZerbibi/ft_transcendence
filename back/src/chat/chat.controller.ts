@@ -4,6 +4,10 @@ import { UseGuards, Controller, Body, Param, Get, Post } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
+// ENTITIES
+import { ChannelEntity } from './impl/ChannelEntity';
+import { ChannelUserEntity } from './impl/ChannelUserEntity';
+import { ChannelMessageEntity } from './impl/ChannelMessageEntity';
 // PRISMA
 import { Channel, User, ChannelUser, ChannelMessage } from '@prisma/client';
 // DTO
@@ -28,7 +32,7 @@ export class ChannelController {
 	@UseGuards(JwtGuard) // Needed to access user attribute
 	@ApiOperation({ summary: 'Create channel' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async create(@GetUser() user: User, @Body() dto: CreateChannelDto): Promise<ChannelDto> {
+	async create(@GetUser() user: User, @Body() dto: CreateChannelDto): Promise<ChannelEntity> {
 		return await this.channelService.create(dto, user.id);
 	}
 
@@ -55,7 +59,7 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'For debugging purpose only : Get all channels' })
 	@ApiBearerAuth('JWT-auth')
-	async getAllChannels(): Promise<ChannelNameDto[]> {
+	async getAllChannels(): Promise<ChannelEntity[]> {
 		return await this.channelService.getAllChannels();
 	}
 

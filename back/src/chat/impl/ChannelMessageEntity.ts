@@ -1,3 +1,4 @@
+import { ChannelMessage } from '@prisma/client';
 import { IChannelMessage } from './interfaces/IChannelMessage';
 
 export class ChannelMessageEntity implements IChannelMessage {
@@ -6,11 +7,11 @@ export class ChannelMessageEntity implements IChannelMessage {
 	private created_at: Date;
 	private channel_user_id: number;
 
-	constructor(id: number, content: string, created_at: Date, channel_user_id: number) {
-		this.id = id;
-		this.content = content;
-		this.created_at = created_at;
-		this.channel_user_id = channel_user_id;
+	constructor(channelMessage: ChannelMessage) {
+		this.id = channelMessage.id;
+		this.content = channelMessage.content;
+		this.created_at = channelMessage.created_at;
+		this.channel_user_id = channelMessage.channel_user_id;
 	}
 
 	/*************************************************************************/

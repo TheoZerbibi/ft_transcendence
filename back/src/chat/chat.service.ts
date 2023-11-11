@@ -1,11 +1,14 @@
 // COMMON
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+// ENTITIES
+import { ChannelEntity } from './impl/ChannelEntity';
+import { ChannelUserEntity } from './impl/ChannelUserEntity';
+import { ChannelMessageEntity } from './impl/ChannelMessageEntity';
 // PRISMA
-import { Prisma, User, Channel, ChannelUser } from '@prisma/client';
+import { Prisma, User, Channel, ChannelUser, ChannelMessage } from '@prisma/client';
 // DTO
 import { ChannelDto, ChannelNameDto, CreateChannelDto } from './dto/channel.dto';
 import { ChannelUserDto, CreateChannelUserDto } from './dto/channel-user.dto';
-
 // SERVICES
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserService } from '../user/user.service';
@@ -19,7 +22,7 @@ enum PrivilegeStatus {
 
 @Injectable()
 export class ChannelService {
-	localChannels: Channel[] = [];
+	localChannels: ChannelEntity[] = [];
 
 	constructor(
 		private prisma: PrismaService,
@@ -30,7 +33,20 @@ export class ChannelService {
 
 	private async initLocalChannels(): Promise<void> {
 		try {
-			this.localChannels = await this.prisma.channel.findMany();
+			const channels: Channel[] = await this.prisma.channel.findMany();
+
+			const channelPromises = channels.map(async (channel: Channel) => {
+				const [channelUsers, channelMessages] = await Promise.all([
+					this.prisma.channelUser.findMany({
+						where: { channel_id: channel.id },
+					}),
+					this.prisma.channelMessage.findMany({
+						where: { channel_user_id: channel.id },
+					}),
+				]);
+				return new ChannelEntity(channel, channelUsers, channelMessages);
+			});
+			this.localChannels = await Promise.all(channelPromises);
 		} catch (e) {
 			console.error('Failed to initialize local channels:', e);
 		}
@@ -39,29 +55,26 @@ export class ChannelService {
 	/***********************************************/
 	/* 					Creation				   */
 	/***********************************************/
-	async create(dto: CreateChannelDto, userId: number): Promise<ChannelDto> {
+	async create(dto: CreateChannelDto, userId: number): Promise<ChannelEntity> {
 		try {
-			const channel: ChannelDto = await this.prisma.channel
-				.create({
-					data: {
-						name: dto.name,
-						password: dto.password as string,
-						public: dto.is_public,
-					},
-				})
-				.then(async (channel: Channel) => {
-					await this.prisma.channelUser.create({
-						data: {
-							channel_id: channel.id,
-							user_id: userId,
-							is_owner: true,
-							is_admin: true,
-						},
-					});
-					return channel;
-				});
-			this.localChannels.push(channel);
-			return channel as ChannelDto;
+			const channel: Channel = await this.prisma.channel.create({
+				data: {
+					name: dto.name,
+					password: dto.password as string,
+					public: dto.is_public,
+				},
+			});
+			const channelUser = await this.prisma.channelUser.create({
+				data: {
+					channel_id: channel.id,
+					user_id: userId,
+					is_owner: true,
+					is_admin: true,
+				},
+			});
+			const newChannelEntity = new ChannelEntity(channel, [channelUser]);
+			this.localChannels.push(newChannelEntity);
+			return newChannelEntity;
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				if (e.code === 'P2002') throw new BadRequestException('Channel name taken');
@@ -106,16 +119,16 @@ export class ChannelService {
 	/***************** Channels ********************/
 	//DEBUG ONLY
 	/*
-	async getAllChannels(): Promise<ChannelNameDto[]> {
-		return this.localChannels.map((channel) => this.toChannelNameDto(channel)) as unknown as ChannelNameDto[];
+	async getAllChannels(): Promise<ChannelEntity[]> {
+		return this.localChannels.map((channel) => this.toChannelNameDto(channel)) as unknown as ChannelEntity[];
 	}
-	async toChannelNameDto(channel: Channel): Promise<ChannelNameDto> {
+	async toChannelNameDto(channel: Channel): Promise<ChannelEntity> {
 		return {
 			name: channel.name,
-		} as ChannelNameDto;
+		} as ChannelEntity;
 	}
 	*/
-	async getAllChannels(): Promise<Channel[]> {
+	async getAllChannels(): Promise<ChannelEntity[]> {
 		return this.localChannels;
 	}
 	//*********/
