@@ -154,13 +154,13 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 		this.server.to(game.getPlayerBySide(SIDE.LEFT).socketID).emit('player-side', {
 			side: SIDE.LEFT,
-			position: game.getPlayerBySide(SIDE.LEFT).playerData.pos.y,
+			position: game.getPlayerBySide(SIDE.LEFT).playerData.pos.toObject(),
 			width: game.getPlayerBySide(SIDE.LEFT).playerData.w,
 			height: game.getPlayerBySide(SIDE.LEFT).playerData.h,
 		});
 		this.server.to(game.getPlayerBySide(SIDE.RIGHT).socketID).emit('player-side', {
 			side: SIDE.RIGHT,
-			position: game.getPlayerBySide(SIDE.RIGHT).playerData.pos.y,
+			position: game.getPlayerBySide(SIDE.RIGHT).playerData.pos.toObject(),
 			width: game.getPlayerBySide(SIDE.RIGHT).playerData.w,
 			height: game.getPlayerBySide(SIDE.RIGHT).playerData.h,
 		});
@@ -188,28 +188,20 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 					speed: game.getGameData().ball.getSpeed(),
 					radius: game.getGameData().ball.getRadius(),
 				});
-				if (game.getGameData().ball.playerLHasHit) {
-					// const player: IUser = game.getPlayerBySide(SIDE.LEFT);
-					// await this.gameService.addPoint(game, player);
-					// this.server
-					// 	.to(game.getGameUID())
-					// 	.emit('new-point', { side: SIDE.LEFT, score: player.playerData.score });
-					game.getGameData().ball.playerLHasHit = false;
-					game.setPause(true, 3000);
-				}
-				if (game.getGameData().ball.playerRHasHit) {
-					// const player: IUser = game.getPlayerBySide(SIDE.LEFT);
-					// await this.gameService.addPoint(game, player);
-					// this.server
-					// 	.to(game.getGameUID())
-					// 	.emit('new-point', { side: SIDE.RIGHT, score: player.playerData.score });
-					game.getGameData().ball.playerRHasHit = false;
-					game.setPause(true, 3000);
+				if (game.newPoint) {
+					this.server.to(game.getGameUID()).emit('game-score', {
+						p1: game.getPlayerBySide(SIDE.LEFT).playerData.score,
+						p2: game.getPlayerBySide(SIDE.RIGHT).playerData.score,
+					});
+					game.newPoint = false;
 				}
 			} else {
+				const winner: users = game.getPlayerBySide(game.winnerSide).user;
+				// const loser: users = game.getPlayerBySide(game.loserSide).user;
 				this.server.to(game.getGameUID()).emit('game-end', {
 					startDate: game.getGameData().startingDate,
 					endingDate: game.getGameData().endingDate,
+					winner: winner,
 				});
 				clearInterval(gameLoop);
 			}

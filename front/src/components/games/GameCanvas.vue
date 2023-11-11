@@ -215,14 +215,6 @@ export default {
 			if (data.p2) gameData.p2?.update(data.p2.position, data.p2.width, data.p2.height);
 		});
 
-		this.socket.on('new-point', (data: any) => {
-			if (data.side == SIDE.LEFT) {
-				gameData.p1?.setPoint(data.score);
-			} else if (data.side == SIDE.RIGHT) {
-				gameData.p2?.setPoint(data.score);
-			}
-		});
-
 		this.socket.on('game-score', (data: any) => {
 			gameData.p1?.setPoint(data.p1);
 			gameData.p2?.setPoint(data.p2);

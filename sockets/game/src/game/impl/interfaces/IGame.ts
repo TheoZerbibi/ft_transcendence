@@ -4,7 +4,9 @@ import { IUser } from './IUser';
 
 export interface IGame {
 	inProgress: boolean;
+	newPoint: boolean;
 	gameData: IGameData;
+	winnerSide: SIDE;
 
 	isInProgress: () => boolean;
 	isEnded: () => boolean;
@@ -29,6 +31,8 @@ export interface IGame {
 
 	setPause: (pause: boolean, time: number) => void;
 	isInPause: () => boolean;
+
+	addPoint: (side: SIDE) => void;
 
 	startGame: () => void;
 	endGame: () => void;
