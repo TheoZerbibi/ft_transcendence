@@ -3,6 +3,7 @@ import { IPlayerData } from '../impl/interfaces/IPlayerData';
 import { Vector } from './utils/Vector';
 import { SIDE } from './enums/Side';
 import { constrain } from './utils/MathUtils';
+import { Game } from '../impl/Game';
 
 export class Ball {
 	private r: number = 10;
@@ -10,6 +11,7 @@ export class Ball {
 	private spawn: Vector;
 	private pos: Vector;
 	private vel: Vector;
+	private game: Game;
 
 	private rightUser: IPlayerData;
 	private leftUser: IPlayerData;
@@ -41,14 +43,18 @@ export class Ball {
 
 	outOfBounds() {
 		if (this.pos.x > this.width + this.r) {
-			this.playerRHasHit = true;
+			this.game.addPoint(SIDE.LEFT);
 			this.resetBall();
 		}
 
 		if (this.pos.x < -this.r) {
-			this.playerLHasHit = true;
+			this.game.addPoint(SIDE.RIGHT);
 			this.resetBall();
 		}
+	}
+
+	setGame(game: Game) {
+		this.game = game;
 	}
 
 	hit() {

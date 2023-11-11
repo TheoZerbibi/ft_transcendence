@@ -14,8 +14,10 @@ export class Game implements IGame {
 	private height: number = 400;
 
 	public inProgress: boolean = false;
+	public newPoint: boolean = false;
 	public gameData: IGameData = { ball: new Ball(this.width, this.height), startingDate: null, endingDate: null };
 	public pause: boolean = false;
+	public winnerSide: SIDE;
 
 	private static games: Map<string, any> = new Map<string, any>();
 
@@ -27,6 +29,7 @@ export class Game implements IGame {
 	) {
 		try {
 			Game.games.set(this.gameUID, this);
+			this.gameData.ball.setGame(this);
 		} catch (err) {
 			this.logger.error(err);
 		}
@@ -155,6 +158,25 @@ export class Game implements IGame {
 		}, time);
 	}
 
+	async addPoint(side: SIDE) {
+		const user: IUser = this.getPlayerBySide(side);
+		await this.prismaService.game_players.update({
+			where: {
+				player_id_game_id: {
+					game_id: this.getGameID(),
+					player_id: user.user.id,
+				},
+			},
+			data: {
+				score: user.playerData.score,
+			},
+		});
+		user.playerData.score++;
+		this.newPoint = true;
+		this.setPause(true, 3000);
+		if (user.playerData.score >= 3) this.winGame(user, side);
+	}
+
 	isInPause(): boolean {
 		return this.pause;
 	}
@@ -167,5 +189,10 @@ export class Game implements IGame {
 				clearInterval(loop);
 			}
 		}, 1);
+	}
+
+	private winGame(user: IUser, side: SIDE) {
+		this.winnerSide = side;
+		this.endGame();
 	}
 }
