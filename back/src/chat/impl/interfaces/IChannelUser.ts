@@ -1,12 +1,4 @@
 export interface IChannelUser {
-	id: number;
-	channel_id: number;
-	user_id: string;
-	is_owner: boolean;
-	is_admin: boolean;
-	is_muted: number;
-	is_ban: boolean;
-
 	getId(): number;
 	getChannelId(): number;
 	getUserId(): string;
