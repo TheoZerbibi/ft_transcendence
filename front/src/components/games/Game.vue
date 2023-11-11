@@ -179,15 +179,28 @@ export default {
 								console.log(data[i].playerData);
 							}
 						});
+
 						this.socket.on('game-start', (data: any) => {
 							snackbarStore.showSnackbar('Game Starting !', 3000, 'green');
 							this.apiData.started_at = data.startDate;
 						});
+
 						this.socket.on('game-end', (data: any) => {
 							this.disconnect();
-							snackbarStore.showSnackbar('Game is ended', 3000, 'primary');
-							if (data.winner) alert(data.winner.login);
+							if (!snackbarStore.snackbar) snackbarStore.showSnackbar('Game is ended', 3000, 'primary');
+							if (data.winner) console.log(`Winner : ${data.winner.user.login}`);
 						});
+
+						this.socket.on('game-win', () => {
+							this.disconnect();
+							snackbarStore.showSnackbar('You win!', 3000, 'green');
+						});
+
+						this.socket.on('game-loose', () => {
+							this.disconnect();
+							snackbarStore.showSnackbar('You loose!', 3000, 'red');
+						});
+
 						this.socket.emit('session-join', {
 							gameUID: this.gameUID,
 							userID: data.player_id,

@@ -133,15 +133,15 @@ export default {
 				gameData.p2.resizeUpdate(height, width, oldWidth, oldHeight);
 			};
 
-			p5.mouseMoved = () => {
-				if (!gameData.ball || !gameData.socket) return;
-				if (!gameData.player || !gameData.start) {
-					if (!gameData.p1 || !gameData.p1.pos || gameData.start) return;
-					if (p5.mouseY + gameData.p1.h >= p5.height) gameData.p1.pos.y = p5.height - gameData.p1.h;
-					else gameData.p1.pos.y = Math.max(0, Math.min(p5.height, p5.mouseY));
-					return;
-				}
-			};
+			// p5.mouseMoved = () => {
+			// 	if (!gameData.ball || !gameData.socket) return;
+			// 	if (!gameData.player || !gameData.start) {
+			// 		if (!gameData.p1 || !gameData.p1.pos || gameData.start) return;
+			// 		if (p5.mouseY + gameData.p1.h >= p5.height) gameData.p1.pos.y = p5.height - gameData.p1.h;
+			// 		else gameData.p1.pos.y = Math.max(0, Math.min(p5.height, p5.mouseY));
+			// 		return;
+			// 	}
+			// };
 
 			/**
 			 * Function for moving the player Paddle.
@@ -154,7 +154,6 @@ export default {
 				}
 
 				if (p5.keyIsDown(87)) {
-					// gameData.player.move(-5);
 					gameData.socket.emit('player-move', {
 						gameUID: gameData.gameUID,
 						direction: DIRECTION.DOWN,
@@ -162,7 +161,6 @@ export default {
 				}
 
 				if (p5.keyIsDown(83)) {
-					// gameData.player.move(5);
 					gameData.socket.emit('player-move', {
 						gameUID: gameData.gameUID,
 						direction: DIRECTION.UP,
@@ -204,13 +202,10 @@ export default {
 		});
 
 		this.socket.on('game-update', (data: any) => {
-			// console.log(data);
 			gameData.ball?.serverUpdate(data.position, data.velocity, data.speed);
 		});
 
 		this.socket.on('player-moved', (data: any) => {
-			console.log(data.p1);
-			console.log(data.p2);
 			if (data.p1) gameData.p1?.update(data.p1.position, data.p1.width, data.p1.height);
 			if (data.p2) gameData.p2?.update(data.p2.position, data.p2.width, data.p2.height);
 		});
@@ -218,18 +213,29 @@ export default {
 		this.socket.on('game-score', (data: any) => {
 			gameData.p1?.setPoint(data.p1);
 			gameData.p2?.setPoint(data.p2);
-			console.log(data);
 		});
 
 		this.socket.on('player-side', (data: any) => {
 			if (data.side == SIDE.LEFT) {
 				gameData.player = gameData.p1;
-				gameData.player?.setSide(SIDE.LEFT);
+				if (!gameData.player) {
+					this.socket.disconnect();
+					return;
+				}
+				gameData.player.setSide(SIDE.LEFT);
 			} else if (data.side == SIDE.RIGHT) {
 				gameData.player = gameData.p2;
-				gameData.player?.setSide(SIDE.RIGHT);
+				if (!gameData.player) {
+					this.socket.disconnect();
+					return;
+				}
+				gameData.player.setSide(SIDE.RIGHT);
 			}
-			gameData.player?.update(data.position, data.width, data.height);
+			if (!gameData.player) {
+				this.socket.disconnect();
+				return;
+			}
+			gameData.player.update(data.position, data.width, data.height);
 		});
 	},
 };
@@ -237,7 +243,7 @@ export default {
 
 <style scoped>
 @font-face {
-	font-family: 'Arcade Classic';
+	font-family: 'Arcade_Classic';
 	src: url('/fonts/ARCADECLASSIC.TTF');
 }
 

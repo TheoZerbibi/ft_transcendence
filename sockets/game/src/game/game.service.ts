@@ -89,6 +89,7 @@ export class GameService {
 		const gameUser: IUser = {
 			user: { id: user.id, login: user.login, displayName: user.display_name, avatar: user.avatar },
 			socketID: client.id,
+			isConnected: true,
 			isSpec: isSpec,
 			playerData: playerData,
 		};
@@ -101,14 +102,15 @@ export class GameService {
 		if (!user) return;
 		const game: IGame = Game.getGamesFromUser(user.id);
 		if (!game) return;
-		const gameUser = game.getUser(user.id);
+		const gameUser: IUser = game.getUser(user.id);
 		if (!gameUser) return;
 		game.removeUser(gameUser);
 
 		if (!gameUser.isSpec) {
-			if (gameUser.playerData.side === SIDE.LEFT) this.winGame(game, gameUser);
-			else if (gameUser.playerData.side === SIDE.RIGHT) this.winGame(game, gameUser);
-			game.endGame();
+			gameUser.isConnected = false;
+			const winnerSide: SIDE = gameUser.playerData.side === SIDE.LEFT ? SIDE.RIGHT : SIDE.LEFT;
+			const winner: IUser = game.getPlayerBySide(winnerSide);
+			game.winGame(winner, gameUser);
 			return null;
 		}
 		return game;
