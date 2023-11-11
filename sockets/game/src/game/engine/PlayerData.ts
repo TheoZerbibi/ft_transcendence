@@ -3,6 +3,7 @@ import { IPlayerData } from '../impl/interfaces/IPlayerData';
 import { Vector } from './utils/Vector';
 import { constrain } from './utils/MathUtils';
 import { DIRECTION } from './enums/Direction';
+import { GameService } from '../game.service';
 
 export class PlayerData implements IPlayerData {
 	pos: Vector;
@@ -31,5 +32,9 @@ export class PlayerData implements IPlayerData {
 		if (direction === DIRECTION.UP) this.pos.y += 5;
 		else if (direction === DIRECTION.DOWN) this.pos.y -= 5;
 		this.pos.y = constrain(this.pos.y, 0, this.height - this.h);
+	}
+
+	addPoint() {
+		this.score++;
 	}
 }

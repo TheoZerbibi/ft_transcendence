@@ -184,9 +184,10 @@ export default {
 							snackbarStore.showSnackbar('Game Starting !', 3000, 'green');
 							this.apiData.started_at = data.startDate;
 						});
-						this.socket.on('game-end', () => {
+						this.socket.on('game-end', (data: any) => {
 							this.disconnect();
 							snackbarStore.showSnackbar('Game is ended', 3000, 'primary');
+							if (data.winner) alert(data.winner.login);
 						});
 						this.socket.emit('session-join', {
 							gameUID: this.gameUID,
