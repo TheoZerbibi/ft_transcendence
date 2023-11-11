@@ -19,7 +19,6 @@ import { JwtGuard } from 'src/auth/guard';
 import { users } from '@prisma/client';
 import { SIDE } from './engine/enums/Side';
 import { PlayerData } from './engine/PlayerData';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { instrument } from '@socket.io/admin-ui';
 
 @WebSocketGateway({
@@ -57,6 +56,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				avatar: 'null',
 			},
 			socketID: 'null',
+			isConnected: false,
 			isSpec: false,
 			playerData: new PlayerData(gameS.getWidth(), gameS.getHeight(), 670, 150, 10, 100, SIDE.RIGHT),
 		};
@@ -196,12 +196,16 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 					game.newPoint = false;
 				}
 			} else {
-				const winner: users = game.getPlayerBySide(game.winnerSide).user;
-				// const loser: users = game.getPlayerBySide(game.loserSide).user;
+				const winner: IUser = game.winner;
+				const looser: IUser = game.winner;
+				await this.gameService.winGame(game, winner);
+				if (winner) this.server.to(winner.socketID).emit('game-win');
+				if (looser) this.server.to(looser.socketID).emit('game-loose');
 				this.server.to(game.getGameUID()).emit('game-end', {
+					winner: { user: winner.user, score: winner.playerData.score },
+					looser: { user: looser.user, score: looser.playerData.score },
 					startDate: game.getGameData().startingDate,
 					endingDate: game.getGameData().endingDate,
-					winner: winner,
 				});
 				clearInterval(gameLoop);
 			}

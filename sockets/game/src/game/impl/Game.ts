@@ -17,7 +17,8 @@ export class Game implements IGame {
 	public newPoint: boolean = false;
 	public gameData: IGameData = { ball: new Ball(this.width, this.height), startingDate: null, endingDate: null };
 	public pause: boolean = false;
-	public winnerSide: SIDE;
+	public winner: IUser;
+	public looser: IUser;
 
 	private static games: Map<string, any> = new Map<string, any>();
 
@@ -90,17 +91,35 @@ export class Game implements IGame {
 	getUsersInGame(): Array<IUser> {
 		return this.usersInGame
 			.filter((user) => !user.isSpec)
-			.map(({ user, isSpec, playerData }) => ({ user, isSpec, playerData, socketID: 'null' }));
+			.map(({ user, isSpec, playerData, isConnected }) => ({
+				user,
+				isSpec,
+				playerData,
+				isConnected,
+				socketID: 'null',
+			}));
 	}
 
 	getSpectatorsInGame(): Array<IUser> {
 		return this.usersInGame
 			.filter((user) => user.isSpec)
-			.map(({ user, isSpec, playerData }) => ({ user, isSpec, playerData, socketID: 'null' }));
+			.map(({ user, isSpec, playerData, isConnected }) => ({
+				user,
+				isSpec,
+				playerData,
+				isConnected,
+				socketID: 'null',
+			}));
 	}
 
 	getAllUsersInGame(): Array<IUser> {
-		return this.usersInGame.map(({ user, isSpec, playerData }) => ({ user, isSpec, playerData, socketID: 'null' }));
+		return this.usersInGame.map(({ user, isSpec, playerData, isConnected }) => ({
+			user,
+			isSpec,
+			playerData,
+			isConnected,
+			socketID: 'null',
+		}));
 	}
 
 	getPlayerBySide(side: SIDE): IUser {
@@ -131,6 +150,12 @@ export class Game implements IGame {
 				end_at: this.gameData.endingDate,
 			},
 		});
+	}
+
+	winGame(winner: IUser, looser: IUser) {
+		this.winner = winner;
+		this.looser = looser;
+		this.endGame();
 	}
 
 	userIsInGame(userId: number): boolean {
@@ -174,7 +199,9 @@ export class Game implements IGame {
 		user.playerData.score++;
 		this.newPoint = true;
 		this.setPause(true, 3000);
-		if (user.playerData.score >= 3) this.winGame(user, side);
+		const looserSide: SIDE = side === SIDE.LEFT ? SIDE.RIGHT : SIDE.LEFT;
+		const looser: IUser = this.getPlayerBySide(looserSide);
+		if (user.playerData.score >= 3) this.winGame(user, looser);
 	}
 
 	isInPause(): boolean {
@@ -191,8 +218,4 @@ export class Game implements IGame {
 		}, 1);
 	}
 
-	private winGame(user: IUser, side: SIDE) {
-		this.winnerSide = side;
-		this.endGame();
-	}
 }
