@@ -1,13 +1,6 @@
 <template>
-	<header>
-		<p>This is a header</p>
-	</header>
-	<nav>
-		<p>This is a navbar to display after authentification, vertically left better?</p>
-		<!--Cf ul and li balises-->
-	</nav>
 	<v-row align="center" justify="center" class="fill-height" id="background">
-		<v-card class="homepage text-center rounded-card" variant="tonal" color="green darken-4" width="700">
+		<v-card class="homepage text-center blurred-card rounded-card" variant="tonal" color="green darken-4" width="600">
 			<v-card-item>
 				<v-card-title class="title">
 					<p class="neonPolice">Welcome to NSTG's ft_transcendence</p>
@@ -19,9 +12,6 @@
 			</v-card-item>
 			<v-card-text class="neonPolice text homeSubtitles">
 				<br />students of 42 paris<br />
-				<!-- <strong>students of 42 paris (en gras)</strong><br /> -->
-				<!-- <mark>students of 42 paris (en surligne)</mark><br /> -->
-				<!-- <em>students of 42 paris (en italique)</em><br /> -->
 			</v-card-text>
 			<v-card-actions>
 				<v-btn
@@ -40,15 +30,14 @@
 			</v-card-actions>
 		</v-card>
 	</v-row>
-	<aside>
-		<p>This is an aside section</p>
-	</aside>
-	<footer>
-		<p>This is a footer</p>
-		<a href="https://www.instagram.com" target="_blank">Instagram </a>
-		<a href="https://www.facebook.com" target="_blank">Facebook </a>
-		<a href="https://www.twitter.com" target="_blank">Twitter </a>
-	</footer>
+	<HomepageFooter></HomepageFooter>
+	<v-footer class="neonPolice footer blurred-card" alt="Footer">
+		<a href="https://www.instagram.com/42.born2code/" target="_blank">42Instagram</a>
+		&#129418
+		<a href="https://www.facebook.com/42born2code" target="_blank">42Facebook</a>
+		&#129418
+		<a href="https://twitter.com/42born2code?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" target="_blank">42Twitter</a>
+	</v-footer>
 </template>
 
 <script lang="ts">
@@ -56,6 +45,14 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
 	name: 'HomeView',
+	data: () => ({
+      icons: [
+        'mdi-facebook',
+        'mdi-twitter',
+        'mdi-linkedin',
+        'mdi-instagram',
+      ],
+    }),
 });
 </script>
 
@@ -68,10 +65,7 @@ export default defineComponent({
 	display: flex;
 	align-items: center;
 	flex-direction: column;
-	/* background: linear-gradient(90deg, #8360c3, #2ebf91); */
-	background-color: transparent;
-	backdrop-filter: blur(3px);
-	padding: 16px;
+	background: linear-gradient(90deg, #8360c3, #2ebf91);
 }
 
 .title {
@@ -87,12 +81,22 @@ export default defineComponent({
 }
 
 #authButton:hover {
-	/* box-shadow: 6px 6px 0px rgba(0, 0, 0);  Button with shadow non gradient*/
-	box-shadow: 6px 6px 25px rgba(0, 0, 0, 0.5);
+	box-shadow: 6px 6px 0px rgba(0, 0, 0);
+	/* box-shadow: 6px 6px 25px rgba(0, 0, 0, 0.5); */
 	border: double;
 }
 
-.auth:hover {
-	color: darkmagenta;
+.footer {
+	display:block;
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    padding-left: 24px;
+    height: 36px;
+    text-align: center;
 }
+
 </style>
