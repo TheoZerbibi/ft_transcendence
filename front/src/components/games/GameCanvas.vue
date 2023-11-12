@@ -114,7 +114,8 @@ export default {
 			p5.setup = () => {
 				if (!cDiv) return;
 				width = cDiv.offsetWidth;
-				height = cDiv.offsetWidth / 2 - 200;
+				height = cDiv.offsetWidth / 2;
+				if (height >= 800) height = 700;
 				const canvas = p5.createCanvas(width, height);
 				canvas.parent('game-canvas');
 
@@ -122,6 +123,7 @@ export default {
 				gameData.leftUser = new Paddle(p5, 20, height / 2 - 50, 10, 100, SIDE.LEFT);
 				gameData.leftUser.setUser(gameData.user.displayName, gameData.user.avatar);
 				gameData.rightUser = new Paddle(p5, width - 30, height / 2 - 50, 10, 100, SIDE.RIGHT);
+				gameData.go = true;
 			};
 
 			p5.draw = () => {
@@ -131,11 +133,25 @@ export default {
 				if (!gameData.leftUser || !gameData.rightUser || !gameData.ball) return;
 				gameData.ball.outOfBounds();
 				if (gameData.go) gameData.ball.update();
+				if (!gameData.start && gameData.go) rightPaddleAI();
 				gameData.ball.hit(gameData.leftUser, gameData.rightUser);
 				gameData.leftUser.show();
 				gameData.rightUser.show();
 				gameData.ball.show();
 			};
+
+			/**
+			 * Function for moving the right Paddle.
+			 */
+			function rightPaddleAI() {
+				if (!gameData.ball || !gameData.rightUser) return;
+				if (gameData.ball.pos.y < gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
+					gameData.rightUser.move(-1);
+				}
+				if (gameData.ball.pos.y > gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
+					gameData.rightUser.move(1);
+				}
+			}
 
 			/**
 			 * Function for write score and drawing line in the center.
@@ -220,10 +236,23 @@ export default {
 		};
 		new P5(script);
 
-		this.socket.on('game-start', () => {
+		this.socket.on('game-start', (data: any) => {
 			gameData.socket = this.socket;
+			if (data.leftUser) {
+				this.userData.leftPlayer = {
+					name: data.leftUser.name,
+					avatar: data.leftUser.avatar,
+				};
+			}
+			if (data.rightUser) {
+				this.userData.rightPlayer = {
+					name: data.rightUser.name,
+					avatar: data.rightUser.avatar,
+				};
+			}
 			countdownStore.setSeconds(5);
 			this.showCountdown = true;
+			gameData.go = false;
 		});
 
 		this.socket.on('countdown', (data: number) => {

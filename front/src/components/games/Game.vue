@@ -175,7 +175,6 @@ export default {
 						this.socket.on('session-info', (data: any) => {
 							this.players = [];
 							for (let i = 0; i < data.length; i++) {
-								console.log(data);
 								data[i].user.isSpec = data[i].isSpec;
 								if (data[i].user) this.players.push(data[i].user);
 							}
