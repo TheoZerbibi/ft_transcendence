@@ -99,4 +99,8 @@ export default defineComponent({
     text-align: center;
 }
 
+a {
+	color:black;
+}
+
 </style>
