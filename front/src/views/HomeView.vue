@@ -8,14 +8,13 @@
 	</nav>
 	<v-row align="center" justify="center" class="fill-height" id="background">
 		<v-card class="homepage text-center rounded-card" variant="tonal" color="green darken-4" width="700">
-			<p>Find the omori wallpaper purple with drawings</p>
 			<v-card-item>
 				<v-card-title class="title">
-					<p class="neonPolice">Welcome to STING's ft_transcendence</p>
+					<p class="neonPolice">Welcome to NSTG's ft_transcendence</p>
 				</v-card-title>
 				<v-img src="CatsRounded.png" contain max-height="300" alt="These are cute kittens" />
 				<v-card-subtitle class="neonPolice homeSubtitles">
-					<br />Gaelle, Ismael, <span class="teamLeader">Théo</span>, Semiha, Noe
+					<br />Gaelle, <span class="teamLeader">Théo</span>, Semiha, Noe
 				</v-card-subtitle>
 			</v-card-item>
 			<v-card-text class="neonPolice text homeSubtitles">
@@ -61,11 +60,18 @@ export default defineComponent({
 </script>
 
 <style>
+#background {
+	background-image: url('/src/assets/OmoriHomepageWallpaper.jpg');
+}
+
 .homepage {
 	display: flex;
 	align-items: center;
 	flex-direction: column;
-	background: linear-gradient(90deg, #8360c3, #2ebf91);
+	/* background: linear-gradient(90deg, #8360c3, #2ebf91); */
+	background-color: transparent;
+	backdrop-filter: blur(3px);
+	padding: 16px;
 }
 
 .title {

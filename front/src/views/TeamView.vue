@@ -2,7 +2,7 @@
 	<div class="customBackground">
 		<v-card class="blurred-card rounded-card">
 			<v-col class="largerSize neonPolice">
-				<h1>The STING team</h1>
+				<h1>The NSTG team</h1>
 				<h4>Starring</h4>
 				<br />
 				<v-row>
@@ -34,7 +34,6 @@ import { defineComponent } from 'vue';
 
 import backgroundWallpaper from '../assets/OmoriTeam.svg';
 import QRcodeGaelle from '../assets/QRcodesIntra/QRcodeGaelle.png';
-import QRcodeIsmael from '../assets/QRcodesIntra/QRcodeIsmael.png';
 import QRcodeNoemi from '../assets/QRcodesIntra/QRcodeNoemi.png';
 import QRcodeSemiha from '../assets/QRcodesIntra/QRcodeSemiha.png';
 import QRcodeTheo from '../assets/QRcodesIntra/QRcodeTheo.png';
@@ -45,9 +44,9 @@ export default defineComponent({
 	data() {
 		return {
 			backgroundWallpaper,
-			prenoms: ['Semiha', 'Théo', 'Ismaël', 'Noé', 'Gaëlle'],
-			logins: ['seozcan', 'thzeribi', 'iguidado', 'nfauconn', 'grannou'],
-			qrCodes: [QRcodeSemiha, QRcodeTheo, QRcodeIsmael, QRcodeNoemi, QRcodeGaelle],
+			prenoms: ['Noe', 'Semiha', 'Théo', 'Gaëlle'],
+			logins: ['nfauconn', 'seozcan', 'thzeribi', 'grannou'],
+			qrCodes: [QRcodeNoemi, QRcodeSemiha, QRcodeTheo, QRcodeGaelle],
 		};
 	},
 	methods: {
