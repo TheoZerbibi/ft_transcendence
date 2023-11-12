@@ -39,6 +39,11 @@ const router = createRouter({
 			component: () => import('../components/exemples/P5Exemple.vue'),
 		},
 		{
+			path: '/exemples/modal',
+			name: 'ModalExemple',
+			component: () => import('../components/exemples/ModalExemple.vue'),
+		},
+		{
 			path: '/secret',
 			name: 'secret',
 			component: () => import('../views/SecretView.vue'),

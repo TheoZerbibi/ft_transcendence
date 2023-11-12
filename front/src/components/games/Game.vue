@@ -1,7 +1,7 @@
 <template>
 	<v-container>
 		<div v-if="apiData">
-			<v-card color="#1d2028" class="mx-auto" max-width="500">
+			<!-- <v-card color="#1d2028" class="mx-auto" max-width="500">
 				<v-card-title class="d-flex align-center justify-center" :style="{ backgroundColor: '#191b22' }">
 					<p>Game info</p>
 				</v-card-title>
@@ -44,7 +44,11 @@
 				<v-card-text class="px-5" :style="{ backgroundColor: 'transparent' }">
 					<v-list dense :style="{ backgroundColor: 'transparent', color: 'white' }">
 						<v-list-item v-for="player in players" :key="player.id">
-							{{ player.id }} - {{ player.displayName }} :
+							{{ player.id }} -
+							<v-avatar>
+								<v-img :src="player.avatar" />
+							</v-avatar>
+							{{ player.displayName }} :
 							<span
 								:style="{ color: `${player.isSpec ? '#00E676' : '#D50000'}` }"
 								class="font-weight-bold"
@@ -54,8 +58,8 @@
 						</v-list-item>
 					</v-list>
 				</v-card-text>
-			</v-card>
-			<v-btn
+			</v-card> -->
+			<!-- <v-btn
 				v-if="isConnected"
 				color="primary"
 				dark
@@ -65,7 +69,7 @@
 				@click="test()"
 			>
 				Connect FakeUser
-			</v-btn>
+			</v-btn> -->
 			<div v-if="isConnected">
 				<GameCanvas />
 			</div>
@@ -107,7 +111,6 @@ export default {
 		};
 
 		const socketListen = () => {
-			console.log('socket : ', socket.value);
 			if (socket.value) {
 				socket.value.on('game-error', (data: any) => {
 					disconnect();
@@ -166,18 +169,15 @@ export default {
 				return response.json();
 			})
 			.then(async (data) => {
-				console.log('port : ', this.port);
-				await this.connect(this.JWT, 'AAAAAAA')
+				await this.connect(this.JWT, import.meta.env.VITE_GAME_SOCKET_PORT)
 					.then(() => {
-						console.log('connected');
 						this.socketListen();
 						this.socket.on('session-info', (data: any) => {
 							this.players = [];
 							for (let i = 0; i < data.length; i++) {
+								console.log(data);
 								data[i].user.isSpec = data[i].isSpec;
 								if (data[i].user) this.players.push(data[i].user);
-								console.log(data[i].user);
-								console.log(data[i].playerData);
 							}
 						});
 
@@ -188,7 +188,7 @@ export default {
 
 						this.socket.on('game-end', (data: any) => {
 							this.disconnect();
-							if (!snackbarStore.snackbar) snackbarStore.showSnackbar('Game is ended', 3000, 'primary');
+							// if (!snackbarStore.snackbar) snackbarStore.showSnackbar('Game is ended', 3000, 'primary');
 							if (data.winner) console.log(`Winner : ${data.winner.user.login}`);
 						});
 
@@ -210,7 +210,6 @@ export default {
 					})
 					.catch((error: any) => {
 						snackbarStore.showSnackbar(error, 3000, 'red');
-						console.log('error : ', error);
 						return;
 					});
 				this.apiData = data;
@@ -221,12 +220,9 @@ export default {
 				console.error(error);
 			});
 	},
-	mounted() {
-		console.log('JWT : ', this.JWT);
-	},
+	mounted() {},
 	methods: {
 		test() {
-			console.log(this.isConnected);
 			if (this.isConnected) {
 				this.socket.emit('session-join-test', {
 					gameUID: this.gameUID,

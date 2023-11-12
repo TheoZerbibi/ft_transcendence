@@ -107,11 +107,16 @@ export class GameService {
 		game.removeUser(gameUser);
 
 		if (!gameUser.isSpec) {
-			gameUser.isConnected = false;
-			const winnerSide: SIDE = gameUser.playerData.side === SIDE.LEFT ? SIDE.RIGHT : SIDE.LEFT;
-			const winner: IUser = game.getPlayerBySide(winnerSide);
-			game.winGame(winner, gameUser);
-			return null;
+			if (game.getUsersInGame().length === 0) {
+				game.removeGame();
+				return null;
+			} else {
+				gameUser.isConnected = false;
+				const winnerSide: SIDE = gameUser.playerData.side === SIDE.LEFT ? SIDE.RIGHT : SIDE.LEFT;
+				const winner: IUser = game.getPlayerBySide(winnerSide);
+				game.winGame(winner, gameUser);
+				return null;
+			}
 		}
 		return game;
 	}

@@ -9,14 +9,12 @@ export const useSocketStore = defineStore('webSocket', {
 	getters: {
 		isConnected: (state) => {
 			if (!state.socket) return false;
-			console.log(state.socket.connected);
 			return state.socket.connected;
 		},
 		getSocket: (state) => state.socket,
 	},
 	actions: {
 		async connect(jwt: string, port: any): Promise<Socket> {
-			console.log(port);
 			const serverURL = `http://${import.meta.env.VITE_HOST}:4000`;
 			if (!this.isConnected) {
 				console.log('Connecting to socket ', serverURL);
