@@ -101,8 +101,8 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				if (!game.getPlayerBySide(SIDE.RIGHT) || !game.getPlayerBySide(SIDE.LEFT)) return;
 				if (!game.isInProgress()) return;
 				this.server.to(client.id).emit('game-score', {
-					p1: game.getPlayerBySide(SIDE.LEFT).playerData.score,
-					p2: game.getPlayerBySide(SIDE.RIGHT).playerData.score,
+					leftUser: game.getPlayerBySide(SIDE.LEFT).playerData.score,
+					rightUser: game.getPlayerBySide(SIDE.RIGHT).playerData.score,
 				});
 			} else client.disconnect();
 		} else {
@@ -130,86 +130,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			if (game.getPlayerBySide(SIDE.RIGHT).user.login != player.user.login) return;
 			player.playerData.move(data.direction);
 		}
-		this.server.to(game.getGameUID()).emit('player-moved', {
-			p1: {
-				position: game.getPlayerBySide(SIDE.LEFT).playerData.pos.toObject(),
-				width: game.getPlayerBySide(SIDE.LEFT).playerData.w,
-				height: game.getPlayerBySide(SIDE.LEFT).playerData.h,
-			},
-			p2: {
-				position: game.getPlayerBySide(SIDE.RIGHT).playerData.pos.toObject(),
-				width: game.getPlayerBySide(SIDE.RIGHT).playerData.w,
-				height: game.getPlayerBySide(SIDE.RIGHT).playerData.h,
-			},
-		});
-	}
-
-	private startGame(game: IGame): void {
-		game.startGame();
-		this.server.to(game.getGameUID()).emit('game-start', {
-			ball: game.getGameData().ball.getPos(),
-			players: game.getUsersInGame(),
-			startDate: game.getGameData().startingDate,
-		});
-
-		this.server.to(game.getPlayerBySide(SIDE.LEFT).socketID).emit('player-side', {
-			side: SIDE.LEFT,
-			position: game.getPlayerBySide(SIDE.LEFT).playerData.pos.toObject(),
-			width: game.getPlayerBySide(SIDE.LEFT).playerData.w,
-			height: game.getPlayerBySide(SIDE.LEFT).playerData.h,
-		});
-		this.server.to(game.getPlayerBySide(SIDE.RIGHT).socketID).emit('player-side', {
-			side: SIDE.RIGHT,
-			position: game.getPlayerBySide(SIDE.RIGHT).playerData.pos.toObject(),
-			width: game.getPlayerBySide(SIDE.RIGHT).playerData.w,
-			height: game.getPlayerBySide(SIDE.RIGHT).playerData.h,
-		});
-
-		let countdown = 4;
-		const countdownInterval = setInterval(() => {
-			if (countdown > 0) {
-				this.server.to(game.getGameUID()).emit('countdown', countdown);
-				countdown--;
-			} else {
-				this.server.to(game.getGameUID()).emit('countdown', 0);
-				this.gameUpdate(game);
-				clearInterval(countdownInterval);
-			}
-		}, 1000);
-	}
-
-	private gameUpdate(game: IGame): void {
-		game.startGameLoop();
-		const gameLoop = setInterval(async () => {
-			if (!game.isEnded()) {
-				this.server.to(game.getGameUID()).emit('game-update', {
-					position: game.getGameData().ball.getPos().toObject(),
-					velocity: game.getGameData().ball.getVel().toObject(),
-					speed: game.getGameData().ball.getSpeed(),
-					radius: game.getGameData().ball.getRadius(),
-				});
-				if (game.newPoint) {
-					this.server.to(game.getGameUID()).emit('game-score', {
-						p1: game.getPlayerBySide(SIDE.LEFT).playerData.score,
-						p2: game.getPlayerBySide(SIDE.RIGHT).playerData.score,
-					});
-					game.newPoint = false;
-				}
-			} else {
-				const winner: IUser = game.winner;
-				const looser: IUser = game.winner;
-				await this.gameService.winGame(game, winner);
-				if (winner) this.server.to(winner.socketID).emit('game-win');
-				if (looser) this.server.to(looser.socketID).emit('game-loose');
-				this.server.to(game.getGameUID()).emit('game-end', {
-					winner: { user: winner.user, score: winner.playerData.score },
-					looser: { user: looser.user, score: looser.playerData.score },
-					startDate: game.getGameData().startingDate,
-					endingDate: game.getGameData().endingDate,
-				});
-				clearInterval(gameLoop);
-			}
-		}, 1);
+		this.sendPosition(game);
 	}
 
 	public afterInit() {
@@ -236,5 +157,100 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			client.emit('error', 'Invalid token');
 			client.disconnect();
 		}
+	}
+
+	private startGame(game: IGame): void {
+		let countdown = 4;
+		game.startGame();
+		this.server.to(game.getGameUID()).emit('game-start', {
+			players: game.getUsersInGame(),
+			startDate: game.getGameData().startingDate,
+			leftUser: game.getPlayerBySide(SIDE.LEFT).user,
+			rightUser: game.getPlayerBySide(SIDE.RIGHT).user,
+		});
+		this.sendSide(game);
+		this.sendPosition(game);
+		const countdownInterval = setInterval(() => {
+			if (countdown > 0) {
+				this.server.to(game.getGameUID()).emit('countdown', countdown);
+				countdown--;
+			} else {
+				this.server.to(game.getGameUID()).emit('countdown', 0);
+				this.gameUpdate(game);
+				clearInterval(countdownInterval);
+			}
+		}, 1000);
+	}
+
+	private sendPosition(game: IGame) {
+		this.server.to(game.getGameUID()).emit('player-moved', {
+			leftUser: {
+				position: game.getPlayerBySide(SIDE.LEFT).playerData.pos.toObject(),
+				width: game.getPlayerBySide(SIDE.LEFT).playerData.w,
+				height: game.getPlayerBySide(SIDE.LEFT).playerData.h,
+			},
+			rightUser: {
+				position: game.getPlayerBySide(SIDE.RIGHT).playerData.pos.toObject(),
+				width: game.getPlayerBySide(SIDE.RIGHT).playerData.w,
+				height: game.getPlayerBySide(SIDE.RIGHT).playerData.h,
+			},
+		});
+	}
+
+	private sendSide(game: IGame) {
+		this.server.to(game.getPlayerBySide(SIDE.LEFT).socketID).emit('player-side', {
+			side: SIDE.LEFT,
+			position: game.getPlayerBySide(SIDE.LEFT).playerData.pos.toObject(),
+			width: game.getPlayerBySide(SIDE.LEFT).playerData.w,
+			height: game.getPlayerBySide(SIDE.LEFT).playerData.h,
+		});
+		this.server.to(game.getPlayerBySide(SIDE.RIGHT).socketID).emit('player-side', {
+			side: SIDE.RIGHT,
+			position: game.getPlayerBySide(SIDE.RIGHT).playerData.pos.toObject(),
+			width: game.getPlayerBySide(SIDE.RIGHT).playerData.w,
+			height: game.getPlayerBySide(SIDE.RIGHT).playerData.h,
+		});
+	}
+
+	private sendBallPosition(game: IGame) {
+		this.server.to(game.getGameUID()).emit('game-update', {
+			position: game.getGameData().ball.getPos().toObject(),
+			velocity: game.getGameData().ball.getVel().toObject(),
+			speed: game.getGameData().ball.getSpeed(),
+			radius: game.getGameData().ball.getRadius(),
+		});
+	}
+
+	private async sendWinner(game: IGame) {
+		const winner: IUser = game.winner;
+		const looser: IUser = game.winner;
+		await this.gameService.winGame(game, winner);
+		if (winner) this.server.to(winner.socketID).emit('game-win');
+		if (looser) this.server.to(looser.socketID).emit('game-loose');
+		this.server.to(game.getGameUID()).emit('game-end', {
+			winner: { user: winner.user, score: winner.playerData.score },
+			looser: { user: looser.user, score: looser.playerData.score },
+			startDate: game.getGameData().startingDate,
+			endingDate: game.getGameData().endingDate,
+		});
+	}
+
+	private gameUpdate(game: IGame): void {
+		game.startGameLoop();
+		const gameLoop = setInterval(async () => {
+			if (!game.isEnded()) {
+				this.sendBallPosition(game);
+				if (game.newPoint) {
+					this.server.to(game.getGameUID()).emit('game-score', {
+						leftUser: game.getPlayerBySide(SIDE.LEFT).playerData.score,
+						rightUser: game.getPlayerBySide(SIDE.RIGHT).playerData.score,
+					});
+					game.newPoint = false;
+				}
+			} else {
+				this.sendWinner(game);
+				clearInterval(gameLoop);
+			}
+		}, 1);
 	}
 }

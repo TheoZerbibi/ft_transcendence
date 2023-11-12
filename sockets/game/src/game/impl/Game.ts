@@ -195,6 +195,7 @@ export class Game implements IGame {
 
 	async addPoint(side: SIDE) {
 		const user: IUser = this.getPlayerBySide(side);
+		if (!user) return;
 		await this.prismaService.game_players.update({
 			where: {
 				player_id_game_id: {
@@ -211,7 +212,7 @@ export class Game implements IGame {
 		this.setPause(true, 3000);
 		const looserSide: SIDE = side === SIDE.LEFT ? SIDE.RIGHT : SIDE.LEFT;
 		const looser: IUser = this.getPlayerBySide(looserSide);
-		if (user.playerData.score >= 3) this.winGame(user, looser);
+		if (user.playerData.score >= 11) this.winGame(user, looser);
 	}
 
 	isInPause(): boolean {
