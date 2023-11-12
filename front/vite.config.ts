@@ -20,8 +20,5 @@ export default defineConfig({
 				includePaths: ['node_modules'],
 			},
 		},
-	},
-	define: {
-		JWT: '"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTg5MTM5MDYsImV4cCI6MTY5OTAwMDMwNn0.ntdZv7DqdVy6-V_EUACCxp8oHcfolBS-cjeVe57gaJo"',
-	},
+	}
 });
