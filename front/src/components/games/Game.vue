@@ -1,7 +1,13 @@
 <template>
-	<v-container>
-		<div v-if="apiData">
-			<!-- <v-card color="#1d2028" class="mx-auto" max-width="500">
+	<div
+		v-if="apiData"
+		:style="{
+			backgroundImage: `url(${background})`,
+			backgroundPosition: 'center center',
+			backgroundSize: 'cover',
+		}"
+	>
+		<!-- <v-card color="#1d2028" class="mx-auto" max-width="500">
 				<v-card-title class="d-flex align-center justify-center" :style="{ backgroundColor: '#191b22' }">
 					<p>Game info</p>
 				</v-card-title>
@@ -59,7 +65,7 @@
 					</v-list>
 				</v-card-text>
 			</v-card> -->
-			<!-- <v-btn
+		<!-- <v-btn
 				v-if="isConnected"
 				color="primary"
 				dark
@@ -70,12 +76,11 @@
 			>
 				Connect FakeUser
 			</v-btn> -->
-			<div v-if="isConnected">
-				<GameCanvas />
-			</div>
+		<div v-if="isConnected">
+			<GameCanvas />
 		</div>
-		<Snackbar />
-	</v-container>
+	</div>
+	<Snackbar />
 </template>
 
 <script lang="ts">
@@ -132,7 +137,7 @@ export default {
 			apiData: null as any,
 			gameUID: null as string | null,
 			players: [] as any[],
-			port: import.meta.env.VITE_GAME_SOCKET_PORT as number,
+			background: null as any,
 		};
 	},
 	async beforeUnmount() {
@@ -146,6 +151,14 @@ export default {
 		this.gameUID = route.params.uid;
 		if (!this.gameUID) return;
 		snackbarStore.hideSnackbar();
+
+		const backgroundList: string[] = [];
+		const images = import.meta.glob('/public/battleBackground/*.png');
+		console.log(images);
+		for (const path in images) {
+			backgroundList.push(path);
+		}
+		this.background = backgroundList[Math.floor(Math.random() * backgroundList.length)];
 
 		const requestOptions = {
 			method: 'POST',

@@ -38,7 +38,7 @@ export class Ball {
 		const speed = this.speed;
 		this.vel = Vector.fromAngle(angle, speed);
 		if (Math.random() > 0.5) this.vel.x *= -1;
-		this.vel.divideBy(2);
+		this.vel.divideBy(3);
 	}
 
 	outOfBounds() {
