@@ -5,7 +5,7 @@
 				<v-card-title class="title">
 					<p class="neonPolice">Welcome to NSTG's ft_transcendence</p>
 				</v-card-title>
-				<v-img src="CatsRounded.png" contain max-height="300" alt="These are cute kittens" />
+				<v-img class="rounded-card" src="/src/assets/OmoriPictures/Omori007.jpg" contain max-height="300" alt="These are us" />
 				<v-card-subtitle class="neonPolice homeSubtitles">
 					<br />Gaelle, <span class="teamLeader">Théo</span>, Semiha, Noe
 				</v-card-subtitle>
@@ -65,7 +65,7 @@ export default defineComponent({
 	display: flex;
 	align-items: center;
 	flex-direction: column;
-	background: linear-gradient(90deg, #8360c3, #2ebf91);
+	/* background: linear-gradient(90deg, #8360c3, #2ebf91); */
 }
 
 .title {
