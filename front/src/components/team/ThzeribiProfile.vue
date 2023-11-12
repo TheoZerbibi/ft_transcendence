@@ -1,4 +1,6 @@
 <template>
+	<h1>Team Profile page</h1>
+
 	<v-card class="d-flex align-center justify-center backgroundWallpaper" min-height="100%" color="transparent">
 		<v-card-title class="text-center">Team Profile</v-card-title>
 		<v-card-text class="text-center">
