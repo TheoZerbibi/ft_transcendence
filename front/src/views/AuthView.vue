@@ -22,7 +22,7 @@ export default {
 		const userStore = useUser();
 		const jwtInput = ref('');
 
-		const JWT = computed(() => userStore.getJWT);
+		const JWT: any = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
 
 		const setJWT = (jwt: string) => {

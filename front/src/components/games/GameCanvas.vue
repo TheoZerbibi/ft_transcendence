@@ -1,7 +1,16 @@
 <template>
 	<v-container>
 		<div id="app">
-			<v-card color="transparent" theme="dark">
+			<v-card
+				color="transparent"
+				theme="dark"
+				class="blurred-card"
+				:style="{
+					backgroundImage: `url(${background})`,
+					backgroundPosition: 'center center',
+					backgroundSize: 'cover',
+				}"
+			>
 				<div class="d-flex justify-space-between align-center">
 					<!-- Ajout de la classe align-center -->
 					<div class="mr-auto">
@@ -11,7 +20,7 @@
 						<h2>{{ userData.leftPlayer.name }}</h2>
 					</div>
 					<div>
-						<h1 class="title">Versus</h1>
+						<h1>Versus</h1>
 					</div>
 					<div class="ml-auto">
 						<v-avatar class="avatar-responsive">
@@ -78,14 +87,21 @@ export default {
 					avatar: 'https://cdn-icons-png.flaticon.com/512/4529/4529980.png',
 				},
 			},
+			background: '',
 		};
 	},
 	beforeMount() {
-		console.log(this.user);
 		this.userData.leftPlayer = {
 			name: this.user.displayName,
 			avatar: this.user.avatar,
 		};
+		const backgroundList: string[] = [];
+		const images = import.meta.glob('/public/battleParallax/*.png');
+		console.log(images);
+		for (const path in images) {
+			backgroundList.push(path);
+		}
+		this.background = backgroundList[Math.floor(Math.random() * backgroundList.length)];
 	},
 	mounted() {
 		const route = useRoute();
@@ -120,18 +136,22 @@ export default {
 				canvas.parent('game-canvas');
 
 				gameData.ball = new Ball(p5, width / 2, height / 2, 10);
-				gameData.leftUser = new Paddle(p5, 20, height / 2 - 50, 10, 100, SIDE.LEFT);
+				gameData.leftUser = new Paddle(p5, 20, height / 2 - 50, 10, height / 4, SIDE.LEFT);
 				gameData.leftUser.setUser(gameData.user.displayName, gameData.user.avatar);
-				gameData.rightUser = new Paddle(p5, width - 30, height / 2 - 50, 10, 100, SIDE.RIGHT);
+				gameData.rightUser = new Paddle(p5, width - 30, height / 2 - 50, 10, height / 4, SIDE.RIGHT);
 				gameData.go = true;
 			};
 
 			p5.draw = () => {
-				p5.background(51);
+				p5.clear();
 				movePaddles();
 				backdrop();
 				if (!gameData.leftUser || !gameData.rightUser || !gameData.ball) return;
-				gameData.ball.outOfBounds();
+				const oob = gameData.ball.outOfBounds();
+				if (oob) {
+					if (oob == 'right') gameData.leftUser.score++;
+					else gameData.rightUser.score++;
+				}
 				if (gameData.go) gameData.ball.update();
 				if (!gameData.start && gameData.go) rightPaddleAI();
 				gameData.ball.hit(gameData.leftUser, gameData.rightUser);
@@ -145,11 +165,15 @@ export default {
 			 */
 			function rightPaddleAI() {
 				if (!gameData.ball || !gameData.rightUser) return;
+
+				const halfWidth = width / 2;
+
+				if (gameData.ball.pos.x < halfWidth) return;
 				if (gameData.ball.pos.y < gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
-					gameData.rightUser.move(-1);
+					gameData.rightUser.move(-4);
 				}
 				if (gameData.ball.pos.y > gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
-					gameData.rightUser.move(1);
+					gameData.rightUser.move(4);
 				}
 			}
 
@@ -158,7 +182,7 @@ export default {
 			 */
 			function backdrop() {
 				if (!gameData.leftUser || !gameData.rightUser) return;
-				p5.stroke(80);
+				p5.stroke(255);
 				p5.strokeWeight(width / 200);
 
 				const dottedLength = width / 100;
@@ -174,7 +198,7 @@ export default {
 				p5.textFont(retroFont);
 				p5.textSize(_size);
 				p5.noStroke();
-				p5.fill(80);
+				p5.fill(255);
 
 				p5.textAlign(p5.RIGHT, p5.TOP);
 				p5.text(gameData.leftUser.score, width / 2 - textOffsetX, textOffsetY);
@@ -250,6 +274,8 @@ export default {
 					avatar: data.rightUser.avatar,
 				};
 			}
+			if (gameData.leftUser) gameData.leftUser.score = 0;
+			if (gameData.rightUser) gameData.rightUser.score = 0;
 			countdownStore.setSeconds(5);
 			this.showCountdown = true;
 			gameData.go = false;
@@ -340,6 +366,12 @@ html {
 	text-align: center;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	border: 10px double #dddfe2;
+}
+
+#game-canvas {
+	background-color: transparent;
+	backdrop-filter: blur(5px);
 }
 
 #vue-canvas {
@@ -363,7 +395,7 @@ html {
 
 h1 {
 	font-family: 'OMORI_DISTURBED';
-	font-size: 3.5vw;
+	font-size: 4.5vw;
 	text-align: center;
 	color: white;
 	text-shadow:
@@ -388,5 +420,11 @@ h2 {
 canvas {
 	width: 100% !important;
 	height: 100px !important;
+	background-color: rgba(172, 11, 11, 0.4);
+}
+
+.blurred-card {
+	padding: 16px;
+	border: 10px double #dddfe2;
 }
 </style>
