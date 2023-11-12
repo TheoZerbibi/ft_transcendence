@@ -106,7 +106,8 @@ export class GameService {
 		if (!gameUser) return;
 		game.removeUser(gameUser);
 
-		if (!gameUser.isSpec) {
+		if (!gameUser.isSpec && !game.isEnded) {
+			console.log(game.getUsersInGame(), game.isEnded());
 			if (game.getUsersInGame().length === 0) {
 				game.removeGame();
 				return null;

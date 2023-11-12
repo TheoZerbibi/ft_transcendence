@@ -3,8 +3,8 @@ import P5 from 'p5';
 import type { Paddle } from './Paddle';
 export class Ball {
 	private spawn: P5.Vector;
-	private pos: P5.Vector;
 	private vel: P5.Vector;
+	pos: P5.Vector;
 
 	constructor(
 		private p5: any,
@@ -85,7 +85,7 @@ export class Ball {
 		this.pos.x = (pos.x / 700) * this.p5.width;
 		this.pos.y = (pos.y / 400) * this.p5.height;
 		this.speed = speed;
-		this.r = this.p5.width / 50;
+		// this.r = this.p5.width / 50;
 		this.vel.x = vel.x;
 		this.vel.y = vel.y;
 	}
