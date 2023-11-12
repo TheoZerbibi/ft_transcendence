@@ -2,6 +2,8 @@ import P5 from 'p5';
 import { SIDE } from './enums/Side';
 
 export class Paddle {
+	private name: string = 'IA';
+	private avatar: string = 'https://cdn-icons-png.flaticon.com/512/4529/4529980.png';
 	pos: P5.Vector;
 	score: number;
 	w: number;
@@ -37,6 +39,11 @@ export class Paddle {
 		this.pos.y = (pos.y / 400) * this.p5.height;
 		// this.w = (width / 700) * this.p5.width - 50;
 		// this.h = (height / 400) * this.p5.height;
+	}
+
+	setUser(name: string, avatar: string) {
+		this.name = name;
+		this.avatar = avatar;
 	}
 
 	move(amt: number) {

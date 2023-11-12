@@ -1,6 +1,26 @@
 <template>
 	<v-container>
 		<div id="app">
+			<v-card color="transparent" theme="dark">
+				<div class="d-flex justify-space-between align-center">
+					<!-- Ajout de la classe align-center -->
+					<div class="mr-auto">
+						<v-avatar class="avatar-responsive">
+							<v-img :src="userData.leftPlayer.avatar" />
+						</v-avatar>
+						<h2>{{ userData.leftPlayer.name }}</h2>
+					</div>
+					<div>
+						<h1 class="title">Versus</h1>
+					</div>
+					<div class="ml-auto">
+						<v-avatar class="avatar-responsive">
+							<v-img :src="userData.rightPlayer.avatar" />
+						</v-avatar>
+						<h2>{{ userData.rightPlayer.name }}</h2>
+					</div>
+				</div>
+			</v-card>
 			<div id="game-canvas" />
 		</div>
 		<CountdownOverlay v-if="showCountdown" />
@@ -18,6 +38,7 @@ import { Paddle } from '../../plugins/game/Paddle';
 import { DIRECTION } from '../../plugins/game/enums/Direction';
 import { SIDE } from '../../plugins/game/enums/Side';
 import { useCountdownStore } from '../../stores/countdown';
+import { useUser } from '../../stores/user';
 import { useSocketStore } from '../../stores/websocket';
 import CountdownOverlay from '../utils/Countdown.vue';
 
@@ -30,17 +51,40 @@ export default {
 	},
 	setup() {
 		const webSocketStore = useSocketStore();
+		const userStore = useUser();
 
 		const isConnected = computed(() => webSocketStore.isConnected);
 		const socket = computed(() => webSocketStore.getSocket);
+		const user = computed(() => userStore.getUser);
+		const JWT = computed(() => userStore.getJWT);
+
 		return {
 			isConnected,
 			socket,
+			user,
+			JWT,
 		};
 	},
 	data() {
 		return {
 			showCountdown: false,
+			userData: {
+				leftPlayer: {
+					name: '',
+					avatar: '',
+				},
+				rightPlayer: {
+					name: 'AI',
+					avatar: 'https://cdn-icons-png.flaticon.com/512/4529/4529980.png',
+				},
+			},
+		};
+	},
+	beforeMount() {
+		console.log(this.user);
+		this.userData.leftPlayer = {
+			name: this.user.displayName,
+			avatar: this.user.avatar,
 		};
 	},
 	mounted() {
@@ -48,8 +92,9 @@ export default {
 		const gameData = {
 			start: false as boolean,
 			go: false as boolean,
-			p1: null as Paddle | null,
-			p2: null as Paddle | null,
+			user: this.user as any,
+			leftUser: null as Paddle | null,
+			rightUser: null as Paddle | null,
 			player: null as Paddle | null,
 			ball: null as Ball | null,
 			ratio: (9 / 20) as number,
@@ -69,25 +114,26 @@ export default {
 			p5.setup = () => {
 				if (!cDiv) return;
 				width = cDiv.offsetWidth;
-				height = cDiv.offsetWidth / 2;
+				height = cDiv.offsetWidth / 2 - 200;
 				const canvas = p5.createCanvas(width, height);
 				canvas.parent('game-canvas');
 
 				gameData.ball = new Ball(p5, width / 2, height / 2, 10);
-				gameData.p1 = new Paddle(p5, 20, height / 2 - 50, 10, 100, SIDE.LEFT);
-				gameData.p2 = new Paddle(p5, width - 30, height / 2 - 50, 10, 100, SIDE.RIGHT);
+				gameData.leftUser = new Paddle(p5, 20, height / 2 - 50, 10, 100, SIDE.LEFT);
+				gameData.leftUser.setUser(gameData.user.displayName, gameData.user.avatar);
+				gameData.rightUser = new Paddle(p5, width - 30, height / 2 - 50, 10, 100, SIDE.RIGHT);
 			};
 
 			p5.draw = () => {
 				p5.background(51);
 				movePaddles();
 				backdrop();
-				if (!gameData.p1 || !gameData.p2 || !gameData.ball) return;
+				if (!gameData.leftUser || !gameData.rightUser || !gameData.ball) return;
 				gameData.ball.outOfBounds();
 				if (gameData.go) gameData.ball.update();
-				gameData.ball.hit(gameData.p1, gameData.p2);
-				gameData.p1.show();
-				gameData.p2.show();
+				gameData.ball.hit(gameData.leftUser, gameData.rightUser);
+				gameData.leftUser.show();
+				gameData.rightUser.show();
 				gameData.ball.show();
 			};
 
@@ -95,7 +141,7 @@ export default {
 			 * Function for write score and drawing line in the center.
 			 */
 			function backdrop() {
-				if (!gameData.p1 || !gameData.p2) return;
+				if (!gameData.leftUser || !gameData.rightUser) return;
 				p5.stroke(80);
 				p5.strokeWeight(width / 200);
 
@@ -115,33 +161,23 @@ export default {
 				p5.fill(80);
 
 				p5.textAlign(p5.RIGHT, p5.TOP);
-				p5.text(gameData.p1.score, width / 2 - textOffsetX, textOffsetY);
+				p5.text(gameData.leftUser.score, width / 2 - textOffsetX, textOffsetY);
 
 				p5.textAlign(p5.LEFT);
-				p5.text(gameData.p2.score, width / 2 + textOffsetX, textOffsetY);
+				p5.text(gameData.rightUser.score, width / 2 + textOffsetX, textOffsetY);
 			}
 
 			p5.windowResized = () => {
-				if (!cDiv || !gameData.ball || !gameData.p1 || !gameData.p2) return;
+				if (!cDiv || !gameData.ball || !gameData.leftUser || !gameData.rightUser) return;
 				const oldWidth: number = width;
 				const oldHeight: number = height;
 				width = cDiv.offsetWidth;
 				height = cDiv.offsetWidth / 2;
 				p5.resizeCanvas(width, height);
 				gameData.ball.resizeUpdate(width, height, oldWidth, oldHeight);
-				gameData.p1.resizeUpdate(height, width, oldWidth, oldHeight);
-				gameData.p2.resizeUpdate(height, width, oldWidth, oldHeight);
+				gameData.leftUser.resizeUpdate(height, width, oldWidth, oldHeight);
+				gameData.rightUser.resizeUpdate(height, width, oldWidth, oldHeight);
 			};
-
-			// p5.mouseMoved = () => {
-			// 	if (!gameData.ball || !gameData.socket) return;
-			// 	if (!gameData.player || !gameData.start) {
-			// 		if (!gameData.p1 || !gameData.p1.pos || gameData.start) return;
-			// 		if (p5.mouseY + gameData.p1.h >= p5.height) gameData.p1.pos.y = p5.height - gameData.p1.h;
-			// 		else gameData.p1.pos.y = Math.max(0, Math.min(p5.height, p5.mouseY));
-			// 		return;
-			// 	}
-			// };
 
 			/**
 			 * Function for moving the player Paddle.
@@ -172,13 +208,13 @@ export default {
 			 * Function for moving the player Paddle in local.
 			 */
 			function localMovePaddles() {
-				if (!gameData.ball || !gameData.p1 || gameData.start) return;
+				if (!gameData.ball || !gameData.leftUser || gameData.start) return;
 				if (p5.keyIsDown(87)) {
-					gameData.p1.move(-5);
+					gameData.leftUser.move(-5);
 				}
 
 				if (p5.keyIsDown(83)) {
-					gameData.p1.move(5);
+					gameData.leftUser.move(5);
 				}
 			}
 		};
@@ -206,33 +242,38 @@ export default {
 		});
 
 		this.socket.on('player-moved', (data: any) => {
-			if (data.p1) gameData.p1?.update(data.p1.position, data.p1.width, data.p1.height);
-			if (data.p2) gameData.p2?.update(data.p2.position, data.p2.width, data.p2.height);
+			if (data.leftUser)
+				gameData.leftUser?.update(data.leftUser.position, data.leftUser.width, data.leftUser.height);
+			if (data.rightUser)
+				gameData.rightUser?.update(data.rightUser.position, data.rightUser.width, data.rightUser.height);
 		});
 
 		this.socket.on('game-score', (data: any) => {
-			gameData.p1?.setPoint(data.p1);
-			gameData.p2?.setPoint(data.p2);
+			gameData.leftUser?.setPoint(data.leftUser);
+			gameData.rightUser?.setPoint(data.rightUser);
 		});
 
 		this.socket.on('player-side', (data: any) => {
 			if (data.side == SIDE.LEFT) {
-				gameData.player = gameData.p1;
+				gameData.player = gameData.leftUser;
 				if (!gameData.player) {
 					this.socket.disconnect();
+					console.error('Player is null');
 					return;
 				}
 				gameData.player.setSide(SIDE.LEFT);
 			} else if (data.side == SIDE.RIGHT) {
-				gameData.player = gameData.p2;
+				gameData.player = gameData.rightUser;
 				if (!gameData.player) {
 					this.socket.disconnect();
+					console.error('Player is null');
 					return;
 				}
 				gameData.player.setSide(SIDE.RIGHT);
 			}
 			if (!gameData.player) {
 				this.socket.disconnect();
+				console.error('Player is null');
 				return;
 			}
 			gameData.player.update(data.position, data.width, data.height);
@@ -245,6 +286,16 @@ export default {
 @font-face {
 	font-family: 'Arcade_Classic';
 	src: url('/fonts/ARCADECLASSIC.TTF');
+}
+
+@font-face {
+	font-family: 'OMORI_MAIN';
+	src: url('/fonts/OMORI_GAME.ttf') format('truetype-variations');
+}
+
+@font-face {
+	font-family: 'OMORI_DISTURBED';
+	src: url('/fonts/OMORI_GAME2.ttf') format('truetype-variations');
 }
 
 body,
@@ -270,6 +321,39 @@ html {
 	height: 500px;
 	border-radius: 20px;
 	overflow: hidden;
+}
+
+.avatar-responsive {
+	width: 5vw;
+	height: 5vw;
+}
+
+.align-center {
+	align-items: center;
+}
+
+h1 {
+	font-family: 'OMORI_DISTURBED';
+	font-size: 3.5vw;
+	text-align: center;
+	color: white;
+	text-shadow:
+		1px 1px 2px plum,
+		0 0 1em purple,
+		0 0 0.2em goldenrod;
+	margin: auto;
+}
+
+h2 {
+	font-family: 'OMORI_MAIN';
+	font-size: xx-large;
+	text-align: center;
+	color: white;
+	text-shadow:
+		1px 1px 2px plum,
+		0 0 1em purple,
+		0 0 0.2em goldenrod;
+	margin: auto;
 }
 
 canvas {

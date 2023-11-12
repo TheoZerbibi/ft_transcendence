@@ -221,7 +221,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	}
 
 	handleDisconnect(client: Socket): void {
-		const game = this.gameService.removeUserFromGame(client);
+		const game: IGame = this.gameService.removeUserFromGame(client);
 		if (game) this.server.to(game.getGameUID()).emit('session-info', game.getAllUsersInGame());
 		return this.logger.debug(`Client disconnected: ${client.id}`);
 	}

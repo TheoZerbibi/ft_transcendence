@@ -3,6 +3,11 @@
 		<h1>Tempo Auth</h1>
 		<v-text-field v-model="jwtInput" label="JWT Token" @keydown.enter="setJWT(jwtInput)" />
 		{{ JWT }}
+		<br />
+		<v-avatar>
+			<v-img :src="user.avatar" />
+		</v-avatar>
+		{{ user.login }} : {{ user.displayName }}
 	</div>
 </template>
 
@@ -18,6 +23,7 @@ export default {
 		const jwtInput = ref('');
 
 		const JWT = computed(() => userStore.getJWT);
+		const user = computed(() => userStore.getUser);
 
 		const setJWT = (jwt: string) => {
 			userStore.setJWT(jwt);
@@ -26,11 +32,13 @@ export default {
 		return {
 			jwtInput,
 			JWT,
+			user,
 			setJWT,
 		};
 	},
-	data() {
-		return {};
+	mounted() {
+		console.log(this.JWT);
+		console.log(this.user);
 	},
 };
 </script>

@@ -40,6 +40,16 @@ export class Game implements IGame {
 		return this.inProgress;
 	}
 
+	async removeGame(): Promise<void> {
+		this.isEnd = true;
+		await this.prismaService.games.delete({
+			where: {
+				uid: this.gameUID,
+			},
+		});
+		Game.games.delete(this.gameUID);
+	}
+
 	public static getGames(): Map<string, IGame> {
 		return this.games;
 	}
@@ -217,5 +227,4 @@ export class Game implements IGame {
 			}
 		}, 1);
 	}
-
 }
