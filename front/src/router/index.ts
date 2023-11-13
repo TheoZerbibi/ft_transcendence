@@ -63,6 +63,11 @@ const router = createRouter({
 			name: 'Sinup',
 			component: () => import('../views/SignupView.vue'),
 		},
+		{
+			path: '/api/oauth/callback',
+			name: 'OauthCallback',
+			component: () => import('../views/OauthCallbackView.vue'),
+		},
 	],
 });
 
