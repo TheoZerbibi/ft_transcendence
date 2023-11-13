@@ -1,91 +1,30 @@
 <template>
-	<div
-		v-if="apiData"
-		:style="{
-			backgroundImage: `url(${background})`,
-			backgroundPosition: 'center center',
-			backgroundSize: 'cover',
-		}"
-		class="container"
-	>
-		<!-- <v-card color="#1d2028" class="mx-auto" max-width="500">
-				<v-card-title class="d-flex align-center justify-center" :style="{ backgroundColor: '#191b22' }">
-					<p>Game info</p>
-				</v-card-title>
-				<v-card-text class="px-5">
-					<span>GameUID : </span>
-					<span class="font-weight-bold">
-						{{ apiData.uid }}
+	<main>
+		<div
+			v-if="apiData"
+			:style="{
+				backgroundImage: `url(${background})`,
+				backgroundPosition: 'center center',
+				backgroundSize: 'cover',
+			}"
+			class="container d-flex align-center justify-center"
+		>
+			<div v-if="isConnected">
+				<GameCanvas />
+				<span class="d-flex justify-center align-center ga-10">
+					<span class="d-flex justify-center ga-1">
+						<img height="50" width="50" src="/game/keys/W_KEY.gif" />
+						<h4 class="ml-2">UP</h4>
 					</span>
-					<br />
-					<span>Creation Date : </span>
-					<span class="font-weight-bold">
-						{{ apiData.created_at }}
+					<span class="d-flex justify-center ga-1">
+						<img height="50" width="50" src="/game/keys/S_KEY.gif" />
+						<h4 class="ml-2">DOWN</h4>
 					</span>
-					<br />
-					<div v-if="apiData.started_at">
-						<span>Started Date : </span>
-						<span class="font-weight-bold">
-							{{ apiData.started_at }}
-						</span>
-					</div>
-					<div v-if="apiData.end_at">
-						<span>Ended Date : </span>
-						<span class="font-weight-bold">
-							{{ apiData.end_at }}
-						</span>
-					</div>
-					<span>
-						Socket Connection :
-						<span :style="{ color: `${isConnected ? '#00E676' : '#D50000'}` }" class="font-weight-bold">
-							{{ isConnected }}
-						</span>
-					</span>
-				</v-card-text>
-			</v-card>
-
-			<v-card v-if="players.length > 0" color="#272b35" class="mx-auto mt-3" max-width="500">
-				<v-card-title class="d-flex align-center justify-center" :style="{ backgroundColor: '#21242d' }">
-					<span>Players in Game</span>
-				</v-card-title>
-				<v-card-text class="px-5" :style="{ backgroundColor: 'transparent' }">
-					<v-list dense :style="{ backgroundColor: 'transparent', color: 'white' }">
-						<v-list-item v-for="player in players" :key="player.id">
-							{{ player.id }} -
-							<v-avatar>
-								<v-img :src="player.avatar" />
-							</v-avatar>
-							{{ player.displayName }} :
-							<span
-								:style="{ color: `${player.isSpec ? '#00E676' : '#D50000'}` }"
-								class="font-weight-bold"
-							>
-								Spectator
-							</span>
-						</v-list-item>
-					</v-list>
-				</v-card-text>
-			</v-card> -->
-		<!-- <v-btn
-				v-if="isConnected"
-				color="primary"
-				dark
-				absolute
-				class="d-flex mx-auto align-center justify-center mt-3"
-				top:style="{left: '50%', transform:'translateX(-50%)'}"
-				@click="test()"
-			>
-				Connect FakeUser
-			</v-btn> -->
-		<div v-if="isConnected">
-			<GameCanvas />
-			<v-card color="transparent" class="d-flex justify-space-around pa-0">
-				<v-img height="50" src="/game/keys/W_KEY.gif" />
-				<v-img height="50" src="/game/keys/S_KEY.gif" />
-			</v-card>
+				</span>
+			</div>
 		</div>
-	</div>
-	<Snackbar />
+		<Snackbar />
+	</main>
 </template>
 
 <script lang="ts">
@@ -159,7 +98,6 @@ export default {
 
 		const backgroundList: string[] = [];
 		const images = import.meta.glob('/public/game/battleBackground/*.png');
-		console.log(images);
 		for (const path in images) {
 			backgroundList.push(path);
 		}
@@ -187,51 +125,58 @@ export default {
 				return response.json();
 			})
 			.then(async (data) => {
-				await this.connect(this.JWT, import.meta.env.VITE_GAME_SOCKET_PORT)
-					.then(() => {
-						this.socketListen();
-						this.socket.on('session-info', (data: any) => {
-							this.players = [];
-							for (let i = 0; i < data.length; i++) {
-								data[i].user.isSpec = data[i].isSpec;
-								if (data[i].user) this.players.push(data[i].user);
-							}
-						});
+				console.log(data);
+				if (data.end_at) {
+					this.apiData = data;
+					snackbarStore.showSnackbar('Game is ended', 3000, 'primary');
+				} else {
+					await this.connect(this.JWT, import.meta.env.VITE_GAME_SOCKET_PORT)
+						.then(() => {
+							this.socketListen();
+							this.socket.on('session-info', (data: any) => {
+								this.players = [];
+								for (let i = 0; i < data.length; i++) {
+									data[i].user.isSpec = data[i].isSpec;
+									if (data[i].user) this.players.push(data[i].user);
+								}
+							});
 
-						this.socket.on('game-start', (data: any) => {
-							snackbarStore.showSnackbar('Game Starting !', 3000, 'green');
-							this.apiData.started_at = data.startDate;
-						});
+							this.socket.on('game-start', (data: any) => {
+								snackbarStore.showSnackbar('Game Starting !', 3000, 'green');
+								this.apiData.started_at = data.startDate;
+							});
 
-						this.socket.on('game-end', (data: any) => {
-							this.disconnect();
-							// if (!snackbarStore.snackbar) snackbarStore.showSnackbar('Game is ended', 3000, 'primary');
-							if (data.winner) console.log(`Winner : ${data.winner.user.login}`);
-						});
+							this.socket.on('game-end', (data: any) => {
+								this.disconnect();
+								if (!snackbarStore.snackbar)
+									snackbarStore.showSnackbar('Game is ended', 3000, 'primary');
+								if (data.winner) console.log(`Winner : ${data.winner.user.login}`);
+							});
 
-						this.socket.on('game-win', () => {
-							this.disconnect();
-							snackbarStore.showSnackbar('You win!', 3000, 'green');
-						});
+							this.socket.on('game-win', () => {
+								console.log('Win!');
+								snackbarStore.showSnackbar('You win!', 3000, 'green');
+							});
 
-						this.socket.on('game-loose', () => {
-							this.disconnect();
-							snackbarStore.showSnackbar('You loose!', 3000, 'red');
-						});
+							this.socket.on('game-lose', () => {
+								console.log('lose!');
+								snackbarStore.showSnackbar('You lose!', 3000, 'red');
+							});
 
-						this.socket.emit('session-join', {
-							gameUID: this.gameUID,
-							userID: data.player_id,
-							isSpec: data.is_spec,
+							this.socket.emit('session-join', {
+								gameUID: this.gameUID,
+								userID: data.player_id,
+								isSpec: data.is_spec,
+							});
+						})
+						.catch((error: any) => {
+							snackbarStore.showSnackbar(error, 3000, 'red');
+							return;
 						});
-					})
-					.catch((error: any) => {
-						snackbarStore.showSnackbar(error, 3000, 'red');
-						return;
-					});
-				this.apiData = data;
-				if (data.isSpec) snackbarStore.showSnackbar('Connecting to the game session.', 3000, 'orange');
-				else snackbarStore.showSnackbar('Joining game session.', 3000, 'green');
+					this.apiData = data;
+					if (data.isSpec) snackbarStore.showSnackbar('Connecting to the game session.', 3000, 'orange');
+					else snackbarStore.showSnackbar('Joining game session.', 3000, 'green');
+				}
 			})
 			.catch((error) => {
 				console.error(error);
@@ -250,7 +195,29 @@ export default {
 };
 </script>
 <style scoped>
+@font-face {
+	font-family: 'OMORI_MAIN';
+	src: url('/fonts/OMORI_GAME.ttf') format('truetype-variations');
+}
+
+@font-face {
+	font-family: 'OMORI_DISTURBED';
+	src: url('/fonts/OMORI_GAME2.ttf') format('truetype-variations');
+}
+
+h4 {
+	font-family: 'OMORI_MAIN';
+	font-size: xx-large;
+	text-align: center;
+	color: rgb(65, 37, 37);
+	text-shadow:
+		1px 1px 2px plum,
+		0 0 1em rgb(255, 123, 255),
+		0 0 0.2em rgb(255, 255, 255);
+}
+
 .container {
+	overflow: hidden;
 	height: 100vh;
 }
 </style>

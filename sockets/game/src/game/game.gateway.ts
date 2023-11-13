@@ -221,15 +221,15 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		});
 	}
 
-	private async sendWinner(game: IGame) {
+	public async sendWinner(game: IGame) {
 		const winner: IUser = game.winner;
-		const looser: IUser = game.winner;
-		await this.gameService.winGame(game, winner);
-		if (winner) this.server.to(winner.socketID).emit('game-win');
-		if (looser) this.server.to(looser.socketID).emit('game-loose');
+		const loser: IUser = game.loser;
+		console.log(winner, loser);
+		if (winner.isConnected) this.server.to(winner.socketID).emit('game-win');
+		if (loser.isConnected) this.server.to(loser.socketID).emit('game-lose');
 		this.server.to(game.getGameUID()).emit('game-end', {
 			winner: { user: winner.user, score: winner.playerData.score },
-			looser: { user: looser.user, score: looser.playerData.score },
+			loser: { user: loser.user, score: loser.playerData.score },
 			startDate: game.getGameData().startingDate,
 			endingDate: game.getGameData().endingDate,
 		});
@@ -241,6 +241,9 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			if (!game.isEnded()) {
 				this.sendBallPosition(game);
 				if (game.newPoint) {
+					const leftUser: IUser = game.getPlayerBySide(SIDE.LEFT);
+					const rightUser: IUser = game.getPlayerBySide(SIDE.RIGHT);
+					if (!leftUser || !leftUser.isConnected || !rightUser || !rightUser.isConnected) return;
 					this.server.to(game.getGameUID()).emit('game-score', {
 						leftUser: game.getPlayerBySide(SIDE.LEFT).playerData.score,
 						rightUser: game.getPlayerBySide(SIDE.RIGHT).playerData.score,

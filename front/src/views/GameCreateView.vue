@@ -1,13 +1,22 @@
 <template>
 	<v-card class="d-flex align-center justify-center" min-height="100%" :style="{ backgroundColor: color }">
 		<v-btn
-			color="primary"
 			dark
 			absolute
-			top:style="{left: '50%', transform:'translateX(-50%)'}"
+			width="22vw"
+			:style="{
+				backgroundImage: `url(/game/UI/fightButton.png)`,
+				backgroundPosition: 'center center',
+				backgroundSize: '100% 100%',
+				backgroundRepeat: 'no-repeat',
+			}"
+			@mouseover="showOverlay = true"
+			@mouseleave="showOverlay = false"
 			@click="checkExistingGame()"
 		>
-			Join Game
+			<div v-show="showOverlay" class="overlay" :class="{ 'slide-animation': showOverlay }">
+				<img src="/game/UI/handSelection.png" alt="Hand Image" />
+			</div>
 		</v-btn>
 		<Snackbar />
 	</v-card>
@@ -39,6 +48,7 @@ export default {
 	data() {
 		return {
 			color: '#2e2e2e',
+			showOverlay: false,
 		};
 	},
 	methods: {
@@ -95,3 +105,39 @@ export default {
 	},
 };
 </script>
+<style scoped>
+.overlay {
+	position: absolute;
+	top: 0;
+	left: 4vw;
+	width: 100%;
+	height: 100%;
+	background: none;
+	z-index: 1;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start; /* Alignez l'image à gauche de l'overlay */
+}
+
+.slide-animation {
+	animation: slideAnimation 1s linear infinite; /* Définir la durée, le type et le nombre d'itérations */
+}
+
+@keyframes slideAnimation {
+	0% {
+		transform: translateX(0);
+	}
+	50% {
+		transform: translateX(10px); /* Ajuster la valeur selon vos besoins */
+	}
+	100% {
+		transform: translateX(0);
+	}
+}
+
+.overlay img {
+	max-width: 100%;
+	max-height: 100%;
+	object-fit: contain; /* Ajuste la taille de l'image tout en préservant les proportions */
+}
+</style>
