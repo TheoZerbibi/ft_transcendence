@@ -34,7 +34,6 @@ export class ChannelService {
 	private async initLocalChannels(): Promise<void> {
 		try {
 			const channels: Channel[] = await this.prisma.channel.findMany();
-
 			const channelPromises = channels.map(async (channel: Channel) => {
 				const [channelUsers, channelMessages] = await Promise.all([
 					this.prisma.channelUser.findMany({
@@ -48,7 +47,7 @@ export class ChannelService {
 			});
 			this.localChannels = await Promise.all(channelPromises);
 		} catch (e) {
-			console.error('Failed to initialize local channels:', e);
+			console.error('Failed to initialize local channels ', e);
 		}
 	}
 
@@ -112,7 +111,7 @@ export class ChannelService {
 	}
 	*/
 
-	/***********************************************/
+	/********************************************t***/
 	/* 					Getters					   */
 	/***********************************************/
 
@@ -133,74 +132,52 @@ export class ChannelService {
 	}
 	//*********/
 
-	/*
-	async getAllPublicChannels(): Promise<ChannelDto[] | null> {
-		const channels: Channel[] = await this.prisma.channel.findMany({
-			where: {
-				public: true,
-			},
-		});
-		return channels.length ? (channels as ChannelDto[]) : null;
+
+	async getAllPublicChannels(): Promise<ChannelNameDto[] | null> {
+		const publicChannels = this.localChannels.filter((channel) => channel.getPublic());
+
+		return publicChannels.map((channel) => ({ name: channel.getName() }));
 	}
 
-	async getJoinedChannels(user: User): Promise<ChannelDto[] | null> {
-		const channels: Channel[] = await this.prisma.channel.findMany({
-			where: {
-				channel_users: {
-					some: {
-						user_id: user.id,
-					},
-				},
-			},
-			orderBy: {
-				updated_at: 'desc',
-			},
+	async getJoinedChannels(user: User): Promise<ChannelNameDto[] | null> {
+		const joinedChannels = this.localChannels.filter((channel) => {
+			const channelUsers = channel.getUsers();
+			return channelUsers.some((channelUser) => channelUser.getUserId() === user.id);
 		});
-		return channels.length ? (channels as ChannelDto[]) : null;
+		const allowedChannels = joinedChannels.filter((channel) => {
+			const channelUser = channel.getUsers().find((channelUser) => channelUser.getUserId() === user.id);
+			return !channelUser.getIsBan();
+		});
+		return allowedChannels.map((channel) => ({ name: channel.getName() }));
 	}
 
-	async getChannelByNameIfAllowed(user: User, channel_name: string): Promise<Channel | null> {
+	async getChannelByNameIfAllowed(user: User, channel_name: string): Promise<ChannelEntity | null> {
 		if (user.is_ban) throw new ForbiddenException('You are banned from this channel');
-		const channel: Channel | null = await this.prisma.channel.findUnique({
-			where: {
-				name: channel_name,
-			},
-		});
-		if (!channel.is_public && !this.isOnChannel(user, channel))
-			throw new ForbiddenException('You cannot access to this channel');
+		const channel: Channel | null = this.localChannels.find((channel) => channel.getName() === channel_name);
+		if (!channel) throw new BadRequestException("Channel doesn't exist");
+		if (!this.channelIsAllowed(user, channel)) throw new ForbiddenException('You cannot access to this channel');
 		return channel;
 	}
 
 	async getChannelByIdIfAllowed(user: User, channel_id: number): Promise<Channel | null> {
-		const channel: Channel | null = await this.prisma.channel.findUnique({
-			where: {
-				id: channel_id,
-			},
-		});
-		if (!channel.is_public && !this.isOnChannel(user, channel))
-			throw new ForbiddenException('You cannot access to this channel');
-		if (channel.user.is_ban) throw new ForbiddenException('You are banned from this channel');
+		if (user.is_ban) throw new ForbiddenException('You are banned from this channel');
+		const channel: Channel | null = this.localChannels.find((channel) => channel.getId() === channel_id);
+		if (!channel) throw new BadRequestException("Channel doesn't exist");
+		if (!this.channelIsAllowed(user, channel)) throw new ForbiddenException('You cannot access to this channel');
 		return channel;
 	}
 
 	async getChannelByName(channel_name: string): Promise<Channel | null> {
-		const channel: Channel | null = await this.prisma.channel.findUnique({
-			where: {
-				name: channel_name,
-			},
-		});
-		return channel;
+		const channel: Channel | null = this.localChannels.find((channel) => channel.getName() === channel_name);
+
+		return channel || null;
 	}
 
 	async getChannelById(channel_id: number): Promise<Channel | null> {
-		const channel: Channel | null = await this.prisma.channel.findUnique({
-			where: {
-				id: channel_id,
-			},
-		});
-		return channel;
+		const channel: Channel | null = this.localChannels.find((channel) => channel.getId() === channel_id);
+
+		return channel || null;
 	}
-	*/
 
 	//******************* Users ********************/
 	/*
@@ -299,7 +276,6 @@ export class ChannelService {
 	/***********************************************/
 
 	/*************** Permissions ****I**************/
-	/*
 	async channelIsAllowed(user: User, channel: Channel): Promise<boolean> {
 		if (!channel.public) {
 			return this.isOnChannel(user, channel);
@@ -308,17 +284,9 @@ export class ChannelService {
 	}
 
 	async isOnChannel(user: User, channel: Channel): Promise<boolean> {
-		const channel_user: ChannelUser = await this.prisma.channelUser.findUnique({
-			where: {
-				channel_id_user_id: {
-					channel_id: channel.id,
-					user_id: user.id,
-				},
-			},
-		});
+		const channel_user: ChannelUser = this.localChannels[channel.id]?.getUsers().find(u => u.getId() === user.id);
 		return channel_user ? true : false;
 	}
-	*/
 
 	/***************** Privileges ******************/
 	/*
@@ -391,7 +359,7 @@ export class ChannelService {
 	}
 
 	// Fetch a channel user status, you can't fetch data on a channel if you are banned from it
-	async getMyChannelUser(user: User, channel_name: string): Promise<ChannelUser | undefined> {
+	async getMyChannelUser(user: User, channel_name: string): Promise<ChannelUser | null> {
 		try {
 			const channel: Channel = await this.prisma.channel.findUnique({
 				where: {

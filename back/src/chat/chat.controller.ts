@@ -63,13 +63,12 @@ export class ChannelController {
 		return await this.channelService.getAllChannels();
 	}
 
-	/*
 	// Get all public channels
 	@Get('discover')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get all public channels' })
 	@ApiBearerAuth('JWT-auth')
-	async getAllPublicChannels(): Promise<ChannelDto[]> {
+	async getAllPublicChannels(): Promise<ChannelNameDto[]> {
 		return await this.channelService.getAllPublicChannels();
 	}
 
@@ -78,7 +77,7 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: "Get all user's channels" })
 	@ApiBearerAuth('JWT-auth')
-	async getJoinedChannels(@GetUser() user: User): Promise<ChannelDto[] | null> {
+	async getJoinedChannels(@GetUser() user: User): Promise<ChannelNameDto[] | null> {
 		return await this.channelService.getJoinedChannels(user);
 	}
 
@@ -100,6 +99,7 @@ export class ChannelController {
 		return await this.channelService.getChannelByIdIfAllowed(user, channel_id);
 	}
 
+	/*
 	//Get all users in a channel
 	@Get(':channel/users')
 	@UseGuards(JwtGuard)
