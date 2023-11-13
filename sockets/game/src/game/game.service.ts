@@ -106,14 +106,15 @@ export class GameService {
 		if (!gameUser) return;
 		game.removeUser(gameUser);
 
-		if (!gameUser.isSpec && !game.isEnded) {
+		if (!gameUser.isSpec && !game.isEnded()) {
 			console.log(game.getUsersInGame(), game.isEnded());
+			gameUser.isConnected = false;
 			if (game.getUsersInGame().length === 0) {
 				game.removeGame();
 				return null;
 			} else {
-				gameUser.isConnected = false;
 				const winnerSide: SIDE = gameUser.playerData.side === SIDE.LEFT ? SIDE.RIGHT : SIDE.LEFT;
+				console.log(gameUser.playerData.side, winnerSide);
 				const winner: IUser = game.getPlayerBySide(winnerSide);
 				game.winGame(winner, gameUser);
 				return null;
@@ -133,20 +134,6 @@ export class GameService {
 			},
 			data: {
 				score: user.playerData.score,
-			},
-		});
-	}
-
-	public async winGame(game: IGame, user: IUser) {
-		await this.prismaService.game_players.update({
-			where: {
-				player_id_game_id: {
-					game_id: game.getGameID(),
-					player_id: user.user.id,
-				},
-			},
-			data: {
-				is_win: true,
 			},
 		});
 	}

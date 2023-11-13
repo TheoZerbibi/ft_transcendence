@@ -18,7 +18,7 @@ export class Game implements IGame {
 	public gameData: IGameData = { ball: new Ball(this.width, this.height), startingDate: null, endingDate: null };
 	public pause: boolean = false;
 	public winner: IUser;
-	public looser: IUser;
+	public loser: IUser;
 
 	private static games: Map<string, any> = new Map<string, any>();
 
@@ -162,10 +162,21 @@ export class Game implements IGame {
 		});
 	}
 
-	winGame(winner: IUser, looser: IUser) {
+	async winGame(winner: IUser, loser: IUser) {
 		this.winner = winner;
-		this.looser = looser;
-		this.endGame();
+		this.loser = loser;
+		await this.prismaService.game_players.update({
+			where: {
+				player_id_game_id: {
+					game_id: this.getGameID(),
+					player_id: winner.user.id,
+				},
+			},
+			data: {
+				is_win: true,
+			},
+		});
+		await this.endGame();
 	}
 
 	userIsInGame(userId: number): boolean {
@@ -210,9 +221,9 @@ export class Game implements IGame {
 		user.playerData.score++;
 		this.newPoint = true;
 		this.setPause(true, 3000);
-		const looserSide: SIDE = side === SIDE.LEFT ? SIDE.RIGHT : SIDE.LEFT;
-		const looser: IUser = this.getPlayerBySide(looserSide);
-		if (user.playerData.score >= 11) this.winGame(user, looser);
+		const loserSide: SIDE = side === SIDE.LEFT ? SIDE.RIGHT : SIDE.LEFT;
+		const loser: IUser = this.getPlayerBySide(loserSide);
+		if (user.playerData.score >= 11) this.winGame(user, loser);
 	}
 
 	isInPause(): boolean {

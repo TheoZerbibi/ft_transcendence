@@ -7,7 +7,8 @@ import { Game } from '../impl/Game';
 
 export class Ball {
 	private r: number = 10;
-	private speed: number = 1;
+	private speed: number = 10;
+	private hitCounter: number = 0;
 	private spawn: Vector;
 	private pos: Vector;
 	private vel: Vector;
@@ -35,8 +36,7 @@ export class Ball {
 	public resetBall() {
 		this.pos = this.spawn.copy();
 		const angle = (Math.random() * Math.PI) / 2 - Math.PI / 4;
-		const speed = this.speed;
-		this.vel = Vector.fromAngle(angle, speed);
+		this.vel = Vector.fromAngle(angle, 1);
 		if (Math.random() > 0.5) this.vel.x *= -1;
 		this.vel.divideBy(3);
 	}
@@ -44,11 +44,13 @@ export class Ball {
 	outOfBounds() {
 		if (this.pos.x > this.width + this.r) {
 			this.game.addPoint(SIDE.LEFT);
+			this.hitCounter = 0;
 			this.resetBall();
 		}
 
 		if (this.pos.x < -this.r) {
 			this.game.addPoint(SIDE.RIGHT);
+			this.hitCounter = 0;
 			this.resetBall();
 		}
 	}
@@ -69,6 +71,7 @@ export class Ball {
 
 			if (padX - ballR < ballX && ballX < padX + padWidth + ballR) {
 				if (padY - ballR < ballY && ballY < padY + padHeight + ballR) {
+					this.hitCounter++;
 					const padCenter = new Vector(padX + padWidth / 2, padY + padHeight / 2);
 
 					this.vel = this.pos.copy().subtract(padCenter);
@@ -82,7 +85,13 @@ export class Ball {
 						const a = this.vel.heading();
 						this.vel = Vector.fromAngle(Math.PI + a / 2, 10);
 					}
-					this.vel.divideBy(20);
+					if (this.hitCounter >= 100) this.vel.divideBy(5);
+					else if (this.hitCounter >= 50) this.vel.divideBy(10);
+					else if (this.hitCounter >= 30) this.vel.divideBy(13);
+					else if (this.hitCounter >= 20) this.vel.divideBy(15);
+					else if (this.hitCounter >= 15) this.vel.divideBy(18);
+					else if (this.hitCounter >= 10) this.vel.divideBy(20);
+					else this.vel.divideBy(25);
 				}
 			}
 		}
