@@ -1,13 +1,13 @@
 <template>
 	<v-row align="center" justify="center" class="fill-height" id="background">
-		<v-card class="homepage text-center blurred-card rounded-card" variant="tonal" color="green darken-4" width="600">
+		<v-card class="homepage text-center blurred-card rounded-card" variant="tonal" width="600">
 			<v-card-item>
 				<v-card-title class="title">
 					<p class="neonPolice">Welcome to NSTG's ft_transcendence</p>
 				</v-card-title>
 				<v-img class="rounded-card" src="/src/assets/OmoriPictures/Omori007.jpg" contain max-height="300" alt="These are us" />
 				<v-card-subtitle class="neonPolice homeSubtitles">
-					<br />Gaelle, <span class="teamLeader">Théo</span>, Semiha, Noe
+					<br />Gaelle, <span class="teamLeader">Theo</span>, Semiha, Noe
 				</v-card-subtitle>
 			</v-card-item>
 			<v-card-text class="neonPolice text homeSubtitles">
@@ -18,25 +18,27 @@
 					id="authButton"
 					class="text-capitalize"
 					rounded="xl"
-					color="green darken-4"
+					color="#C306DF"
 					variant="outlined"
 					size="x-large"
-					border="doted"
 					href="https://intra.42.fr"
-					target="_blank"
-				>
-					<div class="neonPolice">&#129418; <span class="auth">Authenticate with 42</span></div>
+					target="_blank">
+					<span class="neonPolice">
+						💡 Sign in with 42
+					</span>
 				</v-btn>
 			</v-card-actions>
 		</v-card>
 	</v-row>
 	<HomepageFooter></HomepageFooter>
 	<v-footer class="neonPolice footer blurred-card" alt="Footer">
-		<a href="https://www.instagram.com/42.born2code/" target="_blank">42Instagram</a>
-		&#129418
-		<a href="https://www.facebook.com/42born2code" target="_blank">42Facebook</a>
-		&#129418
-		<a href="https://twitter.com/42born2code?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" target="_blank">42Twitter</a>
+		<span style="color:black"> ☆⋆｡𖦹°‧★ </span>
+		<a href="https://www.instagram.com/42.born2code/" target="_blank">Instagram</a>
+		<span style="color:black"> 👁 </span>
+		<a href="https://www.facebook.com/42born2code" target="_blank">Facebook</a>
+		<span style="color:black"> 👁 </span>
+		<a href="https://twitter.com/42born2code?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" target="_blank">Twitter</a>
+		<span style="color:black"> ☆⋆｡𖦹°‧★ </span>
 	</v-footer>
 </template>
 
@@ -81,9 +83,13 @@ export default defineComponent({
 }
 
 #authButton:hover {
+	background-color: black;
 	box-shadow: 6px 6px 0px rgba(0, 0, 0);
 	/* box-shadow: 6px 6px 25px rgba(0, 0, 0, 0.5); */
 	border: double;
+	span {
+		color:white !important;
+	}
 }
 
 .footer {

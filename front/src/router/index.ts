@@ -60,6 +60,11 @@ const router = createRouter({
 			component: () => import('../views/PortfolioView.vue'),
 		},
 		{
+			path: '/colors',
+			name: 'Colors',
+			component: () => import('../views/Colors.vue'),
+		},
+		{
 			path: '/exemples/websocket',
 			name: 'WebsocketExemple',
 			component: () => import('../components/exemples/WebsocketExemple.vue'),
