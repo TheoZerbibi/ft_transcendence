@@ -1,5 +1,5 @@
 <template>
-	<v-container>
+	<v-container class="d-flex align-center justify-center">
 		<div id="app">
 			<v-card
 				color="transparent"
@@ -12,7 +12,6 @@
 				}"
 			>
 				<div class="d-flex justify-space-between align-center">
-					<!-- Ajout de la classe align-center -->
 					<div class="mr-auto">
 						<v-avatar class="avatar-responsive">
 							<v-img :src="userData.leftPlayer.avatar" />
@@ -96,7 +95,7 @@ export default {
 			avatar: this.user.avatar,
 		};
 		const backgroundList: string[] = [];
-		const images = import.meta.glob('/public/battleParallax/*.png');
+		const images = import.meta.glob('/public/game/battleParallax/*.png');
 		console.log(images);
 		for (const path in images) {
 			backgroundList.push(path);
@@ -130,8 +129,7 @@ export default {
 			p5.setup = () => {
 				if (!cDiv) return;
 				width = cDiv.offsetWidth;
-				height = cDiv.offsetWidth / 2;
-				if (height >= 800) height = 700;
+				height = cDiv.offsetHeight;
 				const canvas = p5.createCanvas(width, height);
 				canvas.parent('game-canvas');
 
@@ -212,7 +210,7 @@ export default {
 				const oldWidth: number = width;
 				const oldHeight: number = height;
 				width = cDiv.offsetWidth;
-				height = cDiv.offsetWidth / 2;
+				height = cDiv.offsetHeight;
 				p5.resizeCanvas(width, height);
 				gameData.ball.resizeUpdate(width, height, oldWidth, oldHeight);
 				gameData.leftUser.resizeUpdate(height, width, oldWidth, oldHeight);
@@ -364,6 +362,7 @@ html {
 	color: #dddfe2;
 	font-family: 'Avenir', Helvetica, Arial, sans-serif;
 	text-align: center;
+	width: 80vw;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	border: 10px double #dddfe2;
@@ -372,6 +371,8 @@ html {
 #game-canvas {
 	background-color: transparent;
 	backdrop-filter: blur(5px);
+	width: 79vw;
+	height: 61.2vh;
 }
 
 #vue-canvas {

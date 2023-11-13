@@ -6,6 +6,7 @@
 			backgroundPosition: 'center center',
 			backgroundSize: 'cover',
 		}"
+		class="container"
 	>
 		<!-- <v-card color="#1d2028" class="mx-auto" max-width="500">
 				<v-card-title class="d-flex align-center justify-center" :style="{ backgroundColor: '#191b22' }">
@@ -78,6 +79,10 @@
 			</v-btn> -->
 		<div v-if="isConnected">
 			<GameCanvas />
+			<v-card color="transparent" class="d-flex justify-space-around pa-0">
+				<v-img height="50" src="/game/keys/W_KEY.gif" />
+				<v-img height="50" src="/game/keys/S_KEY.gif" />
+			</v-card>
 		</div>
 	</div>
 	<Snackbar />
@@ -153,7 +158,7 @@ export default {
 		snackbarStore.hideSnackbar();
 
 		const backgroundList: string[] = [];
-		const images = import.meta.glob('/public/battleBackground/*.png');
+		const images = import.meta.glob('/public/game/battleBackground/*.png');
 		console.log(images);
 		for (const path in images) {
 			backgroundList.push(path);
@@ -244,3 +249,8 @@ export default {
 	},
 };
 </script>
+<style scoped>
+.container {
+	height: 100vh;
+}
+</style>
