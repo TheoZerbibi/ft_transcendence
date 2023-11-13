@@ -13,19 +13,19 @@
 			>
 				<div class="d-flex justify-space-between align-center">
 					<div class="mr-auto">
-						<v-avatar class="avatar-responsive">
-							<v-img :src="userData.leftPlayer.avatar" />
-						</v-avatar>
-						<h2>{{ userData.leftPlayer.name }}</h2>
+						<v-img class="cadre-responsive" src="/game/UI/cadre5.png">
+							<h2>{{ userData.leftPlayer.name }}</h2>
+							<v-img class="avatar-responsive" :src="userData.leftPlayer.avatar" />
+						</v-img>
 					</div>
 					<div>
 						<h1>Versus</h1>
 					</div>
 					<div class="ml-auto">
-						<v-avatar class="avatar-responsive">
-							<v-img :src="userData.rightPlayer.avatar" />
-						</v-avatar>
-						<h2>{{ userData.rightPlayer.name }}</h2>
+						<v-img class="cadre-responsive" src="/game/UI/cadre5.png">
+							<h2>{{ userData.rightPlayer.name }}</h2>
+							<v-img class="avatar-responsive" :src="userData.rightPlayer.avatar" />
+						</v-img>
 					</div>
 				</div>
 			</v-card>
@@ -384,9 +384,15 @@ html {
 	overflow: hidden;
 }
 
+.cadre-responsive {
+	width: 6vw;
+	height: 8vw;
+}
+
 .avatar-responsive {
-	width: 5vw;
-	height: 5vw;
+	width: 6vw;
+	height: 7vw;
+	z-index: -999;
 }
 
 .align-center {
@@ -407,14 +413,15 @@ h1 {
 
 h2 {
 	font-family: 'OMORI_MAIN';
-	font-size: xx-large;
+	margin-top: 0.8vw;
+	font-size: 1.5vw;
 	text-align: center;
 	color: white;
+	line-height: 0px;
 	text-shadow:
 		1px 1px 2px plum,
 		0 0 1em purple,
 		0 0 0.2em goldenrod;
-	margin: auto;
 }
 
 canvas {
