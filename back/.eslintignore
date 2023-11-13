@@ -1,7 +1,0 @@
-.husky/
-.vscode/
-.yarn/
-.pnpm-store/
-coverage/
-dist/
-
