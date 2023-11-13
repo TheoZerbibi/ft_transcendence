@@ -3,7 +3,6 @@ import { IPlayerData } from '../impl/interfaces/IPlayerData';
 import { Vector } from './utils/Vector';
 import { constrain } from './utils/MathUtils';
 import { DIRECTION } from './enums/Direction';
-import { GameService } from '../game.service';
 
 export class PlayerData implements IPlayerData {
 	pos: Vector;

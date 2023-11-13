@@ -96,7 +96,6 @@ export default {
 		};
 		const backgroundList: string[] = [];
 		const images = import.meta.glob('/public/game/battleParallax/*.png');
-		console.log(images);
 		for (const path in images) {
 			backgroundList.push(path);
 		}
@@ -168,10 +167,10 @@ export default {
 
 				if (gameData.ball.pos.x < halfWidth) return;
 				if (gameData.ball.pos.y < gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
-					gameData.rightUser.move(-4);
+					gameData.rightUser.move(-5);
 				}
 				if (gameData.ball.pos.y > gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
-					gameData.rightUser.move(4);
+					gameData.rightUser.move(5);
 				}
 			}
 
@@ -362,7 +361,7 @@ html {
 	color: #dddfe2;
 	font-family: 'Avenir', Helvetica, Arial, sans-serif;
 	text-align: center;
-	width: 80vw;
+	width: 70vw;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	border: 10px double #dddfe2;
@@ -371,7 +370,7 @@ html {
 #game-canvas {
 	background-color: transparent;
 	backdrop-filter: blur(5px);
-	width: 79vw;
+	width: 69vw;
 	height: 61.2vh;
 }
 
