@@ -1,0 +1,11 @@
+{
+	"scripts": {
+		"start:prisma": "npx prisma studio",
+		"db:pull": "npx prisma db pull && npx prisma generate"
+	},
+	"dependencies": {
+		"@prisma/client": "^5.4.2",
+		"prisma": "^5.4.2",
+		"prisma-dbml-generator": "^0.10.0"
+	}
+}
