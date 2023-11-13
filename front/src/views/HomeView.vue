@@ -47,14 +47,10 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
 	name: 'HomeView',
-	data: () => ({
-      icons: [
-        'mdi-facebook',
-        'mdi-twitter',
-        'mdi-linkedin',
-        'mdi-instagram',
-      ],
-    }),
+	data() {
+		return {
+		};
+	},
 });
 </script>
 
