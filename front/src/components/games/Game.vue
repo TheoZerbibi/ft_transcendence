@@ -102,6 +102,7 @@ export default {
 			backgroundList.push(path);
 		}
 		this.background = backgroundList[Math.floor(Math.random() * backgroundList.length)];
+		this.background = this.background.replace('/public', '');
 
 		const requestOptions = {
 			method: 'POST',

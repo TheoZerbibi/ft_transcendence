@@ -223,7 +223,7 @@ export class Game implements IGame {
 		this.setPause(true, 3000);
 		const loserSide: SIDE = side === SIDE.LEFT ? SIDE.RIGHT : SIDE.LEFT;
 		const loser: IUser = this.getPlayerBySide(loserSide);
-		if (user.playerData.score >= 11) this.winGame(user, loser);
+		if (user.playerData.score >= 6) this.winGame(user, loser);
 	}
 
 	isInPause(): boolean {

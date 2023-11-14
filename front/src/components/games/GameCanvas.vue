@@ -13,7 +13,7 @@
 			>
 				<div class="d-flex justify-space-between align-center">
 					<div class="mr-auto">
-						<v-img class="cadre-responsive" src="/game/UI/cadre5.png">
+						<v-img class="cadre-responsive" :src="userData.leftPlayer.cadre">
 							<h2>{{ userData.leftPlayer.name }}</h2>
 							<v-img class="avatar-responsive" :src="userData.leftPlayer.avatar" />
 						</v-img>
@@ -22,7 +22,7 @@
 						<h1>Versus</h1>
 					</div>
 					<div class="ml-auto">
-						<v-img class="cadre-responsive" src="/game/UI/cadre5.png">
+						<v-img class="cadre-responsive" :src="userData.rightPlayer.cadre">
 							<h2>{{ userData.rightPlayer.name }}</h2>
 							<v-img class="avatar-responsive" :src="userData.rightPlayer.avatar" />
 						</v-img>
@@ -80,10 +80,12 @@ export default {
 				leftPlayer: {
 					name: '',
 					avatar: '',
+					cadre: '/game/UI/cadre5.png',
 				},
 				rightPlayer: {
 					name: 'AI',
 					avatar: 'https://cdn-icons-png.flaticon.com/512/4529/4529980.png',
+					cadre: '/game/UI/cadre5.png',
 				},
 			},
 			background: '',
@@ -93,6 +95,7 @@ export default {
 		this.userData.leftPlayer = {
 			name: this.user.displayName,
 			avatar: this.user.avatar,
+			cadre: '/game/UI/cadre5.png',
 		};
 		const backgroundList: string[] = [];
 		const images = import.meta.glob('/public/game/battleParallax/*.png');
@@ -100,6 +103,7 @@ export default {
 			backgroundList.push(path);
 		}
 		this.background = backgroundList[Math.floor(Math.random() * backgroundList.length)];
+		this.background = this.background.replace('/public', '');
 	},
 	mounted() {
 		const route = useRoute();
@@ -164,6 +168,7 @@ export default {
 				if (!gameData.ball || !gameData.rightUser) return;
 
 				const halfWidth = width / 2;
+				if (gameData.ball.vel.x < 0) return;
 
 				if (gameData.ball.pos.x < halfWidth) return;
 				if (gameData.ball.pos.y < gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
@@ -263,12 +268,14 @@ export default {
 				this.userData.leftPlayer = {
 					name: data.leftUser.name,
 					avatar: data.leftUser.avatar,
+					cadre: '/game/UI/cadre5.png',
 				};
 			}
 			if (data.rightUser) {
 				this.userData.rightPlayer = {
 					name: data.rightUser.name,
 					avatar: data.rightUser.avatar,
+					cadre: '/game/UI/cadre5.png',
 				};
 			}
 			if (gameData.leftUser) gameData.leftUser.score = 0;
@@ -301,8 +308,11 @@ export default {
 		});
 
 		this.socket.on('game-score', (data: any) => {
+			if (!gameData.leftUser || !gameData.rightUser) return;
 			gameData.leftUser?.setPoint(data.leftUser);
 			gameData.rightUser?.setPoint(data.rightUser);
+			if (gameData.rightUser?.score >= 5) this.userData.leftPlayer.cadre = '/game/UI/cadre0.png';
+			if (gameData.leftUser?.score >= 5) this.userData.rightPlayer.cadre = '/game/UI/cadre0.png';
 		});
 
 		this.socket.on('player-side', (data: any) => {
