@@ -1,7 +1,8 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, Get, UseGuards, Req, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 @ApiTags('Authentication')
@@ -15,10 +16,17 @@ export class AuthController {
 		return this.authService.signup(dto);
 	}
 
-	@Post('signin')
-	@HttpCode(HttpStatus.OK)
-	@ApiOperation({ summary: 'Log as user.' })
-	async signin(@Body() dto: AuthDto) {
-		return this.authService.signin(dto);
+	/* @Get('auth/oauth/callback') */
+	@Get('signup')
+	@UseGuards(AuthGuard('jwt'))
+	async redirectFromOAuth(@Req() req, @Res() res) {
+		const token = await this.authService.signup(req.user);
+		res.redirect(`${process.env.API42_REDIRECT_URI}?token=${token}`);
 	}
+	// @Post('signin')
+	// @HttpCode(HttpStatus.OK)
+	// @ApiOperation({ summary: 'Log as user.' })
+	// async signin(@Body() dto: AuthDto) {
+	// 	return this.authService.login(dto);
+	// }
 }
