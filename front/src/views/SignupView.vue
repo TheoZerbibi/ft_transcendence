@@ -5,8 +5,6 @@ export default {
 	methods: {
 		redirectToOAuth() {
 			// Redirect to your OAuth2 provider's authentication URL
-			// if (process.env.API42_OAUTH_URL) {
-			// 	window.location.href = process.env.API42_OAUTH_URL;
 			window.location.href = 'http://api.intra.42.fr/oauth/authorize';
 		},
 	},
