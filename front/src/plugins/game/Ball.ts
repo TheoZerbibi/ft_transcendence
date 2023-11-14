@@ -3,7 +3,7 @@ import P5 from 'p5';
 import type { Paddle } from './Paddle';
 export class Ball {
 	private spawn: P5.Vector;
-	private vel: P5.Vector;
+	vel: P5.Vector;
 	pos: P5.Vector;
 
 	constructor(
@@ -91,6 +91,7 @@ export class Ball {
 	}
 
 	resizeUpdate(width: number, height: number, oldWidth: number, oldHeight: number) {
+		this.spawn = this.p5.createVector(width / 2, height / 2);
 		this.r = (this.r / Math.min(oldWidth, oldHeight)) * Math.min(width, height);
 		this.pos.x = (this.pos.x / oldWidth) * width;
 		this.pos.y = (this.pos.y / oldHeight) * height;
