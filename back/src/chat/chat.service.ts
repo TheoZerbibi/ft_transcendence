@@ -7,7 +7,7 @@ import { ChannelMessageEntity } from './impl/ChannelMessageEntity';
 // PRISMA
 import { Prisma, User, Channel, ChannelUser, ChannelMessage } from '@prisma/client';
 // DTO
-import { ChannelDto, ChannelListElemDto, CreateChannelDto, ModChannelDto } from './dto/channel.dto';
+import { ChannelDto, ChannelListElemDto, CreateChannelDto, ChannelSettingsDto } from './dto/channel.dto';
 import { ChannelUserDto, CreateChannelUserDto } from './dto/channel-user.dto';
 // SERVICES
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -130,10 +130,20 @@ export class ChannelService {
 	async getAllChannels(): Promise<ChannelEntity[]> {
 		return this.localChannels;
 	}
+
+	async getAllChannelUsers(): Promise<ChannelUserEntity[]> {
+		const channelUsers: ChannelUserEntity[] = [];
+		this.localChannels.forEach((channel) => {
+			channel.getUsers().forEach((channelUser) => {
+				channelUsers.push(channelUser);
+			});
+		});
+		return channelUsers;
+	}
 	//*********/
 
 	async getAllPublicChannels(): Promise<ChannelListElemDto[] | null> {
-		const publicChannels = this.localChannels.filter((channel) => channel.isPublic());
+		const publicChannels = this.localChannels.filter((channel) => channel.getIsPublic());
 
 		return publicChannels.map((channel) => ({ name: channel.getName() }));
 	}
@@ -160,7 +170,7 @@ export class ChannelService {
 	async getChannelByIdIfAllowed(user: User, channel_id: number): Promise<ChannelEntity | null> {
 		const channel: ChannelEntity | null = this.localChannels.find((channel) => channel.getId() === channel_id);
 		if (!channel) throw new BadRequestException("Channel doesn't exist");
-		if (!channel.isPublic() && !this.userIsMember(user, channel)) throw new ForbiddenException('You cannot access to this channel');
+		if (!channel.getIsPublic() && !this.userIsMember(user, channel)) throw new ForbiddenException('You cannot access to this channel');
 		return channel;
 	}
 
@@ -171,9 +181,15 @@ export class ChannelService {
 	}
 
 	async getChannelById(channel_id: number): Promise<ChannelEntity | null> {
-		const channel: ChannelEntity | null = this.localChannels.find((channel) => channel.getId() === channel_id);
-
-		return channel || null;
+		//return this.localChannels.find((channel: ChannelEntity) => channel.getId() === channel_id);
+		console.log(`Searching for channel with ID: ${channel_id}`);
+		const channel = this.localChannels.find((channel: ChannelEntity) => {
+			const id = channel.getId();
+			console.log(`Checking channel with ID: ${id}`);
+			return id === channel_id;
+		});
+		console.log(`Found channel: ${JSON.stringify(channel)}`);
+		return channel;
 	}
 
 	//******************* Users ********************/
@@ -194,25 +210,30 @@ export class ChannelService {
 	/* 					Modification			   */
 	/***********************************************/
 
-	async modChannel(dto: ChannelDto, user: User) {
+	async modChannel(user: User, channel_id: number, newParamsdto: ChannelSettingsDto): Promise<ChannelEntity> {
 		try {
-			const channelUser: ChannelUserEntity | null = await this.getChannelUser(user, dto.name);
+			const channelEntity: ChannelEntity | null = await this.getChannelById(channel_id);
+			if (!channelEntity) throw new BadRequestException(`Channel with id ${channel_id} doesn't exist`);
+
+			const channelUser: ChannelUserEntity | null = await this.getChannelUser(user, channelEntity.getName());
 			if (!channelUser) throw new BadRequestException("You don't have access to this channel");
 			if (!channelUser.isOwner() || !channelUser.isAdmin())
 				throw new ForbiddenException('You are not authorized to operate on this channel');
 
-			const channel = await this.prisma.channel.update({
+			await this.prisma.channel.update({
 				where: {
 					id: channelUser.getChannelId(),
 				},
 				data: {
-					...dto,
+					...newParamsdto,
+					updated_at: new Date(),
 				},
 			});
-			return channel;
+			return channelEntity;
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				if (e.code === 'P2002') throw new BadRequestException('Channel name taken');
+				console.log(e);
 			}
 			throw new BadRequestException(e);
 		}

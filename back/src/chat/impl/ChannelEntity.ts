@@ -7,7 +7,7 @@ export class ChannelEntity implements IChannel {
 	private id: number;
 	private name: string;
 	private password: string;
-	private public: boolean;
+	private isPublic: boolean;
 	private created_at: Date;
 	private updated_at: Date;
 	private users: ChannelUserEntity[] = [];
@@ -16,7 +16,7 @@ export class ChannelEntity implements IChannel {
 	constructor(channel: Channel, channelUsers: ChannelUser[], channelMessages?: ChannelMessage[]) {
 		this.id = channel.id;
 		this.name = channel.name;
-		this.public = channel.public;
+		this.isPublic = channel.public;
 		this.created_at = channel.created_at;
 		this.updated_at = channel.updated_at;
 		this.users = channelUsers.map((channelUser) => new ChannelUserEntity(channelUser));
@@ -44,8 +44,8 @@ export class ChannelEntity implements IChannel {
 		return this.password;
 	}
 
-	public isPublic(): boolean {
-		return this.public;
+	public getIsPublic(): boolean {
+		return this.isPublic;
 	}
 
 	public getCreatedAt(): Date {
@@ -78,7 +78,7 @@ export class ChannelEntity implements IChannel {
 	}
 
 	public setPublic(isPublic: boolean): void {
-		this.public = isPublic;
+		this.isPublic = isPublic;
 		this.updated_at = new Date();
 	}
 

@@ -5,7 +5,7 @@ export interface IChannel {
 	getId(): number;
 	getName(): string;
 	getPassword(): string;
-	isPublic(): boolean;
+	getIsPublic(): boolean;
 	getCreatedAt(): Date;
 	getUpdatedAt(): Date;
 	getUsers(): IChannelUser[];

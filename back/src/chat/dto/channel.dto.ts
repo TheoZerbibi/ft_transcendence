@@ -9,7 +9,7 @@ export class ChannelListElemDto {
 	name: string;
 }
 
-export class ModChannelDto extends ChannelListElemDto {
+export class ChannelSettingsDto extends ChannelListElemDto {
 	@ApiProperty()
 	@IsString()
 	// eslint-disable-next-line
@@ -17,28 +17,27 @@ export class ModChannelDto extends ChannelListElemDto {
 
 	@ApiProperty()
 	@IsBoolean()
-	@IsOptional()
 	// eslint-disable-next-line
 	is_public: boolean;
-
-	@ApiProperty()
-	@IsDate()
-	@IsOptional()
-	// eslint-disable-next-line
-	updated_at: Date;
 }
 
-export class ChannelDto extends ModChannelDto {
+export class ChannelDto extends ChannelSettingsDto {
 	@ApiProperty()
 	@IsNumber()
 	// eslint-disable-next-line
 	id: number;
+}
+
+export class ChannelWithCreationAndModificationDateDto extends ChannelDto {
+	@ApiProperty()
+	@IsDate()
+	// eslint-disable-next-line
+	created_at: Date;
 
 	@ApiProperty()
 	@IsDate()
-	@IsOptional()
 	// eslint-disable-next-line
-	created_at: Date;
+	updated_at: Date;
 }
 
 export class ChannelWithUsersDto extends ChannelDto {

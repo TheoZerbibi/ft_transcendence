@@ -11,7 +11,7 @@ import { ChannelMessageEntity } from './impl/ChannelMessageEntity';
 // PRISMA
 import { Channel, User, ChannelUser, ChannelMessage } from '@prisma/client';
 // DTO
-import { ChannelDto, ChannelListElemDto, CreateChannelDto, ModChannelDto } from './dto/channel.dto';
+import { ChannelDto, ChannelListElemDto, CreateChannelDto, ChannelSettingsDto } from './dto/channel.dto';
 // SERVICES
 import { ChannelService } from './chat.service';
 import { UserService } from '../user/user.service';
@@ -55,12 +55,21 @@ export class ChannelController {
 	/***********************************************/
 
 	// DEBUG ONLY
-	@Get('allDebug')
+	@Get('allChannelsDebug')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'For debugging purpose only : Get all channels' })
 	@ApiBearerAuth('JWT-auth')
 	async getAllChannels(): Promise<ChannelEntity[]> {
 		return await this.channelService.getAllChannels();
+	}
+
+	// DEBUG ONLY
+	@Get('allChannelUsersDebug')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'For debugging purpose only : Get all channel users' })
+	@ApiBearerAuth('JWT-auth')
+	async getAllChannelUsers(): Promise<ChannelUserEntity[]> {
+		return await this.channelService.getAllChannelUsers();
 	}
 
 	// Get all public channels
@@ -106,19 +115,23 @@ export class ChannelController {
 	@ApiBearerAuth('JWT-auth')
 	async getChannelUsers(
 		@GetUser() user: User,
-		@Param('channel') channel_name: string,
+		@Param(':channel') channel_name: string,
 	): Promise<ChannelUserEntity[] | null> {
 		return await this.channelService.getChannelUsers(user, channel_name);
 	}
 
 	/****************** Users **********************/
 
-	@Patch('mod/channel')
+	@Patch('settings/:id')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'mod Channel' })
 	@ApiBearerAuth('JWT-auth')
-	async modChannel(@Body() dto: ChannelDto, @GetUser() user: User) {
-		return await this.channelService.modChannel(dto, user);
+	async modChannel(
+		@GetUser() user: User,
+		@Param('id') id: number,
+		@Body() newParamsdto: ChannelSettingsDto,
+	): Promise<ChannelEntity> {
+		return await this.channelService.modChannel(user, id, newParamsdto);
 	}
 
 	/*
