@@ -8,7 +8,7 @@ export class ChannelUserEntity implements IChannelUser {
 	private is_owner: boolean;
 	private is_admin: boolean;
 	private is_muted: Date;
-	private is_ban: boolean;
+	private is_banned: boolean;
 
 	constructor(channelUser: ChannelUser) {
 		this.id = channelUser.id;
@@ -17,7 +17,7 @@ export class ChannelUserEntity implements IChannelUser {
 		this.is_owner = channelUser.is_owner;
 		this.is_admin = channelUser.is_admin;
 		this.is_muted = channelUser.is_muted;
-		this.is_ban = channelUser.is_ban;
+		this.is_banned = channelUser.is_ban;
 	}
 
 	/*************************************************************************/
@@ -35,20 +35,20 @@ export class ChannelUserEntity implements IChannelUser {
 		return this.user_id;
 	}
 
-	public getIsOwner(): boolean {
+	public isOwner(): boolean {
 		return this.is_owner;
 	}
 
-	public getIsAdmin(): boolean {
+	public isAdmin(): boolean {
 		return this.is_admin;
 	}
 
-	public getIsMuted(): Date {
+	public isMuted(): Date {
 		return this.is_muted;
 	}
 
-	public getIsBan(): boolean {
-		return this.is_ban;
+	public isBanned(): boolean {
+		return this.is_banned;
 	}
 
 	/*************************************************************************/
@@ -66,7 +66,7 @@ export class ChannelUserEntity implements IChannelUser {
 		this.is_muted = isMuted;
 	}
 
-	public setIsBan(isBan: boolean): void {
-		this.is_ban = isBan;
+	public setisBanned(isBanned: boolean): void {
+		this.is_banned = isBanned;
 	}
 }

@@ -1,5 +1,5 @@
 // COMMON
-import { UseGuards, Controller, Body, Param, Get, Post } from '@nestjs/common';
+import { UseGuards, Controller, Body, Param, Get, Patch, Post } from '@nestjs/common';
 // AUTH
 import { JwtGuard } from 'src/auth/guard';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -11,7 +11,7 @@ import { ChannelMessageEntity } from './impl/ChannelMessageEntity';
 // PRISMA
 import { Channel, User, ChannelUser, ChannelMessage } from '@prisma/client';
 // DTO
-import { ChannelDto, ChannelNameDto, CreateChannelDto } from './dto/channel.dto';
+import { ChannelDto, ChannelListElemDto, CreateChannelDto, ModChannelDto } from './dto/channel.dto';
 // SERVICES
 import { ChannelService } from './chat.service';
 import { UserService } from '../user/user.service';
@@ -68,7 +68,7 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get all public channels' })
 	@ApiBearerAuth('JWT-auth')
-	async getAllPublicChannels(): Promise<ChannelNameDto[]> {
+	async getAllPublicChannels(): Promise<ChannelListElemDto[]> {
 		return await this.channelService.getAllPublicChannels();
 	}
 
@@ -77,7 +77,7 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: "Get all user's channels" })
 	@ApiBearerAuth('JWT-auth')
-	async getJoinedChannels(@GetUser() user: User): Promise<ChannelNameDto[] | null> {
+	async getJoinedChannels(@GetUser() user: User): Promise<ChannelListElemDto[] | null> {
 		return await this.channelService.getJoinedChannels(user);
 	}
 
@@ -99,7 +99,6 @@ export class ChannelController {
 		return await this.channelService.getChannelByIdIfAllowed(user, channel_id);
 	}
 
-	/*
 	//Get all users in a channel
 	@Get(':channel/users')
 	@UseGuards(JwtGuard)
@@ -108,22 +107,21 @@ export class ChannelController {
 	async getChannelUsers(
 		@GetUser() user: User,
 		@Param('channel') channel_name: string,
-	): Promise<ChannelUser[] | null> {
+	): Promise<ChannelUserEntity[] | null> {
 		return await this.channelService.getChannelUsers(user, channel_name);
 	}
-	*/
 
 	/****************** Users **********************/
-	/*
 
 	@Patch('mod/channel')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'mod Channel' })
 	@ApiBearerAuth('JWT-auth')
-	async modChannel(@Body() dto: UpdateChannelDto, @GetUser() user: User) {
+	async modChannel(@Body() dto: ChannelDto, @GetUser() user: User) {
 		return await this.channelService.modChannel(dto, user);
 	}
 
+	/*
 	// TODO
 	@Patch('mod/user')
 	@UseGuards(JwtGuard)

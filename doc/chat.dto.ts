@@ -59,7 +59,7 @@ export class ChannelUserDto {
 	@ApiProperty()
 	@IsBoolean()
 	// eslint-disable-next-line
-	is_ban: boolean;
+	is_banned: boolean;
 }
 
 export class joinChannelDto extends ChannelUserDto {

@@ -1,7 +1,5 @@
 import { Channel, ChannelUser, ChannelMessage } from '@prisma/client';
 import { IChannel } from './interfaces/IChannel';
-import { IChannelUser } from './interfaces/IChannelUser';
-import { IChannelMessage } from './interfaces/IChannelMessage';
 import { ChannelUserEntity } from './ChannelUserEntity';
 import { ChannelMessageEntity } from './ChannelMessageEntity';
 
@@ -9,16 +7,16 @@ export class ChannelEntity implements IChannel {
 	private id: number;
 	private name: string;
 	private password: string;
-	private isPublic: boolean;
+	private public: boolean;
 	private created_at: Date;
 	private updated_at: Date;
-	private users: IChannelUser[] = [];
-	private messages: IChannelMessage[] = [];
+	private users: ChannelUserEntity[] = [];
+	private messages: ChannelMessageEntity[] = [];
 
 	constructor(channel: Channel, channelUsers: ChannelUser[], channelMessages?: ChannelMessage[]) {
 		this.id = channel.id;
 		this.name = channel.name;
-		this.isPublic = channel.public;
+		this.public = channel.public;
 		this.created_at = channel.created_at;
 		this.updated_at = channel.updated_at;
 		this.users = channelUsers.map((channelUser) => new ChannelUserEntity(channelUser));
@@ -46,8 +44,8 @@ export class ChannelEntity implements IChannel {
 		return this.password;
 	}
 
-	public getPublic(): boolean {
-		return this.isPublic;
+	public isPublic(): boolean {
+		return this.public;
 	}
 
 	public getCreatedAt(): Date {
@@ -58,11 +56,11 @@ export class ChannelEntity implements IChannel {
 		return this.updated_at;
 	}
 
-	public getUsers(): IChannelUser[] {
+	public getUsers(): ChannelUserEntity[] {
 		return this.users;
 	}
 
-	public getMessages(): IChannelMessage[] {
+	public getMessages(): ChannelMessageEntity[] {
 		return this.messages;
 	}
 
@@ -80,36 +78,36 @@ export class ChannelEntity implements IChannel {
 	}
 
 	public setPublic(isPublic: boolean): void {
-		this.isPublic = isPublic;
+		this.public = isPublic;
 		this.updated_at = new Date();
 	}
 
-	public setUsers(users: IChannelUser[]): void {
+	public setUsers(users: ChannelUserEntity[]): void {
 		this.users = users;
 		this.updated_at = new Date();
 	}
 
-	public setMessages(messages: IChannelMessage[]): void {
+	public setMessages(messages: ChannelMessageEntity[]): void {
 		this.messages = messages;
 		this.updated_at = new Date();
 	}
 
-	public addUser(user: IChannelUser): void {
+	public addUser(user: ChannelUserEntity): void {
 		this.users.push(user);
 		this.updated_at = new Date();
 	}
 
-	public addMessage(message: IChannelMessage): void {
+	public addMessage(message: ChannelMessageEntity): void {
 		this.messages.push(message);
 		this.updated_at = new Date();
 	}
 
-	public removeUser(user: IChannelUser): void {
+	public removeUser(user: ChannelUserEntity): void {
 		this.users = this.users.filter((u) => u.getId() !== user.getId());
 		this.updated_at = new Date();
 	}
 
-	public removeMessage(message: IChannelMessage): void {
+	public removeMessage(message: ChannelMessageEntity): void {
 		this.messages = this.messages.filter((m) => m.getId() !== message.getId());
 		this.updated_at = new Date();
 	}

@@ -5,7 +5,7 @@
 - check ban
 - check blocked
 - check friend
-- promises
+- promises everywhere
 - join channel
 - delete channel (only owner)
 - quit channel (if owner: he has to set new owner)
