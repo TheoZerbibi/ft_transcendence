@@ -1,4 +1,4 @@
-/* import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { AuthDto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
@@ -49,20 +49,5 @@ export class AuthService {
 		return {
 			access_token: token,
 		};
-	}
-}
- */
-
-// auth.service.ts
-import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-
-@Injectable()
-export class AuthService {
-	constructor(private jwtService: JwtService) {}
-
-	async login(user: any): Promise<string> {
-		const payload = { username: user.username, sub: user.userId };
-		return this.jwtService.sign(payload);
 	}
 }
