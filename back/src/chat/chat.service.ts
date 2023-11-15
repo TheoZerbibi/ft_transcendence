@@ -161,16 +161,17 @@ export class ChannelService {
 	}
 
 	async getChannelByNameIfAllowed(user: User, channel_name: string): Promise<ChannelEntity | null> {
-		const channel: ChannelEntity | null = this.localChannels.find((channel) => channel.getName() === channel_name);
+		const channel: ChannelEntity | null = await this.getChannelByName(channel_name);
 		if (!channel) throw new BadRequestException("Channel doesn't exist");
 		if (!this.userIsMember(user, channel)) throw new ForbiddenException('You cannot access to this channel');
 		return channel;
 	}
 
 	async getChannelByIdIfAllowed(user: User, channel_id: number): Promise<ChannelEntity | null> {
-		const channel: ChannelEntity | null = this.localChannels.find((channel) => channel.getId() === channel_id);
-		if (!channel) throw new BadRequestException("Channel doesn't exist");
-		if (!channel.getIsPublic() && !this.userIsMember(user, channel)) throw new ForbiddenException('You cannot access to this channel');
+		const channel: ChannelEntity | null = await this.getChannelById(channel_id);
+		if (!channel) throw new BadRequestException("Channel ${channel_id} doesn't exist");
+		if (!channel.getIsPublic() && !this.userIsMember(user, channel))
+			throw new ForbiddenException('You cannot access to this channel');
 		return channel;
 	}
 
@@ -181,26 +182,20 @@ export class ChannelService {
 	}
 
 	async getChannelById(channel_id: number): Promise<ChannelEntity | null> {
-		//return this.localChannels.find((channel: ChannelEntity) => channel.getId() === channel_id);
-		console.log(`Searching for channel with ID: ${channel_id}`);
-		const channel = this.localChannels.find((channel: ChannelEntity) => {
-			const id = channel.getId();
-			console.log(`Checking channel with ID: ${id}`);
-			return id === channel_id;
-		});
-		console.log(`Found channel: ${JSON.stringify(channel)}`);
-		return channel;
+		const channel: ChannelEntity | null = this.localChannels.find((channel) => channel.getId() == channel_id);
+
+		return channel || null;
 	}
 
 	//******************* Users ********************/
 
-	async getChannelUsers(user: User, channel_name: string): Promise<ChannelUserEntity[] | null> {
+	async getAllChannelUsersByChannelName(user: User, channel_name: string): Promise<ChannelUserEntity[] | null> {
 		const channel: ChannelEntity = await this.getChannelByNameIfAllowed(user, channel_name);
 		if (!channel) return null;
 		return channel.getUsers();
 	}
 
-	async getChannelUser(user: User, channel_name: string): Promise<ChannelUserEntity | null> {
+	async getChannelUserByChannelName(user: User, channel_name: string): Promise<ChannelUserEntity | null> {
 		const channel: ChannelEntity = await this.getChannelByNameIfAllowed(user, channel_name);
 		if (!channel) return null;
 		return channel.getUsers().find((channelUser) => channelUser.getUserId() === user.id) || null;
@@ -215,7 +210,7 @@ export class ChannelService {
 			const channelEntity: ChannelEntity | null = await this.getChannelById(channel_id);
 			if (!channelEntity) throw new BadRequestException(`Channel with id ${channel_id} doesn't exist`);
 
-			const channelUser: ChannelUserEntity | null = await this.getChannelUser(user, channelEntity.getName());
+			const channelUser: ChannelUserEntity | null = await this.getChannelUserByChannelName(user, channelEntity.getName());
 			if (!channelUser) throw new BadRequestException("You don't have access to this channel");
 			if (!channelUser.isOwner() || !channelUser.isAdmin())
 				throw new ForbiddenException('You are not authorized to operate on this channel');
@@ -306,7 +301,7 @@ export class ChannelService {
 	}
 }
 
-/* 	async getChannelUserByNames(user_name: string, channel_name: string) {
+/* 	async getChannelUserByChannelNameByNames(user_name: string, channel_name: string) {
 		try {
 			const channel: Channel = await this.prisma.channel.findUnique({
 				where: {
@@ -340,34 +335,6 @@ export class ChannelService {
 		}
 	}
 
-	// Fetch a channel user status, you can't fetch data on a channel if you are banned from it
-	async getMyChannelUser(user: User, channel_name: string): Promise<ChannelUser | null> {
-		try {
-			const channel: Channel = await this.prisma.channel.findUnique({
-				where: {
-					name: channel_name,
-				},
-			});
 
-			if (!channel) throw new BadRequestException("Channel doesn't exist");
-
-			const channel_user: ChannelUser = await this.prisma.channelUser.findUnique({
-				where: {
-					channel_id_user_id: {
-						channel_id: channel.id,
-						user_id: user.id,
-					},
-				},
-			});
-
-			return channel_user;
-		} catch (e) {
-			console.log(e);
-		}
-	}
-	
-	async findAllChannelUsers(): Promise<ChannelUser[] | null> {
-		return await this.prisma.channelUser.findMany();
-	}
 */
 }

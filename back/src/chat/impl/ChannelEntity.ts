@@ -67,6 +67,11 @@ export class ChannelEntity implements IChannel {
 	/*************************************************************************/
 	/* 								SETTERS                                  */
 	/*************************************************************************/
+	public setId(id: number): void {
+		this.id = id;
+		this.updated_at = new Date();
+	}
+
 	public setName(name: string): void {
 		this.name = name;
 		this.updated_at = new Date();

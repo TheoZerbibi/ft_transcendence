@@ -29,7 +29,7 @@ export class ChannelMessageEntity implements IChannelMessage {
 		return this.created_at;
 	}
 
-	public getChannelUserId(): number {
+	public getChannelUserByChannelNameId(): number {
 		return this.channel_user_id;
 	}
 }

@@ -95,7 +95,10 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get a channel by its name' })
 	@ApiBearerAuth('JWT-auth')
-	async getChannelByNameIfAllowed(@GetUser() user: User, @Param('name') channel_name: string) {
+	async getChannelByNameIfAllowed(
+		@GetUser() user: User,
+		@Param('name') channel_name: string,
+	): Promise<ChannelEntity> {
 		return await this.channelService.getChannelByNameIfAllowed(user, channel_name);
 	}
 
@@ -104,8 +107,12 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get a channel by its id' })
 	@ApiBearerAuth('JWT-auth')
-	async getChannelByIdIfAllowed(@GetUser() user: User, @Param('id') channel_id: number) {
-		return await this.channelService.getChannelByIdIfAllowed(user, channel_id);
+	async getChannelByIdIfAllowed(
+		@GetUser() user: User,
+		@Param('id') channel_id_string: string,
+	): Promise<ChannelEntity> {
+		const channel_id: number = parseInt(channel_id_string, 10);
+		return await this.channelService.getChannelByIdIfAllowed(user, 1);
 	}
 
 	//Get all users in a channel
@@ -113,11 +120,11 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get all channel users' })
 	@ApiBearerAuth('JWT-auth')
-	async getChannelUsers(
+	async getAllChannelUsersByChannelName(
 		@GetUser() user: User,
 		@Param(':channel') channel_name: string,
 	): Promise<ChannelUserEntity[] | null> {
-		return await this.channelService.getChannelUsers(user, channel_name);
+		return await this.channelService.getAllChannelUsersByChannelName(user, channel_name);
 	}
 
 	/****************** Users **********************/
@@ -128,10 +135,11 @@ export class ChannelController {
 	@ApiBearerAuth('JWT-auth')
 	async modChannel(
 		@GetUser() user: User,
-		@Param('id') id: number,
+		@Param('id') channel_id_string: string,
 		@Body() newParamsdto: ChannelSettingsDto,
 	): Promise<ChannelEntity> {
-		return await this.channelService.modChannel(user, id, newParamsdto);
+		const channel_id: number = parseInt(channel_id_string, 10);
+		return await this.channelService.modChannel(user, channel_id, newParamsdto);
 	}
 
 	/*

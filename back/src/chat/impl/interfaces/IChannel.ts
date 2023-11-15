@@ -11,6 +11,7 @@ export interface IChannel {
 	getUsers(): IChannelUser[];
 	getMessages(): IChannelMessage[];
 
+	setId(id: number): void;
 	setName(name: string): void;
 	setPassword(password: string): void;
 	setPublic(publicChannel: boolean): void;
