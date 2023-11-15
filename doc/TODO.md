@@ -2,6 +2,7 @@
 ## to do
 - try catch : error prisma demander a gpt
 - dto / prisma
+- check password !!
 - check ban
 - check blocked
 - check friend

@@ -61,3 +61,9 @@ export class CreateChannelUserDto {
 	// eslint-disable-next-line
 	chan_password: string;
 }
+
+export class UpdateChannelUserDto {
+	@ApiProperty()
+	@IsBoolean()
+	is_
+}

@@ -178,7 +178,7 @@ export class ChannelService {
 	async modChannel(user: User, channel_id: number, newParamsdto: ChannelSettingsDto): Promise<ChannelEntity> {
 		try {
 			const channelEntity: ChannelEntity | null = await this.getChannelById(channel_id);
-			if (!channelEntity) throw new BadRequestException(`Channel with id ${channel_id} doesn't exist`);
+			if (!channelEntity) throw new BadRequestException(`Channel doesn't exist`);
 
 			const channelUser: ChannelUserEntity | null = await this.getChannelUserByChannelName(
 				user,
@@ -188,14 +188,17 @@ export class ChannelService {
 			if (!channelUser.isOwner() || !channelUser.isAdmin())
 				throw new ForbiddenException('You are not authorized to operate on this channel');
 
+			channelEntity.setName(newParamsdto.name);
+			channelEntity.setPassword(newParamsdto.password);
+			channelEntity.setPublic(newParamsdto.is_public);
 			await this.prisma.channel.update({
 				where: {
-					id: channelUser.getChannelId(),
+					id: channel_id,
 				},
 				data: {
-					name: newParamsdto.name,
-					password: newParamsdto.password,
-					is_public: newParamsdto.is_public,
+					name: channelEntity.getName(),
+					password: channelEntity.getPassword(),
+					public: channelEntity.getIsPublic(),
 					updated_at: new Date(),
 				},
 			});
@@ -209,6 +212,32 @@ export class ChannelService {
 		}
 	}
 
+	async joinChannel(user: User, channel_name: string): Promise<void> {
+		try {
+			const channel: ChannelEntity | null = await this.getChannelByName(channel_name);
+			if (!channel) throw new BadRequestException("Channel doesn't exist");
+			const channelUserEntity: ChannelUserEntity | null = await this.getChannelUserByChannelName(
+				user,
+				channel_name,
+			);
+			if (channelUserEntity) throw new BadRequestException('You are already on this channel');
+			const channelUser = await this.prisma.channelUser.create({
+				data: {
+					channel_id: channel.getId(),
+					user_id: user.id,
+				},
+			});
+			this.localChannels
+				.find((channelEntity) => channelEntity.getName() === channel_name)
+				?.addUser(new ChannelUserEntity(channelUser));
+		} catch (e) {
+			throw new BadRequestException(e);
+		}
+	}
+
+	/***********************************************/
+	/* 					Deletion				   */
+	/***********************************************/
 	/*
 	async updateChannelUser(dto: UpdateChannelUserDto, user: User) {
 		try {
@@ -254,13 +283,11 @@ export class ChannelService {
 
 	/***************** Privileges ******************/
 
-	/* 	
-	async hasPrivilegesOnTarget(user: User, target: User, channel: Channel): Promise<boolean> {
+/* 	async hasPrivilegesOnTarget(user: User, target: User, channel: Channel): Promise<boolean> {
 		const userPrivileges = await this.getPrivilegesLvl(user, channel.name);
 		if (userPrivileges === null) throw new BadRequestException('You are not on this channel');
 		const targetPrivileges = await this.getPrivilegesLvl(target, channel.name);
 		if (targetPrivileges === null) throw new BadRequestException('Target is not on this channel');
 		return userPrivileges > targetPrivileges;
-	}
-	*/
+	} */
 }

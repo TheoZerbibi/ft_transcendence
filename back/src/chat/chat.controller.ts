@@ -72,6 +72,7 @@ export class ChannelController {
 		return await this.channelService.getAllChannelUsers();
 	}
 
+	/*************** Channel lists ****************/
 	// Get all public channels
 	@Get('discover')
 	@UseGuards(JwtGuard)
@@ -90,6 +91,8 @@ export class ChannelController {
 		return await this.channelService.getJoinedChannels(user);
 	}
 
+	/************** Channel access ****************/
+
 	// Will show the public infos of the channel and possibility to join it BUT not if you are banned / is private
 	@Get(':name')
 	@UseGuards(JwtGuard)
@@ -103,13 +106,33 @@ export class ChannelController {
 	}
 
 	// Will show the public infos of the channel and possibility to join it BUT not if you are banned / is private
-/* 	@Get(':id')
+	// PROBLEM : impossible to get the channel id from the body coz GET method and Param decorator seems to not receive number
+	/*
+ 	@Get(':id')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get a channel by its id' })
 	@ApiBearerAuth('JWT-auth')
 	async getChannelByIdIfAllowed(@GetUser() user: User, @Body() id: number): Promise<ChannelEntity> {
 		return await this.channelService.getChannelByIdIfAllowed(user, id);
-	} */
+	}
+	*/
+
+	/************** Channel settings ***************/
+
+	@Patch('settings/:id')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'mod channel' })
+	@ApiBearerAuth('JWT-auth')
+	async modChannel(
+		@GetUser() user: User,
+		@Param('id') channel_id_string: string,
+		@Body() newParamsdto: ChannelSettingsDto,
+	): Promise<ChannelEntity> {
+		const channel_id: number = parseInt(channel_id_string, 10);
+		return await this.channelService.modChannel(user, channel_id, newParamsdto);
+	}
+
+	/****************** Users **********************/
 
 	//Get all users in a channel
 	@Get(':channel/users')
@@ -123,28 +146,20 @@ export class ChannelController {
 		return await this.channelService.getAllChannelUsersByChannelName(user, channel_name);
 	}
 
-	/****************** Users **********************/
-
-	@Patch('settings/:id')
+	@Patch(':channel/addUser')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'mod Channel' })
+	@ApiOperation({ summary: 'Add user to channel' })
 	@ApiBearerAuth('JWT-auth')
-	async modChannel(
-		@GetUser() user: User,
-		@Param('id') channel_id_string: string,
-		@Body() newParamsdto: ChannelSettingsDto,
-	): Promise<ChannelEntity> {
-		const channel_id: number = parseInt(channel_id_string, 10);
-		return await this.channelService.modChannel(user, channel_id, newParamsdto);
+	async joinChannel(@GetUser() user: User, @Param(':channel') channel_name: string): Promise<void> {
+		return await this.channelService.joinChannel(user, channel_name);
 	}
 
 	/*
-	// TODO
-	@Patch('mod/user')
+	@Patch('mod_user/:id')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Get all accessible channel' })
+	@ApiOperation({ summary: 'mod channel user' })
 	@ApiBearerAuth('JWT-auth')
-	updateUser(@Body() dto: UpdateChannelUserDto, @GetUser() user: User): Promise<boolean> {
+	async updateUser(@Body() dto: UpdateChannelUserDto, @GetUser() user: User): Promise<boolean> {
 		return null;
 	}
 
