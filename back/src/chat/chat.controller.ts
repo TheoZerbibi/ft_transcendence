@@ -103,17 +103,13 @@ export class ChannelController {
 	}
 
 	// Will show the public infos of the channel and possibility to join it BUT not if you are banned / is private
-	@Get(':id')
+/* 	@Get(':id')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get a channel by its id' })
 	@ApiBearerAuth('JWT-auth')
-	async getChannelByIdIfAllowed(
-		@GetUser() user: User,
-		@Param('id') channel_id_string: string,
-	): Promise<ChannelEntity> {
-		const channel_id: number = parseInt(channel_id_string, 10);
-		return await this.channelService.getChannelByIdIfAllowed(user, 1);
-	}
+	async getChannelByIdIfAllowed(@GetUser() user: User, @Body() id: number): Promise<ChannelEntity> {
+		return await this.channelService.getChannelByIdIfAllowed(user, id);
+	} */
 
 	//Get all users in a channel
 	@Get(':channel/users')

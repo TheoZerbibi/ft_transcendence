@@ -193,7 +193,9 @@ export class ChannelService {
 					id: channelUser.getChannelId(),
 				},
 				data: {
-					...newParamsdto,
+					name: newParamsdto.name,
+					password: newParamsdto.password,
+					is_public: newParamsdto.is_public,
 					updated_at: new Date(),
 				},
 			});
