@@ -1,5 +1,5 @@
 export interface IChannelUser {
-	getId(): number;
+	getChannelUserId(): number;
 	getChannelId(): number;
 	getUserId(): number;
 	isOwner(): boolean;

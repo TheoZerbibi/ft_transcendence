@@ -1,5 +1,5 @@
-import { IChannelMessage } from './IChannelMessage';
-import { IChannelUser } from './IChannelUser';
+import { ChannelMessageEntity } from '../ChannelMessageEntity';
+import { ChannelUserEntity } from '../ChannelUserEntity';
 
 export interface IChannel {
 	getId(): number;
@@ -8,19 +8,19 @@ export interface IChannel {
 	getIsPublic(): boolean;
 	getCreatedAt(): Date;
 	getUpdatedAt(): Date;
-	getUsers(): IChannelUser[];
-	getMessages(): IChannelMessage[];
+	getUsers(): ChannelUserEntity[];
+	getMessages(): ChannelMessageEntity[];
 
 	setId(id: number): void;
 	setName(name: string): void;
 	setPassword(password: string): void;
 	setPublic(publicChannel: boolean): void;
-	setUsers(users: IChannelUser[]): void;
-	setMessages(messages: IChannelMessage[]): void;
+	setUsers(users: ChannelUserEntity[]): void;
+	setMessages(messages: ChannelMessageEntity[]): void;
 
-	addUser(user: IChannelUser): void;
-	addMessage(message: IChannelMessage): void;
+	addUser(user: ChannelUserEntity): void;
+	addMessage(message: ChannelMessageEntity): void;
 
-	removeUser(user: IChannelUser): void;
-	removeMessage(message: IChannelMessage): void;
+	removeUser(user: ChannelUserEntity): void;
+	removeMessage(message: ChannelMessageEntity): void;
 }

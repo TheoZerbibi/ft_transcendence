@@ -1,5 +1,5 @@
 export interface IChannelMessage {
-	getId(): number;
+	getMessageId(): number;
 	getContent(): string;
 	getCreatedAt(): Date;
 	getChannelUserId(): number;

@@ -108,12 +108,12 @@ export class ChannelEntity implements IChannel {
 	}
 
 	public removeUser(user: ChannelUserEntity): void {
-		this.users = this.users.filter((u) => u.getId() !== user.getId());
+		this.users = this.users.filter((u) => u.getUserId() !== user.getUserId());
 		this.updated_at = new Date();
 	}
 
 	public removeMessage(message: ChannelMessageEntity): void {
-		this.messages = this.messages.filter((m) => m.getId() !== message.getId());
+		this.messages = this.messages.filter((m) => m.getMessageId() !== message.getMessageId());
 		this.updated_at = new Date();
 	}
 }

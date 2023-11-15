@@ -86,47 +86,13 @@ export class ChannelService {
 	/* 					Message					   */
 	/***********************************************/
 
-	/*
-	async postMessage(user: User, channel_id: number, content: string) {
-		const channel: Channel = await this.getChannelById(channel_id);
-		// if channel doesn't exist && discussion is private : create channel
-		if (!channel) throw new BadRequestException("Channel doesn't exist");
-
-		const channel_user: ChannelUser = await this.prisma.channelUser.findUnique({
-			where: {
-				channel_id_user_id: {
-					channel_id: channel.id,
-					user_id: user.id,
-				},
-			},
-		});
-		if (!channel_user && !channel.public)
-			throw new ForbiddenException("Channel doesn't exist or you don't have right to post in it");
-		await this.prisma.channelMessage.create({
-			data: {
-				content: content,
-				channel_user_id: channel.id,
-			},
-		});
-	}
-	*/
 
 	/********************************************t***/
 	/* 					Getters					   */
 	/***********************************************/
 
 	/***************** Channels ********************/
-	//DEBUG ONLY
-	/*
-	async getAllChannels(): Promise<ChannelEntity[]> {
-		return this.localChannels.map((channel) => this.toChannelListElemDto(channel)) as unknown as ChannelEntity[];
-	}
-	async toChannelListElemDto(channel: Channel): Promise<ChannelEntity> {
-		return {
-			name: channel.name,
-		} as ChannelEntity;
-	}
-	*/
+	/*DEBUG ONLY*/
 	async getAllChannels(): Promise<ChannelEntity[]> {
 		return this.localChannels;
 	}
@@ -140,7 +106,7 @@ export class ChannelService {
 		});
 		return channelUsers;
 	}
-	//*********/
+	/*END DEBUG*/
 
 	async getAllPublicChannels(): Promise<ChannelListElemDto[] | null> {
 		const publicChannels = this.localChannels.filter((channel) => channel.getIsPublic());
@@ -169,20 +135,24 @@ export class ChannelService {
 
 	async getChannelByIdIfAllowed(user: User, channel_id: number): Promise<ChannelEntity | null> {
 		const channel: ChannelEntity | null = await this.getChannelById(channel_id);
-		if (!channel) throw new BadRequestException("Channel ${channel_id} doesn't exist");
+		if (!channel) throw new BadRequestException("Channel with id ${channel_id} doesn't exist");
 		if (!channel.getIsPublic() && !this.userIsMember(user, channel))
 			throw new ForbiddenException('You cannot access to this channel');
 		return channel;
 	}
 
 	async getChannelByName(channel_name: string): Promise<ChannelEntity | null> {
-		const channel: ChannelEntity | null = this.localChannels.find((channel) => channel.getName() === channel_name);
+		const channel: ChannelEntity | null = this.localChannels.find(
+			(channel: ChannelEntity) => channel.getName() === channel_name,
+		);
 
 		return channel || null;
 	}
 
 	async getChannelById(channel_id: number): Promise<ChannelEntity | null> {
-		const channel: ChannelEntity | null = this.localChannels.find((channel) => channel.getId() == channel_id);
+		const channel: ChannelEntity | null = this.localChannels.find(
+			(channel: ChannelEntity) => channel.getId() == channel_id,
+		);
 
 		return channel || null;
 	}
@@ -210,7 +180,10 @@ export class ChannelService {
 			const channelEntity: ChannelEntity | null = await this.getChannelById(channel_id);
 			if (!channelEntity) throw new BadRequestException(`Channel with id ${channel_id} doesn't exist`);
 
-			const channelUser: ChannelUserEntity | null = await this.getChannelUserByChannelName(user, channelEntity.getName());
+			const channelUser: ChannelUserEntity | null = await this.getChannelUserByChannelName(
+				user,
+				channelEntity.getName(),
+			);
 			if (!channelUser) throw new BadRequestException("You don't have access to this channel");
 			if (!channelUser.isOwner() || !channelUser.isAdmin())
 				throw new ForbiddenException('You are not authorized to operate on this channel');
@@ -279,19 +252,7 @@ export class ChannelService {
 
 	/***************** Privileges ******************/
 
-	/*
-	async getPrivilegesLvl(user: User, channel_name: string): Promise<PrivilegeStatus | null> {
-		
-	}
-
-	async isAdmin(privilegeLvl: PrivilegeStatus): Promise<boolean> {
-		return privilegeLvl === PrivilegeStatus.ADMIN;
-	}
-
-	async isOwner(privilegeLvl: PrivilegeStatus): Promise<boolean> {
-		return privilegeLvl === PrivilegeStatus.OWNER;
-	}
-
+	/* 	
 	async hasPrivilegesOnTarget(user: User, target: User, channel: Channel): Promise<boolean> {
 		const userPrivileges = await this.getPrivilegesLvl(user, channel.name);
 		if (userPrivileges === null) throw new BadRequestException('You are not on this channel');
@@ -299,42 +260,5 @@ export class ChannelService {
 		if (targetPrivileges === null) throw new BadRequestException('Target is not on this channel');
 		return userPrivileges > targetPrivileges;
 	}
-}
-
-/* 	async getChannelUserByChannelNameByNames(user_name: string, channel_name: string) {
-		try {
-			const channel: Channel = await this.prisma.channel.findUnique({
-				where: {
-					name: channel_name,
-				},
-			});
-
-			if (!channel) throw new BadRequestException("Channel doesn't exist");
-
-			const user: User = await this.prisma.channelUser.findUnique({
-				where: {
-					login: user_name,
-				},
-			});
-
-			if (!user) throw new BadRequestException("User doesn't exist");
-
-			const channel_user: ChannelUser = await this.prisma.channelUser.findUnique({
-				where: {
-					channel_id_user_id: {
-						channel_id: channel.id,
-						user_id: user.id,
-					},
-				},
-			});
-
-			return channel_user;
-		} catch (e) {
-			console.log(e);
-
-		}
-	}
-
-
-*/
+	*/
 }
