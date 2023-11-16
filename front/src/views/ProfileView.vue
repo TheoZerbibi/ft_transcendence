@@ -232,6 +232,7 @@ export default defineComponent({
 	grid-template-columns: 1fr 1fr 1fr 1fr;
 	grid-template-rows: 70px 70px 70px 70px 70px 70px 70px 70px 70px 70px 70px;
 	gap: 10px;
+	/* background: url(/src/assets/OmoriWallpapers/OmoriJournal01.png); */
 
 }
 
