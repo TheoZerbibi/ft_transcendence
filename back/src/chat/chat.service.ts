@@ -51,62 +51,11 @@ export class ChannelService {
 		}
 	}
 
-	/***********************************************/
-	/* 					Creation				   */
-	/***********************************************/
-	async create(dto: CreateChannelDto, userId: number): Promise<ChannelEntity> {
-		try {
-			const channel: Channel = await this.prisma.channel.create({
-				data: {
-					name: dto.name,
-					password: dto.password as string,
-					public: dto.is_public,
-				},
-			});
-			const channelUser = await this.prisma.channelUser.create({
-				data: {
-					channel_id: channel.id,
-					user_id: userId,
-					is_owner: true,
-					is_admin: true,
-				},
-			});
-			const newChannelEntity = new ChannelEntity(channel, [channelUser]);
-			this.localChannels.push(newChannelEntity);
-			return newChannelEntity;
-		} catch (e) {
-			if (e instanceof Prisma.PrismaClientKnownRequestError) {
-				if (e.code === 'P2002') throw new BadRequestException('Channel name taken');
-			}
-			throw new BadRequestException(e);
-		}
-	}
+	/***********************************************************************************/
+	/* 										Getters									   */
+	/***********************************************************************************/
 
-	/***********************************************/
-	/* 					Message					   */
-	/***********************************************/
-
-
-	/********************************************t***/
-	/* 					Getters					   */
-	/***********************************************/
-
-	/***************** Channels ********************/
-	/*DEBUG ONLY*/
-	async getAllChannels(): Promise<ChannelEntity[]> {
-		return this.localChannels;
-	}
-
-	async getAllChannelUsers(): Promise<ChannelUserEntity[]> {
-		const channelUsers: ChannelUserEntity[] = [];
-		this.localChannels.forEach((channel) => {
-			channel.getUsers().forEach((channelUser) => {
-				channelUsers.push(channelUser);
-			});
-		});
-		return channelUsers;
-	}
-	/*END DEBUG*/
+	/************************************** Channels ***********************************/
 
 	async getAllPublicChannels(): Promise<ChannelListElemDto[] | null> {
 		const publicChannels = this.localChannels.filter((channel) => channel.getIsPublic());
@@ -171,9 +120,41 @@ export class ChannelService {
 		return channel.getUsers().find((channelUser) => channelUser.getUserId() === user.id) || null;
 	}
 
-	/***********************************************/
-	/* 					Modification			   */
-	/***********************************************/
+	/***********************************************************************************/
+	/* 										Creation								   */
+	/***********************************************************************************/
+
+	async create(dto: CreateChannelDto, userId: number): Promise<ChannelEntity> {
+		try {
+			if (dto.name && dto.name.length > 20) throw new BadRequestException('Channel name too long');
+			const channel: Channel = await this.prisma.channel.create({
+				data: {
+					name: dto.name,
+					public: dto.is_public,
+				},
+			});
+			const channelUser = await this.prisma.channelUser.create({
+				data: {
+					channel_id: channel.id,
+					user_id: userId,
+					is_owner: true,
+					is_admin: true,
+				},
+			});
+			const newChannelEntity = new ChannelEntity(channel, [channelUser]);
+			this.localChannels.push(newChannelEntity);
+			return newChannelEntity;
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				if (e.code === 'P2002') throw new BadRequestException('Channel name taken');
+			}
+			throw new BadRequestException(e);
+		}
+	}
+
+	/***********************************************************************************/
+	/* 									Modification								   */
+	/***********************************************************************************/
 
 	async modChannel(user: User, channel_id: number, newParamsdto: ChannelSettingsDto): Promise<ChannelEntity> {
 		try {
@@ -290,4 +271,21 @@ export class ChannelService {
 		if (targetPrivileges === null) throw new BadRequestException('Target is not on this channel');
 		return userPrivileges > targetPrivileges;
 	} */
+	/***********************************************************************************/
+	/* 										DEBUG									   */
+	/***********************************************************************************/
+
+	async getAllChannels(): Promise<ChannelEntity[]> {
+		return this.localChannels;
+	}
+
+	async getAllChannelUsers(): Promise<ChannelUserEntity[]> {
+		const channelUsers: ChannelUserEntity[] = [];
+		this.localChannels.forEach((channel) => {
+			channel.getUsers().forEach((channelUser) => {
+				channelUsers.push(channelUser);
+			});
+		});
+		return channelUsers;
+	}
 }

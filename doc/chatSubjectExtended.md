@@ -1,37 +1,64 @@
-1. **Create channel**
+## CHANNELS
+
+**[ ] See channel's infos**
+- name
+>	if public / private but user is in / check pwd:
+- users
+
+**[ ] Find a channel**
+> if allowed : 
+> 	- public
+> 	- private but in
+> 	- mdp
+> 	- not banned
+
+**[x] Create channel**
     - [x] public
     - [x] private
     - [x] protected by a password
-
->	[x] The user who has created a new channel is automatically set as the channel owner 
+>	[x] create user : owner & admin
 >	[ ] until they leave it : new owner 
 
-2. [ ] A user can join a channel 
->	pwd
->	banned
+**[ ] Mod the channel**
+  - [ ] set pwd
+  - [ ] remove pwd
+  - [ ] change pwd
+>	if owner
+>	hash it
+- [x] change name
+- [x] change public/private
+>	if admin
 
-3. [ ] a user can send messages on a channel
->	muted
->	
+**[ ] Join a channel**
+>	check pwd
+>	check banned
 
-4. [ ] The user should be able to send **direct messages** to other users.
+**[ ] Leave a channel**
+>	if owner: has to choose new owner
+
+**[ ] Mod another channel user**
+   - [ ] kick
+   - [ ] ban
+   - [ ] mute (for limited time)
+>	if admin
+>	not if target = owner
+
+**[ ] Send messages on channel**
+>	not if muted
+>	check pwd
+>	not if banned
+>	not if not in chan
+
+
+## USERS / FRIENDS / DM
+
+**[ ] Direct messages to other users**
 >	not if blocked
+>	not if not friends?
 
-1. The user should be able to **block** other users. 
+**[ ] Block a user**
 >	 This way, they will see no more messages from the account they blocked.
 
-1. The **channel owner** can:
-	- set a password required to access the channel
-	- change it
-	- remove it
-    "The owner is an administrator. They can set other users as administrators."
+**[ ] Invite to play pong game**
 
-2. A user who is an administrator of a channel can:
-   - kick
-   - ban
-   - mute (for a limited time)
->	every user BUT the owner
-
-1. The user should be able to **invite other users to play a Pong game** through the chat interface.
-
-2.  The user should be able to **access other players profiles** through the chat interface
+**[ ] Access other profiles**

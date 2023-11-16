@@ -146,7 +146,7 @@ export class ChannelController {
 		return await this.channelService.getAllChannelUsersByChannelName(user, channel_name);
 	}
 
-	@Patch(':channel/addUser')
+	@Patch(':channel/join')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Add user to channel' })
 	@ApiBearerAuth('JWT-auth')

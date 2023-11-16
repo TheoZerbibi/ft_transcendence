@@ -18,14 +18,16 @@ export class ChannelListElemDto {
 
 export class ChannelSettingsDto extends ChannelListElemDto {
 	@ApiProperty()
-	@IsString()
-	// eslint-disable-next-line
-	password: string;
-
-	@ApiProperty()
 	@IsBoolean()
 	// eslint-disable-next-line
 	is_public: boolean;
+}
+
+export class ChannelPasswordDto {
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	password: string;
 }
 
 export class ChannelDto extends ChannelSettingsDto {
@@ -59,11 +61,6 @@ export class CreateChannelDto {
 	@IsString()
 	// eslint-disable-next-line
 	name: string;
-
-	@ApiProperty()
-	@IsString()
-	// eslint-disable-next-line
-	password: string;
 
 	@ApiProperty()
 	@IsBoolean()
