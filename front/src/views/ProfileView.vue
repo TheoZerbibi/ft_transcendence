@@ -69,12 +69,16 @@ export default defineComponent({
 	grid-template-columns: 1fr 1fr 1fr 1fr;
 	grid-template-rows: 70px 70px 70px 70px 70px 70px 70px 70px 70px 70px 70px;
 	gap: 10px;
+
 }
+
 
 .box {
 	background-color: darkgreen;
 	/* display: flex; */
 	/* align-items: center; */
+	background: url(/src/assets/OmoriWallpapers/OmoriJournal01.png) no-repeat;
+	background-size: cover;
 }
 .one {
 	grid-row: 1 / 6;
@@ -95,6 +99,8 @@ export default defineComponent({
 	grid-column: 2 / 5;
 	grid-row: 5 / 8;
 	display: block;
+	background: url(/src/assets/OmoriWallpapers/OmoriJournal02.png) no-repeat;
+	background-size: cover;
 }
 .six {
 	grid-row: 6 / 8;
@@ -108,6 +114,9 @@ export default defineComponent({
 .nine {
 	grid-column: 2 / 4;
 	grid-row: 8 / 12;
+	background: url(/src/assets/OmoriWallpapers/OmoriJournal02.png) no-repeat;
+	background-size: cover;
+
 }
 .ten {
 	grid-column: 4 / 5;;
