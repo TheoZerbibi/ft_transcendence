@@ -9,7 +9,7 @@
 			}"
 			class="container d-flex align-center justify-center"
 		>
-			<div v-if="isConnected">
+			<div>
 				<GameCanvas />
 				<span class="d-flex justify-center align-center ga-10">
 					<span class="d-flex justify-center ga-1">
@@ -126,7 +126,6 @@ export default {
 				return response.json();
 			})
 			.then(async (data) => {
-				console.log(data);
 				if (data.end_at) {
 					this.apiData = data;
 					snackbarStore.showSnackbar('Game is ended', 3000, 'primary');

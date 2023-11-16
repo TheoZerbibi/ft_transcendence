@@ -26,8 +26,5 @@ export default {
 		const route = useRoute();
 		this.login = route.params.login;
 	},
-	mounted() {
-		console.log(this.login);
-	},
 };
 </script>
