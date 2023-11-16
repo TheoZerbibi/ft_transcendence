@@ -34,6 +34,10 @@ export class Paddle {
 		this.score = score;
 	}
 
+	getPoint() {
+		return this.score;
+	}
+
 	update(pos: { x: number; y: number }, width: number, height: number) {
 		this.pos.x = (pos.x / 700) * this.p5.width;
 		this.pos.y = (pos.y / 400) * this.p5.height;

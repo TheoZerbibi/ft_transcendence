@@ -97,9 +97,32 @@ export class Ball {
 		this.pos.y = (this.pos.y / oldHeight) * height;
 	}
 
-	show() {
+	show(ball: P5.Image, ballLeft: P5.Image, ballRight: P5.Image, isWaiting: boolean) {
 		this.p5.fill(255);
 		this.p5.noStroke();
 		this.p5.ellipse(this.pos.x, this.pos.y, this.r * 2);
+
+		const imgSize = this.r * 3;
+		if (isWaiting) {
+			this.p5.image(ball, this.p5.width / 2 - imgSize / 2, this.p5.height / 2 - imgSize, imgSize, imgSize + 10);
+			return;
+		}
+
+		this.p5.push();
+		if (this.vel.x < 0) {
+			// Lorsque la balle va vers la gauche
+			this.p5.translate(this.pos.x, this.pos.y);
+			const angle = this.p5.atan2(this.vel.y, this.vel.x);
+			this.p5.rotate(angle);
+			this.p5.image(ballLeft, -50, -imgSize / 2, imgSize * 2, imgSize);
+		} else {
+			// Lorsque la balle va vers la droite
+			this.p5.translate(this.pos.x, this.pos.y);
+			const angle = this.p5.atan2(this.vel.y, this.vel.x);
+			this.p5.rotate(angle);
+			this.p5.image(ballRight, -50, -imgSize / 2, imgSize * 2, imgSize); // Ajustement ici
+		}
+
+		this.p5.pop();
 	}
 }

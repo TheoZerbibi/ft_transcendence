@@ -41,7 +41,7 @@ export const useUser = defineStore('user', {
 				this.avatar = undefined;
 				throw new Error(data.message);
 			}
-			console.log(data);
+
 			this.login = data.login;
 			this.displayName = data.display_name;
 			this.avatar = data.avatar;

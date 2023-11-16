@@ -20,8 +20,7 @@ export class GameController {
 	@ApiOperation({ summary: 'Create a new Game' })
 	@ApiBearerAuth('JWT-auth')
 	@HttpCode(HttpStatus.OK)
-	createNewGame(@GetUser() user: User) {
-		console.log(user);
+	createNewGame() {
 		return this.gameService.createNewGame();
 	}
 
@@ -41,10 +40,8 @@ export class GameController {
 	@HttpCode(HttpStatus.OK)
 	async joinGame(@GetUser() user: User, @Param('uuid') gameUUID: string) {
 		const response = await this.gameService.joinGame(user, gameUUID);
-		console.log('Join');
 		if (response) {
 			const isEnded: boolean = response.end_at ? true : false;
-			console.log(response);
 			await this.redisService.connectClientToSocket(response.id, gameUUID, user.id, response.is_spec, isEnded);
 			if (isEnded) {
 				return response;
