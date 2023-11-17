@@ -30,9 +30,9 @@ const router = createRouter({
 			component: () => import('../components/exemples/SnackbarExemple.vue'),
 		},
 		{
-			path: '/exemples/websocket',
-			name: 'WebsocketExemple',
-			component: () => import('../components/exemples/WebsocketExemple.vue'),
+			path: '/chat',
+			name: 'chat',
+			component: () => import('../views/ChatView.vue'),
 		},
 		{
 			path: '/exemples/p5',
@@ -45,7 +45,6 @@ const router = createRouter({
 			component: () => import('../components/exemples/ModalExemple.vue'),
 		},
 		{
-
 			path: '/chat',
 			name: 'chat',
 			component: () => import('../views/ChatView.vue'),
