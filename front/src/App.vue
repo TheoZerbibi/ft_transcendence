@@ -1,5 +1,5 @@
 <template>
-	<v-app :style="{ backgroundColor: color }">
+	<v-app>
 		<v-main>
 			<router-view />
 		</v-main>
@@ -11,12 +11,9 @@ import { defineComponent } from 'vue';
 export default defineComponent({
 	name: 'App',
 	data() {
-		return {
-			color: '#2e2e2e',
-		};
+		return {};
 	},
 });
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

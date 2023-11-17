@@ -1,40 +1,34 @@
 <template>
-		<v-row align="center" justify="center" class="fill-height">
-		<v-card class="homepage text-center rounded-card"  variant="tonal" color="green darken-4" width="600">
-			<v-card-item>	
-				<v-card-title class="title">	
+	<v-row align="center" justify="center" class="fill-height" id="background">
+		<v-card class="homepage text-center rounded-card" variant="tonal" color="green darken-4" width="700">
+			<v-card-item>
+				<v-card-title class="title">
 					<p class="neonPolice">Welcome to STING's ft_transcendence</p>
 					<br />
 					<br />
 				</v-card-title>
-
 				<v-img src="CatsRounded.png" contain max-height="300" alt="These are cute kittens"></v-img>
-
-				<v-card-subtitle>
-					Gaëlle, Ismaël, Théo, Semiha, Noé
+				<v-card-subtitle class="neonPolice homeSubtitles">
+					<br />Gaëlle, Ismaël, <span class="teamLeader">Théo</span>, Semiha, Noé
 				</v-card-subtitle>
 			</v-card-item>
-
-			<v-card-text>
-				students of 42 paris<br />
+			<v-card-text class="neonPolice homeSubtitles">
+				<br />students of 42 paris<br />
 				<!-- <strong>students of 42 paris (en gras)</strong><br /> -->
 				<!-- <mark>students of 42 paris (en surligne)</mark><br /> -->
 				<!-- <em>students of 42 paris (en italique)</em><br /> -->
 			</v-card-text>
-
 			<v-card-actions>
 				<v-btn
-					prepend-icon="&#129418"
-					class="text-capitalize" 
+					class="text-capitalize"
 					rounded="xl"
 					color="green darken-4"
 					variant="outlined"
 					size="x-large"
 					href="https://intra.42.fr"
-					target="_blank">
-						<div class ="neonPolice">
-							&#129418; Authenticate with 42
-						</div>
+					target="_blank"
+				>
+					<div class="neonPolice">&#129418; Authenticate with 42</div>
 				</v-btn>
 			</v-card-actions>
 		</v-card>
@@ -50,7 +44,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.homepage  {
+.homepage {
 	display: flex;
 	align-items: center;
 	flex-direction: column;
@@ -65,5 +59,4 @@ export default defineComponent({
 	display: flex;
 	justify-content: flex-end;
 }
-
 </style>

@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@fortawesome/fontawesome-free':
+        specifier: ^6.4.2
+        version: 6.4.2
       '@mdi/font':
         specifier: 7.3.67
         version: 7.3.67
@@ -75,9 +78,6 @@ importers:
         specifier: ^1.6.28
         version: 1.6.28
     devDependencies:
-      '@fortawesome/fontawesome-free':
-        specifier: ^6.4.2
-        version: 6.4.2
       '@rushstack/eslint-patch':
         specifier: ^1.5.1
         version: 1.5.1
@@ -756,7 +756,7 @@ packages:
     resolution: {integrity: sha512-m5cPn3e2+FDCOgi1mz0RexTUvvQibBebOUlUlW0+YrMjDTPkiJ6VTKukA1GRsvRw+12KyJndNjj0O4AgTxm2Pg==}
     engines: {node: '>=6'}
     requiresBuild: true
-    dev: true
+    dev: false
 
   /@hapi/hoek@9.3.0:
     resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}
