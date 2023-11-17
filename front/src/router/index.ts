@@ -99,7 +99,7 @@ const router = createRouter({
 			component: () => import('../components/exemples/P5Exemple.vue'),
 		},
 		{
-			path: '/api/oauth/callback',
+			path: '/api/oauth/callback:token',
 			name: 'OauthCallback',
 			component: () => import('../views/OauthCallbackView.vue'),
 		},
