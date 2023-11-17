@@ -1,5 +1,5 @@
 export interface IChannelUser {
-	getChannelUserId(): number;
+	getId(): number;
 	getChannelId(): number;
 	getUserId(): number;
 	isOwner(): boolean;
@@ -10,5 +10,5 @@ export interface IChannelUser {
 	setIsOwner(isOwner: boolean): void;
 	setIsAdmin(isAdmin: boolean): void;
 	setIsMuted(isMuted: Date): void;
-	setisBanned(isBanned: boolean): void;
+	setIsBanned(isBanned: boolean): void;
 }

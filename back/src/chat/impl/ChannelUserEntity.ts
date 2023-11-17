@@ -2,7 +2,7 @@ import { ChannelUser } from '@prisma/client';
 import { IChannelUser } from './interfaces/IChannelUser';
 
 export class ChannelUserEntity implements IChannelUser {
-	private channeluser_id: number;
+	private id: number;
 	private channel_id: number;
 	private user_id: number;
 	private is_owner: boolean;
@@ -11,7 +11,7 @@ export class ChannelUserEntity implements IChannelUser {
 	private is_banned: boolean;
 
 	constructor(channelUser: ChannelUser) {
-		this.channeluser_id = channelUser.id;
+		this.id = channelUser.id;
 		this.channel_id = channelUser.channel_id;
 		this.user_id = channelUser.user_id;
 		this.is_owner = channelUser.is_owner;
@@ -23,8 +23,8 @@ export class ChannelUserEntity implements IChannelUser {
 	/*************************************************************************/
 	/* 								GETTERS                                  */
 	/*************************************************************************/
-	public getChannelUserId(): number {
-		return this.channeluser_id;
+	public getId(): number {
+		return this.id;
 	}
 
 	public getChannelId(): number {
@@ -54,6 +54,7 @@ export class ChannelUserEntity implements IChannelUser {
 	/*************************************************************************/
 	/* 								SETTERS                                  */
 	/*************************************************************************/
+
 	public setIsOwner(isOwner: boolean): void {
 		this.is_owner = isOwner;
 	}

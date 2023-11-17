@@ -104,11 +104,11 @@ export class ChannelController {
 		return await this.channelService.joinChannel(user, channel_name, pwd);
 	}
 
-	//@Post(':channel/message')
-
 	/***********************************************************************************/
 	/* 									Modification								   */
 	/***********************************************************************************/
+
+	/*********************************** Channel Settings ******************************/
 
 	@Patch(':channel_id/settings')
 	@UseGuards(JwtGuard)
@@ -137,6 +137,97 @@ export class ChannelController {
 		return await this.channelService.modChannelPwd(user, channel_id, ChannelModPwdDto);
 	}
 
+	/*************************************** Users ************************************/
+
+	@Patch(':channel/settings/admin/:user_id')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'Set user as admin of channel' })
+	@ApiBearerAuth('JWT-auth')
+	async setAdmin(
+		@GetUser() user: User,
+		@Param('channel') channel_id_string: string,
+		@Param('id') target_user_id_str: string,
+		@Body() pwd: string,
+	): Promise<void> {
+		const channel_id: number = parseInt(channel_id_string, 10);
+		const target_user_id: number = parseInt(target_user_id_str, 10);
+		return await this.channelService.setChannelUserAsAdmin(user, channel_id, target_user_id, pwd);
+	}
+
+	@Patch(':channel/settings/mute/:user_id')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'Mute user from channel' })
+	@ApiBearerAuth('JWT-auth')
+	async muteUser(
+		@GetUser() user: User,
+		@Param('channel') channel_id_string: string,
+		@Param('id') target_user_id_str: string,
+		@Body() pwd: string,
+	): Promise<void> {
+		const channel_id: number = parseInt(channel_id_string, 10);
+		const target_user_id: number = parseInt(target_user_id_str, 10);
+		return await this.channelService.muteChannelUser(user, channel_id, target_user_id, pwd);
+	}
+
+	@Patch(':channel/settings/unmute/:user_id')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'Unmute user from channel' })
+	@ApiBearerAuth('JWT-auth')
+	async unmuteUser(
+		@GetUser() user: User,
+		@Param('channel') channel_id_string: string,
+		@Param('id') target_user_id_str: string,
+		@Body() pwd: string,
+	): Promise<void> {
+		const channel_id: number = parseInt(channel_id_string, 10);
+		const target_user_id: number = parseInt(target_user_id_str, 10);
+		return await this.channelService.unmuteChannelUser(user, channel_id, target_user_id, pwd);
+	}
+
+	@Patch(':channel/settings/kick/:user_id')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'Kick user from channel' })
+	@ApiBearerAuth('JWT-auth')
+	async kickUser(
+		@GetUser() user: User,
+		@Param('channel') channel_id_string: string,
+		@Param('id') target_user_id_str: string,
+		@Body() pwd: string,
+	): Promise<void> {
+		const channel_id: number = parseInt(channel_id_string, 10);
+		const target_user_id: number = parseInt(target_user_id_str, 10);
+		return await this.channelService.kickChannelUser(user, channel_id, target_user_id, pwd);
+	}
+
+	@Patch(':channel/settings/ban/:user_id')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'Ban user from channel' })
+	@ApiBearerAuth('JWT-auth')
+	async banUser(
+		@GetUser() user: User,
+		@Param('channel') channel_id_string: string,
+		@Param('id') target_user_id_str: string,
+		@Body() pwd: string,
+	): Promise<void> {
+		const channel_id: number = parseInt(channel_id_string, 10);
+		const target_user_id: number = parseInt(target_user_id_str, 10);
+		return await this.channelService.banChannelUser(user, channel_id, target_user_id, pwd);
+	}
+
+	@Patch(':channel/settings/unban/:user_id')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'Unban user from channel (kick them)' })
+	@ApiBearerAuth('JWT-auth')
+	async unbanUser(
+		@GetUser() user: User,
+		@Param('channel') channel_id_string: string,
+		@Param('id') target_user_id_str: string,
+		@Body() pwd: string,
+	): Promise<void> {
+		const channel_id: number = parseInt(channel_id_string, 10);
+		const target_user_id: number = parseInt(target_user_id_str, 10);
+		return await this.channelService.unbanChannelUser(user, channel_id, target_user_id, pwd);
+	}
 
 	/***********************************************************************************/
 	/* 										DEBUG									   */

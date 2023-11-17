@@ -6,7 +6,7 @@ export class MessageDto {
 	@ApiProperty()
 	@IsNumber()
 	// eslint-disable-next-line
-	user_id: number;
+	target_id: number;
 
 	@ApiProperty()
 	@IsNumber()
