@@ -1,5 +1,5 @@
 // COMMON
-import { UseGuards, Controller, Body, Param, Get, Patch, Post } from '@nestjs/common';
+import { UseGuards, Controller, Body, Param, Get, Patch, Post, Delete } from '@nestjs/common';
 // AUTH
 import { JwtGuard } from 'src/auth/guard';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -11,7 +11,14 @@ import { ChannelMessageEntity } from './impl/ChannelMessageEntity';
 // PRISMA
 import { Channel, User, ChannelUser, ChannelMessage } from '@prisma/client';
 // DTO
-import { ChannelDto, ChannelListElemDto, CreateChannelDto, ChannelSettingsDto, ChannelModPwdDto } from './dto/channel.dto';
+import {
+	ChannelDto,
+	ChannelListElemDto,
+	CreateChannelDto,
+	ChannelSettingsDto,
+	ChannelModPwdDto,
+} from './dto/channel.dto';
+import { ChannelMessageDto } from './dto/channel-message.dto';
 // SERVICES
 import { ChannelService } from './chat.service';
 import { UserService } from '../user/user.service';
@@ -92,7 +99,7 @@ export class ChannelController {
 		return await this.channelService.createChannel(dto, user.id);
 	}
 
-	@Patch(':channel/join')
+	@Post(':channel/join')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Add user to channel' })
 	@ApiBearerAuth('JWT-auth')
@@ -110,7 +117,7 @@ export class ChannelController {
 
 	/*********************************** Channel Settings ******************************/
 
-	@Patch(':channel_id/settings')
+	@Patch('settings/:channel_id/name_or_privacy')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Mod channel name & privacy' })
 	@ApiBearerAuth('JWT-auth')
@@ -139,7 +146,7 @@ export class ChannelController {
 
 	/*************************************** Users ************************************/
 
-	@Patch(':channel/settings/admin/:user_id')
+	@Patch('settings/:channel_id/admin/:user_id')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Set user as admin of channel' })
 	@ApiBearerAuth('JWT-auth')
@@ -154,7 +161,7 @@ export class ChannelController {
 		return await this.channelService.setChannelUserAsAdmin(user, channel_id, target_user_id, pwd);
 	}
 
-	@Patch(':channel/settings/mute/:user_id')
+	@Patch('settings/:channel_id/mute/:user_id')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Mute user from channel' })
 	@ApiBearerAuth('JWT-auth')
@@ -169,7 +176,7 @@ export class ChannelController {
 		return await this.channelService.muteChannelUser(user, channel_id, target_user_id, pwd);
 	}
 
-	@Patch(':channel/settings/unmute/:user_id')
+	@Patch('settings/:channel_id/unmute/:user_id')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Unmute user from channel' })
 	@ApiBearerAuth('JWT-auth')
@@ -184,7 +191,7 @@ export class ChannelController {
 		return await this.channelService.unmuteChannelUser(user, channel_id, target_user_id, pwd);
 	}
 
-	@Patch(':channel/settings/kick/:user_id')
+	@Patch('settings/:channel_id/kick/:user_id')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Kick user from channel' })
 	@ApiBearerAuth('JWT-auth')
@@ -199,7 +206,7 @@ export class ChannelController {
 		return await this.channelService.kickChannelUser(user, channel_id, target_user_id, pwd);
 	}
 
-	@Patch(':channel/settings/ban/:user_id')
+	@Patch('settings/:channel_id/ban/:user_id')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Ban user from channel' })
 	@ApiBearerAuth('JWT-auth')
@@ -214,7 +221,7 @@ export class ChannelController {
 		return await this.channelService.banChannelUser(user, channel_id, target_user_id, pwd);
 	}
 
-	@Patch(':channel/settings/unban/:user_id')
+	@Patch('settings/:channel_id/unban/:user_id')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Unban user from channel (kick them)' })
 	@ApiBearerAuth('JWT-auth')
@@ -227,6 +234,51 @@ export class ChannelController {
 		const channel_id: number = parseInt(channel_id_string, 10);
 		const target_user_id: number = parseInt(target_user_id_str, 10);
 		return await this.channelService.unbanChannelUser(user, channel_id, target_user_id, pwd);
+	}
+
+	/***********************************************************************************/
+	/* 										Messages								   */
+	/***********************************************************************************/
+
+	@Post(':channel_id/message')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'Send message to channel' })
+	@ApiBearerAuth('JWT-auth')
+	async sendMessage(
+		@GetUser() user: User,
+		@Param('channel_id') channel_id_string: string,
+		@Body() channelMessageDto: ChannelMessageDto,
+	): Promise<ChannelMessageEntity> {
+		const channel_id: number = parseInt(channel_id_string, 10);
+		return await this.channelService.sendMessage(user, channel_id, channelMessageDto);
+	}
+
+	@Get(':channel_id/messages')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'Get 20 last messages from channel' })
+	@ApiBearerAuth('JWT-auth')
+	async getLastMessages(
+		@GetUser() user: User,
+		@Param('channel_id') channel_id_string: string,
+		@Body() pwd: string,
+	): Promise<ChannelMessageEntity[]> {
+		const channel_id: number = parseInt(channel_id_string, 10);
+		return await this.channelService.getLastMessages(user, channel_id, pwd);
+	}
+
+	@Delete(':channel_id/:message_id')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'Delete message from channel' })
+	@ApiBearerAuth('JWT-auth')
+	async deleteMessage(
+		@GetUser() user: User,
+		@Param('channel_id') channel_id_string: string,
+		@Param('message_id') message_id_string: string,
+		@Body() pwd: string,
+	): Promise<void> {
+		const channel_id: number = parseInt(channel_id_string, 10);
+		const message_id: number = parseInt(message_id_string, 10);
+		return await this.channelService.deleteMessage(user, channel_id, message_id, pwd);
 	}
 
 	/***********************************************************************************/

@@ -7,8 +7,14 @@ import { ChannelMessageEntity } from './impl/ChannelMessageEntity';
 // PRISMA
 import { Prisma, User, Channel, ChannelUser, ChannelMessage } from '@prisma/client';
 // DTO
-import { ChannelDto, ChannelListElemDto, CreateChannelDto, ChannelSettingsDto, ChannelModPwdDto } from './dto/channel.dto';
-import { ChannelUserDto, CreateChannelUserDto } from './dto/channel-user.dto';
+import {
+	ChannelDto,
+	ChannelListElemDto,
+	CreateChannelDto,
+	ChannelSettingsDto,
+	ChannelModPwdDto,
+} from './dto/channel.dto';
+import { ChannelMessageDto } from './dto/channel-message.dto';
 // SERVICES
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserService } from '../user/user.service';
@@ -388,22 +394,70 @@ export class ChannelService {
 	/* 										Messages								   */
 	/***********************************************************************************/
 
-/* 	async sendMessage(user: User, dto: ChannelMessage): Promise<ChannelMessageEntity> {
-		const channelEntity: ChannelEntity | null = await this.findChannelById(dto.channel_id);
+	async sendMessage(user: User, channel_id: number, messageDto: ChannelMessageDto): Promise<ChannelMessageEntity> {
+		const channelEntity: ChannelEntity | null = await this.findChannelById(channel_id);
 		this.checkChannelExists(channelEntity);
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		this.checkUserAccess(channelUser, channelEntity);
-		this.checkPassword(channelEntity, dto.pwd);
+		this.checkPassword(channelEntity, messageDto.password);
+
+		if (channelUser.isMuted() && channelUser.isMuted() > new Date()) throw new ForbiddenException('You are muted on this channel');
+		if (messageDto.content.length > 200) throw new BadRequestException('Message too long (max 200 characters)');
 
 		const channelMessage = await this.prisma.channelMessage.create({
 			data: {
-				channel_user_id: dto.channel_user_id,
-				content: dto.content,
+				channel_user_id: channelUser.getId(),
+				content: messageDto.content,
+				created_at: new Date(),
 			},
 		});
-		return channelMessage;
+		const messageEntity: ChannelMessageEntity = new ChannelMessageEntity(channelMessage);
+		channelEntity.addMessage(messageEntity);
+		return messageEntity;
 	}
- */
+
+	async getLastMessages(user: User, channel_id: number, pwd: string): Promise<ChannelMessageEntity[] | null> {
+		const channelEntity: ChannelEntity | null = await this.findChannelById(channel_id);
+		this.checkChannelExists(channelEntity);
+		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
+		this.checkUserAccess(channelUser, channelEntity);
+		this.checkPassword(channelEntity, pwd);
+
+		const messages = await this.prisma.channelMessage.findMany({
+			where: {
+				channel_user_id: {
+					in: channelEntity.getUsers().map((user) => user.getId()),
+				},
+			},
+			orderBy: {
+				created_at: 'desc',
+			},
+			take: 20,
+		});
+		return messages.map((message) => new ChannelMessageEntity(message));
+	}
+
+	async deleteMessage(user: User, channel_id: number, message_id: number, pwd: string): Promise<void> {
+		const channelEntity: ChannelEntity | null = await this.findChannelById(channel_id);
+		this.checkChannelExists(channelEntity);
+		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
+		this.checkUserAccess(channelUser, channelEntity);
+		this.checkPassword(channelEntity, pwd);
+
+		const messageEntity: ChannelMessageEntity | null = channelEntity
+			.getMessages()
+			.find((message) => message.getMessageId() === message_id);
+		if (!messageEntity) throw new BadRequestException('Message does not exist');
+		if (messageEntity.getChannelUserId() !== channelUser.getId())
+			throw new BadRequestException('You cannot delete someone else message');
+		await this.prisma.channelMessage.delete({
+			where: {
+				id: message_id,
+			},
+		});
+		channelEntity.removeMessage(messageEntity);
+	}
+
 	/***********************************************************************************/
 	/* 										UTILS									   */
 	/***********************************************************************************/

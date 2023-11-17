@@ -3,7 +3,7 @@
 **[b] Channels list**
 - [b] all public channel (except banned) : discover
 - [b] all joined channels (except banned)
-																	},
+
 **[b] Channel infos**
 - [b] name
 >	if public / private but user is in / check pwd:
@@ -27,6 +27,7 @@
   - [b] set pwd
   - [b] remove pwd
   - [b] change pwd
+  - [b] set new admin
 >	if owner
 >	hash it
 - [b] change name
@@ -50,12 +51,20 @@
 >	if admin
 >	not if target = owner
 
-**[ ] Send messages on channel**
+**[b] Send messages on channel**
 >	not if muted (date > actual date)
 >	check pwd
 >	not if banned
 >	not if not in chan
 
+**[b] Get messages from channel**
+>	not if banned
+>	not if not in chan
+
+**[b] Delete message from channel**
+>	not it not from you
+>	not if banned
+>	not if not in chan
 
 ## USERS / FRIENDS / DM
 
