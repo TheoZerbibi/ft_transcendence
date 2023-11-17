@@ -3,8 +3,4 @@
 # Questions:
 ___
 
-- what about channel sans nom
-- comment acceder aux foreign keys en tant que variables (id qui relie suffit ?)
-- qui s'occupe des friends
-- comment recaster
-
+- est-ce que je recup un pointeur quand je recup une variable sans faire new

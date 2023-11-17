@@ -7,7 +7,7 @@ import { ChannelMessageEntity } from './impl/ChannelMessageEntity';
 // PRISMA
 import { Prisma, User, Channel, ChannelUser, ChannelMessage } from '@prisma/client';
 // DTO
-import { ChannelDto, ChannelListElemDto, CreateChannelDto, ChannelSettingsDto } from './dto/channel.dto';
+import { ChannelDto, ChannelListElemDto, CreateChannelDto, ChannelSettingsDto, ChannelModPwdDto } from './dto/channel.dto';
 import { ChannelUserDto, CreateChannelUserDto } from './dto/channel-user.dto';
 // SERVICES
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -84,7 +84,7 @@ export class ChannelService {
 
 	async getChannelByIdIfAllowed(user: User, channel_id: number): Promise<ChannelEntity | null> {
 		const channel: ChannelEntity | null = await this.getChannelById(channel_id);
-		if (!channel) throw new BadRequestException("Channel with id ${channel_id} doesn't exist");
+		if (!channel) throw new BadRequestException("Channel doesn't exist");
 		if (!channel.getIsPublic() && !this.userIsMember(user, channel))
 			throw new ForbiddenException('You cannot access to this channel');
 		return channel;
@@ -106,7 +106,7 @@ export class ChannelService {
 		return channel || null;
 	}
 
-	//******************* Users ********************/
+	/************************************** Users ***********************************/
 
 	async getAllChannelUsersByChannelName(user: User, channel_name: string): Promise<ChannelUserEntity[] | null> {
 		const channel: ChannelEntity = await this.getChannelByNameIfAllowed(user, channel_name);
@@ -156,21 +156,18 @@ export class ChannelService {
 	/* 									Modification								   */
 	/***********************************************************************************/
 
-	async modChannel(user: User, channel_id: number, newParamsdto: ChannelSettingsDto): Promise<ChannelEntity> {
+	async modChannel(user: User, channel_id: number, pwd: string, newParamsdto: ChannelSettingsDto): Promise<void> {
 		try {
-			const channelEntity: ChannelEntity | null = await this.getChannelById(channel_id);
-			if (!channelEntity) throw new BadRequestException(`Channel doesn't exist`);
-
+			const channelEntity: ChannelEntity | null = await this.getChannelByIdIfAllowed(user, channel_id);
+			this.checkPassword(channelEntity, pwd);
 			const channelUser: ChannelUserEntity | null = await this.getChannelUserByChannelName(
 				user,
 				channelEntity.getName(),
 			);
 			if (!channelUser) throw new BadRequestException("You don't have access to this channel");
-			if (!channelUser.isOwner() || !channelUser.isAdmin())
+			if (!channelUser.isAdmin())
 				throw new ForbiddenException('You are not authorized to operate on this channel');
-
 			channelEntity.setName(newParamsdto.name);
-			channelEntity.setPassword(newParamsdto.password);
 			channelEntity.setPublic(newParamsdto.is_public);
 			await this.prisma.channel.update({
 				where: {
@@ -178,12 +175,10 @@ export class ChannelService {
 				},
 				data: {
 					name: channelEntity.getName(),
-					password: channelEntity.getPassword(),
 					public: channelEntity.getIsPublic(),
 					updated_at: new Date(),
 				},
 			});
-			return channelEntity;
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				if (e.code === 'P2002') throw new BadRequestException('Channel name taken');
@@ -191,6 +186,31 @@ export class ChannelService {
 			}
 			throw new BadRequestException(e);
 		}
+	}
+
+	async modChannelPwd(user: User, channel_id: number, dto: ChannelModPwdDto): Promise<void> {
+		const channelEntity: ChannelEntity | null = await this.getChannelByIdIfAllowed(user, channel_id);
+		const channelUser: ChannelUserEntity | null = await this.getChannelUserByChannelName(
+			user,
+			channelEntity.getName(),
+		);
+		if (!channelUser) throw new BadRequestException("You don't have access to this channel");
+		if (!channelUser.isOwner())
+			throw new ForbiddenException('You are not authorized to set or modify the password on this channel');
+		this.checkPassword(channelEntity, dto.prev_pwd);
+		if ((dto.new_pwd && dto.new_pwd.length > 20) || (dto.new_pwd_confirm && dto.new_pwd_confirm.length > 20))
+			throw new BadRequestException('Password too long');
+		if (dto.new_pwd !== dto.new_pwd_confirm) throw new BadRequestException('Passwords do not match');
+		channelEntity.setPassword(dto.new_pwd);
+		await this.prisma.channel.update({
+			where: {
+				id: channel_id,
+			},
+			data: {
+				password: channelEntity.getPassword(),
+				updated_at: new Date(),
+			},
+		});
 	}
 
 	async joinChannel(user: User, channel_name: string): Promise<void> {
@@ -250,9 +270,9 @@ export class ChannelService {
 	}
 	*/
 
-	/***********************************************/
-	/* 					Utils					   */
-	/***********************************************/
+	/***********************************************************************************/
+	/* 										UTILS									   */
+	/***********************************************************************************/
 
 	/*************** Permissions ****I**************/
 	async userIsMember(user: User, channel: ChannelEntity): Promise<boolean> {
@@ -260,6 +280,10 @@ export class ChannelService {
 		if (channelUsers.some((channelUser) => channelUser.getUserId() === user.id))
 			return !channelUsers.some((channelUser) => channelUser.isBanned());
 		return true;
+	}
+
+	async checkPassword(channel: ChannelEntity, pwd: string): Promise<void> {
+		if (channel.getPassword() && pwd !== channel.getPassword()) throw new BadRequestException('Wrong password');
 	}
 
 	/***************** Privileges ******************/

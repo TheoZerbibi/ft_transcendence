@@ -2,51 +2,12 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsBoolean, IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 import { ChannelUserDto } from './channel-user.dto';
 
-export class ChannelIdDto {
-	@ApiProperty()
-	@IsNumber()
-	// eslint-disable-next-line
-	id: number;
-}
 
-export class ChannelListElemDto {
+export class ChannelDto {
 	@ApiProperty()
 	@IsString()
 	// eslint-disable-next-line
 	name: string;
-}
-
-export class ChannelSettingsDto extends ChannelListElemDto {
-	@ApiProperty()
-	@IsBoolean()
-	// eslint-disable-next-line
-	is_public: boolean;
-}
-
-export class ChannelPasswordDto {
-	@ApiProperty()
-	@IsString()
-	// eslint-disable-next-line
-	password: string;
-}
-
-export class ChannelDto extends ChannelSettingsDto {
-	@ApiProperty()
-	@IsNumber()
-	// eslint-disable-next-line
-	id: number;
-}
-
-export class ChannelWithCreationAndModificationDateDto extends ChannelDto {
-	@ApiProperty()
-	@IsDate()
-	// eslint-disable-next-line
-	created_at: Date;
-
-	@ApiProperty()
-	@IsDate()
-	// eslint-disable-next-line
-	updated_at: Date;
 }
 
 export class ChannelWithUsersDto extends ChannelDto {
@@ -67,4 +28,46 @@ export class CreateChannelDto {
 	@IsOptional()
 	// eslint-disable-next-line
 	is_public: boolean;
+}
+
+export class ChannelListElemDto {
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	name: string;
+}
+
+export class ChannelSettingsDto {
+	@ApiProperty()
+	@IsNumber()
+	// eslint-disable-next-line
+	id: number;
+
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	name: string;
+
+	@ApiProperty()
+	@IsBoolean()
+	@IsOptional()
+	// eslint-disable-next-line
+	is_public: boolean;
+}
+
+export class ChannelModPwdDto {
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	prev_pwd: string;
+
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	new_pwd: string;
+
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	new_pwd_confirm: string;
 }

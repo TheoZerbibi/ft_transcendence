@@ -1,22 +1,26 @@
 ## CHANNELS
 
-**[ ] See channel's infos**
-- name
+**[b] Channels list**
+- [b] all public channel (except banned) : discover
+- [b] all joined channels (except banned)
+																	},
+**[b] Channel infos**
+- [b] name
 >	if public / private but user is in / check pwd:
-- users
+- [b] users
 
-**[ ] Find a channel**
+**[b] Find a channel**
 > if allowed : 
 > 	- public
 > 	- private but in
 > 	- mdp
 > 	- not banned
 
-**[x] Create channel**
-    - [x] public
-    - [x] private
-    - [x] protected by a password
->	[x] create user : owner & admin
+**[b] Create channel**
+    - [b] public
+    - [b] private
+    - [b] protected by a password
+>	[b] create user : owner & admin
 >	[ ] until they leave it : new owner 
 
 **[ ] Mod the channel**
@@ -25,8 +29,8 @@
   - [ ] change pwd
 >	if owner
 >	hash it
-- [x] change name
-- [x] change public/private
+- [b] change name
+- [b] change public/private
 >	if admin
 
 **[ ] Join a channel**
@@ -52,7 +56,10 @@
 
 ## USERS / FRIENDS / DM
 
-**[ ] Direct messages to other users**
+**[ ] List of dms**
+>	usernames
+
+**[ ] Send direct messages to other users**
 >	not if blocked
 >	not if not friends?
 
