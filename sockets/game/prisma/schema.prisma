@@ -76,29 +76,14 @@ model users {
   game_players                     game_players[]
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 6c47f89 (suite tuto to fix)
 model game_players {
   player_id Int
   game_id   Int
   is_win    Boolean?
   is_spec   Boolean?
-<<<<<<< HEAD
   score     Int      @default(0)
-=======
->>>>>>> 6c47f89 (suite tuto to fix)
   games     games    @relation(fields: [game_id], references: [id], onDelete: Cascade)
   users     users    @relation(fields: [player_id], references: [id])
 
   @@id([player_id, game_id])
 }
-<<<<<<< HEAD
-=======
-/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
-// model gamePlayers {
-// }
->>>>>>> 89e81b3 (ca marche sur mon ordi en plein festival ou on me sort que je suis une sorciere blanche ahaha alors que je suis de l;'akatsuki mdr)
-=======
->>>>>>> 6c47f89 (suite tuto to fix)
