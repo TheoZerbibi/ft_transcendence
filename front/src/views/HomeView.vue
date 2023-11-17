@@ -34,7 +34,6 @@
 					variant="outlined"
 					size="x-large"
 					href="/auth/signup"
-					target="_blank"
 				>
 					<span class="neonPolice"> 💡 Sign in with 42 </span>
 				</v-btn>
