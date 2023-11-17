@@ -51,6 +51,11 @@ const router = createRouter({
 			component: () => import('../views/ChatView.vue'),
 		},
 		{
+			path: '/profile',
+			name: 'profile',
+			component: () => import('../views/ProfileView.vue'),
+		},
+		{
 			path: '/team',
 			name: 'team',
 			component: () => import('../views/TeamView.vue'),
@@ -74,6 +79,16 @@ const router = createRouter({
 			path: '/portfolio',
 			name: 'portfolio',
 			component: () => import('../views/PortfolioView.vue'),
+		},
+		{
+			path: '/exemples/websocket',
+			name: 'WebsocketExemple',
+			component: () => import('../components/exemples/WebsocketExemple.vue'),
+		},
+		{
+			path: '/exemples/p5',
+			name: 'P5Exemple',
+			component: () => import('../components/exemples/P5Exemple.vue'),
 		},
 	],
 });
