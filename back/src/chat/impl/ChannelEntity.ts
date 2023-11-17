@@ -6,6 +6,7 @@ import { ChannelMessageEntity } from './ChannelMessageEntity';
 export class ChannelEntity implements IChannel {
 	private id: number;
 	private name: string;
+	private is_pwd: boolean;
 	private password: string;
 	private isPublic: boolean;
 	private created_at: Date;
@@ -16,6 +17,8 @@ export class ChannelEntity implements IChannel {
 	constructor(channel: Channel, channelUsers: ChannelUser[], channelMessages?: ChannelMessage[]) {
 		this.id = channel.id;
 		this.name = channel.name;
+		this.is_pwd = channel.password ? true : false;
+		this.password = channel.password ? channel.password : '';
 		this.isPublic = channel.public;
 		this.created_at = channel.created_at;
 		this.updated_at = channel.updated_at;
@@ -25,8 +28,6 @@ export class ChannelEntity implements IChannel {
 		} else {
 			this.messages = [];
 		}
-
-		this.password = '';
 	}
 
 	/*************************************************************************/
@@ -38,6 +39,10 @@ export class ChannelEntity implements IChannel {
 
 	public getName(): string {
 		return this.name;
+	}
+
+	public getIsPwd(): boolean {
+		return this.is_pwd;
 	}
 
 	public getPassword(): string {
@@ -74,6 +79,11 @@ export class ChannelEntity implements IChannel {
 
 	public setName(name: string): void {
 		this.name = name;
+		this.updated_at = new Date();
+	}
+
+	public setIsPwd(is_pwd: boolean): void {
+		this.is_pwd = is_pwd;
 		this.updated_at = new Date();
 	}
 

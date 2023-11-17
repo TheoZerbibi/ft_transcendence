@@ -43,38 +43,41 @@ export class ChannelController {
 	//Get all channels on which user is
 	@Get('joined')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Get joined channels' })
+	@ApiOperation({ summary: 'Get joined channel names' })
 	@ApiBearerAuth('JWT-auth')
-	async getJoinedChannels(@GetUser() user: User): Promise<ChannelListElemDto[] | null> {
-		return await this.channelService.getJoinedChannels(user);
+	async getJoinedChannelNames(@GetUser() user: User): Promise<ChannelListElemDto[] | null> {
+		return await this.channelService.getJoinedChannelNames(user);
 	}
 
 	/********************************** Channel Access *********************************/
 
-	// Will show the public infos of the channel and possibility to join it BUT not if you are banned / is private
+	// Get a channel by its name
 	@Get(':name')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Get a channel by its name' })
+	@ApiOperation({ summary: 'Access to a channel by its name' })
 	@ApiBearerAuth('JWT-auth')
-	async getChannelByNameIfAllowed(
+	async accessChannelByName(
 		@GetUser() user: User,
 		@Param('name') channel_name: string,
+		@Body() pwd: string,
 	): Promise<ChannelEntity> {
-		return await this.channelService.getChannelByNameIfAllowed(user, channel_name);
+		return await this.channelService.accessChannelByName(user, channel_name, pwd);
 	}
 
 	/*************************************** Users ************************************/
 
 	//Get all users in a channel
-	@Get(':channel/users')
+	@Get(':channel_id/users')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get all channel users' })
 	@ApiBearerAuth('JWT-auth')
-	async getAllChannelUsersByChannelName(
+	async getAllChannelUsers(
 		@GetUser() user: User,
-		@Param(':channel') channel_name: string,
+		@Param('channel_id') channel_id_string: string,
+		@Body() pwd: string,
 	): Promise<ChannelUserEntity[] | null> {
-		return await this.channelService.getAllChannelUsersByChannelName(user, channel_name);
+		const channel_id: number = parseInt(channel_id_string, 10);
+		return await this.channelService.getAllChannelUsers(user, channel_id, pwd);
 	}
 
 	/***********************************************************************************/
@@ -85,16 +88,20 @@ export class ChannelController {
 	@UseGuards(JwtGuard) // Needed to access user attribute
 	@ApiOperation({ summary: 'Create channel' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async create(@GetUser() user: User, @Body() dto: CreateChannelDto): Promise<ChannelEntity> {
-		return await this.channelService.create(dto, user.id);
+	async createChannel(@GetUser() user: User, @Body() dto: CreateChannelDto): Promise<ChannelEntity> {
+		return await this.channelService.createChannel(dto, user.id);
 	}
 
 	@Patch(':channel/join')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Add user to channel' })
 	@ApiBearerAuth('JWT-auth')
-	async joinChannel(@GetUser() user: User, @Param(':channel') channel_name: string): Promise<void> {
-		return await this.channelService.joinChannel(user, channel_name);
+	async joinChannel(
+		@GetUser() user: User,
+		@Param(':channel') channel_name: string,
+		@Body() pwd: string,
+	): Promise<void> {
+		return await this.channelService.joinChannel(user, channel_name, pwd);
 	}
 
 	//@Post(':channel/message')
@@ -103,7 +110,7 @@ export class ChannelController {
 	/* 									Modification								   */
 	/***********************************************************************************/
 
-	@Patch('settings/:channel_id')
+	@Patch(':channel_id/settings')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Mod channel name & privacy' })
 	@ApiBearerAuth('JWT-auth')
@@ -139,8 +146,8 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'For debugging purpose only : Get all channels' })
 	@ApiBearerAuth('JWT-auth')
-	async getAllChannels(): Promise<ChannelEntity[]> {
-		return await this.channelService.getAllChannels();
+	async getAllChannelsDebug(): Promise<ChannelEntity[]> {
+		return await this.channelService.getAllChannelsDebug();
 	}
 
 	// DEBUG ONLY
@@ -148,8 +155,8 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'For debugging purpose only : Get all channel users' })
 	@ApiBearerAuth('JWT-auth')
-	async getAllChannelUsers(): Promise<ChannelUserEntity[]> {
-		return await this.channelService.getAllChannelUsers();
+	async getAllChannelUsersDebug(): Promise<ChannelUserEntity[]> {
+		return await this.channelService.getAllChannelUsersDebug();
 	}
 
 }
