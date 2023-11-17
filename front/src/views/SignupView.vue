@@ -1,4 +1,16 @@
 <!-- SignupLogin.vue -->
+
+<script lang="ts">
+export default {
+	methods: {
+		redirectToOAuth() {
+			// Redirect to your OAuth2 provider's authentication URL
+			window.location.href = 'http://api.intra.42.fr/oauth/authorize';
+		},
+	},
+};
+</script>
+
 <template>
 	<div>
 		<h1>{{ "ft_transcendence" }}</h1>
