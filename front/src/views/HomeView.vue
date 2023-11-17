@@ -33,7 +33,7 @@
 					color="#C306DF"
 					variant="outlined"
 					size="x-large"
-					href="https://intra.42.fr"
+					href="/auth/signup"
 					target="_blank"
 				>
 					<span class="neonPolice"> 💡 Sign in with 42 </span>
@@ -41,7 +41,7 @@
 			</v-card-actions>
 		</v-card>
 	</v-row>
-	<HomepageFooter></HomepageFooter>
+	<HomepageFooter />
 	<v-footer class="neonPolice footer blurred-card" alt="Footer">
 		<span style="color: black"> ☆⋆｡𖦹°‧★ </span>
 		<a href="https://www.instagram.com/42.born2code/" target="_blank">Instagram</a>
