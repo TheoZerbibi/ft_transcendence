@@ -9,7 +9,7 @@
 					<v-btn to="/auth/signup">Login</v-btn>
 				</template>
 			</v-app-bar>
-			<v-main class="d-flex align-center justify-center" style="min-height: 300px;">
+			<v-main>
 				<router-view />
 			</v-main>
 		</v-layout>

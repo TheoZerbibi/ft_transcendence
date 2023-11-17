@@ -1,5 +1,4 @@
 <template>
-	<h1>This is the game page</h1>
 	<v-card class="d-flex align-center justify-center" min-height="100%" :style="{ backgroundColor: color }">
 		<v-btn
 			dark
