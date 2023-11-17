@@ -1,6 +1,7 @@
 <template>
     <v-footer>
-        <v-card elevation="0" rounded="0" width="100%" class="bg-grey text-center">
+        <!-- <v-card elevation="0" rounded="0" width="100%" class="bg-grey text-center"> -->
+        <v-card>
             <v-card-text>
                 <v-btn class="mw-4" icon="fas fa-comment" variant="plain" color="white"></v-btn>
                 <v-btn class="mw-4" icon="fas fa-university" variant="plain" color="white"></v-btn>
@@ -18,8 +19,8 @@
 <script>
 import { defineComponent } from 'vue';
 
-export default({
-})
+export default(
+)
 </script>
 
 <style>
