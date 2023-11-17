@@ -88,13 +88,14 @@ export class GameService {
 
 	private async createGamePlayer(
 		game: GameDto,
-		user: User,
+		user: any,
 		spec: boolean = false,
 	): Promise<GamePlayerDto | undefined> {
 		try {
+			console.log(user);
 			const gamePlayer: GamePlayerDto = await this.prisma.gamePlayer.create({
 				data: {
-					player_id: user.id,
+					player_id: user.userId,
 					game_id: game.id,
 					is_spec: spec,
 					is_win: false,
