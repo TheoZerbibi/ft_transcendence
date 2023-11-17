@@ -18,7 +18,6 @@ const router = createRouter({
 			name: 'GameCreator',
 			component: () => import('../views/GameMenuView.vue'),
 		},
-		// PAS TOUCHE a /game:uid
 		{
 			path: '/game/:uid',
 			name: 'Game',
@@ -98,6 +97,11 @@ const router = createRouter({
 			path: '/exemples/p5',
 			name: 'P5Exemple',
 			component: () => import('../components/exemples/P5Exemple.vue'),
+		},
+		{
+			path: '/api/oauth/callback',
+			name: 'OauthCallback',
+			component: () => import('../views/OauthCallbackView.vue'),
 		},
 	],
 });
