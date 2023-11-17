@@ -20,5 +20,5 @@ export default defineConfig({
 				includePaths: ['node_modules'],
 			},
 		},
-	}
+	},
 });

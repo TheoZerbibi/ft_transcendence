@@ -2,40 +2,48 @@
 	<main>
 		<section>
 			<v-container class="profileHome neonPolice">
-				<div class="box one">Settings &#128001
-					<link rel="icon" href="/favicon.ico">
+				<div class="box one">
+					Settings &#128001;
+					<link rel="icon" href="/favicon.ico" />
 					<v-btn class="customButton darkNeonPolice" rounded>About ℹ️</v-btn>
 					<v-btn class="customButton darkNeonPolice" rounded>Rules 📄</v-btn>
 					<v-btn class="customButton darkNeonPolice" rounded>Help ❓</v-btn>
 				</div>
-				<div class="box two">User infos &#128048
+				<div class="box two">
+					User infos &#128048;
 					<div>Profile picture</div>
 					<div>name 1</div>
 					<div>does not display username</div>
 				</div>
-				<div class="box three">&#129418</div>
+				<div class="box three">&#129418;</div>
 				<div class="box four">
 					<v-btn class="customButton darkNeonPolice" rounded>Modify 🖋</v-btn>
 					<v-btn class="customButton darkNeonPolice" rounded>Logout 🚪</v-btn>
 				</div>
-				<div class="box five">Game stats &#128014
+				<div class="box five">
+					Game stats &#128014;
 					<div></div>
 					<div></div>
 				</div>
 				<div class="box six">
-					<v-btn class="customButton darkNeonPolice" rounded @click="$router.push('chat')">Chat &#128062;</v-btn>
+					<v-btn class="customButton darkNeonPolice" rounded @click="$router.push('chat')"
+						>Chat &#128062;</v-btn
+					>
 				</div>
-				<div class="box seven">Security &#128029
-					<v-btn class="customButton darkNeonPolice" rounded>Enable 2FA &#128506</v-btn>
+				<div class="box seven">
+					Security &#128029;
+					<v-btn class="customButton darkNeonPolice" rounded>Enable 2FA &#128506;</v-btn>
 				</div>
-				<div class="box eight">Privacy &#128030
+				<div class="box eight">
+					Privacy &#128030;
 					<v-btn class="customButton darkNeonPolice" rounded>Delete account ❌</v-btn>
 				</div>
-				<div class="box nine">Match history &#128060</div>
+				<div class="box nine">Match history &#128060;</div>
 				<div class="box ten">
-					<v-btn class="customButton darkNeonPolice" rounded @click="$router.push('chat')">Play ▶️ &#129513;</v-btn>
+					<v-btn class="customButton darkNeonPolice" rounded @click="$router.push('chat')"
+						>Play ▶️ &#129513;</v-btn
+					>
 				</div>
-
 			</v-container>
 		</section>
 	</main>
@@ -50,14 +58,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
-.profileHome{
-	display:grid;
+.profileHome {
+	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr;
 	grid-template-rows: 70px 70px 70px 70px 70px 70px 70px 70px 70px 70px 70px;
 	gap: 10px;
 	/* background: url(/src/assets/OmoriWallpapers/OmoriJournal01.png); */
-
 }
 
 .box {
@@ -65,10 +71,9 @@ export default defineComponent({
 	/* background: url(/src/assets/OmoriWallpapers/OmoriJournal01.png) no-repeat; */
 	background-size: cover;
 	display: flex;
-    flex-direction: column;
-    align-items: center; /* Align buttons to the bottom */
+	flex-direction: column;
+	align-items: center; /* Align buttons to the bottom */
 	justify-content: space-between; /* Align items to the bottom */
-
 }
 .one {
 	grid-row: 1 / 6;
@@ -78,16 +83,15 @@ export default defineComponent({
 
 .customButton {
 	display: flex;
-    align-items: center;
-    min-width: auto;
-    padding-left: 20px;
-  }
+	align-items: center;
+	min-width: auto;
+	padding-left: 20px;
+}
 
 .two {
 	grid-row: 1 / 5;
 	background: url(/src/assets/OmoriPictures/Omori228.jpg) center no-repeat;
 	background-size: cover;
-
 }
 .three {
 	grid-row: 1 / 5;
@@ -127,7 +131,7 @@ export default defineComponent({
 	background-size: cover;
 }
 .ten {
-	grid-column: 4 / 5;;
+	grid-column: 4 / 5;
 	grid-row: 8 / 12;
 	background: url(/src/assets/OmoriPictures/Omori409.jpg) center no-repeat;
 	background-size: cover;
@@ -139,4 +143,3 @@ export default defineComponent({
 	}
 }
 </style>
-

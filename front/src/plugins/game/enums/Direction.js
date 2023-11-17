@@ -1,5 +1,0 @@
-export var DIRECTION;
-(function (DIRECTION) {
-    DIRECTION[DIRECTION["UP"] = 0] = "UP";
-    DIRECTION[DIRECTION["DOWN"] = 1] = "DOWN";
-})(DIRECTION || (DIRECTION = {}));

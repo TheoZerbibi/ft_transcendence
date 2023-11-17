@@ -206,7 +206,7 @@ export default {
 }
 
 h4 {
-	font-family: 'OMORI_MAIN';
+	font-family: 'OMORI_MAIN', sans-serif;
 	font-size: xx-large;
 	text-align: center;
 	color: rgb(65, 37, 37);

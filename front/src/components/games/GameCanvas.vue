@@ -421,10 +421,8 @@ export default {
 		});
 
 		this.socket.on('player-moved', (data: any) => {
-			if (data.leftUser)
-				gameData.leftUser?.update(data.leftUser.position, data.leftUser.width, data.leftUser.height);
-			if (data.rightUser)
-				gameData.rightUser?.update(data.rightUser.position, data.rightUser.width, data.rightUser.height);
+			if (data.leftUser) gameData.leftUser?.update(data.leftUser.position);
+			if (data.rightUser) gameData.rightUser?.update(data.rightUser.position);
 		});
 
 		this.socket.on('game-score', (data: any) => {
@@ -575,7 +573,7 @@ html {
 }
 
 .versus {
-	font-family: 'OMORI_DISTURBED';
+	font-family: 'OMORI_DISTURBED', sans-serif;
 	font-size: 4.5vw;
 	text-align: center;
 	color: white;
@@ -609,7 +607,7 @@ html {
 }
 
 h2 {
-	font-family: 'OMORI_MAIN';
+	font-family: 'OMORI_MAIN', sans-serif;
 	margin-top: 0.8vw;
 	font-size: 1.5vw;
 	text-align: center;
