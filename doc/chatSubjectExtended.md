@@ -53,7 +53,6 @@
 
 **[b] Send messages on channel**
 >	not if muted (date > actual date)
->	check pwd
 >	not if banned
 >	not if not in chan
 

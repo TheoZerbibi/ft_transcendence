@@ -14,7 +14,7 @@ export interface IChannel {
 	setId(id: number): void;
 	setName(name: string): void;
 	setPassword(password: string): void;
-	setPublic(publicChannel: boolean): void;
+	setIsPublic(publicChannel: boolean): void;
 	setUsers(users: ChannelUserEntity[]): void;
 	setMessages(messages: ChannelMessageEntity[]): void;
 

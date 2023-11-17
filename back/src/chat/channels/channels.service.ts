@@ -7,34 +7,18 @@ import { ChannelMessageEntity } from './impl/ChannelMessageEntity';
 // PRISMA
 import { Prisma, User, Channel, ChannelUser, ChannelMessage } from '@prisma/client';
 // DTO
-import {
-	ChannelDto,
-	ChannelListElemDto,
-	CreateChannelDto,
-	ChannelSettingsDto,
-	ChannelModPwdDto,
-} from './dto/channel.dto';
+import { ChannelListElemDto, CreateChannelDto, ChannelSettingsDto, ChannelModPwdDto } from './dto/channel.dto';
 import { ChannelMessageDto } from './dto/channel-message.dto';
 // SERVICES
 import { PrismaService } from 'src/prisma/prisma.service';
-import { UserService } from '../user/user.service';
-import { channel } from 'diagnostics_channel';
-
-enum PrivilegeStatus {
-	NOTHING = -1,
-	USER,
-	ADMIN,
-	OWNER,
-}
+// PWD HASHING
+import argon2d from 'argon2';
 
 @Injectable()
 export class ChannelService {
 	localChannels: ChannelEntity[] = [];
 
-	constructor(
-		private prisma: PrismaService,
-		private userService: UserService,
-	) {
+	constructor(private prisma: PrismaService) {
 		this.initLocalChannels();
 	}
 
@@ -119,7 +103,6 @@ export class ChannelService {
 			const channel: Channel = await this.prisma.channel.create({
 				data: {
 					name: dto.name,
-					public: dto.is_public,
 				},
 			});
 			const channelUser = await this.prisma.channelUser.create({
@@ -152,7 +135,7 @@ export class ChannelService {
 			}
 			this.checkPassword(channel, pwd);
 
-			const channelUser = await this.prisma.channelUser.create({
+			const channelUser: ChannelUser = await this.prisma.channelUser.create({
 				data: {
 					channel_id: channel.getId(),
 					user_id: user.id,
@@ -183,7 +166,7 @@ export class ChannelService {
 			this.checkPassword(channelEntity, pwd);
 
 			channelEntity.setName(newParamsdto.name);
-			channelEntity.setPublic(newParamsdto.is_public);
+			channelEntity.setIsPublic(newParamsdto.is_public);
 			await this.prisma.channel.update({
 				where: {
 					id: channel_id,
@@ -191,7 +174,6 @@ export class ChannelService {
 				data: {
 					name: channelEntity.getName(),
 					public: channelEntity.getIsPublic(),
-					updated_at: new Date(),
 				},
 			});
 		} catch (e) {
@@ -215,17 +197,18 @@ export class ChannelService {
 		if (dto.new_pwd.length > 20 || dto.new_pwd_confirm.length > 20)
 			throw new BadRequestException('Password too long (max 20 characters)');
 		if (dto.new_pwd !== dto.new_pwd_confirm) throw new BadRequestException('Passwords do not match');
+		dto.new_pwd ? channelEntity.setIsPublic(false) : channelEntity.setIsPublic(true);
 
-		dto.new_pwd ? channelEntity.setIsPwd(true) : channelEntity.setIsPwd(false);
-		channelEntity.setPassword(dto.new_pwd);
+		const hashedPwd = await argon2d.hash(dto.new_pwd);
+		channelEntity.setPassword(hashedPwd);
 
 		await this.prisma.channel.update({
 			where: {
 				id: channel_id,
 			},
 			data: {
+				public: channelEntity.getIsPublic(),
 				password: channelEntity.getPassword(),
-				updated_at: new Date(),
 			},
 		});
 	}
@@ -357,12 +340,11 @@ export class ChannelService {
 	/* 									Deletion									   */
 	/***********************************************************************************/
 
-	async leaveChannel(user: User, channel_id: number, pwd: string): Promise<void> {
+	async leaveChannel(user: User, channel_id: number): Promise<void> {
 		const channelEntity: ChannelEntity | null = await this.findChannelById(channel_id);
 		this.checkChannelExists(channelEntity);
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		this.checkUserAccess(channelUser, channelEntity);
-		this.checkPassword(channelEntity, pwd);
 
 		if (channelUser.isOwner()) throw new BadRequestException('You cannot leave a channel you own');
 		await this.prisma.channelUser.delete({
@@ -399,12 +381,11 @@ export class ChannelService {
 		this.checkChannelExists(channelEntity);
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		this.checkUserAccess(channelUser, channelEntity);
-		this.checkPassword(channelEntity, messageDto.password);
 
 		if (channelUser.isMuted() && channelUser.isMuted() > new Date()) throw new ForbiddenException('You are muted on this channel');
 		if (messageDto.content.length > 200) throw new BadRequestException('Message too long (max 200 characters)');
 
-		const channelMessage = await this.prisma.channelMessage.create({
+		const channelMessage: ChannelMessage = await this.prisma.channelMessage.create({
 			data: {
 				channel_user_id: channelUser.getId(),
 				content: messageDto.content,
@@ -432,17 +413,16 @@ export class ChannelService {
 			orderBy: {
 				created_at: 'desc',
 			},
-			take: 20,
+			take: 50,
 		});
 		return messages.map((message) => new ChannelMessageEntity(message));
 	}
 
-	async deleteMessage(user: User, channel_id: number, message_id: number, pwd: string): Promise<void> {
+	async deleteMessage(user: User, channel_id: number, message_id: number): Promise<void> {
 		const channelEntity: ChannelEntity | null = await this.findChannelById(channel_id);
 		this.checkChannelExists(channelEntity);
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		this.checkUserAccess(channelUser, channelEntity);
-		this.checkPassword(channelEntity, pwd);
 
 		const messageEntity: ChannelMessageEntity | null = channelEntity
 			.getMessages()
@@ -506,7 +486,9 @@ export class ChannelService {
 
 	// Check if channel has a password and if it matches the one given
 	async checkPassword(channel: ChannelEntity, pwd?: string): Promise<void> {
-		if (channel.getIsPwd() && pwd && pwd !== channel.getPassword()) throw new BadRequestException('Wrong password');
+		if (channel.getIsPublic()) return;
+		if (argon2d.verify(channel.getPassword(), pwd)) return;
+		else throw new BadRequestException('Wrong password');
 	}
 
 	/*********************************** Privileges **********************************/

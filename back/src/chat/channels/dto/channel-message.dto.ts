@@ -6,10 +6,5 @@ export class ChannelMessageDto {
 	@ApiProperty()
 	@IsString()
 	// eslint-disable-next-line
-	password: string;
-
-	@ApiProperty()
-	@IsString()
-	// eslint-disable-next-line
 	content: string;
 }

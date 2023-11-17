@@ -33,16 +33,13 @@ export class ChannelEntity implements IChannel {
 	/*************************************************************************/
 	/* 								GETTERS                                  */
 	/*************************************************************************/
+
 	public getId(): number {
 		return this.id;
 	}
 
 	public getName(): string {
 		return this.name;
-	}
-
-	public getIsPwd(): boolean {
-		return this.is_pwd;
 	}
 
 	public getPassword(): string {
@@ -74,56 +71,41 @@ export class ChannelEntity implements IChannel {
 	/*************************************************************************/
 	public setId(id: number): void {
 		this.id = id;
-		this.updated_at = new Date();
 	}
 
 	public setName(name: string): void {
 		this.name = name;
-		this.updated_at = new Date();
-	}
-
-	public setIsPwd(is_pwd: boolean): void {
-		this.is_pwd = is_pwd;
-		this.updated_at = new Date();
 	}
 
 	public setPassword(password: string): void {
 		this.password = password;
-		this.updated_at = new Date();
 	}
 
-	public setPublic(isPublic: boolean): void {
+	public setIsPublic(isPublic: boolean): void {
 		this.isPublic = isPublic;
-		this.updated_at = new Date();
 	}
 
 	public setUsers(users: ChannelUserEntity[]): void {
 		this.users = users;
-		this.updated_at = new Date();
 	}
 
 	public setMessages(messages: ChannelMessageEntity[]): void {
 		this.messages = messages;
-		this.updated_at = new Date();
 	}
 
 	public addUser(user: ChannelUserEntity): void {
 		this.users.push(user);
-		this.updated_at = new Date();
 	}
 
 	public addMessage(message: ChannelMessageEntity): void {
 		this.messages.push(message);
-		this.updated_at = new Date();
 	}
 
 	public removeUser(user: ChannelUserEntity): void {
 		this.users = this.users.filter((u) => u.getUserId() !== user.getUserId());
-		this.updated_at = new Date();
 	}
 
 	public removeMessage(message: ChannelMessageEntity): void {
 		this.messages = this.messages.filter((m) => m.getMessageId() !== message.getMessageId());
-		this.updated_at = new Date();
 	}
 }

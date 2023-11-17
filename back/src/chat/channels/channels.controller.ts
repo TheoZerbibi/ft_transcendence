@@ -9,28 +9,19 @@ import { ChannelEntity } from './impl/ChannelEntity';
 import { ChannelUserEntity } from './impl/ChannelUserEntity';
 import { ChannelMessageEntity } from './impl/ChannelMessageEntity';
 // PRISMA
-import { Channel, User, ChannelUser, ChannelMessage } from '@prisma/client';
+import { User } from '@prisma/client';
 // DTO
-import {
-	ChannelDto,
-	ChannelListElemDto,
-	CreateChannelDto,
-	ChannelSettingsDto,
-	ChannelModPwdDto,
-} from './dto/channel.dto';
+import { ChannelListElemDto, CreateChannelDto, ChannelSettingsDto, ChannelModPwdDto } from './dto/channel.dto';
 import { ChannelMessageDto } from './dto/channel-message.dto';
 // SERVICES
-import { ChannelService } from './chat.service';
-import { UserService } from '../user/user.service';
+import { ChannelService } from './channels.service';
+import { UserService } from '../../user/user.service';
 
 @Controller('channel')
 @ApiTags('Channel')
 @ApiBearerAuth()
 export class ChannelController {
-	constructor(
-		private channelService: ChannelService,
-		private userService: UserService,
-	) {}
+	constructor(private channelService: ChannelService) {}
 
 	/***********************************************************************************/
 	/* 										Getters									   */
@@ -274,11 +265,10 @@ export class ChannelController {
 		@GetUser() user: User,
 		@Param('channel_id') channel_id_string: string,
 		@Param('message_id') message_id_string: string,
-		@Body() pwd: string,
 	): Promise<void> {
 		const channel_id: number = parseInt(channel_id_string, 10);
 		const message_id: number = parseInt(message_id_string, 10);
-		return await this.channelService.deleteMessage(user, channel_id, message_id, pwd);
+		return await this.channelService.deleteMessage(user, channel_id, message_id);
 	}
 
 	/***********************************************************************************/

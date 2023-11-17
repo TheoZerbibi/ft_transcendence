@@ -5,7 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { PrismaModule } from './prisma/prisma.module';
 //import { ChatModule } from './chat/chat.module';
-import { ChannelModule } from './chat/chat.module';
+import { ChannelModule } from './chat/channels/channels.module';
 import { GameModule } from './game/game.module';
 import { RedisModule } from './redis/redis.module';
 

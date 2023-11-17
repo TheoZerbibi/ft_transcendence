@@ -22,12 +22,6 @@ export class CreateChannelDto {
 	@IsString()
 	// eslint-disable-next-line
 	name: string;
-
-	@ApiProperty()
-	@IsBoolean()
-	@IsOptional()
-	// eslint-disable-next-line
-	is_public: boolean;
 }
 
 export class ChannelListElemDto {
