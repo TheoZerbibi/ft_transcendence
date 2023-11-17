@@ -23,32 +23,35 @@
 >	[b] create user : owner & admin
 >	[ ] until they leave it : new owner 
 
-**[ ] Mod the channel**
-  - [ ] set pwd
-  - [ ] remove pwd
-  - [ ] change pwd
+**[b] Mod the channel**
+  - [b] set pwd
+  - [b] remove pwd
+  - [b] change pwd
 >	if owner
 >	hash it
 - [b] change name
 - [b] change public/private
 >	if admin
 
-**[ ] Join a channel**
+**[b] Delete the channel**
+>	if owner
+
+**[b] Join a channel**
 >	check pwd
 >	check banned
 
-**[ ] Leave a channel**
->	if owner: has to choose new owner
+**[b] Leave a channel**
+>	if owner: impossible
 
-**[ ] Mod another channel user**
-   - [ ] kick
-   - [ ] ban
-   - [ ] mute (for limited time)
+**[b] Mod another channel user**
+   - [b] kick
+   - [b] ban
+   - [b] mute (for limited time)
 >	if admin
 >	not if target = owner
 
 **[ ] Send messages on channel**
->	not if muted
+>	not if muted (date > actual date)
 >	check pwd
 >	not if banned
 >	not if not in chan

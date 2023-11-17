@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class ChannelUserDto {
 	@ApiProperty()
@@ -28,9 +28,9 @@ export class ChannelUserDto {
 	is_admin: boolean;
 
 	@ApiProperty()
-	@IsNumber()
+	@IsDate()
 	// eslint-disable-next-line
-	is_muted: number;
+	is_muted: Date;
 
 	@ApiProperty()
 	@IsBoolean()
@@ -62,8 +62,34 @@ export class CreateChannelUserDto {
 	chan_password: string;
 }
 
-export class UpdateChannelUserDto {
+export class BanChannelUserDto {
+	@ApiProperty()
+	@IsNumber()
+	// eslint-disable-next-line
+	id: number;
+
+	@ApiProperty()
+	@IsNumber()
+	// eslint-disable-next-line
+	channel_id: number;
+
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	user_id: string;
+
 	@ApiProperty()
 	@IsBoolean()
-	is_
+	// eslint-disable-next-line
+	is_owner: boolean;
+
+	@ApiProperty()
+	@IsBoolean()
+	// eslint-disable-next-line
+	is_admin: boolean;
+
+	@ApiProperty()
+	@IsBoolean()
+	// eslint-disable-next-line
+	is_banned: boolean;
 }

@@ -139,7 +139,11 @@ export class ChannelService {
 			const channel: ChannelEntity | null = await this.findChannelByName(channel_name);
 			this.checkChannelExists(channel);
 			const channelUserEntity: ChannelUserEntity | null = await this.findChannelUser(user, channel);
-			if (channelUserEntity) throw new BadRequestException('You are already on this channel');
+			if (channelUserEntity) {
+				if (channelUserEntity.isBanned())
+					throw new ForbiddenException('You are banned from this channel');
+				throw new BadRequestException('You are already on this channel');
+			}
 			this.checkPassword(channel, pwd);
 
 			const channelUser = await this.prisma.channelUser.create({
@@ -159,6 +163,8 @@ export class ChannelService {
 	/***********************************************************************************/
 	/* 									Modification								   */
 	/***********************************************************************************/
+
+	/************************************ Channels *************************************/
 
 	async modChannel(user: User, channel_id: number, pwd: string, newParamsdto: ChannelSettingsDto): Promise<void> {
 		try {
@@ -218,9 +224,104 @@ export class ChannelService {
 		});
 	}
 
-	/***********************************************/
-	/* 					Deletion				   */
-	/***********************************************/
+	/************************************** Users ***********************************/
+
+	async banChannelUser(user: User, channel_id: number, target_channel_id: number, pwd: string): Promise<void> {
+		const targetChanUser: ChannelUserEntity | null = await this.targetIfAllowed(
+			user,
+			channel_id,
+			target_channel_id,
+			'ban',
+			pwd,
+		);
+		targetChanUser.setIsBanned(true);
+		await this.prisma.channelUser.update({
+			where: {
+				id: targetChanUser.getChannelUserId(),
+			},
+			data: {
+				is_banned: targetChanUser.isBanned(),
+			},
+		});
+	}
+
+	async unbanChannelUser(user: User, channel_id: number, target_channel_id: number, pwd: string): Promise<void> {
+		const targetChanUser: ChannelUserEntity | null = await this.targetIfAllowed(
+			user,
+			channel_id,
+			target_channel_id,
+			'unban',
+			pwd,
+		);
+		targetChanUser.setIsBanned(false);
+		await this.prisma.channelUser.update({
+			where: {
+				id: targetChanUser.getChannelUserId(),
+			},
+			data: {
+				is_banned: targetChanUser.isBanned(),
+			},
+		});
+	}
+
+	async muteChannelUser(user: User, channel_id: number, target_channel_id: number, pwd: string): Promise<void> {
+		const targetChanUser: ChannelUserEntity | null = await this.targetIfAllowed(
+			user,
+			channel_id,
+			target_channel_id,
+			'mute',
+			pwd,
+		);
+		targetChanUser.setIsMuted(new Date());
+		await this.prisma.channelUser.update({
+			where: {
+				id: targetChanUser.getChannelUserId(),
+			},
+			data: {
+				is_muted: targetChanUser.isMuted(),
+			},
+		});
+	}
+
+	async unmuteChannelUser(user: User, channel_id: number, target_channel_id: number, pwd: string): Promise<void> {
+		const targetChanUser: ChannelUserEntity | null = await this.targetIfAllowed(
+			user,
+			channel_id,
+			target_channel_id,
+			'unmute',
+			pwd,
+		);
+		targetChanUser.setIsMuted(null);
+		await this.prisma.channelUser.update({
+			where: {
+				id: targetChanUser.getChannelUserId(),
+			},
+			data: {
+				is_muted: targetChanUser.isMuted(),
+			},
+		});
+	}
+
+	async kickChannelUser(user: User, channel_id: number, target_channel_id: number, pwd: string): Promise<void> {
+		const targetChanUser: ChannelUserEntity | null = await this.targetIfAllowed(
+			user,
+			channel_id,
+			target_channel_id,
+			'kick',
+			pwd,
+		);
+		await this.prisma.channelUser.delete({
+			where: {
+				id: targetChanUser.getChannelUserId(),
+			},
+		});
+		const channel = this.localChannels.find((c) => c.getId() === channel_id);
+		channel.removeUser(targetChanUser);
+	}
+
+	/***********************************************************************************/
+	/* 									Deletion									   */
+	/***********************************************************************************/
 
 	async leaveChannel(user: User, channel_id: number, pwd: string): Promise<void> {
 		const channelEntity: ChannelEntity | null = await this.findChannelById(channel_id);
@@ -307,15 +408,23 @@ export class ChannelService {
 
 	/*********************************** Privileges **********************************/
 
-	/*
-	async hasPrivilegesOnTarget(user: User, target: User, channel: Channel): Promise<boolean> {
-		const userPrivileges = await this.getPrivilegesLvl(user, channel.name);
-		if (userPrivileges === null) throw new BadRequestException('You are not on this channel');
-		const targetPrivileges = await this.getPrivilegesLvl(target, channel.name);
-		if (targetPrivileges === null) throw new BadRequestException('Target is not on this channel');
-		return userPrivileges > targetPrivileges;
+	async targetIfAllowed(user: User, channel_id: number, target_channel_id: number, action: string, pwd: string): Promise<ChannelUserEntity> {
+		const channelEntity: ChannelEntity | null = await this.findChannelById(channel_id);
+		this.checkChannelExists(channelEntity);
+		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
+		this.checkUserAccess(channelUser, channelEntity);
+		this.checkPassword(channelEntity, pwd);
+		if (!channelUser.isAdmin())
+			throw new ForbiddenException('You are not authorized to ${action} someone on this channel');
+
+		const targetChanUser: ChannelUserEntity | null = channelEntity.getUsers().find((channelUser) => {
+			return channelUser.getChannelUserId() === target_channel_id;
+		});
+		if (!targetChanUser) throw new BadRequestException('User is not on this channel');
+		if (targetChanUser.isOwner()) throw new BadRequestException('You cannot ${action} the owner of this channel');
+
+		return targetChanUser;
 	}
-	*/
 
 	/***********************************************************************************/
 	/* 										DEBUG									   */

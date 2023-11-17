@@ -66,7 +66,7 @@ export class ChannelUserEntity implements IChannelUser {
 		this.is_muted = isMuted;
 	}
 
-	public setisBanned(isBanned: boolean): void {
+	public setIsBanned(isBanned: boolean): void {
 		this.is_banned = isBanned;
 	}
 }
