@@ -140,7 +140,7 @@ const router = createRouter({
 >>>>>>> 7f206e2 (profile route created)
 =======
 		{
-			path: '/api/oauth/callback',
+			path: '/api/oauth/callback:token',
 			name: 'OauthCallback',
 			component: () => import('../views/OauthCallbackView.vue'),
 		},
