@@ -51,13 +51,12 @@ model friends {
 }
 
 model games {
-  id           Int            @id @unique @default(autoincrement())
-  uid          String         @unique
-  is_private   Boolean        @default(false)
-  created_at   DateTime       @default(now())
-  started_at   DateTime?
-  end_at       DateTime?
-  game_players game_players[]
+  id         Int       @id @unique @default(autoincrement())
+  uid        String    @unique
+  is_private Boolean   @default(false)
+  created_at DateTime  @default(now())
+  started_at DateTime?
+  end_at     DateTime?
 }
 
 model users {
@@ -73,9 +72,9 @@ model users {
   channel_users                    channel_users[]
   friends_friends_friend_idTousers friends[]       @relation("friends_friend_idTousers")
   friends_friends_user_idTousers   friends[]       @relation("friends_user_idTousers")
-  game_players                     game_players[]
 }
 
+<<<<<<< HEAD
 model game_players {
   player_id Int
   game_id   Int
@@ -87,3 +86,8 @@ model game_players {
 
   @@id([player_id, game_id])
 }
+=======
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model gamePlayers {
+// }
+>>>>>>> 89e81b3 (ca marche sur mon ordi en plein festival ou on me sort que je suis une sorciere blanche ahaha alors que je suis de l;'akatsuki mdr)
