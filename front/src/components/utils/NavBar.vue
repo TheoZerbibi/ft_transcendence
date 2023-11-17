@@ -2,21 +2,24 @@
     <v-app-bar app color="black" dark flat class="px-12">
         <v-btn>
             <!-- Icon does not work -->
-            <v-icon color="yellow" left class="mr-2">fas fa-signature</v-icon>42 paris 
+            <v-icon color="pink" left class="mr-2">fas fa-solid fa-paw fa-bounce</v-icon>42 paris 
+            <font-awesome-icon :icon="['fas', 'paw']"></font-awesome-icon>
+            <font-awesome-icon icon="fa-solid fa-heart" beat></font-awesome-icon>
         </v-btn>
 
-        <v-icon color="yellow" left class="mr-2">
-        <i class="fas fa-signature"></i>
-        </v-icon>
+        <!-- <v-btn color="orange" left class="mr-2"> -->
+        <!-- <i class="fa-solid fa-paw fa-bounce"></i> -->
+        <!-- 42 Paris -->
+        <!-- </v-btn> -->
 
         <v-spacer></v-spacer>
-        <v-btn text @click="scroll('home')" class="text-yellow">Home</v-btn>
-        <v-btn text @click="scroll('about')">About</v-btn>
-        <v-btn text @click="scroll('portfolio')">Portfolio</v-btn>
-        <v-btn text @click="scroll('services')">Services</v-btn>
-        <v-btn text @click="scroll('page')">Page</v-btn>
-        <v-btn text @click="scroll('blog')">Blog</v-btn>
-        <v-btn text @click="scroll('contact')">Contact</v-btn>
+        <v-btn text @click="scroll('home')" class="text-red">Home</v-btn>
+        <v-btn text @click="scroll('about')" class="text-orange">About</v-btn>
+        <v-btn text @click="scroll('portfolio')" class="text-yellow">Portfolio</v-btn>
+        <v-btn text @click="scroll('services')" class="text-green">Services</v-btn>
+        <v-btn text @click="scroll('page')" class="text-blue">Page</v-btn>
+        <v-btn text @click="scroll('blog')" class="text-purple">Blog</v-btn>
+        <v-btn text @click="scroll('contact')" class="text-pink">Contact</v-btn>
     </v-app-bar>
 </template>
 
