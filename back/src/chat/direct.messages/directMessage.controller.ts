@@ -4,291 +4,300 @@ import { UseGuards, Controller, Body, Param, Get, Patch, Post, Delete } from '@n
 import { JwtGuard } from 'src/auth/guard';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
-// ENTITIES
-import { ChannelEntity } from './impl/ConversationEntity';
-import { ChannelUserEntity } from './impl/FriendEntity';
-import { ChannelMessageEntity } from './impl/DirectMessageEntity.tss';
 // PRISMA
-import { User } from '@prisma/client';
+import { User, Friends, Blocked, DirectMessage } from '@prisma/client';
 // DTO
-import { ChannelListElemDto, CreateChannelDto, ChannelSettingsDto, ChannelModPwdDto } from './dto/channel.dto';
-import { ChannelMessageDto } from './dto/channel-message.dto';
+import { DirectMessageDto } from './dto/direct-message.dto';
 // SERVICES
-import { ChannelService } from './directMessage.service';
+import { DirectMessageService } from './directMessage.service';
 
-@Controller('channel')
-@ApiTags('Channel')
+@Controller('directMessage')
+@ApiTags('DirectMessage')
 @ApiBearerAuth()
-export class ChannelController {
-	constructor(private channelService: ChannelService) {}
+export class DirectMessageController {
+	constructor(private directMessageService: DirectMessageService) {}
 
 	/***********************************************************************************/
 	/* 										Getters									   */
 	/***********************************************************************************/
 
-	/*********************************** Channels Lists ********************************/
+	/******************************* DirectMessages Lists ******************************/
 
-	// Get all public channels
-	@Get('discover')
+	/*
+ 	// Get all conversations
+	@Get('all')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Get all public channels' })
+	@ApiOperation({ summary: 'Get all DMs' })
 	@ApiBearerAuth('JWT-auth')
-	async getAllPublicChannels(): Promise<ChannelListElemDto[]> {
-		return await this.channelService.getAllPublicChannels();
+	async getAllPublicDirectMessages() {
+		return await this.directMessageService.getAllPublicDirectMessages();
 	}
 
-	//Get all channels on which user is
+	//Get all directMessages on which user is
 	@Get('joined')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Get joined channel names' })
+	@ApiOperation({ summary: 'Get joined directMessage names' })
 	@ApiBearerAuth('JWT-auth')
-	async getJoinedChannelNames(@GetUser() user: User): Promise<ChannelListElemDto[] | null> {
-		return await this.channelService.getJoinedChannelNames(user);
+	async getJoinedDirectMessageNames(@GetUser() user: User): Promise<DirectMessageListElemDto[] | null> {
+		return await this.directMessageService.getJoinedDirectMessageNames(user);
 	}
 
-	/********************************** Channel Access *********************************/
+	/********************************** DirectMessage Access *********************************/
 
-	// Get a channel by its name
+	/*
+	// Get a directMessage by its name
 	@Get(':name')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Access to a channel by its name' })
+	@ApiOperation({ summary: 'Access to a directMessage by its name' })
 	@ApiBearerAuth('JWT-auth')
-	async accessChannelByName(
+	async accessDirectMessageByName(
 		@GetUser() user: User,
-		@Param('name') channel_name: string,
+		@Param('name') directMessage_name: string,
 		@Body() pwd: string,
-	): Promise<ChannelEntity> {
-		return await this.channelService.accessChannelByName(user, channel_name, pwd);
+	): Promise<DirectMessageEntity> {
+		return await this.directMessageService.accessDirectMessageByName(user, directMessage_name, pwd);
 	}
+	/*
 
 	/*************************************** Users ************************************/
 
-	//Get all users in a channel
-	@Get(':channel_id/users')
+	/*
+	//Get all users in a directMessage
+	@Get(':directMessage_id/users')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Get all channel users' })
+	@ApiOperation({ summary: 'Get all directMessage users' })
 	@ApiBearerAuth('JWT-auth')
-	async getAllChannelUsers(
+	async getAllDirectMessageUsers(
 		@GetUser() user: User,
-		@Param('channel_id') channel_id_string: string,
+		@Param('directMessage_id') directMessage_id_string: string,
 		@Body() pwd: string,
-	): Promise<ChannelUserEntity[] | null> {
-		const channel_id: number = parseInt(channel_id_string, 10);
-		return await this.channelService.getAllChannelUsers(user, channel_id, pwd);
+	): Promise<DirectMessageUserEntity[] | null> {
+		const directMessage_id: number = parseInt(directMessage_id_string, 10);
+		return await this.directMessageService.getAllDirectMessageUsers(user, directMessage_id, pwd);
 	}
+	*/
 
 	/***********************************************************************************/
 	/* 										Creation								   */
 	/***********************************************************************************/
 
+	/*
 	@Post('create')
 	@UseGuards(JwtGuard) // Needed to access user attribute
-	@ApiOperation({ summary: 'Create channel' })
+	@ApiOperation({ summary: 'Create directMessage' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async createChannel(@GetUser() user: User, @Body() dto: CreateChannelDto): Promise<ChannelEntity> {
-		return await this.channelService.createChannel(dto, user.id);
+	async createDirectMessage(@GetUser() user: User, @Body() dto: CreateDirectMessageDto): Promise<DirectMessageEntity> {
+		return await this.directMessageService.createDirectMessage(dto, user.id);
 	}
 
-	@Post(':channel/join')
+	@Post(':directMessage/join')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Add user to channel' })
+	@ApiOperation({ summary: 'Add user to directMessage' })
 	@ApiBearerAuth('JWT-auth')
-	async joinChannel(
+	async joinDirectMessage(
 		@GetUser() user: User,
-		@Param(':channel') channel_name: string,
+		@Param(':directMessage') directMessage_name: string,
 		@Body() pwd: string,
 	): Promise<void> {
-		return await this.channelService.joinChannel(user, channel_name, pwd);
+		return await this.directMessageService.joinDirectMessage(user, directMessage_name, pwd);
 	}
+	*/
 
 	/***********************************************************************************/
 	/* 									Modification								   */
 	/***********************************************************************************/
 
-	/*********************************** Channel Settings ******************************/
+	/*********************************** DirectMessage Settings ******************************/
 
-	@Patch('settings/:channel_id/name_or_privacy')
+	/*
+	@Patch('settings/:directMessage_id/name_or_privacy')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Mod channel name & privacy' })
+	@ApiOperation({ summary: 'Mod directMessage name & privacy' })
 	@ApiBearerAuth('JWT-auth')
-	async modChannel(
+	async modDirectMessage(
 		@GetUser() user: User,
-		@Param('channel_id') channel_id_string: string,
-		@Body() newParamsdto: ChannelSettingsDto,
+		@Param('directMessage_id') directMessage_id_string: string,
+		@Body() newParamsdto: DirectMessageSettingsDto,
 		@Body() pwd: string,
 	): Promise<void> {
-		const channel_id: number = parseInt(channel_id_string, 10);
-		return await this.channelService.modChannel(user, channel_id, pwd, newParamsdto);
+		const directMessage_id: number = parseInt(directMessage_id_string, 10);
+		return await this.directMessageService.modDirectMessage(user, directMessage_id, pwd, newParamsdto);
 	}
 
-	@Patch('settings/:channel_id/pwd')
+	@Patch('settings/:directMessage_id/pwd')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Mod channel pwd' })
+	@ApiOperation({ summary: 'Mod directMessage pwd' })
 	@ApiBearerAuth('JWT-auth')
-	async modChannelPwd(
+	async modDirectMessagePwd(
 		@GetUser() user: User,
-		@Param('channel_id') channel_id_string: string,
-		@Body() channelModPwdDto: ChannelModPwdDto,
+		@Param('directMessage_id') directMessage_id_string: string,
+		@Body() directMessageModPwdDto: DirectMessageModPwdDto,
 	): Promise<void> {
-		const channel_id: number = parseInt(channel_id_string, 10);
-		return await this.channelService.modChannelPwd(user, channel_id, channelModPwdDto);
+		const directMessage_id: number = parseInt(directMessage_id_string, 10);
+		return await this.directMessageService.modDirectMessagePwd(user, directMessage_id, directMessageModPwdDto);
 	}
+	*/
 
 	/*************************************** Users ************************************/
 
-	@Patch('settings/:channel_id/admin/:user_id')
+	/*
+	@Patch('settings/:directMessage_id/admin/:user_id')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Set user as admin of channel' })
+	@ApiOperation({ summary: 'Set user as admin of directMessage' })
 	@ApiBearerAuth('JWT-auth')
 	async setAdmin(
 		@GetUser() user: User,
-		@Param('channel') channel_id_string: string,
+		@Param('directMessage') directMessage_id_string: string,
 		@Param('id') target_user_id_str: string,
 		@Body() pwd: string,
 	): Promise<void> {
-		const channel_id: number = parseInt(channel_id_string, 10);
+		const directMessage_id: number = parseInt(directMessage_id_string, 10);
 		const target_user_id: number = parseInt(target_user_id_str, 10);
-		return await this.channelService.setChannelUserAsAdmin(user, channel_id, target_user_id, pwd);
+		return await this.directMessageService.setDirectMessageUserAsAdmin(user, directMessage_id, target_user_id, pwd);
 	}
 
-	@Patch('settings/:channel_id/mute/:user_id')
+	@Patch('settings/:directMessage_id/mute/:user_id')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Mute user from channel' })
+	@ApiOperation({ summary: 'Mute user from directMessage' })
 	@ApiBearerAuth('JWT-auth')
 	async muteUser(
 		@GetUser() user: User,
-		@Param('channel') channel_id_string: string,
+		@Param('directMessage') directMessage_id_string: string,
 		@Param('id') target_user_id_str: string,
 		@Body() pwd: string,
 	): Promise<void> {
-		const channel_id: number = parseInt(channel_id_string, 10);
+		const directMessage_id: number = parseInt(directMessage_id_string, 10);
 		const target_user_id: number = parseInt(target_user_id_str, 10);
-		return await this.channelService.muteChannelUser(user, channel_id, target_user_id, pwd);
+		return await this.directMessageService.muteDirectMessageUser(user, directMessage_id, target_user_id, pwd);
 	}
 
-	@Patch('settings/:channel_id/unmute/:user_id')
+	@Patch('settings/:directMessage_id/unmute/:user_id')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Unmute user from channel' })
+	@ApiOperation({ summary: 'Unmute user from directMessage' })
 	@ApiBearerAuth('JWT-auth')
 	async unmuteUser(
 		@GetUser() user: User,
-		@Param('channel') channel_id_string: string,
+		@Param('directMessage') directMessage_id_string: string,
 		@Param('id') target_user_id_str: string,
 		@Body() pwd: string,
 	): Promise<void> {
-		const channel_id: number = parseInt(channel_id_string, 10);
+		const directMessage_id: number = parseInt(directMessage_id_string, 10);
 		const target_user_id: number = parseInt(target_user_id_str, 10);
-		return await this.channelService.unmuteChannelUser(user, channel_id, target_user_id, pwd);
+		return await this.directMessageService.unmuteDirectMessageUser(user, directMessage_id, target_user_id, pwd);
 	}
 
-	@Patch('settings/:channel_id/kick/:user_id')
+	@Patch('settings/:directMessage_id/kick/:user_id')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Kick user from channel' })
+	@ApiOperation({ summary: 'Kick user from directMessage' })
 	@ApiBearerAuth('JWT-auth')
 	async kickUser(
 		@GetUser() user: User,
-		@Param('channel') channel_id_string: string,
+		@Param('directMessage') directMessage_id_string: string,
 		@Param('id') target_user_id_str: string,
 		@Body() pwd: string,
 	): Promise<void> {
-		const channel_id: number = parseInt(channel_id_string, 10);
+		const directMessage_id: number = parseInt(directMessage_id_string, 10);
 		const target_user_id: number = parseInt(target_user_id_str, 10);
-		return await this.channelService.kickChannelUser(user, channel_id, target_user_id, pwd);
+		return await this.directMessageService.kickDirectMessageUser(user, directMessage_id, target_user_id, pwd);
 	}
 
-	@Patch('settings/:channel_id/ban/:user_id')
+	@Patch('settings/:directMessage_id/ban/:user_id')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Ban user from channel' })
+	@ApiOperation({ summary: 'Ban user from directMessage' })
 	@ApiBearerAuth('JWT-auth')
 	async banUser(
 		@GetUser() user: User,
-		@Param('channel') channel_id_string: string,
+		@Param('directMessage') directMessage_id_string: string,
 		@Param('id') target_user_id_str: string,
 		@Body() pwd: string,
 	): Promise<void> {
-		const channel_id: number = parseInt(channel_id_string, 10);
+		const directMessage_id: number = parseInt(directMessage_id_string, 10);
 		const target_user_id: number = parseInt(target_user_id_str, 10);
-		return await this.channelService.banChannelUser(user, channel_id, target_user_id, pwd);
+		return await this.directMessageService.banDirectMessageUser(user, directMessage_id, target_user_id, pwd);
 	}
 
-	@Patch('settings/:channel_id/unban/:user_id')
+	@Patch('settings/:directMessage_id/unban/:user_id')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Unban user from channel (kick them)' })
+	@ApiOperation({ summary: 'Unban user from directMessage (kick them)' })
 	@ApiBearerAuth('JWT-auth')
 	async unbanUser(
 		@GetUser() user: User,
-		@Param('channel') channel_id_string: string,
+		@Param('directMessage') directMessage_id_string: string,
 		@Param('id') target_user_id_str: string,
 		@Body() pwd: string,
 	): Promise<void> {
-		const channel_id: number = parseInt(channel_id_string, 10);
+		const directMessage_id: number = parseInt(directMessage_id_string, 10);
 		const target_user_id: number = parseInt(target_user_id_str, 10);
-		return await this.channelService.unbanChannelUser(user, channel_id, target_user_id, pwd);
+		return await this.directMessageService.unbanDirectMessageUser(user, directMessage_id, target_user_id, pwd);
 	}
+	*/
 
 	/***********************************************************************************/
 	/* 										Messages								   */
 	/***********************************************************************************/
 
-	@Post(':channel_id/message')
+	/*
+	@Post(':directMessage_id/message')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Send message to channel' })
+	@ApiOperation({ summary: 'Send message to directMessage' })
 	@ApiBearerAuth('JWT-auth')
 	async sendMessage(
 		@GetUser() user: User,
-		@Param('channel_id') channel_id_string: string,
-		@Body() channelMessageDto: ChannelMessageDto,
-	): Promise<ChannelMessageEntity> {
-		const channel_id: number = parseInt(channel_id_string, 10);
-		return await this.channelService.sendMessage(user, channel_id, channelMessageDto);
+		@Param('directMessage_id') directMessage_id_string: string,
+		@Body() directMessageMessageDto: DirectMessageMessageDto,
+	): Promise<DirectMessageMessageEntity> {
+		const directMessage_id: number = parseInt(directMessage_id_string, 10);
+		return await this.directMessageService.sendMessage(user, directMessage_id, directMessageMessageDto);
 	}
 
-	@Get(':channel_id/messages')
+	@Get(':directMessage_id/messages')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Get 20 last messages from channel' })
+	@ApiOperation({ summary: 'Get 20 last messages from directMessage' })
 	@ApiBearerAuth('JWT-auth')
 	async getLastMessages(
 		@GetUser() user: User,
-		@Param('channel_id') channel_id_string: string,
+		@Param('directMessage_id') directMessage_id_string: string,
 		@Body() pwd: string,
-	): Promise<ChannelMessageEntity[]> {
-		const channel_id: number = parseInt(channel_id_string, 10);
-		return await this.channelService.getLastMessages(user, channel_id, pwd);
+	): Promise<DirectMessageMessageEntity[]> {
+		const directMessage_id: number = parseInt(directMessage_id_string, 10);
+		return await this.directMessageService.getLastMessages(user, directMessage_id, pwd);
 	}
 
-	@Delete(':channel_id/:message_id')
+	@Delete(':directMessage_id/:message_id')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Delete message from channel' })
+	@ApiOperation({ summary: 'Delete message from directMessage' })
 	@ApiBearerAuth('JWT-auth')
 	async deleteMessage(
 		@GetUser() user: User,
-		@Param('channel_id') channel_id_string: string,
+		@Param('directMessage_id') directMessage_id_string: string,
 		@Param('message_id') message_id_string: string,
 	): Promise<void> {
-		const channel_id: number = parseInt(channel_id_string, 10);
+		const directMessage_id: number = parseInt(directMessage_id_string, 10);
 		const message_id: number = parseInt(message_id_string, 10);
-		return await this.channelService.deleteMessage(user, channel_id, message_id);
+		return await this.directMessageService.deleteMessage(user, directMessage_id, message_id);
 	}
+	*/
 
 	/***********************************************************************************/
 	/* 										DEBUG									   */
 	/***********************************************************************************/
+	/*
 	// DEBUG ONLY
-	@Get('allChannelsDebug')
+	@Get('allDirectMessagesDebug')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'For debugging purpose only : Get all channels' })
+	@ApiOperation({ summary: 'For debugging purpose only : Get all directMessages' })
 	@ApiBearerAuth('JWT-auth')
-	async getAllChannelsDebug(): Promise<ChannelEntity[]> {
-		return await this.channelService.getAllChannelsDebug();
+	async getAllDirectMessagesDebug(): Promise<DirectMessageEntity[]> {
+		return await this.directMessageService.getAllDirectMessagesDebug();
 	}
 
 	// DEBUG ONLY
-	@Get('allChannelUsersDebug')
+	@Get('allDirectMessageUsersDebug')
 	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'For debugging purpose only : Get all channel users' })
+	@ApiOperation({ summary: 'For debugging purpose only : Get all directMessage users' })
 	@ApiBearerAuth('JWT-auth')
-	async getAllChannelUsersDebug(): Promise<ChannelUserEntity[]> {
-		return await this.channelService.getAllChannelUsersDebug();
+	async getAllDirectMessageUsersDebug(): Promise<DirectMessageUserEntity[]> {
+		return await this.directMessageService.getAllDirectMessageUsersDebug();
 	}
-
+ */
 }

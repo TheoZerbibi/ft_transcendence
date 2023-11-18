@@ -37,3 +37,14 @@ model ChannelMessage {
 
 	@@map("channel_messages")
 }
+
+model DirectMessage {
+	id				Int			@id @default(autoincrement())
+	content			String
+	created_at		DateTime	@default(now())
+	user_id			Int
+	target_id		Int
+	user			User		@relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+	@@map("direct_messages")
+}

@@ -15,16 +15,29 @@ model User {
 	user			Friends[] @relation("user")
 	friends			Friends[] @relation("friends")
 	GamePlayer		GamePlayer[]
+	directMessages	DirectMessage[]
+	blockedBy		Blocked[] @relation("user")
+	blockedUsers	Blocked[] @relation("blocked")
 
 	@@map("users")
 }
 
 model Friends {
 	user		User	@relation("user", fields: [user_id], references: [id])
-	friends		User	@relation("friends", fields: [friend_id], references: [id])
+	friend		User	@relation("friends", fields: [friend_id], references: [id])
 	user_id		Int	
 	friend_id	Int
 
 	@@id([user_id, friend_id])
 	@@map("friends")
+}
+
+model Blocked {
+	blockedBy			User	@relation("user", fields: [blocked_by_id], references: [id])
+	blocked				User	@relation("blocked", fields: [blocked_id], references: [id])
+	blocked_by_id		Int	
+	blocked_id			Int
+
+	@@id([blocked_by_id, blocked_id])
+	@@map("blocked")
 }

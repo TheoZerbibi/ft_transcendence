@@ -61,19 +61,22 @@ model games {
 }
 
 model users {
-  id                               Int             @id @default(autoincrement())
-  login                            String          @unique
-  display_name                     String
-  email                            String
-  dAuth                            Boolean         @default(false)
-  avatar                           String
-  created_at                       DateTime        @default(now())
-  updated_at                       DateTime
-  last_login                       DateTime        @default(now())
-  channel_users                    channel_users[]
-  friends_friends_friend_idTousers friends[]       @relation("friends_friend_idTousers")
-  friends_friends_user_idTousers   friends[]       @relation("friends_user_idTousers")
-  game_players                     game_players[]
+  id                                   Int               @id @default(autoincrement())
+  login                                String            @unique
+  display_name                         String
+  email                                String
+  dAuth                                Boolean           @default(false)
+  avatar                               String
+  created_at                           DateTime          @default(now())
+  updated_at                           DateTime
+  last_login                           DateTime          @default(now())
+  blocked_blocked_blocked_by_idTousers blocked[]         @relation("blocked_blocked_by_idTousers")
+  blocked_blocked_blocked_idTousers    blocked[]         @relation("blocked_blocked_idTousers")
+  channel_users                        channel_users[]
+  direct_messages                      direct_messages[]
+  friends_friends_friend_idTousers     friends[]         @relation("friends_friend_idTousers")
+  friends_friends_user_idTousers       friends[]         @relation("friends_user_idTousers")
+  game_players                         game_players[]
 }
 
 model game_players {
@@ -85,4 +88,22 @@ model game_players {
   users     users    @relation(fields: [player_id], references: [id])
 
   @@id([player_id, game_id])
+}
+
+model blocked {
+  blocked_id                         Int
+  blocked_by_id                      Int
+  users_blocked_blocked_by_idTousers users @relation("blocked_blocked_by_idTousers", fields: [blocked_by_id], references: [id])
+  users_blocked_blocked_idTousers    users @relation("blocked_blocked_idTousers", fields: [blocked_id], references: [id])
+
+  @@id([blocked_by_id, blocked_id])
+}
+
+model direct_messages {
+  id         Int      @id @default(autoincrement())
+  content    String
+  created_at DateTime @default(now())
+  user_id    Int
+  target_id  Int
+  users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }

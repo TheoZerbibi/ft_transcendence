@@ -1,24 +1,17 @@
 // COMMON
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
-// ENTITIES
-import { DirectMessageEntity } from './impl/ConversationEntity';
-import { DirectMessageUserEntity } from './impl/DirectMessageUserEntity';
-import { DirectMessageMessageEntity } from './impl/DirectMessageEntity.tss';
 // PRISMA
-import { Prisma, User, DirectMessage, DirectMessageUser, DirectMessageMessage } from '@prisma/client';
+import { Prisma, User, DirectMessage, Friends, Blocked } from '@prisma/client';
 // DTO
-import { DirectMessageListElemDto, CreateDirectMessageDto, DirectMessagesettingsDto, DirectMessageModPwdDto } from './dto/DirectMessage.dto';
-import { DirectMessageMessageDto } from './dto/DirectMessage-message.dto';
+import { DirectMessageDto } from './dto/direct-message.dto';
+import { ConversationDto } from './dto/conversation.dto';
 // SERVICES
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class DirectMessageService {
-	localDirectMessages: DirectMessageEntity[] = [];
-
-	constructor(private prisma: PrismaService) {
-		this.initLocalDirectMessages();
-	}
+	constructor(private prisma: PrismaService) {}
 
 	private async initLocalDirectMessages(): Promise<void> {}
 
