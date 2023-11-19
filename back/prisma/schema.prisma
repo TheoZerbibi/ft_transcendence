@@ -65,7 +65,6 @@ model DirectMessage {
 	user_id			Int
 	friend_id		Int
 	user			User		@relation(name: "UserDirectMessages", fields: [user_id], references: [id], onDelete: Cascade)
-	friend			User		@relation(name: "FriendDirectMessages", fields: [friend_id], references: [id], onDelete: Cascade)
 
 
 	@@map("direct_messages")
