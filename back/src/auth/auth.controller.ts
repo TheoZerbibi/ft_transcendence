@@ -15,19 +15,22 @@ export class AuthController {
 		return this.authService.signup(dto);
 	}
 
-	@Get('/callback:token')
-	async redirectFromOAuth(@Req() req, @Res() res) {
-		const code = req.query.code;
-		const token = await this.authService.getAccessToken(code);
-		const user = await this.authService.getUserInfo(token);
-		const jwt = await this.authService.signToken(user);
-		res.redirect(`http://localhost:3000/auth/callback?token=${jwt.access_token}`);
-	}
-
 	@Post('signin')
 	@HttpCode(HttpStatus.OK)
 	@ApiOperation({ summary: 'Log as user.' })
 	async signin(@Body() dto: AuthDto) {
 		return this.authService.signin(dto);
+	}
+
+	@Post('callback:token')
+	@HttpCode(HttpStatus.FOUND)
+	@ApiOperation({ summary: 'Callback from 42 API.' })
+	async checkStateAndStoreJWT(@Req() req, @Res() res) {
+		const code = req.query.code;
+		const token = await this.authService.getAccessToken(code);
+		const user = await this.authService.getUserInfo(token);
+		const jwt = await this.authService.signToken(user);
+		res.cookie('jwt', jwt.access_token, { httpOnly: true });
+		res.redirect('http://localhost:3000');
 	}
 }
