@@ -3,3 +3,7 @@
 ## CALLBACK
 - [] check if states are matching, if not, it means a third party changed the state.
 - [] check the port (ie localhost:3000/api/auth/callback)
+- [] get the user info
+- [] onboarding if user doesn't already exist
+- [] else redirect to homepage or game
+- [] 2FA
