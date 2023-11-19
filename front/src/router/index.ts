@@ -16,12 +16,12 @@ const router = createRouter({
 		{
 			path: '/game',
 			name: 'GameCreator',
-			component: () => import('../views/GameMenuView.vue'),
+			component: () => import('../views/game/GameMenuView.vue'),
 		},
 		{
 			path: '/game/:uid',
 			name: 'Game',
-			component: () => import('../views/GameView.vue'),
+			component: () => import('../views/game/GameView.vue'),
 		},
 		{
 			path: '/exemples/snackbar',
@@ -51,32 +51,32 @@ const router = createRouter({
 		{
 			path: '/profile',
 			name: 'profile',
-			component: () => import('../views/ProfileView.vue'),
+			component: () => import('../views/profile/ProfileView.vue'),
 		},
 		{
 			path: '/team',
 			name: 'team',
-			component: () => import('../views/TeamView.vue'),
+			component: () => import('../views/profile/TeamView.vue'),
 		},
 		{
 			path: '/team/:login',
 			name: 'TeamProfile',
-			component: () => import('../views/TeamProfileView.vue'),
+			component: () => import('../views/profile/TeamProfileView.vue'),
 		},
 		{
 			path: '/auth',
 			name: 'Auth',
-			component: () => import('../views/AuthView.vue'),
+			component: () => import('../views/auth/AuthView.vue'),
 		},
 		{
 			path: '/auth/signup',
 			name: 'Sinup',
-			component: () => import('../views/SignupView.vue'),
+			component: () => import('../views/auth/SignupView.vue'),
 		},
 		{
 			path: '/secret',
 			name: 'secret',
-			component: () => import('../views/SecretView.vue'),
+			component: () => import('../components/secrets/Secret.vue'),
 		},
 		{
 			path: '/portfolio',
@@ -86,7 +86,7 @@ const router = createRouter({
 		{
 			path: '/colors',
 			name: 'Colors',
-			component: () => import('../views/Colors.vue'),
+			component: () => import('../components/secrets/Colors.vue'),
 		},
 		{
 			path: '/exemples/websocket',
@@ -101,7 +101,7 @@ const router = createRouter({
 		{
 			path: '/api/oauth/callback:token',
 			name: 'OauthCallback',
-			component: () => import('../views/OauthCallbackView.vue'),
+			component: () => import('../views/auth/OauthCallbackView.vue'),
 		},
 	],
 });

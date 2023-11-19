@@ -14,7 +14,7 @@
 <script lang="ts">
 import { computed, ref } from 'vue';
 
-import { useUser } from '../stores/user';
+import { useUser } from '../../stores/user';
 
 export default {
 	name: 'AuthView',

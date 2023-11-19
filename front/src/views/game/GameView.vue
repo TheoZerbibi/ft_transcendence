@@ -14,7 +14,7 @@
 import { defineComponent } from 'vue';
 
 // Components
-import Game from '../components/games/Game.vue';
+import Game from '../../components/games/Game.vue';
 
 export default defineComponent({
 	name: 'GameView',
