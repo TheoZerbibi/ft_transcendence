@@ -1,23 +1,23 @@
 
 model User {
-	id				Int	@id @default(autoincrement())
-	login			String @unique
+	id				Int				@id @default(autoincrement())
+	login			String 			@unique
 	display_name	String
 	email			String
-	dAuth			Boolean @default(false)
+	dAuth			Boolean 		@default(false)
 	avatar			String
-	created_at		DateTime @default(now())
-	updated_at		DateTime @updatedAt
-	last_login		DateTime @default(now())
+	created_at		DateTime 		@default(now())
+	updated_at		DateTime 		@updatedAt
+	last_login		DateTime 		@default(now())
 	channelUser		ChannelUser[]
 
 
-	user			Friends[] @relation("user")
-	friends			Friends[] @relation("friends")
+	user			Friends[]		@relation("user")
+	friends			Friends[] 		@relation("friends")
 	GamePlayer		GamePlayer[]
-	directMessages	DirectMessage[]
-	blockedBy		Blocked[] @relation("user")
-	blockedUsers	Blocked[] @relation("blocked")
+	directMessages	DirectMessage[]	@relation(name: "UserDirectMessages")
+	blockedBy		Blocked[]		@relation("user")
+	blockedUsers	Blocked[]		@relation("blocked")
 
 	@@map("users")
 }

@@ -48,7 +48,7 @@ Table direct_messages {
   content String [not null]
   created_at DateTime [default: `now()`, not null]
   user_id Int [not null]
-  target_id Int [not null]
+  friend_id Int [not null]
   user users [not null]
 }
 

@@ -1,11 +1,11 @@
 
 model Channel {
-	id			Int	@id @default(autoincrement())
-	name		String @unique
-	public		Boolean		@default(true)
+	id			Int				@id @default(autoincrement())
+	name		String			@unique
+	public		Boolean			@default(true)
 	password	String?
-	created_at	DateTime	@default(now())
-	updated_at	DateTime	@default(now()) @updatedAt
+	created_at	DateTime		@default(now())
+	updated_at	DateTime		@default(now()) @updatedAt
 	channelUser	ChannelUser[]
 
 	@@map("channels")
@@ -43,8 +43,9 @@ model DirectMessage {
 	content			String
 	created_at		DateTime	@default(now())
 	user_id			Int
-	target_id		Int
-	user			User		@relation(fields: [user_id], references: [id], onDelete: Cascade)
+	friend_id		Int
+	user			User		@relation(name: "UserDirectMessages", fields: [user_id], references: [id], onDelete: Cascade)
+
 
 	@@map("direct_messages")
 }

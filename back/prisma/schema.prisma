@@ -20,12 +20,12 @@ datasource db {
 }
 
 model Channel {
-	id			Int	@id @default(autoincrement())
-	name		String @unique
-	public		Boolean		@default(true)
+	id			Int				@id @default(autoincrement())
+	name		String			@unique
+	public		Boolean			@default(true)
 	password	String?
-	created_at	DateTime	@default(now())
-	updated_at	DateTime	@default(now()) @updatedAt
+	created_at	DateTime		@default(now())
+	updated_at	DateTime		@default(now()) @updatedAt
 	channelUser	ChannelUser[]
 
 	@@map("channels")
@@ -63,8 +63,10 @@ model DirectMessage {
 	content			String
 	created_at		DateTime	@default(now())
 	user_id			Int
-	target_id		Int
-	user			User		@relation(fields: [user_id], references: [id], onDelete: Cascade)
+	friend_id		Int
+	user			User		@relation(name: "UserDirectMessages", fields: [user_id], references: [id], onDelete: Cascade)
+	friend			User		@relation(name: "FriendDirectMessages", fields: [friend_id], references: [id], onDelete: Cascade)
+
 
 	@@map("direct_messages")
 }
@@ -93,24 +95,24 @@ model GamePlayer {
 }
 
 model User {
-	id				Int	@id @default(autoincrement())
-	login			String @unique
+	id				Int				@id @default(autoincrement())
+	login			String 			@unique
 	display_name	String
 	email			String
-	dAuth			Boolean @default(false)
+	dAuth			Boolean 		@default(false)
 	avatar			String
-	created_at		DateTime @default(now())
-	updated_at		DateTime @updatedAt
-	last_login		DateTime @default(now())
+	created_at		DateTime 		@default(now())
+	updated_at		DateTime 		@updatedAt
+	last_login		DateTime 		@default(now())
 	channelUser		ChannelUser[]
 
 
-	user			Friends[] @relation("user")
-	friends			Friends[] @relation("friends")
+	user			Friends[]		@relation("user")
+	friends			Friends[] 		@relation("friends")
 	GamePlayer		GamePlayer[]
-	directMessages	DirectMessage[]
-	blockedBy		Blocked[] @relation("user")
-	blockedUsers	Blocked[] @relation("blocked")
+	directMessages	DirectMessage[]	@relation(name: "UserDirectMessages")
+	blockedBy		Blocked[]		@relation("user")
+	blockedUsers	Blocked[]		@relation("blocked")
 
 	@@map("users")
 }

@@ -103,7 +103,7 @@ model direct_messages {
   id         Int      @id @default(autoincrement())
   content    String
   created_at DateTime @default(now())
+  friend_id  Int
   user_id    Int
-  target_id  Int
   users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
