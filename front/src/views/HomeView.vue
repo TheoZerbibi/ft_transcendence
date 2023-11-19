@@ -40,28 +40,16 @@
 			</v-card-actions>
 		</v-card>
 	</v-row>
-	<HomepageFooter />
-	<v-footer class="neonPolice footer blurred-card" alt="Footer">
-		<span style="color: black"> ☆⋆｡𖦹°‧★ </span>
-		<a href="https://www.instagram.com/42.born2code/" target="_blank">Instagram</a>
-		<span style="color: black"> 👁 </span>
-		<a href="https://www.facebook.com/42born2code" target="_blank">Facebook</a>
-		<span style="color: black"> 👁 </span>
-		<a href="https://twitter.com/42born2code?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" target="_blank"
-			>Twitter</a
-		>
-		<span style="color: black"> ☆⋆｡𖦹°‧★ </span>
-	</v-footer>
+	<Footer />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import Footer from '../components/utils/Footer.vue';
 
 export default defineComponent({
 	name: 'HomeView',
-	data() {
-		return {};
-	},
+	components: { Footer },
 });
 </script>
 <!-- <script nomodule="">!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script> -->
