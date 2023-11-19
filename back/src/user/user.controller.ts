@@ -32,7 +32,7 @@ export class UserController {
 
 	@UseGuards(JwtGuard)
 	@Get(':login')
-	@ApiOperation({ summary: 'Get information for specify user' })
+	@ApiOperation({ summary: 'Get specific user information' })
 	@ApiBearerAuth('JWT-auth')
 	@UseInterceptors(ClassSerializerInterceptor)
 	async getUserByLogin(@Param('login') userLogin: string): Promise<UserDto> {
