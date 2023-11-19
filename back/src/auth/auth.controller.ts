@@ -15,10 +15,13 @@ export class AuthController {
 		return this.authService.signup(dto);
 	}
 
-	@Get('oauth/callback')
+	@Get('/callback:token')
 	async redirectFromOAuth(@Req() req, @Res() res) {
-		const token = await this.authService.signup(req.user);
-		res.redirect(`${process.env.API42_REDIRECT_URI}?token=${token}`);
+		const code = req.query.code;
+		const token = await this.authService.getAccessToken(code);
+		const user = await this.authService.getUserInfo(token);
+		const jwt = await this.authService.signToken(user);
+		res.redirect(`http://localhost:3000/auth/callback?token=${jwt.access_token}`);
 	}
 
 	@Post('signin')

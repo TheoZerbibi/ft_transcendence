@@ -1,15 +1,12 @@
-<script>
-import { defineComponent } from '@vue/composition-api';
+<script lang="ts">
 
-export default defineComponent({
-	setup() {},
-});
 </script>
 
 <template>
 	<div>
 		<h2>Redirection Page</h2>
 		<p>Loading...</p>
+		
 	</div>	
 </template>
 
