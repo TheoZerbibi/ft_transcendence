@@ -10,6 +10,7 @@
 				}"
 				class="fill-height versus-container"
 			>
+			<div class="versus-container-inner">
 				<div class="fill-height d-flex align-center no-gutters">
 					<div
 						:style="{
@@ -25,7 +26,7 @@
 							<div
 								id="leftUser"
 								:class="{ tremble: shouldTremble('leftUser') }"
-								class="mr-auto fill-height ml-2"
+								class="mr-auto fill-height ml-3"
 							>
 								<v-img class="cadre-responsive" :src="userData.leftPlayer.cadre">
 									<h2>{{ userData.leftPlayer.name }}</h2>
@@ -61,7 +62,7 @@
 						}"
 						class="fill-height d-flex justify-end align-center right"
 					>
-						<div id="rightUser" :class="{ tremble: shouldTremble('rightUser') }" class="fill-height mr-2">
+						<div id="rightUser" :class="{ tremble: shouldTremble('rightUser') }" class="fill-height mr-3">
 							<v-img class="cadre-responsive" :src="userData.rightPlayer.cadre">
 								<h2>{{ userData.rightPlayer.name }}</h2>
 								<v-img
@@ -79,9 +80,10 @@
 						</div>
 					</div>
 				</div>
+				</div>
 			</v-card>
 			<div id="game-canvas" />
-		</div>
+	</div>
 		<CountdownOverlay v-if="showCountdown" />
 	</v-container>
 </template>
@@ -517,10 +519,11 @@ html {
 	color: #dddfe2;
 	font-family: 'Avenir', Helvetica, Arial, sans-serif;
 	text-align: center;
-	width: 70vw;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	border: 10px double #dddfe2;
+	border: 5px solid #2a3cad;
+	border-radius: 5px;
+	box-shadow: 0px 0px 5px #2a3cad;
 }
 
 #game-canvas {
@@ -555,7 +558,7 @@ html {
 	width: 6vw;
 	height: 7vw;
 	position: absolute;
-	z-index: -888; /* Position absolue pour positionner par-dessus la deuxième image */
+	z-index: -888;
 }
 
 .toast-of-death {
@@ -585,14 +588,6 @@ html {
 	top: 50%;
 	transform: translateY(-50%);
 	z-index: 99999;
-}
-
-.versus-container {
-	border: 10px double #dddfe2;
-	position: relative;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
 }
 
 .right {
@@ -653,5 +648,56 @@ canvas {
 	100% {
 		transform: translate(2px, -2px);
 	}
+}
+
+.versus-container {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	padding: 5px;
+	overflow: hidden;
+	border: 2px solid #b78846;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+ .versus-container:before, .versus-container:after {
+	content: "•";
+	position: absolute;
+	width: 14px;
+	height: 14px;
+	font-size: 14px;
+	color: #b78846;
+	border: 2px solid #b78846;
+	line-height: 12px;
+	top: 5px;
+	text-align: center;
+}
+ .versus-container:before {
+	 left: 5px;
+}
+ .versus-container:after {
+	 right: 5px;
+}
+ .versus-container .versus-container-inner {
+	 position: relative;
+	 border: 2px solid #b78846;
+}
+ .versus-container .versus-container-inner:before, .versus-container .versus-container-inner:after {
+	 content: "•";
+	 position: absolute;
+	 width: 14px;
+	 height: 14px;
+	 font-size: 14px;
+	 color: #b78846;
+	 border: 2px solid #b78846;
+	 line-height: 12px;
+	 bottom: -2px;
+	 text-align: center;
+}
+ .versus-container .versus-container-inner:before {
+	 left: -2px;
+}
+ .versus-container .versus-container-inner:after {
+	 right: -2px;
 }
 </style>
