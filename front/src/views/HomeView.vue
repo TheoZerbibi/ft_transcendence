@@ -1,4 +1,5 @@
 <template>
+	<!--Header avec l'ampoule a tester-->
 	<!-- <header role="banner" class="site-header hide-on-overlay" data-v-9fb9646a=""> -->
 	<!-- <img class="site-header__logo" width="125" height="76" draggable="false" src="/src/assets/OmoriWallpapers/logo1.png" data-v-9fb9646a=""> -->
 	<!-- <div class="site-header__lightbulb" data-v-9fb9646a=""> -->

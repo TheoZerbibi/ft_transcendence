@@ -1,51 +1,53 @@
 <template>
 	<main>
-		<section>
+		<!-- <section> -->
 			<v-container class="profileHome neonPolice">
 				<div class="box one">
-					Settings &#128001;
+					Settings;
 					<link rel="icon" href="/favicon.ico" />
 					<v-btn class="customButton darkNeonPolice" rounded>About ℹ️</v-btn>
 					<v-btn class="customButton darkNeonPolice" rounded>Rules 📄</v-btn>
 					<v-btn class="customButton darkNeonPolice" rounded>Help ❓</v-btn>
 				</div>
 				<div class="box two">
-					User infos &#128048;
+					User infos
 					<div>Profile picture</div>
 					<div>name 1</div>
 					<div>does not display username</div>
 				</div>
-				<div class="box three">&#129418;</div>
+				<div class="box three"></div>
 				<div class="box four">
 					<v-btn class="customButton darkNeonPolice" rounded>Modify 🖋</v-btn>
 					<v-btn class="customButton darkNeonPolice" rounded>Logout 🚪</v-btn>
 				</div>
 				<div class="box five">
-					Game stats &#128014;
+					Game stats;
 					<div></div>
 					<div></div>
 				</div>
 				<div class="box six">
 					<v-btn class="customButton darkNeonPolice" rounded @click="$router.push('chat')"
-						>Chat &#128062;</v-btn
+						>Chat</v-btn
 					>
 				</div>
 				<div class="box seven">
-					Security &#128029;
+					Security;
 					<v-btn class="customButton darkNeonPolice" rounded>Enable 2FA &#128506;</v-btn>
 				</div>
 				<div class="box eight">
-					Privacy &#128030;
+					Privacy;
 					<v-btn class="customButton darkNeonPolice" rounded>Delete account ❌</v-btn>
 				</div>
-				<div class="box nine">Match history &#128060;</div>
+				<div class="box nine">Match history</div>
 				<div class="box ten">
+					<br />
+					<br />
 					<v-btn class="customButton darkNeonPolice" rounded @click="$router.push('chat')"
-						>Play ▶️ &#129513;</v-btn
+						>Play ▶️</v-btn
 					>
 				</div>
 			</v-container>
-		</section>
+		<!-- </section> -->
 	</main>
 </template>
 
@@ -63,17 +65,21 @@ export default defineComponent({
 	grid-template-columns: 1fr 1fr 1fr 1fr;
 	grid-template-rows: 70px 70px 70px 70px 70px 70px 70px 70px 70px 70px 70px;
 	gap: 10px;
-	/* background: url(/src/assets/OmoriWallpapers/OmoriJournal01.png); */
+	/* background-image: url(/src/assets/OmoriWallpapers/OmoriJournal01.png); */
+	/* background-size: cover; */
+	/* background: url(/src/assets/OmoriWallpapers/OmoriJournal01.png) no-repeat; */
 }
 
 .box {
 	background-color: darkgreen;
-	/* background: url(/src/assets/OmoriWallpapers/OmoriJournal01.png) no-repeat; */
 	background-size: cover;
 	display: flex;
 	flex-direction: column;
 	align-items: center; /* Align buttons to the bottom */
 	justify-content: space-between; /* Align items to the bottom */
+	border: 2px solid #333; /* Couleur de la bordure et épaisseur */
+	padding: 10px; /* Ajoutez un espace intérieur pour rendre la bordure plus visible */
+	text-align: center;
 }
 .one {
 	grid-row: 1 / 6;
