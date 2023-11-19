@@ -55,35 +55,17 @@
 </template>
 
 <script lang="ts">
-/**
- * Generates a random string of the specified length.
- * @param {number} length The length of the random string.
- * @returns {string} The random string.
- */
- function makeid(length: number): string {
-	let result = '';
-	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	const charactersLength = characters.length;
-	let counter = 0;
-	while (counter < length) {
-		result += characters.charAt(Math.floor(Math.random() * charactersLength));
-		counter += 1;
-	}
-	return result;
-}
+import { makeid } from '../plugins/makeId';
 
 export default {
 	name: 'HomeView',
-	data() {
-		return {};
-	},
 	methods: {
 		redirectToOAuth() {
 			const clientId = import.meta.env.VITE_API42_UID;
 			const redirectUri = import.meta.env.VITE_API42_REDIRECT_URI;
 			const responseType = 'code';
 			const scope = 'public';
-			const state = makeid(32);
+			const state = makeid(42);
 
 			const params = new URLSearchParams();
 			params.append('client_id', clientId);
