@@ -56,6 +56,7 @@
 
 <script lang="ts">
 import { makeid } from '../plugins/makeId';
+//import { useUser } from '../stores/user';
 
 export default {
 	name: 'HomeView',
