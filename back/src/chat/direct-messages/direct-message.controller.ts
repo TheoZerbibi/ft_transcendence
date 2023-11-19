@@ -9,7 +9,7 @@ import { User, Friends, Blocked, DirectMessage } from '@prisma/client';
 // DTO
 import { DirectMessageDto } from './dto/direct-message.dto';
 // SERVICES
-import { DirectMessageService } from './directMessage.service';
+import { DirectMessageService } from './direct-message.service';
 
 @Controller('directMessage')
 @ApiTags('DirectMessage')

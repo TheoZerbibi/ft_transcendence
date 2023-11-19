@@ -19,6 +19,7 @@ export class DirectMessageService {
 
 	/******************************* Direct Message Lists ******************************/
 
+	/*
 	async getLastConversations(user: User): Promise<User[]> {
 		const friends = await this.prisma.directMessage.findMany({
 			where: {
@@ -66,22 +67,24 @@ export class DirectMessageService {
 		const usersList = Array.from(usersSet).slice(0, 10);
 		return usersList;
 	}
+	*/
 
 	/******************************* DirectMessage Access ******************************/
 
+	/*
 	async accessConversation(user: User, friend_login: string): Promise<DirectMessage[]> {
 
 		
 	}
 
 	async findConversationByUsername() {}
+	*/
 
 	/***********************************************************************************/
 	/* 										Creation								   */
 	/***********************************************************************************/
 
-	async createConversation(user: User, friend_login: string, content: string): Promise<ConversationDto> {
-	}
+	//async createConversation(user: User, friend_login: string, content: string): Promise<ConversationDto> { }
 
 	/***********************************************************************************/
 	/* 									Modification								   */
@@ -89,17 +92,17 @@ export class DirectMessageService {
 
 	/********************************* DirectMessages **********************************/
 
-	async answerInConversation() {}
+	//async answerInConversation() {}
 
 	/************************************** Users **************************************/
 
-	async blockFriend() {}
+	//async blockFriend() {}
 
 	/***********************************************************************************/
 	/* 									Deletion									   */
 	/***********************************************************************************/
 
-	async deleteDirectMessage() {}
+	//async deleteDirectMessage() {}
 
 	/***********************************************************************************/
 	/* 										UTILS									   */
