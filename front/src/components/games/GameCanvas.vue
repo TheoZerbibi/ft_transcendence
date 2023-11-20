@@ -436,8 +436,15 @@ export default {
 		});
 
 		this.socket.on('player-moved', (data: any) => {
+<<<<<<< HEAD
 			if (data.leftUser) gameData.leftUser?.update(data.leftUser.position);
 			if (data.rightUser) gameData.rightUser?.update(data.rightUser.position);
+=======
+			console.log(data.p1);
+			console.log(data.p2);
+			if (data.p1) gameData.p1?.update(data.p1.position, data.p1.width, data.p1.height);
+			if (data.p2) gameData.p2?.update(data.p2.position, data.p2.width, data.p2.height);
+>>>>>>> 2f557b2 (refactor(pong): Add Winner side at the end)
 		});
 
 		this.socket.on('game-score', (data: any) => {

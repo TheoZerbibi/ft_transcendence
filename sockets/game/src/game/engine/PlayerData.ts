@@ -3,6 +3,7 @@ import { IPlayerData } from '../impl/interfaces/IPlayerData';
 import { Vector } from './utils/Vector';
 import { constrain } from './utils/MathUtils';
 import { DIRECTION } from './enums/Direction';
+import { GameService } from '../game.service';
 
 export class PlayerData implements IPlayerData {
 <<<<<<< HEAD
@@ -50,5 +51,9 @@ export class PlayerData implements IPlayerData {
 		else if (direction === DIRECTION.DOWN) this.pos.y -= 5;
 		this.pos.y = constrain(this.pos.y, 0, this.height - this.h);
 >>>>>>> 42c10c0 (refactor(pong): Improve ball deplacement)
+	}
+
+	addPoint() {
+		this.score++;
 	}
 }

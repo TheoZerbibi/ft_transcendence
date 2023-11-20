@@ -173,10 +173,36 @@ export default {
 							snackbarStore.showSnackbar(error, 3000, 'red');
 							return;
 						});
+<<<<<<< HEAD
 					this.apiData = data;
 					if (data.isSpec) snackbarStore.showSnackbar('Connecting to the game session.', 3000, 'orange');
 					else snackbarStore.showSnackbar('Joining game session.', 3000, 'green');
 				}
+=======
+						this.socket.on('game-start', (data: any) => {
+							snackbarStore.showSnackbar('Game Starting !', 3000, 'green');
+							this.apiData.started_at = data.startDate;
+						});
+						this.socket.on('game-end', (data: any) => {
+							this.disconnect();
+							snackbarStore.showSnackbar('Game is ended', 3000, 'primary');
+							if (data.winner) alert(data.winner.login);
+						});
+						this.socket.emit('session-join', {
+							gameUID: this.gameUID,
+							userID: data.player_id,
+							isSpec: data.is_spec,
+						});
+					})
+					.catch((error: any) => {
+						snackbarStore.showSnackbar(error, 3000, 'red');
+						console.log('error : ', error);
+						return;
+					});
+				this.apiData = data;
+				if (data.isSpec) snackbarStore.showSnackbar('Connecting to the game session.', 3000, 'orange');
+				else snackbarStore.showSnackbar('Joining game session.', 3000, 'green');
+>>>>>>> 2f557b2 (refactor(pong): Add Winner side at the end)
 			})
 			.catch((error) => {
 				console.error(error);

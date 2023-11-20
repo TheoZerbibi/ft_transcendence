@@ -243,4 +243,9 @@ export class Game implements IGame {
 			}
 		}, 1);
 	}
+
+	private winGame(user: IUser, side: SIDE) {
+		this.winnerSide = side;
+		this.endGame();
+	}
 }
