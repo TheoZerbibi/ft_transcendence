@@ -51,13 +51,12 @@ model friends {
 }
 
 model games {
-  id           Int            @id @unique @default(autoincrement())
-  uid          String         @unique
-  is_private   Boolean        @default(false)
-  created_at   DateTime       @default(now())
-  started_at   DateTime?
-  end_at       DateTime?
-  game_players game_players[]
+  id         Int       @id @unique @default(autoincrement())
+  uid        String    @unique
+  is_private Boolean   @default(false)
+  created_at DateTime  @default(now())
+  started_at DateTime?
+  end_at     DateTime?
 }
 
 model users {
@@ -91,6 +90,7 @@ model users {
   channel_users                    channel_users[]
   friends_friends_friend_idTousers friends[]       @relation("friends_friend_idTousers")
   friends_friends_user_idTousers   friends[]       @relation("friends_user_idTousers")
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> 977750d (chore: Fix prisma.schema)
 =======
@@ -150,3 +150,10 @@ model direct_messages {
 =======
 >>>>>>> 6c47f89 (suite tuto to fix)
 >>>>>>> 8ad44c4 (chore: Fix prisma.schema)
+=======
+}
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model gamePlayers {
+// }
+>>>>>>> 89e81b3 (ca marche sur mon ordi en plein festival ou on me sort que je suis une sorciere blanche ahaha alors que je suis de l;'akatsuki mdr)
