@@ -39,6 +39,7 @@ dependencies:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     specifier: 5.5.2
     version: 5.5.2(prisma@5.5.2)
 <<<<<<< HEAD
@@ -59,6 +60,10 @@ dependencies:
     specifier: ^0.5.1
     version: 0.5.1(socket.io@4.7.2)
 >>>>>>> a9452ee (chore: Add Admin UI for Socket.io)
+=======
+    specifier: 5.5.0
+    version: 5.5.0(prisma@5.5.0)
+>>>>>>> 079adc7 (chore: Update some modules versions)
   '@socket.io/redis-adapter':
     specifier: ^8.2.1
     version: 8.2.1(socket.io-adapter@2.5.2)
@@ -86,6 +91,7 @@ dependencies:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     specifier: 5.5.2
     version: 5.5.2
 =======
@@ -100,6 +106,10 @@ dependencies:
     specifier: 5.6.0
     version: 5.6.0
 >>>>>>> e16901f (chore: Merge Develop)
+=======
+    specifier: 5.5.0
+    version: 5.5.0
+>>>>>>> 079adc7 (chore: Update some modules versions)
   redis:
     specifier: ^4.6.10
     version: 4.6.10
@@ -124,8 +134,13 @@ dependencies:
 
 devDependencies:
   '@nestjs/cli':
+<<<<<<< HEAD
     specifier: ^10.2.1
     version: 10.2.1
+=======
+    specifier: ^10.2.0
+    version: 10.2.0
+>>>>>>> 079adc7 (chore: Update some modules versions)
   '@types/express':
 <<<<<<< HEAD
     specifier: ^4.17.21
@@ -152,15 +167,16 @@ devDependencies:
     specifier: ^29.5.6
     version: 29.5.6
   '@types/node':
-    specifier: ^20.8.7
-    version: 20.8.7
+    specifier: ^20.8.8
+    version: 20.8.8
   '@types/supertest':
     specifier: ^2.0.15
     version: 2.0.15
   '@typescript-eslint/eslint-plugin':
-    specifier: ^6.8.0
-    version: 6.8.0(@typescript-eslint/parser@6.8.0)(eslint@8.51.0)(typescript@5.2.2)
+    specifier: ^6.9.0
+    version: 6.9.0(@typescript-eslint/parser@6.9.0)(eslint@8.52.0)(typescript@5.2.2)
   '@typescript-eslint/parser':
+<<<<<<< HEAD
     specifier: ^6.8.0
     version: 6.8.0(eslint@8.51.0)(typescript@5.2.2)
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
@@ -180,6 +196,22 @@ devDependencies:
 =======
     version: 29.7.0(@types/node@20.8.7)(ts-node@10.9.1)
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+    specifier: ^6.9.0
+    version: 6.9.0(eslint@8.52.0)(typescript@5.2.2)
+  eslint:
+    specifier: ^8.52.0
+    version: 8.52.0
+  eslint-config-prettier:
+    specifier: ^9.0.0
+    version: 9.0.0(eslint@8.52.0)
+  eslint-plugin-prettier:
+    specifier: ^5.0.1
+    version: 5.0.1(eslint-config-prettier@9.0.0)(eslint@8.52.0)(prettier@3.0.3)
+  jest:
+    specifier: ^29.7.0
+    version: 29.7.0(@types/node@20.8.8)(ts-node@10.9.1)
+>>>>>>> 079adc7 (chore: Update some modules versions)
   prettier:
     specifier: ^3.1.0
     version: 3.1.0
@@ -198,10 +230,14 @@ devDependencies:
   ts-node:
     specifier: ^10.9.1
 <<<<<<< HEAD
+<<<<<<< HEAD
     version: 10.9.1(@types/node@20.9.1)(typescript@5.2.2)
 =======
     version: 10.9.1(@types/node@20.8.7)(typescript@5.2.2)
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+    version: 10.9.1(@types/node@20.8.8)(typescript@5.2.2)
+>>>>>>> 079adc7 (chore: Update some modules versions)
   tsconfig-paths:
     specifier: ^4.2.0
     version: 4.2.0
@@ -224,8 +260,29 @@ packages:
       '@jridgewell/trace-mapping': 0.3.19
     dev: true
 
+<<<<<<< HEAD
   /@angular-devkit/core@16.2.8(chokidar@3.5.3):
     resolution: {integrity: sha512-PTGozYvh1Bin5lB15PwcXa26Ayd17bWGLS3H8Rs0s+04mUDvfNofmweaX1LgumWWy3nCUTDuwHxX10M3G0wE2g==}
+=======
+  /@angular-devkit/core@16.1.8(chokidar@3.5.3):
+    resolution: {integrity: sha512-dSRD/+bGanArIXkj+kaU1kDFleZeQMzmBiOXX+pK0Ah9/0Yn1VmY3RZh1zcX9vgIQXV+t7UPrTpOjaERMUtVGw==}
+    engines: {node: ^16.14.0 || >=18.10.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
+    peerDependencies:
+      chokidar: ^3.5.2
+    peerDependenciesMeta:
+      chokidar:
+        optional: true
+    dependencies:
+      ajv: 8.12.0
+      ajv-formats: 2.1.1(ajv@8.12.0)
+      chokidar: 3.5.3
+      jsonc-parser: 3.2.0
+      rxjs: 7.8.1
+      source-map: 0.7.4
+
+  /@angular-devkit/core@16.2.7(chokidar@3.5.3):
+    resolution: {integrity: sha512-XskObYrg7NRdEuHnSVZOM7OeinEL8HzugjmKnawAa+dAbFCCoGsVWjMliA/Q8sb1yfGkyL0WW7DZABZj7EGwWA==}
+>>>>>>> 079adc7 (chore: Update some modules versions)
     engines: {node: ^16.14.0 || >=18.10.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
     peerDependencies:
       chokidar: ^3.5.2
@@ -241,6 +298,7 @@ packages:
       rxjs: 7.8.1
       source-map: 0.7.4
 
+<<<<<<< HEAD
   /@angular-devkit/schematics-cli@16.2.8(chokidar@3.5.3):
     resolution: {integrity: sha512-EXURJCzWTVYCipiTT4vxQQOrF63asOUDbeOy3OtiSh7EwIUvxm3BPG6hquJqngEnI/N6bA75NJ1fBhU6Hrh7eA==}
     engines: {node: ^16.14.0 || >=18.10.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
@@ -248,6 +306,15 @@ packages:
     dependencies:
       '@angular-devkit/core': 16.2.8(chokidar@3.5.3)
       '@angular-devkit/schematics': 16.2.8(chokidar@3.5.3)
+=======
+  /@angular-devkit/schematics-cli@16.2.7(chokidar@3.5.3):
+    resolution: {integrity: sha512-K10EE3qtSv4AoI3gnCNT80BbDNMK6UmpM8w0sd08hlNC4SCfzp+OFszV0AW29A5VK3zkbDQLJ6PL4wnNN4iuDQ==}
+    engines: {node: ^16.14.0 || >=18.10.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
+    hasBin: true
+    dependencies:
+      '@angular-devkit/core': 16.2.7(chokidar@3.5.3)
+      '@angular-devkit/schematics': 16.2.7(chokidar@3.5.3)
+>>>>>>> 079adc7 (chore: Update some modules versions)
       ansi-colors: 4.1.3
       inquirer: 8.2.4
       symbol-observable: 4.0.0
@@ -260,7 +327,23 @@ packages:
     resolution: {integrity: sha512-MBiKZOlR9/YMdflALr7/7w/BGAfo/BGTrlkqsIB6rDWV1dYiCgxI+033HsiNssLS6RQyCFx/e7JA2aBBzu9zEg==}
     engines: {node: ^16.14.0 || >=18.10.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
     dependencies:
+<<<<<<< HEAD
       '@angular-devkit/core': 16.2.8(chokidar@3.5.3)
+=======
+      '@angular-devkit/core': 16.1.8(chokidar@3.5.3)
+      jsonc-parser: 3.2.0
+      magic-string: 0.30.0
+      ora: 5.4.1
+      rxjs: 7.8.1
+    transitivePeerDependencies:
+      - chokidar
+
+  /@angular-devkit/schematics@16.2.7(chokidar@3.5.3):
+    resolution: {integrity: sha512-zu3xHwA4w+kXHkyyjGl3i7uSU2/kKLPKuyyixw0WLcKUQCYd7TWmu8OC0qCDa42XkxP9gGL091dJFu56exgneA==}
+    engines: {node: ^16.14.0 || >=18.10.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
+    dependencies:
+      '@angular-devkit/core': 16.2.7(chokidar@3.5.3)
+>>>>>>> 079adc7 (chore: Update some modules versions)
       jsonc-parser: 3.2.0
       magic-string: 0.30.1
       ora: 5.4.1
@@ -611,13 +694,21 @@ packages:
       '@jridgewell/trace-mapping': 0.3.9
     dev: true
 
+<<<<<<< HEAD
   /@eslint-community/eslint-utils@4.4.0(eslint@8.53.0):
+=======
+  /@eslint-community/eslint-utils@4.4.0(eslint@8.52.0):
+>>>>>>> 079adc7 (chore: Update some modules versions)
     resolution: {integrity: sha512-1/sA4dwrzBAyeUoQ6oxahHKmrZvsnLCg4RfxW3ZFGGmQkSNQPFNLV9CUEFQP1x9EYXHTo5p6xdhZM1Ne9p/AfA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
     dependencies:
+<<<<<<< HEAD
       eslint: 8.53.0
+=======
+      eslint: 8.52.0
+>>>>>>> 079adc7 (chore: Update some modules versions)
       eslint-visitor-keys: 3.4.3
     dev: true
 
@@ -643,8 +734,13 @@ packages:
       - supports-color
     dev: true
 
+<<<<<<< HEAD
   /@eslint/js@8.53.0:
     resolution: {integrity: sha512-Kn7K8dx/5U6+cT1yEhpX1w4PCSg0M+XyRILPgvwcEBjerFWCwQj5sbr3/VmxqV0JGHCBCzyd6LxypEuehypY1w==}
+=======
+  /@eslint/js@8.52.0:
+    resolution: {integrity: sha512-mjZVbpaeMZludF2fsWLD0Z9gCref1Tk4i9+wddjRvpUNqqcndPkBD09N/Mapey0b3jaXbLm2kICwFv2E64QinA==}
+>>>>>>> 079adc7 (chore: Update some modules versions)
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
@@ -706,10 +802,14 @@ packages:
     dependencies:
       '@jest/types': 29.6.3
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
       chalk: 4.1.2
       jest-message-util: 29.7.0
       jest-util: 29.7.0
@@ -731,10 +831,14 @@ packages:
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       ci-info: 3.8.0
@@ -742,10 +846,14 @@ packages:
       graceful-fs: 4.2.11
       jest-changed-files: 29.7.0
 <<<<<<< HEAD
+<<<<<<< HEAD
       jest-config: 29.7.0(@types/node@20.9.1)(ts-node@10.9.1)
 =======
       jest-config: 29.7.0(@types/node@20.8.7)(ts-node@10.9.1)
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      jest-config: 29.7.0(@types/node@20.8.8)(ts-node@10.9.1)
+>>>>>>> 079adc7 (chore: Update some modules versions)
       jest-haste-map: 29.7.0
       jest-message-util: 29.7.0
       jest-regex-util: 29.6.3
@@ -774,10 +882,14 @@ packages:
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
       jest-mock: 29.7.0
     dev: true
 
@@ -805,10 +917,14 @@ packages:
       '@jest/types': 29.6.3
       '@sinonjs/fake-timers': 10.3.0
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
       jest-message-util: 29.7.0
       jest-mock: 29.7.0
       jest-util: 29.7.0
@@ -842,10 +958,14 @@ packages:
       '@jest/types': 29.6.3
       '@jridgewell/trace-mapping': 0.3.19
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
       chalk: 4.1.2
       collect-v8-coverage: 1.0.2
       exit: 0.1.2
@@ -934,10 +1054,14 @@ packages:
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
       '@types/yargs': 17.0.24
       chalk: 4.1.2
     dev: true
@@ -990,8 +1114,13 @@ packages:
     engines: {node: '>=8'}
     dev: false
 
+<<<<<<< HEAD
   /@nestjs/cli@10.2.1:
     resolution: {integrity: sha512-CAJAQwmxFZfB3RTvqz/eaXXWpyU+mZ4QSqfBYzjneTsPgF+uyOAW3yQpaLNn9Dfcv39R9UxSuAhayv6yuFd+Jg==}
+=======
+  /@nestjs/cli@10.2.0:
+    resolution: {integrity: sha512-OMbn6A/YNu7QSk1nM8VucrtUwocaa0XEa9uoqRpw5Acvh/KIetvMHCn8L6yIBxiK7yvYiKa8q9U+RpLsKpKfgw==}
+>>>>>>> 079adc7 (chore: Update some modules versions)
     engines: {node: '>= 16.14'}
     hasBin: true
     peerDependencies:
@@ -1003,16 +1132,28 @@ packages:
       '@swc/core':
         optional: true
     dependencies:
+<<<<<<< HEAD
       '@angular-devkit/core': 16.2.8(chokidar@3.5.3)
       '@angular-devkit/schematics': 16.2.8(chokidar@3.5.3)
       '@angular-devkit/schematics-cli': 16.2.8(chokidar@3.5.3)
       '@nestjs/schematics': 10.0.3(chokidar@3.5.3)(typescript@5.2.2)
+=======
+      '@angular-devkit/core': 16.2.7(chokidar@3.5.3)
+      '@angular-devkit/schematics': 16.2.7(chokidar@3.5.3)
+      '@angular-devkit/schematics-cli': 16.2.7(chokidar@3.5.3)
+      '@nestjs/schematics': 10.0.2(chokidar@3.5.3)(typescript@5.2.2)
+>>>>>>> 079adc7 (chore: Update some modules versions)
       chalk: 4.1.2
       chokidar: 3.5.3
       cli-table3: 0.6.3
       commander: 4.1.1
+<<<<<<< HEAD
       fork-ts-checker-webpack-plugin: 9.0.2(typescript@5.2.2)(webpack@5.89.0)
       glob: 10.3.10
+=======
+      fork-ts-checker-webpack-plugin: 9.0.0(typescript@5.2.2)(webpack@5.89.0)
+      glob: 10.3.4
+>>>>>>> 079adc7 (chore: Update some modules versions)
       inquirer: 8.2.6
       node-emoji: 1.11.0
       ora: 5.4.1
@@ -1266,6 +1407,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /@prisma/client@5.5.2(prisma@5.5.2):
     resolution: {integrity: sha512-54XkqR8M+fxbzYqe+bIXimYnkkcGqgOh0dn0yWtIk6CQT4IUCAvNFNcQZwk2KqaLU+/1PHTSWrcHtx4XjluR5w==}
 =======
@@ -1280,6 +1422,10 @@ packages:
   /@prisma/client@5.6.0(prisma@5.6.0):
     resolution: {integrity: sha512-mUDefQFa1wWqk4+JhKPYq8BdVoFk9NFMBXUI8jAkBfQTtgx8WPx02U2HB/XbAz3GSUJpeJOKJQtNvaAIDs6sug==}
 >>>>>>> e16901f (chore: Merge Develop)
+=======
+  /@prisma/client@5.5.0(prisma@5.5.0):
+    resolution: {integrity: sha512-JiCj/h79PRawWiBVa4Ng4tBaKMrfJgUwuRrZi4NuQRd58gWIP4kEYMqIidpUrab3dU2NM617pWRG2avX+dh+Sg==}
+>>>>>>> 079adc7 (chore: Update some modules versions)
     engines: {node: '>=16.13'}
     requiresBuild: true
     peerDependencies:
@@ -1288,6 +1434,7 @@ packages:
       prisma:
         optional: true
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1331,6 +1478,18 @@ packages:
   /@prisma/engines@5.6.0:
     resolution: {integrity: sha512-Mt2q+GNJpU2vFn6kif24oRSBQv1KOkYaterQsi0k2/lA+dLvhRX6Lm26gon6PYHwUM8/h8KRgXIUMU0PCLB6bw==}
 >>>>>>> e16901f (chore: Merge Develop)
+=======
+      '@prisma/engines-version': 5.5.0-19.475c616176945d72f4330c92801f0c5e6398dc0f
+      prisma: 5.5.0
+    dev: false
+
+  /@prisma/engines-version@5.5.0-19.475c616176945d72f4330c92801f0c5e6398dc0f:
+    resolution: {integrity: sha512-/1orOUq7I54ISYBJockYB15FmF/VkCBeFzYYkWyLtBl2tLlJWHmA3NEUBM+wSmXGLK78BmuSNHrLbf8bmXkukQ==}
+    dev: false
+
+  /@prisma/engines@5.5.0:
+    resolution: {integrity: sha512-WX+8l4sJuWeS3A/5WqJpdBHp32UzUticiKwUWbFggcd6/sqGtCiiaFmXYmNw6Au2O6hjSX37Y07Vu2ZhP9cmWg==}
+>>>>>>> 079adc7 (chore: Update some modules versions)
     requiresBuild: true
     dev: false
 
@@ -1484,19 +1643,27 @@ packages:
     dependencies:
       '@types/connect': 3.4.36
 <<<<<<< HEAD
-      '@types/node': 20.9.1
-=======
-      '@types/node': 20.8.7
->>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
-
-  /@types/connect@3.4.36:
-    resolution: {integrity: sha512-P63Zd/JUGq+PdrM1lv0Wv5SBYeA2+CORvbrXbngriYY0jzLUWfQMQQxOhjONEz/wlHOAxOdY7CY65rgQdTjq2w==}
-    dependencies:
 <<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
+
+  /@types/connect@3.4.36:
+    resolution: {integrity: sha512-P63Zd/JUGq+PdrM1lv0Wv5SBYeA2+CORvbrXbngriYY0jzLUWfQMQQxOhjONEz/wlHOAxOdY7CY65rgQdTjq2w==}
+    dependencies:
+<<<<<<< HEAD
+<<<<<<< HEAD
+      '@types/node': 20.9.1
+=======
+      '@types/node': 20.8.7
+>>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
 
   /@types/cookie@0.4.1:
     resolution: {integrity: sha512-XW/Aa8APYr6jSVVA1y/DEIZX0/GMKLEVekNG727R8cs56ahETkRAy/3DR7+fJyh7oUgGwNQaRfXCun0+KbWY7Q==}
@@ -1510,10 +1677,14 @@ packages:
     resolution: {integrity: sha512-RXHUvNWYICtbP6s18PnOCaqToK8y14DnLd75c6HfyKf228dxy7pHNOQkxPtvXKp/hINFMDjbYzsj63nnpPMSRQ==}
     dependencies:
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
     dev: false
 
   /@types/eslint-scope@3.7.4:
@@ -1538,10 +1709,14 @@ packages:
     resolution: {integrity: sha512-zbivROJ0ZqLAtMzgzIUC4oNqDG9iF0lSsAqpOD9kbs5xcIM3dTiyuHvBc7R8MtWBp3AAWGaovJa+wzWPjLYW7Q==}
     dependencies:
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
       '@types/qs': 6.9.8
       '@types/range-parser': 1.2.4
       '@types/send': 0.17.1
@@ -1563,10 +1738,14 @@ packages:
     resolution: {integrity: sha512-MhzcwU8aUygZroVwL2jeYk6JisJrPl/oov/gsgGCue9mkgl9wjGbzReYQClxiUgFDnib9FuHqTndccKeZKxTRw==}
     dependencies:
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
     dev: true
 
   /@types/http-errors@2.0.2:
@@ -1608,10 +1787,14 @@ packages:
     resolution: {integrity: sha512-VRLSGzik+Unrup6BsouBeHsf4d1hOEgYWTm/7Nmw1sXoN1+tRly/Gy/po3yeahnP4jfnQWWAhQAqcNfH7ngOkA==}
     dependencies:
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
     dev: false
 
   /@types/mime@1.3.2:
@@ -1621,12 +1804,17 @@ packages:
     resolution: {integrity: sha512-Y4XFY5VJAuw0FgAqPNd6NNoV44jbq9Bz2L7Rh/J6jLTiHBSBJa9fxqQIvkIld4GsoDOcCbvzOUAbLPsSKKg+uA==}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /@types/node@20.9.1:
     resolution: {integrity: sha512-HhmzZh5LSJNS5O8jQKpJ/3ZcrrlG6L70hpGqMIAoM9YVD0YBRNWYsfwcXq8VnSjlNpCpgLzMXdiPo+dxcvSmiA==}
 =======
   /@types/node@20.8.7:
     resolution: {integrity: sha512-21TKHHh3eUHIi2MloeptJWALuCu5H7HQTdTrWIFReA8ad+aggoX+lRes3ex7/FtpC+sVUpFMQ+QTfYr74mruiQ==}
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+  /@types/node@20.8.8:
+    resolution: {integrity: sha512-YRsdVxq6OaLfmR9Hy816IMp33xOBjfyOgUd77ehqg96CFywxAPbDbXvAsuN2KVg2HOT8Eh6uAfU+l4WffwPVrQ==}
+>>>>>>> 079adc7 (chore: Update some modules versions)
     dependencies:
       undici-types: 5.26.5
 
@@ -1662,10 +1850,14 @@ packages:
     dependencies:
       '@types/mime': 1.3.2
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
 
   /@types/serve-static@1.15.2:
     resolution: {integrity: sha512-J2LqtvFYCzaj8pVYKw8klQXrLLk7TBZmQ4ShlcdkELFKGwGMfevMLneMMRkMgZxotOD9wg497LpC7O8PcvAmfw==}
@@ -1673,10 +1865,14 @@ packages:
       '@types/http-errors': 2.0.2
       '@types/mime': 3.0.1
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
 
   /@types/stack-utils@2.0.1:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
@@ -1687,6 +1883,7 @@ packages:
     dependencies:
       '@types/cookiejar': 2.1.2
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
     dev: true
 
@@ -1694,6 +1891,9 @@ packages:
     resolution: {integrity: sha512-6c2ogktZ06tr2ENoZivgm7YnprnhYE4ZoXGMY+oA7IuAf17M8FWvujXZGmxLv8y0PTyts4x5A+erSwVUFA8XSg==}
 =======
       '@types/node': 20.8.7
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
     dev: true
 
   /@types/supertest@2.0.15:
@@ -1718,12 +1918,17 @@ packages:
     dev: true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /@typescript-eslint/eslint-plugin@6.11.0(@typescript-eslint/parser@6.11.0)(eslint@8.53.0)(typescript@5.2.2):
     resolution: {integrity: sha512-uXnpZDc4VRjY4iuypDBKzW1rz9T5YBBK0snMn8MaTSNd2kMlj50LnLBABELjJiOL5YHk7ZD8hbSpI9ubzqYI0w==}
 =======
   /@typescript-eslint/eslint-plugin@6.8.0(@typescript-eslint/parser@6.8.0)(eslint@8.51.0)(typescript@5.2.2):
     resolution: {integrity: sha512-GosF4238Tkes2SHPQ1i8f6rMtG6zlKwMEB0abqSJ3Npvos+doIlc/ATG+vX1G9coDF3Ex78zM3heXHLyWEwLUw==}
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+  /@typescript-eslint/eslint-plugin@6.9.0(@typescript-eslint/parser@6.9.0)(eslint@8.52.0)(typescript@5.2.2):
+    resolution: {integrity: sha512-lgX7F0azQwRPB7t7WAyeHWVfW1YJ9NIgd9mvGhfQpRY56X6AVf8mwM8Wol+0z4liE7XX3QOt8MN1rUKCfSjRIA==}
+>>>>>>> 079adc7 (chore: Update some modules versions)
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
       '@typescript-eslint/parser': ^6.0.0 || ^6.0.0-alpha
@@ -1734,6 +1939,7 @@ packages:
         optional: true
     dependencies:
       '@eslint-community/regexpp': 4.8.1
+<<<<<<< HEAD
 <<<<<<< HEAD
       '@typescript-eslint/parser': 6.11.0(eslint@8.53.0)(typescript@5.2.2)
       '@typescript-eslint/scope-manager': 6.11.0
@@ -1749,6 +1955,15 @@ packages:
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
       debug: 4.3.4
       eslint: 8.53.0
+=======
+      '@typescript-eslint/parser': 6.9.0(eslint@8.52.0)(typescript@5.2.2)
+      '@typescript-eslint/scope-manager': 6.9.0
+      '@typescript-eslint/type-utils': 6.9.0(eslint@8.52.0)(typescript@5.2.2)
+      '@typescript-eslint/utils': 6.9.0(eslint@8.52.0)(typescript@5.2.2)
+      '@typescript-eslint/visitor-keys': 6.9.0
+      debug: 4.3.4
+      eslint: 8.52.0
+>>>>>>> 079adc7 (chore: Update some modules versions)
       graphemer: 1.4.0
       ignore: 5.2.4
       natural-compare: 1.4.0
@@ -1760,12 +1975,17 @@ packages:
     dev: true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /@typescript-eslint/parser@6.11.0(eslint@8.53.0)(typescript@5.2.2):
     resolution: {integrity: sha512-+whEdjk+d5do5nxfxx73oanLL9ghKO3EwM9kBCkUtWMRwWuPaFv9ScuqlYfQ6pAD6ZiJhky7TZ2ZYhrMsfMxVQ==}
 =======
   /@typescript-eslint/parser@6.8.0(eslint@8.51.0)(typescript@5.2.2):
     resolution: {integrity: sha512-5tNs6Bw0j6BdWuP8Fx+VH4G9fEPDxnVI7yH1IAPkQH5RUtvKwRoqdecAPdQXv4rSOADAaz1LFBZvZG7VbXivSg==}
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+  /@typescript-eslint/parser@6.9.0(eslint@8.52.0)(typescript@5.2.2):
+    resolution: {integrity: sha512-GZmjMh4AJ/5gaH4XF2eXA8tMnHWP+Pm1mjQR2QN4Iz+j/zO04b9TOvJYOX2sCNIQHtRStKTxRY1FX7LhpJT4Gw==}
+>>>>>>> 079adc7 (chore: Update some modules versions)
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0
@@ -1774,6 +1994,7 @@ packages:
       typescript:
         optional: true
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
       '@typescript-eslint/scope-manager': 6.11.0
       '@typescript-eslint/types': 6.11.0
@@ -1787,11 +2008,20 @@ packages:
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
       debug: 4.3.4
       eslint: 8.53.0
+=======
+      '@typescript-eslint/scope-manager': 6.9.0
+      '@typescript-eslint/types': 6.9.0
+      '@typescript-eslint/typescript-estree': 6.9.0(typescript@5.2.2)
+      '@typescript-eslint/visitor-keys': 6.9.0
+      debug: 4.3.4
+      eslint: 8.52.0
+>>>>>>> 079adc7 (chore: Update some modules versions)
       typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
     dev: true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   /@typescript-eslint/scope-manager@6.11.0:
     resolution: {integrity: sha512-0A8KoVvIURG4uhxAdjSaxy8RdRE//HztaZdG8KiHLP8WOXSk0vlF7Pvogv+vlJA5Rnjj/wDcFENvDaHb+gKd1A==}
@@ -1806,15 +2036,24 @@ packages:
 =======
   /@typescript-eslint/scope-manager@6.8.0:
     resolution: {integrity: sha512-xe0HNBVwCph7rak+ZHcFD6A+q50SMsFwcmfdjs9Kz4qDh5hWhaPhFjRs/SODEhroBI5Ruyvyz9LfwUJ624O40g==}
+=======
+  /@typescript-eslint/scope-manager@6.9.0:
+    resolution: {integrity: sha512-1R8A9Mc39n4pCCz9o79qRO31HGNDvC7UhPhv26TovDsWPBDx+Sg3rOZdCELIA3ZmNoWAuxaMOT7aWtGRSYkQxw==}
+>>>>>>> 079adc7 (chore: Update some modules versions)
     engines: {node: ^16.0.0 || >=18.0.0}
     dependencies:
-      '@typescript-eslint/types': 6.8.0
-      '@typescript-eslint/visitor-keys': 6.8.0
+      '@typescript-eslint/types': 6.9.0
+      '@typescript-eslint/visitor-keys': 6.9.0
     dev: true
 
+<<<<<<< HEAD
   /@typescript-eslint/type-utils@6.8.0(eslint@8.51.0)(typescript@5.2.2):
     resolution: {integrity: sha512-RYOJdlkTJIXW7GSldUIHqc/Hkto8E+fZN96dMIFhuTJcQwdRoGN2rEWA8U6oXbLo0qufH7NPElUb+MceHtz54g==}
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+  /@typescript-eslint/type-utils@6.9.0(eslint@8.52.0)(typescript@5.2.2):
+    resolution: {integrity: sha512-XXeahmfbpuhVbhSOROIzJ+b13krFmgtc4GlEuu1WBT+RpyGPIA4Y/eGnXzjbDj5gZLzpAXO/sj+IF/x2GtTMjQ==}
+>>>>>>> 079adc7 (chore: Update some modules versions)
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0
@@ -1824,6 +2063,7 @@ packages:
         optional: true
     dependencies:
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@typescript-eslint/typescript-estree': 6.11.0(typescript@5.2.2)
       '@typescript-eslint/utils': 6.11.0(eslint@8.53.0)(typescript@5.2.2)
 =======
@@ -1832,12 +2072,19 @@ packages:
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
       debug: 4.3.4
       eslint: 8.53.0
+=======
+      '@typescript-eslint/typescript-estree': 6.9.0(typescript@5.2.2)
+      '@typescript-eslint/utils': 6.9.0(eslint@8.52.0)(typescript@5.2.2)
+      debug: 4.3.4
+      eslint: 8.52.0
+>>>>>>> 079adc7 (chore: Update some modules versions)
       ts-api-utils: 1.0.3(typescript@5.2.2)
       typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
     dev: true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   /@typescript-eslint/types@6.11.0:
     resolution: {integrity: sha512-ZbEzuD4DwEJxwPqhv3QULlRj8KYTAnNsXxmfuUXFCxZmO6CF2gM/y+ugBSAQhrqaJL3M+oe4owdWunaHM6beqA==}
@@ -1855,6 +2102,15 @@ packages:
   /@typescript-eslint/typescript-estree@6.8.0(typescript@5.2.2):
     resolution: {integrity: sha512-ISgV0lQ8XgW+mvv5My/+iTUdRmGspducmQcDw5JxznasXNnZn3SKNrTRuMsEXv+V/O+Lw9AGcQCfVaOPCAk/Zg==}
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+  /@typescript-eslint/types@6.9.0:
+    resolution: {integrity: sha512-+KB0lbkpxBkBSiVCuQvduqMJy+I1FyDbdwSpM3IoBS7APl4Bu15lStPjgBIdykdRqQNYqYNMa8Kuidax6phaEw==}
+    engines: {node: ^16.0.0 || >=18.0.0}
+    dev: true
+
+  /@typescript-eslint/typescript-estree@6.9.0(typescript@5.2.2):
+    resolution: {integrity: sha512-NJM2BnJFZBEAbCfBP00zONKXvMqihZCrmwCaik0UhLr0vAgb6oguXxLX1k00oQyD+vZZ+CJn3kocvv2yxm4awQ==}
+>>>>>>> 079adc7 (chore: Update some modules versions)
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
       typescript: '*'
@@ -1863,12 +2119,17 @@ packages:
         optional: true
     dependencies:
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@typescript-eslint/types': 6.11.0
       '@typescript-eslint/visitor-keys': 6.11.0
 =======
       '@typescript-eslint/types': 6.8.0
       '@typescript-eslint/visitor-keys': 6.8.0
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@typescript-eslint/types': 6.9.0
+      '@typescript-eslint/visitor-keys': 6.9.0
+>>>>>>> 079adc7 (chore: Update some modules versions)
       debug: 4.3.4
       globby: 11.1.0
       is-glob: 4.0.3
@@ -1880,16 +2141,22 @@ packages:
     dev: true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /@typescript-eslint/utils@6.11.0(eslint@8.53.0)(typescript@5.2.2):
     resolution: {integrity: sha512-p23ibf68fxoZy605dc0dQAEoUsoiNoP3MD9WQGiHLDuTSOuqoTsa4oAy+h3KDkTcxbbfOtUjb9h3Ta0gT4ug2g==}
 =======
   /@typescript-eslint/utils@6.8.0(eslint@8.51.0)(typescript@5.2.2):
     resolution: {integrity: sha512-dKs1itdE2qFG4jr0dlYLQVppqTE+Itt7GmIf/vX6CSvsW+3ov8PbWauVKyyfNngokhIO9sKZeRGCUo1+N7U98Q==}
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+  /@typescript-eslint/utils@6.9.0(eslint@8.52.0)(typescript@5.2.2):
+    resolution: {integrity: sha512-5Wf+Jsqya7WcCO8me504FBigeQKVLAMPmUzYgDbWchINNh1KJbxCgVya3EQ2MjvJMVeXl3pofRmprqX6mfQkjQ==}
+>>>>>>> 079adc7 (chore: Update some modules versions)
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0
     dependencies:
+<<<<<<< HEAD
       '@eslint-community/eslint-utils': 4.4.0(eslint@8.53.0)
       '@types/json-schema': 7.0.13
       '@types/semver': 7.5.2
@@ -1904,12 +2171,22 @@ packages:
       '@typescript-eslint/typescript-estree': 6.8.0(typescript@5.2.2)
       eslint: 8.51.0
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@eslint-community/eslint-utils': 4.4.0(eslint@8.52.0)
+      '@types/json-schema': 7.0.13
+      '@types/semver': 7.5.2
+      '@typescript-eslint/scope-manager': 6.9.0
+      '@typescript-eslint/types': 6.9.0
+      '@typescript-eslint/typescript-estree': 6.9.0(typescript@5.2.2)
+      eslint: 8.52.0
+>>>>>>> 079adc7 (chore: Update some modules versions)
       semver: 7.5.4
     transitivePeerDependencies:
       - supports-color
       - typescript
     dev: true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   /@typescript-eslint/visitor-keys@6.11.0:
     resolution: {integrity: sha512-+SUN/W7WjBr05uRxPggJPSzyB8zUpaYo2hByKasWbqr3PM8AXfZt8UHdNpBS1v9SA62qnSSMF3380SwDqqprgQ==}
@@ -1923,6 +2200,13 @@ packages:
     dependencies:
       '@typescript-eslint/types': 6.8.0
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+  /@typescript-eslint/visitor-keys@6.9.0:
+    resolution: {integrity: sha512-dGtAfqjV6RFOtIP8I0B4ZTBRrlTT8NHHlZZSchQx3qReaoDeXhYM++M4So2AgFK9ZB0emRPA6JI1HkafzA2Ibg==}
+    engines: {node: ^16.0.0 || >=18.0.0}
+    dependencies:
+      '@typescript-eslint/types': 6.9.0
+>>>>>>> 079adc7 (chore: Update some modules versions)
       eslint-visitor-keys: 3.4.3
     dev: true
 
@@ -2703,10 +2987,14 @@ packages:
     dev: true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /create-jest@29.7.0(@types/node@20.9.1)(ts-node@10.9.1):
 =======
   /create-jest@29.7.0(@types/node@20.8.7)(ts-node@10.9.1):
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+  /create-jest@29.7.0(@types/node@20.8.8)(ts-node@10.9.1):
+>>>>>>> 079adc7 (chore: Update some modules versions)
     resolution: {integrity: sha512-Adz2bdH0Vq3F53KEMJOoftQFutWCukm6J24wbPWRO4k1kMY7gS7ds/uoJkNuV8wDCtWWnuwGcJwpWcih+zEW1Q==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     hasBin: true
@@ -2716,10 +3004,14 @@ packages:
       exit: 0.1.2
       graceful-fs: 4.2.11
 <<<<<<< HEAD
+<<<<<<< HEAD
       jest-config: 29.7.0(@types/node@20.9.1)(ts-node@10.9.1)
 =======
       jest-config: 29.7.0(@types/node@20.8.7)(ts-node@10.9.1)
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      jest-config: 29.7.0(@types/node@20.8.8)(ts-node@10.9.1)
+>>>>>>> 079adc7 (chore: Update some modules versions)
       jest-util: 29.7.0
       prompts: 2.4.2
     transitivePeerDependencies:
@@ -2947,10 +3239,14 @@ packages:
       '@types/cookie': 0.4.1
       '@types/cors': 2.8.14
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
       accepts: 1.3.8
       base64id: 2.0.0
       cookie: 0.4.2
@@ -3006,16 +3302,27 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
+<<<<<<< HEAD
   /eslint-config-prettier@9.0.0(eslint@8.53.0):
+=======
+  /eslint-config-prettier@9.0.0(eslint@8.52.0):
+>>>>>>> 079adc7 (chore: Update some modules versions)
     resolution: {integrity: sha512-IcJsTkJae2S35pRsRAwoCE+925rJJStOdkKnLVgtE+tEpqU0EVVM7OqrwxqgptKdX29NUwC82I5pXsGFIgSevw==}
     hasBin: true
     peerDependencies:
       eslint: '>=7.0.0'
     dependencies:
+<<<<<<< HEAD
       eslint: 8.53.0
     dev: true
 
   /eslint-plugin-prettier@5.0.1(eslint-config-prettier@9.0.0)(eslint@8.53.0)(prettier@3.1.0):
+=======
+      eslint: 8.52.0
+    dev: true
+
+  /eslint-plugin-prettier@5.0.1(eslint-config-prettier@9.0.0)(eslint@8.52.0)(prettier@3.0.3):
+>>>>>>> 079adc7 (chore: Update some modules versions)
     resolution: {integrity: sha512-m3u5RnR56asrwV/lDC4GHorlW75DsFfmUcjfCYylTUs85dBRnB7VM6xG8eCMJdeDRnppzmxZVf1GEPJvl1JmNg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
@@ -3029,9 +3336,15 @@ packages:
       eslint-config-prettier:
         optional: true
     dependencies:
+<<<<<<< HEAD
       eslint: 8.53.0
       eslint-config-prettier: 9.0.0(eslint@8.53.0)
       prettier: 3.1.0
+=======
+      eslint: 8.52.0
+      eslint-config-prettier: 9.0.0(eslint@8.52.0)
+      prettier: 3.0.3
+>>>>>>> 079adc7 (chore: Update some modules versions)
       prettier-linter-helpers: 1.0.0
       synckit: 0.8.5
     dev: true
@@ -3057,6 +3370,7 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
+<<<<<<< HEAD
   /eslint@8.53.0:
     resolution: {integrity: sha512-N4VuiPjXDUa4xVeV/GC/RV3hQW9Nw+Y463lkWaKKXKYMvmRiRDAtfpuPFLN+E1/6ZhyR8J2ig+eVREnYgUsiag==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -3066,6 +3380,17 @@ packages:
       '@eslint-community/regexpp': 4.8.1
       '@eslint/eslintrc': 2.1.3
       '@eslint/js': 8.53.0
+=======
+  /eslint@8.52.0:
+    resolution: {integrity: sha512-zh/JHnaixqHZsolRB/w9/02akBk9EPrOs9JwcTP2ek7yL5bVvXuRariiaAjjoJ5DvuwQ1WAE/HsMz+w17YgBCg==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    hasBin: true
+    dependencies:
+      '@eslint-community/eslint-utils': 4.4.0(eslint@8.52.0)
+      '@eslint-community/regexpp': 4.8.1
+      '@eslint/eslintrc': 2.1.2
+      '@eslint/js': 8.52.0
+>>>>>>> 079adc7 (chore: Update some modules versions)
       '@humanwhocodes/config-array': 0.11.13
       '@humanwhocodes/module-importer': 1.0.1
       '@nodelib/fs.walk': 1.2.8
@@ -3379,8 +3704,13 @@ packages:
       signal-exit: 4.1.0
     dev: true
 
+<<<<<<< HEAD
   /fork-ts-checker-webpack-plugin@9.0.2(typescript@5.2.2)(webpack@5.89.0):
     resolution: {integrity: sha512-Uochze2R8peoN1XqlSi/rGUkDQpRogtLFocP9+PGu68zk1BDAKXfdeCdyVZpgTk8V8WFVQXdEz426VKjXLO1Gg==}
+=======
+  /fork-ts-checker-webpack-plugin@9.0.0(typescript@5.2.2)(webpack@5.89.0):
+    resolution: {integrity: sha512-Kw3JjsfGs0piB0V2Em8gCuo51O3p4KyCOK0Tn8X57oq2mSNBrMmONALRBw5frcmWsOVU7iELXXsJ+FVxJeQuhA==}
+>>>>>>> 079adc7 (chore: Update some modules versions)
     engines: {node: '>=12.13.0', yarn: '>=1.0.0'}
     peerDependencies:
       typescript: '>3.6.0'
@@ -3514,8 +3844,13 @@ packages:
     resolution: {integrity: sha512-lkX1HJXwyMcprw/5YUZc2s7DrpAiHB21/V+E1rHUrVNokkvB6bqMzT0VfV6/86ZNabt1k14YOIaT7nDvOX3Iiw==}
     dev: true
 
+<<<<<<< HEAD
   /glob@10.3.10:
     resolution: {integrity: sha512-fa46+tv1Ak0UPK1TOy/pZrIybNNt4HCv7SDzwyfiOZkvZLEbjsZkJBPtDHVshZjbecAoAGSC20MjLDG/qr679g==}
+=======
+  /glob@10.3.4:
+    resolution: {integrity: sha512-6LFElP3A+i/Q8XQKEvZjkEWEOTgAIALR9AO2rwT8bgPhDd1anmqDJDZ6lLddI4ehxxxR1S5RIqKe1uapMQfYaQ==}
+>>>>>>> 079adc7 (chore: Update some modules versions)
     engines: {node: '>=16 || 14 >=14.17'}
     hasBin: true
     dependencies:
@@ -3945,10 +4280,14 @@ packages:
       '@jest/test-result': 29.7.0
       '@jest/types': 29.6.3
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
       chalk: 4.1.2
       co: 4.6.0
       dedent: 1.5.1
@@ -3970,10 +4309,14 @@ packages:
     dev: true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /jest-cli@29.7.0(@types/node@20.9.1)(ts-node@10.9.1):
 =======
   /jest-cli@29.7.0(@types/node@20.8.7)(ts-node@10.9.1):
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+  /jest-cli@29.7.0(@types/node@20.8.8)(ts-node@10.9.1):
+>>>>>>> 079adc7 (chore: Update some modules versions)
     resolution: {integrity: sha512-OVVobw2IubN/GSYsxETi+gOe7Ka59EFMR/twOU3Jb2GnKKeMGJB5SGUUrEz3SFVmJASUdZUzy83sLNNQ2gZslg==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     hasBin: true
@@ -3988,6 +4331,7 @@ packages:
       '@jest/types': 29.6.3
       chalk: 4.1.2
 <<<<<<< HEAD
+<<<<<<< HEAD
       create-jest: 29.7.0(@types/node@20.9.1)(ts-node@10.9.1)
       exit: 0.1.2
       import-local: 3.1.0
@@ -3998,6 +4342,12 @@ packages:
       import-local: 3.1.0
       jest-config: 29.7.0(@types/node@20.8.7)(ts-node@10.9.1)
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      create-jest: 29.7.0(@types/node@20.8.8)(ts-node@10.9.1)
+      exit: 0.1.2
+      import-local: 3.1.0
+      jest-config: 29.7.0(@types/node@20.8.8)(ts-node@10.9.1)
+>>>>>>> 079adc7 (chore: Update some modules versions)
       jest-util: 29.7.0
       jest-validate: 29.7.0
       yargs: 17.7.2
@@ -4009,10 +4359,14 @@ packages:
     dev: true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /jest-config@29.7.0(@types/node@20.9.1)(ts-node@10.9.1):
 =======
   /jest-config@29.7.0(@types/node@20.8.7)(ts-node@10.9.1):
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+  /jest-config@29.7.0(@types/node@20.8.8)(ts-node@10.9.1):
+>>>>>>> 079adc7 (chore: Update some modules versions)
     resolution: {integrity: sha512-uXbpfeQ7R6TZBqI3/TxCU4q4ttk3u0PJeC+E0zbfSoSjq6bJ7buBPxzQPL0ifrkY4DNu4JUdk0ImlBUYi840eQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     peerDependencies:
@@ -4028,10 +4382,14 @@ packages:
       '@jest/test-sequencer': 29.7.0
       '@jest/types': 29.6.3
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
       babel-jest: 29.7.0(@babel/core@7.22.20)
       chalk: 4.1.2
       ci-info: 3.8.0
@@ -4052,10 +4410,14 @@ packages:
       slash: 3.0.0
       strip-json-comments: 3.1.1
 <<<<<<< HEAD
+<<<<<<< HEAD
       ts-node: 10.9.1(@types/node@20.9.1)(typescript@5.2.2)
 =======
       ts-node: 10.9.1(@types/node@20.8.7)(typescript@5.2.2)
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      ts-node: 10.9.1(@types/node@20.8.8)(typescript@5.2.2)
+>>>>>>> 079adc7 (chore: Update some modules versions)
     transitivePeerDependencies:
       - babel-plugin-macros
       - supports-color
@@ -4097,10 +4459,14 @@ packages:
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
       jest-mock: 29.7.0
       jest-util: 29.7.0
     dev: true
@@ -4117,10 +4483,14 @@ packages:
       '@jest/types': 29.6.3
       '@types/graceful-fs': 4.1.7
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
       anymatch: 3.1.3
       fb-watchman: 2.0.2
       graceful-fs: 4.2.11
@@ -4172,10 +4542,14 @@ packages:
     dependencies:
       '@jest/types': 29.6.3
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
       jest-util: 29.7.0
     dev: true
 
@@ -4231,10 +4605,14 @@ packages:
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
       chalk: 4.1.2
       emittery: 0.13.1
       graceful-fs: 4.2.11
@@ -4266,10 +4644,14 @@ packages:
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
       chalk: 4.1.2
       cjs-module-lexer: 1.2.3
       collect-v8-coverage: 1.0.2
@@ -4322,10 +4704,14 @@ packages:
     dependencies:
       '@jest/types': 29.6.3
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
       chalk: 4.1.2
       ci-info: 3.8.0
       graceful-fs: 4.2.11
@@ -4351,10 +4737,14 @@ packages:
       '@jest/test-result': 29.7.0
       '@jest/types': 29.6.3
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       emittery: 0.13.1
@@ -4367,10 +4757,14 @@ packages:
     engines: {node: '>= 10.13.0'}
     dependencies:
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: true
@@ -4380,20 +4774,28 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
       jest-util: 29.7.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /jest@29.7.0(@types/node@20.9.1)(ts-node@10.9.1):
 =======
   /jest@29.7.0(@types/node@20.8.7)(ts-node@10.9.1):
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+  /jest@29.7.0(@types/node@20.8.8)(ts-node@10.9.1):
+>>>>>>> 079adc7 (chore: Update some modules versions)
     resolution: {integrity: sha512-NIy3oAFp9shda19hy4HK0HRTWKtPJmGdnvywu01nOqNC2vZg+Z+fvJDxpMQA88eb2I9EcafcdjYgsDthnYTvGw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     hasBin: true
@@ -4407,10 +4809,14 @@ packages:
       '@jest/types': 29.6.3
       import-local: 3.1.0
 <<<<<<< HEAD
+<<<<<<< HEAD
       jest-cli: 29.7.0(@types/node@20.9.1)(ts-node@10.9.1)
 =======
       jest-cli: 29.7.0(@types/node@20.8.7)(ts-node@10.9.1)
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      jest-cli: 29.7.0(@types/node@20.8.8)(ts-node@10.9.1)
+>>>>>>> 079adc7 (chore: Update some modules versions)
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -5142,6 +5548,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /prisma@5.5.2:
     resolution: {integrity: sha512-WQtG6fevOL053yoPl6dbHV+IWgKo25IRN4/pwAGqcWmg7CrtoCzvbDbN9fXUc7QS2KK0LimHIqLsaCOX/vHl8w==}
 =======
@@ -5156,10 +5563,15 @@ packages:
   /prisma@5.6.0:
     resolution: {integrity: sha512-EEaccku4ZGshdr2cthYHhf7iyvCcXqwJDvnoQRAJg5ge2Tzpv0e2BaMCp+CbbDUwoVTzwgOap9Zp+d4jFa2O9A==}
 >>>>>>> e16901f (chore: Merge Develop)
+=======
+  /prisma@5.5.0:
+    resolution: {integrity: sha512-QyMMh1WQiGU07Iz3Q8jd6y5KlomGLDVb4etkMWpQ4EmDAaY+zGgNHmBk2MfRPb0A+un1Ior1nZWZorfnKD6E5A==}
+>>>>>>> 079adc7 (chore: Update some modules versions)
     engines: {node: '>=16.13'}
     hasBin: true
     requiresBuild: true
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -5173,6 +5585,9 @@ packages:
 =======
       '@prisma/engines': 5.6.0
 >>>>>>> e16901f (chore: Merge Develop)
+=======
+      '@prisma/engines': 5.5.0
+>>>>>>> 079adc7 (chore: Update some modules versions)
     dev: false
 
   /process-nextick-args@2.0.1:
@@ -5848,6 +6263,30 @@ packages:
       webpack: 5.89.0
     dev: true
 
+  /terser-webpack-plugin@5.3.9(webpack@5.89.0):
+    resolution: {integrity: sha512-ZuXsqE07EcggTWQjXUj+Aot/OMcD0bMKGgF63f7UxYcu5/AJF53aIpK1YoP5xR9l6s/Hy2b+t1AM0bLNPRuhwA==}
+    engines: {node: '>= 10.13.0'}
+    peerDependencies:
+      '@swc/core': '*'
+      esbuild: '*'
+      uglify-js: '*'
+      webpack: ^5.1.0
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      esbuild:
+        optional: true
+      uglify-js:
+        optional: true
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.19
+      jest-worker: 27.5.1
+      schema-utils: 3.3.0
+      serialize-javascript: 6.0.1
+      terser: 5.20.0
+      webpack: 5.89.0
+    dev: true
+
   /terser@5.20.0:
     resolution: {integrity: sha512-e56ETryaQDyebBwJIWYB2TT6f2EZ0fL0sW/JRXNMN26zZdKi2u/E/5my5lG6jNxym6qsrVXfFRmOdV42zlAgLQ==}
     engines: {node: '>=10'}
@@ -5951,10 +6390,14 @@ packages:
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
 <<<<<<< HEAD
+<<<<<<< HEAD
       jest: 29.7.0(@types/node@20.9.1)(ts-node@10.9.1)
 =======
       jest: 29.7.0(@types/node@20.8.7)(ts-node@10.9.1)
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      jest: 29.7.0(@types/node@20.8.8)(ts-node@10.9.1)
+>>>>>>> 079adc7 (chore: Update some modules versions)
       jest-util: 29.7.0
       json5: 2.2.3
       lodash.memoize: 4.1.2
@@ -5981,10 +6424,14 @@ packages:
     dev: true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /ts-node@10.9.1(@types/node@20.9.1)(typescript@5.2.2):
 =======
   /ts-node@10.9.1(@types/node@20.8.7)(typescript@5.2.2):
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+  /ts-node@10.9.1(@types/node@20.8.8)(typescript@5.2.2):
+>>>>>>> 079adc7 (chore: Update some modules versions)
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
     peerDependencies:
@@ -6004,10 +6451,14 @@ packages:
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+      '@types/node': 20.8.8
+>>>>>>> 079adc7 (chore: Update some modules versions)
       acorn: 8.10.0
       acorn-walk: 8.2.0
       arg: 4.1.3
@@ -6246,6 +6697,46 @@ packages:
 
 =======
 >>>>>>> 4607c5b (chore: Update some modules versions)
+  /webpack@5.89.0:
+    resolution: {integrity: sha512-qyfIC10pOr70V+jkmud8tMfajraGCZMBWJtrmuBymQKCrLTRejBI8STDp1MCyZu/QTdZSeacCQYpYNQVOzX5kw==}
+    engines: {node: '>=10.13.0'}
+    hasBin: true
+    peerDependencies:
+      webpack-cli: '*'
+    peerDependenciesMeta:
+      webpack-cli:
+        optional: true
+    dependencies:
+      '@types/eslint-scope': 3.7.4
+      '@types/estree': 1.0.1
+      '@webassemblyjs/ast': 1.11.6
+      '@webassemblyjs/wasm-edit': 1.11.6
+      '@webassemblyjs/wasm-parser': 1.11.6
+      acorn: 8.10.0
+      acorn-import-assertions: 1.9.0(acorn@8.10.0)
+      browserslist: 4.21.10
+      chrome-trace-event: 1.0.3
+      enhanced-resolve: 5.15.0
+      es-module-lexer: 1.3.1
+      eslint-scope: 5.1.1
+      events: 3.3.0
+      glob-to-regexp: 0.4.1
+      graceful-fs: 4.2.11
+      json-parse-even-better-errors: 2.3.1
+      loader-runner: 4.3.0
+      mime-types: 2.1.35
+      neo-async: 2.6.2
+      schema-utils: 3.3.0
+      tapable: 2.2.1
+      terser-webpack-plugin: 5.3.9(webpack@5.89.0)
+      watchpack: 2.4.0
+      webpack-sources: 3.2.3
+    transitivePeerDependencies:
+      - '@swc/core'
+      - esbuild
+      - uglify-js
+    dev: true
+
   /webpack@5.89.0:
     resolution: {integrity: sha512-qyfIC10pOr70V+jkmud8tMfajraGCZMBWJtrmuBymQKCrLTRejBI8STDp1MCyZu/QTdZSeacCQYpYNQVOzX5kw==}
     engines: {node: '>=10.13.0'}
