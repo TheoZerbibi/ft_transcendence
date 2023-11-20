@@ -366,8 +366,13 @@ importers:
         specifier: ^4.7.2
         version: 4.7.2
       vite:
+<<<<<<< HEAD
         specifier: ^4.5.0
         version: 4.5.0(@types/node@20.9.1)
+=======
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@20.9.1)(sass@1.69.5)
+>>>>>>> edc9129 (feat(front): Continue Game front, add Border)
       vite-plugin-vuetify:
         specifier: ^1.0.2
 <<<<<<< HEAD
@@ -1009,6 +1014,9 @@ importers:
 =======
         specifier: ^3.1.0
         version: 3.1.0
+      sass:
+        specifier: ^1.69.5
+        version: 1.69.5
       start-server-and-test:
         specifier: ^2.0.3
         version: 2.0.3
@@ -1040,7 +1048,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^0.34.6
-        version: 0.34.6(jsdom@22.1.0)
+        version: 0.34.6(jsdom@22.1.0)(sass@1.69.5)
       vue-tsc:
         specifier: ^1.8.22
         version: 1.8.22(typescript@5.2.2)
@@ -3316,6 +3324,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       vite: 4.5.0(@types/node@20.9.1)
 =======
       vite: 5.0.0(@types/node@20.9.1)
@@ -3329,6 +3338,9 @@ packages:
 =======
       vite: 4.5.0(@types/node@20.9.1)
 >>>>>>> 98c8637 (fix(deps): update dependency vite to v4.5.0 (minor))
+=======
+      vite: 5.0.0(@types/node@20.9.1)(sass@1.69.5)
+>>>>>>> edc9129 (feat(front): Continue Game front, add Border)
       vue: 3.3.8(typescript@5.2.2)
 >>>>>>> e3b6b2e (fix(Frontend): Downgrade version (Build error))
 =======
@@ -3390,6 +3402,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       vite: 4.5.0(@types/node@20.9.1)
 =======
       vite: 5.0.0(@types/node@20.9.1)
@@ -3403,6 +3416,9 @@ packages:
 =======
       vite: 4.5.0(@types/node@20.9.1)
 >>>>>>> 98c8637 (fix(deps): update dependency vite to v4.5.0 (minor))
+=======
+      vite: 5.0.0(@types/node@20.9.1)(sass@1.69.5)
+>>>>>>> edc9129 (feat(front): Continue Game front, add Border)
       vue: 3.3.8(typescript@5.2.2)
 >>>>>>> e3b6b2e (fix(Frontend): Downgrade version (Build error))
 =======
@@ -4275,6 +4291,13 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
+  /anymatch@3.1.3:
+    resolution: {integrity: sha512-KMReFUr0B4t+D+OBkjR3KYqvocp2XaSzO55UcB6mgQMd3KbcE+mWTyvVV7D/zsdEbNnV6acZUutkiHQXvTr1Rw==}
+    engines: {node: '>= 8'}
+    dependencies:
+      normalize-path: 3.0.0
+      picomatch: 2.3.1
+
   /arch@2.2.0:
     resolution: {integrity: sha512-Of/R0wqp83cgHozfIYLbBMnej79U/SVGOOyuB3VVFv1NRM/PSFMK12x9KVtiYzJqmnU5WR2qp0Z5rHb7sWGnFQ==}
     dev: true
@@ -4452,6 +4475,10 @@ packages:
     resolution: {integrity: sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==}
     dev: false
 
+  /binary-extensions@2.2.0:
+    resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
+    engines: {node: '>=8'}
+
   /blob-util@2.0.2:
     resolution: {integrity: sha512-T7JQa+zsXXEa6/8ZhHcQEW1UFfVM49Ts65uBkFL6fz2QmrElqmbajIDJvuA0tEhRe5eIjpV9ZF+0RfZR9voJFQ==}
     dev: true
@@ -4487,7 +4514,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       fill-range: 7.0.1
-    dev: true
 
   /browserslist@4.22.1:
     resolution: {integrity: sha512-FEVc202+2iuClEhZhrWy6ZiAcRLvNMyYcxZ8raemul1DYVOVdFsbqckWLdsixQZCpJlwe77Z3UTalE7jsjnKfQ==}
@@ -4621,6 +4647,20 @@ packages:
     resolution: {integrity: sha512-Pj779qHxV2tuapviy1bSZNEL1maXr13bPYpsvSDB68HlYcYuhlDrmGd63i0JHMCLKzc7rUSNIrpdJlhVlNwrxA==}
     engines: {node: '>= 0.8.0'}
     dev: true
+
+  /chokidar@3.5.3:
+    resolution: {integrity: sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==}
+    engines: {node: '>= 8.10.0'}
+    dependencies:
+      anymatch: 3.1.3
+      braces: 3.0.2
+      glob-parent: 5.1.2
+      is-binary-path: 2.1.0
+      is-glob: 4.0.3
+      normalize-path: 3.0.0
+      readdirp: 3.6.0
+    optionalDependencies:
+      fsevents: 2.3.3
 
   /chrome-trace-event@1.0.3:
     resolution: {integrity: sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==}
@@ -13783,7 +13823,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       to-regex-range: 5.0.1
-    dev: true
 
   /find-cache-dir@3.3.2:
     resolution: {integrity: sha512-wXZV5emFEjrridIgED11OoUKLxiYjAcqot/NJdAkOhlJ+vGzwhOAfcG5OX1jP+S0PcjEn8bdMJv+g2jwQ3Onig==}
@@ -14037,7 +14076,6 @@ packages:
     engines: {node: '>= 6'}
     dependencies:
       is-glob: 4.0.3
-    dev: true
 
   /glob-parent@6.0.2:
     resolution: {integrity: sha512-XxwI8EOhVQgWp6iDL+3b0r86f4d6AX6zSU55HfB4ydCEuXLXc5FcYeOu+nnGftS4TEju/11rt4KJPTMgbfmv4A==}
@@ -14328,6 +14366,9 @@ packages:
     resolution: {integrity: sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==}
     engines: {node: '>= 4'}
 
+  /immutable@4.3.4:
+    resolution: {integrity: sha512-fsXeu4J4i6WNWSikpI88v/PcVflZz+6kMhUfIwc5SY+poQRPnaf5V7qds6SUyUN3cVxEzuCab7QIoLOQ+DQ1wA==}
+
   /import-fresh@3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
@@ -14417,6 +14458,12 @@ packages:
     dependencies:
       has-bigints: 1.0.2
     dev: true
+
+  /is-binary-path@2.1.0:
+    resolution: {integrity: sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw==}
+    engines: {node: '>=8'}
+    dependencies:
+      binary-extensions: 2.2.0
 
   /is-boolean-object@1.1.2:
     resolution: {integrity: sha512-gDYaKHJmnj4aWxyj6YHyXVpdQawtVLHU5cb+eztPGczf6cjuTdwve5ZIEfgXqH4e57An1D1AKf8CZ3kYrQRqYA==}
@@ -14534,7 +14581,6 @@ packages:
   /is-number@7.0.0:
     resolution: {integrity: sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==}
     engines: {node: '>=0.12.0'}
-    dev: true
 
   /is-path-inside@3.0.3:
     resolution: {integrity: sha512-Fd4gABb+ycGAmKou8eMftCupSir5lRxqf4aD/vd0cD2qc4HL07OjCeuHMr8Ro4CoMaeCKDB0/ECBOVWjTwUvPQ==}
@@ -16319,7 +16365,6 @@ packages:
   /normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
-    dev: true
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -17421,7 +17466,6 @@ packages:
   /picomatch@2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
-    dev: true
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -20720,6 +20764,12 @@ packages:
       type-fest: 1.4.0
     dev: true
 
+  /readdirp@3.6.0:
+    resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
+    engines: {node: '>=8.10.0'}
+    dependencies:
+      picomatch: 2.3.1
+
   /rechoir@0.6.2:
     resolution: {integrity: sha512-HFM8rkZ+i3zrV+4LQjwQ0W+ez98pApMGM3HUrN04j3CqzPOzl9nmP15Y8YXNm8QHGv/eacOVEjqhmWpkRV0NAw==}
     engines: {node: '>= 0.10'}
@@ -20866,6 +20916,15 @@ packages:
   /safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
     dev: true
+
+  /sass@1.69.5:
+    resolution: {integrity: sha512-qg2+UCJibLr2LCVOt3OlPhr/dqVHWOa9XtZf2OjbLs/T4VPSJ00udtgJxH3neXZm+QqX8B+3cU7RaLqp1iVfcQ==}
+    engines: {node: '>=14.0.0'}
+    hasBin: true
+    dependencies:
+      chokidar: 3.5.3
+      immutable: 4.3.4
+      source-map-js: 1.0.2
 
   /saxes@6.0.0:
     resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==}
@@ -30965,7 +31024,6 @@ packages:
     engines: {node: '>=8.0'}
     dependencies:
       is-number: 7.0.0
-    dev: true
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -31955,6 +32013,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /vite-node@0.34.6(@types/node@20.9.1):
 =======
   /vite-node@0.34.6(@types/node@20.8.2):
@@ -31965,6 +32024,9 @@ packages:
 =======
   /vite-node@0.34.6(@types/node@20.9.1):
 >>>>>>> d2e5210 (chore(frond): Update vite)
+=======
+  /vite-node@0.34.6(@types/node@20.9.1)(sass@1.69.5):
+>>>>>>> edc9129 (feat(front): Continue Game front, add Border)
     resolution: {integrity: sha512-nlBMJ9x6n7/Amaz6F3zJ97EBwR2FkzhBRxF5e+jE6LA3yi6Wtc2lyTij1OnDMIr34v5g/tVQtsVAzhT0jc5ygA==}
     engines: {node: '>=v14.18.0'}
     hasBin: true
@@ -31974,6 +32036,7 @@ packages:
       mlly: 1.4.2
       pathe: 1.1.1
       picocolors: 1.0.0
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -32007,6 +32070,9 @@ packages:
 =======
       vite: 4.5.0(@types/node@20.9.1)
 >>>>>>> 98c8637 (fix(deps): update dependency vite to v4.5.0 (minor))
+=======
+      vite: 5.0.0(@types/node@20.9.1)(sass@1.69.5)
+>>>>>>> edc9129 (feat(front): Continue Game front, add Border)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -32063,7 +32129,11 @@ packages:
       '@vuetify/loader-shared': 1.7.1(vue@3.3.8)(vuetify@3.4.2)
       debug: 4.3.4(supports-color@8.1.1)
       upath: 2.0.1
+<<<<<<< HEAD
       vite: 4.5.0(@types/node@20.9.1)
+=======
+      vite: 5.0.0(@types/node@20.9.1)(sass@1.69.5)
+>>>>>>> edc9129 (feat(front): Continue Game front, add Border)
       vuetify: 3.4.2(typescript@5.2.2)(vite-plugin-vuetify@1.0.2)(vue@3.3.8)
 =======
       '@vuetify/loader-shared': 1.7.1(vue@3.3.4)(vuetify@3.3.21)
@@ -32084,6 +32154,7 @@ packages:
       - vue
     dev: false
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -32116,6 +32187,9 @@ packages:
       '@types/node': '>= 14'
 =======
   /vite@5.0.0(@types/node@20.9.1):
+=======
+  /vite@5.0.0(@types/node@20.9.1)(sass@1.69.5):
+>>>>>>> edc9129 (feat(front): Continue Game front, add Border)
     resolution: {integrity: sha512-ESJVM59mdyGpsiNAeHQOR/0fqNoOyWPYesFto8FFZugfmhdHx8Fzd8sF3Q/xkVhZsyOxHfdM7ieiVAorI9RjFw==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -32207,6 +32281,7 @@ packages:
       postcss: 8.4.31
 <<<<<<< HEAD
       rollup: 4.4.1
+<<<<<<< HEAD
 >>>>>>> d2e5210 (chore(frond): Update vite)
 =======
       rollup: 3.29.4
@@ -32223,10 +32298,13 @@ packages:
 =======
       rollup: 3.29.4
 >>>>>>> 98c8637 (fix(deps): update dependency vite to v4.5.0 (minor))
+=======
+      sass: 1.69.5
+>>>>>>> edc9129 (feat(front): Continue Game front, add Border)
     optionalDependencies:
       fsevents: 2.3.3
 
-  /vitest@0.34.6(jsdom@22.1.0):
+  /vitest@0.34.6(jsdom@22.1.0)(sass@1.69.5):
     resolution: {integrity: sha512-+5CALsOvbNKnS+ZHMXtuUC7nL8/7F1F2DnHGjSsszX8zCjWSSviphCb/NuS9Nzf4Q03KyyDRBAXhF/8lffME4Q==}
     engines: {node: '>=v14.18.0'}
     hasBin: true
@@ -32289,6 +32367,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       vite: 4.5.0(@types/node@20.9.1)
 =======
       vite: 5.0.0(@types/node@20.9.1)
@@ -32309,6 +32388,10 @@ packages:
       vite: 4.5.0(@types/node@20.9.1)
 >>>>>>> 98c8637 (fix(deps): update dependency vite to v4.5.0 (minor))
       vite-node: 0.34.6(@types/node@20.9.1)
+=======
+      vite: 5.0.0(@types/node@20.9.1)(sass@1.69.5)
+      vite-node: 0.34.6(@types/node@20.9.1)(sass@1.69.5)
+>>>>>>> edc9129 (feat(front): Continue Game front, add Border)
       why-is-node-running: 2.2.2
     transitivePeerDependencies:
       - less

@@ -20,6 +20,7 @@
 				class="fill-height versus-container"
 			>
 			<div class="versus-container-inner">
+<<<<<<< HEAD
 				<div class="fill-height d-flex align-center no-gutters">
 					<div
 						:style="{
@@ -130,6 +131,8 @@
 							/>
 						</v-img>
 =======
+=======
+>>>>>>> edc9129 (feat(front): Continue Game front, add Border)
 				<div class="fill-height d-flex align-center no-gutters">
 					<div
 						:style="{
@@ -145,7 +148,7 @@
 							<div
 								id="leftUser"
 								:class="{ tremble: shouldTremble('leftUser') }"
-								class="mr-auto fill-height ml-2"
+								class="mr-auto fill-height ml-3"
 							>
 								<v-img class="cadre-responsive" :src="userData.leftPlayer.cadre">
 									<h2>{{ userData.leftPlayer.name }}</h2>
@@ -182,7 +185,7 @@
 						}"
 						class="fill-height d-flex justify-end align-center right"
 					>
-						<div id="rightUser" :class="{ tremble: shouldTremble('rightUser') }" class="fill-height mr-2">
+						<div id="rightUser" :class="{ tremble: shouldTremble('rightUser') }" class="fill-height mr-3">
 							<v-img class="cadre-responsive" :src="userData.rightPlayer.cadre">
 								<h2>{{ userData.rightPlayer.name }}</h2>
 								<v-img
@@ -200,6 +203,7 @@
 						</div>
 					</div>
 				</div>
+<<<<<<< HEAD
 >>>>>>> ef81387 (feat(pong): Start Responsive)
 			</v-card>
 			<div id="game-canvas" />
@@ -210,6 +214,12 @@
 			<div id="game-canvas" />
 		</div>
 >>>>>>> c80165e (fix: github issue)
+=======
+				</div>
+			</v-card>
+			<div id="game-canvas" />
+	</div>
+>>>>>>> edc9129 (feat(front): Continue Game front, add Border)
 		<CountdownOverlay v-if="showCountdown" />
 	</v-container>
 </template>
@@ -1312,10 +1322,15 @@ html {
 	font-family: 'Avenir', Helvetica, Arial, sans-serif;
 	text-align: center;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	width: 70vw;
+=======
+>>>>>>> edc9129 (feat(front): Continue Game front, add Border)
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	border: 10px double #dddfe2;
+	border: 5px solid #2a3cad;
+	border-radius: 5px;
+	box-shadow: 0px 0px 5px #2a3cad;
 }
 
 #game-canvas {
@@ -1372,10 +1387,14 @@ html {
 	height: 7vw;
 	position: absolute;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	z-index: -888;
 =======
 	z-index: -888; /* Position absolue pour positionner par-dessus la deuxième image */
 >>>>>>> 98da990 (feat(pong): Improve Pong, fix a lot a Backend error + more frontend.)
+=======
+	z-index: -888;
+>>>>>>> edc9129 (feat(front): Continue Game front, add Border)
 }
 
 .toast-of-death {
@@ -1445,6 +1464,7 @@ h1 {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 .versus-container {
 	border: 10px double #dddfe2;
@@ -1455,6 +1475,8 @@ h1 {
 }
 
 >>>>>>> 51a037d (feat(pong): MORE FRONT)
+=======
+>>>>>>> edc9129 (feat(front): Continue Game front, add Border)
 .right {
 	z-index: -666;
 	width: 100%;
@@ -1601,6 +1623,7 @@ canvas {
 }
  .versus-container .versus-container-inner:after {
 	 right: -2px;
+<<<<<<< HEAD
 =======
 	border: 10px double #dddfe2;
 >>>>>>> c7368ae (feat(pong): Front for the Pong)
@@ -1635,4 +1658,7 @@ canvas {
 }
 =======
 >>>>>>> c80165e (fix: github issue)
+=======
+}
+>>>>>>> edc9129 (feat(front): Continue Game front, add Border)
 </style>

@@ -592,6 +592,7 @@ h4 {
 	height: 100vh;
 }
 
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 6505030 (feat(pong): Responsivity & Design)
@@ -600,6 +601,8 @@ h4 {
 	height: 100vh;
 }
 >>>>>>> 6ed663d (feat(pong): Responsivity)
+=======
+>>>>>>> edc9129 (feat(front): Continue Game front, add Border)
 </style>
 =======
 >>>>>>> c80165e (fix: github issue)
