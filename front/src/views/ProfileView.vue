@@ -172,7 +172,7 @@ export default defineComponent({
 		<section>
 			<v-container class="profileHome">
 				<div class="¨box zero">
-					<v-btn class="neonPolice" @click="$router.push('chat')">Chat &#128062;</v-btn>
+					<v-btn class=" box zero neonPolice" @click="$router.push('chat')">Chat &#128062;</v-btn>
 				</div>
 				<div class="box one">Box 1 &#128001</div>
 				<div class="box two">Box 2 &#128048</div>
@@ -259,7 +259,18 @@ export default defineComponent({
 	background-color: green;
 }
 
+@media screen and (max-width: 960px) {
+	.profileHome {
+		flex-direction: column;
+	}
+
+	/* .box { */
+		/* overflow: auto; */
+	/* } */
+}
+
 </style>
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 <script></script>
@@ -277,3 +288,6 @@ export default defineComponent({
 >>>>>>> 3b9f6f4 (clean files)
 =======
 >>>>>>> 4790b5f (container boxes prottotype in profile page)
+=======
+
+>>>>>>> 30dcbad (core:feat clean syntax of profile page)
