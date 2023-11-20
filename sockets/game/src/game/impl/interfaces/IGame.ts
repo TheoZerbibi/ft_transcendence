@@ -8,12 +8,16 @@ export interface IGame {
 	gameData: IGameData;
 	winner: IUser;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	loser: IUser;
 
 	removeGame: () => void;
 =======
 	looser: IUser;
 >>>>>>> 7cff344 (refactor(pong): Fix EndGame condition (Crash when player refresh))
+=======
+	loser: IUser;
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 
 	removeGame: () => void;
 
@@ -46,10 +50,14 @@ export interface IGame {
 	startGame: () => void;
 	endGame: () => void;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	winGame: (winner: IUser, loser: IUser) => void;
 =======
 	winGame: (winner: IUser, looser: IUser) => void;
 >>>>>>> 7cff344 (refactor(pong): Fix EndGame condition (Crash when player refresh))
+=======
+	winGame: (winner: IUser, loser: IUser) => void;
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 
 	startGameLoop: () => void;
 	getGameData: () => IGameData;

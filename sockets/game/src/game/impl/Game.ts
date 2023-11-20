@@ -19,10 +19,14 @@ export class Game implements IGame {
 	public pause: boolean = false;
 	public winner: IUser;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public loser: IUser;
 =======
 	public looser: IUser;
 >>>>>>> 7cff344 (refactor(pong): Fix EndGame condition (Crash when player refresh))
+=======
+	public loser: IUser;
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 
 	private static games: Map<string, any> = new Map<string, any>();
 
@@ -174,6 +178,7 @@ export class Game implements IGame {
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	async winGame(winner: IUser, loser: IUser) {
 		this.winner = winner;
 		this.loser = loser;
@@ -195,6 +200,23 @@ export class Game implements IGame {
 		this.looser = looser;
 		this.endGame();
 >>>>>>> 7cff344 (refactor(pong): Fix EndGame condition (Crash when player refresh))
+=======
+	async winGame(winner: IUser, loser: IUser) {
+		this.winner = winner;
+		this.loser = loser;
+		await this.prismaService.game_players.update({
+			where: {
+				player_id_game_id: {
+					game_id: this.getGameID(),
+					player_id: winner.user.id,
+				},
+			},
+			data: {
+				is_win: true,
+			},
+		});
+		await this.endGame();
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 	}
 
 	userIsInGame(userId: number): boolean {
@@ -240,6 +262,7 @@ export class Game implements IGame {
 		this.newPoint = true;
 		this.setPause(true, 3000);
 <<<<<<< HEAD
+<<<<<<< HEAD
 		const loserSide: SIDE = side === SIDE.LEFT ? SIDE.RIGHT : SIDE.LEFT;
 		const loser: IUser = this.getPlayerBySide(loserSide);
 		if (user.playerData.score >= 6) this.winGame(user, loser);
@@ -248,6 +271,11 @@ export class Game implements IGame {
 		const looser: IUser = this.getPlayerBySide(looserSide);
 		if (user.playerData.score >= 11) this.winGame(user, looser);
 >>>>>>> 3afc756 (feat(pong): Continue responsivity)
+=======
+		const loserSide: SIDE = side === SIDE.LEFT ? SIDE.RIGHT : SIDE.LEFT;
+		const loser: IUser = this.getPlayerBySide(loserSide);
+		if (user.playerData.score >= 11) this.winGame(user, loser);
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 	}
 
 	isInPause(): boolean {

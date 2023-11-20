@@ -1,6 +1,9 @@
 <template>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 	<main>
 		<div
 			v-if="apiData"
@@ -11,6 +14,7 @@
 			}"
 			class="container d-flex align-center justify-center"
 		>
+<<<<<<< HEAD
 			<div>
 =======
 	<v-container>
@@ -35,12 +39,20 @@
 					<span>GameUID : </span>
 					<span class="font-weight-bold">
 						{{ apiData.uid }}
+=======
+			<div v-if="isConnected">
+				<GameCanvas />
+				<span class="d-flex justify-center align-center ga-10">
+					<span class="d-flex justify-center ga-1">
+						<img height="50" width="50" src="/game/keys/W_KEY.gif" />
+						<h4 class="ml-2">UP</h4>
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 					</span>
-					<br />
-					<span>Creation Date : </span>
-					<span class="font-weight-bold">
-						{{ apiData.created_at }}
+					<span class="d-flex justify-center ga-1">
+						<img height="50" width="50" src="/game/keys/S_KEY.gif" />
+						<h4 class="ml-2">DOWN</h4>
 					</span>
+<<<<<<< HEAD
 					<br />
 					<div v-if="apiData.started_at">
 						<span>Started Date : </span>
@@ -127,6 +139,13 @@
 	</div>
 	<Snackbar />
 >>>>>>> c7368ae (feat(pong): Front for the Pong)
+=======
+				</span>
+			</div>
+		</div>
+		<Snackbar />
+	</main>
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 </template>
 
 <script lang="ts">
@@ -211,6 +230,7 @@ export default {
 <<<<<<< HEAD
 <<<<<<< HEAD
 		const images = import.meta.glob('/public/game/battleBackground/*.png');
+<<<<<<< HEAD
 =======
 		const images = import.meta.glob('/public/battleBackground/*.png');
 =======
@@ -218,6 +238,8 @@ export default {
 >>>>>>> 6ed663d (feat(pong): Responsivity)
 		console.log(images);
 >>>>>>> c7368ae (feat(pong): Front for the Pong)
+=======
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 		for (const path in images) {
 			backgroundList.push(path);
 		}
@@ -250,6 +272,10 @@ export default {
 			})
 			.then(async (data) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+				console.log(data);
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 				if (data.end_at) {
 					this.apiData = data;
 					snackbarStore.showSnackbar('Game is ended', 3000, 'primary');
@@ -264,6 +290,7 @@ export default {
 									if (data[i].user) this.players.push(data[i].user);
 								}
 							});
+<<<<<<< HEAD
 =======
 				await this.connect(this.JWT, import.meta.env.VITE_GAME_SOCKET_PORT)
 					.then(() => {
@@ -276,6 +303,8 @@ export default {
 							}
 						});
 >>>>>>> ef81387 (feat(pong): Start Responsive)
+=======
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 
 							this.socket.on('game-start', (data: any) => {
 								snackbarStore.showSnackbar('Game Starting !', 3000, 'green');
@@ -283,10 +312,14 @@ export default {
 							});
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 							this.socket.on('game-end', (data: any) => {
 								this.disconnect();
 								if (!snackbarStore.snackbar)
 									snackbarStore.showSnackbar('Game is ended', 3000, 'primary');
+<<<<<<< HEAD
 								this.dialogVisible = true;
 								console.log(data);
 								this.apiData = data;
@@ -304,12 +337,22 @@ export default {
 							this.socket.on('game-win', () => {
 								console.log('Win!');
 								this.isWinner = true;
+=======
+								if (data.winner) console.log(`Winner : ${data.winner.user.login}`);
+							});
+
+							this.socket.on('game-win', () => {
+								console.log('Win!');
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 								snackbarStore.showSnackbar('You win!', 3000, 'green');
 							});
 
 							this.socket.on('game-lose', () => {
 								console.log('lose!');
+<<<<<<< HEAD
 								this.isLoser = true;
+=======
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 								snackbarStore.showSnackbar('You lose!', 3000, 'red');
 							});
 
@@ -324,10 +367,14 @@ export default {
 							return;
 						});
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 					this.apiData = data;
 					if (data.isSpec) snackbarStore.showSnackbar('Connecting to the game session.', 3000, 'orange');
 					else snackbarStore.showSnackbar('Joining game session.', 3000, 'green');
 				}
+<<<<<<< HEAD
 =======
 					})
 					.catch((error: any) => {
@@ -338,6 +385,8 @@ export default {
 				if (data.isSpec) snackbarStore.showSnackbar('Connecting to the game session.', 3000, 'orange');
 				else snackbarStore.showSnackbar('Joining game session.', 3000, 'green');
 >>>>>>> ef81387 (feat(pong): Start Responsive)
+=======
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 			})
 			.catch((error) => {
 				console.error(error);
@@ -365,6 +414,9 @@ export default {
 </script>
 <style scoped>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 @font-face {
 	font-family: 'OMORI_MAIN';
 	src: url('/fonts/OMORI_GAME.ttf') format('truetype-variations');
@@ -376,7 +428,11 @@ export default {
 }
 
 h4 {
+<<<<<<< HEAD
 	font-family: 'OMORI_MAIN', sans-serif;
+=======
+	font-family: 'OMORI_MAIN';
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 	font-size: xx-large;
 	text-align: center;
 	color: rgb(65, 37, 37);
@@ -386,13 +442,17 @@ h4 {
 		0 0 0.2em rgb(255, 255, 255);
 }
 
+<<<<<<< HEAD
 .container {
 	overflow: hidden;
 	height: 100vh;
 }
 
 =======
+=======
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 .container {
+	overflow: hidden;
 	height: 100vh;
 }
 >>>>>>> 6ed663d (feat(pong): Responsivity)

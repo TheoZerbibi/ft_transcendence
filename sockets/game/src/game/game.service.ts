@@ -108,6 +108,7 @@ export class GameService {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if (!gameUser.isSpec && !game.isEnded()) {
 			gameUser.isConnected = false;
 =======
@@ -117,15 +118,24 @@ export class GameService {
 		if (!gameUser.isSpec && !game.isEnded) {
 			console.log(game.getUsersInGame(), game.isEnded());
 >>>>>>> 3afc756 (feat(pong): Continue responsivity)
+=======
+		if (!gameUser.isSpec && !game.isEnded()) {
+			console.log(game.getUsersInGame(), game.isEnded());
+			gameUser.isConnected = false;
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 			if (game.getUsersInGame().length === 0) {
 				game.removeGame();
 				return null;
 			} else {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 				gameUser.isConnected = false;
 >>>>>>> ef81387 (feat(pong): Start Responsive)
+=======
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 				const winnerSide: SIDE = gameUser.playerData.side === SIDE.LEFT ? SIDE.RIGHT : SIDE.LEFT;
+				console.log(gameUser.playerData.side, winnerSide);
 				const winner: IUser = game.getPlayerBySide(winnerSide);
 				game.winGame(winner, gameUser);
 				return null;
@@ -149,6 +159,7 @@ export class GameService {
 		});
 	}
 
+<<<<<<< HEAD
 	public gameVerification(client: Socket, gameUID: string, userID: number): IUser | null {
 		const game: IGame = this.getGame(gameUID);
 		if (!game) {
@@ -209,6 +220,8 @@ export class GameService {
 		});
 	}
 
+=======
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 	public gameVerification(client: Socket, gameUID: string, userID: number): IUser | null {
 		const game: IGame = this.getGame(gameUID);
 		if (!game) {

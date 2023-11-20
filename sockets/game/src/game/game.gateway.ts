@@ -222,6 +222,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public async sendWinner(game: IGame) {
 		const winner: IUser = game.winner;
 		const loser: IUser = game.loser;
@@ -233,15 +234,22 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			loser: { user: loser.user, score: loser.playerData.score, side: loser.playerData.side },
 =======
 	private async sendWinner(game: IGame) {
+=======
+	public async sendWinner(game: IGame) {
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 		const winner: IUser = game.winner;
-		const looser: IUser = game.winner;
-		await this.gameService.winGame(game, winner);
-		if (winner) this.server.to(winner.socketID).emit('game-win');
-		if (looser) this.server.to(looser.socketID).emit('game-loose');
+		const loser: IUser = game.loser;
+		console.log(winner, loser);
+		if (winner.isConnected) this.server.to(winner.socketID).emit('game-win');
+		if (loser.isConnected) this.server.to(loser.socketID).emit('game-lose');
 		this.server.to(game.getGameUID()).emit('game-end', {
 			winner: { user: winner.user, score: winner.playerData.score },
+<<<<<<< HEAD
 			looser: { user: looser.user, score: looser.playerData.score },
 >>>>>>> 3afc756 (feat(pong): Continue responsivity)
+=======
+			loser: { user: loser.user, score: loser.playerData.score },
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 			startDate: game.getGameData().startingDate,
 			endingDate: game.getGameData().endingDate,
 		});
@@ -260,7 +268,13 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 =======
 				this.sendBallPosition(game);
 				if (game.newPoint) {
+<<<<<<< HEAD
 >>>>>>> 3afc756 (feat(pong): Continue responsivity)
+=======
+					const leftUser: IUser = game.getPlayerBySide(SIDE.LEFT);
+					const rightUser: IUser = game.getPlayerBySide(SIDE.RIGHT);
+					if (!leftUser || !leftUser.isConnected || !rightUser || !rightUser.isConnected) return;
+>>>>>>> 6505030 (feat(pong): Responsivity & Design)
 					this.server.to(game.getGameUID()).emit('game-score', {
 						leftUser: game.getPlayerBySide(SIDE.LEFT).playerData.score,
 						rightUser: game.getPlayerBySide(SIDE.RIGHT).playerData.score,
