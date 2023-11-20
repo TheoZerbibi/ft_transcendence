@@ -4,7 +4,7 @@
 			<div v-if="waitingOpp">
 				<span class="d-flex align-center justify-center" min-height="100%">
 					<h4>Waiting for a opponant</h4>
-					<v-progress-circular indeterminate color="primary" />
+					<v-progress-circular indeterminate color="deep-purple-accent-2" />
 				</span>
 			</div>
 			<v-card

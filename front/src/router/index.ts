@@ -41,7 +41,7 @@ const router = createRouter({
 		{
 			path: '/exemples/modal',
 			name: 'ModalExemple',
-			component: () => import('../components/exemples/ModalExemple.vue'),
+			component: () => import('../components/utils/GameModal.vue'),
 		},
 		{
 			path: '/chat',
@@ -99,8 +99,8 @@ const router = createRouter({
 			component: () => import('../components/exemples/P5Exemple.vue'),
 		},
 		{
-			path: '/api/oauth/callback:token',
-			name: 'OauthCallback',
+			path: '/auth/callback:token?',
+			name: 'AuthCallback',
 			component: () => import('../views/auth/OauthCallbackView.vue'),
 		},
 	],
