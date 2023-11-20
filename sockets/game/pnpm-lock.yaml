@@ -44,6 +44,7 @@ dependencies:
     specifier: 5.5.2
     version: 5.5.2(prisma@5.5.2)
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     specifier: 5.5.0
     version: 5.5.0(prisma@5.5.0)
@@ -69,6 +70,11 @@ dependencies:
     specifier: 5.5.2
     version: 5.5.2(prisma@5.5.2)
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+  '@socket.io/admin-ui':
+    specifier: ^0.5.1
+    version: 0.5.1(socket.io@4.7.2)
+>>>>>>> fb6fc86 (chore: Add Admin UI for Socket.io)
   '@socket.io/redis-adapter':
     specifier: ^8.2.1
     version: 8.2.1(socket.io-adapter@2.5.2)
