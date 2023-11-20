@@ -51,16 +51,16 @@ model friends {
 }
 
 model games {
-  id           Int            @id @unique @default(autoincrement())
-  uid          String         @unique
-  is_private   Boolean        @default(false)
-  created_at   DateTime       @default(now())
-  started_at   DateTime?
-  end_at       DateTime?
-  game_players game_players[]
+  id         Int       @id @unique @default(autoincrement())
+  uid        String    @unique
+  is_private Boolean   @default(false)
+  created_at DateTime  @default(now())
+  started_at DateTime?
+  end_at     DateTime?
 }
 
 model users {
+<<<<<<< HEAD
   id                                   Int               @id @default(autoincrement())
   login                                String            @unique
   display_name                         String
@@ -77,8 +77,23 @@ model users {
   friends_friends_friend_idTousers     friends[]         @relation("friends_friend_idTousers")
   friends_friends_user_idTousers       friends[]         @relation("friends_user_idTousers")
   game_players                         game_players[]
+=======
+  id                               Int             @id @default(autoincrement())
+  login                            String          @unique
+  display_name                     String
+  email                            String
+  dAuth                            Boolean         @default(false)
+  avatar                           String
+  created_at                       DateTime        @default(now())
+  updated_at                       DateTime
+  last_login                       DateTime        @default(now())
+  channel_users                    channel_users[]
+  friends_friends_friend_idTousers friends[]       @relation("friends_friend_idTousers")
+  friends_friends_user_idTousers   friends[]       @relation("friends_user_idTousers")
+>>>>>>> 977750d (chore: Fix prisma.schema)
 }
 
+<<<<<<< HEAD
 model game_players {
   player_id Int
   game_id   Int
@@ -90,6 +105,7 @@ model game_players {
 
   @@id([player_id, game_id])
 }
+<<<<<<< HEAD
 
 model blocked {
   blocked_id                         Int
@@ -108,3 +124,10 @@ model direct_messages {
   user_id    Int
   users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
+=======
+=======
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model gamePlayers {
+// }
+>>>>>>> 89e81b3 (ca marche sur mon ordi en plein festival ou on me sort que je suis une sorciere blanche ahaha alors que je suis de l;'akatsuki mdr)
+>>>>>>> 977750d (chore: Fix prisma.schema)
