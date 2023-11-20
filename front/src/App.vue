@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 0bc9e74 (chore: Fix conflict)
 <template>
@@ -41,6 +42,13 @@
 >>>>>>> 0bc9e74 (chore: Fix conflict)
 =======
 >>>>>>> 0a0071c (chore: revert app)
+=======
+<template>
+	<v-app>
+		<v-main>
+			<router-view />
+		</v-main>
+>>>>>>> a70d59b (fix(frond): reset App.vue)
 	</v-app>
 </template>
 
@@ -54,6 +62,7 @@ export default defineComponent({
 	},
 });
 </script>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -97,3 +106,5 @@ v-btn:hover {
 >>>>>>> 0bc9e74 (chore: Fix conflict)
 =======
 >>>>>>> 0a0071c (chore: revert app)
+=======
+>>>>>>> a70d59b (fix(frond): reset App.vue)
