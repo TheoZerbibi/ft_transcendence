@@ -1,6 +1,7 @@
 <template>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	<main>
 		<section>
 			<v-container class="profileHome neonPolice">
@@ -152,11 +153,17 @@ export default defineComponent({
     </div>
     
 >>>>>>> 2e60013 (just vuetify icon works)
+=======
+	<div>
+		<h1>This is the profile page</h1>
+		<v-btn class="neonPolice" @click="$router.push('chat')">Chat &#129418;</v-btn>
+	</div>
+>>>>>>> 3b9f6f4 (clean files)
 </template>
 
-<script>
-</script>
+<script></script>
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <style></style>
 >>>>>>> 7f206e2 (profile route created)
@@ -164,3 +171,6 @@ export default defineComponent({
 <style>
 </style>
 >>>>>>> 2e60013 (just vuetify icon works)
+=======
+<style></style>
+>>>>>>> 3b9f6f4 (clean files)

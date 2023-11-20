@@ -133,5 +133,4 @@ export default defineComponent({
 .intraLinks {
 	background-color: transparent;
 }
-
 </style>

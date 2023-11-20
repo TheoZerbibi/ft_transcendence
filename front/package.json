@@ -26,6 +26,9 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3b9f6f4 (clean files)
 		"@fortawesome/fontawesome-free": "^6.4.2",
 		"@mdi/font": "7.3.67",
 		"@tsconfig/node18": "^18.2.2",
@@ -53,9 +56,15 @@
 =======
 >>>>>>> 790bb55 (nav bar to fix)
 		"gsap": "^3.12.2",
+<<<<<<< HEAD
 		"p5": "^1.8.0",
 		"pinia": "^2.1.7",
 		"pinia-plugin-persistedstate": "^3.2.0",
+=======
+		"p5": "^1.7.0",
+		"pinia": "^2.1.6",
+		"pnpm": "^8.10.2",
+>>>>>>> 3b9f6f4 (clean files)
 		"roboto-fontface": "*",
 		"socket.io-client": "^4.7.2",
 <<<<<<< HEAD
@@ -70,7 +79,11 @@
 		"vue-router": "^4.2.5",
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		"vuetify": "^3.4.2",
+=======
+		"vuetify": "^3.3.21",
+>>>>>>> 3b9f6f4 (clean files)
 		"webfontloader": "^1.6.28"
 	},
 	"devDependencies": {

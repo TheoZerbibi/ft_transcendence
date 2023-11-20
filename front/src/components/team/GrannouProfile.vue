@@ -19,8 +19,12 @@ export default defineComponent({
 </script>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 <style></style>
 =======
 <style>
 </style>
 >>>>>>> 2e60013 (just vuetify icon works)
+=======
+<style></style>
+>>>>>>> 3b9f6f4 (clean files)

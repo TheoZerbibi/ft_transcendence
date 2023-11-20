@@ -5,6 +5,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	<!-- <header role="banner" class="site-header hide-on-overlay" data-v-9fb9646a=""> -->
 		<!-- <img class="site-header__logo" width="125" height="76" draggable="false" src="/src/assets/OmoriWallpapers/logo1.png" data-v-9fb9646a=""> -->
 			<!-- <div class="site-header__lightbulb" data-v-9fb9646a=""> -->
@@ -58,35 +59,37 @@
 >>>>>>> f9c0ccd (homepage prototype dome)
 			<v-card-item>	
 				<v-card-title class="title">	
+=======
+	<v-row align="center" justify="center" class="fill-height" id="background">
+		<v-card class="homepage text-center rounded-card" variant="tonal" color="green darken-4" width="700">
+			<v-card-item>
+				<v-card-title class="title">
+>>>>>>> 3b9f6f4 (clean files)
 					<p class="neonPolice">Welcome to STING's ft_transcendence</p>
 					<br />
 					<br />
 				</v-card-title>
-
 				<v-img src="CatsRounded.png" contain max-height="300" alt="These are cute kittens"></v-img>
-
-				<v-card-subtitle>
-					Gaëlle, Ismaël, Théo, Semiha, Noé
+				<v-card-subtitle class="neonPolice homeSubtitles">
+					<br />Gaëlle, Ismaël, <span class="teamLeader">Théo</span>, Semiha, Noé
 				</v-card-subtitle>
 			</v-card-item>
-
-			<v-card-text>
-				students of 42 paris<br />
+			<v-card-text class="neonPolice homeSubtitles">
+				<br />students of 42 paris<br />
 				<!-- <strong>students of 42 paris (en gras)</strong><br /> -->
 				<!-- <mark>students of 42 paris (en surligne)</mark><br /> -->
 				<!-- <em>students of 42 paris (en italique)</em><br /> -->
 			</v-card-text>
-
 			<v-card-actions>
 				<v-btn
-					prepend-icon="&#129418"
-					class="text-capitalize" 
+					class="text-capitalize"
 					rounded="xl"
 					color="green darken-4"
 >>>>>>> 9c6a256 (add kittens in homepage^^)
 					variant="outlined"
 					size="x-large"
 					href="https://intra.42.fr"
+<<<<<<< HEAD
 					target="_blank">
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -99,6 +102,11 @@
 							&#129418; Authenticate with 42
 						</div>
 >>>>>>> 1f20d30 (les icons fonctionnentgit add .git add .git add . <3 <3 <3 jvais en mettre PAAAAARTOUT)
+=======
+					target="_blank"
+				>
+					<div class="neonPolice">&#129418; Authenticate with 42</div>
+>>>>>>> 3b9f6f4 (clean files)
 				</v-btn>
 			</v-card-actions>
 		</v-card>
@@ -702,7 +710,7 @@ a {
 >>>>>>> ff1c0ad (video at 21:38)
 =======
 <style scoped>
-.homepage  {
+.homepage {
 	display: flex;
 	align-items: center;
 	flex-direction: column;
@@ -717,6 +725,7 @@ a {
 	display: flex;
 	justify-content: flex-end;
 }
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 .neonPolice {
@@ -750,4 +759,6 @@ a {
 >>>>>>> ef5589f (homepage title, button to 42 intra and font police)
 =======
 >>>>>>> 452e6ff (page team prototype done)
+=======
+>>>>>>> 3b9f6f4 (clean files)
 </style>

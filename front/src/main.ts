@@ -16,6 +16,7 @@ import router from './router';
 
 // Importing the global css file
 <<<<<<< HEAD
+<<<<<<< HEAD
 import './assets/global.css';
 =======
 import "./assets/global.css"
@@ -28,6 +29,13 @@ const vuetify = createVuetify({
 =======
 		defaultTheme: "dark",
 >>>>>>> c9c7a2b (halloween colors)
+=======
+import './assets/global.css';
+
+const vuetify = createVuetify({
+	theme: {
+		defaultTheme: 'dark',
+>>>>>>> 3b9f6f4 (clean files)
 	},
 	components,
 	directives,
