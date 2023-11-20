@@ -59,7 +59,7 @@
 							<div style="position: relative" clas="mt-16">
 								<h1 class="text-grey">Hello,</h1>
 								<h1 class="text-grey">Welcome to ft_transcendence of</h1>
-								<span class="text-grey">Théo, Gaëlle, Semiha, Noémie and ?</span><br />
+								<span class="text-grey">Théo, Gaëlle, Semiha, Noémie and Norminet</span><br />
 								<v-btn title dark class="text-yellow mt-8" variant="outlined"></v-btn>
 							</div>
 						</v-col>
@@ -76,9 +76,15 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
 	name: 'HomeView',
+<<<<<<< HEAD
 	data() {
 		return {
 		};
+=======
+
+	components: {
+		NavBar	
+>>>>>>> 9e87f6d (tuto)
 	},
 });
 

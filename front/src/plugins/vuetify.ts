@@ -1,5 +1,6 @@
 // Styles
 <<<<<<< HEAD
+<<<<<<< HEAD
 import '@mdi/font/css/materialdesignicons.css';
 =======
 import 'vuetify/styles';
@@ -11,10 +12,17 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
 import 'vuetify/styles';
 import '@fontsource-variable/dancing-script';
 import '@fontsource-variable/pixelify-sans';
+=======
+import '@fortawesome/fontawesome-free/css/all.css'
+import '@mdi/font/css/materialdesignicons.css'
+import {aliases, fa} from 'vuetify/iconsets/fa'
+import 'vuetify/styles'
+>>>>>>> 9e87f6d (tuto)
 
 // Vuetify
-import { createVuetify } from 'vuetify';
+import { createVuetify } from 'vuetify'
 
+<<<<<<< HEAD
 export default createVuetify({
 	icons: {
 		defaultSet: 'mdi',
@@ -28,7 +36,21 @@ export default createVuetify({
 		defaultSet: 'fa',
 		aliases,
 		sets: {
+=======
+export default createVuetify(
+	{
+		icons: {
+			defaultSet: 'fa',
+			aliases,
+			sets: {
+>>>>>>> 9e87f6d (tuto)
 			fa,
-		}	
+			}	
+		}
 	}
+<<<<<<< HEAD
 });
+=======
+)
+// https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
+>>>>>>> 9e87f6d (tuto)
