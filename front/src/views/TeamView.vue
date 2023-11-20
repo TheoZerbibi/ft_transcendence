@@ -1,8 +1,14 @@
 <template>
 	<div class="customBackground">
+<<<<<<< HEAD
 		<v-card class="blurred-card rounded-card">
 			<v-col class="largerSize neonPolice">
 				<h1>The NSTG team</h1>
+=======
+		<v-card class="blurred-card">
+			<v-col class="title">
+				<h1>Welcome to ft_transcendence STING team</h1>
+>>>>>>> ef5589f (homepage title, button to 42 intra and font police)
 				<h4>Starring</h4>
 				<br />
 				<v-row>
@@ -58,7 +64,11 @@ export default defineComponent({
 </script>
 
 <style>
+<<<<<<< HEAD
 .largerSize {
+=======
+.title {
+>>>>>>> ef5589f (homepage title, button to 42 intra and font police)
 	font-size: larger;
 }
 

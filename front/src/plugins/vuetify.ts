@@ -25,7 +25,11 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import { fa } from "vuetify/iconsets/fa";
 import { aliases, mdi } from "vuetify/lib/iconsets/mdi";
 import "vuetify/styles";
+<<<<<<< HEAD
 >>>>>>> c9c7a2b (halloween colors)
+=======
+import '@fontsource-variable/dancing-script';
+>>>>>>> ef5589f (homepage title, button to 42 intra and font police)
 
 // Vuetify
 import { createVuetify } from "vuetify"
