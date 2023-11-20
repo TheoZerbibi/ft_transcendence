@@ -111,6 +111,11 @@ const router = createRouter({
 =======
 >>>>>>> 7f206e2 (profile route created)
 		{
+			path: '/colors',
+			name: 'Colors',
+			component: () => import('../views/Colors.vue'),
+		},
+		{
 			path: '/exemples/websocket',
 			name: 'WebsocketExemple',
 			component: () => import('../components/exemples/WebsocketExemple.vue'),

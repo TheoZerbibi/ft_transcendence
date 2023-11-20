@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
 	<div class="row">
 		<div class="column">
 			<img src="/src/assets/OmoriWallpapers/OmoriRecipes01.jpg">
@@ -15,6 +16,13 @@
 
 	</div>
 
+=======
+	<div class="image-row">
+		<img src="/src/assets/OmoriWallpapers/OmoriRecipes01.jpg" alt="Image 1">
+		<p>Hello</p>
+		<img src="/src/assets/OmoriWallpapers/OmoriRecipes02.jpg" alt="Image 2">
+	</div>
+>>>>>>> 374b499 (/colors page added)
 </template>
 
 <script></script>
@@ -25,6 +33,7 @@ import { defineComponent } from 'vue';
 export default defineComponent({
 	name: 'Secret',
 	data() {
+<<<<<<< HEAD
 		return {
 			images: [
         	{
@@ -44,12 +53,18 @@ export default defineComponent({
         	},
 		]
 		};
+=======
+		return;
+		{
+		}
+>>>>>>> 374b499 (/colors page added)
 	},
 
 });
 </script>
 
 <style>
+<<<<<<< HEAD
 .row {
   display: flex;
   flex-wrap: wrap;
@@ -84,5 +99,7 @@ export default defineComponent({
     max-width: 100%;
   }
 }
+=======
+>>>>>>> 374b499 (/colors page added)
 
 </style>
