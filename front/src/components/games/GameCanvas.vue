@@ -4,10 +4,17 @@
 		<div id="app">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			<div v-if="waitingOpp">
 				<span class="d-flex align-center justify-center" min-height="100%">
 					<h4>Waiting for a opponant</h4>
 					<v-progress-circular indeterminate color="deep-purple-accent-2" />
+=======
+			<div v-if="waitingOpp">
+				<span class="d-flex align-center justify-center" min-height="100%">
+					<h4>Waiting for a opponant</h4>
+					<v-progress-circular indeterminate color="primary" />
+>>>>>>> 2903c30 (fix(front): Fix leftUser not grayscale after death)
 				</span>
 			</div>
 			<v-card
@@ -285,9 +292,13 @@ export default {
 			showCountdown: false,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			waitingOpp: true,
 =======
 >>>>>>> ef81387 (feat(pong): Start Responsive)
+=======
+			waitingOpp: true,
+>>>>>>> 2903c30 (fix(front): Fix leftUser not grayscale after death)
 			userData: {
 				leftPlayer: {
 					name: '',
@@ -482,6 +493,7 @@ export default {
 					if (gameData.ball.pos.x < halfWidth) return;
 					if (gameData.ball.pos.y < gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
 						gameData.rightUser.move(-4.5);
+<<<<<<< HEAD
 					}
 					if (gameData.ball.pos.y > gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
 						gameData.rightUser.move(4.5);
@@ -880,9 +892,11 @@ export default {
 					if (gameData.ball.pos.x < halfWidth) return;
 					if (gameData.ball.pos.y < gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
 						gameData.rightUser.move(-5);
+=======
+>>>>>>> 2903c30 (fix(front): Fix leftUser not grayscale after death)
 					}
 					if (gameData.ball.pos.y > gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
-						gameData.rightUser.move(5);
+						gameData.rightUser.move(4.5);
 					}
 				}
 
@@ -973,6 +987,7 @@ export default {
 		});
 		this.socket.on('game-start', async (data: any) => {
 			await p5jsReadyPromise;
+			this.waitingOpp = false;
 			gameData.socket = this.socket;
 			gameData.go = false;
 			gameData.waiting = true;
@@ -1046,7 +1061,7 @@ export default {
 				return this.$router.push({ name: 'GameCreator' });
 			}
 			console.log(data);
-			gameData.player.update(data.position, data.width, data.height);
+			gameData.player.update(data.position);
 		});
 
 >>>>>>> 98da990 (feat(pong): Improve Pong, fix a lot a Backend error + more frontend.)
@@ -1328,9 +1343,6 @@ html {
 >>>>>>> edc9129 (feat(front): Continue Game front, add Border)
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	border: 5px solid #2a3cad;
-	border-radius: 5px;
-	box-shadow: 0px 0px 5px #2a3cad;
 }
 
 #game-canvas {
@@ -1338,6 +1350,10 @@ html {
 	backdrop-filter: blur(5px);
 	width: 69vw;
 	height: 61.2vh;
+	border: 5px solid #b78846;
+	border-top: 0;
+	border-radius: 5px;
+	box-shadow: 0px 0px 5px #b78846;
 }
 
 #game-canvas {
@@ -1508,6 +1524,7 @@ h4 {
 	text-align: center;
 	color: white;
 	line-height: 1;
+<<<<<<< HEAD
 =======
 	margin: auto;
 }
@@ -1523,10 +1540,13 @@ h2 {
 =======
 	line-height: 0px;
 >>>>>>> 897b554 (feat(pong): Responsivity & Design)
+=======
+>>>>>>> 2903c30 (fix(front): Fix leftUser not grayscale after death)
 	text-shadow:
 		1px 1px 2px plum,
 		0 0 1em purple,
 		0 0 0.2em goldenrod;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -1534,6 +1554,8 @@ h2 {
 >>>>>>> ef81387 (feat(pong): Start Responsive)
 =======
 >>>>>>> 897b554 (feat(pong): Responsivity & Design)
+=======
+>>>>>>> 2903c30 (fix(front): Fix leftUser not grayscale after death)
 }
 
 canvas {
