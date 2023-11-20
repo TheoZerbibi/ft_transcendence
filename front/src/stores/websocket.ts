@@ -19,8 +19,12 @@ export const useSocketStore = defineStore('webSocket', {
 			const serverURL = `http://${import.meta.env.VITE_HOST}:${port}`;
 =======
 		async connect(jwt: string, port: any): Promise<Socket> {
+<<<<<<< HEAD
 			const serverURL = `http://${import.meta.env.VITE_HOST}:4000`;
 >>>>>>> ef81387 (feat(pong): Start Responsive)
+=======
+			const serverURL = `http://${import.meta.env.VITE_HOST}:${port}`;
+>>>>>>> 98da990 (feat(pong): Improve Pong, fix a lot a Backend error + more frontend.)
 			if (!this.isConnected) {
 				this.socket = await new Promise((resolve, reject) => {
 					const socket = io(serverURL, {

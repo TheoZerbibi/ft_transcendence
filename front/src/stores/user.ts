@@ -45,10 +45,14 @@ export const useUser = defineStore('user', {
 				throw new Error(data.message);
 			}
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 			console.log(data);
 >>>>>>> ef81387 (feat(pong): Start Responsive)
+=======
+
+>>>>>>> 98da990 (feat(pong): Improve Pong, fix a lot a Backend error + more frontend.)
 			this.login = data.login;
 			this.displayName = data.display_name;
 			this.avatar = data.avatar;

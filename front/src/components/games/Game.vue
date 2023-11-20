@@ -15,6 +15,7 @@
 			class="container d-flex align-center justify-center"
 		>
 <<<<<<< HEAD
+<<<<<<< HEAD
 			<div>
 =======
 	<v-container>
@@ -41,6 +42,9 @@
 						{{ apiData.uid }}
 =======
 			<div v-if="isConnected">
+=======
+			<div>
+>>>>>>> 98da990 (feat(pong): Improve Pong, fix a lot a Backend error + more frontend.)
 				<GameCanvas />
 				<span class="d-flex justify-center align-center ga-10">
 					<span class="d-flex justify-center ga-1">
@@ -277,9 +281,12 @@ export default {
 			.then(async (data) => {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 				console.log(data);
 >>>>>>> 6505030 (feat(pong): Responsivity & Design)
+=======
+>>>>>>> 98da990 (feat(pong): Improve Pong, fix a lot a Backend error + more frontend.)
 				if (data.end_at) {
 					this.apiData = data;
 					snackbarStore.showSnackbar('Game is ended', 3000, 'primary');

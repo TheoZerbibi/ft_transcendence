@@ -232,6 +232,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		this.server.to(game.getGameUID()).emit('game-end', {
 			winner: { user: winner.user, score: winner.playerData.score, side: winner.playerData.side },
 			loser: { user: loser.user, score: loser.playerData.score, side: loser.playerData.side },
+<<<<<<< HEAD
 =======
 	private async sendWinner(game: IGame) {
 =======
@@ -250,6 +251,8 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 =======
 			loser: { user: loser.user, score: loser.playerData.score },
 >>>>>>> 6505030 (feat(pong): Responsivity & Design)
+=======
+>>>>>>> 98da990 (feat(pong): Improve Pong, fix a lot a Backend error + more frontend.)
 			startDate: game.getGameData().startingDate,
 			endingDate: game.getGameData().endingDate,
 		});
@@ -260,6 +263,9 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		const gameLoop = setInterval(async () => {
 			if (!game.isEnded()) {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 98da990 (feat(pong): Improve Pong, fix a lot a Backend error + more frontend.)
 				if (!game.isInPause()) this.sendBallPosition(game);
 				if (game.newPoint) {
 					const leftUser: IUser = game.getPlayerBySide(SIDE.LEFT);

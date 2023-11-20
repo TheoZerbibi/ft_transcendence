@@ -120,7 +120,6 @@ export class GameService {
 >>>>>>> 3afc756 (feat(pong): Continue responsivity)
 =======
 		if (!gameUser.isSpec && !game.isEnded()) {
-			console.log(game.getUsersInGame(), game.isEnded());
 			gameUser.isConnected = false;
 >>>>>>> 6505030 (feat(pong): Responsivity & Design)
 			if (game.getUsersInGame().length === 0) {
@@ -135,7 +134,6 @@ export class GameService {
 =======
 >>>>>>> 6505030 (feat(pong): Responsivity & Design)
 				const winnerSide: SIDE = gameUser.playerData.side === SIDE.LEFT ? SIDE.RIGHT : SIDE.LEFT;
-				console.log(gameUser.playerData.side, winnerSide);
 				const winner: IUser = game.getPlayerBySide(winnerSide);
 				game.winGame(winner, gameUser);
 				return null;

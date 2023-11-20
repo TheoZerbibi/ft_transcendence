@@ -45,11 +45,14 @@ export default {
 		};
 	},
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	mounted() {
 		console.log(this.JWT);
 		console.log(this.user);
 	},
 >>>>>>> ef81387 (feat(pong): Start Responsive)
+=======
+>>>>>>> 98da990 (feat(pong): Improve Pong, fix a lot a Backend error + more frontend.)
 };
 </script>
