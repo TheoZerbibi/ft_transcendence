@@ -539,6 +539,7 @@
 
 <script lang="ts">
 <<<<<<< HEAD
+<<<<<<< HEAD
 import Footer from '../components/utils/Footer.vue';
 import { makeid } from '../plugins/makeId';
 
@@ -626,10 +627,14 @@ export default defineComponent({
 	}
 	return result;
 }
+=======
+import { makeid } from '../plugins/makeId';
+>>>>>>> ef83eb1 (feat: plugin makeId to create state token)
 
 export default {
 >>>>>>> f54b82a (feat: callback route en cours)
 	name: 'HomeView',
+<<<<<<< HEAD
 >>>>>>> eaeb1b1 (move portfolio homepage to /portfolio)
 =======
 	data: () => ({
@@ -665,6 +670,8 @@ export default {
 	data() {
 		return {};
 	},
+=======
+>>>>>>> ef83eb1 (feat: plugin makeId to create state token)
 	methods: {
 		redirectToOAuth() {
 			const clientId = import.meta.env.VITE_API42_UID;
@@ -677,8 +684,12 @@ export default {
 			const redirectUri = import.meta.env.VITE_API42_REDIRECT_URI;
 			const responseType = 'code';
 			const scope = 'public';
+<<<<<<< HEAD
 			const state = makeid(32);
 >>>>>>> f54b82a (feat: callback route en cours)
+=======
+			const state = makeid(42);
+>>>>>>> ef83eb1 (feat: plugin makeId to create state token)
 
 			const params = new URLSearchParams();
 			params.append('client_id', clientId);
