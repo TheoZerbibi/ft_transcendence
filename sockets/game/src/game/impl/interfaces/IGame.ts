@@ -1,43 +1,24 @@
-<<<<<<< HEAD
 import { SIDE } from 'src/game/engine/enums/Side';
 import { IGameData } from './IGameData';
-=======
->>>>>>> c80165e (fix: github issue)
 import { IUser } from './IUser';
 
 export interface IGame {
 	inProgress: boolean;
-<<<<<<< HEAD
 	newPoint: boolean;
 	gameData: IGameData;
 	winner: IUser;
-<<<<<<< HEAD
-<<<<<<< HEAD
 	loser: IUser;
 
 	removeGame: () => void;
-=======
-	looser: IUser;
->>>>>>> 7cff344 (refactor(pong): Fix EndGame condition (Crash when player refresh))
-=======
-	loser: IUser;
->>>>>>> 6505030 (feat(pong): Responsivity & Design)
-
-	removeGame: () => void;
-=======
->>>>>>> c80165e (fix: github issue)
 
 	isInProgress: () => boolean;
 	isEnded: () => boolean;
 
 	getGameUID: () => string;
-<<<<<<< HEAD
 	getGameID: () => number;
 
 	getWidth: () => number;
 	getHeight: () => number;
-=======
->>>>>>> c80165e (fix: github issue)
 
 	addUser: (user: IUser) => void;
 	removeUser: (user: IUser) => void;
@@ -46,15 +27,11 @@ export interface IGame {
 	getAllUsersInGame: () => Array<IUser>;
 	getUsersInGame: () => Array<IUser>;
 	getSpectatorsInGame: () => Array<IUser>;
-<<<<<<< HEAD
 	getPlayerBySide: (side: SIDE) => IUser;
-=======
->>>>>>> c80165e (fix: github issue)
 
 	userIsInGame: (userId: number) => boolean;
 	userIsSpectator: (userId: number) => boolean;
 
-<<<<<<< HEAD
 	setPause: (pause: boolean, time: number) => void;
 	isInPause: () => boolean;
 
@@ -62,20 +39,8 @@ export interface IGame {
 
 	startGame: () => void;
 	endGame: () => void;
-<<<<<<< HEAD
-<<<<<<< HEAD
 	winGame: (winner: IUser, loser: IUser) => void;
-=======
-	winGame: (winner: IUser, looser: IUser) => void;
->>>>>>> 7cff344 (refactor(pong): Fix EndGame condition (Crash when player refresh))
-=======
-	winGame: (winner: IUser, loser: IUser) => void;
->>>>>>> 6505030 (feat(pong): Responsivity & Design)
 
 	startGameLoop: () => void;
 	getGameData: () => IGameData;
-=======
-	startGame: () => void;
-	endGame: () => void;
->>>>>>> c80165e (fix: github issue)
 }

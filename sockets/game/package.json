@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
 	"name": "socket-game",
-=======
-	"name": "sock",
->>>>>>> c80165e (fix: github issue)
 	"version": "0.0.1",
 	"description": "",
 	"author": "",
@@ -29,72 +25,30 @@
 		"test:e2e": "jest --config ./test/jest-e2e.json"
 	},
 	"dependencies": {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-		"@nestjs/common": "^10.2.9",
-=======
-=======
->>>>>>> 8b07d1f (fix: Fix for rebase)
 		"@nestjs/common": "^10.2.10",
->>>>>>> 2cceda7 (fix: Fix for rebase)
 		"@nestjs/config": "^3.1.1",
-		"@nestjs/core": "^10.2.9",
-		"@nestjs/platform-express": "^10.2.9",
-		"@nestjs/platform-socket.io": "^10.2.9",
+		"@nestjs/core": "^10.2.10",
+		"@nestjs/platform-express": "^10.2.10",
+		"@nestjs/platform-socket.io": "^10.2.10",
 		"@nestjs/jwt": "^10.2.0",
 		"@nestjs/passport": "^10.0.2",
 		"@nestjs/schematics": "^10.0.3",
-		"@nestjs/testing": "^10.2.9",
-		"@nestjs/websockets": "^10.2.9",
+		"@nestjs/testing": "^10.2.10",
+		"@nestjs/websockets": "^10.2.10",
 		"@prisma/client": "5.6.0",
 		"@socket.io/admin-ui": "^0.5.1",
 		"@socket.io/redis-adapter": "^8.2.1",
 		"@types/passport": "^1.0.15",
 		"prisma": "5.6.0",
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-		"@nestjs/common": "^10.2.7",
-		"@nestjs/config": "^3.1.1",
-		"@nestjs/core": "^10.2.7",
-		"@nestjs/platform-express": "^10.2.7",
-		"@nestjs/platform-socket.io": "^10.2.7",
-		"@nestjs/jwt": "^10.1.1",
-		"@nestjs/passport": "^10.0.2",
-		"@nestjs/schematics": "^10.0.2",
-		"@nestjs/testing": "^10.2.7",
-		"@nestjs/websockets": "^10.2.7",
-		"@prisma/client": "5.4.2",
-		"@socket.io/redis-adapter": "^8.2.1",
-		"@types/passport": "^1.0.13",
-		"prisma": "5.4.2",
->>>>>>> c80165e (fix: github issue)
-=======
-		"@nestjs/schematics": "^10.0.2",
-		"@nestjs/testing": "^10.2.7",
-		"@nestjs/websockets": "^10.2.7",
-<<<<<<< HEAD
-		"@prisma/client": "5.5.2",
-		"@socket.io/redis-adapter": "^8.2.1",
-		"@types/passport": "^1.0.14",
-		"prisma": "5.5.2",
->>>>>>> 3eba716 (chore: Update some node modules versions)
->>>>>>> 11fb8d1 (fix: Fix for rebase)
-=======
->>>>>>> 2cceda7 (fix: Fix for rebase)
-=======
->>>>>>> 8b07d1f (fix: Fix for rebase)
 		"ioredis": "^5.3.2",
 		"class-transformer": "^0.5.1",
 		"class-validator": "^0.14.0",
 		"passport-jwt": "^4.0.1",
-		"redis": "^4.6.10",
+		"redis": "^4.6.11",
 		"reflect-metadata": "^0.1.13",
 		"rxjs": "^7.8.1",
 		"socket.io": "^4.7.2",
 		"socket.io-redis": "^5.4.0",
-<<<<<<< HEAD
 		"unique-names-generator": "^4.7.1",
 		"ws": "^8.14.2"
 	},
@@ -102,40 +56,11 @@
 		"@nestjs/cli": "^10.2.1",
 		"@types/express": "^4.17.21",
 		"@types/jest": "^29.5.8",
-		"@types/node": "^20.9.1",
+		"@types/node": "^20.9.2",
 		"@types/supertest": "^2.0.16",
-<<<<<<< HEAD
-		"@typescript-eslint/eslint-plugin": "^6.11.0",
-		"@typescript-eslint/parser": "^6.11.0",
-		"eslint": "^8.53.0",
-=======
 		"@typescript-eslint/eslint-plugin": "^6.12.0",
 		"@typescript-eslint/parser": "^6.12.0",
 		"eslint": "^8.54.0",
-<<<<<<< HEAD
-		"@nestjs/cli": "^10.2.0",
-		"@types/express": "^4.17.20",
-		"@types/jest": "^29.5.6",
-		"@types/node": "^20.8.9",
-		"@types/supertest": "^2.0.15",
-		"@typescript-eslint/eslint-plugin": "^6.9.0",
-		"@typescript-eslint/parser": "^6.9.0",
-		"eslint": "^8.52.0",
-<<<<<<< HEAD
->>>>>>> 3eba716 (chore: Update some node modules versions)
->>>>>>> 11fb8d1 (fix: Fix for rebase)
-=======
-		"@nestjs/cli": "^10.2.1",
-		"@types/express": "^4.17.21",
-		"@types/jest": "^29.5.7",
-		"@types/node": "^20.8.10",
-		"@types/supertest": "^2.0.15",
-		"@typescript-eslint/eslint-plugin": "^6.10.0",
-		"@typescript-eslint/parser": "^6.10.0",
-		"eslint": "^8.53.0",
->>>>>>> 2cceda7 (fix: Fix for rebase)
-=======
->>>>>>> 8b07d1f (fix: Fix for rebase)
 		"eslint-config-prettier": "^9.0.0",
 		"eslint-plugin-prettier": "^5.0.1",
 		"jest": "^29.7.0",
@@ -144,31 +69,9 @@
 		"supertest": "^6.3.3",
 		"ts-jest": "^29.1.1",
 		"ts-loader": "^9.5.1",
-=======
-		"ws": "^8.14.2",
-		"unique-names-generator": "^4.7.1"
-	},
-	"devDependencies": {
-		"@nestjs/cli": "^10.1.18",
-		"@types/express": "^4.17.19",
-		"@types/jest": "^29.5.5",
-		"@types/node": "^20.8.4",
-		"@types/supertest": "^2.0.14",
-		"@typescript-eslint/eslint-plugin": "^6.7.5",
-		"@typescript-eslint/parser": "^6.7.5",
-		"eslint": "^8.51.0",
-		"eslint-config-prettier": "^9.0.0",
-		"eslint-plugin-prettier": "^5.0.1",
-		"jest": "^29.7.0",
-		"prettier": "^3.0.3",
-		"source-map-support": "^0.5.21",
-		"supertest": "^6.3.3",
-		"ts-jest": "^29.1.1",
-		"ts-loader": "^9.5.0",
->>>>>>> c80165e (fix: github issue)
 		"ts-node": "^10.9.1",
 		"tsconfig-paths": "^4.2.0",
-		"typescript": "^5.2.2"
+		"typescript": "^5.3.2"
 	},
 	"jest": {
 		"moduleFileExtensions": [

@@ -19,38 +19,14 @@ services:
         condition: service_started
       game:
         condition: service_started
-      # chat:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-      #   condition: service_started
-=======
-        # condition: service_started
->>>>>>> c9c7a2b (halloween colors)
-=======
-        # condition: service_started
->>>>>>> baf17ac (chore: Fix for rebase)
-=======
-        # condition: service_started
->>>>>>> b0a73ea (test: local dev settings)
-=======
-        # condition: service_started
->>>>>>> c80165e (fix: github issue)
+      chat:
+        condition: service_started
     environment:
       NODE_ENV: ${NODE_ENV}
       VITE_HOST: ${HOSTNAME}
       VITE_API42_UID: ${API42_UID}
       VITE_API42_SECRET: ${API42_SECRET}
-<<<<<<< HEAD
-<<<<<<< HEAD
       VITE_API42_CALLBACK: ${API42_CALLBACK}
-=======
-      VITE_API42_REDIRECT_URI: ${API42_REDIRECT_URI}
->>>>>>> 76ed767 (feat: sign  with 42 redirection)
-=======
-      VITE_API42_CALLBACK: ${API42_CALLBACK}
->>>>>>> 7f99142 (feat: functional callback)
       VITE_PORT: ${FRONT_PORT}
       VITE_API_PORT: ${API_PORT}
       VITE_GAME_SOCKET_PORT: ${GAME_SOCKET_PORT}
@@ -90,13 +66,6 @@ services:
     # command: sh -c "tail -f /dev/null"
     restart: always
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 0a8c0ed (fix: Fix for rebase)
   chat:
     build:
       context: ./sockets/chat
@@ -107,7 +76,7 @@ services:
     - ${CHAT_SOCKET_PORT}:${CHAT_SOCKET_PORT}
     volumes:
       - ./sockets/chat:/home/node/app
-      #- /home/node/app/node_modules
+      - /home/node/app/node_modules
       - /home/node/app/.pnpm-store
     depends_on:
       api:
@@ -124,86 +93,9 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       HOST: ${HOSTNAME}
       PORT: ${CHAT_SOCKET_PORT}
-    # command: sh -c "pnpm db:pull && pnpm start:dev"
-    command: sh -c "tail -f /dev/null"
-    restart: always
-<<<<<<< HEAD
-=======
-=======
->>>>>>> b0a73ea (test: local dev settings)
-=======
->>>>>>> c80165e (fix: github issue)
-  # chat:
-  #   build:
-  #     context: ./sockets/chat
-  #     target: socket
-  #     dockerfile: ../../docker/node/Dockerfile
-  #   container_name: chat
-  #   ports:
-  #   - ${CHAT_SOCKET_PORT}:${CHAT_SOCKET_PORT}
-  #   volumes:
-  #     - ./sockets/chat:/home/node/app
-  #     - /home/node/app/node_modules
-  #     - /home/node/app/.pnpm-store
-  #   depends_on:
-  #     api:
-  #       condition: service_started
-  #     redis:
-  #       condition: service_healthy
-  #   environment:
-  #     REDIS_HOST: ${REDIS_HOST}
-  #     REDIS_PORT: ${REDIS_PORT}
-  #     REDIS_PASS: ${REDIS_PASS}
-  #     REDIS_URL: ${REDIS_URL}
-  #     NODE_ENV: ${NODE_ENV}
-  #     DATABASE_URL: ${DATABASE_URL}
-  #     JWT_SECRET: ${JWT_SECRET}
-  #     HOST: ${HOSTNAME}
-  #     PORT: ${CHAT_SOCKET_PORT}
-  #   command: sh -c "pnpm db:pull && pnpm start:dev"
-  #   # command: sh -c "tail -f /dev/null"
-  #   restart: always
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 7441ac6 (chore: Update all depencies)
-=======
-  # chat:
-    # build:
-      # context: ./sockets/chat
-      # target: socket
-      # dockerfile: ../../docker/node/Dockerfile
-    # container_name: chat
-    # ports:
-    # - ${CHAT_SOCKET_PORT}:${CHAT_SOCKET_PORT}
-    # volumes:
-      # - ./sockets/chat:/home/node/app
-      # - /home/node/app/node_modules
-      # - /home/node/app/.pnpm-store
-    # depends_on:
-      # api:
-        # condition: service_started
-      # redis:
-        # condition: service_healthy
-    # environment:
-      # REDIS_HOST: ${REDIS_HOST}
-      # REDIS_PORT: ${REDIS_PORT}
-      # REDIS_PASS: ${REDIS_PASS}
-      # REDIS_URL: ${REDIS_URL}
-      # NODE_ENV: ${NODE_ENV}
-      # DATABASE_URL: ${DATABASE_URL}
-      # JWT_SECRET: ${JWT_SECRET}
-      # HOST: ${HOSTNAME}
-      # PORT: ${CHAT_SOCKET_PORT}
-    # command: sh -c "pnpm db:pull && pnpm start:dev"
+    command: sh -c "pnpm db:pull && pnpm start:dev"
     # command: sh -c "tail -f /dev/null"
-    # restart: always
->>>>>>> c9c7a2b (halloween colors)
-=======
->>>>>>> b0a73ea (test: local dev settings)
-=======
->>>>>>> c80165e (fix: github issue)
-=======
->>>>>>> 0a8c0ed (fix: Fix for rebase)
+    restart: always
 
   api:
     build:
@@ -215,23 +107,7 @@ services:
      - ${API_PORT}:${API_PORT}
     volumes:
       - ./back:/home/node/app
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-      #- /home/node/app/node_modules
-=======
       # - /home/node/app/node_modules
->>>>>>> 7441ac6 (chore: Update all depencies)
-=======
-      # - /home/node/app/node_modules
->>>>>>> b0a73ea (test: local dev settings)
-=======
-      # - /home/node/app/node_modules
->>>>>>> c80165e (fix: github issue)
-=======
-      #- /home/node/app/node_modules
->>>>>>> 0a8c0ed (fix: Fix for rebase)
       - /home/node/app/.pnpm-store
     depends_on:
       postgres:
@@ -255,111 +131,10 @@ services:
       REDIS_PORT: ${REDIS_PORT}
       REDIS_PASS: ${REDIS_PASS}
       REDIS_URL: ${REDIS_URL}
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    #command: sh -c "pnpm db:deploy && pnpm start:dev"
-=======
     # command: sh -c "pnpm db:deploy && pnpm start:dev"
->>>>>>> 7441ac6 (chore: Update all depencies)
-=======
-    # command: sh -c "pnpm db:deploy && pnpm start:dev"
->>>>>>> b0a73ea (test: local dev settings)
     command: sh -c "tail -f /dev/null"
     restart: always
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  # prisma:
-<<<<<<< HEAD
-  #   container_name: prisma
-  #   build:
-  #     context: ./
-  #     dockerfile: ./docker/prisma/Dockerfile
-  #   ports:
-  #     - 5555:5555
-  #   depends_on:
-  #     api:
-  #       condition: service_started
-  #   environment:
-  #     POSTGRES_DB: ${POSTGRES_DB}
-  #     POSTGRES_USER: ${POSTGRES_USER}
-  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-  #     POSTGRES_PORT: ${POSTGRES_PORT}
-  #     POSTGRES_ENABLED: ${POSTGRES_ENABLED}
-  #     NODE_ENV: ${NODE_ENV}
-  #     DATABASE_URL: ${DATABASE_URL}
-  #     HOST: ${HOSTNAME}
-  #   command: sh -c "pnpm db:pull && pnpm start:prisma"
-  #   restart: always
-=======
-    # container_name: prisma
-    # build:
-      # context: ./
-      # dockerfile: ./docker/prisma/Dockerfile
-    # ports:
-      # - 5555:5555
-    # depends_on:
-      # api:
-        # condition: service_started
-    # environment:
-      # POSTGRES_DB: ${POSTGRES_DB}
-      # POSTGRES_USER: ${POSTGRES_USER}
-      # POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      # POSTGRES_PORT: ${POSTGRES_PORT}
-      # POSTGRES_ENABLED: ${POSTGRES_ENABLED}
-      # NODE_ENV: ${NODE_ENV}
-      # DATABASE_URL: ${DATABASE_URL}
-      # HOST: ${HOSTNAME}
-    # command: sh -c "pnpm db:pull && pnpm start:prisma"
-    # restart: always
->>>>>>> c9c7a2b (halloween colors)
-=======
-    # command: sh -c "pnpm db:deploy && pnpm start:dev"
-=======
-    #command: sh -c "pnpm db:deploy && pnpm start:dev"
->>>>>>> 0a8c0ed (fix: Fix for rebase)
-    command: sh -c "tail -f /dev/null"
-    restart: always
-
-<<<<<<< HEAD
-=======
->>>>>>> 46a40e3 (core:feat clean profile page, add borderes)
-=======
->>>>>>> 5d4223e (core:feat clean profile page, add borderes)
-  prisma:
-    container_name: prisma
-    build:
-      context: ./
-      dockerfile: ./docker/prisma/Dockerfile
-    ports:
-      - 5555:5555
-    depends_on:
-      api:
-        condition: service_started
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      POSTGRES_ENABLED: ${POSTGRES_ENABLED}
-      NODE_ENV: ${NODE_ENV}
-      DATABASE_URL: ${DATABASE_URL}
-      HOST: ${HOSTNAME}
-    command: sh -c "pnpm db:pull && pnpm start:prisma"
-    restart: always
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> c80165e (fix: github issue)
-=======
->>>>>>> 46a40e3 (core:feat clean profile page, add borderes)
-=======
->>>>>>> 5d4223e (core:feat clean profile page, add borderes)
-=======
-=======
->>>>>>> f54b82a (feat: callback route en cours)
     # prisma:
     #  container_name: prisma
     #  build:
@@ -381,39 +156,14 @@ services:
     #    HOST: ${HOSTNAME}
     #  command: sh -c "pnpm db:pull && pnpm start:prisma"
     #  restart: always
-<<<<<<< HEAD
->>>>>>> 7dd47b2 (fix: Fix for rebase)
-=======
->>>>>>> f54b82a (feat: callback route en cours)
 
   postgres:
     image: postgres:16-alpine3.18
     container_name: postgres
     volumes:
         - pgdata:/var/lib/postgresql/data
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    ports:
-<<<<<<< HEAD
-      - '5432:5432'
-=======
-      - 5432:5432
->>>>>>> 6ff4cb1 (feat(game): Start implementing PongGame in Socket Server)
-=======
-    expose:
-      - '5432'
->>>>>>> 3afc756 (feat(pong): Continue responsivity)
-=======
     ports:
       - '5432:5432'
->>>>>>> 6ed663d (feat(pong): Responsivity)
-=======
-    ports:
-      - 5432:5432
-    expose:
-      - 5432
->>>>>>> c80165e (fix: github issue)
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
       POSTGRES_DB: ${POSTGRES_DB}

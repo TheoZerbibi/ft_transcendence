@@ -3,15 +3,8 @@ name: Docker Build CI
 on:
   push:
     branches:
-<<<<<<< HEAD
       - 'develop'
       - 'master'
-=======
-      - '*'
-      - '**'
-      - '*/*'
-      - '!master'
->>>>>>> c80165e (fix: github issue)
     paths:
       - '!.github/**'
       - 'back/**'
@@ -21,14 +14,7 @@ on:
       - "docker/node/**"
   pull_request:
     branches:
-<<<<<<< HEAD
       - 'develop'
-=======
-      - '*'
-      - '**'
-      - '*/*'
-      - '!master'
->>>>>>> c80165e (fix: github issue)
     paths:
       - '!.github/**'
       - 'back/**'
@@ -39,11 +25,7 @@ on:
 
 env:
   DEFAULT_BRANCH: master
-<<<<<<< HEAD
   NODE_VERSION: 21
-=======
-  NODE_VERSION: 20
->>>>>>> c80165e (fix: github issue)
   REDIS_PASS: ${{ vars.REDIS_PASSWORD }}
   DATABASE_URL: "postgresql://${{ vars.POSTGRES_USER }}:${{ vars.POSTGRES_PASSWORD }}@localhost:5432/${{ vars.POSTGRES_DB }}?schema=public"
   HOSTNAME: localhost

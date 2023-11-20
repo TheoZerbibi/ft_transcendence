@@ -14,34 +14,9 @@ on:
       - ".github/workflows/frontend-ci.yml"
       - "front/**"
       - "docker/node/**"
-<<<<<<< HEAD
 
 env:
   NODE_VERSION: 21
-=======
-  pull_request:
-    branches:
-      - '*'
-      - '**'
-      - '*/*'
-      - '!master' 
-      - '!**/backend'
-      - '!backend/**'
-      - '!**/backend/**'
-    types:
-      - opened
-      - synchronize
-      - reopened
-      - ready_for_review
-    paths:
-      - ".github/workflows/frontend-ci.yml"
-      - "front/**"
-      - "docker/node/**"
-  workflow_dispatch:
-
-env:
-  NODE_VERSION: 20
->>>>>>> c80165e (fix: github issue)
 
 defaults:
   run:
@@ -64,11 +39,7 @@ jobs:
         with:
           version: 8
       - name: Use Node.js ${{ env.NODE_VERSION }}
-<<<<<<< HEAD
         uses: actions/setup-node@v4
-=======
-        uses: actions/setup-node@v3
->>>>>>> c80165e (fix: github issue)
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
@@ -88,11 +59,7 @@ jobs:
         with:
           version: 8
       - name: Use Node.js ${{ env.NODE_VERSION }}
-<<<<<<< HEAD
         uses: actions/setup-node@v4
-=======
-        uses: actions/setup-node@v3
->>>>>>> c80165e (fix: github issue)
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
@@ -113,11 +80,7 @@ jobs:
         with:
           version: 8
       - name: Use Node.js ${{ env.NODE_VERSION }}
-<<<<<<< HEAD
         uses: actions/setup-node@v4
-=======
-        uses: actions/setup-node@v3
->>>>>>> c80165e (fix: github issue)
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
@@ -175,4 +138,3 @@ jobs:
       VITE_API_PORT: 3001
       VITE_GAME_SOCKET_PORT: 4000
       VITE_CHAT_SOCKET_PORT: 4001
-

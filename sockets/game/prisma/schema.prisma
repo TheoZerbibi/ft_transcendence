@@ -16,11 +16,7 @@ model channel_messages {
 }
 
 model channel_users {
-<<<<<<< HEAD
   id               Int                @id @default(autoincrement())
-=======
-  id               Int                @id(map: "channel_users_pk") @default(autoincrement())
->>>>>>> c80165e (fix: github issue)
   channel_id       Int
   user_id          Int
   is_muted         DateTime?
@@ -32,20 +28,12 @@ model channel_users {
   channels         channels           @relation(fields: [channel_id], references: [id], onDelete: Cascade)
   users            users              @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-<<<<<<< HEAD
   @@unique([channel_id, user_id])
-=======
-  @@unique([channel_id, user_id], map: "channel_users_channel_id_user_id_uindex")
->>>>>>> c80165e (fix: github issue)
 }
 
 model channels {
   id            Int             @id @default(autoincrement())
-<<<<<<< HEAD
   name          String          @unique
-=======
-  name          String
->>>>>>> c80165e (fix: github issue)
   public        Boolean         @default(true)
   password      String?
   created_at    DateTime        @default(now())
@@ -73,27 +61,6 @@ model games {
 }
 
 model users {
-<<<<<<< HEAD
-<<<<<<< HEAD
-  id                                   Int               @id @default(autoincrement())
-  login                                String            @unique
-  display_name                         String
-  email                                String
-  dAuth                                Boolean           @default(false)
-  avatar                               String
-  created_at                           DateTime          @default(now())
-  updated_at                           DateTime
-  last_login                           DateTime          @default(now())
-  blocked_blocked_blocked_by_idTousers blocked[]         @relation("blocked_blocked_by_idTousers")
-  blocked_blocked_blocked_idTousers    blocked[]         @relation("blocked_blocked_idTousers")
-  channel_users                        channel_users[]
-  direct_messages                      direct_messages[]
-  friends_friends_friend_idTousers     friends[]         @relation("friends_friend_idTousers")
-  friends_friends_user_idTousers       friends[]         @relation("friends_user_idTousers")
-  game_players                         game_players[]
-=======
-=======
->>>>>>> c80165e (fix: github issue)
   id                               Int             @id @default(autoincrement())
   login                            String          @unique
   display_name                     String
@@ -106,14 +73,7 @@ model users {
   channel_users                    channel_users[]
   friends_friends_friend_idTousers friends[]       @relation("friends_friend_idTousers")
   friends_friends_user_idTousers   friends[]       @relation("friends_user_idTousers")
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 977750d (chore: Fix prisma.schema)
-=======
   game_players                     game_players[]
->>>>>>> 8ad44c4 (chore: Fix prisma.schema)
 }
 
 model game_players {
@@ -127,67 +87,3 @@ model game_players {
 
   @@id([player_id, game_id])
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-model blocked {
-  blocked_id                         Int
-  blocked_by_id                      Int
-  users_blocked_blocked_by_idTousers users @relation("blocked_blocked_by_idTousers", fields: [blocked_by_id], references: [id])
-  users_blocked_blocked_idTousers    users @relation("blocked_blocked_idTousers", fields: [blocked_id], references: [id])
-
-  @@id([blocked_by_id, blocked_id])
-}
-
-model direct_messages {
-  id         Int      @id @default(autoincrement())
-  content    String
-  created_at DateTime @default(now())
-  friend_id  Int
-  user_id    Int
-  users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
-}
-=======
-=======
->>>>>>> 8ad44c4 (chore: Fix prisma.schema)
-=======
-/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
-// model gamePlayers {
-// }
->>>>>>> 89e81b3 (ca marche sur mon ordi en plein festival ou on me sort que je suis une sorciere blanche ahaha alors que je suis de l;'akatsuki mdr)
-<<<<<<< HEAD
->>>>>>> 977750d (chore: Fix prisma.schema)
-=======
-=======
->>>>>>> 6c47f89 (suite tuto to fix)
->>>>>>> 8ad44c4 (chore: Fix prisma.schema)
-=======
-}
-
-/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
-// model gamePlayers {
-// }
->>>>>>> 89e81b3 (ca marche sur mon ordi en plein festival ou on me sort que je suis une sorciere blanche ahaha alors que je suis de l;'akatsuki mdr)
-=======
-=======
->>>>>>> c80165e (fix: github issue)
-  game_players                     game_players[]
-}
-
-model game_players {
-  player_id Int
-  game_id   Int
-  is_win    Boolean?
-  is_spec   Boolean?
-  games     games    @relation(fields: [game_id], references: [id], onDelete: Cascade)
-  users     users    @relation(fields: [player_id], references: [id])
-
-  @@id([player_id, game_id])
-}
-<<<<<<< HEAD
->>>>>>> 6c47f89 (suite tuto to fix)
-=======
->>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
-=======
->>>>>>> c80165e (fix: github issue)

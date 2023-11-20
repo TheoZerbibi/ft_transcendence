@@ -14,34 +14,9 @@ on:
       - ".github/workflows/backend-ci.yml"
       - "back/**"
       - "docker/node/**"
-<<<<<<< HEAD
 
 env:
   NODE_VERSION: 21
-=======
-  pull_request:
-    branches:
-      - "*"
-      - "**"
-      - "*/*"
-      - '!master'
-      - "!**/frontend"
-      - "!frontend/**"
-      - "!**/frontend/**"
-    types:
-      - opened
-      - synchronize
-      - reopened
-      - ready_for_review
-    paths:
-      - ".github/workflows/backend-ci.yml"
-      - "back/**"
-      - "docker/node/**"
-  workflow_dispatch:
-
-env:
-  NODE_VERSION: 20
->>>>>>> c80165e (fix: github issue)
 
 defaults:
   run:
@@ -64,11 +39,7 @@ jobs:
         with:
           version: 8
       - name: Use Node.js ${{ env.NODE_VERSION }}
-<<<<<<< HEAD
         uses: actions/setup-node@v4
-=======
-        uses: actions/setup-node@v3
->>>>>>> c80165e (fix: github issue)
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
@@ -88,11 +59,7 @@ jobs:
         with:
           version: 8
       - name: Use Node.js ${{ env.NODE_VERSION }}
-<<<<<<< HEAD
         uses: actions/setup-node@v4
-=======
-        uses: actions/setup-node@v3
->>>>>>> c80165e (fix: github issue)
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
@@ -113,11 +80,7 @@ jobs:
         with:
           version: 8
       - name: Use Node.js ${{ env.NODE_VERSION }}
-<<<<<<< HEAD
         uses: actions/setup-node@v4
-=======
-        uses: actions/setup-node@v3
->>>>>>> c80165e (fix: github issue)
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
