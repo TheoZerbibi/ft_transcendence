@@ -191,6 +191,7 @@ const router = createRouter({
 =======
 		{
 <<<<<<< HEAD
+<<<<<<< HEAD
 			path: '/auth/callback:token?',
 			name: 'AuthCallback',
 			component: () => import('../views/AuthCallbackView.vue'),
@@ -213,6 +214,9 @@ const router = createRouter({
 >>>>>>> 89f4162 (feat(front): Continue Front)
 =======
 			path: '/auth/callback:token',
+=======
+			path: '/auth/callback:token?',
+>>>>>>> 7f99142 (feat: functional callback)
 			name: 'AuthCallback',
 			component: () => import('../views/AuthCallbackView.vue'),
 >>>>>>> f54b82a (feat: callback route en cours)

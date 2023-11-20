@@ -542,7 +542,6 @@
 <<<<<<< HEAD
 import Footer from '../components/utils/Footer.vue';
 import { makeid } from '../plugins/makeId';
-//import { useUser } from '../stores/user';
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -677,6 +676,9 @@ export default {
 		redirectToOAuth() {
 			const clientId = import.meta.env.VITE_API42_UID;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7f99142 (feat: functional callback)
 			const redirectUri = import.meta.env.VITE_API42_CALLBACK;
 			const responseType = 'code';
 			const scope = 'public';

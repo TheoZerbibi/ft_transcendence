@@ -52,6 +52,7 @@ export class AuthService {
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	async getAccessToken(code: string) {
 		const data = {
@@ -70,6 +71,8 @@ export class AuthService {
 	}
 
 >>>>>>> f54b82a (feat: callback route en cours)
+=======
+>>>>>>> 7f99142 (feat: functional callback)
 	async getUserInfo(token: string) {
 		const response = await fetch('https://api.intra.42.fr/v2/me', {
 			headers: {
@@ -90,6 +93,9 @@ export class AuthService {
 		return json;
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7f99142 (feat: functional callback)
 
 	async callback(dto: { code: string }) {
 		try {
@@ -134,6 +140,9 @@ export class AuthService {
 			throw new ForbiddenException('Invalid request');
 		}
 	}
+<<<<<<< HEAD
 =======
 >>>>>>> f54b82a (feat: callback route en cours)
+=======
+>>>>>>> 7f99142 (feat: functional callback)
 }

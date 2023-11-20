@@ -267,10 +267,14 @@ importers:
         version: 3.1.0(vite@4.5.0)(vue@3.3.8)
       '@vue/composition-api':
 <<<<<<< HEAD
+<<<<<<< HEAD
         specifier: ^1.7.2
 =======
         specifier: 1.7.2
 >>>>>>> 76ed767 (feat: sign  with 42 redirection)
+=======
+        specifier: ^1.7.2
+>>>>>>> 7f99142 (feat: functional callback)
         version: 1.7.2(vue@3.3.8)
       '@vue/tsconfig':
         specifier: ^0.4.0
