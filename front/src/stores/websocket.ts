@@ -26,7 +26,14 @@ export const useSocketStore = defineStore('webSocket', {
 	actions: {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		async connect(jwt: string, port: number): Promise<Socket> {
+=======
+		async connect(jwt: string, port: any): Promise<Socket> {
+=======
+		async connect(jwt: string, port: number): Promise<Socket> {
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
 			const serverURL = `http://${import.meta.env.VITE_HOST}:${port}`;
 =======
 		async connect(jwt: string, port: any): Promise<Socket> {

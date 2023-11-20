@@ -26,9 +26,15 @@ dependencies:
     specifier: ^10.2.1
     version: 10.2.1
   '@nestjs/common':
+<<<<<<< HEAD
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
     specifier: ^10.2.9
     version: 10.2.9(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+=======
+<<<<<<< HEAD
+    specifier: ^10.2.10
+    version: 10.2.10(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
   '@nestjs/config':
     specifier: ^3.1.1
     version: 3.1.1(@nestjs/common@10.2.9)(reflect-metadata@0.1.13)
@@ -83,7 +89,39 @@ dependencies:
   '@nestjs/swagger':
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
     specifier: ^7.1.16
+<<<<<<< HEAD
     version: 7.1.16(@nestjs/common@10.2.9)(@nestjs/core@10.2.9)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
+=======
+    version: 7.1.16(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
+=======
+    specifier: ^10.2.8
+    version: 10.2.8(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+  '@nestjs/config':
+    specifier: ^3.1.1
+    version: 3.1.1(@nestjs/common@10.2.8)(reflect-metadata@0.1.13)
+  '@nestjs/core':
+    specifier: ^10.2.8
+    version: 10.2.8(@nestjs/common@10.2.8)(@nestjs/microservices@10.2.8)(@nestjs/platform-express@10.2.8)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+  '@nestjs/jwt':
+    specifier: ^10.1.1
+    version: 10.1.1(@nestjs/common@10.2.8)
+  '@nestjs/mapped-types':
+    specifier: ^2.0.2
+    version: 2.0.2(@nestjs/common@10.2.8)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
+  '@nestjs/microservices':
+    specifier: ^10.2.8
+    version: 10.2.8(@nestjs/common@10.2.8)(@nestjs/core@10.2.8)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+  '@nestjs/passport':
+    specifier: ^10.0.2
+    version: 10.0.2(@nestjs/common@10.2.8)(passport@0.6.0)
+  '@nestjs/platform-express':
+    specifier: ^10.2.8
+    version: 10.2.8(@nestjs/common@10.2.8)(@nestjs/core@10.2.8)
+  '@nestjs/swagger':
+    specifier: ^7.1.14
+    version: 7.1.14(@nestjs/common@10.2.8)(@nestjs/core@10.2.8)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
   '@prisma/client':
     specifier: ^5.6.0
     version: 5.6.0(prisma@5.6.0)
@@ -116,6 +154,7 @@ dependencies:
     specifier: ^4.17.21
     version: 4.17.21
   '@types/node':
+<<<<<<< HEAD
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
     specifier: ^20.9.1
     version: 20.9.1
@@ -151,6 +190,21 @@ dependencies:
 >>>>>>> 160e18e (chore: Update module depencies)
 =======
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
+=======
+<<<<<<< HEAD
+    specifier: ^20.9.2
+    version: 20.9.2
+  '@types/passport-jwt':
+    specifier: ^3.0.13
+    version: 3.0.13
+=======
+    specifier: ^20.8.10
+    version: 20.8.10
+  '@types/passport-jwt':
+    specifier: ^3.0.12
+    version: 3.0.12
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
   argon2:
     specifier: ^0.31.2
     version: 0.31.2
@@ -261,7 +315,12 @@ devDependencies:
   '@nestjs/schematics':
 <<<<<<< HEAD
     specifier: ^10.0.3
+<<<<<<< HEAD
     version: 10.0.3(chokidar@3.5.3)(typescript@5.2.2)
+=======
+<<<<<<< HEAD
+    version: 10.0.3(typescript@5.3.2)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
   '@nestjs/testing':
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -282,14 +341,29 @@ devDependencies:
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
     specifier: ^29.5.8
     version: 29.5.8
+=======
+    version: 10.0.3(chokidar@3.5.3)(typescript@5.2.2)
+  '@nestjs/testing':
+    specifier: ^10.2.8
+    version: 10.2.8(@nestjs/common@10.2.8)(@nestjs/core@10.2.8)(@nestjs/microservices@10.2.8)(@nestjs/platform-express@10.2.8)
+  '@types/jest':
+    specifier: ^29.5.7
+    version: 29.5.7
+>>>>>>> a0f8163 (chore: Update node module version)
   '@types/supertest':
     specifier: ^2.0.16
     version: 2.0.16
   '@typescript-eslint/eslint-plugin':
+<<<<<<< HEAD
     specifier: ^6.11.0
     version: 6.11.0(@typescript-eslint/parser@6.11.0)(eslint@8.53.0)(typescript@5.2.2)
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    specifier: ^6.12.0
+    version: 6.12.0(@typescript-eslint/parser@6.12.0)(eslint@8.54.0)(typescript@5.3.2)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
   '@typescript-eslint/parser':
     specifier: ^6.11.0
     version: 6.11.0(eslint@8.53.0)(typescript@5.2.2)
@@ -335,6 +409,7 @@ devDependencies:
     version: 9.0.0(eslint@8.53.0)
   eslint-plugin-prettier:
     specifier: ^5.0.1
+<<<<<<< HEAD
     version: 5.0.1(eslint-config-prettier@9.0.0)(eslint@8.53.0)(prettier@3.1.0)
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -349,6 +424,15 @@ devDependencies:
     specifier: ^6.10.0
     version: 6.10.0(eslint@8.53.0)(typescript@5.2.2)
 >>>>>>> 6469717 (chore: Update node module version)
+=======
+    version: 5.0.1(eslint-config-prettier@9.0.0)(eslint@8.54.0)(prettier@3.1.0)
+=======
+    specifier: ^6.10.0
+    version: 6.10.0(@typescript-eslint/parser@6.10.0)(eslint@8.53.0)(typescript@5.2.2)
+  '@typescript-eslint/parser':
+    specifier: ^6.10.0
+    version: 6.10.0(eslint@8.53.0)(typescript@5.2.2)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
   eslint:
     specifier: ^8.53.0
     version: 8.53.0
@@ -357,6 +441,7 @@ devDependencies:
     version: 9.0.0(eslint@8.53.0)
   eslint-plugin-prettier:
     specifier: ^5.0.1
+<<<<<<< HEAD
 <<<<<<< HEAD
     version: 5.0.1(eslint-config-prettier@9.0.0)(eslint@8.52.0)(prettier@3.0.3)
 >>>>>>> 079adc7 (chore: Update some modules versions)
@@ -395,11 +480,16 @@ devDependencies:
     specifier: ^5.0.1
     version: 5.0.1(eslint-config-prettier@9.0.0)(eslint@8.51.0)(prettier@3.0.3)
 >>>>>>> c80165e (fix: github issue)
+=======
+    version: 5.0.1(eslint-config-prettier@9.0.0)(eslint@8.53.0)(prettier@3.0.3)
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
   fs:
     specifier: 0.0.1-security
     version: 0.0.1-security
   jest:
     specifier: ^29.7.0
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -426,6 +516,12 @@ devDependencies:
 =======
     version: 29.7.0(@types/node@20.9.1)(ts-node@10.9.1)
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
+=======
+    version: 29.7.0(@types/node@20.9.2)(ts-node@10.9.1)
+=======
+    version: 29.7.0(@types/node@20.8.10)(ts-node@10.9.1)
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
   prettier:
     specifier: ^3.1.0
     version: 3.1.0
@@ -448,12 +544,16 @@ devDependencies:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
+=======
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     specifier: ^9.5.1
     version: 9.5.1(typescript@5.2.2)(webpack@5.89.0)
   ts-node:
     specifier: ^10.9.1
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -465,10 +565,14 @@ devDependencies:
     version: 10.9.1(@types/node@20.8.8)(typescript@5.2.2)
 >>>>>>> 079adc7 (chore: Update some modules versions)
 =======
+    version: 10.9.1(@types/node@20.9.2)(typescript@5.3.2)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
+=======
     specifier: ^9.5.0
     version: 9.5.0(typescript@5.2.2)(webpack@5.89.0)
   ts-node:
     specifier: ^10.9.1
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     version: 10.9.1(@types/node@20.8.9)(typescript@5.2.2)
@@ -489,6 +593,10 @@ devDependencies:
     specifier: ^10.9.1
     version: 10.9.1(@types/node@20.8.4)(typescript@5.2.2)
 >>>>>>> c80165e (fix: github issue)
+=======
+    version: 10.9.1(@types/node@20.8.10)(typescript@5.2.2)
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
   tsconfig-paths:
     specifier: ^4.2.0
     version: 4.2.0
@@ -1025,6 +1133,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /@eslint-community/eslint-utils@4.4.0(eslint@8.53.0):
 =======
   /@eslint-community/eslint-utils@4.4.0(eslint@8.52.0):
@@ -1038,11 +1147,18 @@ packages:
 =======
   /@eslint-community/eslint-utils@4.4.0(eslint@8.51.0):
 >>>>>>> c80165e (fix: github issue)
+=======
+  /@eslint-community/eslint-utils@4.4.0(eslint@8.54.0):
+=======
+  /@eslint-community/eslint-utils@4.4.0(eslint@8.53.0):
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     resolution: {integrity: sha512-1/sA4dwrzBAyeUoQ6oxahHKmrZvsnLCg4RfxW3ZFGGmQkSNQPFNLV9CUEFQP1x9EYXHTo5p6xdhZM1Ne9p/AfA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1060,6 +1176,12 @@ packages:
 =======
       eslint: 8.51.0
 >>>>>>> c80165e (fix: github issue)
+=======
+      eslint: 8.54.0
+=======
+      eslint: 8.53.0
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       eslint-visitor-keys: 3.4.3
     dev: true
 
@@ -1094,6 +1216,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /@eslint/js@8.53.0:
     resolution: {integrity: sha512-Kn7K8dx/5U6+cT1yEhpX1w4PCSg0M+XyRILPgvwcEBjerFWCwQj5sbr3/VmxqV0JGHCBCzyd6LxypEuehypY1w==}
 =======
@@ -1108,6 +1231,14 @@ packages:
   /@eslint/js@8.53.0:
     resolution: {integrity: sha512-Kn7K8dx/5U6+cT1yEhpX1w4PCSg0M+XyRILPgvwcEBjerFWCwQj5sbr3/VmxqV0JGHCBCzyd6LxypEuehypY1w==}
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
+=======
+  /@eslint/js@8.54.0:
+    resolution: {integrity: sha512-ut5V+D+fOoWPgGGNj83GGjnntO39xDy6DWxO0wb7Jp3DcMX0TfIqdzHF85VTQkerdyGmuuMD9AKAo5KiNlf/AQ==}
+=======
+  /@eslint/js@8.53.0:
+    resolution: {integrity: sha512-Kn7K8dx/5U6+cT1yEhpX1w4PCSg0M+XyRILPgvwcEBjerFWCwQj5sbr3/VmxqV0JGHCBCzyd6LxypEuehypY1w==}
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
@@ -1190,6 +1321,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -1212,6 +1344,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       chalk: 4.1.2
       jest-message-util: 29.7.0
       jest-util: 29.7.0
@@ -1239,6 +1377,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -1261,12 +1400,19 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       ci-info: 3.8.0
       exit: 0.1.2
       graceful-fs: 4.2.11
       jest-changed-files: 29.7.0
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1296,6 +1442,12 @@ packages:
 =======
       jest-config: 29.7.0(@types/node@20.8.4)(ts-node@10.9.1)
 >>>>>>> c80165e (fix: github issue)
+=======
+      jest-config: 29.7.0(@types/node@20.9.2)(ts-node@10.9.1)
+=======
+      jest-config: 29.7.0(@types/node@20.8.10)(ts-node@10.9.1)
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       jest-haste-map: 29.7.0
       jest-message-util: 29.7.0
       jest-regex-util: 29.6.3
@@ -1330,6 +1482,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -1349,6 +1502,12 @@ packages:
 =======
       '@types/node': 20.9.1
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       jest-mock: 29.7.0
     dev: true
 
@@ -1395,6 +1554,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -1417,6 +1577,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       jest-message-util: 29.7.0
       jest-mock: 29.7.0
       jest-util: 29.7.0
@@ -1456,6 +1622,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -1478,6 +1645,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       chalk: 4.1.2
       collect-v8-coverage: 1.0.2
       exit: 0.1.2
@@ -1572,6 +1745,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -1594,6 +1768,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       '@types/yargs': 17.0.24
       chalk: 4.1.2
     dev: true
@@ -1772,6 +1952,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /@nestjs/common@10.2.9(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1):
     resolution: {integrity: sha512-i7vb2zMLJUDIPqjfBhMkgIITK1AnKDkFYSsM+aaRHpNa9xv/CwsiQuINaXfzStMpnwjkq5FDE3aoF0wkTfD2cQ==}
 =======
@@ -1786,6 +1967,14 @@ packages:
   /@nestjs/common@10.2.7(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1):
     resolution: {integrity: sha512-cUtCRXiUstDmh4bSBhVbq4cI439Gngp4LgLGLBmd5dqFQodfXKnSD441ldYfFiLz4rbUsnoMJz/8ZjuIEI+B7A==}
 >>>>>>> c80165e (fix: github issue)
+=======
+  /@nestjs/common@10.2.10(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1):
+    resolution: {integrity: sha512-fwAk931rjW8CNH2Mgwawq/7HWHH1dxkOLdcgs7U52ddLk8CtHXjejm1cbNahewlSbNhvlOl7y1STLHutE6sUqw==}
+=======
+  /@nestjs/common@10.2.8(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1):
+    resolution: {integrity: sha512-rmpwcdvq2IWMmsUVP8rsdKub6uDWk7dwCYo0aif50JTwcvcxzaP3iKVFKoSgvp0RKYu8h15+/AEOfaInmPpl0Q==}
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     peerDependencies:
       class-transformer: '*'
       class-validator: '*'
@@ -1808,6 +1997,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /@nestjs/config@3.1.1(@nestjs/common@10.2.9)(reflect-metadata@0.1.13):
 =======
   /@nestjs/config@3.1.1(@nestjs/common@10.2.8)(reflect-metadata@0.1.13):
@@ -1818,11 +2008,18 @@ packages:
 =======
   /@nestjs/config@3.1.1(@nestjs/common@10.2.7)(reflect-metadata@0.1.13):
 >>>>>>> c80165e (fix: github issue)
+=======
+  /@nestjs/config@3.1.1(@nestjs/common@10.2.10)(reflect-metadata@0.1.13):
+=======
+  /@nestjs/config@3.1.1(@nestjs/common@10.2.8)(reflect-metadata@0.1.13):
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     resolution: {integrity: sha512-qu5QlNiJdqQtOsnB6lx4JCXPQ96jkKUsOGd+JXfXwqJqZcOSAq6heNFg0opW4pq4J/VZoNwoo87TNnx9wthnqQ==}
     peerDependencies:
       '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
       reflect-metadata: ^0.1.13
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1836,6 +2033,12 @@ packages:
 =======
       '@nestjs/common': 10.2.7(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@nestjs/common': 10.2.10(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+=======
+      '@nestjs/common': 10.2.8(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       dotenv: 16.3.1
       dotenv-expand: 10.0.0
       lodash: 4.17.21
@@ -1843,6 +2046,7 @@ packages:
       uuid: 9.0.0
     dev: false
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1860,6 +2064,14 @@ packages:
   /@nestjs/core@10.2.7(@nestjs/common@10.2.7)(@nestjs/microservices@10.2.7)(@nestjs/platform-express@10.2.7)(reflect-metadata@0.1.13)(rxjs@7.8.1):
     resolution: {integrity: sha512-5GSu53QUUcwX17sNmlJPa1I0wIeAZOKbedyVuQx0ZAwWVa9g0wJBbsNP+R4EJ+j5Dkdzt/8xkiZvnKt8RFRR8g==}
 >>>>>>> c80165e (fix: github issue)
+=======
+  /@nestjs/core@10.2.10(@nestjs/common@10.2.10)(@nestjs/microservices@10.2.10)(@nestjs/platform-express@10.2.10)(reflect-metadata@0.1.13)(rxjs@7.8.1):
+    resolution: {integrity: sha512-+ckOI6BPi2ZMHikT9MCG4ctHDc4OnjhoIytrn7f2AYMMXI4bnutJhqyQKc30VDka5x3Wq6QAD57pgSP7y+JjJg==}
+=======
+  /@nestjs/core@10.2.8(@nestjs/common@10.2.8)(@nestjs/microservices@10.2.8)(@nestjs/platform-express@10.2.8)(reflect-metadata@0.1.13)(rxjs@7.8.1):
+    resolution: {integrity: sha512-9+MZ2s8ixfY9Bl/M9ofChiyYymcwdK9ZWNH4GDMF7Am7XRAQ1oqde6MYGG05rhQwiVXuTwaYLlXciJKfsrg5qg==}
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     requiresBuild: true
     peerDependencies:
       '@nestjs/common': ^10.0.0
@@ -1879,13 +2091,20 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@nestjs/common': 10.2.9(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/microservices': 10.2.9(@nestjs/common@10.2.9)(@nestjs/core@10.2.9)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/platform-express': 10.2.9(@nestjs/common@10.2.9)(@nestjs/core@10.2.9)
 =======
+      '@nestjs/common': 10.2.10(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/microservices': 10.2.10(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/platform-express': 10.2.10(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
+=======
       '@nestjs/common': 10.2.8(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/microservices': 10.2.8(@nestjs/common@10.2.8)(@nestjs/core@10.2.8)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/platform-express': 10.2.8(@nestjs/common@10.2.8)(@nestjs/core@10.2.8)
+<<<<<<< HEAD
 >>>>>>> 6469717 (chore: Update node module version)
 =======
       '@nestjs/common': 10.2.9(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
@@ -1897,6 +2116,9 @@ packages:
       '@nestjs/microservices': 10.2.7(@nestjs/common@10.2.7)(@nestjs/core@10.2.7)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/platform-express': 10.2.7(@nestjs/common@10.2.7)(@nestjs/core@10.2.7)
 >>>>>>> c80165e (fix: github issue)
+=======
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       '@nuxtjs/opencollective': 0.3.2
       fast-safe-stringify: 2.1.1
       iterare: 1.2.1
@@ -1912,9 +2134,13 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
   /@nestjs/jwt@10.2.0(@nestjs/common@10.2.9):
+=======
+  /@nestjs/jwt@10.2.0(@nestjs/common@10.2.10):
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     resolution: {integrity: sha512-x8cG90SURkEiLOehNaN2aRlotxT0KZESUliOPKKnjWiyJOcWurkF3w345WOX0P4MgFzUjGoZ1Sy0aZnxeihT0g==}
     peerDependencies:
       '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
@@ -1927,6 +2153,7 @@ packages:
   /@nestjs/mapped-types@2.0.3(@nestjs/common@10.2.9)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13):
     resolution: {integrity: sha512-40Zdqg98lqoF0+7ThWIZFStxgzisK6GG22+1ABO4kZiGF/Tu2FE+DYLw+Q9D94vcFWizJ+MSjNN4ns9r6hIGxw==}
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   /@nestjs/jwt@10.1.1(@nestjs/common@10.2.8):
     resolution: {integrity: sha512-sISYylg8y1Mb7saxPx5Zh11i7v9JOh70CEC/rN6g43MrbFlJ57c1eYFrffxip1YAx3DmV4K67yXob3syKZMOew==}
@@ -1934,10 +2161,16 @@ packages:
   /@nestjs/jwt@10.2.0(@nestjs/common@10.2.8):
     resolution: {integrity: sha512-x8cG90SURkEiLOehNaN2aRlotxT0KZESUliOPKKnjWiyJOcWurkF3w345WOX0P4MgFzUjGoZ1Sy0aZnxeihT0g==}
 >>>>>>> 160e18e (chore: Update module depencies)
+=======
+=======
+  /@nestjs/jwt@10.1.1(@nestjs/common@10.2.8):
+    resolution: {integrity: sha512-sISYylg8y1Mb7saxPx5Zh11i7v9JOh70CEC/rN6g43MrbFlJ57c1eYFrffxip1YAx3DmV4K67yXob3syKZMOew==}
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     peerDependencies:
       '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
     dependencies:
       '@nestjs/common': 10.2.8(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+<<<<<<< HEAD
       '@types/jsonwebtoken': 9.0.5
       jsonwebtoken: 9.0.2
     dev: false
@@ -1959,13 +2192,21 @@ packages:
       '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
     dependencies:
       '@nestjs/common': 10.2.7(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+=======
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       '@types/jsonwebtoken': 9.0.2
       jsonwebtoken: 9.0.0
     dev: false
 
+<<<<<<< HEAD
   /@nestjs/mapped-types@2.0.2(@nestjs/common@10.2.7)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13):
     resolution: {integrity: sha512-V0izw6tWs6fTp9+KiiPUbGHWALy563Frn8X6Bm87ANLRuE46iuBMD5acKBDP5lKL/75QFvrzSJT7HkCbB0jTpg==}
 >>>>>>> c80165e (fix: github issue)
+=======
+  /@nestjs/mapped-types@2.0.2(@nestjs/common@10.2.8)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13):
+    resolution: {integrity: sha512-V0izw6tWs6fTp9+KiiPUbGHWALy563Frn8X6Bm87ANLRuE46iuBMD5acKBDP5lKL/75QFvrzSJT7HkCbB0jTpg==}
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     peerDependencies:
       '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
       class-transformer: ^0.4.0 || ^0.5.0
@@ -1980,6 +2221,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@nestjs/common': 10.2.9(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
 =======
       '@nestjs/common': 10.2.8(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
@@ -1990,6 +2232,12 @@ packages:
 =======
       '@nestjs/common': 10.2.7(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@nestjs/common': 10.2.10(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+=======
+      '@nestjs/common': 10.2.8(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       class-transformer: 0.5.1
       class-validator: 0.14.0
       reflect-metadata: 0.1.13
@@ -1998,9 +2246,13 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
   /@nestjs/mapped-types@2.0.4(@nestjs/common@10.2.9)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13):
+=======
+  /@nestjs/mapped-types@2.0.4(@nestjs/common@10.2.10)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13):
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     resolution: {integrity: sha512-xl+gUSp0B+ln1VSNoUftlglk8dfpUes3DHGxKZ5knuBxS5g2H/8p9/DSBOYWUfO5f4u9s6ffBPZ71WO+tbe5SA==}
     peerDependencies:
       '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
@@ -2019,6 +2271,7 @@ packages:
       reflect-metadata: 0.1.13
     dev: false
 
+<<<<<<< HEAD
   /@nestjs/microservices@10.2.9(@nestjs/common@10.2.9)(@nestjs/core@10.2.9)(reflect-metadata@0.1.13)(rxjs@7.8.1):
     resolution: {integrity: sha512-FaTejUUuzXHGuptmKMp8J3Bx6Sgi1DnckPYJF/ktWDm2V14BDhjWYF0uv642KsUmvkQUbeV2uaNHFC3ZPg4Pwg==}
 <<<<<<< HEAD
@@ -2032,6 +2285,14 @@ packages:
   /@nestjs/microservices@10.2.7(@nestjs/common@10.2.7)(@nestjs/core@10.2.7)(reflect-metadata@0.1.13)(rxjs@7.8.1):
     resolution: {integrity: sha512-ggpng1yRuugPufn+OKeHV6Dcw3TWI7lmOvXkyYRwatVHQMvb3MlPpbzsA5PfUlg5DsjPGEWRbkIWN7OFb8OTyw==}
 >>>>>>> c80165e (fix: github issue)
+=======
+  /@nestjs/microservices@10.2.10(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(reflect-metadata@0.1.13)(rxjs@7.8.1):
+    resolution: {integrity: sha512-vebXc4lF67grtLr3UXc+rPErH5aCzCez1Y2Oec4k2K4ObhjftNug7L2O9W3XiprHlwPhPXc51VQ9nhKn7IFAxw==}
+=======
+  /@nestjs/microservices@10.2.8(@nestjs/common@10.2.8)(@nestjs/core@10.2.8)(reflect-metadata@0.1.13)(rxjs@7.8.1):
+    resolution: {integrity: sha512-zfrD7hgN3ygrjicASQUVdnsh3V7vTmhZfttZ7ZNjihwqEoweJFgWmqKkpAfbCrIP7z19gT4JQ8hO4W0Alwdt0w==}
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     peerDependencies:
       '@grpc/grpc-js': '*'
       '@nestjs/common': ^10.0.0
@@ -2069,6 +2330,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@nestjs/common': 10.2.9(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/core': 10.2.9(@nestjs/common@10.2.9)(@nestjs/microservices@10.2.9)(@nestjs/platform-express@10.2.9)(reflect-metadata@0.1.13)(rxjs@7.8.1)
 =======
@@ -2083,11 +2345,20 @@ packages:
       '@nestjs/common': 10.2.7(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/core': 10.2.7(@nestjs/common@10.2.7)(@nestjs/microservices@10.2.7)(@nestjs/platform-express@10.2.7)(reflect-metadata@0.1.13)(rxjs@7.8.1)
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@nestjs/common': 10.2.10(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/core': 10.2.10(@nestjs/common@10.2.10)(@nestjs/microservices@10.2.10)(@nestjs/platform-express@10.2.10)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+=======
+      '@nestjs/common': 10.2.8(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/core': 10.2.8(@nestjs/common@10.2.8)(@nestjs/microservices@10.2.8)(@nestjs/platform-express@10.2.8)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       iterare: 1.2.1
       reflect-metadata: 0.1.13
       rxjs: 7.8.1
       tslib: 2.6.2
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -2101,11 +2372,18 @@ packages:
 =======
   /@nestjs/passport@10.0.2(@nestjs/common@10.2.7)(passport@0.6.0):
 >>>>>>> c80165e (fix: github issue)
+=======
+  /@nestjs/passport@10.0.2(@nestjs/common@10.2.10)(passport@0.6.0):
+=======
+  /@nestjs/passport@10.0.2(@nestjs/common@10.2.8)(passport@0.6.0):
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     resolution: {integrity: sha512-od31vfB2z3y05IDB5dWSbCGE2+pAf2k2WCBinNuTTOxN0O0+wtO1L3kawj/aCW3YR9uxsTOVbTDwtwgpNNsnjQ==}
     peerDependencies:
       '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
       passport: ^0.4.0 || ^0.5.0 || ^0.6.0
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -2119,12 +2397,21 @@ packages:
     resolution: {integrity: sha512-r6BSMJmLLeNgyPZJ9F8wQWCXH6rrMHMd9QbCfvyUmETci5Ofy6atiYVVXl7Ms1rAi2EEnXpVCuoydHBBqSlTbg==}
 <<<<<<< HEAD
 =======
+      '@nestjs/common': 10.2.10(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      passport: 0.6.0
+    dev: false
+
+  /@nestjs/platform-express@10.2.10(@nestjs/common@10.2.10)(@nestjs/core@10.2.10):
+    resolution: {integrity: sha512-U4KDgtMjH8TqEvt0RzC/POP8ABvL9bYoCScvlGtFSKgVGaMLBKkZ4+jHtbQx6qItYSlBBRUuz/dveMZCObfrkQ==}
+>>>>>>> 2cceda7 (fix: Fix for rebase)
+=======
       '@nestjs/common': 10.2.8(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       passport: 0.6.0
     dev: false
 
   /@nestjs/platform-express@10.2.8(@nestjs/common@10.2.8)(@nestjs/core@10.2.8):
     resolution: {integrity: sha512-WoSSVtwIRc5AdGMHWVzWZK4JZLT0f4o2xW8P9gQvcX+omL8W1kXCfY8GQYXNBG84XmBNYH8r0FtC8oMe/lH5NQ==}
+<<<<<<< HEAD
 >>>>>>> 6469717 (chore: Update node module version)
 =======
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
@@ -2136,10 +2423,14 @@ packages:
   /@nestjs/platform-express@10.2.7(@nestjs/common@10.2.7)(@nestjs/core@10.2.7):
     resolution: {integrity: sha512-p+kp6aJtkgAdVpUrCVmM6MKtOvjsbt7QofBiZMidjYesZkMeG5gZ1D2SK8XzvQ8VXHJfFgEdY2xcKGB+wJLOYQ==}
 >>>>>>> c80165e (fix: github issue)
+=======
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     peerDependencies:
       '@nestjs/common': ^10.0.0
       '@nestjs/core': ^10.0.0
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -2157,6 +2448,14 @@ packages:
       '@nestjs/common': 10.2.7(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/core': 10.2.7(@nestjs/common@10.2.7)(@nestjs/microservices@10.2.7)(@nestjs/platform-express@10.2.7)(reflect-metadata@0.1.13)(rxjs@7.8.1)
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@nestjs/common': 10.2.10(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/core': 10.2.10(@nestjs/common@10.2.10)(@nestjs/microservices@10.2.10)(@nestjs/platform-express@10.2.10)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+=======
+      '@nestjs/common': 10.2.8(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/core': 10.2.8(@nestjs/common@10.2.8)(@nestjs/microservices@10.2.8)(@nestjs/platform-express@10.2.8)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       body-parser: 1.20.2
       cors: 2.8.5
       express: 4.18.2
@@ -2194,6 +2493,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /@nestjs/swagger@7.1.16(@nestjs/common@10.2.9)(@nestjs/core@10.2.9)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13):
     resolution: {integrity: sha512-f9KBk/BX9MUKPTj7tQNYJ124wV/jP5W2lwWHLGwe/4qQXixuDOo39zP55HIJ44LE7S04B7BOeUOo9GBJD/vRcw==}
 =======
@@ -2215,6 +2515,29 @@ packages:
   /@nestjs/swagger@7.1.13(@nestjs/common@10.2.7)(@nestjs/core@10.2.7)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13):
     resolution: {integrity: sha512-aHfW0rDZZKTuPVSkxutBCB16lBy5vrsHVoRF5RvPtH7U2cm4Vf+OnfhxKKuG2g2Xocn9sDL+JAyVlY2VN3ytTw==}
 >>>>>>> c80165e (fix: github issue)
+=======
+  /@nestjs/schematics@10.0.3(typescript@5.3.2):
+    resolution: {integrity: sha512-2BRujK0GqGQ7j1Zpz+obVfskDnnOeVKt5aXoSaVngKo8Oczy8uYCY+R547TQB+Kf35epdfFER2pVnQrX3/It5A==}
+    peerDependencies:
+      typescript: '>=4.8.2'
+    dependencies:
+      '@angular-devkit/core': 16.2.8(chokidar@3.5.3)
+      '@angular-devkit/schematics': 16.2.8(chokidar@3.5.3)
+      comment-json: 4.2.3
+      jsonc-parser: 3.2.0
+      pluralize: 8.0.0
+      typescript: 5.3.2
+    transitivePeerDependencies:
+      - chokidar
+    dev: true
+
+  /@nestjs/swagger@7.1.16(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13):
+    resolution: {integrity: sha512-f9KBk/BX9MUKPTj7tQNYJ124wV/jP5W2lwWHLGwe/4qQXixuDOo39zP55HIJ44LE7S04B7BOeUOo9GBJD/vRcw==}
+=======
+  /@nestjs/swagger@7.1.14(@nestjs/common@10.2.8)(@nestjs/core@10.2.8)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13):
+    resolution: {integrity: sha512-2Ol4S6qHeYVVmkshkWBM8E/qkmEqEOUj2QIewr0jLSyo30H7f3v81pJyks6pTLy4PK0LGUXojMvIfFIE3mmGQQ==}
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     peerDependencies:
       '@fastify/static': ^6.0.0
       '@nestjs/common': ^9.0.0 || ^10.0.0
@@ -2230,6 +2553,7 @@ packages:
       class-validator:
         optional: true
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -2255,6 +2579,16 @@ packages:
       '@nestjs/core': 10.2.7(@nestjs/common@10.2.7)(@nestjs/microservices@10.2.7)(@nestjs/platform-express@10.2.7)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/mapped-types': 2.0.2(@nestjs/common@10.2.7)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@nestjs/common': 10.2.10(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/core': 10.2.10(@nestjs/common@10.2.10)(@nestjs/microservices@10.2.10)(@nestjs/platform-express@10.2.10)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/mapped-types': 2.0.3(@nestjs/common@10.2.10)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
+=======
+      '@nestjs/common': 10.2.8(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/core': 10.2.8(@nestjs/common@10.2.8)(@nestjs/microservices@10.2.8)(@nestjs/platform-express@10.2.8)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/mapped-types': 2.0.2(@nestjs/common@10.2.8)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       class-transformer: 0.5.1
       class-validator: 0.14.0
       js-yaml: 4.1.0
@@ -2265,6 +2599,7 @@ packages:
       swagger-ui-dist: 5.9.1
     dev: false
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   /@nestjs/testing@10.2.9(@nestjs/common@10.2.9)(@nestjs/core@10.2.9)(@nestjs/microservices@10.2.9)(@nestjs/platform-express@10.2.9):
@@ -2284,6 +2619,14 @@ packages:
   /@nestjs/testing@10.2.7(@nestjs/common@10.2.7)(@nestjs/core@10.2.7)(@nestjs/microservices@10.2.7)(@nestjs/platform-express@10.2.7):
     resolution: {integrity: sha512-d2SIqiJIf/7NSILeNNWSdRvTTpHSouGgisGHwf5PVDC7z4/yXZw/wPO9eJhegnxFlqk6n2LW4QBTmMzbqjAfHA==}
 >>>>>>> c80165e (fix: github issue)
+=======
+  /@nestjs/testing@10.2.10(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(@nestjs/microservices@10.2.10)(@nestjs/platform-express@10.2.10):
+    resolution: {integrity: sha512-IVLUnPz/+fkBtPATYfqTIP+phN9yjkXejmj+JyhmcfPJZpxBmD1i9VSMqa4u54l37j0xkGPscQ0IXpbhqMYUKw==}
+=======
+  /@nestjs/testing@10.2.8(@nestjs/common@10.2.8)(@nestjs/core@10.2.8)(@nestjs/microservices@10.2.8)(@nestjs/platform-express@10.2.8):
+    resolution: {integrity: sha512-9Kj5IQhM67/nj/MT6Wi2OmWr5YQnCMptwKVFrX1TDaikpY12196v7frk0jVjdT7wms7rV07GZle9I2z0aSjqtQ==}
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     peerDependencies:
       '@nestjs/common': ^10.0.0
       '@nestjs/core': ^10.0.0
@@ -2298,6 +2641,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
       '@nestjs/common': 10.2.9(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
@@ -2306,10 +2650,17 @@ packages:
       '@nestjs/platform-express': 10.2.9(@nestjs/common@10.2.9)(@nestjs/core@10.2.9)
 <<<<<<< HEAD
 =======
+      '@nestjs/common': 10.2.10(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/core': 10.2.10(@nestjs/common@10.2.10)(@nestjs/microservices@10.2.10)(@nestjs/platform-express@10.2.10)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/microservices': 10.2.10(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/platform-express': 10.2.10(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
+=======
       '@nestjs/common': 10.2.8(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/core': 10.2.8(@nestjs/common@10.2.8)(@nestjs/microservices@10.2.8)(@nestjs/platform-express@10.2.8)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/microservices': 10.2.8(@nestjs/common@10.2.8)(@nestjs/core@10.2.8)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/platform-express': 10.2.8(@nestjs/common@10.2.8)(@nestjs/core@10.2.8)
+<<<<<<< HEAD
 >>>>>>> 6469717 (chore: Update node module version)
 =======
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
@@ -2319,6 +2670,9 @@ packages:
       '@nestjs/microservices': 10.2.7(@nestjs/common@10.2.7)(@nestjs/core@10.2.7)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/platform-express': 10.2.7(@nestjs/common@10.2.7)(@nestjs/core@10.2.7)
 >>>>>>> c80165e (fix: github issue)
+=======
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       tslib: 2.6.2
     dev: true
 
@@ -2786,6 +3140,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -2808,6 +3163,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     dev: false
 
   /@types/connect@3.4.35:
@@ -2820,6 +3181,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -2842,6 +3204,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     dev: false
 
   /@types/cookiejar@2.1.2:
@@ -2858,6 +3226,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -2880,6 +3249,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     dev: false
 
   /@types/debug@4.1.7:
@@ -2913,6 +3288,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -2935,6 +3311,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       '@types/qs': 6.9.8
       '@types/range-parser': 1.2.4
       '@types/send': 0.17.1
@@ -2979,6 +3361,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -3001,6 +3384,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     dev: true
 
   /@types/http-errors@2.0.1:
@@ -3028,6 +3417,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /@types/jest@29.5.8:
     resolution: {integrity: sha512-fXEFTxMV2Co8ZF5aYFJv+YeA08RTYJfhtN5c9JSv/mFEMe+xxjufCb+PHL+bJcMs/ebPUsBu+UNTEz+ydXrR6g==}
 =======
@@ -3046,6 +3436,14 @@ packages:
   /@types/jest@29.5.8:
     resolution: {integrity: sha512-fXEFTxMV2Co8ZF5aYFJv+YeA08RTYJfhtN5c9JSv/mFEMe+xxjufCb+PHL+bJcMs/ebPUsBu+UNTEz+ydXrR6g==}
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
+=======
+  /@types/jest@29.5.8:
+    resolution: {integrity: sha512-fXEFTxMV2Co8ZF5aYFJv+YeA08RTYJfhtN5c9JSv/mFEMe+xxjufCb+PHL+bJcMs/ebPUsBu+UNTEz+ydXrR6g==}
+=======
+  /@types/jest@29.5.7:
+    resolution: {integrity: sha512-HLyetab6KVPSiF+7pFcUyMeLsx25LDNDemw9mGsJBkai/oouwrjTycocSDYopMEwFhN2Y4s9oPyOCZNofgSt2g==}
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     dependencies:
       expect: 29.7.0
       pretty-format: 29.7.0
@@ -3071,6 +3469,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.9.0
@@ -3078,11 +3477,15 @@ packages:
 =======
       '@types/node': 20.9.1
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
+=======
+      '@types/node': 20.9.2
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     dev: false
 
   /@types/jsonwebtoken@9.0.5:
     resolution: {integrity: sha512-VRLSGzik+Unrup6BsouBeHsf4d1hOEgYWTm/7Nmw1sXoN1+tRly/Gy/po3yeahnP4jfnQWWAhQAqcNfH7ngOkA==}
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
       '@types/node': 20.9.1
@@ -3107,6 +3510,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     dev: false
 
   /@types/mime@1.3.2:
@@ -3121,6 +3530,7 @@ packages:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
     dev: false
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -3154,6 +3564,14 @@ packages:
   /@types/node@20.9.1:
     resolution: {integrity: sha512-HhmzZh5LSJNS5O8jQKpJ/3ZcrrlG6L70hpGqMIAoM9YVD0YBRNWYsfwcXq8VnSjlNpCpgLzMXdiPo+dxcvSmiA==}
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
+=======
+  /@types/node@20.9.2:
+    resolution: {integrity: sha512-WHZXKFCEyIUJzAwh3NyyTHYSR35SevJ6mZ1nWwJafKtiQbqRTIKSRcw3Ma3acqgsent3RRDqeVwpHntMk+9irg==}
+=======
+  /@types/node@20.8.10:
+    resolution: {integrity: sha512-TlgT8JntpcbmKUFzjhsyhGfP2fsiz1Mv56im6enJ905xG1DAYesxJaeSbGqQmAw8OWPdhyJGhGSQGKRNJ45u9w==}
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     dependencies:
       undici-types: 5.26.5
 =======
@@ -3172,12 +3590,19 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 160e18e (chore: Update module depencies)
 =======
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
+=======
+>>>>>>> 2cceda7 (fix: Fix for rebase)
   /@types/passport-jwt@3.0.13:
     resolution: {integrity: sha512-fjHaC6Bv8EpMMqzTnHP32SXlZGaNfBPC/Po5dmRGYi2Ky7ljXPbGnOy+SxZqa6iZvFgVhoJ1915Re3m93zmcfA==}
+=======
+  /@types/passport-jwt@3.0.12:
+    resolution: {integrity: sha512-nXCd1lu20rw//nZ5AnK1FnlVZdSC4R5xksquev9oAJlXwJw0irMdZ7dRAE4KDlalptKObiaoam6BQ8lpujeZog==}
+>>>>>>> a0f8163 (chore: Update node module version)
     dependencies:
       '@types/express': 4.17.21
 <<<<<<< HEAD
@@ -3286,6 +3711,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -3308,6 +3734,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     dev: false
 
   /@types/serve-static@1.15.2:
@@ -3322,6 +3754,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -3344,6 +3777,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     dev: false
 
   /@types/stack-utils@2.0.1:
@@ -3361,9 +3800,16 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
       '@types/node': 20.9.1
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     dev: true
 
   /@types/supertest@2.0.16:
@@ -3425,6 +3871,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /@typescript-eslint/eslint-plugin@6.11.0(@typescript-eslint/parser@6.11.0)(eslint@8.53.0)(typescript@5.2.2):
     resolution: {integrity: sha512-uXnpZDc4VRjY4iuypDBKzW1rz9T5YBBK0snMn8MaTSNd2kMlj50LnLBABELjJiOL5YHk7ZD8hbSpI9ubzqYI0w==}
 =======
@@ -3455,6 +3902,14 @@ packages:
   /@typescript-eslint/eslint-plugin@6.7.5(@typescript-eslint/parser@6.7.5)(eslint@8.51.0)(typescript@5.2.2):
     resolution: {integrity: sha512-JhtAwTRhOUcP96D0Y6KYnwig/MRQbOoLGXTON2+LlyB/N35SP9j1boai2zzwXb7ypKELXMx3DVk9UTaEq1vHEw==}
 >>>>>>> c80165e (fix: github issue)
+=======
+  /@typescript-eslint/eslint-plugin@6.12.0(@typescript-eslint/parser@6.12.0)(eslint@8.54.0)(typescript@5.3.2):
+    resolution: {integrity: sha512-XOpZ3IyJUIV1b15M7HVOpgQxPPF7lGXgsfcEIu3yDxFPaf/xZKt7s9QO/pbk7vpWQyVulpJbu4E5LwpZiQo4kA==}
+=======
+  /@typescript-eslint/eslint-plugin@6.10.0(@typescript-eslint/parser@6.10.0)(eslint@8.53.0)(typescript@5.2.2):
+    resolution: {integrity: sha512-uoLj4g2OTL8rfUQVx2AFO1hp/zja1wABJq77P6IclQs6I/m9GLrm7jCdgzZkvWdDCQf1uEvoa8s8CupsgWQgVg==}
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
       '@typescript-eslint/parser': ^6.0.0 || ^6.0.0-alpha
@@ -3465,6 +3920,7 @@ packages:
         optional: true
     dependencies:
       '@eslint-community/regexpp': 4.8.0
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -3509,11 +3965,21 @@ packages:
       eslint: 8.52.0
 >>>>>>> 079adc7 (chore: Update some modules versions)
 =======
+      '@typescript-eslint/parser': 6.12.0(eslint@8.54.0)(typescript@5.3.2)
+      '@typescript-eslint/scope-manager': 6.12.0
+      '@typescript-eslint/type-utils': 6.12.0(eslint@8.54.0)(typescript@5.3.2)
+      '@typescript-eslint/utils': 6.12.0(eslint@8.54.0)(typescript@5.3.2)
+      '@typescript-eslint/visitor-keys': 6.12.0
+      debug: 4.3.4
+      eslint: 8.54.0
+>>>>>>> 2cceda7 (fix: Fix for rebase)
+=======
       '@typescript-eslint/parser': 6.10.0(eslint@8.53.0)(typescript@5.2.2)
       '@typescript-eslint/scope-manager': 6.10.0
       '@typescript-eslint/type-utils': 6.10.0(eslint@8.53.0)(typescript@5.2.2)
       '@typescript-eslint/utils': 6.10.0(eslint@8.53.0)(typescript@5.2.2)
       '@typescript-eslint/visitor-keys': 6.10.0
+<<<<<<< HEAD
 =======
 >>>>>>> 1f4dfd0 (feat(pong): Improve IA deplacement + add life visualation)
       debug: 4.3.4
@@ -3532,6 +3998,11 @@ packages:
       debug: 4.3.4
       eslint: 8.51.0
 >>>>>>> c80165e (fix: github issue)
+=======
+      debug: 4.3.4
+      eslint: 8.53.0
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       graphemer: 1.4.0
       ignore: 5.2.4
       natural-compare: 1.4.0
@@ -3542,6 +4013,7 @@ packages:
       - supports-color
     dev: true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -3579,6 +4051,14 @@ packages:
   /@typescript-eslint/parser@6.7.5(eslint@8.51.0)(typescript@5.2.2):
     resolution: {integrity: sha512-bIZVSGx2UME/lmhLcjdVc7ePBwn7CLqKarUBL4me1C5feOd663liTGjMBGVcGr+BhnSLeP4SgwdvNnnkbIdkCw==}
 >>>>>>> c80165e (fix: github issue)
+=======
+  /@typescript-eslint/parser@6.12.0(eslint@8.54.0)(typescript@5.3.2):
+    resolution: {integrity: sha512-s8/jNFPKPNRmXEnNXfuo1gemBdVmpQsK1pcu+QIvuNJuhFzGrpD7WjOcvDc/+uEdfzSYpNu7U/+MmbScjoQ6vg==}
+=======
+  /@typescript-eslint/parser@6.10.0(eslint@8.53.0)(typescript@5.2.2):
+    resolution: {integrity: sha512-+sZwIj+s+io9ozSxIWbNB5873OSdfeBEH/FR0re14WLI6BaKuSOnnwCJ2foUiu8uXf4dRp1UqHP0vrZ1zXGrog==}
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0
@@ -3587,6 +4067,7 @@ packages:
       typescript:
         optional: true
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -3627,10 +4108,20 @@ packages:
       eslint: 8.52.0
 >>>>>>> 079adc7 (chore: Update some modules versions)
 =======
+      '@typescript-eslint/scope-manager': 6.12.0
+      '@typescript-eslint/types': 6.12.0
+      '@typescript-eslint/typescript-estree': 6.12.0(typescript@5.3.2)
+      '@typescript-eslint/visitor-keys': 6.12.0
+      debug: 4.3.4
+      eslint: 8.54.0
+      typescript: 5.3.2
+>>>>>>> 2cceda7 (fix: Fix for rebase)
+=======
       '@typescript-eslint/scope-manager': 6.10.0
       '@typescript-eslint/types': 6.10.0
       '@typescript-eslint/typescript-estree': 6.10.0(typescript@5.2.2)
       '@typescript-eslint/visitor-keys': 6.10.0
+<<<<<<< HEAD
 =======
 >>>>>>> 1f4dfd0 (feat(pong): Improve IA deplacement + add life visualation)
       debug: 4.3.4
@@ -3649,6 +4140,12 @@ packages:
       eslint: 8.51.0
 >>>>>>> c80165e (fix: github issue)
       typescript: 5.2.2
+=======
+      debug: 4.3.4
+      eslint: 8.53.0
+      typescript: 5.2.2
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -3660,16 +4157,22 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
   /@typescript-eslint/scope-manager@6.11.0:
     resolution: {integrity: sha512-0A8KoVvIURG4uhxAdjSaxy8RdRE//HztaZdG8KiHLP8WOXSk0vlF7Pvogv+vlJA5Rnjj/wDcFENvDaHb+gKd1A==}
+=======
+  /@typescript-eslint/scope-manager@6.12.0:
+    resolution: {integrity: sha512-5gUvjg+XdSj8pcetdL9eXJzQNTl3RD7LgUiYTl8Aabdi8hFkaGSYnaS6BLc0BGNaDH+tVzVwmKtWvu0jLgWVbw==}
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     engines: {node: ^16.0.0 || >=18.0.0}
     dependencies:
       '@typescript-eslint/types': 6.11.0
       '@typescript-eslint/visitor-keys': 6.11.0
     dev: true
 
+<<<<<<< HEAD
   /@typescript-eslint/type-utils@6.11.0(eslint@8.53.0)(typescript@5.2.2):
     resolution: {integrity: sha512-nA4IOXwZtqBjIoYrJcYxLRO+F9ri+leVGoJcMW1uqr4r1Hq7vW5cyWrA43lFbpRvQ9XgNrnfLpIkO3i1emDBIA==}
 <<<<<<< HEAD
@@ -3735,6 +4238,22 @@ packages:
   /@typescript-eslint/type-utils@6.7.5(eslint@8.51.0)(typescript@5.2.2):
     resolution: {integrity: sha512-Gs0qos5wqxnQrvpYv+pf3XfcRXW6jiAn9zE/K+DlmYf6FcpxeNYN0AIETaPR7rHO4K2UY+D0CIbDP9Ut0U4m1g==}
 >>>>>>> c80165e (fix: github issue)
+=======
+  /@typescript-eslint/type-utils@6.12.0(eslint@8.54.0)(typescript@5.3.2):
+    resolution: {integrity: sha512-WWmRXxhm1X8Wlquj+MhsAG4dU/Blvf1xDgGaYCzfvStP2NwPQh6KBvCDbiOEvaE0filhranjIlK/2fSTVwtBng==}
+=======
+  /@typescript-eslint/scope-manager@6.10.0:
+    resolution: {integrity: sha512-TN/plV7dzqqC2iPNf1KrxozDgZs53Gfgg5ZHyw8erd6jd5Ta/JIEcdCheXFt9b1NYb93a1wmIIVW/2gLkombDg==}
+    engines: {node: ^16.0.0 || >=18.0.0}
+    dependencies:
+      '@typescript-eslint/types': 6.10.0
+      '@typescript-eslint/visitor-keys': 6.10.0
+    dev: true
+
+  /@typescript-eslint/type-utils@6.10.0(eslint@8.53.0)(typescript@5.2.2):
+    resolution: {integrity: sha512-wYpPs3hgTFblMYwbYWPT3eZtaDOjbLyIYuqpwuLBBqhLiuvJ+9sEp2gNRJEtR5N/c9G1uTtQQL5AhV0fEPJYcg==}
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0
@@ -3743,6 +4262,7 @@ packages:
       typescript:
         optional: true
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -3792,10 +4312,27 @@ packages:
 >>>>>>> c80165e (fix: github issue)
       ts-api-utils: 1.0.2(typescript@5.2.2)
       typescript: 5.2.2
+=======
+      '@typescript-eslint/typescript-estree': 6.12.0(typescript@5.3.2)
+      '@typescript-eslint/utils': 6.12.0(eslint@8.54.0)(typescript@5.3.2)
+      debug: 4.3.4
+      eslint: 8.54.0
+      ts-api-utils: 1.0.2(typescript@5.3.2)
+      typescript: 5.3.2
+=======
+      '@typescript-eslint/typescript-estree': 6.10.0(typescript@5.2.2)
+      '@typescript-eslint/utils': 6.10.0(eslint@8.53.0)(typescript@5.2.2)
+      debug: 4.3.4
+      eslint: 8.53.0
+      ts-api-utils: 1.0.2(typescript@5.2.2)
+      typescript: 5.2.2
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     transitivePeerDependencies:
       - supports-color
     dev: true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -3841,6 +4378,15 @@ packages:
     resolution: {integrity: sha512-U+mUylTHfcqeO7mLWVQ5W/tMLXqVpRv61wm9ZtfE5egz7gtnmqVIw9ryh0mgIlkKk9rZLY3UHygsBSdB9/ftyw==}
 >>>>>>> 402fe16 (chore: Update module depencies)
 =======
+  /@typescript-eslint/types@6.12.0:
+    resolution: {integrity: sha512-MA16p/+WxM5JG/F3RTpRIcuOghWO30//VEOvzubM8zuOOBYXsP+IfjoCXXiIfy2Ta8FRh9+IO9QLlaFQUU+10Q==}
+    engines: {node: ^16.0.0 || >=18.0.0}
+    dev: true
+
+  /@typescript-eslint/typescript-estree@6.12.0(typescript@5.3.2):
+    resolution: {integrity: sha512-vw9E2P9+3UUWzhgjyyVczLWxZ3GuQNT7QpnIY3o5OMeLO/c8oHljGc8ZpryBMIyympiAAaKgw9e5Hl9dCWFOYw==}
+>>>>>>> 2cceda7 (fix: Fix for rebase)
+=======
   /@typescript-eslint/types@6.10.0:
     resolution: {integrity: sha512-36Fq1PWh9dusgo3vH7qmQAj5/AZqARky1Wi6WpINxB6SkQdY5vQoT2/7rW7uBIsPDcvvGCLi4r10p0OJ7ITAeg==}
     engines: {node: ^16.0.0 || >=18.0.0}
@@ -3848,6 +4394,7 @@ packages:
 
   /@typescript-eslint/typescript-estree@6.10.0(typescript@5.2.2):
     resolution: {integrity: sha512-ek0Eyuy6P15LJVeghbWhSrBCj/vJpPXXR+EpaRZqou7achUWL8IdYnMSC5WHAeTWswYQuP2hAZgij/bC9fanBg==}
+<<<<<<< HEAD
 >>>>>>> 6469717 (chore: Update node module version)
 =======
   /@typescript-eslint/types@6.11.0:
@@ -3869,6 +4416,9 @@ packages:
   /@typescript-eslint/typescript-estree@6.7.5(typescript@5.2.2):
     resolution: {integrity: sha512-NhJiJ4KdtwBIxrKl0BqG1Ur+uw7FiOnOThcYx9DpOGJ/Abc9z2xNzLeirCG02Ig3vkvrc2qFLmYSSsaITbKjlg==}
 >>>>>>> c80165e (fix: github issue)
+=======
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
       typescript: '*'
@@ -3876,6 +4426,7 @@ packages:
       typescript:
         optional: true
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -3913,6 +4464,14 @@ packages:
       '@typescript-eslint/types': 6.7.5
       '@typescript-eslint/visitor-keys': 6.7.5
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@typescript-eslint/types': 6.12.0
+      '@typescript-eslint/visitor-keys': 6.12.0
+=======
+      '@typescript-eslint/types': 6.10.0
+      '@typescript-eslint/visitor-keys': 6.10.0
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       debug: 4.3.4
       globby: 11.1.0
       is-glob: 4.0.3
@@ -3923,6 +4482,7 @@ packages:
       - supports-color
     dev: true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -3960,10 +4520,19 @@ packages:
   /@typescript-eslint/utils@6.7.5(eslint@8.51.0)(typescript@5.2.2):
     resolution: {integrity: sha512-pfRRrH20thJbzPPlPc4j0UNGvH1PjPlhlCMq4Yx7EGjV7lvEeGX0U6MJYe8+SyFutWgSHsdbJ3BXzZccYggezA==}
 >>>>>>> c80165e (fix: github issue)
+=======
+  /@typescript-eslint/utils@6.12.0(eslint@8.54.0)(typescript@5.3.2):
+    resolution: {integrity: sha512-LywPm8h3tGEbgfyjYnu3dauZ0U7R60m+miXgKcZS8c7QALO9uWJdvNoP+duKTk2XMWc7/Q3d/QiCuLN9X6SWyQ==}
+=======
+  /@typescript-eslint/utils@6.10.0(eslint@8.53.0)(typescript@5.2.2):
+    resolution: {integrity: sha512-v+pJ1/RcVyRc0o4wAGux9x42RHmAjIGzPRo538Z8M1tVx6HOnoQBCX/NoadHQlZeC+QO2yr4nNSFWOoraZCAyg==}
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -4014,12 +4583,31 @@ packages:
       '@typescript-eslint/typescript-estree': 6.7.5(typescript@5.2.2)
       eslint: 8.51.0
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@eslint-community/eslint-utils': 4.4.0(eslint@8.54.0)
+      '@types/json-schema': 7.0.12
+      '@types/semver': 7.5.1
+      '@typescript-eslint/scope-manager': 6.12.0
+      '@typescript-eslint/types': 6.12.0
+      '@typescript-eslint/typescript-estree': 6.12.0(typescript@5.3.2)
+      eslint: 8.54.0
+=======
+      '@eslint-community/eslint-utils': 4.4.0(eslint@8.53.0)
+      '@types/json-schema': 7.0.12
+      '@types/semver': 7.5.1
+      '@typescript-eslint/scope-manager': 6.10.0
+      '@typescript-eslint/types': 6.10.0
+      '@typescript-eslint/typescript-estree': 6.10.0(typescript@5.2.2)
+      eslint: 8.53.0
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       semver: 7.5.4
     transitivePeerDependencies:
       - supports-color
       - typescript
     dev: true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -4057,11 +4645,19 @@ packages:
       '@typescript-eslint/types': 6.9.1
 >>>>>>> 402fe16 (chore: Update module depencies)
 =======
+  /@typescript-eslint/visitor-keys@6.12.0:
+    resolution: {integrity: sha512-rg3BizTZHF1k3ipn8gfrzDXXSFKyOEB5zxYXInQ6z0hUvmQlhaZQzK+YmHmNViMA9HzW5Q9+bPPt90bU6GQwyw==}
+    engines: {node: ^16.0.0 || >=18.0.0}
+    dependencies:
+      '@typescript-eslint/types': 6.12.0
+>>>>>>> 2cceda7 (fix: Fix for rebase)
+=======
   /@typescript-eslint/visitor-keys@6.10.0:
     resolution: {integrity: sha512-xMGluxQIEtOM7bqFCo+rCMh5fqI+ZxV5RUUOa29iVPz1OgCZrtc7rFnz5cLUazlkPKYqX+75iuDq7m0HQ48nCg==}
     engines: {node: ^16.0.0 || >=18.0.0}
     dependencies:
       '@typescript-eslint/types': 6.10.0
+<<<<<<< HEAD
 >>>>>>> 6469717 (chore: Update node module version)
 =======
   /@typescript-eslint/visitor-keys@6.11.0:
@@ -4072,6 +4668,9 @@ packages:
 >>>>>>> 1f4dfd0 (feat(pong): Improve IA deplacement + add life visualation)
 =======
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
+=======
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       eslint-visitor-keys: 3.4.3
     dev: true
 
@@ -5029,6 +5628,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /create-jest@29.7.0(@types/node@20.9.1)(ts-node@10.9.1):
 =======
   /create-jest@29.7.0(@types/node@20.8.7)(ts-node@10.9.1):
@@ -5051,6 +5651,12 @@ packages:
 =======
   /create-jest@29.7.0(@types/node@20.8.4)(ts-node@10.9.1):
 >>>>>>> c80165e (fix: github issue)
+=======
+  /create-jest@29.7.0(@types/node@20.9.2)(ts-node@10.9.1):
+=======
+  /create-jest@29.7.0(@types/node@20.8.10)(ts-node@10.9.1):
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     resolution: {integrity: sha512-Adz2bdH0Vq3F53KEMJOoftQFutWCukm6J24wbPWRO4k1kMY7gS7ds/uoJkNuV8wDCtWWnuwGcJwpWcih+zEW1Q==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     hasBin: true
@@ -5059,6 +5665,7 @@ packages:
       chalk: 4.1.2
       exit: 0.1.2
       graceful-fs: 4.2.11
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -5088,6 +5695,12 @@ packages:
 =======
       jest-config: 29.7.0(@types/node@20.8.4)(ts-node@10.9.1)
 >>>>>>> c80165e (fix: github issue)
+=======
+      jest-config: 29.7.0(@types/node@20.9.2)(ts-node@10.9.1)
+=======
+      jest-config: 29.7.0(@types/node@20.8.10)(ts-node@10.9.1)
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       jest-util: 29.7.0
       prompts: 2.4.2
     transitivePeerDependencies:
@@ -5359,6 +5972,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /eslint-config-prettier@9.0.0(eslint@8.53.0):
 =======
   /eslint-config-prettier@9.0.0(eslint@8.52.0):
@@ -5372,11 +5986,18 @@ packages:
 =======
   /eslint-config-prettier@9.0.0(eslint@8.51.0):
 >>>>>>> c80165e (fix: github issue)
+=======
+  /eslint-config-prettier@9.0.0(eslint@8.54.0):
+=======
+  /eslint-config-prettier@9.0.0(eslint@8.53.0):
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     resolution: {integrity: sha512-IcJsTkJae2S35pRsRAwoCE+925rJJStOdkKnLVgtE+tEpqU0EVVM7OqrwxqgptKdX29NUwC82I5pXsGFIgSevw==}
     hasBin: true
     peerDependencies:
       eslint: '>=7.0.0'
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -5395,9 +6016,16 @@ packages:
   /eslint-plugin-prettier@5.0.1(eslint-config-prettier@9.0.0)(eslint@8.52.0)(prettier@3.0.3):
 >>>>>>> 079adc7 (chore: Update some modules versions)
 =======
+      eslint: 8.54.0
+    dev: true
+
+  /eslint-plugin-prettier@5.0.1(eslint-config-prettier@9.0.0)(eslint@8.54.0)(prettier@3.1.0):
+>>>>>>> 2cceda7 (fix: Fix for rebase)
+=======
       eslint: 8.53.0
     dev: true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   /eslint-plugin-prettier@5.0.1(eslint-config-prettier@9.0.0)(eslint@8.53.0)(prettier@3.0.3):
 >>>>>>> 6469717 (chore: Update node module version)
@@ -5412,6 +6040,10 @@ packages:
 
   /eslint-plugin-prettier@5.0.1(eslint-config-prettier@9.0.0)(eslint@8.51.0)(prettier@3.0.3):
 >>>>>>> c80165e (fix: github issue)
+=======
+  /eslint-plugin-prettier@5.0.1(eslint-config-prettier@9.0.0)(eslint@8.53.0)(prettier@3.0.3):
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     resolution: {integrity: sha512-m3u5RnR56asrwV/lDC4GHorlW75DsFfmUcjfCYylTUs85dBRnB7VM6xG8eCMJdeDRnppzmxZVf1GEPJvl1JmNg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
@@ -5425,6 +6057,7 @@ packages:
       eslint-config-prettier:
         optional: true
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -5454,6 +6087,16 @@ packages:
       eslint-config-prettier: 9.0.0(eslint@8.51.0)
       prettier: 3.0.3
 >>>>>>> c80165e (fix: github issue)
+=======
+      eslint: 8.54.0
+      eslint-config-prettier: 9.0.0(eslint@8.54.0)
+      prettier: 3.1.0
+=======
+      eslint: 8.53.0
+      eslint-config-prettier: 9.0.0(eslint@8.53.0)
+      prettier: 3.0.3
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       prettier-linter-helpers: 1.0.0
       synckit: 0.8.5
     dev: true
@@ -5482,16 +6125,22 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
   /eslint@8.53.0:
     resolution: {integrity: sha512-N4VuiPjXDUa4xVeV/GC/RV3hQW9Nw+Y463lkWaKKXKYMvmRiRDAtfpuPFLN+E1/6ZhyR8J2ig+eVREnYgUsiag==}
+=======
+  /eslint@8.54.0:
+    resolution: {integrity: sha512-NY0DfAkM8BIZDVl6PgSa1ttZbx3xHgJzSNJKYcQglem6CppHyMhRIQkBVSSMaSRnLhig3jsDbEzOjwCVt4AmmA==}
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     hasBin: true
     dependencies:
       '@eslint-community/eslint-utils': 4.4.0(eslint@8.53.0)
       '@eslint-community/regexpp': 4.8.0
       '@eslint/eslintrc': 2.1.3
+<<<<<<< HEAD
       '@eslint/js': 8.53.0
 <<<<<<< HEAD
 =======
@@ -5501,11 +6150,18 @@ packages:
   /eslint@8.53.0:
     resolution: {integrity: sha512-N4VuiPjXDUa4xVeV/GC/RV3hQW9Nw+Y463lkWaKKXKYMvmRiRDAtfpuPFLN+E1/6ZhyR8J2ig+eVREnYgUsiag==}
 >>>>>>> 6469717 (chore: Update node module version)
+=======
+      '@eslint/js': 8.54.0
+=======
+  /eslint@8.53.0:
+    resolution: {integrity: sha512-N4VuiPjXDUa4xVeV/GC/RV3hQW9Nw+Y463lkWaKKXKYMvmRiRDAtfpuPFLN+E1/6ZhyR8J2ig+eVREnYgUsiag==}
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     hasBin: true
     dependencies:
       '@eslint-community/eslint-utils': 4.4.0(eslint@8.53.0)
       '@eslint-community/regexpp': 4.8.0
+<<<<<<< HEAD
 <<<<<<< HEAD
       '@eslint/eslintrc': 2.1.2
       '@eslint/js': 8.52.0
@@ -5516,6 +6172,11 @@ packages:
 >>>>>>> 6469717 (chore: Update node module version)
 =======
 >>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
+=======
+      '@eslint/eslintrc': 2.1.3
+      '@eslint/js': 8.53.0
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       '@humanwhocodes/config-array': 0.11.13
       '@humanwhocodes/module-importer': 1.0.1
       '@nodelib/fs.walk': 1.2.8
@@ -6559,6 +7220,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -6581,6 +7243,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       chalk: 4.1.2
       co: 4.6.0
       dedent: 1.5.1
@@ -6601,6 +7269,7 @@ packages:
       - supports-color
     dev: true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -6630,6 +7299,12 @@ packages:
 =======
   /jest-cli@29.7.0(@types/node@20.8.4)(ts-node@10.9.1):
 >>>>>>> c80165e (fix: github issue)
+=======
+  /jest-cli@29.7.0(@types/node@20.9.2)(ts-node@10.9.1):
+=======
+  /jest-cli@29.7.0(@types/node@20.8.10)(ts-node@10.9.1):
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     resolution: {integrity: sha512-OVVobw2IubN/GSYsxETi+gOe7Ka59EFMR/twOU3Jb2GnKKeMGJB5SGUUrEz3SFVmJASUdZUzy83sLNNQ2gZslg==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     hasBin: true
@@ -6643,6 +7318,7 @@ packages:
       '@jest/test-result': 29.7.0
       '@jest/types': 29.6.3
       chalk: 4.1.2
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -6676,10 +7352,17 @@ packages:
       jest-config: 29.7.0(@types/node@20.8.9)(ts-node@10.9.1)
 >>>>>>> 2b99e9b (chore: Update some modules versions)
 =======
+      create-jest: 29.7.0(@types/node@20.9.2)(ts-node@10.9.1)
+      exit: 0.1.2
+      import-local: 3.1.0
+      jest-config: 29.7.0(@types/node@20.9.2)(ts-node@10.9.1)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
+=======
       create-jest: 29.7.0(@types/node@20.8.10)(ts-node@10.9.1)
       exit: 0.1.2
       import-local: 3.1.0
       jest-config: 29.7.0(@types/node@20.8.10)(ts-node@10.9.1)
+<<<<<<< HEAD
 >>>>>>> 402fe16 (chore: Update module depencies)
 =======
       create-jest: 29.7.0(@types/node@20.9.0)(ts-node@10.9.1)
@@ -6695,6 +7378,9 @@ packages:
       import-local: 3.1.0
       jest-config: 29.7.0(@types/node@20.8.4)(ts-node@10.9.1)
 >>>>>>> c80165e (fix: github issue)
+=======
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       jest-util: 29.7.0
       jest-validate: 29.7.0
       yargs: 17.7.2
@@ -6705,6 +7391,7 @@ packages:
       - ts-node
     dev: true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -6734,6 +7421,12 @@ packages:
 =======
   /jest-config@29.7.0(@types/node@20.8.4)(ts-node@10.9.1):
 >>>>>>> c80165e (fix: github issue)
+=======
+  /jest-config@29.7.0(@types/node@20.9.2)(ts-node@10.9.1):
+=======
+  /jest-config@29.7.0(@types/node@20.8.10)(ts-node@10.9.1):
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     resolution: {integrity: sha512-uXbpfeQ7R6TZBqI3/TxCU4q4ttk3u0PJeC+E0zbfSoSjq6bJ7buBPxzQPL0ifrkY4DNu4JUdk0ImlBUYi840eQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     peerDependencies:
@@ -6748,6 +7441,7 @@ packages:
       '@babel/core': 7.22.11
       '@jest/test-sequencer': 29.7.0
       '@jest/types': 29.6.3
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -6777,6 +7471,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       babel-jest: 29.7.0(@babel/core@7.22.11)
       chalk: 4.1.2
       ci-info: 3.8.0
@@ -6796,6 +7496,7 @@ packages:
       pretty-format: 29.7.0
       slash: 3.0.0
       strip-json-comments: 3.1.1
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -6825,6 +7526,12 @@ packages:
 =======
       ts-node: 10.9.1(@types/node@20.8.4)(typescript@5.2.2)
 >>>>>>> c80165e (fix: github issue)
+=======
+      ts-node: 10.9.1(@types/node@20.9.2)(typescript@5.3.2)
+=======
+      ts-node: 10.9.1(@types/node@20.8.10)(typescript@5.2.2)
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     transitivePeerDependencies:
       - babel-plugin-macros
       - supports-color
@@ -6885,6 +7592,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -6907,6 +7615,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       jest-mock: 29.7.0
       jest-util: 29.7.0
     dev: true
@@ -6929,6 +7643,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -6951,6 +7666,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       anymatch: 3.1.3
       fb-watchman: 2.0.2
       graceful-fs: 4.2.11
@@ -7039,6 +7760,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -7061,6 +7783,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       jest-util: 29.7.0
     dev: true
 
@@ -7122,6 +7850,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -7144,6 +7873,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       chalk: 4.1.2
       emittery: 0.13.1
       graceful-fs: 4.2.11
@@ -7181,6 +7916,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -7203,6 +7939,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       chalk: 4.1.2
       cjs-module-lexer: 1.2.3
       collect-v8-coverage: 1.0.2
@@ -7261,6 +8003,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -7283,6 +8026,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       chalk: 4.1.2
       ci-info: 3.8.0
       graceful-fs: 4.2.11
@@ -7301,6 +8050,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -7323,6 +8073,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       chalk: 4.1.2
       ci-info: 3.8.0
       graceful-fs: 4.2.11
@@ -7354,6 +8110,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -7376,6 +8133,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       emittery: 0.13.1
@@ -7394,6 +8157,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -7416,6 +8180,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -7430,6 +8200,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -7452,11 +8223,18 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       jest-util: 29.7.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -7486,6 +8264,12 @@ packages:
 =======
   /jest@29.7.0(@types/node@20.8.4)(ts-node@10.9.1):
 >>>>>>> c80165e (fix: github issue)
+=======
+  /jest@29.7.0(@types/node@20.9.2)(ts-node@10.9.1):
+=======
+  /jest@29.7.0(@types/node@20.8.10)(ts-node@10.9.1):
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     resolution: {integrity: sha512-NIy3oAFp9shda19hy4HK0HRTWKtPJmGdnvywu01nOqNC2vZg+Z+fvJDxpMQA88eb2I9EcafcdjYgsDthnYTvGw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     hasBin: true
@@ -7498,6 +8282,7 @@ packages:
       '@jest/core': 29.7.0(ts-node@10.9.1)
       '@jest/types': 29.6.3
       import-local: 3.1.0
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -7527,6 +8312,12 @@ packages:
 =======
       jest-cli: 29.7.0(@types/node@20.8.4)(ts-node@10.9.1)
 >>>>>>> c80165e (fix: github issue)
+=======
+      jest-cli: 29.7.0(@types/node@20.9.2)(ts-node@10.9.1)
+=======
+      jest-cli: 29.7.0(@types/node@20.8.10)(ts-node@10.9.1)
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -9387,6 +10178,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       jest: 29.7.0(@types/node@20.9.1)(ts-node@10.9.1)
 =======
       jest: 29.7.0(@types/node@20.8.7)(ts-node@10.9.1)
@@ -9409,6 +10201,12 @@ packages:
 =======
       jest: 29.7.0(@types/node@20.8.4)(ts-node@10.9.1)
 >>>>>>> c80165e (fix: github issue)
+=======
+      jest: 29.7.0(@types/node@20.9.2)(ts-node@10.9.1)
+=======
+      jest: 29.7.0(@types/node@20.8.10)(ts-node@10.9.1)
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       jest-util: 29.6.3
       json5: 2.2.3
       lodash.memoize: 4.1.2
@@ -9421,11 +10219,16 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /ts-loader@9.5.1(typescript@5.2.2)(webpack@5.89.0):
+=======
+  /ts-loader@9.5.1(typescript@5.3.2)(webpack@5.89.0):
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     resolution: {integrity: sha512-rNH3sK9kGZcH9dYzC7CewQm4NtxJTjSEVRJ2DyBZR7f8/wcta+iV44UPCXc5+nzDzivKtlzV6c9P4e+oFhDLYg==}
 =======
   /ts-loader@9.5.0(typescript@5.2.2)(webpack@5.89.0):
     resolution: {integrity: sha512-LLlB/pkB4q9mW2yLdFMnK3dEHbrBjeZTYguaaIfusyojBgAGf5kF+O6KcWqiGzWqHk0LBsoolrp4VftEURhybg==}
+<<<<<<< HEAD
 >>>>>>> 2b99e9b (chore: Update some modules versions)
 =======
   /ts-loader@9.5.1(typescript@5.2.2)(webpack@5.89.0):
@@ -9435,6 +10238,9 @@ packages:
   /ts-loader@9.5.0(typescript@5.2.2)(webpack@5.88.2):
     resolution: {integrity: sha512-LLlB/pkB4q9mW2yLdFMnK3dEHbrBjeZTYguaaIfusyojBgAGf5kF+O6KcWqiGzWqHk0LBsoolrp4VftEURhybg==}
 >>>>>>> c80165e (fix: github issue)
+=======
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     engines: {node: '>=12.0.0'}
     peerDependencies:
       typescript: '*'
@@ -9445,6 +10251,7 @@ packages:
       micromatch: 4.0.5
       semver: 7.5.4
       source-map: 0.7.4
+<<<<<<< HEAD
       typescript: 5.2.2
 <<<<<<< HEAD
       webpack: 5.89.0
@@ -9481,6 +10288,21 @@ packages:
 
   /ts-node@10.9.1(@types/node@20.8.4)(typescript@5.2.2):
 >>>>>>> c80165e (fix: github issue)
+=======
+<<<<<<< HEAD
+      typescript: 5.3.2
+      webpack: 5.89.0
+    dev: true
+
+  /ts-node@10.9.1(@types/node@20.9.2)(typescript@5.3.2):
+=======
+      typescript: 5.2.2
+      webpack: 5.89.0
+    dev: true
+
+  /ts-node@10.9.1(@types/node@20.8.10)(typescript@5.2.2):
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
     peerDependencies:
@@ -9499,6 +10321,7 @@ packages:
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -9528,6 +10351,12 @@ packages:
 =======
       '@types/node': 20.8.4
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@types/node': 20.9.2
+=======
+      '@types/node': 20.8.10
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       acorn: 8.10.0
       acorn-walk: 8.2.0
       arg: 4.1.3
@@ -9686,6 +10515,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       ts-node: 10.9.1(@types/node@20.9.1)(typescript@5.2.2)
 =======
       ts-node: 10.9.1(@types/node@20.8.7)(typescript@5.2.2)
@@ -9708,6 +10538,12 @@ packages:
 =======
       ts-node: 10.9.1(@types/node@20.8.4)(typescript@5.2.2)
 >>>>>>> c80165e (fix: github issue)
+=======
+      ts-node: 10.9.1(@types/node@20.9.2)(typescript@5.3.2)
+=======
+      ts-node: 10.9.1(@types/node@20.8.10)(typescript@5.2.2)
+>>>>>>> a0f8163 (chore: Update node module version)
+>>>>>>> 2cceda7 (fix: Fix for rebase)
       tslib: 2.6.2
       uuid: 9.0.1
       yargs: 17.7.2

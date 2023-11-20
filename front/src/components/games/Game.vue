@@ -393,11 +393,14 @@ export default {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 				console.log(data);
 >>>>>>> 6505030 (feat(pong): Responsivity & Design)
 =======
 >>>>>>> 98da990 (feat(pong): Improve Pong, fix a lot a Backend error + more frontend.)
+=======
+>>>>>>> 2cceda7 (fix: Fix for rebase)
 				if (data.end_at) {
 					this.apiData = data;
 					snackbarStore.showSnackbar('Game is ended', 3000, 'primary');
@@ -515,6 +518,20 @@ export default {
 						.catch((error: any) => {
 							snackbarStore.showSnackbar(error, 3000, 'red');
 							return;
+=======
+				await this.connect(JWT, import.meta.env.VITE_GAME_SOCKET_PORT)
+					.then(() => {
+						console.log('connected');
+						this.socketListen();
+						this.socket.on('session-info', (data: any) => {
+							this.players = [];
+							console.log('Données reçues du canal session-info :', data);
+							for (let i = 0; i < data.length; i++) {
+								data[i].user.isSpec = data[i].isSpec;
+								if (data[i].user) this.players.push(data[i].user);
+								console.log(data[i].user);
+							}
+>>>>>>> a0f8163 (chore: Update node module version)
 						});
 <<<<<<< HEAD
 <<<<<<< HEAD
