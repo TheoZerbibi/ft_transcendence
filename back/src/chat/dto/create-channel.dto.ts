@@ -42,6 +42,7 @@ export class CreateChannelUserDto {
 export class CreateChannelMessageDto {
 	@ApiProperty()
 	@IsNumber()
+	// eslint-disable-next-line
 	channel_id: number;
 
 	@ApiProperty()

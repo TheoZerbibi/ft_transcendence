@@ -1,12 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { PartialType } from '@nestjs/swagger';
-import {
-	IsBoolean,
-	IsNumber,
-	IsOptional,
-	IsString,
-	IsDate,
-} from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 
 import { CreateChannelDto } from './create-channel.dto';
 
@@ -21,7 +15,6 @@ export class UpdateChannelDto extends PartialType(CreateChannelDto) {
 	@IsOptional()
 	// eslint-disable-next-line
 	name: string;
-
 }
 
 export class UpdateChannelUserDto {
@@ -30,7 +23,6 @@ export class UpdateChannelUserDto {
 	// eslint-disable-next-line
 	user_id: number;
 
-	
 	@ApiProperty()
 	@IsString()
 	// eslint-disable-next-line
