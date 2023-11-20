@@ -76,7 +76,7 @@
 
 			<v-card-actions>
 				<v-btn
-					prepend-icon="mdi-check-circle"
+					prepend-icon="$vuetify"
 					class="text-capitalize" 
 					rounded="xl"
 					color="green darken-4"

@@ -24,6 +24,7 @@ import "@mdi/font/css/materialdesignicons.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 import { fa } from "vuetify/iconsets/fa";
 import { aliases, mdi } from "vuetify/lib/iconsets/mdi";
+import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
 import "vuetify/styles";
 <<<<<<< HEAD
 >>>>>>> c9c7a2b (halloween colors)
