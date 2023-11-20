@@ -311,7 +311,11 @@
 		<button class="button button4">12px</button>
 		<button class="button button5">50%</button>
 	</div>
+<<<<<<< HEAD
 >>>>>>> eaeb1b1 (move portfolio homepage to /portfolio)
+=======
+	
+>>>>>>> 4efe178 (tests on homepage)
 </template>
 
 <script lang="ts">
