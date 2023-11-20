@@ -3,6 +3,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	<!-- <header role="banner" class="site-header hide-on-overlay" data-v-9fb9646a=""> -->
 		<!-- <img class="site-header__logo" width="125" height="76" draggable="false" src="/src/assets/OmoriWallpapers/logo1.png" data-v-9fb9646a=""> -->
 			<!-- <div class="site-header__lightbulb" data-v-9fb9646a=""> -->
@@ -47,10 +48,37 @@
 					rounded="xl"
 					color=#3EBBB9
 >>>>>>> ef5589f (homepage title, button to 42 intra and font police)
+=======
+	<div class="d-flex justify-center">
+		<v-card class="homepage"  variant="tonal" color="green darken-4" width="600" >
+			<v-card-item>	
+				<v-card-title class="title">	
+					<p class="neonPolice">Welcome to STING's ft_transcendence</p>
+				</v-card-title>
+
+				<v-img src="CatsRounded.png" contain max-height="300" ></v-img>
+
+				<v-card-subtitle >
+					Gaëlle, Ismaël, Théo, Semiha, Noé
+				</v-card-subtitle>
+			</v-card-item>
+
+			<v-card-text>
+				This is the project
+			</v-card-text>
+
+			<v-card-actions>
+				<v-btn
+					prepend-icon="mdi-check-circle"
+					class="text-capitalize" 
+					rounded="xl"
+					color="green darken-4"
+>>>>>>> 9c6a256 (add kittens in homepage^^)
 					variant="outlined"
 					size="x-large"
 					href="https://intra.42.fr"
 					target="_blank">
+<<<<<<< HEAD
 <<<<<<< HEAD
 					<span class="neonPolice">
 						💡 Sign in with 42
@@ -339,10 +367,16 @@
 					<template v-slot:prepend>
     				    <v-icon color="success"></v-icon>
       				</template>
+=======
+					<template v-slot:prepend>
+    				    <v-icon color="success"></v-icon>
+    	  			</template>
+>>>>>>> 9c6a256 (add kittens in homepage^^)
 						<div class ="neonPolice">
 						Sign in with 42
 						</div>
 				</v-btn>
+<<<<<<< HEAD
 			</v-col>
 		</v-row>
 =======
@@ -367,6 +401,11 @@
 >>>>>>> 6601571 (git reset)
 	</v-container>
 >>>>>>> ef5589f (homepage title, button to 42 intra and font police)
+=======
+			</v-card-actions>
+		</v-card>
+	</div>
+>>>>>>> 9c6a256 (add kittens in homepage^^)
 </template>
 
 <script lang="ts">
@@ -646,8 +685,20 @@ a {
 .homepage  {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
-	flex-direction: column;	
+	/* justify-content: space-around; */
+	flex-direction: column;
+		
+}
+
+.title {
+	display: flex;
+	align-items: flex-start;
+}
+
+.button {
+	display: flex;
+
+	justify-content: flex-end;
 }
 
 .neonPolice {
