@@ -59,6 +59,7 @@ export class AuthController {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 2433f86 (fix: rework)
 	/* @Get('auth/oauth/callback') */
@@ -106,12 +107,15 @@ export class AuthController {
 	}
 
 >>>>>>> 76ed767 (feat: sign  with 42 redirection)
+=======
+>>>>>>> 8a287e6 (fix: callback controller rework)
 	@Post('signin')
 	@HttpCode(HttpStatus.OK)
 	@ApiOperation({ summary: 'Log as user.' })
 	async signin(@Body() dto: AuthDto) {
 		return this.authService.signin(dto);
 	}
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> c80165e (fix: github issue)
 =======
@@ -140,4 +144,18 @@ export class AuthController {
 		return this.authService.callback(dto);
 	}
 >>>>>>> a0d2e7f (fix: callback controller rework)
+=======
+
+	@Post('callback:token')
+	@HttpCode(HttpStatus.FOUND)
+	@ApiOperation({ summary: 'Callback from 42 API.' })
+	async checkStateAndStoreJWT(@Req() req, @Res() res) {
+		const code = req.query.code;
+		const token = await this.authService.getAccessToken(code);
+		const user = await this.authService.getUserInfo(token);
+		const jwt = await this.authService.signToken(user);
+		res.cookie('jwt', jwt.access_token, { httpOnly: true });
+		res.redirect('http://localhost:3000');
+	}
+>>>>>>> 8a287e6 (fix: callback controller rework)
 }
