@@ -4,10 +4,14 @@ import type { Paddle } from './Paddle';
 export class Ball {
 	private spawn: P5.Vector;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	vel: P5.Vector;
 =======
 	private vel: P5.Vector;
 >>>>>>> 3afc756 (feat(pong): Continue responsivity)
+=======
+	vel: P5.Vector;
+>>>>>>> 1f4dfd0 (feat(pong): Improve IA deplacement + add life visualation)
 	pos: P5.Vector;
 
 	constructor(

@@ -274,8 +274,12 @@ export class Game implements IGame {
 =======
 		const loserSide: SIDE = side === SIDE.LEFT ? SIDE.RIGHT : SIDE.LEFT;
 		const loser: IUser = this.getPlayerBySide(loserSide);
+<<<<<<< HEAD
 		if (user.playerData.score >= 11) this.winGame(user, loser);
 >>>>>>> 6505030 (feat(pong): Responsivity & Design)
+=======
+		if (user.playerData.score >= 6) this.winGame(user, loser);
+>>>>>>> 1f4dfd0 (feat(pong): Improve IA deplacement + add life visualation)
 	}
 
 	isInPause(): boolean {

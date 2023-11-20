@@ -245,9 +245,13 @@ export default {
 		}
 		this.background = backgroundList[Math.floor(Math.random() * backgroundList.length)];
 <<<<<<< HEAD
+<<<<<<< HEAD
 		this.background = this.background.replace('/public', '');
 =======
 >>>>>>> c7368ae (feat(pong): Front for the Pong)
+=======
+		this.background = this.background.replace('/public', '');
+>>>>>>> 1f4dfd0 (feat(pong): Improve IA deplacement + add life visualation)
 
 		const requestOptions = {
 			method: 'POST',
