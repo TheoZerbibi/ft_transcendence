@@ -86,6 +86,9 @@ export class Ball {
 						this.vel = Vector.fromAngle(Math.PI + a / 2, 10);
 					}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 2f7e46d (feat(game): increment palette speed deplacement with ball speed deplacement)
 					if (this.hitCounter >= 100) {
 						this.rightUser.setMoveSpeed(7);
 						this.leftUser.setMoveSpeed(7);
@@ -100,6 +103,7 @@ export class Ball {
 						this.leftUser.setMoveSpeed(6);
 						this.vel.divideBy(15);
 					} else if (this.hitCounter >= 15) this.vel.divideBy(18);
+<<<<<<< HEAD
 =======
 					if (this.hitCounter >= 100) this.vel.divideBy(5);
 					else if (this.hitCounter >= 50) this.vel.divideBy(10);
@@ -107,6 +111,8 @@ export class Ball {
 					else if (this.hitCounter >= 20) this.vel.divideBy(15);
 					else if (this.hitCounter >= 15) this.vel.divideBy(18);
 >>>>>>> 6505030 (feat(pong): Responsivity & Design)
+=======
+>>>>>>> 2f7e46d (feat(game): increment palette speed deplacement with ball speed deplacement)
 					else if (this.hitCounter >= 10) this.vel.divideBy(20);
 					else this.vel.divideBy(25);
 				}
