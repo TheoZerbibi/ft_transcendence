@@ -51,22 +51,6 @@ export class AuthService {
 		};
 	}
 
-	async getAccessToken(code: string) {
-		const data = {
-			grant_type: 'authorization_code',
-			client_id: this.config.get<string>('API42_UID'),
-			client_secret: this.config.get<string>('API42_SECRET'),
-			code: code,
-			redirect_uri: 'http://localhost:3001/auth/callback',
-		};
-		const response = await fetch('https://api.intra.42.fr/oauth/token', {
-			method: 'POST',
-			body: new URLSearchParams(data),
-		});
-		const json = await response.json();
-		return json.access_token;
-	}
-
 	async getUserInfo(token: string) {
 		const response = await fetch('https://api.intra.42.fr/v2/me', {
 			headers: {
@@ -85,5 +69,49 @@ export class AuthService {
 		});
 		const json = await response.json();
 		return json;
+	}
+
+	async callback(dto: { code: string }) {
+		try {
+			const formData = new FormData();
+			formData.append('grant_type', 'authorization_code');
+			formData.append('client_id', this.config.get<string>('API42_UID'));
+			formData.append('client_secret', this.config.get<string>('API42_SECRET'));
+			formData.append('code', dto.code);
+			formData.append('redirect_uri', 'http://localhost:3000/auth/callback');
+
+			const access_token: any = await fetch('https://api.intra.42.fr/oauth/token', {
+				method: 'POST',
+				body: formData,
+			});
+			const json = await access_token.json();
+			this.getUserFromAuthServer(json.access_token);
+		} catch (e) {
+			throw new ForbiddenException('Invalid request');
+		}
+	}
+
+	async getUserFromAuthServer(access_token: string) {
+		try {
+			const userInfo = await this.getUserInfo(access_token);
+			console.log(userInfo);
+			const user = await this.prisma.user.findUnique({
+				where: {
+					login: userInfo.login,
+				},
+			});
+			if (!user) {
+				const newUser = {
+					login: userInfo.login,
+					email: userInfo.email,
+				};
+				return newUser;
+			} else {
+				return { access_token: this.signToken(user), user: user };
+			}
+		} catch (e) {
+			console.log(e);
+			throw new ForbiddenException('Invalid request');
+		}
 	}
 }
