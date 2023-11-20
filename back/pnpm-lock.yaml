@@ -7,12 +7,17 @@ settings:
 dependencies:
   '@nestjs/cli':
 <<<<<<< HEAD
+<<<<<<< HEAD
     specifier: ^10.2.1
     version: 10.2.1
 =======
     specifier: ^10.2.0
     version: 10.2.0
 >>>>>>> 079adc7 (chore: Update some modules versions)
+=======
+    specifier: ^10.2.1
+    version: 10.2.1
+>>>>>>> 402fe16 (chore: Update module depencies)
   '@nestjs/common':
     specifier: ^10.2.9
     version: 10.2.9(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
@@ -70,12 +75,17 @@ dependencies:
     specifier: ^4.17.20
     version: 4.17.20
   '@types/node':
-    specifier: ^20.8.9
-    version: 20.8.9
+    specifier: ^20.8.10
+    version: 20.8.10
   '@types/passport-jwt':
+<<<<<<< HEAD
     specifier: ^3.0.11
     version: 3.0.11
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+    specifier: ^3.0.12
+    version: 3.0.12
+>>>>>>> 402fe16 (chore: Update module depencies)
   argon2:
     specifier: ^0.31.2
     version: 0.31.2
@@ -132,6 +142,7 @@ devDependencies:
     version: 10.2.9(@nestjs/common@10.2.9)(@nestjs/core@10.2.9)(@nestjs/microservices@10.2.9)(@nestjs/platform-express@10.2.9)
   '@types/jest':
 <<<<<<< HEAD
+<<<<<<< HEAD
     specifier: ^29.5.8
     version: 29.5.8
   '@types/supertest':
@@ -146,13 +157,18 @@ devDependencies:
 =======
     specifier: ^29.5.6
     version: 29.5.6
+=======
+    specifier: ^29.5.7
+    version: 29.5.7
+>>>>>>> 402fe16 (chore: Update module depencies)
   '@types/supertest':
     specifier: ^2.0.15
     version: 2.0.15
   '@typescript-eslint/eslint-plugin':
-    specifier: ^6.9.0
-    version: 6.9.0(@typescript-eslint/parser@6.9.0)(eslint@8.52.0)(typescript@5.2.2)
+    specifier: ^6.9.1
+    version: 6.9.1(@typescript-eslint/parser@6.9.1)(eslint@8.52.0)(typescript@5.2.2)
   '@typescript-eslint/parser':
+<<<<<<< HEAD
 <<<<<<< HEAD
     specifier: ^6.8.0
     version: 6.8.0(eslint@8.51.0)(typescript@5.2.2)
@@ -169,6 +185,10 @@ devDependencies:
 =======
     specifier: ^6.9.0
     version: 6.9.0(eslint@8.52.0)(typescript@5.2.2)
+=======
+    specifier: ^6.9.1
+    version: 6.9.1(eslint@8.52.0)(typescript@5.2.2)
+>>>>>>> 402fe16 (chore: Update module depencies)
   eslint:
     specifier: ^8.52.0
     version: 8.52.0
@@ -187,6 +207,7 @@ devDependencies:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     version: 29.7.0(@types/node@20.9.1)(ts-node@10.9.1)
 =======
     version: 29.7.0(@types/node@20.8.7)(ts-node@10.9.1)
@@ -197,6 +218,9 @@ devDependencies:
 =======
     version: 29.7.0(@types/node@20.8.9)(ts-node@10.9.1)
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+    version: 29.7.0(@types/node@20.8.10)(ts-node@10.9.1)
+>>>>>>> 402fe16 (chore: Update module depencies)
   prettier:
     specifier: ^3.1.0
     version: 3.1.0
@@ -229,8 +253,12 @@ devDependencies:
     version: 9.5.0(typescript@5.2.2)(webpack@5.89.0)
   ts-node:
     specifier: ^10.9.1
+<<<<<<< HEAD
     version: 10.9.1(@types/node@20.8.9)(typescript@5.2.2)
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+    version: 10.9.1(@types/node@20.8.10)(typescript@5.2.2)
+>>>>>>> 402fe16 (chore: Update module depencies)
   tsconfig-paths:
     specifier: ^4.2.0
     version: 4.2.0
@@ -254,6 +282,7 @@ packages:
     dev: true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /@angular-devkit/core@16.2.8(chokidar@3.5.3):
     resolution: {integrity: sha512-PTGozYvh1Bin5lB15PwcXa26Ayd17bWGLS3H8Rs0s+04mUDvfNofmweaX1LgumWWy3nCUTDuwHxX10M3G0wE2g==}
 =======
@@ -276,6 +305,10 @@ packages:
   /@angular-devkit/core@16.2.7(chokidar@3.5.3):
     resolution: {integrity: sha512-XskObYrg7NRdEuHnSVZOM7OeinEL8HzugjmKnawAa+dAbFCCoGsVWjMliA/Q8sb1yfGkyL0WW7DZABZj7EGwWA==}
 >>>>>>> 079adc7 (chore: Update some modules versions)
+=======
+  /@angular-devkit/core@16.2.8(chokidar@3.5.3):
+    resolution: {integrity: sha512-PTGozYvh1Bin5lB15PwcXa26Ayd17bWGLS3H8Rs0s+04mUDvfNofmweaX1LgumWWy3nCUTDuwHxX10M3G0wE2g==}
+>>>>>>> 402fe16 (chore: Update module depencies)
     engines: {node: ^16.14.0 || >=18.10.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
     peerDependencies:
       chokidar: ^3.5.2
@@ -291,6 +324,7 @@ packages:
       rxjs: 7.8.1
       source-map: 0.7.4
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   /@angular-devkit/schematics-cli@16.2.8(chokidar@3.5.3):
     resolution: {integrity: sha512-EXURJCzWTVYCipiTT4vxQQOrF63asOUDbeOy3OtiSh7EwIUvxm3BPG6hquJqngEnI/N6bA75NJ1fBhU6Hrh7eA==}
@@ -308,6 +342,15 @@ packages:
       '@angular-devkit/core': 16.2.7(chokidar@3.5.3)
       '@angular-devkit/schematics': 16.2.7(chokidar@3.5.3)
 >>>>>>> 079adc7 (chore: Update some modules versions)
+=======
+  /@angular-devkit/schematics-cli@16.2.8(chokidar@3.5.3):
+    resolution: {integrity: sha512-EXURJCzWTVYCipiTT4vxQQOrF63asOUDbeOy3OtiSh7EwIUvxm3BPG6hquJqngEnI/N6bA75NJ1fBhU6Hrh7eA==}
+    engines: {node: ^16.14.0 || >=18.10.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
+    hasBin: true
+    dependencies:
+      '@angular-devkit/core': 16.2.8(chokidar@3.5.3)
+      '@angular-devkit/schematics': 16.2.8(chokidar@3.5.3)
+>>>>>>> 402fe16 (chore: Update module depencies)
       ansi-colors: 4.1.3
       inquirer: 8.2.4
       symbol-observable: 4.0.0
@@ -320,6 +363,7 @@ packages:
     resolution: {integrity: sha512-MBiKZOlR9/YMdflALr7/7w/BGAfo/BGTrlkqsIB6rDWV1dYiCgxI+033HsiNssLS6RQyCFx/e7JA2aBBzu9zEg==}
     engines: {node: ^16.14.0 || >=18.10.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
       '@angular-devkit/core': 16.2.8(chokidar@3.5.3)
 =======
@@ -337,6 +381,9 @@ packages:
     dependencies:
       '@angular-devkit/core': 16.2.7(chokidar@3.5.3)
 >>>>>>> 079adc7 (chore: Update some modules versions)
+=======
+      '@angular-devkit/core': 16.2.8(chokidar@3.5.3)
+>>>>>>> 402fe16 (chore: Update module depencies)
       jsonc-parser: 3.2.0
       magic-string: 0.30.1
       ora: 5.4.1
@@ -796,6 +843,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -806,6 +854,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
       chalk: 4.1.2
       jest-message-util: 29.7.0
       jest-util: 29.7.0
@@ -829,6 +880,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -839,12 +891,16 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       ci-info: 3.8.0
       exit: 0.1.2
       graceful-fs: 4.2.11
       jest-changed-files: 29.7.0
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -858,6 +914,9 @@ packages:
 =======
       jest-config: 29.7.0(@types/node@20.8.9)(ts-node@10.9.1)
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      jest-config: 29.7.0(@types/node@20.8.10)(ts-node@10.9.1)
+>>>>>>> 402fe16 (chore: Update module depencies)
       jest-haste-map: 29.7.0
       jest-message-util: 29.7.0
       jest-regex-util: 29.6.3
@@ -888,6 +947,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -898,6 +958,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
       jest-mock: 29.7.0
     dev: true
 
@@ -927,6 +990,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -937,6 +1001,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
       jest-message-util: 29.7.0
       jest-mock: 29.7.0
       jest-util: 29.7.0
@@ -972,6 +1039,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -982,6 +1050,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
       chalk: 4.1.2
       collect-v8-coverage: 1.0.2
       exit: 0.1.2
@@ -1072,6 +1143,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -1082,6 +1154,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
       '@types/yargs': 17.0.24
       chalk: 4.1.2
     dev: true
@@ -1146,12 +1221,17 @@ packages:
     dev: false
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /@nestjs/cli@10.2.1:
     resolution: {integrity: sha512-CAJAQwmxFZfB3RTvqz/eaXXWpyU+mZ4QSqfBYzjneTsPgF+uyOAW3yQpaLNn9Dfcv39R9UxSuAhayv6yuFd+Jg==}
 =======
   /@nestjs/cli@10.2.0:
     resolution: {integrity: sha512-OMbn6A/YNu7QSk1nM8VucrtUwocaa0XEa9uoqRpw5Acvh/KIetvMHCn8L6yIBxiK7yvYiKa8q9U+RpLsKpKfgw==}
 >>>>>>> 079adc7 (chore: Update some modules versions)
+=======
+  /@nestjs/cli@10.2.1:
+    resolution: {integrity: sha512-CAJAQwmxFZfB3RTvqz/eaXXWpyU+mZ4QSqfBYzjneTsPgF+uyOAW3yQpaLNn9Dfcv39R9UxSuAhayv6yuFd+Jg==}
+>>>>>>> 402fe16 (chore: Update module depencies)
     engines: {node: '>= 16.14'}
     hasBin: true
     peerDependencies:
@@ -1164,20 +1244,27 @@ packages:
         optional: true
     dependencies:
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 402fe16 (chore: Update module depencies)
       '@angular-devkit/core': 16.2.8(chokidar@3.5.3)
       '@angular-devkit/schematics': 16.2.8(chokidar@3.5.3)
       '@angular-devkit/schematics-cli': 16.2.8(chokidar@3.5.3)
       '@nestjs/schematics': 10.0.3(chokidar@3.5.3)(typescript@5.2.2)
+<<<<<<< HEAD
 =======
       '@angular-devkit/core': 16.2.7(chokidar@3.5.3)
       '@angular-devkit/schematics': 16.2.7(chokidar@3.5.3)
       '@angular-devkit/schematics-cli': 16.2.7(chokidar@3.5.3)
       '@nestjs/schematics': 10.0.2(chokidar@3.5.3)(typescript@5.2.2)
 >>>>>>> 079adc7 (chore: Update some modules versions)
+=======
+>>>>>>> 402fe16 (chore: Update module depencies)
       chalk: 4.1.2
       chokidar: 3.5.3
       cli-table3: 0.6.3
       commander: 4.1.1
+<<<<<<< HEAD
 <<<<<<< HEAD
       fork-ts-checker-webpack-plugin: 9.0.2(typescript@5.2.2)(webpack@5.89.0)
       glob: 10.3.10
@@ -1185,6 +1272,10 @@ packages:
       fork-ts-checker-webpack-plugin: 9.0.0(typescript@5.2.2)(webpack@5.89.0)
       glob: 10.3.4
 >>>>>>> 079adc7 (chore: Update some modules versions)
+=======
+      fork-ts-checker-webpack-plugin: 9.0.2(typescript@5.2.2)(webpack@5.89.0)
+      glob: 10.3.10
+>>>>>>> 402fe16 (chore: Update module depencies)
       inquirer: 8.2.6
       node-emoji: 1.11.0
       ora: 5.4.1
@@ -1873,6 +1964,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -1883,6 +1975,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
     dev: false
 
   /@types/connect@3.4.35:
@@ -1891,6 +1986,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -1901,6 +1997,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
     dev: false
 
   /@types/cookiejar@2.1.2:
@@ -1913,6 +2012,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -1923,6 +2023,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
     dev: false
 
   /@types/debug@4.1.7:
@@ -1952,6 +2055,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -1962,6 +2066,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
       '@types/qs': 6.9.8
       '@types/range-parser': 1.2.4
       '@types/send': 0.17.1
@@ -1987,6 +2094,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -1997,6 +2105,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
     dev: true
 
   /@types/http-errors@2.0.1:
@@ -2020,12 +2131,17 @@ packages:
     dev: true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /@types/jest@29.5.8:
     resolution: {integrity: sha512-fXEFTxMV2Co8ZF5aYFJv+YeA08RTYJfhtN5c9JSv/mFEMe+xxjufCb+PHL+bJcMs/ebPUsBu+UNTEz+ydXrR6g==}
 =======
   /@types/jest@29.5.6:
     resolution: {integrity: sha512-/t9NnzkOpXb4Nfvg17ieHE6EeSjDS2SGSpNYfoLbUAeL/EOueU/RSdOWFpfQTXBEM7BguYW1XQ0EbM+6RlIh6w==}
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
+=======
+  /@types/jest@29.5.7:
+    resolution: {integrity: sha512-HLyetab6KVPSiF+7pFcUyMeLsx25LDNDemw9mGsJBkai/oouwrjTycocSDYopMEwFhN2Y4s9oPyOCZNofgSt2g==}
+>>>>>>> 402fe16 (chore: Update module depencies)
     dependencies:
       expect: 29.7.0
       pretty-format: 29.7.0
@@ -2037,6 +2153,7 @@ packages:
   /@types/jsonwebtoken@9.0.2:
     resolution: {integrity: sha512-drE6uz7QBKq1fYqqoFKTDRdFCPHd5TCub75BM+D+cMx7NU9hUz7SESLfC2fSCXVFMO5Yj8sOWHuGqPgjc+fz0Q==}
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -2056,6 +2173,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
     dev: false
 
   /@types/mime@1.3.2:
@@ -2073,6 +2193,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /@types/node@20.9.1:
     resolution: {integrity: sha512-HhmzZh5LSJNS5O8jQKpJ/3ZcrrlG6L70hpGqMIAoM9YVD0YBRNWYsfwcXq8VnSjlNpCpgLzMXdiPo+dxcvSmiA==}
 =======
@@ -2087,6 +2208,10 @@ packages:
   /@types/node@20.8.9:
     resolution: {integrity: sha512-UzykFsT3FhHb1h7yD4CA4YhBHq545JC0YnEz41xkipN88eKQtL6rSgocL5tbAP6Ola9Izm/Aw4Ora8He4x0BHg==}
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+  /@types/node@20.8.10:
+    resolution: {integrity: sha512-TlgT8JntpcbmKUFzjhsyhGfP2fsiz1Mv56im6enJ905xG1DAYesxJaeSbGqQmAw8OWPdhyJGhGSQGKRNJ45u9w==}
+>>>>>>> 402fe16 (chore: Update module depencies)
     dependencies:
       undici-types: 5.26.5
 
@@ -2094,6 +2219,7 @@ packages:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
     dev: false
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   /@types/passport-jwt@3.0.13:
     resolution: {integrity: sha512-fjHaC6Bv8EpMMqzTnHP32SXlZGaNfBPC/Po5dmRGYi2Ky7ljXPbGnOy+SxZqa6iZvFgVhoJ1915Re3m93zmcfA==}
@@ -2106,6 +2232,10 @@ packages:
 
   /@types/passport-jwt@3.0.11:
     resolution: {integrity: sha512-HwQNi4cajueebj41EjH5rtnLAdxQfusICFU18JEnvV3uYCJzKoT1D3MCwQ+nn8HeGjy6QuTxnm/I2WxuraqeDw==}
+=======
+  /@types/passport-jwt@3.0.12:
+    resolution: {integrity: sha512-nXCd1lu20rw//nZ5AnK1FnlVZdSC4R5xksquev9oAJlXwJw0irMdZ7dRAE4KDlalptKObiaoam6BQ8lpujeZog==}
+>>>>>>> 402fe16 (chore: Update module depencies)
     dependencies:
       '@types/express': 4.17.20
 >>>>>>> aa32908 (chore(frontend): fix depencie for frontend)
@@ -2157,6 +2287,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -2167,6 +2298,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
     dev: false
 
   /@types/serve-static@1.15.2:
@@ -2177,6 +2311,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -2187,6 +2322,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
     dev: false
 
   /@types/stack-utils@2.0.1:
@@ -2197,6 +2335,7 @@ packages:
     resolution: {integrity: sha512-LOWgpacIV8GHhrsQU+QMZuomfqXiqzz3ILLkCtKx3Us6AmomFViuzKT9D693QTKgyut2oCytMG8/efOop+DB+w==}
     dependencies:
       '@types/cookiejar': 2.1.2
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -2213,6 +2352,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
     dev: true
 
   /@types/supertest@2.0.15:
@@ -2237,6 +2379,7 @@ packages:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /@typescript-eslint/eslint-plugin@6.11.0(@typescript-eslint/parser@6.11.0)(eslint@8.53.0)(typescript@5.2.2):
     resolution: {integrity: sha512-uXnpZDc4VRjY4iuypDBKzW1rz9T5YBBK0snMn8MaTSNd2kMlj50LnLBABELjJiOL5YHk7ZD8hbSpI9ubzqYI0w==}
 =======
@@ -2247,6 +2390,10 @@ packages:
   /@typescript-eslint/eslint-plugin@6.9.0(@typescript-eslint/parser@6.9.0)(eslint@8.52.0)(typescript@5.2.2):
     resolution: {integrity: sha512-lgX7F0azQwRPB7t7WAyeHWVfW1YJ9NIgd9mvGhfQpRY56X6AVf8mwM8Wol+0z4liE7XX3QOt8MN1rUKCfSjRIA==}
 >>>>>>> 079adc7 (chore: Update some modules versions)
+=======
+  /@typescript-eslint/eslint-plugin@6.9.1(@typescript-eslint/parser@6.9.1)(eslint@8.52.0)(typescript@5.2.2):
+    resolution: {integrity: sha512-w0tiiRc9I4S5XSXXrMHOWgHgxbrBn1Ro+PmiYhSg2ZVdxrAJtQgzU5o2m1BfP6UOn7Vxcc6152vFjQfmZR4xEg==}
+>>>>>>> 402fe16 (chore: Update module depencies)
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
       '@typescript-eslint/parser': ^6.0.0 || ^6.0.0-alpha
@@ -2257,6 +2404,7 @@ packages:
         optional: true
     dependencies:
       '@eslint-community/regexpp': 4.8.0
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
       '@typescript-eslint/parser': 6.11.0(eslint@8.53.0)(typescript@5.2.2)
@@ -2279,6 +2427,13 @@ packages:
       '@typescript-eslint/type-utils': 6.9.0(eslint@8.52.0)(typescript@5.2.2)
       '@typescript-eslint/utils': 6.9.0(eslint@8.52.0)(typescript@5.2.2)
       '@typescript-eslint/visitor-keys': 6.9.0
+=======
+      '@typescript-eslint/parser': 6.9.1(eslint@8.52.0)(typescript@5.2.2)
+      '@typescript-eslint/scope-manager': 6.9.1
+      '@typescript-eslint/type-utils': 6.9.1(eslint@8.52.0)(typescript@5.2.2)
+      '@typescript-eslint/utils': 6.9.1(eslint@8.52.0)(typescript@5.2.2)
+      '@typescript-eslint/visitor-keys': 6.9.1
+>>>>>>> 402fe16 (chore: Update module depencies)
       debug: 4.3.4
       eslint: 8.52.0
 >>>>>>> 079adc7 (chore: Update some modules versions)
@@ -2294,6 +2449,7 @@ packages:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /@typescript-eslint/parser@6.11.0(eslint@8.53.0)(typescript@5.2.2):
     resolution: {integrity: sha512-+whEdjk+d5do5nxfxx73oanLL9ghKO3EwM9kBCkUtWMRwWuPaFv9ScuqlYfQ6pAD6ZiJhky7TZ2ZYhrMsfMxVQ==}
 =======
@@ -2304,6 +2460,10 @@ packages:
   /@typescript-eslint/parser@6.9.0(eslint@8.52.0)(typescript@5.2.2):
     resolution: {integrity: sha512-GZmjMh4AJ/5gaH4XF2eXA8tMnHWP+Pm1mjQR2QN4Iz+j/zO04b9TOvJYOX2sCNIQHtRStKTxRY1FX7LhpJT4Gw==}
 >>>>>>> 079adc7 (chore: Update some modules versions)
+=======
+  /@typescript-eslint/parser@6.9.1(eslint@8.52.0)(typescript@5.2.2):
+    resolution: {integrity: sha512-C7AK2wn43GSaCUZ9do6Ksgi2g3mwFkMO3Cis96kzmgudoVaKyt62yNzJOktP0HDLb/iO2O0n2lBOzJgr6Q/cyg==}
+>>>>>>> 402fe16 (chore: Update module depencies)
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0
@@ -2312,6 +2472,7 @@ packages:
       typescript:
         optional: true
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
       '@typescript-eslint/scope-manager': 6.11.0
@@ -2331,6 +2492,12 @@ packages:
       '@typescript-eslint/types': 6.9.0
       '@typescript-eslint/typescript-estree': 6.9.0(typescript@5.2.2)
       '@typescript-eslint/visitor-keys': 6.9.0
+=======
+      '@typescript-eslint/scope-manager': 6.9.1
+      '@typescript-eslint/types': 6.9.1
+      '@typescript-eslint/typescript-estree': 6.9.1(typescript@5.2.2)
+      '@typescript-eslint/visitor-keys': 6.9.1
+>>>>>>> 402fe16 (chore: Update module depencies)
       debug: 4.3.4
       eslint: 8.52.0
 >>>>>>> 079adc7 (chore: Update some modules versions)
@@ -2339,6 +2506,7 @@ packages:
       - supports-color
     dev: true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   /@typescript-eslint/scope-manager@6.11.0:
@@ -2358,12 +2526,17 @@ packages:
   /@typescript-eslint/scope-manager@6.9.0:
     resolution: {integrity: sha512-1R8A9Mc39n4pCCz9o79qRO31HGNDvC7UhPhv26TovDsWPBDx+Sg3rOZdCELIA3ZmNoWAuxaMOT7aWtGRSYkQxw==}
 >>>>>>> 079adc7 (chore: Update some modules versions)
+=======
+  /@typescript-eslint/scope-manager@6.9.1:
+    resolution: {integrity: sha512-38IxvKB6NAne3g/+MyXMs2Cda/Sz+CEpmm+KLGEM8hx/CvnSRuw51i8ukfwB/B/sESdeTGet1NH1Wj7I0YXswg==}
+>>>>>>> 402fe16 (chore: Update module depencies)
     engines: {node: ^16.0.0 || >=18.0.0}
     dependencies:
-      '@typescript-eslint/types': 6.9.0
-      '@typescript-eslint/visitor-keys': 6.9.0
+      '@typescript-eslint/types': 6.9.1
+      '@typescript-eslint/visitor-keys': 6.9.1
     dev: true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   /@typescript-eslint/type-utils@6.8.0(eslint@8.51.0)(typescript@5.2.2):
     resolution: {integrity: sha512-RYOJdlkTJIXW7GSldUIHqc/Hkto8E+fZN96dMIFhuTJcQwdRoGN2rEWA8U6oXbLo0qufH7NPElUb+MceHtz54g==}
@@ -2372,6 +2545,10 @@ packages:
   /@typescript-eslint/type-utils@6.9.0(eslint@8.52.0)(typescript@5.2.2):
     resolution: {integrity: sha512-XXeahmfbpuhVbhSOROIzJ+b13krFmgtc4GlEuu1WBT+RpyGPIA4Y/eGnXzjbDj5gZLzpAXO/sj+IF/x2GtTMjQ==}
 >>>>>>> 079adc7 (chore: Update some modules versions)
+=======
+  /@typescript-eslint/type-utils@6.9.1(eslint@8.52.0)(typescript@5.2.2):
+    resolution: {integrity: sha512-eh2oHaUKCK58qIeYp19F5V5TbpM52680sB4zNSz29VBQPTWIlE/hCj5P5B1AChxECe/fmZlspAWFuRniep1Skg==}
+>>>>>>> 402fe16 (chore: Update module depencies)
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0
@@ -2380,6 +2557,7 @@ packages:
       typescript:
         optional: true
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
       '@typescript-eslint/typescript-estree': 6.11.0(typescript@5.2.2)
@@ -2393,6 +2571,10 @@ packages:
 =======
       '@typescript-eslint/typescript-estree': 6.9.0(typescript@5.2.2)
       '@typescript-eslint/utils': 6.9.0(eslint@8.52.0)(typescript@5.2.2)
+=======
+      '@typescript-eslint/typescript-estree': 6.9.1(typescript@5.2.2)
+      '@typescript-eslint/utils': 6.9.1(eslint@8.52.0)(typescript@5.2.2)
+>>>>>>> 402fe16 (chore: Update module depencies)
       debug: 4.3.4
       eslint: 8.52.0
 >>>>>>> 079adc7 (chore: Update some modules versions)
@@ -2402,6 +2584,7 @@ packages:
       - supports-color
     dev: true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   /@typescript-eslint/types@6.11.0:
@@ -2429,6 +2612,15 @@ packages:
   /@typescript-eslint/typescript-estree@6.9.0(typescript@5.2.2):
     resolution: {integrity: sha512-NJM2BnJFZBEAbCfBP00zONKXvMqihZCrmwCaik0UhLr0vAgb6oguXxLX1k00oQyD+vZZ+CJn3kocvv2yxm4awQ==}
 >>>>>>> 079adc7 (chore: Update some modules versions)
+=======
+  /@typescript-eslint/types@6.9.1:
+    resolution: {integrity: sha512-BUGslGOb14zUHOUmDB2FfT6SI1CcZEJYfF3qFwBeUrU6srJfzANonwRYHDpLBuzbq3HaoF2XL2hcr01c8f8OaQ==}
+    engines: {node: ^16.0.0 || >=18.0.0}
+    dev: true
+
+  /@typescript-eslint/typescript-estree@6.9.1(typescript@5.2.2):
+    resolution: {integrity: sha512-U+mUylTHfcqeO7mLWVQ5W/tMLXqVpRv61wm9ZtfE5egz7gtnmqVIw9ryh0mgIlkKk9rZLY3UHygsBSdB9/ftyw==}
+>>>>>>> 402fe16 (chore: Update module depencies)
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
       typescript: '*'
@@ -2436,6 +2628,7 @@ packages:
       typescript:
         optional: true
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
       '@typescript-eslint/types': 6.11.0
@@ -2448,6 +2641,10 @@ packages:
       '@typescript-eslint/types': 6.9.0
       '@typescript-eslint/visitor-keys': 6.9.0
 >>>>>>> 079adc7 (chore: Update some modules versions)
+=======
+      '@typescript-eslint/types': 6.9.1
+      '@typescript-eslint/visitor-keys': 6.9.1
+>>>>>>> 402fe16 (chore: Update module depencies)
       debug: 4.3.4
       globby: 11.1.0
       is-glob: 4.0.3
@@ -2460,6 +2657,7 @@ packages:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /@typescript-eslint/utils@6.11.0(eslint@8.53.0)(typescript@5.2.2):
     resolution: {integrity: sha512-p23ibf68fxoZy605dc0dQAEoUsoiNoP3MD9WQGiHLDuTSOuqoTsa4oAy+h3KDkTcxbbfOtUjb9h3Ta0gT4ug2g==}
 =======
@@ -2470,6 +2668,10 @@ packages:
   /@typescript-eslint/utils@6.9.0(eslint@8.52.0)(typescript@5.2.2):
     resolution: {integrity: sha512-5Wf+Jsqya7WcCO8me504FBigeQKVLAMPmUzYgDbWchINNh1KJbxCgVya3EQ2MjvJMVeXl3pofRmprqX6mfQkjQ==}
 >>>>>>> 079adc7 (chore: Update some modules versions)
+=======
+  /@typescript-eslint/utils@6.9.1(eslint@8.52.0)(typescript@5.2.2):
+    resolution: {integrity: sha512-L1T0A5nFdQrMVunpZgzqPL6y2wVreSyHhKGZryS6jrEN7bD9NplVAyMryUhXsQ4TWLnZmxc2ekar/lSGIlprCA==}
+>>>>>>> 402fe16 (chore: Update module depencies)
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0
@@ -2493,9 +2695,9 @@ packages:
       '@eslint-community/eslint-utils': 4.4.0(eslint@8.52.0)
       '@types/json-schema': 7.0.12
       '@types/semver': 7.5.1
-      '@typescript-eslint/scope-manager': 6.9.0
-      '@typescript-eslint/types': 6.9.0
-      '@typescript-eslint/typescript-estree': 6.9.0(typescript@5.2.2)
+      '@typescript-eslint/scope-manager': 6.9.1
+      '@typescript-eslint/types': 6.9.1
+      '@typescript-eslint/typescript-estree': 6.9.1(typescript@5.2.2)
       eslint: 8.52.0
 >>>>>>> 079adc7 (chore: Update some modules versions)
       semver: 7.5.4
@@ -2504,6 +2706,7 @@ packages:
       - typescript
     dev: true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   /@typescript-eslint/visitor-keys@6.11.0:
@@ -2525,6 +2728,13 @@ packages:
     dependencies:
       '@typescript-eslint/types': 6.9.0
 >>>>>>> 079adc7 (chore: Update some modules versions)
+=======
+  /@typescript-eslint/visitor-keys@6.9.1:
+    resolution: {integrity: sha512-MUaPUe/QRLEffARsmNfmpghuQkW436DvESW+h+M52w0coICHRfD6Np9/K6PdACwnrq1HmuLl+cSPZaJmeVPkSw==}
+    engines: {node: ^16.0.0 || >=18.0.0}
+    dependencies:
+      '@typescript-eslint/types': 6.9.1
+>>>>>>> 402fe16 (chore: Update module depencies)
       eslint-visitor-keys: 3.4.3
     dev: true
 
@@ -3440,6 +3650,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /create-jest@29.7.0(@types/node@20.9.1)(ts-node@10.9.1):
 =======
   /create-jest@29.7.0(@types/node@20.8.7)(ts-node@10.9.1):
@@ -3450,6 +3661,9 @@ packages:
 =======
   /create-jest@29.7.0(@types/node@20.8.9)(ts-node@10.9.1):
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+  /create-jest@29.7.0(@types/node@20.8.10)(ts-node@10.9.1):
+>>>>>>> 402fe16 (chore: Update module depencies)
     resolution: {integrity: sha512-Adz2bdH0Vq3F53KEMJOoftQFutWCukm6J24wbPWRO4k1kMY7gS7ds/uoJkNuV8wDCtWWnuwGcJwpWcih+zEW1Q==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     hasBin: true
@@ -3458,6 +3672,7 @@ packages:
       chalk: 4.1.2
       exit: 0.1.2
       graceful-fs: 4.2.11
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -3471,6 +3686,9 @@ packages:
 =======
       jest-config: 29.7.0(@types/node@20.8.9)(ts-node@10.9.1)
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      jest-config: 29.7.0(@types/node@20.8.10)(ts-node@10.9.1)
+>>>>>>> 402fe16 (chore: Update module depencies)
       jest-util: 29.7.0
       prompts: 2.4.2
     transitivePeerDependencies:
@@ -4134,12 +4352,17 @@ packages:
     dev: false
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /fork-ts-checker-webpack-plugin@9.0.2(typescript@5.2.2)(webpack@5.89.0):
     resolution: {integrity: sha512-Uochze2R8peoN1XqlSi/rGUkDQpRogtLFocP9+PGu68zk1BDAKXfdeCdyVZpgTk8V8WFVQXdEz426VKjXLO1Gg==}
 =======
   /fork-ts-checker-webpack-plugin@9.0.0(typescript@5.2.2)(webpack@5.89.0):
     resolution: {integrity: sha512-Kw3JjsfGs0piB0V2Em8gCuo51O3p4KyCOK0Tn8X57oq2mSNBrMmONALRBw5frcmWsOVU7iELXXsJ+FVxJeQuhA==}
 >>>>>>> 079adc7 (chore: Update some modules versions)
+=======
+  /fork-ts-checker-webpack-plugin@9.0.2(typescript@5.2.2)(webpack@5.89.0):
+    resolution: {integrity: sha512-Uochze2R8peoN1XqlSi/rGUkDQpRogtLFocP9+PGu68zk1BDAKXfdeCdyVZpgTk8V8WFVQXdEz426VKjXLO1Gg==}
+>>>>>>> 402fe16 (chore: Update module depencies)
     engines: {node: '>=12.13.0', yarn: '>=1.0.0'}
     peerDependencies:
       typescript: '>3.6.0'
@@ -4308,12 +4531,17 @@ packages:
     resolution: {integrity: sha512-lkX1HJXwyMcprw/5YUZc2s7DrpAiHB21/V+E1rHUrVNokkvB6bqMzT0VfV6/86ZNabt1k14YOIaT7nDvOX3Iiw==}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /glob@10.3.10:
     resolution: {integrity: sha512-fa46+tv1Ak0UPK1TOy/pZrIybNNt4HCv7SDzwyfiOZkvZLEbjsZkJBPtDHVshZjbecAoAGSC20MjLDG/qr679g==}
 =======
   /glob@10.3.4:
     resolution: {integrity: sha512-6LFElP3A+i/Q8XQKEvZjkEWEOTgAIALR9AO2rwT8bgPhDd1anmqDJDZ6lLddI4ehxxxR1S5RIqKe1uapMQfYaQ==}
 >>>>>>> 079adc7 (chore: Update some modules versions)
+=======
+  /glob@10.3.10:
+    resolution: {integrity: sha512-fa46+tv1Ak0UPK1TOy/pZrIybNNt4HCv7SDzwyfiOZkvZLEbjsZkJBPtDHVshZjbecAoAGSC20MjLDG/qr679g==}
+>>>>>>> 402fe16 (chore: Update module depencies)
     engines: {node: '>=16 || 14 >=14.17'}
     hasBin: true
     dependencies:
@@ -4792,6 +5020,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -4802,6 +5031,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
       chalk: 4.1.2
       co: 4.6.0
       dedent: 1.5.1
@@ -4825,6 +5057,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /jest-cli@29.7.0(@types/node@20.9.1)(ts-node@10.9.1):
 =======
   /jest-cli@29.7.0(@types/node@20.8.7)(ts-node@10.9.1):
@@ -4835,6 +5068,9 @@ packages:
 =======
   /jest-cli@29.7.0(@types/node@20.8.9)(ts-node@10.9.1):
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+  /jest-cli@29.7.0(@types/node@20.8.10)(ts-node@10.9.1):
+>>>>>>> 402fe16 (chore: Update module depencies)
     resolution: {integrity: sha512-OVVobw2IubN/GSYsxETi+gOe7Ka59EFMR/twOU3Jb2GnKKeMGJB5SGUUrEz3SFVmJASUdZUzy83sLNNQ2gZslg==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     hasBin: true
@@ -4848,6 +5084,7 @@ packages:
       '@jest/test-result': 29.7.0
       '@jest/types': 29.6.3
       chalk: 4.1.2
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -4873,6 +5110,12 @@ packages:
       import-local: 3.1.0
       jest-config: 29.7.0(@types/node@20.8.9)(ts-node@10.9.1)
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      create-jest: 29.7.0(@types/node@20.8.10)(ts-node@10.9.1)
+      exit: 0.1.2
+      import-local: 3.1.0
+      jest-config: 29.7.0(@types/node@20.8.10)(ts-node@10.9.1)
+>>>>>>> 402fe16 (chore: Update module depencies)
       jest-util: 29.7.0
       jest-validate: 29.7.0
       yargs: 17.7.2
@@ -4886,6 +5129,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /jest-config@29.7.0(@types/node@20.9.1)(ts-node@10.9.1):
 =======
   /jest-config@29.7.0(@types/node@20.8.7)(ts-node@10.9.1):
@@ -4896,6 +5140,9 @@ packages:
 =======
   /jest-config@29.7.0(@types/node@20.8.9)(ts-node@10.9.1):
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+  /jest-config@29.7.0(@types/node@20.8.10)(ts-node@10.9.1):
+>>>>>>> 402fe16 (chore: Update module depencies)
     resolution: {integrity: sha512-uXbpfeQ7R6TZBqI3/TxCU4q4ttk3u0PJeC+E0zbfSoSjq6bJ7buBPxzQPL0ifrkY4DNu4JUdk0ImlBUYi840eQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     peerDependencies:
@@ -4913,6 +5160,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -4923,6 +5171,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
       babel-jest: 29.7.0(@babel/core@7.22.11)
       chalk: 4.1.2
       ci-info: 3.8.0
@@ -4945,6 +5196,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       ts-node: 10.9.1(@types/node@20.9.1)(typescript@5.2.2)
 =======
       ts-node: 10.9.1(@types/node@20.8.7)(typescript@5.2.2)
@@ -4955,6 +5207,9 @@ packages:
 =======
       ts-node: 10.9.1(@types/node@20.8.9)(typescript@5.2.2)
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      ts-node: 10.9.1(@types/node@20.8.10)(typescript@5.2.2)
+>>>>>>> 402fe16 (chore: Update module depencies)
     transitivePeerDependencies:
       - babel-plugin-macros
       - supports-color
@@ -4998,6 +5253,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -5008,6 +5264,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
       jest-mock: 29.7.0
       jest-util: 29.7.0
     dev: true
@@ -5026,6 +5285,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -5036,6 +5296,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
       anymatch: 3.1.3
       fb-watchman: 2.0.2
       graceful-fs: 4.2.11
@@ -5089,6 +5352,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -5099,6 +5363,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
       jest-util: 29.7.0
     dev: true
 
@@ -5156,6 +5423,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -5166,6 +5434,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
       chalk: 4.1.2
       emittery: 0.13.1
       graceful-fs: 4.2.11
@@ -5199,6 +5470,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -5209,6 +5481,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
       chalk: 4.1.2
       cjs-module-lexer: 1.2.3
       collect-v8-coverage: 1.0.2
@@ -5263,6 +5538,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -5273,6 +5549,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
       chalk: 4.1.2
       ci-info: 3.8.0
       graceful-fs: 4.2.11
@@ -5287,6 +5566,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -5297,6 +5577,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
       chalk: 4.1.2
       ci-info: 3.8.0
       graceful-fs: 4.2.11
@@ -5324,6 +5607,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -5334,6 +5618,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       emittery: 0.13.1
@@ -5348,6 +5635,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -5358,6 +5646,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -5368,6 +5659,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -5378,11 +5670,15 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
       jest-util: 29.7.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -5396,6 +5692,9 @@ packages:
 =======
   /jest@29.7.0(@types/node@20.8.9)(ts-node@10.9.1):
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+  /jest@29.7.0(@types/node@20.8.10)(ts-node@10.9.1):
+>>>>>>> 402fe16 (chore: Update module depencies)
     resolution: {integrity: sha512-NIy3oAFp9shda19hy4HK0HRTWKtPJmGdnvywu01nOqNC2vZg+Z+fvJDxpMQA88eb2I9EcafcdjYgsDthnYTvGw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     hasBin: true
@@ -5411,6 +5710,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       jest-cli: 29.7.0(@types/node@20.9.1)(ts-node@10.9.1)
 =======
       jest-cli: 29.7.0(@types/node@20.8.7)(ts-node@10.9.1)
@@ -5421,6 +5721,9 @@ packages:
 =======
       jest-cli: 29.7.0(@types/node@20.8.9)(ts-node@10.9.1)
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      jest-cli: 29.7.0(@types/node@20.8.10)(ts-node@10.9.1)
+>>>>>>> 402fe16 (chore: Update module depencies)
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -7163,6 +7466,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       jest: 29.7.0(@types/node@20.9.1)(ts-node@10.9.1)
 =======
       jest: 29.7.0(@types/node@20.8.7)(ts-node@10.9.1)
@@ -7173,6 +7477,9 @@ packages:
 =======
       jest: 29.7.0(@types/node@20.8.9)(ts-node@10.9.1)
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      jest: 29.7.0(@types/node@20.8.10)(ts-node@10.9.1)
+>>>>>>> 402fe16 (chore: Update module depencies)
       jest-util: 29.6.3
       json5: 2.2.3
       lodash.memoize: 4.1.2
@@ -7206,6 +7513,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /ts-node@10.9.1(@types/node@20.9.1)(typescript@5.2.2):
 =======
   /ts-node@10.9.1(@types/node@20.8.7)(typescript@5.2.2):
@@ -7216,6 +7524,9 @@ packages:
 =======
   /ts-node@10.9.1(@types/node@20.8.9)(typescript@5.2.2):
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+  /ts-node@10.9.1(@types/node@20.8.10)(typescript@5.2.2):
+>>>>>>> 402fe16 (chore: Update module depencies)
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
     peerDependencies:
@@ -7237,6 +7548,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.1
 =======
       '@types/node': 20.8.7
@@ -7247,6 +7559,9 @@ packages:
 =======
       '@types/node': 20.8.9
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      '@types/node': 20.8.10
+>>>>>>> 402fe16 (chore: Update module depencies)
       acorn: 8.10.0
       acorn-walk: 8.2.0
       arg: 4.1.3
@@ -7401,6 +7716,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       ts-node: 10.9.1(@types/node@20.9.1)(typescript@5.2.2)
 =======
       ts-node: 10.9.1(@types/node@20.8.7)(typescript@5.2.2)
@@ -7411,6 +7727,9 @@ packages:
 =======
       ts-node: 10.9.1(@types/node@20.8.9)(typescript@5.2.2)
 >>>>>>> 2b99e9b (chore: Update some modules versions)
+=======
+      ts-node: 10.9.1(@types/node@20.8.10)(typescript@5.2.2)
+>>>>>>> 402fe16 (chore: Update module depencies)
       tslib: 2.6.2
       uuid: 9.0.1
       yargs: 17.7.2
