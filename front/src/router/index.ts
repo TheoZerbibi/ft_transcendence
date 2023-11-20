@@ -185,7 +185,7 @@ const router = createRouter({
 =======
 >>>>>>> c80165e (fix: github issue)
 		{
-			path: '/api/oauth/callback',
+			path: '/api/oauth/callback:token',
 			name: 'OauthCallback',
 			component: () => import('../views/OauthCallbackView.vue'),
 		},
