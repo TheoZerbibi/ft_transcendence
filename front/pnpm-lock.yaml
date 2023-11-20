@@ -55,12 +55,17 @@ importers:
         version: 1.0.2(vite@4.5.0)(vue@3.3.8)(vuetify@3.3.23)
       volar-service-vetur:
 <<<<<<< HEAD
+<<<<<<< HEAD
         specifier: ^0.0.17
         version: 0.0.17
 =======
         specifier: ^0.0.15
         version: 0.0.15
 >>>>>>> 5ddd1ef (fix(deps): update dependency volar-service-vetur to ^0.0.15 (patch))
+=======
+        specifier: ^0.0.17
+        version: 0.0.17
+>>>>>>> e5bb2c2 (fix(deps): update dependency volar-service-vetur to ^0.0.17 (patch))
       vue:
         specifier: ^3.3.8
         version: 3.3.8(typescript@5.2.2)
@@ -6027,12 +6032,17 @@ packages:
     dev: false
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /volar-service-vetur@0.0.17:
     resolution: {integrity: sha512-lTZTmk6H3IhE8YXUG/9eUtApxyiJid2+3wVOn6vrFl4ho4o4B2pRm7EtbxbXMj/dtABi4UMm2Tqi6SCjVqmbgA==}
 =======
   /volar-service-vetur@0.0.15:
     resolution: {integrity: sha512-1aByo6pG8YOscHz86WqqsWfYrlKJRDl6nHSSxCFC9SZcKcb9W0dpsG4RCpZFHlPFJxCj+TBISmPZmnjp3I1FiA==}
 >>>>>>> 5ddd1ef (fix(deps): update dependency volar-service-vetur to ^0.0.15 (patch))
+=======
+  /volar-service-vetur@0.0.17:
+    resolution: {integrity: sha512-lTZTmk6H3IhE8YXUG/9eUtApxyiJid2+3wVOn6vrFl4ho4o4B2pRm7EtbxbXMj/dtABi4UMm2Tqi6SCjVqmbgA==}
+>>>>>>> e5bb2c2 (fix(deps): update dependency volar-service-vetur to ^0.0.17 (patch))
     peerDependencies:
       '@volar/language-service': ~1.11.0
     peerDependenciesMeta:
