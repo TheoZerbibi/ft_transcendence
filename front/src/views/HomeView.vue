@@ -76,7 +76,7 @@
 
 			<v-card-actions>
 				<v-btn
-					prepend-icon="$vuetify"
+					prepend-icon="&#129418"
 					class="text-capitalize" 
 					rounded="xl"
 					color="green darken-4"
@@ -87,9 +87,15 @@
 					target="_blank">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 					<span class="neonPolice">
 						💡 Sign in with 42
 					</span>
+=======
+						<div class ="neonPolice">
+							&#129418; Authenticate with 42
+						</div>
+>>>>>>> 1f20d30 (les icons fonctionnentgit add .git add .git add . <3 <3 <3 jvais en mettre PAAAAARTOUT)
 				</v-btn>
 			</v-card-actions>
 		</v-card>
