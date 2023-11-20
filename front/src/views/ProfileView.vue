@@ -3,6 +3,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	<main>
 		<section>
 			<v-container class="profileHome neonPolice">
@@ -164,6 +165,8 @@ export default defineComponent({
 	<header>
 		<h1 class="neonPolice">This is the profile page</h1>
 	</header>
+=======
+>>>>>>> bac66c6 (core:feat center all boxes buttons and text)
 	<main>
 		<section>
 			<v-container class="profileHome neonPolice">
@@ -172,6 +175,10 @@ export default defineComponent({
 					<v-btn>About ℹ️</v-btn>
 					<v-btn>Rules 📄</v-btn>
 					<v-btn>Help ❓</v-btn>
+					<v-btn class="customButton" rounded>
+						<!-- <img src="/src/assets/OmoriWallpapers/OmoriJournal02.png" alt="Image Alt Text"> -->
+      					<span class="darkNeonPolice">Button Text</span>
+					</v-btn>
 				</div>
 				<div class="box two">User infos &#128048
 					<div>Profile picture</div>
@@ -191,7 +198,7 @@ export default defineComponent({
 				<div class="box six">
 					<v-btn class="chatButtom" @click="$router.push('chat')">Chat &#128062;</v-btn>
 				</div>
-/				<div class="box seven">Security &#128029
+				<div class="box seven">Security &#128029
 					<v-btn>Enable 2FA &#128506</v-btn>
 				</div>
 				<div class="box eight">Privacy &#128030
@@ -205,6 +212,7 @@ export default defineComponent({
 			</v-container>
 		</section>
 	</main>
+<<<<<<< HEAD
 	<aside>
 		<p>This is an aside section</p>
 	</aside>
@@ -215,6 +223,8 @@ export default defineComponent({
 		<a href="https://www.twitter.com" target="_blank">Twitter </a>
 	</footer>
 >>>>>>> dd686cf (prototype profile page)
+=======
+>>>>>>> bac66c6 (core:feat center all boxes buttons and text)
 </template>
 
 <script lang="ts">
@@ -236,33 +246,41 @@ export default defineComponent({
 
 }
 
-
 .box {
 	background-color: darkgreen;
-	/* display: flex; */
-	/* align-items: center; */
 	background: url(/src/assets/OmoriWallpapers/OmoriJournal01.png) no-repeat;
 	background-size: cover;
+	display: flex;
+    flex-direction: column;
+    align-items: center; /* Align buttons to the bottom */
+	justify-content: space-around; /* Align items to the bottom */
+
 }
 .one {
 	grid-row: 1 / 6;
-	display: block;
 }
+
+.customButton {
+	display: flex;
+    align-items: center;
+    background: url("/src/assets/OmoriWallpaper04.jpg") no-repeat center center;
+    background-size: cover;
+    min-width: auto;
+    padding-left: 20px;
+  }
+
 .two {
 	grid-row: 1 / 5;
-	display: block;
 }
 .three {
 	grid-row: 1 / 5;
 }
 .four {
 	grid-row: 1 / 5;
-	display: block;
 }
 .five {
 	grid-column: 2 / 5;
 	grid-row: 5 / 8;
-	display: block;
 	background: url(/src/assets/OmoriWallpapers/OmoriJournal02.png) no-repeat;
 	background-size: cover;
 }

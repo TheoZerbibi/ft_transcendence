@@ -57,6 +57,7 @@
 .darkNeonPolice {
 	font-family: 'OMORI_MAIN';
 
+<<<<<<< HEAD
 =======
 .rounded-card{
     border-radius:50px;
@@ -77,6 +78,11 @@
 	color: black;
 =======
 >>>>>>> 374b499 (/colors page added)
+=======
+	font-size: xx-large;
+	text-align: center;
+	color: black;
+>>>>>>> bac66c6 (core:feat center all boxes buttons and text)
 	text-shadow:
 		1px 1px 2px plum,
 		0 0 1em purple,
@@ -84,6 +90,9 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> bac66c6 (core:feat center all boxes buttons and text)
 		margin: auto;
 }
 
