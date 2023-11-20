@@ -10,17 +10,23 @@ import {
 
 import { CreateChannelDto } from './create-channel.dto';
 
-
 export class ChannelDto{
 	@ApiProperty()
+	@IsOptional()
 	@IsNumber()
 	// eslint-disable-next-line
 	id: number;
 
 	@ApiProperty()
+	@IsOptional()
 	@IsBoolean()
 	// eslint-disable-next-line
 	name: string;
+
+	@ApiProperty()
+	@IsBoolean()
+	// eslint-disable-next-line
+	public: boolean;
 
 	@ApiProperty()
 	@IsOptional()
@@ -28,16 +34,17 @@ export class ChannelDto{
 	// eslint-disable-next-line
 	password: string;
 
-
 	@ApiProperty()
+	@IsOptional()
 	@IsDate()
 	// eslint-disable-next-line
-	created_at: number;
+	created_at: Date;
 
 	@ApiProperty()
+	@IsOptional()
 	@IsDate()
 	// eslint-disable-next-line
-	updated_at: boolean;
+	updated_at: Date;
 }
 
 export class ChannelUserDto{
