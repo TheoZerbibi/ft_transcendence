@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
 	<!-- <header role="banner" class="site-header hide-on-overlay" data-v-9fb9646a=""> -->
 		<!-- <img class="site-header__logo" width="125" height="76" draggable="false" src="/src/assets/OmoriWallpapers/logo1.png" data-v-9fb9646a=""> -->
 			<!-- <div class="site-header__lightbulb" data-v-9fb9646a=""> -->
@@ -48,6 +49,26 @@
 		<a href="https://twitter.com/42born2code?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" target="_blank">Twitter</a>
 		<span style="color:black"> ☆⋆｡𖦹°‧★ </span>
 	</v-footer>
+=======
+	<v-app id="home">
+		<NavBar>
+			<v-container fluid>
+				<div class="head">
+					<v-row>
+						<v-col cols="5">
+							<div style="position: relative" clas="mt-16">
+								<h1 class="text-grey">Hello,</h1>
+								<h1 class="text-grey">Welcome to ft_transcendence of</h1>
+								<span class="text-grey">Théo, Gaëlle, Semiha, Noémie and ?</span><br />
+								<v-btn title dark class="text-yellow mt-8" variant="outlined"></v-btn>
+							</div>
+						</v-col>
+					</v-row>
+				</div>
+			</v-container>
+		</NavBar>
+	</v-app>
+>>>>>>> 6c47f89 (suite tuto to fix)
 </template>
 
 <script lang="ts">
@@ -86,6 +107,7 @@ export default defineComponent({
 	margin: 20px;
 	padding: 20px;
 }
+<<<<<<< HEAD
 
 .teamLeader {
 	font-weight: bold;
@@ -196,4 +218,16 @@ a {
 }
 
 
+=======
+.head.after{
+	content: " ";
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100%;
+	width: 50%;
+	background: black;
+	transform: skew(0deg, -6deg);
+}
+>>>>>>> 6c47f89 (suite tuto to fix)
 </style>

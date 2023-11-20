@@ -28,6 +28,11 @@
             <!-- Icon does not work -->
             <v-icon color="yellow" left class="mr-2">fas fa-signature</v-icon>42 paris 
         </v-btn>
+
+        <v-icon color="yellow" left class="mr-2">
+        <i class="fas fa-signature"></i>
+        </v-icon>
+
         <v-spacer></v-spacer>
         <v-btn text @click="scroll('home')" class="text-yellow">Home</v-btn>
         <v-btn text @click="scroll('about')">About</v-btn>

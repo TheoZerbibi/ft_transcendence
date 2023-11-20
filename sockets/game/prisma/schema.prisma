@@ -51,12 +51,13 @@ model friends {
 }
 
 model games {
-  id         Int       @id @unique @default(autoincrement())
-  uid        String    @unique
-  is_private Boolean   @default(false)
-  created_at DateTime  @default(now())
-  started_at DateTime?
-  end_at     DateTime?
+  id           Int            @id @unique @default(autoincrement())
+  uid          String         @unique
+  is_private   Boolean        @default(false)
+  created_at   DateTime       @default(now())
+  started_at   DateTime?
+  end_at       DateTime?
+  game_players game_players[]
 }
 
 model users {
@@ -90,6 +91,7 @@ model users {
   channel_users                    channel_users[]
   friends_friends_friend_idTousers friends[]       @relation("friends_friend_idTousers")
   friends_friends_user_idTousers   friends[]       @relation("friends_user_idTousers")
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> 977750d (chore: Fix prisma.schema)
@@ -157,3 +159,18 @@ model direct_messages {
 // model gamePlayers {
 // }
 >>>>>>> 89e81b3 (ca marche sur mon ordi en plein festival ou on me sort que je suis une sorciere blanche ahaha alors que je suis de l;'akatsuki mdr)
+=======
+  game_players                     game_players[]
+}
+
+model game_players {
+  player_id Int
+  game_id   Int
+  is_win    Boolean?
+  is_spec   Boolean?
+  games     games    @relation(fields: [game_id], references: [id], onDelete: Cascade)
+  users     users    @relation(fields: [player_id], references: [id])
+
+  @@id([player_id, game_id])
+}
+>>>>>>> 6c47f89 (suite tuto to fix)
