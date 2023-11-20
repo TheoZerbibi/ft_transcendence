@@ -11,11 +11,15 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 62efd17 (header lightbulb photo added)
 =======
 	<!--Header avec l'ampoule a tester-->
 >>>>>>> 46a40e3 (core:feat clean profile page, add borderes)
+=======
+	<!--Header avec l'ampoule a tester-->
+>>>>>>> 5d4223e (core:feat clean profile page, add borderes)
 	<!-- <header role="banner" class="site-header hide-on-overlay" data-v-9fb9646a=""> -->
 		<!-- <img class="site-header__logo" width="125" height="76" draggable="false" src="/src/assets/OmoriWallpapers/logo1.png" data-v-9fb9646a=""> -->
 			<!-- <div class="site-header__lightbulb" data-v-9fb9646a=""> -->

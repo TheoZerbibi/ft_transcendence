@@ -250,6 +250,7 @@ services:
     restart: always
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   # prisma:
 <<<<<<< HEAD
   #   container_name: prisma
@@ -301,6 +302,8 @@ services:
 
 =======
 >>>>>>> 46a40e3 (core:feat clean profile page, add borderes)
+=======
+>>>>>>> 5d4223e (core:feat clean profile page, add borderes)
   prisma:
     container_name: prisma
     build:
@@ -323,9 +326,12 @@ services:
     command: sh -c "pnpm db:pull && pnpm start:prisma"
     restart: always
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> c80165e (fix: github issue)
 =======
 >>>>>>> 46a40e3 (core:feat clean profile page, add borderes)
+=======
+>>>>>>> 5d4223e (core:feat clean profile page, add borderes)
 
   postgres:
     image: postgres:16-alpine3.18

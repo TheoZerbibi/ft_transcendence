@@ -36,7 +36,11 @@
 					>
 				</div>
 				<div class="box seven">
+<<<<<<< HEAD
 					Security
+=======
+					Security;
+>>>>>>> 5d4223e (core:feat clean profile page, add borderes)
 					<v-btn class="customButton darkNeonPolice" rounded>Enable 2FA &#128506;</v-btn>
 				</div>
 				<div class="box eight">
@@ -72,6 +76,10 @@ export default defineComponent({
 	gap: 10px;
 	/* background-image: url(/src/assets/OmoriWallpapers/OmoriJournal01.png); */
 	/* background-size: cover; */
+<<<<<<< HEAD
+=======
+	/* background: url(/src/assets/OmoriWallpapers/OmoriJournal01.png) no-repeat; */
+>>>>>>> 5d4223e (core:feat clean profile page, add borderes)
 }
 
 .box {
@@ -84,8 +92,11 @@ export default defineComponent({
 	border: 2px solid #333; /* Couleur de la bordure et épaisseur */
 	padding: 10px; /* Ajoutez un espace intérieur pour rendre la bordure plus visible */
 	text-align: center;
+<<<<<<< HEAD
 	border: 5px solid transparent;
   	border-image: linear-gradient(to right, #470979, #00d4ff) 5 repeat;
+=======
+>>>>>>> 5d4223e (core:feat clean profile page, add borderes)
 }
 .one {
 	grid-row: 1 / 6;
