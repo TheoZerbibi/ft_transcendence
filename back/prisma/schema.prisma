@@ -20,12 +20,12 @@ datasource db {
 }
 
 model Channel {
-	id			Int	@id @default(autoincrement())
-	name		String		@unique
-	public		Boolean		@default(true)
+	id			Int				@id @default(autoincrement())
+	name		String			@unique
+	public		Boolean			@default(true)
 	password	String?
-	created_at	DateTime	@default(now())
-	updated_at	DateTime	@default(now()) @updatedAt
+	created_at	DateTime		@default(now())
+	updated_at	DateTime		@default(now()) @updatedAt
 	channelUser	ChannelUser[]
 
 	@@map("channels")
@@ -57,6 +57,18 @@ model ChannelMessage {
 
 	@@map("channel_messages")
 }
+
+model DirectMessage {
+	id				Int			@id @default(autoincrement())
+	content			String
+	created_at		DateTime	@default(now())
+	user_id			Int
+	friend_id		Int
+	user			User		@relation(name: "UserDirectMessages", fields: [user_id], references: [id], onDelete: Cascade)
+
+
+	@@map("direct_messages")
+}
 model Game {
 	id			Int	@id @default(autoincrement()) @unique
 	uid			String	@unique
@@ -83,31 +95,44 @@ model GamePlayer {
 }
 
 model User {
-	id				Int	@id @default(autoincrement())
-	login			String @unique
+	id				Int				@id @default(autoincrement())
+	login			String 			@unique
 	display_name	String
 	email			String
-	dAuth			Boolean @default(false)
+	dAuth			Boolean 		@default(false)
 	avatar			String
-	created_at		DateTime @default(now())
-	updated_at		DateTime @updatedAt
-	last_login		DateTime @default(now())
+	created_at		DateTime 		@default(now())
+	updated_at		DateTime 		@updatedAt
+	last_login		DateTime 		@default(now())
 	channelUser		ChannelUser[]
 
 
-	user			Friends[] @relation("user")
-	friends			Friends[] @relation("friends")
+	user			Friends[]		@relation("user")
+	friends			Friends[] 		@relation("friends")
 	GamePlayer		GamePlayer[]
+	directMessages	DirectMessage[]	@relation(name: "UserDirectMessages")
+	blockedBy		Blocked[]		@relation("user")
+	blockedUsers	Blocked[]		@relation("blocked")
 
 	@@map("users")
 }
 
 model Friends {
 	user		User	@relation("user", fields: [user_id], references: [id])
-	friends		User	@relation("friends", fields: [friend_id], references: [id])
+	friend		User	@relation("friends", fields: [friend_id], references: [id])
 	user_id		Int	
 	friend_id	Int
 
 	@@id([user_id, friend_id])
 	@@map("friends")
+}
+
+model Blocked {
+	blockedBy			User	@relation("user", fields: [blocked_by_id], references: [id])
+	blocked				User	@relation("blocked", fields: [blocked_id], references: [id])
+	blocked_by_id		Int	
+	blocked_id			Int
+
+	@@id([blocked_by_id, blocked_id])
+	@@map("blocked")
 }

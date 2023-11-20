@@ -1,3 +1,14 @@
 <template>
-	<h1>This is the chat page</h1>
+	<v-app id="inspire">
+		<Chat></Chat>
+	</v-app>
 </template>
+
+<script>
+import Chat from '../components/chat/Chat.vue';
+
+export default {
+	name: 'ChatView',
+	components: { Chat },
+};
+</script>
