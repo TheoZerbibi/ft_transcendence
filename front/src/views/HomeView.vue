@@ -6,6 +6,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	<!-- <header role="banner" class="site-header hide-on-overlay" data-v-9fb9646a=""> -->
 		<!-- <img class="site-header__logo" width="125" height="76" draggable="false" src="/src/assets/OmoriWallpapers/logo1.png" data-v-9fb9646a=""> -->
 			<!-- <div class="site-header__lightbulb" data-v-9fb9646a=""> -->
@@ -60,6 +61,11 @@
 			<v-card-item>	
 				<v-card-title class="title">	
 =======
+=======
+	<header>
+		<p>This is a header, can be a navbar menu</p>
+	</header>
+>>>>>>> 14a6c34 (add header and footer in homepage)
 	<v-row align="center" justify="center" class="fill-height" id="background">
 		<v-card class="homepage text-center rounded-card" variant="tonal" color="green darken-4" width="700">
 			<v-card-item>
@@ -117,6 +123,7 @@
 			</v-card-actions>
 		</v-card>
 	</v-row>
+<<<<<<< HEAD
 	<HomepageFooter></HomepageFooter>
 	<v-footer class="neonPolice footer blurred-card" alt="Footer">
 		<span style="color:black"> ☆⋆｡𖦹°‧★ </span>
@@ -440,6 +447,11 @@
 =======
 	</v-row>
 >>>>>>> f9c0ccd (homepage prototype dome)
+=======
+	<footer>
+		<p>This is a footer</p>
+	</footer>
+>>>>>>> 14a6c34 (add header and footer in homepage)
 </template>
 
 <script lang="ts">
