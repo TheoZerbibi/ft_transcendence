@@ -107,8 +107,12 @@
 =======
 					target="_blank"
 				>
+<<<<<<< HEAD
 					<div class="neonPolice">&#129418; Authenticate with 42</div>
 >>>>>>> 3b9f6f4 (clean files)
+=======
+					<div class="neonPolice">&#129418; <span class="auth">Authenticate with 42</span></div>
+>>>>>>> 66803a1 (shadow and color change when hover auth button)
 				</v-btn>
 			</v-card-actions>
 		</v-card>
@@ -724,11 +728,17 @@ a {
 	align-items: flex-start;
 }
 
-#authButton {
+.teamLeader {
+	font-weight: bold;
+	color: darkmagenta;
+}
+
+#authButton:hover {
 	/* box-shadow: 6px 6px 0px rgba(0, 0, 0);  Button with shadow non gradient*/
 	box-shadow: 6px 6px 25px rgba(0, 0, 0, 0.5);
 	border: double;
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 <<<<<<< HEAD
@@ -765,4 +775,10 @@ a {
 >>>>>>> 452e6ff (page team prototype done)
 =======
 >>>>>>> 3b9f6f4 (clean files)
+=======
+
+.auth:hover {
+	color: darkmagenta;
+}
+>>>>>>> 66803a1 (shadow and color change when hover auth button)
 </style>
