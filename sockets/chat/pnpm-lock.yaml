@@ -33,6 +33,7 @@ dependencies:
   '@prisma/client':
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     specifier: 5.5.2
     version: 5.5.2(prisma@5.5.2)
   '@socket.io/admin-ui':
@@ -74,10 +75,15 @@ dependencies:
     specifier: 5.4.2
     version: 5.4.2(prisma@5.4.2)
 >>>>>>> c80165e (fix: github issue)
+=======
+    specifier: 5.6.0
+    version: 5.6.0(prisma@5.6.0)
+>>>>>>> 83c0a4e (fix(deps): update prisma monorepo to v5.6.0 (minor))
   '@socket.io/redis-adapter':
     specifier: ^8.2.1
     version: 8.2.1(socket.io-adapter@2.5.2)
   '@types/passport':
+<<<<<<< HEAD
 <<<<<<< HEAD
     specifier: ^1.0.14
     version: 1.0.14
@@ -85,6 +91,10 @@ dependencies:
     specifier: ^1.0.13
     version: 1.0.13
 >>>>>>> c80165e (fix: github issue)
+=======
+    specifier: ^1.0.15
+    version: 1.0.15
+>>>>>>> 83c0a4e (fix(deps): update prisma monorepo to v5.6.0 (minor))
   class-transformer:
     specifier: ^0.5.1
     version: 0.5.1
@@ -98,6 +108,7 @@ dependencies:
     specifier: ^4.0.1
     version: 4.0.1
   prisma:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -115,6 +126,10 @@ dependencies:
     specifier: 5.4.2
     version: 5.4.2
 >>>>>>> c80165e (fix: github issue)
+=======
+    specifier: 5.6.0
+    version: 5.6.0
+>>>>>>> 83c0a4e (fix(deps): update prisma monorepo to v5.6.0 (minor))
   redis:
     specifier: ^4.6.10
     version: 4.6.10
@@ -230,6 +245,9 @@ devDependencies:
   ts-loader:
     specifier: ^9.5.0
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 83c0a4e (fix(deps): update prisma monorepo to v5.6.0 (minor))
     version: 9.5.0(typescript@5.2.2)(webpack@5.89.0)
   ts-node:
     specifier: ^10.9.1
@@ -1504,6 +1522,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /@prisma/client@5.5.2(prisma@5.5.2):
     resolution: {integrity: sha512-54XkqR8M+fxbzYqe+bIXimYnkkcGqgOh0dn0yWtIk6CQT4IUCAvNFNcQZwk2KqaLU+/1PHTSWrcHtx4XjluR5w==}
 =======
@@ -1518,6 +1537,10 @@ packages:
   /@prisma/client@5.4.2(prisma@5.4.2):
     resolution: {integrity: sha512-2xsPaz4EaMKj1WS9iW6MlPhmbqtBsXAOeVttSePp8vTFTtvzh2hZbDgswwBdSCgPzmmwF+tLB259QzggvCmJqA==}
 >>>>>>> c80165e (fix: github issue)
+=======
+  /@prisma/client@5.6.0(prisma@5.6.0):
+    resolution: {integrity: sha512-mUDefQFa1wWqk4+JhKPYq8BdVoFk9NFMBXUI8jAkBfQTtgx8WPx02U2HB/XbAz3GSUJpeJOKJQtNvaAIDs6sug==}
+>>>>>>> 83c0a4e (fix(deps): update prisma monorepo to v5.6.0 (minor))
     engines: {node: '>=16.13'}
     requiresBuild: true
     peerDependencies:
@@ -1529,14 +1552,20 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@prisma/engines-version': 5.5.1-1.aebc046ce8b88ebbcb45efe31cbe7d06fd6abc0a
       prisma: 5.5.2
+=======
+      '@prisma/engines-version': 5.6.0-32.e95e739751f42d8ca026f6b910f5a2dc5adeaeee
+      prisma: 5.6.0
+>>>>>>> 83c0a4e (fix(deps): update prisma monorepo to v5.6.0 (minor))
     dev: false
 
-  /@prisma/engines-version@5.5.1-1.aebc046ce8b88ebbcb45efe31cbe7d06fd6abc0a:
-    resolution: {integrity: sha512-O+qHFnZvAyOFk1tUco2/VdiqS0ym42a3+6CYLScllmnpbyiTplgyLt2rK/B9BTjYkSHjrgMhkG47S0oqzdIckA==}
+  /@prisma/engines-version@5.6.0-32.e95e739751f42d8ca026f6b910f5a2dc5adeaeee:
+    resolution: {integrity: sha512-UoFgbV1awGL/3wXuUK3GDaX2SolqczeeJ5b4FVec9tzeGbSWJboPSbT0psSrmgYAKiKnkOPFSLlH6+b+IyOwAw==}
     dev: false
 
+<<<<<<< HEAD
   /@prisma/engines@5.5.2:
     resolution: {integrity: sha512-Be5hoNF8k+lkB3uEMiCHbhbfF6aj1GnrTBnn5iYFT7GEr3TsOEp1soviEcBR0tYCgHbxjcIxJMhdbvxALJhAqg==}
 =======
@@ -1572,6 +1601,10 @@ packages:
   /@prisma/engines@5.4.2:
     resolution: {integrity: sha512-fqeucJ3LH0e1eyFdT0zRx+oETLancu5+n4lhiYECyEz6H2RDskPJHJYHkVc0LhkU4Uv7fuEnppKU3nVKNzMh8g==}
 >>>>>>> c80165e (fix: github issue)
+=======
+  /@prisma/engines@5.6.0:
+    resolution: {integrity: sha512-Mt2q+GNJpU2vFn6kif24oRSBQv1KOkYaterQsi0k2/lA+dLvhRX6Lm26gon6PYHwUM8/h8KRgXIUMU0PCLB6bw==}
+>>>>>>> 83c0a4e (fix(deps): update prisma monorepo to v5.6.0 (minor))
     requiresBuild: true
     dev: false
 
@@ -1870,8 +1903,8 @@ packages:
     dependencies:
       undici-types: 5.26.5
 
-  /@types/passport@1.0.14:
-    resolution: {integrity: sha512-D6p2ygR2S7Cq5PO7iUaEIQu/5WrM0tONu6Lxgk0C9r3lafQIlVpWCo3V/KI9To3OqHBxcfQaOeK+8AvwW5RYmw==}
+  /@types/passport@1.0.15:
+    resolution: {integrity: sha512-oHOgzPBp5eLI1U/7421qYV/ZySQXMYCBSfRkDe1tQ0YrIbLY/M/76qIXE7Bs7lFyvw1x5QqiNQ9imvh0fQHe9Q==}
     dependencies:
       '@types/express': 4.17.21
 =======
@@ -5431,6 +5464,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /prisma@5.5.2:
     resolution: {integrity: sha512-WQtG6fevOL053yoPl6dbHV+IWgKo25IRN4/pwAGqcWmg7CrtoCzvbDbN9fXUc7QS2KK0LimHIqLsaCOX/vHl8w==}
 =======
@@ -5445,10 +5479,15 @@ packages:
   /prisma@5.4.2:
     resolution: {integrity: sha512-GDMZwZy7mysB2oXU+angQqJ90iaPFdD0rHaZNkn+dio5NRkGLmMqmXs31//tg/qXT3iB0cTQwnGGQNuirhSTZg==}
 >>>>>>> c80165e (fix: github issue)
+=======
+  /prisma@5.6.0:
+    resolution: {integrity: sha512-EEaccku4ZGshdr2cthYHhf7iyvCcXqwJDvnoQRAJg5ge2Tzpv0e2BaMCp+CbbDUwoVTzwgOap9Zp+d4jFa2O9A==}
+>>>>>>> 83c0a4e (fix(deps): update prisma monorepo to v5.6.0 (minor))
     engines: {node: '>=16.13'}
     hasBin: true
     requiresBuild: true
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -5462,6 +5501,9 @@ packages:
 =======
       '@prisma/engines': 5.4.2
 >>>>>>> c80165e (fix: github issue)
+=======
+      '@prisma/engines': 5.6.0
+>>>>>>> 83c0a4e (fix(deps): update prisma monorepo to v5.6.0 (minor))
     dev: false
 
   /process-nextick-args@2.0.1:
@@ -6088,6 +6130,7 @@ packages:
     dev: true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /terser-webpack-plugin@5.3.9(webpack@5.89.0):
 =======
   /terser-webpack-plugin@5.3.9(webpack@5.88.2):
@@ -6116,6 +6159,8 @@ packages:
       webpack: 5.89.0
     dev: true
 
+=======
+>>>>>>> 83c0a4e (fix(deps): update prisma monorepo to v5.6.0 (minor))
   /terser-webpack-plugin@5.3.9(webpack@5.89.0):
     resolution: {integrity: sha512-ZuXsqE07EcggTWQjXUj+Aot/OMcD0bMKGgF63f7UxYcu5/AJF53aIpK1YoP5xR9l6s/Hy2b+t1AM0bLNPRuhwA==}
     engines: {node: '>= 10.13.0'}
@@ -6259,10 +6304,14 @@ packages:
     dev: true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /ts-loader@9.5.0(typescript@5.2.2)(webpack@5.89.0):
 =======
   /ts-loader@9.5.0(typescript@5.2.2)(webpack@5.88.2):
 >>>>>>> c80165e (fix: github issue)
+=======
+  /ts-loader@9.5.0(typescript@5.2.2)(webpack@5.89.0):
+>>>>>>> 83c0a4e (fix(deps): update prisma monorepo to v5.6.0 (minor))
     resolution: {integrity: sha512-LLlB/pkB4q9mW2yLdFMnK3dEHbrBjeZTYguaaIfusyojBgAGf5kF+O6KcWqiGzWqHk0LBsoolrp4VftEURhybg==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -6276,6 +6325,9 @@ packages:
       source-map: 0.7.4
       typescript: 5.2.2
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 83c0a4e (fix(deps): update prisma monorepo to v5.6.0 (minor))
       webpack: 5.89.0
     dev: true
 
@@ -6500,6 +6552,7 @@ packages:
     dev: true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /webpack@5.89.0:
     resolution: {integrity: sha512-qyfIC10pOr70V+jkmud8tMfajraGCZMBWJtrmuBymQKCrLTRejBI8STDp1MCyZu/QTdZSeacCQYpYNQVOzX5kw==}
 =======
@@ -6545,6 +6598,8 @@ packages:
       - uglify-js
     dev: true
 
+=======
+>>>>>>> 83c0a4e (fix(deps): update prisma monorepo to v5.6.0 (minor))
   /webpack@5.89.0:
     resolution: {integrity: sha512-qyfIC10pOr70V+jkmud8tMfajraGCZMBWJtrmuBymQKCrLTRejBI8STDp1MCyZu/QTdZSeacCQYpYNQVOzX5kw==}
     engines: {node: '>=10.13.0'}
