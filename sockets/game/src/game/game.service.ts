@@ -55,7 +55,6 @@ export class GameService {
 			client.emit('game-error', 'Already in Game session');
 			return true;
 		}
-
 		let side: SIDE;
 		if (game.getUsersInGame().length === 0) side = SIDE.LEFT;
 		else if (game.getUsersInGame().length === 1) side = SIDE.RIGHT;

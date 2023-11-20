@@ -86,6 +86,7 @@ export class Game implements IGame {
 	}
 
 	addUser(user: IUser): void {
+		console.log(user);
 		this.usersInGame.push(user);
 		if (user.playerData.side !== SIDE.SPECTATOR) this.gameData.ball.setPlayerSide(user.playerData);
 	}
@@ -238,5 +239,9 @@ export class Game implements IGame {
 				clearInterval(loop);
 			}
 		}, 1);
+	}
+
+	private exclude<IUser>(user: IUser, keys: string[]) {
+		return Object.fromEntries(Object.entries(user).filter(([key]) => !keys.includes(key)));
 	}
 }
