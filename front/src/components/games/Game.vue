@@ -129,6 +129,7 @@ export default {
 			apiData: null as any,
 			gameUID: null as string | null,
 			players: [] as any[],
+			port: import.meta.env.VITE_GAME_SOCKET_PORT as number,
 		};
 	},
 	async beforeUnmount() {

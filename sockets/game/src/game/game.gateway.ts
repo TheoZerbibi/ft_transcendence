@@ -176,40 +176,6 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		});
 	}
 
-	afterInit() {
-		instrument(this.server, {
-			auth: false,
-			mode: 'development',
-			namespaceName: '/game',
-		});
-	}
-
-	public handleDisconnect(client: Socket): void {
-		const game = this.gameService.removeUserFromGame(client);
-		if (game) this.server.to(game.getGameUID()).emit('session-info', game.getAllUsersInGame());
-		return this.logger.debug(`Client disconnected: ${client.id}`);
-	}
-
-	public async handleConnection(client: Socket): Promise<void> {
-		try {
-			if (!client.handshake.headers.authorization) throw new Error('Invalid token');
-			const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
-			this.authService.verifyToken({ access_token: token });
-			return this.logger.debug(`Client connected: ${client.id}`);
-		} catch (e) {
-			client.emit('error', 'Invalid token');
-			client.disconnect();
-		}
-	}
-
-	public handleRedisMessage(channel: string, message: any): void {
-		const data = JSON.parse(message);
-		if (!this.gameService.gameExists(data.gameUID))
-			this.gameService.createGame(data.gameID, data.gameUID, data.isEnded);
-		this.gameService.addWaitingConnection(data);
-		return this.logger.debug(`New redis-message, user ${data.userID} is waiting for game ${data.gameUID}`);
-	}
-
 	private startGame(game: IGame): void {
 		game.startGame();
 		this.server.to(game.getGameUID()).emit('game-start', {
@@ -249,8 +215,8 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		const gameLoop = setInterval(async () => {
 			if (!game.isEnded()) {
 				this.server.to(game.getGameUID()).emit('game-update', {
-					position: game.getGameData().ball.getPos(),
-					velocity: game.getGameData().ball.getVel(),
+					position: game.getGameData().ball.getPos().toObject(),
+					velocity: game.getGameData().ball.getVel().toObject(),
 					speed: game.getGameData().ball.getSpeed(),
 					radius: game.getGameData().ball.getRadius(),
 				});
@@ -279,6 +245,41 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				});
 				clearInterval(gameLoop);
 			}
-		}, 10);
+		}, 1);
 	}
+
+	public handleRedisMessage(channel: string, message: any): void {
+		const data = JSON.parse(message);
+		if (!this.gameService.gameExists(data.gameUID))
+			this.gameService.createGame(data.gameID, data.gameUID, data.isEnded);
+		this.gameService.addWaitingConnection(data);
+		return this.logger.debug(`New redis-message, user ${data.userID} is waiting for game ${data.gameUID}`);
+	}
+
+	afterInit() {
+		instrument(this.server, {
+			auth: false,
+			mode: 'development',
+			namespaceName: '/game',
+		});
+	}
+
+	handleDisconnect(client: Socket): void {
+		const game = this.gameService.removeUserFromGame(client);
+		if (game) this.server.to(game.getGameUID()).emit('session-info', game.getAllUsersInGame());
+		return this.logger.debug(`Client disconnected: ${client.id}`);
+	}
+
+	async handleConnection(client: Socket): Promise<void> {
+		try {
+			if (!client.handshake.headers.authorization) throw new Error('Invalid token');
+			const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
+			this.authService.verifyToken({ access_token: token });
+			return this.logger.debug(`Client connected: ${client.id}`);
+		} catch (e) {
+			client.emit('error', 'Invalid token');
+			client.disconnect();
+		}
+	}
+
 }
