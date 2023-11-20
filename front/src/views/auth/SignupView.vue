@@ -1,0 +1,120 @@
+<!-- SignupLogin.vue -->
+
+<script lang="ts">
+export default {
+	methods: {
+		redirectToOAuth() {
+			// Redirect to your OAuth2 provider's authentication URL
+			//window.location.href = 'http://api.intra.42.fr/oauth/authorize';
+			window.location.href = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-b23568e38139d1ec4d826848c6505cd62c143340904bbc2baef28cbf82aea190&redirect_uri=http%3A%2F%2Flocalhost%2Fapi%2Fauth%2Fcallback&response_type=code';
+
+		},
+	},
+};
+</script>
+
+<template>
+	<div>
+		<p>
+			<button @click="redirectToOAuth">
+				Signin with
+				<svg
+					width="57px"
+					height="40px"
+					viewBox="0 0 57 40"
+					version="1.1"
+					xmlns="http://www.w3.org/2000/svg"
+					xmlns:xlink="http://www.w3.org/1999/xlink"
+				>
+					<title>42 Final sigle seul</title>
+					<defs>
+						<filter id="filter-1">
+							<feColorMatrix
+								in="SourceGraphic"
+								type="matrix"
+								values="0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 1.000000 0"
+							/>
+						</filter>
+						<polygon
+							id="path-2"
+							points="0 0.204536082 31.6266585 0.204536082 31.6266585 39.9752577 0 39.9752577"
+						/>
+					</defs>
+					<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+						<g id="Home-page" transform="translate(-20.000000, -119.000000)">
+							<g
+								id="42-Final-sigle-seul"
+								transform="translate(0.000000, 86.000000)"
+								filter="url(#filter-1)"
+							>
+								<g transform="translate(20.000000, 33.000000)">
+									<g id="Group-3">
+										<mask id="mask-3" fill="white">
+											<use xlink:href="#path-2" />
+										</mask>
+										<g id="Clip-2" />
+										<polyline
+											id="Fill-1"
+											fill="#000105"
+											mask="url(#mask-3)"
+											points="31.6266585 0.204536082 21.0841616 0.204536082 0 21.0969072 0 29.5538144 21.0841616 29.5538144 21.0841616 40 31.6266585 40 31.6266585 21.0969072 10.5420808 21.0969072 31.6266585 0.204536082"
+										/>
+									</g>
+									<polyline
+										id="Fill-4"
+										fill="#000105"
+										points="35.3488372 10.2325581 45.5813953 0 35.3488372 0 35.3488372 10.2325581"
+									/>
+									<polyline
+										id="Fill-5"
+										fill="#000105"
+										points="56.744186 10.5424969 56.744186 0 46.5118299 0 46.5118299 10.5424969 36.2790698 21.0849939 36.2790698 31.627907 46.5118299 31.627907 46.5118299 21.0849939 56.744186 10.5424969"
+									/>
+									<polyline
+										id="Fill-6"
+										fill="#000105"
+										points="56.744186 21.3953488 46.5116279 31.627907 56.744186 31.627907 56.744186 21.3953488"
+									/>
+								</g>
+							</g>
+						</g>
+					</g>
+				</svg>
+			</button>
+		</p>
+	</div>
+</template>
+
+<style scoped>
+/* Add your component-specific styles here */
+label {
+	display: block;
+	margin-bottom: 0.5rem;
+}
+input {
+	width: 100%;
+	padding: 0.5rem;
+	margin-bottom: 1rem;
+}
+button {
+	padding: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	background-color: #000000;
+	color: white;
+	border: none;
+	cursor: pointer;
+	border-radius: 0.4rem;
+	margin: 2rem;
+	vertical-align: middle;
+}
+button:hover {
+	filter: invert(1);
+}
+svg {
+	width: 1.5rem;
+	height: 1rem;
+	vertical-align: middle;
+	margin-left: 0.1rem;
+}
+</style>
