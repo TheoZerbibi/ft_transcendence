@@ -97,15 +97,15 @@
 			<v-card color="transparent" theme="dark">
 =======
 			<v-card
-				color="transparent"
-				theme="dark"
-				class="blurred-card"
 				:style="{
-					backgroundImage: `url(${background})`,
+					backgroundImage: `url(/game/UI/something.gif)`,
 					backgroundPosition: 'center center',
 					backgroundSize: 'cover',
+					flex: '1',
 				}"
+				class="fill-height versus-container"
 			>
+<<<<<<< HEAD
 >>>>>>> c7368ae (feat(pong): Front for the Pong)
 				<div class="d-flex justify-space-between align-center">
 					<div id="leftUser" :class="{ tremble: shouldTremble('leftUser') }" class="mr-auto">
@@ -128,26 +128,75 @@
 								:src="userData.leftPlayer.avatar"
 							/>
 						</v-img>
+=======
+				<div class="fill-height d-flex align-center no-gutters">
+					<div
+						:style="{
+							backgroundImage: `url(${backgroundLeft})`,
+							backgroundPosition: 'center center',
+							backgroundSize: 'cover',
+							height: '100%',
+							flex: '1',
+						}"
+						class="fill-height d-flex align-center left"
+					>
+						<div class="d-flex justify-end align-center fill-height">
+							<div
+								id="leftUser"
+								:class="{ tremble: shouldTremble('leftUser') }"
+								class="mr-auto fill-height ml-2"
+							>
+								<v-img class="cadre-responsive" :src="userData.leftPlayer.cadre">
+									<h2>{{ userData.leftPlayer.name }}</h2>
+									<v-img
+										v-if="userData.leftPlayer.relaseEnergy"
+										src="/game/UI/releaseEnergy.gif"
+										class="release-energy"
+									/>
+									<v-img
+										v-if="userData.leftPlayer.isDead"
+										src="/game/UI/cadres/toastDead.gif"
+										class="toast-of-death"
+									/>
+									<v-img
+										class="avatar-responsive"
+										:class="{ dead: userData.leftPlayer.isDead }"
+										:src="userData.leftPlayer.avatar"
+									/>
+								</v-img>
+							</div>
+						</div>
+>>>>>>> 51a037d (feat(pong): MORE FRONT)
 					</div>
-					<div>
-						<h1>Versus</h1>
+					<div class="d-flex justify-center align-center fill-height">
+						<span class="versus">Versus</span>
 					</div>
-					<div id="rightUser" :class="{ tremble: shouldTremble('rightUser') }" class="ml-auto">
-						<v-img class="cadre-responsive" :src="userData.rightPlayer.cadre">
-							<h2>{{ userData.rightPlayer.name }}</h2>
-
-							<v-img
-								v-if="userData.rightPlayer.relaseEnergy"
-								src="/game/UI/releaseEnergy.gif"
-								class="release-energy"
-							/>
-							<v-img
-								v-if="userData.rightPlayer.isDead"
-								src="/game/UI/cadres/toastDead.gif"
-								class="toast-of-death"
-							/>
-							<v-img class="avatar-responsive" :src="userData.rightPlayer.avatar" />
-						</v-img>
+					<div
+						:style="{
+							backgroundImage: `url(${backgroundRight})`,
+							backgroundPosition: 'center center',
+							backgroundSize: 'cover',
+							height: '100%',
+							flex: '1',
+						}"
+						class="fill-height d-flex justify-end align-center right"
+					>
+						<div id="rightUser" :class="{ tremble: shouldTremble('rightUser') }" class="fill-height mr-2">
+							<v-img class="cadre-responsive" :src="userData.rightPlayer.cadre">
+								<h2>{{ userData.rightPlayer.name }}</h2>
+								<v-img
+									v-if="userData.rightPlayer.relaseEnergy"
+									src="/game/UI/releaseEnergy.gif"
+									class="release-energy"
+								/>
+								<v-img
+									v-if="userData.rightPlayer.isDead"
+									src="/game/UI/cadres/toastDead.gif"
+									class="toast-of-death"
+								/>
+								<v-img class="avatar-responsive" :src="userData.rightPlayer.avatar" />
+							</v-img>
+						</div>
 					</div>
 				</div>
 >>>>>>> ef81387 (feat(pong): Start Responsive)
@@ -237,6 +286,7 @@ export default {
 			},
 			backgroundLeft: '',
 			backgroundRight: '',
+<<<<<<< HEAD
 			trembleState: {
 				leftUser: false,
 				rightUser: false,
@@ -253,6 +303,8 @@ export default {
 				},
 			},
 			background: '',
+=======
+>>>>>>> 51a037d (feat(pong): MORE FRONT)
 			trembleState: {
 				leftUser: false,
 				rightUser: false,
@@ -274,12 +326,16 @@ export default {
 >>>>>>> 98da990 (feat(pong): Improve Pong, fix a lot a Backend error + more frontend.)
 		};
 		const backgroundList: string[] = [];
-		const images = import.meta.glob('/public/game/battleParallax/*.png');
+		const images = import.meta.glob('/public/game/battleParallax/*.*');
 		for (const path in images) {
 			backgroundList.push(path);
 		}
-		this.background = backgroundList[Math.floor(Math.random() * backgroundList.length)];
-		this.background = this.background.replace('/public', '');
+		this.backgroundLeft = backgroundList[Math.floor(Math.random() * backgroundList.length)];
+		this.backgroundLeft = this.backgroundLeft.replace('/public', '');
+		this.backgroundRight = backgroundList[Math.floor(Math.random() * backgroundList.length)];
+		this.backgroundRight = this.backgroundRight.replace('/public', '');
+		console.log(this.backgroundLeft);
+		console.log(this.backgroundRight);
 	},
 <<<<<<< HEAD
 	beforeMount() {
@@ -1167,6 +1223,7 @@ html {
 }
 .dead {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	filter: grayscale(100%);
 =======
 .avatar-responsive {
@@ -1182,6 +1239,9 @@ html {
 =======
 	filter: grayscale(100%);;
 >>>>>>> 98da990 (feat(pong): Improve Pong, fix a lot a Backend error + more frontend.)
+=======
+	filter: grayscale(100%);
+>>>>>>> 51a037d (feat(pong): MORE FRONT)
 }
 
 .align-center {
@@ -1189,11 +1249,15 @@ html {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 .versus {
 	font-family: 'OMORI_DISTURBED', sans-serif;
 	font-size: 4.5vw;
 =======
 h1 {
+=======
+.versus {
+>>>>>>> 51a037d (feat(pong): MORE FRONT)
 	font-family: 'OMORI_DISTURBED';
 <<<<<<< HEAD
 	font-size: 3.5vw;
@@ -1208,12 +1272,26 @@ h1 {
 		0 0 1em purple,
 		0 0 0.2em goldenrod;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 51a037d (feat(pong): MORE FRONT)
 	position: absolute;
 	top: 50%;
 	transform: translateY(-50%);
 	z-index: 99999;
 }
 
+<<<<<<< HEAD
+=======
+.versus-container {
+	border: 10px double #dddfe2;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+>>>>>>> 51a037d (feat(pong): MORE FRONT)
 .right {
 	z-index: -666;
 	width: 100%;
@@ -1281,6 +1359,7 @@ canvas {
 
 .blurred-card {
 	padding: 16px;
+<<<<<<< HEAD
 <<<<<<< HEAD
 }
 
@@ -1362,6 +1441,8 @@ canvas {
 =======
 	border: 10px double #dddfe2;
 >>>>>>> c7368ae (feat(pong): Front for the Pong)
+=======
+>>>>>>> 51a037d (feat(pong): MORE FRONT)
 }
 
 .tremble {
