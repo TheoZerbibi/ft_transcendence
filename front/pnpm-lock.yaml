@@ -16,6 +16,7 @@ importers:
     dependencies:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@nestjs/common':
         specifier: ^10.2.9
         version: 10.2.9(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
@@ -92,6 +93,11 @@ importers:
 >>>>>>> 402fe16 (chore: Update module depencies)
 =======
 >>>>>>> e3b6b2e (fix(Frontend): Downgrade version (Build error))
+=======
+      '@fortawesome/fontawesome-free':
+        specifier: ^6.4.2
+        version: 6.4.2
+>>>>>>> 6b824bb (chore: Fix for merging)
       '@mdi/font':
         specifier: 7.3.67
         version: 7.3.67
@@ -451,12 +457,15 @@ importers:
         version: 1.6.28
     devDependencies:
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> e3b6b2e (fix(Frontend): Downgrade version (Build error))
 =======
       '@fortawesome/fontawesome-free':
         specifier: ^6.4.2
         version: 6.4.2
 >>>>>>> 976f2cd (chore: update all module dependencies)
+=======
+>>>>>>> 6b824bb (chore: Fix for merging)
       '@rushstack/eslint-patch':
         specifier: ^1.5.1
         version: 1.5.1
@@ -1288,7 +1297,7 @@ packages:
     resolution: {integrity: sha512-m5cPn3e2+FDCOgi1mz0RexTUvvQibBebOUlUlW0+YrMjDTPkiJ6VTKukA1GRsvRw+12KyJndNjj0O4AgTxm2Pg==}
     engines: {node: '>=6'}
     requiresBuild: true
-    dev: true
+    dev: false
 
   /@hapi/hoek@9.3.0:
     resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}

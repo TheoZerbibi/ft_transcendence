@@ -15,11 +15,11 @@ import { loadFonts } from './plugins/webfontloader';
 import router from './router';
 
 // Importing the global css file
-import "./assets/global.css"
+import './assets/global.css';
 
 const vuetify = createVuetify({
 	theme: {
-		defaultTheme: "dark",
+		defaultTheme: 'dark',
 	},
 	components,
 	directives,
