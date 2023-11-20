@@ -1,14 +1,23 @@
 <template>
-	<v-app id="inspire">
-		<Chat></Chat>
-	</v-app>
+	<Suspense>
+		<template #default>
+			<discord />
+		</template>
+
+		<template #fallback>
+			<p>Loading Chat</p>
+		</template>
+	</Suspense>
 </template>
 
-<script>
-import Chat from '../components/chat/Chat.vue';
+<script lang="ts">
+import { defineComponent } from 'vue';
 
-export default {
+import Discord from '../components/chat/Discord.vue';
+
+export default defineComponent({
 	name: 'ChatView',
-	components: { Chat },
-};
+
+	components: { Discord },
+});
 </script>
