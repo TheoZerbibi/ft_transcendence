@@ -9,6 +9,8 @@ export interface IGame {
 	winner: IUser;
 	looser: IUser;
 
+	removeGame: () => void;
+
 	isInProgress: () => boolean;
 	isEnded: () => boolean;
 

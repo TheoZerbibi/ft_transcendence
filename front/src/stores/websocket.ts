@@ -9,7 +9,6 @@ export const useSocketStore = defineStore('webSocket', {
 	getters: {
 		isConnected: (state) => {
 			if (!state.socket) return false;
-			console.log(state.socket.connected);
 			return state.socket.connected;
 		},
 		getSocket: (state) => state.socket,
