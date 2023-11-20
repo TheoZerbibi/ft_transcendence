@@ -41,17 +41,21 @@ const router = createRouter({
 		},
 		{
 <<<<<<< HEAD
+<<<<<<< HEAD
 			path: '/exemples/modal',
 			name: 'ModalExemple',
 			component: () => import('../components/exemples/ModalExemple.vue'),
 		},
 		{
 
+=======
+>>>>>>> dd1f47c (routes created)
 			path: '/chat',
 			name: 'chat',
 			component: () => import('../views/ChatView.vue'),
 		},
 		{
+<<<<<<< HEAD
 			path: '/profile',
 			name: 'profile',
 			component: () => import('../views/ProfileView.vue'),
@@ -59,6 +63,8 @@ const router = createRouter({
 		{
 =======
 >>>>>>> 790bb55 (nav bar to fix)
+=======
+>>>>>>> dd1f47c (routes created)
 			path: '/team',
 			name: 'team',
 			component: () => import('../views/TeamView.vue'),

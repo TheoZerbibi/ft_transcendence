@@ -21,4 +21,10 @@ export default defineConfig({
 			},
 		},
 	},
+<<<<<<< HEAD
+=======
+	define: {
+		JWT: '"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6ImdyYW5ub3UiLCJzdWIiOjEsImlhdCI6MTY5ODQyMDI0NCwiZXhwIjoxNjk4NTA2NjQ0fQ.Nmi8JfqxquDiJ9hJ14IMVxmMUnVRBsjLAmT7WAdBmjo"',
+	},
+>>>>>>> dd1f47c (routes created)
 });
