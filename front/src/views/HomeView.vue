@@ -8,6 +8,9 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 62efd17 (header lightbulb photo added)
 	<!-- <header role="banner" class="site-header hide-on-overlay" data-v-9fb9646a=""> -->
 		<!-- <img class="site-header__logo" width="125" height="76" draggable="false" src="/src/assets/OmoriWallpapers/logo1.png" data-v-9fb9646a=""> -->
 			<!-- <div class="site-header__lightbulb" data-v-9fb9646a=""> -->
@@ -579,6 +582,9 @@ export default defineComponent({
 });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 62efd17 (header lightbulb photo added)
 
 </script>
 <!-- <script nomodule="">!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script> -->
@@ -730,6 +736,7 @@ a {
 }
 
 
+<<<<<<< HEAD
 =======
 .head.after{
 =======
@@ -893,4 +900,6 @@ a {
 }
 
 >>>>>>> 65f5147 (footer in black police)
+=======
+>>>>>>> 62efd17 (header lightbulb photo added)
 </style>
