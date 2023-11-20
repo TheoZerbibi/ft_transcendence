@@ -94,6 +94,9 @@ services:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 0a8c0ed (fix: Fix for rebase)
   chat:
     build:
       context: ./sockets/chat
@@ -124,6 +127,7 @@ services:
     # command: sh -c "pnpm db:pull && pnpm start:dev"
     command: sh -c "tail -f /dev/null"
     restart: always
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> b0a73ea (test: local dev settings)
@@ -198,6 +202,8 @@ services:
 >>>>>>> b0a73ea (test: local dev settings)
 =======
 >>>>>>> c80165e (fix: github issue)
+=======
+>>>>>>> 0a8c0ed (fix: Fix for rebase)
 
   api:
     build:
@@ -212,6 +218,7 @@ services:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       #- /home/node/app/node_modules
 =======
       # - /home/node/app/node_modules
@@ -222,6 +229,9 @@ services:
 =======
       # - /home/node/app/node_modules
 >>>>>>> c80165e (fix: github issue)
+=======
+      #- /home/node/app/node_modules
+>>>>>>> 0a8c0ed (fix: Fix for rebase)
       - /home/node/app/.pnpm-store
     depends_on:
       postgres:
@@ -245,6 +255,7 @@ services:
       REDIS_PORT: ${REDIS_PORT}
       REDIS_PASS: ${REDIS_PASS}
       REDIS_URL: ${REDIS_URL}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -307,6 +318,9 @@ services:
 >>>>>>> c9c7a2b (halloween colors)
 =======
     # command: sh -c "pnpm db:deploy && pnpm start:dev"
+=======
+    #command: sh -c "pnpm db:deploy && pnpm start:dev"
+>>>>>>> 0a8c0ed (fix: Fix for rebase)
     command: sh -c "tail -f /dev/null"
     restart: always
 
