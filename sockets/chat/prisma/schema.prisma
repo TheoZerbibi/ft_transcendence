@@ -17,10 +17,14 @@ model channel_messages {
 
 model channel_users {
 <<<<<<< HEAD
+<<<<<<< HEAD
   id               Int                @id @default(autoincrement())
 =======
   id               Int                @id(map: "channel_users_pk") @default(autoincrement())
 >>>>>>> c80165e (fix: github issue)
+=======
+  id               Int                @id @default(autoincrement())
+>>>>>>> 11fb8d1 (fix: Fix for rebase)
   channel_id       Int
   user_id          Int
   is_muted         DateTime?
@@ -33,19 +37,27 @@ model channel_users {
   users            users              @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   @@unique([channel_id, user_id])
 =======
   @@unique([channel_id, user_id], map: "channel_users_channel_id_user_id_uindex")
 >>>>>>> c80165e (fix: github issue)
+=======
+  @@unique([channel_id, user_id])
+>>>>>>> 11fb8d1 (fix: Fix for rebase)
 }
 
 model channels {
   id            Int             @id @default(autoincrement())
 <<<<<<< HEAD
+<<<<<<< HEAD
   name          String          @unique
 =======
   name          String
 >>>>>>> c80165e (fix: github issue)
+=======
+  name          String          @unique
+>>>>>>> 11fb8d1 (fix: Fix for rebase)
   public        Boolean         @default(true)
   password      String?
   created_at    DateTime        @default(now())
@@ -157,6 +169,7 @@ model game_players {
   game_id   Int
   is_win    Boolean?
   is_spec   Boolean?
+  score     Int      @default(0)
   games     games    @relation(fields: [game_id], references: [id], onDelete: Cascade)
   users     users    @relation(fields: [player_id], references: [id])
 
