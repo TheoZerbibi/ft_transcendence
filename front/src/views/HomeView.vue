@@ -63,7 +63,7 @@
 =======
 =======
 	<header>
-		<p>This is a header, can be a navbar menu</p>
+		<p>This is a header</p>
 	</header>
 <<<<<<< HEAD
 >>>>>>> 14a6c34 (add header and footer in homepage)
@@ -79,8 +79,6 @@
 				<v-card-title class="title">
 >>>>>>> 3b9f6f4 (clean files)
 					<p class="neonPolice">Welcome to STING's ft_transcendence</p>
-					<br />
-					<br />
 				</v-card-title>
 				<v-img src="CatsRounded.png" contain max-height="300" alt="These are cute kittens" />
 				<v-card-subtitle class="neonPolice text homeSubtitles">
