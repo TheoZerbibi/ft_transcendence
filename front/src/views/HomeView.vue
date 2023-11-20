@@ -162,6 +162,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	<HomepageFooter></HomepageFooter>
 =======
 	<HomepageFooter />
@@ -519,6 +520,9 @@
 =======
 	<Footer />
 >>>>>>> 526132c (fix: Move footer in component)
+=======
+	<Footer />
+>>>>>>> 72d37c9 (fix: Move footer in component)
 </template>
 
 <script lang="ts">
@@ -536,6 +540,7 @@ import NavBar from '../components/utils/NavBar.vue';
 >>>>>>> d21abb4 (changes on front)
 export default defineComponent({
 	name: 'HomeView',
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -608,6 +613,9 @@ export default defineComponent({
 =======
 	components: { Footer },
 >>>>>>> 526132c (fix: Move footer in component)
+=======
+	components: { Footer },
+>>>>>>> 72d37c9 (fix: Move footer in component)
 });
 
 <<<<<<< HEAD
