@@ -47,7 +47,6 @@
 <script lang="ts">
 import Footer from '../components/utils/Footer.vue';
 import { makeid } from '../plugins/makeId';
-//import { useUser } from '../stores/user';
 
 export default {
 	name: 'HomeView',
@@ -58,7 +57,7 @@ export default {
 	methods: {
 		redirectToOAuth() {
 			const clientId = import.meta.env.VITE_API42_UID;
-			const redirectUri = import.meta.env.VITE_API42_REDIRECT_URI;
+			const redirectUri = import.meta.env.VITE_API42_CALLBACK;
 			const responseType = 'code';
 			const scope = 'public';
 			const state = makeid(42);

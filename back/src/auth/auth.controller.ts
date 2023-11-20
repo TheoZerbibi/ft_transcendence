@@ -1,6 +1,7 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Redirect, Get, Req, Res } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
+import { CallbackDto } from './dto/callback.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('auth')
@@ -22,15 +23,10 @@ export class AuthController {
 		return this.authService.signin(dto);
 	}
 
-	@Post('callback:token')
+	@Post('callback')
 	@HttpCode(HttpStatus.FOUND)
 	@ApiOperation({ summary: 'Callback from 42 API.' })
-	async checkStateAndStoreJWT(@Req() req, @Res() res) {
-		const code = req.query.code;
-		const token = await this.authService.getAccessToken(code);
-		const user = await this.authService.getUserInfo(token);
-		const jwt = await this.authService.signToken(user);
-		res.cookie('jwt', jwt.access_token, { httpOnly: true });
-		res.redirect('http://localhost:3000');
+	async callback(@Body() dto: CallbackDto) {
+		return this.authService.callback(dto);
 	}
 }
