@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	<!-- <header role="banner" class="site-header hide-on-overlay" data-v-9fb9646a=""> -->
 		<!-- <img class="site-header__logo" width="125" height="76" draggable="false" src="/src/assets/OmoriWallpapers/logo1.png" data-v-9fb9646a=""> -->
 			<!-- <div class="site-header__lightbulb" data-v-9fb9646a=""> -->
@@ -344,6 +345,26 @@
 				</v-btn>
 			</v-col>
 		</v-row>
+=======
+	<v-container class="homepage">
+			<h1 class="neonPolice">Welcome to STING team's ft_transcendence</h1>
+			<v-btn
+				prepend-icon="mdi-check-circle"
+				class="text-capitalize" 
+				rounded="xl"
+				color=#3EBBB9
+				variant="outlined"
+				size="x-large"
+				href="https://intra.42.fr"
+				target="_blank">
+				<template v-slot:prepend>
+    			    <v-icon color="success"></v-icon>
+      			</template>
+					<div class ="neonPolice">
+					Sign in with 42
+					</div>
+			</v-btn>
+>>>>>>> 6601571 (git reset)
 	</v-container>
 >>>>>>> ef5589f (homepage title, button to 42 intra and font police)
 </template>
@@ -622,10 +643,16 @@ a {
 >>>>>>> ff1c0ad (video at 21:38)
 =======
 <style scoped>
+.homepage  {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-direction: column;	
+}
+
 .neonPolice {
 	font-family: 'Dancing Script Variable', sans-serif;
 	font-size: xx-large;
-	text-align: center;
 	color: black;
 	text-shadow:
 		1px 1px 2px plum,
