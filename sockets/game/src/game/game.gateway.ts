@@ -255,6 +255,6 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				this.sendWinner(game);
 				clearInterval(gameLoop);
 			}
-		}, 1);
+		}, 10);
 	}
 }
