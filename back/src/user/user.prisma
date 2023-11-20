@@ -1,6 +1,5 @@
 
 model User {
-<<<<<<< HEAD
 	id				Int				@id @default(autoincrement())
 	login			String 			@unique
 	display_name	String
@@ -19,41 +18,19 @@ model User {
 	directMessages	DirectMessage[]	@relation(name: "UserDirectMessages")
 	blockedBy		Blocked[]		@relation("user")
 	blockedUsers	Blocked[]		@relation("blocked")
-=======
-	id				Int	@id @default(autoincrement())
-	login			String @unique
-	display_name	String
-	email			String
-	dAuth			Boolean @default(false)
-	avatar			String
-	created_at		DateTime @default(now())
-	updated_at		DateTime @updatedAt
-	last_login		DateTime @default(now())
-	channelUser		ChannelUser[]
-
-
-	user			Friends[] @relation("user")
-	friends			Friends[] @relation("friends")
-	GamePlayer		GamePlayer[]
->>>>>>> c80165e (fix: github issue)
 
 	@@map("users")
 }
 
 model Friends {
 	user		User	@relation("user", fields: [user_id], references: [id])
-<<<<<<< HEAD
 	friend		User	@relation("friends", fields: [friend_id], references: [id])
-=======
-	friends		User	@relation("friends", fields: [friend_id], references: [id])
->>>>>>> c80165e (fix: github issue)
 	user_id		Int	
 	friend_id	Int
 
 	@@id([user_id, friend_id])
 	@@map("friends")
 }
-<<<<<<< HEAD
 
 model Blocked {
 	blockedBy			User	@relation("user", fields: [blocked_by_id], references: [id])
@@ -64,5 +41,3 @@ model Blocked {
 	@@id([blocked_by_id, blocked_id])
 	@@map("blocked")
 }
-=======
->>>>>>> c80165e (fix: github issue)

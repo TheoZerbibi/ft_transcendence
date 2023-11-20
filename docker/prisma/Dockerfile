@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 FROM node:21-alpine
-=======
-FROM node:20-alpine
->>>>>>> c80165e (fix: github issue)
 
 WORKDIR /home/node/app
 

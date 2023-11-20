@@ -13,10 +13,7 @@ model Game {
 model GamePlayer {
 	player_id	Int
 	game_id		Int
-<<<<<<< HEAD
 	score		Int @default(0)
-=======
->>>>>>> c80165e (fix: github issue)
 	is_win		Boolean?
 	is_spec		Boolean?
 	player		User	@relation(fields: [player_id], references: [id])

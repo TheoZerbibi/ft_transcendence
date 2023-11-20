@@ -9,11 +9,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-<<<<<<< HEAD
 	const userId = 4;
-=======
-	const userId = 2;
->>>>>>> c80165e (fix: github issue)
 
 	const result = await prisma.$queryRawUnsafe(
 		`SELECT DISTINCT * 

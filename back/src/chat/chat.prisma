@@ -1,20 +1,11 @@
 
 model Channel {
-<<<<<<< HEAD
 	id			Int				@id @default(autoincrement())
 	name		String			@unique
 	public		Boolean			@default(true)
 	password	String?
 	created_at	DateTime		@default(now())
 	updated_at	DateTime		@default(now()) @updatedAt
-=======
-	id			Int	@id @default(autoincrement())
-	name		String @unique
-	public		Boolean		@default(true)
-	password	String?
-	created_at	DateTime	@default(now())
-	updated_at	DateTime	@default(now()) @updatedAt
->>>>>>> c80165e (fix: github issue)
 	channelUser	ChannelUser[]
 
 	@@map("channels")
@@ -46,7 +37,6 @@ model ChannelMessage {
 
 	@@map("channel_messages")
 }
-<<<<<<< HEAD
 
 model DirectMessage {
 	id				Int			@id @default(autoincrement())
@@ -59,5 +49,3 @@ model DirectMessage {
 
 	@@map("direct_messages")
 }
-=======
->>>>>>> c80165e (fix: github issue)

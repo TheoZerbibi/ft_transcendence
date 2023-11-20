@@ -43,7 +43,6 @@ Table channel_messages {
   channelUsers channel_users [not null]
 }
 
-<<<<<<< HEAD
 Table direct_messages {
   id Int [pk, increment]
   content String [not null]
@@ -53,8 +52,6 @@ Table direct_messages {
   user users [not null]
 }
 
-=======
->>>>>>> c80165e (fix: github issue)
 Table games {
   id Int [pk, increment]
   uid String [unique, not null]
@@ -68,10 +65,7 @@ Table games {
 Table game_players {
   player_id Int [not null]
   game_id Int [not null]
-<<<<<<< HEAD
   score Int [not null, default: 0]
-=======
->>>>>>> c80165e (fix: github issue)
   is_win Boolean
   is_spec Boolean
   player users [not null]
@@ -96,21 +90,14 @@ Table users {
   user friends [not null]
   friends friends [not null]
   GamePlayer game_players [not null]
-<<<<<<< HEAD
   directMessages direct_messages [not null]
   blockedBy blocked [not null]
   blockedUsers blocked [not null]
-=======
->>>>>>> c80165e (fix: github issue)
 }
 
 Table friends {
   user users [not null]
-<<<<<<< HEAD
   friend users [not null]
-=======
-  friends users [not null]
->>>>>>> c80165e (fix: github issue)
   user_id Int [not null]
   friend_id Int [not null]
 
@@ -119,7 +106,6 @@ Table friends {
   }
 }
 
-<<<<<<< HEAD
 Table blocked {
   blockedBy users [not null]
   blocked users [not null]
@@ -131,31 +117,22 @@ Table blocked {
   }
 }
 
-=======
->>>>>>> c80165e (fix: github issue)
 Ref: channel_users.channel_id > channels.id [delete: Cascade]
 
 Ref: channel_users.user_id > users.id [delete: Cascade]
 
 Ref: channel_messages.channel_user_id > channel_users.id [delete: Cascade]
 
-<<<<<<< HEAD
 Ref: direct_messages.user_id > users.id [delete: Cascade]
 
-=======
->>>>>>> c80165e (fix: github issue)
 Ref: game_players.player_id > users.id
 
 Ref: game_players.game_id > games.id [delete: Cascade]
 
 Ref: friends.user_id > users.id
 
-<<<<<<< HEAD
 Ref: friends.friend_id > users.id
 
 Ref: blocked.blocked_by_id > users.id
 
 Ref: blocked.blocked_id > users.id
-=======
-Ref: friends.friend_id > users.id
->>>>>>> c80165e (fix: github issue)

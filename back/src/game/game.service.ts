@@ -102,7 +102,6 @@ export class GameService {
 			});
 			return gamePlayer;
 		} catch (e) {
-<<<<<<< HEAD
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				if (e.code === 'P2002') {
 					return;
@@ -110,13 +109,6 @@ export class GameService {
 			}
 			const player = await this.getPlayer(game);
 			if (!player) this.deleteGame(game);
-=======
-			const player = await this.getPlayer(game);
-			if (!player) this.deleteGame(game);
-			if (e instanceof Prisma.PrismaClientKnownRequestError) {
-				if (e.code === 'P2002') throw new ForbiddenException('Error during gamePlayer creation');
-			}
->>>>>>> c80165e (fix: github issue)
 			throw e;
 		}
 	}
@@ -177,14 +169,8 @@ export class GameService {
 
 			for (const player of playersInGame) {
 				if (player.player_id === user.id) {
-<<<<<<< HEAD
 					if (!player.is_spec) throw new ForbiddenException('User already in this game.');
 					else return { ...game, ...player };
-=======
-					// if (!player.is_spec) throw new ForbiddenException('User already in this game.');
-					// else
-					return { ...game, ...player };
->>>>>>> c80165e (fix: github issue)
 				}
 			}
 			if (playersInGame.length >= 2) gamePlayer = await this.createGamePlayer(game, user, true);
@@ -193,10 +179,7 @@ export class GameService {
 					for (const games of gameHistory) {
 						if (games.isWin === false || games.game.endAt === null)
 							gamePlayer = await this.createGamePlayer(game, user, true);
-<<<<<<< HEAD
 						else gamePlayer = await this.createGamePlayer(game, user);
-=======
->>>>>>> c80165e (fix: github issue)
 					}
 				} else if (playersInGame.length < 2) {
 					gamePlayer = await this.createGamePlayer(game, user);
