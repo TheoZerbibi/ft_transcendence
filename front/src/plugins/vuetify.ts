@@ -1,6 +1,7 @@
 // Styles
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import '@mdi/font/css/materialdesignicons.css';
 =======
 import 'vuetify/styles';
@@ -18,10 +19,18 @@ import '@mdi/font/css/materialdesignicons.css'
 import {aliases, fa} from 'vuetify/iconsets/fa'
 import 'vuetify/styles'
 >>>>>>> 9e87f6d (tuto)
+=======
+import "@mdi/font/css/materialdesignicons.css";
+import "@fortawesome/fontawesome-free/css/all.css";
+import { fa } from "vuetify/iconsets/fa";
+import { aliases, mdi } from "vuetify/lib/iconsets/mdi";
+import "vuetify/styles";
+>>>>>>> c9c7a2b (halloween colors)
 
 // Vuetify
-import { createVuetify } from 'vuetify'
+import { createVuetify } from "vuetify"
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 export default createVuetify({
 	icons: {
@@ -54,3 +63,15 @@ export default createVuetify(
 )
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 >>>>>>> 9e87f6d (tuto)
+=======
+export default createVuetify({
+	icons: {
+		defaultSet: "mdi",
+		aliases,
+		sets: {
+			mdi,
+			fa
+		},	
+	},
+})
+>>>>>>> c9c7a2b (halloween colors)

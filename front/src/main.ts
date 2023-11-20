@@ -19,7 +19,11 @@ import './assets/global.css';
 
 const vuetify = createVuetify({
 	theme: {
+<<<<<<< HEAD
 		defaultTheme: 'dark',
+=======
+		defaultTheme: "dark",
+>>>>>>> c9c7a2b (halloween colors)
 	},
 	components,
 	directives,

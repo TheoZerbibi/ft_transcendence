@@ -51,28 +51,31 @@
 	</v-footer>
 =======
 	<v-app id="home">
-		<NavBar />
+		<NavBar></NavBar>																												// Top black bar with menu items
 		<v-container fluid>
 			<div class="head">
 				<v-row>
-					<v-col cols="5">
-						<div style="position: relative" clas="mt-16">
-							<h1 class="text-grey">Hello,</h1>
-							<h1 class="text-white">Welcome to ft_transcendence of</h1>
-							<span class="text-grey">Théo, Gaëlle, Semiha, Noémi and Norminet</span><br />
-							<v-btn title dark class="text-yellow mt-8" variant="outlined">Contact us</v-btn>
-						</div>
-					</v-col>
-					<v-col cols="2">
-						<div style="position: absolute;z-index: 9999;bottom: 0;margin-left: auto;margin-right: 0;left: 0;right: 0;text-align: center;">
-							<v-icon>fas fa angle-double-down</v-icon>
-						</div>
-					</v-col>
-					<v-col cols="5">
-						<div style="position: relattive;z-index: 9999;" class="mt-16">
-							<v-img src="Cats.jpg" contain max-height="300"></v-img>
-						</div>
-					</v-col>
+				<v-col cols="5">
+					<div style="position: relative" clas="mt-16">
+						<br />
+						<h1 class="text-white">Welcome</h1>
+						<h1 class="text-grey">to</h1>
+						<h1 class="text-white">ft_transcendence</h1>
+						<h1 class="text-grey">of</h1>
+						<span class="text-grey">Théo, Gaëlle, Semiha, Noémi and Ismaël</span><br />
+						<v-btn title dark class="text-orange mt-8" variant="outlined" rounded>Contact us</v-btn>
+					</div>
+				</v-col>
+				<v-col cols="2">
+					<div style="position: absolute;z-index: 9999;bottom: 0;margin-left: auto;margin-right: 0;left: 0;right: 0;text-align: center;">
+						<v-icon>fas fa-angle-double-down</v-icon>
+					</div>
+				</v-col>
+				<v-col cols="5">
+					<div style="position: relattive;z-index: 9999;" class="mt-16">
+						<v-img src="Cats.jpg" contain max-height="300"></v-img>
+					</div>
+				</v-col>
 				</v-row>
 			</div>
 			<v-col cols="12" class="mt-16" id="about">
@@ -80,17 +83,17 @@
 					<v-row>
 						<v-col cols="12" sm="6">
 							<div class="egg">
-								<v-img src="OmoriWallpaper00.jpg" max-height="300"></v-img>
+								<v-img src="PongLogo.png" max-height="150" ></v-img>
+								
 							</div>
 						</v-col>
 						<v-col cols="12" sm="6">
 							<h5 class="mt-16">About us</h5>
 							<div style="width: 120px">
-								<v-slider v-model="slider2" color="yellow" label="track-color">
+								<v-slider color="orange" >
 								</v-slider>
 							</div>
-							<h4 class="mt-n4">We are fans of Norminet</h4>
-							<h4>and Omori world</h4>
+							<h4 class="mt-n4">We are fans of Norminet and Omori world</h4>
 							<p class="text-grey">
 								Vous savez, je ne crois pas qu'il y ait de bonne ou de mauvaise situation...
 							</p>
@@ -98,9 +101,13 @@
 							<p class="text-grey">
 								Scribe c'est bien comme situation?
 							</p>
-							<v-btn tile dark color="yellow" class="mt-4">
-								Download a Norminet picture
-							</v-btn>
+							<router-link to="/secret" tag="v-btn">
+					            <v-btn rounded color=orange>
+									Discover best of norminet
+								</v-btn>
+					        </router-link>
+
+
 						</v-col>
 					</v-row>
 				</div>
@@ -108,7 +115,7 @@
 			<div class="text-center mt-4">
 				<h2>What we do</h2>
 				<div style="width: 120px; margin: 0 auto;">
-				<v-slider v-model="slider2" color="yellow" label="track-color"></v-slider>
+					<v-slider color="orange"></v-slider>
 				</div>
 			</div>
 			<v-col cols="12" class="padd" id="portfolio">
@@ -116,21 +123,21 @@
 					<v-row>
 						<v-col cols="12">
 							<div class="child">
-								<v-btn ico="fas fa-laptop" color="#FBDF7E" class="text-white"></v-btn>
+								<v-btn ico="fas fa-laptop" color=orange class="text-white"></v-btn>
 								<h3 class="ml-3 mt-4">Pong game</h3>
 								<p class="text-grey ml-3 mt-4 text-caption">
 									Created by Allan Alcorn<br />released in 1972<br />by Atari
 								</p>
 							</div>
 							<div class="child">
-								<v-btn ico="fas fa-mobile-alt" color="#FBDF7E" class="text-white"></v-btn>
+								<v-btn ico="fas fa-mobile-alt" color=orange class="text-white"></v-btn>
 								<h3 class="ml-3 mt-4">Chat</h3>
 								<p class="text-grey ml-3 mt-4 text-caption">
 									blabla<br />blabla<br />blabla
 								</p>
 							</div>
 							<div class="child">
-								<v-btn ico="fas fa-camera" color="#FBDF7E" class="text-white"></v-btn>
+								<v-btn ico="fas fa-camera" color=orange class="text-white"></v-btn>
 								<h3 class="ml-3 mt-4">Photography</h3>
 								<p class="text-grey ml-3 mt-4 text-caption">
 									blabla<br />blabla<br />blabla
@@ -143,7 +150,7 @@
 			</v-col>
 			<v-col cols="12" sm="12" id="services">
 				<div class="d-flex justify-center mb-6">
-					<v-btn color="#FBDF7E" class="mr-2">All</v-btn>
+					<v-btn color=orange class="mr-2">All</v-btn>
 					<v-btn class="mr-2" variant="tonal">Norminet</v-btn>
 					<v-btn class="mr-2" variant="tonal">Babache</v-btn>
 					<v-btn class="mr-2" variant="tonal">Moulinet</v-btn>
@@ -151,7 +158,7 @@
 				</div>
 			</v-col>
 			<v-col cols="12" class="imgHover">
-				<v-row class="fill-height" align="center" justify="center">
+				<v-row class="fill-height" text-align="center" justify="center">
 					<template v-for="(item, i) in items" :key="i">
 						<v-col cols="12" md="4">
 							<v-hover v-slot="{isHovering, props}">
@@ -165,7 +172,7 @@
 			</v-col>
 			<v-col cols="12" sm="12">
 				<div class="d-flex jusify-center mb-6">
-					<v-btn color="#FBDF7E" class="mt-4">Load More</v-btn>
+					<v-btn color=orange class="mt-4">Load More</v-btn>
 				</div>
 			</v-col>
 			<v-col cols="12" id="page">
@@ -196,7 +203,7 @@
 							</p>
 						</v-col>
 						<v-col cols="12" sm="4">
-							<v-btn color="#FBDF7E" class="mt-15">Hire us</v-btn>
+							<v-btn color=orange class="mt-15">Hire us</v-btn>
 						</v-col>
 					</v-row>
 				</div>
@@ -210,9 +217,7 @@
 							<span class="text-caption">Positive quote</span><br />
 							<v-btn icon="fas fa-phone-alt" class="mt-10" variant="outlined"></v-btn><br />
 							<span class="text-caption">42 42 42</span><br />
-							<span class="text-caption">42 42 42</span><br />
 							<v-btn icon="fas fa-envelope" class="mt-10" variant="outlined"></v-btn><br />
-							<span class="text-caption">hello@akatsuki.com</span><br />
 							<span class="text-caption">hello@akatsuki.com</span><br />
 						</div>
 					</v-col>
@@ -243,12 +248,12 @@
 							</v-col>
 						</v-row>
 						<v-textarea label="Message" persisten-hint variant="outlined"></v-textarea>
-						<v-btn color="#FBDF7E" class="mt-2">Submit Now</v-btn>
+						<v-btn color=orange class="mt-2">Submit Now</v-btn>
 					</v-col>
 				</v-row>
 			</v-col>
 		</v-container>
-		<FooterView />
+		<FooterView></FooterView>
 	</v-app>
 >>>>>>> 6c47f89 (suite tuto to fix)
 </template>
@@ -451,8 +456,8 @@ a {
 	margin-top: 50px;
 	width: 356px;
 	height: 300px;
-	background-color: #FBDF7E;
-	border-radius: 50% 50% 50% 50% / 60% 60% 40% 0%;
+	background-color: orange;
+	border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
 }
 .first{
 	width: 100%;
