@@ -165,4 +165,33 @@ export class GameService {
 		}
 		return user;
 	}
+
+	public async addPoint(game: IGame, user: IUser) {
+		user.playerData.score++;
+		await this.prismaService.game_players.update({
+			where: {
+				player_id_game_id: {
+					game_id: game.getGameID(),
+					player_id: user.user.id,
+				},
+			},
+			data: {
+				score: user.playerData.score,
+			},
+		});
+	}
+
+	public async winGame(game: IGame, user: IUser) {
+		await this.prismaService.game_players.update({
+			where: {
+				player_id_game_id: {
+					game_id: game.getGameID(),
+					player_id: user.user.id,
+				},
+			},
+			data: {
+				is_win: true,
+			},
+		});
+	}
 }

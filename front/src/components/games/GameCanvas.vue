@@ -387,6 +387,7 @@ export default {
 			}
 		});
 
+<<<<<<< HEAD
 		this.socket.on('player-side', async (data: any) => {
 			await p5jsReadyPromise;
 			if (data.side == SIDE.LEFT) {
@@ -413,6 +414,26 @@ export default {
 			}
 			console.log(data);
 			gameData.player.update(data.position, data.width, data.height);
+=======
+		this.socket.on('game_update', (data: any) => {
+			gameData.ball?.update(data.position, data.velocity, data.speed, data.radius);
+			gameData.ratio = data.ratio;
+		});
+
+		this.socket.on('player_move', (data: any) => {
+			console.log(data.p1);
+			console.log(data.p2);
+			if (data.p1) gameData.p1?.update(data.p1.position, data.p1.width, data.p1.height);
+			if (data.p2) gameData.p2?.update(data.p2.position, data.p2.width, data.p2.height);
+		});
+
+		this.socket.on('new_point', (data: any) => {
+			if (data.side == SIDE.LEFT) {
+				gameData.p1?.setPoint(data.score);
+			} else if (data.side == SIDE.RIGHT) {
+				gameData.p2?.setPoint(data.score);
+			}
+>>>>>>> 6d9c762 (fix(pong): Fix GamePlayer creation when player already play game + finish correct game end implementation)
 		});
 
 		this.socket.on('game-update', (data: any) => {
