@@ -249,6 +249,7 @@ services:
     command: sh -c "tail -f /dev/null"
     restart: always
 
+<<<<<<< HEAD
   # prisma:
 <<<<<<< HEAD
   #   container_name: prisma
@@ -298,6 +299,8 @@ services:
     command: sh -c "tail -f /dev/null"
     restart: always
 
+=======
+>>>>>>> 46a40e3 (core:feat clean profile page, add borderes)
   prisma:
     container_name: prisma
     build:
@@ -319,7 +322,10 @@ services:
       HOST: ${HOSTNAME}
     command: sh -c "pnpm db:pull && pnpm start:prisma"
     restart: always
+<<<<<<< HEAD
 >>>>>>> c80165e (fix: github issue)
+=======
+>>>>>>> 46a40e3 (core:feat clean profile page, add borderes)
 
   postgres:
     image: postgres:16-alpine3.18
