@@ -112,6 +112,7 @@
 >>>>>>> 374b499 (/colors page added)
 					variant="outlined"
 					size="x-large"
+<<<<<<< HEAD
 					href="https://intra.42.fr"
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -128,6 +129,9 @@
 						</div>
 >>>>>>> 1f20d30 (les icons fonctionnentgit add .git add .git add . <3 <3 <3 jvais en mettre PAAAAARTOUT)
 =======
+=======
+					href="/auth/signup"
+>>>>>>> 0bc9e74 (chore: Fix conflict)
 					target="_blank"
 				>
 <<<<<<< HEAD
@@ -149,7 +153,11 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	<HomepageFooter></HomepageFooter>
+=======
+	<HomepageFooter />
+>>>>>>> 0bc9e74 (chore: Fix conflict)
 	<v-footer class="neonPolice footer blurred-card" alt="Footer">
 		<span style="color:black"> ☆⋆｡𖦹°‧★ </span>
 		<a href="https://www.instagram.com/42.born2code/" target="_blank">Instagram</a>

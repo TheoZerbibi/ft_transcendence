@@ -1,9 +1,13 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 0bc9e74 (chore: Fix conflict)
 <template>
 	<v-app>
 		<v-main>
 			<router-view />
 		</v-main>
+<<<<<<< HEAD
 =======
 
 <template>
@@ -21,6 +25,8 @@
 			</v-main>
 		</v-layout>
 >>>>>>> c80165e (fix: github issue)
+=======
+>>>>>>> 0bc9e74 (chore: Fix conflict)
 	</v-app>
 </template>
 
@@ -34,6 +40,7 @@ export default defineComponent({
 	},
 });
 </script>
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 =======
@@ -68,3 +75,5 @@ v-btn:hover {
 }
 </style>
 >>>>>>> c80165e (fix: github issue)
+=======
+>>>>>>> 0bc9e74 (chore: Fix conflict)
