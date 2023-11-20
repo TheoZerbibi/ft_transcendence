@@ -7,9 +7,13 @@ export interface IGame {
 	newPoint: boolean;
 	gameData: IGameData;
 	winner: IUser;
+<<<<<<< HEAD
 	loser: IUser;
 
 	removeGame: () => void;
+=======
+	looser: IUser;
+>>>>>>> 7cff344 (refactor(pong): Fix EndGame condition (Crash when player refresh))
 
 	isInProgress: () => boolean;
 	isEnded: () => boolean;
@@ -39,7 +43,11 @@ export interface IGame {
 
 	startGame: () => void;
 	endGame: () => void;
+<<<<<<< HEAD
 	winGame: (winner: IUser, loser: IUser) => void;
+=======
+	winGame: (winner: IUser, looser: IUser) => void;
+>>>>>>> 7cff344 (refactor(pong): Fix EndGame condition (Crash when player refresh))
 
 	startGameLoop: () => void;
 	getGameData: () => IGameData;

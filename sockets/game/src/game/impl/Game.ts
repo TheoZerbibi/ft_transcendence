@@ -18,7 +18,11 @@ export class Game implements IGame {
 	public gameData: IGameData = { ball: new Ball(this.width, this.height), startingDate: null, endingDate: null };
 	public pause: boolean = false;
 	public winner: IUser;
+<<<<<<< HEAD
 	public loser: IUser;
+=======
+	public looser: IUser;
+>>>>>>> 7cff344 (refactor(pong): Fix EndGame condition (Crash when player refresh))
 
 	private static games: Map<string, any> = new Map<string, any>();
 
@@ -130,10 +134,13 @@ export class Game implements IGame {
 			isConnected,
 			socketID: 'null',
 		}));
+<<<<<<< HEAD
 	}
 
 	getPlayerBySide(side: SIDE): IUser {
 		return this.usersInGame.find((user) => user.playerData && user.playerData.side === side);
+=======
+>>>>>>> 7cff344 (refactor(pong): Fix EndGame condition (Crash when player refresh))
 	}
 
 	getPlayerBySide(side: SIDE): IUser {
@@ -166,6 +173,7 @@ export class Game implements IGame {
 		});
 	}
 
+<<<<<<< HEAD
 	async winGame(winner: IUser, loser: IUser) {
 		this.winner = winner;
 		this.loser = loser;
@@ -181,6 +189,12 @@ export class Game implements IGame {
 			},
 		});
 		await this.endGame();
+=======
+	winGame(winner: IUser, looser: IUser) {
+		this.winner = winner;
+		this.looser = looser;
+		this.endGame();
+>>>>>>> 7cff344 (refactor(pong): Fix EndGame condition (Crash when player refresh))
 	}
 
 	userIsInGame(userId: number): boolean {
@@ -244,8 +258,4 @@ export class Game implements IGame {
 		}, 1);
 	}
 
-	private winGame(user: IUser, side: SIDE) {
-		this.winnerSide = side;
-		this.endGame();
-	}
 }
