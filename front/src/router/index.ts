@@ -30,6 +30,7 @@ const router = createRouter({
 			component: () => import('../components/exemples/SnackbarExemple.vue'),
 		},
 		{
+<<<<<<< HEAD
 			path: '/exemples/websocket',
 			name: 'WebsocketExemple',
 			component: () => import('../components/exemples/WebsocketExemple.vue'),
@@ -50,21 +51,29 @@ const router = createRouter({
 
 =======
 >>>>>>> dd1f47c (routes created)
+=======
+>>>>>>> 7f206e2 (profile route created)
 			path: '/chat',
 			name: 'chat',
 			component: () => import('../views/ChatView.vue'),
 		},
 		{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7f206e2 (profile route created)
 			path: '/profile',
 			name: 'profile',
 			component: () => import('../views/ProfileView.vue'),
 		},
 		{
+<<<<<<< HEAD
 =======
 >>>>>>> 790bb55 (nav bar to fix)
 =======
 >>>>>>> dd1f47c (routes created)
+=======
+>>>>>>> 7f206e2 (profile route created)
 			path: '/team',
 			name: 'team',
 			component: () => import('../views/TeamView.vue'),
@@ -93,11 +102,14 @@ const router = createRouter({
 			component: () => import('../views/PortfolioView.vue'),
 		},
 <<<<<<< HEAD
+<<<<<<< HEAD
 		{
 			path: '/colors',
 			name: 'Colors',
 			component: () => import('../views/Colors.vue'),
 		},
+=======
+>>>>>>> 7f206e2 (profile route created)
 		{
 			path: '/exemples/websocket',
 			name: 'WebsocketExemple',
@@ -108,8 +120,11 @@ const router = createRouter({
 			name: 'P5Exemple',
 			component: () => import('../components/exemples/P5Exemple.vue'),
 		},
+<<<<<<< HEAD
 =======
 >>>>>>> eaeb1b1 (move portfolio homepage to /portfolio)
+=======
+>>>>>>> 7f206e2 (profile route created)
 	],
 });
 

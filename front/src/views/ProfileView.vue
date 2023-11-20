@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
 	<main>
 		<section>
 			<v-container class="profileHome neonPolice">
@@ -140,3 +141,12 @@ export default defineComponent({
 }
 </style>
 
+=======
+    <h1> This is the profile page</h1>    
+
+</template>
+
+<script></script>
+
+<style></style>
+>>>>>>> 7f206e2 (profile route created)
