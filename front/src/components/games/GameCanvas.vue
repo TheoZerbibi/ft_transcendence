@@ -5,6 +5,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			<div v-if="waitingOpp">
 				<span class="d-flex align-center justify-center" min-height="100%">
 					<h4>Waiting for a opponant</h4>
@@ -19,6 +20,12 @@
 =======
 					<v-progress-circular indeterminate color="deep-purple-accent-2" />
 >>>>>>> f9ddb4d (feat(front): Continue Front)
+=======
+			<div v-if="waitingOpp">
+				<span class="d-flex align-center justify-center" min-height="100%">
+					<h4>Waiting for a opponant</h4>
+					<v-progress-circular indeterminate color="primary" />
+>>>>>>> b3cb6ee (fix(front): Fix leftUser not grayscale after death)
 				</span>
 			</div>
 			<v-card
@@ -215,7 +222,11 @@
 									src="/game/UI/cadres/toastDead.gif"
 									class="toast-of-death"
 								/>
-								<v-img class="avatar-responsive" :src="userData.rightPlayer.avatar" />
+								<v-img
+										class="avatar-responsive"
+										:class="{ dead: userData.rightPlayer.isDead }"
+										:src="userData.rightPlayer.avatar"
+									/>
 							</v-img>
 						</div>
 					</div>
@@ -310,12 +321,16 @@ export default {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			waitingOpp: true,
 =======
 >>>>>>> ef81387 (feat(pong): Start Responsive)
 =======
 			waitingOpp: true,
 >>>>>>> 2903c30 (fix(front): Fix leftUser not grayscale after death)
+=======
+			waitingOpp: true,
+>>>>>>> b3cb6ee (fix(front): Fix leftUser not grayscale after death)
 			userData: {
 				leftPlayer: {
 					name: '',
@@ -510,6 +525,7 @@ export default {
 					if (gameData.ball.pos.x < halfWidth) return;
 					if (gameData.ball.pos.y < gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
 						gameData.rightUser.move(-4.5);
+<<<<<<< HEAD
 <<<<<<< HEAD
 					}
 					if (gameData.ball.pos.y > gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
@@ -914,6 +930,11 @@ export default {
 					}
 					if (gameData.ball.pos.y > gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
 						gameData.rightUser.move(4.5);
+=======
+					}
+					if (gameData.ball.pos.y > gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
+						gameData.rightUser.move(4.5);
+>>>>>>> b3cb6ee (fix(front): Fix leftUser not grayscale after death)
 					}
 				}
 
@@ -1079,6 +1100,7 @@ export default {
 			}
 			console.log(data);
 			gameData.player.update(data.position);
+<<<<<<< HEAD
 		});
 
 >>>>>>> 98da990 (feat(pong): Improve Pong, fix a lot a Backend error + more frontend.)
@@ -1167,6 +1189,8 @@ export default {
 				gameData.rightUser.setPoint(data.winner.score);
 			}
 >>>>>>> 98da990 (feat(pong): Improve Pong, fix a lot a Backend error + more frontend.)
+=======
+>>>>>>> b3cb6ee (fix(front): Fix leftUser not grayscale after death)
 		});
 
 		this.socket.on('game-update', (data: any) => {
@@ -1364,10 +1388,13 @@ html {
 =======
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+<<<<<<< HEAD
 	border: 5px solid #2a3cad;
 	border-radius: 5px;
 	box-shadow: 0px 0px 5px #2a3cad;
 >>>>>>> 67878fd (feat(front): Continue Game front, add Border)
+=======
+>>>>>>> b3cb6ee (fix(front): Fix leftUser not grayscale after death)
 }
 
 #game-canvas {
@@ -1379,6 +1406,7 @@ html {
 	border-top: 0;
 	border-radius: 5px;
 	box-shadow: 0px 0px 5px #b78846;
+<<<<<<< HEAD
 }
 
 #game-canvas {
@@ -1394,6 +1422,8 @@ html {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 >>>>>>> c80165e (fix: github issue)
+=======
+>>>>>>> b3cb6ee (fix(front): Fix leftUser not grayscale after death)
 }
 
 #vue-canvas {
@@ -1557,6 +1587,7 @@ h4 {
 	color: white;
 	line-height: 1;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	margin: auto;
 }
@@ -1574,10 +1605,13 @@ h2 {
 >>>>>>> 897b554 (feat(pong): Responsivity & Design)
 =======
 >>>>>>> 2903c30 (fix(front): Fix leftUser not grayscale after death)
+=======
+>>>>>>> b3cb6ee (fix(front): Fix leftUser not grayscale after death)
 	text-shadow:
 		1px 1px 2px plum,
 		0 0 1em purple,
 		0 0 0.2em goldenrod;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1588,6 +1622,8 @@ h2 {
 >>>>>>> 897b554 (feat(pong): Responsivity & Design)
 =======
 >>>>>>> 2903c30 (fix(front): Fix leftUser not grayscale after death)
+=======
+>>>>>>> b3cb6ee (fix(front): Fix leftUser not grayscale after death)
 }
 
 canvas {
