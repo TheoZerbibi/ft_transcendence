@@ -86,7 +86,6 @@ export class Game implements IGame {
 	}
 
 	addUser(user: IUser): void {
-		console.log(user);
 		this.usersInGame.push(user);
 		if (user.playerData.side !== SIDE.SPECTATOR) this.gameData.ball.setPlayerSide(user.playerData);
 	}
