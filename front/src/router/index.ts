@@ -69,11 +69,6 @@ const router = createRouter({
 			component: () => import('../views/auth/AuthView.vue'),
 		},
 		{
-			path: '/auth/signup',
-			name: 'Sinup',
-			component: () => import('../views/auth/SignupView.vue'),
-		},
-		{
 			path: '/secret',
 			name: 'secret',
 			component: () => import('../components/secrets/Secret.vue'),
@@ -99,9 +94,9 @@ const router = createRouter({
 			component: () => import('../components/exemples/P5Exemple.vue'),
 		},
 		{
-			path: '/auth/callback:token?',
+			path: '/auth/callback:token',
 			name: 'AuthCallback',
-			component: () => import('../views/auth/OauthCallbackView.vue'),
+			component: () => import('../views/AuthCallbackView.vue'),
 		},
 	],
 });
