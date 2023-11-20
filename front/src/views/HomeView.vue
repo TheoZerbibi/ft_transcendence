@@ -698,9 +698,6 @@ a {
 	align-items: center;
 	flex-direction: column;
 }
-.rounded-card{
-    border-radius:50px;
-}
 
 .title {
 	display: flex;
@@ -709,10 +706,10 @@ a {
 
 .button {
 	display: flex;
-
 	justify-content: flex-end;
 }
 
+<<<<<<< HEAD
 .neonPolice {
 	font-family: 'Dancing Script Variable', sans-serif;
 	font-size: xx-large;
@@ -742,4 +739,6 @@ a {
 >>>>>>> eaeb1b1 (move portfolio homepage to /portfolio)
 =======
 >>>>>>> ef5589f (homepage title, button to 42 intra and font police)
+=======
+>>>>>>> 452e6ff (page team prototype done)
 </style>

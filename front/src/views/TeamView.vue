@@ -1,6 +1,7 @@
 <template>
 	<div class="customBackground">
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<v-card class="blurred-card rounded-card">
 			<v-col class="largerSize neonPolice">
 				<h1>The NSTG team</h1>
@@ -9,6 +10,11 @@
 			<v-col class="title">
 				<h1>Welcome to ft_transcendence STING team</h1>
 >>>>>>> ef5589f (homepage title, button to 42 intra and font police)
+=======
+		<v-card class="blurred-card rounded-card">
+			<v-col class="largerSize neonPolice">
+				<h1>The STING team</h1>
+>>>>>>> 452e6ff (page team prototype done)
 				<h4>Starring</h4>
 				<br />
 				<v-row>
@@ -50,9 +56,15 @@ export default defineComponent({
 	data() {
 		return {
 			backgroundWallpaper,
+<<<<<<< HEAD
 			prenoms: ['Noe', 'Semiha', 'Théo', 'Gaëlle'],
 			logins: ['nfauconn', 'seozcan', 'thzeribi', 'grannou'],
 			qrCodes: [QRcodeNoemi, QRcodeSemiha, QRcodeTheo, QRcodeGaelle],
+=======
+			prenoms: ['Semiha', 'Théo', 'Ismaël', 'Noé', 'Gaëlle'],
+			logins: ['seozcan', 'thzeribi', 'iguidado', 'nfauconn', 'grannou'],
+			qrCodes: [QRcodeSemiha, QRcodeTheo, QRcodeIsmael, QRcodeNoemi, QRcodeGaelle],
+>>>>>>> 452e6ff (page team prototype done)
 		};
 	},
 	methods: {
@@ -65,10 +77,14 @@ export default defineComponent({
 
 <style>
 <<<<<<< HEAD
+<<<<<<< HEAD
 .largerSize {
 =======
 .title {
 >>>>>>> ef5589f (homepage title, button to 42 intra and font police)
+=======
+.largerSize {
+>>>>>>> 452e6ff (page team prototype done)
 	font-size: larger;
 }
 
@@ -117,4 +133,5 @@ export default defineComponent({
 .intraLinks {
 	background-color: transparent;
 }
+
 </style>
