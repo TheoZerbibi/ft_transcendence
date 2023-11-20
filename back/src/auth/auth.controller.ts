@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, Redirect, Get, Req, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -13,6 +13,12 @@ export class AuthController {
 	@ApiOperation({ summary: 'Create a new user.' })
 	async signup(@Body() dto: AuthDto) {
 		return this.authService.signup(dto);
+	}
+
+	@Get('oauth/callback')
+	async redirectFromOAuth(@Req() req, @Res() res) {
+		const token = await this.authService.signup(req.user);
+		res.redirect(`${process.env.API42_REDIRECT_URI}?token=${token}`);
 	}
 
 	@Post('signin')
