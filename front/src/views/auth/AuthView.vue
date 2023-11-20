@@ -22,15 +22,7 @@ export default {
 		const userStore = useUser();
 		const jwtInput = ref('');
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 		const JWT: any = computed(() => userStore.getJWT);
-=======
-		const JWT = computed(() => userStore.getJWT);
->>>>>>> ef81387 (feat(pong): Start Responsive)
-=======
-		const JWT: any = computed(() => userStore.getJWT);
->>>>>>> c7368ae (feat(pong): Front for the Pong)
 		const user = computed(() => userStore.getUser);
 
 		const setJWT = (jwt: string) => {
@@ -44,15 +36,5 @@ export default {
 			setJWT,
 		};
 	},
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-	mounted() {
-		console.log(this.JWT);
-		console.log(this.user);
-	},
->>>>>>> ef81387 (feat(pong): Start Responsive)
-=======
->>>>>>> 98da990 (feat(pong): Improve Pong, fix a lot a Backend error + more frontend.)
 };
 </script>

@@ -1,16 +1,12 @@
 <template>
-  <div class="chat-window">
-    <!-- Affichage des messages -->
-  </div>
+	<div class="chat-window">
+	  <!-- Affichage des messages -->
+	</div>
 </template>
 
-<script>
-export default {
-  name: 'ChatWindow',
-  // ...
-};
+<script lang="ts">
+	export default {
+		name: 'ChatWindow',
+	};
 </script>
 
-<style scoped>
-/* Styles pour ChatWindow */
-</style>

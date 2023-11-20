@@ -5,18 +5,8 @@ const router = createRouter({
 	routes: [
 		{
 			path: '/',
-<<<<<<< HEAD
 			name: 'home',
 			component: () => import('../views/HomeView.vue'),
-=======
-			name: 'Home',
-			component: () => import('../views/Homepage.vue'),
-		},
-		{
-			path: '/secret',
-			name: 'secret',
-			component: () => import('../views/SecretView.vue'),
->>>>>>> c80165e (fix: github issue)
 		},
 		{
 			path: '/test',
@@ -26,15 +16,7 @@ const router = createRouter({
 		{
 			path: '/game',
 			name: 'GameCreator',
-<<<<<<< HEAD
-<<<<<<< HEAD
-			component: () => import('../views/GameMenuView.vue'),
-=======
-			component: () => import('../views/GameCreateView.vue'),
->>>>>>> c80165e (fix: github issue)
-=======
 			component: () => import('../views/game/GameMenuView.vue'),
->>>>>>> 7c05d9e (chore: Change File infra for front)
 		},
 		{
 			path: '/game/:uid',
@@ -47,10 +29,16 @@ const router = createRouter({
 			component: () => import('../components/exemples/SnackbarExemple.vue'),
 		},
 		{
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c80165e (fix: github issue)
+			path: '/exemples/p5',
+			name: 'P5Exemple',
+			component: () => import('../components/exemples/P5Exemple.vue'),
+		},
+		{
+			path: '/exemples/modal',
+			name: 'ModalExemple',
+			component: () => import('../components/utils/GameModal.vue'),
+		},
+		{
 			path: '/exemples/websocket',
 			name: 'WebsocketExemple',
 			component: () => import('../components/exemples/WebsocketExemple.vue'),
@@ -61,47 +49,16 @@ const router = createRouter({
 			component: () => import('../components/exemples/P5Exemple.vue'),
 		},
 		{
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-			path: '/exemples/modal',
-			name: 'ModalExemple',
-			component: () => import('../components/utils/GameModal.vue'),
-		},
-		{
-
-=======
->>>>>>> dd1f47c (routes created)
-=======
->>>>>>> 7f206e2 (profile route created)
-			path: '/chat',
+			path: '/chat/',
 			name: 'chat',
 			component: () => import('../views/ChatView.vue'),
 		},
 		{
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 7f206e2 (profile route created)
 			path: '/profile',
 			name: 'profile',
 			component: () => import('../views/profile/ProfileView.vue'),
 		},
 		{
-<<<<<<< HEAD
-=======
->>>>>>> 790bb55 (nav bar to fix)
-=======
->>>>>>> dd1f47c (routes created)
-=======
->>>>>>> 7f206e2 (profile route created)
-=======
-			path: '/secret',
-			name: 'secret',
-			component: () => import('../views/SecretView.vue'),
-		},
-		{
->>>>>>> c80165e (fix: github issue)
 			path: '/team',
 			name: 'team',
 			component: () => import('../views/profile/TeamView.vue'),
@@ -112,127 +69,30 @@ const router = createRouter({
 			component: () => import('../views/profile/TeamProfileView.vue'),
 		},
 		{
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-			path: '/chat/',
-			name: 'chat',
-			component: () => import('../views/ChatView.vue'),
-=======
 			path: '/auth',
 			name: 'Auth',
 			component: () => import('../views/auth/AuthView.vue'),
->>>>>>> 7c05d9e (chore: Change File infra for front)
 		},
 		{
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> eaeb1b1 (move portfolio homepage to /portfolio)
-=======
-=======
->>>>>>> af628b1 (feat: added support for auth/signup page)
-=======
->>>>>>> c80165e (fix: github issue)
-			path: '/auth/signup',
-			name: 'Sinup',
-			component: () => import('../views/auth/SignupView.vue'),
-		},
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-		{
->>>>>>> 97035c7 (chore: Fix for rebase)
-=======
->>>>>>> 7dd47b2 (fix: Fix for rebase)
-=======
->>>>>>> f54b82a (feat: callback route en cours)
-			path: '/secret',
-			name: 'secret',
-			component: () => import('../components/secrets/Secret.vue'),
+			path: '/auth/callback:token?',
+			name: 'AuthCallback',
+			component: () => import('../views/auth/AuthCallbackView.vue'),
 		},
 		{
 			path: '/portfolio',
 			name: 'portfolio',
 			component: () => import('../views/PortfolioView.vue'),
 		},
-<<<<<<< HEAD
-<<<<<<< HEAD
-		{
-			path: '/colors',
-			name: 'Colors',
-			component: () => import('../views/Colors.vue'),
-		},
-=======
->>>>>>> 7f206e2 (profile route created)
 		{
 			path: '/colors',
 			name: 'Colors',
 			component: () => import('../components/secrets/Colors.vue'),
 		},
 		{
-			path: '/exemples/websocket',
-			name: 'WebsocketExemple',
-			component: () => import('../components/exemples/WebsocketExemple.vue'),
+			path: '/secret',
+			name: 'secret',
+			component: () => import('../components/secrets/Secret.vue'),
 		},
-		{
-			path: '/exemples/p5',
-			name: 'P5Exemple',
-			component: () => import('../components/exemples/P5Exemple.vue'),
-		},
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> eaeb1b1 (move portfolio homepage to /portfolio)
-=======
->>>>>>> 7f206e2 (profile route created)
-=======
-		{
-<<<<<<< HEAD
-<<<<<<< HEAD
-			path: '/auth/callback:token?',
-			name: 'AuthCallback',
-			component: () => import('../views/AuthCallbackView.vue'),
-		},
-<<<<<<< HEAD
->>>>>>> 326d237 (chore: Fix for rebase)
-=======
->>>>>>> af628b1 (feat: added support for auth/signup page)
-=======
-=======
->>>>>>> c80165e (fix: github issue)
-		{
-<<<<<<< HEAD
-			path: '/api/oauth/callback:token',
-			name: 'OauthCallback',
-			component: () => import('../views/OauthCallbackView.vue'),
-=======
-			path: '/auth/callback:token?',
-			name: 'AuthCallback',
-			component: () => import('../views/auth/OauthCallbackView.vue'),
->>>>>>> 89f4162 (feat(front): Continue Front)
-=======
-			path: '/auth/callback:token',
-=======
-			path: '/auth/callback:token?',
->>>>>>> 7f99142 (feat: functional callback)
-			name: 'AuthCallback',
-			component: () => import('../views/AuthCallbackView.vue'),
->>>>>>> f54b82a (feat: callback route en cours)
-		},
-<<<<<<< HEAD
->>>>>>> 7711274 (fix: rework)
-=======
->>>>>>> c80165e (fix: github issue)
-=======
-		{
-			path: '/chat/',
-			name: 'chat',
-			component: () => import('../views/ChatView.vue'),
-		},
->>>>>>> 4e9a74d (fix: Fix for rebase)
 	],
 });
 

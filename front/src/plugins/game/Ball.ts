@@ -3,15 +3,7 @@ import P5 from 'p5';
 import type { Paddle } from './Paddle';
 export class Ball {
 	private spawn: P5.Vector;
-<<<<<<< HEAD
-<<<<<<< HEAD
 	vel: P5.Vector;
-=======
-	private vel: P5.Vector;
->>>>>>> 3afc756 (feat(pong): Continue responsivity)
-=======
-	vel: P5.Vector;
->>>>>>> 1f4dfd0 (feat(pong): Improve IA deplacement + add life visualation)
 	pos: P5.Vector;
 
 	constructor(
@@ -22,40 +14,35 @@ export class Ball {
 		private speed = 5,
 	) {
 		this.spawn = p5.createVector(x, y);
-		console.log('vec : ', this.spawn);
 		this.speed = speed;
 		this.r = r;
 		this.pos = this.spawn.copy();
-		this.vel = vel;
+		this.resetball();
 	}
 
-	resetball(vel: P5.Vector) {
-		this.vel = vel;
-	}
-
-	oldreset() {
+	resetball() {
 		this.pos = this.spawn.copy();
 		const angle = this.p5.random(-Math.PI / 4, Math.PI / 4);
 		this.vel = P5.Vector.fromAngle(angle, this.speed);
 		if (this.p5.random(1) > 0.5) this.vel.x *= -1;
 	}
 
-	// outOfBounds() {
-	// 	// If the ball is out of the screen,
-	// 	// return the side, otherwise return false
+	outOfBounds() {
+		// If the ball is out of the screen,
+		// return the side, otherwise return false
 
-	// 	if (this.pos.x > this.p5.width + this.r) {
-	// 		this.oldreset();
-	// 		return 'right';
-	// 	}
+		if (this.pos.x > this.p5.width + this.r) {
+			this.resetball();
+			return 'right';
+		}
 
-	// 	if (this.pos.x < -this.r) {
-	// 		this.oldreset();
-	// 		return 'left';
-	// 	}
+		if (this.pos.x < -this.r) {
+			this.resetball();
+			return 'left';
+		}
 
-	// 	return false;
-	// }
+		return false;
+	}
 
 	hit(p1: Paddle, p2: Paddle) {
 		for (const pad of [p1, p2]) {
@@ -85,8 +72,13 @@ export class Ball {
 		}
 	}
 
-	update(x: number, y: number) {
-		this.pos.set(x, y);
+	update() {
+		this.pos.add(this.vel);
+
+		if (this.pos.y + this.r >= this.p5.height || this.pos.y - this.r <= 0) {
+			this.pos.y = this.p5.constrain(this.pos.y, this.r, this.p5.height - this.r);
+			this.vel.y *= -1;
+		}
 	}
 
 	serverUpdate(pos: { x: number; y: number }, vel: { x: number; y: number }, speed: number) {

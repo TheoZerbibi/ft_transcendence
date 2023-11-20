@@ -21,27 +21,6 @@ function makeid(length: number): string {
 export default {
 	methods: {
 		redirectToOAuth() {
-<<<<<<< HEAD
-			// Redirect to your OAuth2 provider's authentication URL
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-			//window.location.href = 'http://api.intra.42.fr/oauth/authorize';
-			window.location.href = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-b23568e38139d1ec4d826848c6505cd62c143340904bbc2baef28cbf82aea190&redirect_uri=http%3A%2F%2Flocalhost%2Fapi%2Fauth%2Fcallback&response_type=code';
-
-=======
-			// if (process.env.API42_OAUTH_URL) {
-			// 	window.location.href = process.env.API42_OAUTH_URL;
-=======
->>>>>>> 3f86f7f (feat: ui elements)
-			window.location.href = 'http://api.intra.42.fr/oauth/authorize';
->>>>>>> c80165e (fix: github issue)
-=======
-			//window.location.href = 'http://api.intra.42.fr/oauth/authorize';
-			window.location.href = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-b23568e38139d1ec4d826848c6505cd62c143340904bbc2baef28cbf82aea190&redirect_uri=http%3A%2F%2Flocalhost%2Fapi%2Fauth%2Fcallback&response_type=code';
-
->>>>>>> 863eb03 (feat: hardcoding redirection)
-=======
 			const clientId = import.meta.env.VITE_API42_UID;
 			const redirectUri = import.meta.env.VITE_API42_REDIRECT_URI;
 			const responseType = 'code';
@@ -58,7 +37,6 @@ export default {
 			const query = params.toString();
 
 			window.location.href = `https://api.intra.42.fr/oauth/authorize?${query}`;
->>>>>>> 2326550 (chore: Update module dependencies)
 		},
 	},
 };
@@ -66,34 +44,6 @@ export default {
 
 <template>
 	<div>
-<<<<<<< HEAD
-		<h1>{{ "ft_transcendence" }}</h1>
-
-		<p>
-			<button> Signin with 
-				<svg width="57px" height="40px" viewBox="0 0 57 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-					<title>42 Final sigle seul</title>
-					<defs>
-						<filter id="filter-1">
-							<feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 1.000000 0"></feColorMatrix>
-						</filter>
-						<polygon id="path-2" points="0 0.204536082 31.6266585 0.204536082 31.6266585 39.9752577 0 39.9752577"></polygon>
-					</defs>
-					<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-						<g id="Home-page" transform="translate(-20.000000, -119.000000)">
-							<g id="42-Final-sigle-seul" transform="translate(0.000000, 86.000000)" filter="url(#filter-1)">
-								<g transform="translate(20.000000, 33.000000)">
-									<g id="Group-3">
-										<mask id="mask-3" fill="white">
-											<use xlink:href="#path-2"></use>
-										</mask>
-										<g id="Clip-2"></g>
-										<polyline id="Fill-1" fill="#000105" mask="url(#mask-3)" points="31.6266585 0.204536082 21.0841616 0.204536082 0 21.0969072 0 29.5538144 21.0841616 29.5538144 21.0841616 40 31.6266585 40 31.6266585 21.0969072 10.5420808 21.0969072 31.6266585 0.204536082"></polyline>
-									</g>
-									<polyline id="Fill-4" fill="#000105" points="35.3488372 10.2325581 45.5813953 0 35.3488372 0 35.3488372 10.2325581"></polyline>
-									<polyline id="Fill-5" fill="#000105" points="56.744186 10.5424969 56.744186 0 46.5118299 0 46.5118299 10.5424969 36.2790698 21.0849939 36.2790698 31.627907 46.5118299 31.627907 46.5118299 21.0849939 56.744186 10.5424969"></polyline>
-									<polyline id="Fill-6" fill="#000105" points="56.744186 21.3953488 46.5116279 31.627907 56.744186 31.627907 56.744186 21.3953488"></polyline>
-=======
 		<p>
 			<button @click="redirectToOAuth">
 				Signin with
@@ -154,59 +104,18 @@ export default {
 										fill="#000105"
 										points="56.744186 21.3953488 46.5116279 31.627907 56.744186 31.627907 56.744186 21.3953488"
 									/>
->>>>>>> c80165e (fix: github issue)
 								</g>
 							</g>
 						</g>
 					</g>
-<<<<<<< HEAD
-				</svg> 
-=======
 				</svg>
->>>>>>> c80165e (fix: github issue)
 			</button>
 		</p>
 	</div>
 </template>
 
-<<<<<<< HEAD
-<script>
-export default {
-	data() {
-		return {
-			mode: 'login', // 'login' or 'signup'
-			username: '',
-			password: '',
-			confirmPassword: '',
-		};
-	},
-	methods: {
-		switchMode() {
-			this.mode = this.mode === 'login' ? 'signup' : 'login';
-		},
-		submitForm() {
-			if (this.mode === 'login') {
-				// Handle login logic
-				console.log('Login submitted');
-			} else {
-				// Handle signup logic
-				console.log('Signup submitted');
-			}
-			// You can make API calls here to handle authentication
-		},
-	},
-};
-</script>
-
 <style scoped>
 /* Add your component-specific styles here */
-h1 {
-	color: #b8b8b8;
-}
-=======
-<style scoped>
-/* Add your component-specific styles here */
->>>>>>> c80165e (fix: github issue)
 label {
 	display: block;
 	margin-bottom: 0.5rem;

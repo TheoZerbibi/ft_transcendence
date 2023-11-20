@@ -2,7 +2,6 @@ import { defineStore } from 'pinia';
 
 export const useUser = defineStore('user', {
 	state: () => ({
-<<<<<<< HEAD
 		JWT: null as string | null,
 		login: null as string | null,
 		displayName: null as string | null,
@@ -13,10 +12,7 @@ export const useUser = defineStore('user', {
 			return state.JWT;
 		},
 		getUser: (state) => {
-<<<<<<< HEAD
-=======
 			return { login: state.login, displayName: state.displayName, avatar: state.avatar };
->>>>>>> ef81387 (feat(pong): Start Responsive)
 		},
 	},
 	actions: {
@@ -45,28 +41,11 @@ export const useUser = defineStore('user', {
 				this.avatar = undefined;
 				throw new Error(data.message);
 			}
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
-			console.log(data);
->>>>>>> ef81387 (feat(pong): Start Responsive)
-=======
-
->>>>>>> 98da990 (feat(pong): Improve Pong, fix a lot a Backend error + more frontend.)
 			this.login = data.login;
 			this.displayName = data.display_name;
 			this.avatar = data.avatar;
-=======
-		isLoggedIn: false,
-	}),
-	actions: {
-		login() {
-			this.isLoggedIn = true;
-		},
-		logout() {
-			this.isLoggedIn = false;
->>>>>>> c80165e (fix: github issue)
 		},
 	},
+	persist: true,
 });
