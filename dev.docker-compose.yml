@@ -203,6 +203,7 @@ services:
     volumes:
         - pgdata:/var/lib/postgresql/data
 <<<<<<< HEAD
+<<<<<<< HEAD
     ports:
 <<<<<<< HEAD
       - '5432:5432'
@@ -213,6 +214,10 @@ services:
     expose:
       - '5432'
 >>>>>>> 3afc756 (feat(pong): Continue responsivity)
+=======
+    ports:
+      - '5432:5432'
+>>>>>>> 6ed663d (feat(pong): Responsivity)
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
       POSTGRES_DB: ${POSTGRES_DB}

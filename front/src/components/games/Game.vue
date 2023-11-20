@@ -24,6 +24,7 @@
 			backgroundPosition: 'center center',
 			backgroundSize: 'cover',
 		}"
+		class="container"
 	>
 		<!-- <v-card color="#1d2028" class="mx-auto" max-width="500">
 >>>>>>> c7368ae (feat(pong): Front for the Pong)
@@ -118,6 +119,10 @@
 =======
 		<div v-if="isConnected">
 			<GameCanvas />
+			<v-card color="transparent" class="d-flex justify-space-around pa-0">
+				<v-img height="50" src="/game/keys/W_KEY.gif" />
+				<v-img height="50" src="/game/keys/S_KEY.gif" />
+			</v-card>
 		</div>
 	</div>
 	<Snackbar />
@@ -204,9 +209,13 @@ export default {
 
 		const backgroundList: string[] = [];
 <<<<<<< HEAD
+<<<<<<< HEAD
 		const images = import.meta.glob('/public/game/battleBackground/*.png');
 =======
 		const images = import.meta.glob('/public/battleBackground/*.png');
+=======
+		const images = import.meta.glob('/public/game/battleBackground/*.png');
+>>>>>>> 6ed663d (feat(pong): Responsivity)
 		console.log(images);
 >>>>>>> c7368ae (feat(pong): Front for the Pong)
 		for (const path in images) {
@@ -355,6 +364,7 @@ export default {
 };
 </script>
 <style scoped>
+<<<<<<< HEAD
 @font-face {
 	font-family: 'OMORI_MAIN';
 	src: url('/fonts/OMORI_GAME.ttf') format('truetype-variations');
@@ -381,4 +391,9 @@ h4 {
 	height: 100vh;
 }
 
+=======
+.container {
+	height: 100vh;
+}
+>>>>>>> 6ed663d (feat(pong): Responsivity)
 </style>
