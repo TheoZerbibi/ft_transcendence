@@ -28,6 +28,7 @@
 <<<<<<< HEAD
 		"@mdi/font": "7.3.67",
 		"@tsconfig/node18": "^18.2.2",
+<<<<<<< HEAD
 		"@types/jsdom": "^21.1.5",
 		"@types/node": "^20.9.0",
 		"@types/webfontloader": "^1.6.37",
@@ -38,16 +39,35 @@
 		"p5": "^1.8.0",
 		"pinia": "^2.1.7",
 		"pinia-plugin-persistedstate": "^3.2.0",
+=======
+		"@types/jsdom": "^21.1.4",
+		"@types/node": "^20.8.7",
+		"@types/webfontloader": "^1.6.36",
+		"@vitejs/plugin-vue": "^4.4.0",
+		"@vitejs/plugin-vue-jsx": "^3.0.2",
+		"@vue/tsconfig": "^0.4.0",
+		"gsap": "^3.12.2",
+		"p5": "^1.7.0",
+		"pinia": "^2.1.7",
+>>>>>>> 7441ac6 (chore: Update all depencies)
 		"roboto-fontface": "*",
 		"socket.io-client": "^4.7.2",
 		"vite": "^4.5.0",
 		"vite-plugin-vuetify": "^1.0.2",
+<<<<<<< HEAD
 		"volar-service-vetur": "^0.0.17",
 		"vue": "^3.3.8",
 		"vue-advanced-chat": "^2.0.7",
 		"vue-cli-plugin-vuetify": "~2.5.8",
 		"vue-router": "^4.2.5",
 		"vuetify": "^3.4.0",
+=======
+		"volar-service-vetur": "^0.0.14",
+		"vue": "^3.3.6",
+		"vue-cli-plugin-vuetify": "~2.5.8",
+		"vue-router": "^4.2.5",
+		"vuetify": "^3.3.22",
+>>>>>>> 7441ac6 (chore: Update all depencies)
 		"webfontloader": "^1.6.28"
 =======
 		"@nestjs/common": "^10.2.9",
@@ -75,6 +95,7 @@
 >>>>>>> e16901f (chore: Merge Develop)
 	},
 	"devDependencies": {
+<<<<<<< HEAD
 		"@nestjs/cli": "^10.2.1",
 		"@nestjs/schematics": "^10.0.3",
 		"@nestjs/testing": "^10.2.9",
@@ -96,6 +117,33 @@
 		"ts-node": "^10.9.1",
 		"tsconfig-paths": "^4.2.0",
 		"typescript": "^5.2.2"
+=======
+		"@rushstack/eslint-patch": "^1.5.1",
+		"@vue/eslint-config-prettier": "^8.0.0",
+		"@vue/eslint-config-typescript": "^12.0.0",
+		"@vue/test-utils": "^2.4.1",
+		"cypress": "^13.3.2",
+		"eslint": "^8.51.0",
+		"eslint-import-resolver-typescript": "^3.6.1",
+		"eslint-plugin-cypress": "^2.15.1",
+		"eslint-plugin-html": "^7.1.0",
+		"eslint-plugin-import": "^2.28.1",
+		"eslint-plugin-tsdoc": "^0.2.17",
+		"eslint-plugin-vue": "^9.17.0",
+		"eslint-plugin-vuejs-accessibility": "^2.2.0",
+		"jsdom": "^22.1.0",
+		"npm-run-all": "^4.1.5",
+		"postcss-html": "^1.5.0",
+		"prettier": "^3.0.3",
+		"start-server-and-test": "^2.0.1",
+		"stylelint": "^15.11.0",
+		"stylelint-config-recommended-scss": "^13.0.0",
+		"stylelint-config-recommended-vue": "^1.5.0",
+		"stylelint-order": "^6.0.3",
+		"typescript": "~5.2.2",
+		"vitest": "^0.34.6",
+		"vue-tsc": "^1.8.19"
+>>>>>>> 7441ac6 (chore: Update all depencies)
 	},
 	"jest": {
 		"moduleFileExtensions": [

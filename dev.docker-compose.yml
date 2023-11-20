@@ -65,6 +65,7 @@ services:
     command: sh -c "tail -f /dev/null"
     restart: always
 
+<<<<<<< HEAD
   chat:
     build:
       context: ./sockets/chat
@@ -95,6 +96,38 @@ services:
     # command: sh -c "pnpm db:pull && pnpm start:dev"
     command: sh -c "tail -f /dev/null"
     restart: always
+=======
+  # chat:
+  #   build:
+  #     context: ./sockets/chat
+  #     target: socket
+  #     dockerfile: ../../docker/node/Dockerfile
+  #   container_name: chat
+  #   ports:
+  #   - ${CHAT_SOCKET_PORT}:${CHAT_SOCKET_PORT}
+  #   volumes:
+  #     - ./sockets/chat:/home/node/app
+  #     - /home/node/app/node_modules
+  #     - /home/node/app/.pnpm-store
+  #   depends_on:
+  #     api:
+  #       condition: service_started
+  #     redis:
+  #       condition: service_healthy
+  #   environment:
+  #     REDIS_HOST: ${REDIS_HOST}
+  #     REDIS_PORT: ${REDIS_PORT}
+  #     REDIS_PASS: ${REDIS_PASS}
+  #     REDIS_URL: ${REDIS_URL}
+  #     NODE_ENV: ${NODE_ENV}
+  #     DATABASE_URL: ${DATABASE_URL}
+  #     JWT_SECRET: ${JWT_SECRET}
+  #     HOST: ${HOSTNAME}
+  #     PORT: ${CHAT_SOCKET_PORT}
+  #   command: sh -c "pnpm db:pull && pnpm start:dev"
+  #   # command: sh -c "tail -f /dev/null"
+  #   restart: always
+>>>>>>> 7441ac6 (chore: Update all depencies)
 
   api:
     build:
@@ -106,7 +139,11 @@ services:
      - ${API_PORT}:${API_PORT}
     volumes:
       - ./back:/home/node/app
+<<<<<<< HEAD
       #- /home/node/app/node_modules
+=======
+      # - /home/node/app/node_modules
+>>>>>>> 7441ac6 (chore: Update all depencies)
       - /home/node/app/.pnpm-store
     depends_on:
       postgres:
@@ -130,7 +167,11 @@ services:
       REDIS_PORT: ${REDIS_PORT}
       REDIS_PASS: ${REDIS_PASS}
       REDIS_URL: ${REDIS_URL}
+<<<<<<< HEAD
     #command: sh -c "pnpm db:deploy && pnpm start:dev"
+=======
+    # command: sh -c "pnpm db:deploy && pnpm start:dev"
+>>>>>>> 7441ac6 (chore: Update all depencies)
     command: sh -c "tail -f /dev/null"
     restart: always
 
