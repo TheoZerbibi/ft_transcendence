@@ -1,9 +1,27 @@
 <!-- SignupLogin.vue -->
 
 <script lang="ts">
+/**
+ * Generates a random string of the specified length.
+ * @param {number} length The length of the random string.
+ * @returns {string} The random string.
+ */
+function makeid(length: number): string {
+	let result = '';
+	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	const charactersLength = characters.length;
+	let counter = 0;
+	while (counter < length) {
+		result += characters.charAt(Math.floor(Math.random() * charactersLength));
+		counter += 1;
+	}
+	return result;
+}
+
 export default {
 	methods: {
 		redirectToOAuth() {
+<<<<<<< HEAD
 			// Redirect to your OAuth2 provider's authentication URL
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -23,6 +41,24 @@ export default {
 			window.location.href = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-b23568e38139d1ec4d826848c6505cd62c143340904bbc2baef28cbf82aea190&redirect_uri=http%3A%2F%2Flocalhost%2Fapi%2Fauth%2Fcallback&response_type=code';
 
 >>>>>>> 863eb03 (feat: hardcoding redirection)
+=======
+			const clientId = import.meta.env.VITE_API42_UID;
+			const redirectUri = import.meta.env.VITE_API42_REDIRECT_URI;
+			const responseType = 'code';
+			const scope = 'public';
+			const state = makeid(32);
+
+			const params = new URLSearchParams();
+			params.append('client_id', clientId);
+			params.append('redirect_uri', redirectUri);
+			params.append('response_type', responseType);
+			params.append('scope', scope);
+			params.append('state', state);
+
+			const query = params.toString();
+
+			window.location.href = `https://api.intra.42.fr/oauth/authorize?${query}`;
+>>>>>>> 2326550 (chore: Update module dependencies)
 		},
 	},
 };
