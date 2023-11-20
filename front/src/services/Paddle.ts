@@ -1,4 +1,5 @@
 import P5 from 'p5';
+import { SIDE } from './enums/Side';
 
 export class Paddle {
 	private y: number;
@@ -10,6 +11,7 @@ export class Paddle {
 	constructor(
 		private p5: any,
 		private x: number,
+		private side: SIDE,
 		ratio: number,
 	) {
 		this.x = x;
@@ -46,5 +48,13 @@ export class Paddle {
 		this.p5.noStroke();
 		this.p5.fill(255);
 		this.p5.rect(this.pos.x, this.pos.y, this.w, this.h);
+	}
+
+	getSide() {
+		return this.side;
+	}
+
+	setSide(side: SIDE) {
+		this.side = side;
 	}
 }
