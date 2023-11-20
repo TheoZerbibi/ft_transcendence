@@ -6,14 +6,10 @@ import { CreateChannelDto } from './dto/create-channel.dto';
 import { UpdateChannelDto } from './dto/update-channel.dto';
 import { User } from '@prisma/client';
 
-<<<<<<< HEAD
-import { ForbiddenException, Injectable } from '@nestjs/common';
-=======
 import {
 	BadRequestException,
 	Injectable,
 } from '@nestjs/common';
->>>>>>> 9703747 (added channel fetching dto)
 
 enum PrivilegeStatus {
 	NOTHING = -1,
@@ -110,30 +106,6 @@ export class ChannelService {
 		}
 	}
 
-<<<<<<< HEAD
-	async getChannelUser(username: string, channel_name: string) {
-		try {
-			const channel = await this.prisma.channel.findUnique({
-				where: {
-					name: channel_name,
-				},
-			});
-			if (!channel) throw new ForbiddenException("Channel don't exist");
-			//
-		} catch (e) {
-			console.log(e);
-		}
-	}
-
-	// Need to implement
-	// 	User update with dto : controller shall call kick, ban or mute route, can only be performed by higher grade channel_user
-	//	Channel deletion: Only owner can do it
-	//
-	//	Channel update: Setting, mod and delete password
-	//	Quitting channel:  if (owner need to set a new owner)
-
-	//
-=======
 	// async create(dto: CreateChannelDto, userId: number) {
 	// 			try {
 	// 				const	channel = await this.prisma.channel.create({
@@ -166,7 +138,6 @@ export class ChannelService {
 		console.log(updateChannelDto);
 		return `This action updates a #${id} channel`;
 	}
->>>>>>> 9703747 (added channel fetching dto)
 
 	// Tools : fetching user status on channel
 	// 		fetching channel by name
