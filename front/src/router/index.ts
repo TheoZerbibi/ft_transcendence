@@ -196,6 +196,7 @@ const router = createRouter({
 			name: 'AuthCallback',
 			component: () => import('../views/AuthCallbackView.vue'),
 		},
+<<<<<<< HEAD
 >>>>>>> 326d237 (chore: Fix for rebase)
 =======
 >>>>>>> af628b1 (feat: added support for auth/signup page)
@@ -225,6 +226,13 @@ const router = createRouter({
 >>>>>>> 7711274 (fix: rework)
 =======
 >>>>>>> c80165e (fix: github issue)
+=======
+		{
+			path: '/chat/',
+			name: 'chat',
+			component: () => import('../views/ChatView.vue'),
+		},
+>>>>>>> 4e9a74d (fix: Fix for rebase)
 	],
 });
 

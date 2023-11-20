@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
 	<Discord></Discord>
 	<!--
 	<v-expansion-panels>
@@ -24,5 +25,22 @@ export default {
 		ChatBox1,
 		Discord,
 	},
+=======
+<div>
+<h1>Chat App</h1>
+<v-box>
+<Chat />
+</v-box>
+</div>
+</template>
+
+<script>
+import Chat from '../components/Chat.vue'; // Adjust the path as needed
+
+export default {
+components: {
+		    Chat,
+	    },
+>>>>>>> 4e9a74d (fix: Fix for rebase)
 };
 </script>
