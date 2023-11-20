@@ -74,6 +74,7 @@
 		0 0 1em purple,
 		0 0 0.2em goldenrod;
 <<<<<<< HEAD
+<<<<<<< HEAD
 		margin: auto;
 }
 
@@ -91,6 +92,9 @@
 	font-style: italic;
 }
 =======
+=======
+		margin: 5px;
+>>>>>>> 62c6d84 (add margin for neonPolice)
 }
 
 .homeSubtitles {

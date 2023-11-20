@@ -70,6 +70,7 @@
 =======
 	<nav>
 		<p>This is a navbar to display after authentification, vertically left better?</p>
+		<!--Cf ul and li balises-->
 	</nav>
 >>>>>>> ee218da (navbar homepage html prototype)
 	<v-row align="center" justify="center" class="fill-height" id="background">
@@ -129,6 +130,7 @@
 			</v-card-actions>
 		</v-card>
 	</v-row>
+<<<<<<< HEAD
 <<<<<<< HEAD
 	<HomepageFooter></HomepageFooter>
 	<v-footer class="neonPolice footer blurred-card" alt="Footer">
@@ -454,6 +456,11 @@
 	</v-row>
 >>>>>>> f9c0ccd (homepage prototype dome)
 =======
+=======
+	<aside>
+		<p>This is an aside section</p>
+	</aside>
+>>>>>>> 62c6d84 (add margin for neonPolice)
 	<footer>
 		<p>This is a footer</p>
 		<a href="https://www.instagram.com" target="_blank">Instagram </a>
@@ -747,6 +754,8 @@ a {
 .title {
 	display: flex;
 	align-items: flex-start;
+	margin: 20px;
+	padding: 20px;
 }
 
 .teamLeader {
