@@ -72,8 +72,8 @@
 					</div>
 				</v-col>
 				<v-col cols="5">
-					<div style="position: relattive;z-index: 9999;" class="mt-16">
-						<v-img src="Cats.jpg" contain max-height="300"></v-img>
+					<div style="position: relative;z-index: 9999;" class="mt-16">
+						<v-img src="CatsRounded.png" contain max-height="300" ></v-img>
 					</div>
 				</v-col>
 				</v-row>
@@ -123,21 +123,21 @@
 					<v-row>
 						<v-col cols="12">
 							<div class="child">
-								<v-btn ico="fas fa-laptop" color=orange class="text-white"></v-btn>
+								<v-btn ico="fas fa-laptop" color=orange class="text-white" rounded></v-btn>
 								<h3 class="ml-3 mt-4">Pong game</h3>
 								<p class="text-grey ml-3 mt-4 text-caption">
 									Created by Allan Alcorn<br />released in 1972<br />by Atari
 								</p>
 							</div>
 							<div class="child">
-								<v-btn ico="fas fa-mobile-alt" color=orange class="text-white"></v-btn>
+								<v-btn ico="fas fa-mobile-alt" color=orange class="text-white" rounded></v-btn>
 								<h3 class="ml-3 mt-4">Chat</h3>
 								<p class="text-grey ml-3 mt-4 text-caption">
 									blabla<br />blabla<br />blabla
 								</p>
 							</div>
 							<div class="child">
-								<v-btn ico="fas fa-camera" color=orange class="text-white"></v-btn>
+								<v-btn ico="fas fa-camera" color=orange class="text-white" rounded></v-btn>
 								<h3 class="ml-3 mt-4">Photography</h3>
 								<p class="text-grey ml-3 mt-4 text-caption">
 									blabla<br />blabla<br />blabla
@@ -150,11 +150,11 @@
 			</v-col>
 			<v-col cols="12" sm="12" id="services">
 				<div class="d-flex justify-center mb-6">
-					<v-btn color=orange class="mr-2">All</v-btn>
-					<v-btn class="mr-2" variant="tonal">Norminet</v-btn>
-					<v-btn class="mr-2" variant="tonal">Babache</v-btn>
-					<v-btn class="mr-2" variant="tonal">Moulinet</v-btn>
-					<v-btn variant="tonal">Tylung</v-btn>
+					<v-btn color=orange class="mr-2" rounded>All</v-btn>
+					<v-btn color=orange class="mr-2" variant="tonal" rounded>Norminet</v-btn>
+					<v-btn color=orange class="mr-2" variant="tonal" rounded>Babache</v-btn>
+					<v-btn color=orange class="mr-2" variant="tonal" rounded>Moulinet</v-btn>
+					<v-btn color=orange class="mr-2" variant="tonal" rounded>Tylung</v-btn>
 				</div>
 			</v-col>
 			<v-col cols="12" class="imgHover">
@@ -172,7 +172,7 @@
 			</v-col>
 			<v-col cols="12" sm="12">
 				<div class="d-flex jusify-center mb-6">
-					<v-btn color=orange class="mt-4">Load More</v-btn>
+					<v-btn color=orange class="mt-4" rounded>Load More</v-btn>
 				</div>
 			</v-col>
 			<v-col cols="12" id="page">
@@ -203,22 +203,30 @@
 							</p>
 						</v-col>
 						<v-col cols="12" sm="4">
-							<v-btn color=orange class="mt-15">Hire us</v-btn>
+							<v-btn color=orange class="mt-15" rounded>Hire us</v-btn>
 						</v-col>
 					</v-row>
 				</div>
 			</v-col>
 			<v-col cols="12" sm="12" class="px-16" id="contact">
 				<v-row>
-					<v-col cols="12" sm="4">
+					<v-col cols="42" sm="4">
 						<div class="child">
-							<h1>Contact info.</h1>
-							<v-btn icon="fas fa-map-marker-alt" class="mt-10" variant="outlined"></v-btn><br />
-							<span class="text-caption">Positive quote</span><br />
-							<v-btn icon="fas fa-phone-alt" class="mt-10" variant="outlined"></v-btn><br />
-							<span class="text-caption">42 42 42</span><br />
-							<v-btn icon="fas fa-envelope" class="mt-10" variant="outlined"></v-btn><br />
-							<span class="text-caption">hello@akatsuki.com</span><br />
+							<h1>Contact info</h1>
+							<v-row>
+								<v-col>
+									<v-btn icon="fas fa-map-marker-alt" class="mt-10" variant="outlined"></v-btn><br />
+									<span class="text-caption">Positive quote</span>
+								</v-col>
+								<v-col>
+									<v-btn icon="fas fa-phone-alt" class="mt-10" variant="outlined"></v-btn><br />
+									<span class="text-caption">42 42 42</span>
+								</v-col>
+								<v-col>
+									<v-btn icon="fas fa-envelope" class="mt-10" variant="outlined"></v-btn><br />
+									<span class="text-caption">hello@akatsuki.com</span>
+								</v-col>
+							</v-row>
 						</div>
 					</v-col>
 					<v-col cols="12" sm="¨8">
@@ -241,14 +249,14 @@
 						</span>
 						<v-row class="mt-10">
 							<v-col cols="12" sm="6">
-								<v-text-field label="Name" persisten-hint variant="outlined"></v-text-field>
+								<v-text-field label="Name" persisten-hint variant="outlined" rounded></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6">
-								<v-text-field label="Phone No" persisten-hint variant="outlined"></v-text-field>
+								<v-text-field label="Phone No" persisten-hint variant="outlined" rounded></v-text-field>
 							</v-col>
 						</v-row>
-						<v-textarea label="Message" persisten-hint variant="outlined"></v-textarea>
-						<v-btn color=orange class="mt-2">Submit Now</v-btn>
+						<v-textarea label="Message" persisten-hint variant="outlined" rounded></v-textarea>
+						<v-btn color=orange class="mt-2" rounded>Submit Now</v-btn>
 					</v-col>
 				</v-row>
 			</v-col>
@@ -311,12 +319,23 @@ export default defineComponent({
 #background {
 	background-image: url('/src/assets/OmoriHomepageWallpaper.jpg');
 }
+<<<<<<< HEAD
 
 .homepage {
 	display: flex;
 	align-items: center;
 	flex-direction: column;
 	/* background: linear-gradient(90deg, #8360c3, #2ebf91); */
+=======
+.head{
+	position: relative;
+	text-align: center;
+	padding: 12px;
+	margin-bottom: 6px;
+	height: 400px;
+	width: 100%;
+	/* color: white; */
+>>>>>>> 61dd42e (head fixed + rounded picture)
 }
 
 .title {
@@ -325,6 +344,7 @@ export default defineComponent({
 	margin: 20px;
 	padding: 20px;
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 .teamLeader {
@@ -438,6 +458,9 @@ a {
 
 =======
 .head.after{
+=======
+.head:after{
+>>>>>>> 61dd42e (head fixed + rounded picture)
 	content: " ";
 	position: absolute;
 	top: 0;
