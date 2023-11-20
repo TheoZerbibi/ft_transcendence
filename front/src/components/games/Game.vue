@@ -23,6 +23,8 @@
 				</span>
 			</div>
 		</div>
+		<GameModal v-if="gameEnded" :isWinner="isWinner" :isLoser="isLoser" :apiData="apiData" :dialogValue="dialogVisible" />
+		<v-btn color="primary" @click="openDialog">Open Dialog</v-btn>
 		<Snackbar />
 	</main>
 </template>
@@ -35,6 +37,7 @@ import { useSnackbarStore } from '../../stores/snackbar';
 import { useUser } from '../../stores/user';
 import { useSocketStore } from '../../stores/websocket';
 import Snackbar from '../utils/Snackbar.vue';
+import GameModal from '../utils/GameModal.vue';
 
 import GameCanvas from './GameCanvas.vue';
 
@@ -42,7 +45,7 @@ const snackbarStore = useSnackbarStore();
 
 export default {
 	name: 'PongGame',
-	components: { Snackbar, GameCanvas },
+	components: { Snackbar, GameCanvas, GameModal },
 	setup() {
 		const webSocketStore = useSocketStore();
 		const userStore = useUser();
@@ -78,10 +81,15 @@ export default {
 	},
 	data() {
 		return {
+			gameEnded: false as boolean,
 			apiData: null as any,
 			gameUID: null as string | null,
 			players: [] as any[],
 			background: null as any,
+			dialogVisible: false as boolean,
+			isWinner: false as boolean,
+			isLoser: false as boolean,
+			test: 'test',
 		};
 	},
 	async beforeUnmount() {
@@ -150,16 +158,22 @@ export default {
 								this.disconnect();
 								if (!snackbarStore.snackbar)
 									snackbarStore.showSnackbar('Game is ended', 3000, 'primary');
+								this.dialogVisible = true;
+								console.log(data);
+								this.apiData = data;
+								this.gameEnded = true;
 								if (data.winner) console.log(`Winner : ${data.winner.user.login}`);
 							});
 
 							this.socket.on('game-win', () => {
 								console.log('Win!');
+								this.isWinner = true;
 								snackbarStore.showSnackbar('You win!', 3000, 'green');
 							});
 
 							this.socket.on('game-lose', () => {
 								console.log('lose!');
+								this.isLoser = true;
 								snackbarStore.showSnackbar('You lose!', 3000, 'red');
 							});
 
@@ -184,12 +198,11 @@ export default {
 	},
 	mounted() {},
 	methods: {
-		test() {
-			if (this.isConnected) {
-				this.socket.emit('session-join-test', {
-					gameUID: this.gameUID,
-				});
-			}
+		openDialog() {
+			this.gameEnded = true;
+			this.apiData = { "winner": { "user": { "id": 2, "login": "norminet", "displayName": "Norminet", "avatar": "https://preview.redd.it/sky2ka084ns11.jpg?width=640&crop=smart&auto=webp&s=a7f060f539797578a109af48a5ee75909f7661cb" }, "score": 6, "side": 1 }, "loser": { "user": { "id": 1, "login": "thzeribi", "displayName": "Theo", "avatar": "https://i.imgur.com/XXxzteU.png" }, "score": 1, "side": 0 }, "startDate": "2023-11-20T12:00:38.537Z", "endingDate": "2023-11-20T12:01:24.445Z" };
+			this.isLoser = true;
+			this.dialogVisible = true;
 		},
 	},
 };
