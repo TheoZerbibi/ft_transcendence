@@ -29,6 +29,7 @@
 		"gsap": "^3.12.2",
 		"p5": "^1.8.0",
 		"pinia": "^2.1.7",
+		"pinia-plugin-persistedstate": "^3.2.0",
 		"roboto-fontface": "*",
 		"socket.io-client": "^4.7.2",
 		"vite": "^4.5.0",

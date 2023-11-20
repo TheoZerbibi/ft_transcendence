@@ -138,7 +138,6 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		}
 		const gameUID: string = data.gameUID;
 		const userID: number = user.id;
-		console.log(data);
 		const game: IGame = this.gameService.getGame(gameUID);
 		if (!game) {
 			client.emit('game_error', 'Game Error, no game found');
@@ -159,11 +158,9 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		if (player.playerData.side === SIDE.LEFT) {
 			if (game.getPlayerBySide(SIDE.LEFT).user.login != player.user.login) return;
 			player.playerData.move(data.direction);
-			game.getPlayerBySide(SIDE.RIGHT).playerData.move(data.direction);
 		} else if (player.playerData.side === SIDE.RIGHT) {
 			if (game.getPlayerBySide(SIDE.RIGHT).user.login != player.user.login) return;
 			player.playerData.move(data.direction);
-			game.getPlayerBySide(SIDE.LEFT).playerData.move(data.direction);
 		}
 		this.server.to(game.getGameUID()).emit('player_move', {
 			p1: {

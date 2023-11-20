@@ -32,7 +32,6 @@ export default {
 
 		const isConnected = computed(() => webSocketStore.isConnected);
 		const socket = computed(() => webSocketStore.getSocket);
-
 		return {
 			isConnected,
 			socket,
@@ -87,15 +86,14 @@ export default {
 			};
 
 			/**
-			 * Function for moving the player Paddle.
+			 * Function for write score and drawing line in the center.
 			 */
 			function backdrop() {
 				if (!gameData.p1 || !gameData.p2) return;
 				p5.stroke(80);
-				p5.strokeWeight(8);
+				p5.strokeWeight(width / 200);
 
-				let dottedLength = 20;
-
+				const dottedLength = width / 100;
 				let y = dottedLength / 2;
 
 				while (y < p5.height) {
@@ -173,17 +171,13 @@ export default {
 		};
 		new P5(script);
 
-		this.socket.on('game_start', (data: any) => {
-			console.log('game_start');
+		this.socket.on('game_start', () => {
 			gameData.socket = this.socket;
 			countdownStore.setSeconds(5);
 			this.showCountdown = true;
-			console.log('Données reçues du canal game_start :', data);
 		});
 
 		this.socket.on('countdown', (data: number) => {
-			console.log('countdown');
-			console.log(data);
 			countdownStore.setSeconds(data);
 			if (data <= 0) {
 				this.showCountdown = false;
@@ -195,13 +189,13 @@ export default {
 		});
 
 		this.socket.on('game_update', (data: any) => {
-			// console.log('Données reçues du canal game_update :', data);
 			gameData.ball?.update(data.position, data.velocity, data.speed, data.radius);
 			gameData.ratio = data.ratio;
 		});
 
 		this.socket.on('player_move', (data: any) => {
 			console.log(data.p1);
+			console.log(data.p2);
 			if (data.p1) gameData.p1?.update(data.p1.position, data.p1.width, data.p1.height);
 			if (data.p2) gameData.p2?.update(data.p2.position, data.p2.width, data.p2.height);
 		});
@@ -216,13 +210,10 @@ export default {
 		});
 
 		this.socket.on('player_side', (data: any) => {
-			console.log('Données reçues du canal player_side :', data);
 			if (data.side == SIDE.LEFT) {
-				console.log('LEFT');
 				gameData.player = gameData.p1;
 				gameData.player?.setSide(SIDE.LEFT);
 			} else if (data.side == SIDE.RIGHT) {
-				console.log('RIGHT');
 				gameData.player = gameData.p2;
 				gameData.player?.setSide(SIDE.RIGHT);
 			}
