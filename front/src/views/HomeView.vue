@@ -4,6 +4,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	<!-- <header role="banner" class="site-header hide-on-overlay" data-v-9fb9646a=""> -->
 		<!-- <img class="site-header__logo" width="125" height="76" draggable="false" src="/src/assets/OmoriWallpapers/logo1.png" data-v-9fb9646a=""> -->
 			<!-- <div class="site-header__lightbulb" data-v-9fb9646a=""> -->
@@ -51,20 +52,26 @@
 =======
 	<div class="d-flex justify-center">
 		<v-card class="homepage"  variant="tonal" color="green darken-4" width="600" >
+=======
+		<v-row align="center" justify="center" class="fill-height">
+		<v-card class="homepage text-center rounded-card"  variant="tonal" color="green darken-4" width="600">
+>>>>>>> f9c0ccd (homepage prototype dome)
 			<v-card-item>	
 				<v-card-title class="title">	
 					<p class="neonPolice">Welcome to STING's ft_transcendence</p>
+					<br />
+					<br />
 				</v-card-title>
 
 				<v-img src="CatsRounded.png" contain max-height="300" ></v-img>
 
-				<v-card-subtitle >
+				<v-card-subtitle>
 					Gaëlle, Ismaël, Théo, Semiha, Noé
 				</v-card-subtitle>
 			</v-card-item>
 
 			<v-card-text>
-				This is the project
+				students of 42 paris
 			</v-card-text>
 
 			<v-card-actions>
@@ -373,7 +380,7 @@
     	  			</template>
 >>>>>>> 9c6a256 (add kittens in homepage^^)
 						<div class ="neonPolice">
-						Sign in with 42
+						Authenticate with 42
 						</div>
 				</v-btn>
 <<<<<<< HEAD
@@ -404,8 +411,12 @@
 =======
 			</v-card-actions>
 		</v-card>
+<<<<<<< HEAD
 	</div>
 >>>>>>> 9c6a256 (add kittens in homepage^^)
+=======
+	</v-row>
+>>>>>>> f9c0ccd (homepage prototype dome)
 </template>
 
 <script lang="ts">
@@ -685,9 +696,10 @@ a {
 .homepage  {
 	display: flex;
 	align-items: center;
-	/* justify-content: space-around; */
 	flex-direction: column;
-		
+}
+.rounded-card{
+    border-radius:50px;
 }
 
 .title {
