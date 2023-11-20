@@ -157,6 +157,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	<HomepageFooter></HomepageFooter>
 =======
 	<HomepageFooter />
@@ -511,10 +512,14 @@
 =======
 	<hello-world />
 >>>>>>> c80165e (fix: github issue)
+=======
+	<Footer />
+>>>>>>> 526132c (fix: Move footer in component)
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import Footer from '../components/utils/Footer.vue';
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -527,6 +532,7 @@ import NavBar from '../components/utils/NavBar.vue';
 >>>>>>> d21abb4 (changes on front)
 export default defineComponent({
 	name: 'HomeView',
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -595,6 +601,9 @@ export default defineComponent({
 		};
 	},
 >>>>>>> f5dd314 (core:feat /secret done)
+=======
+	components: { Footer },
+>>>>>>> 526132c (fix: Move footer in component)
 });
 
 <<<<<<< HEAD
