@@ -542,6 +542,7 @@
 <<<<<<< HEAD
 import Footer from '../components/utils/Footer.vue';
 import { makeid } from '../plugins/makeId';
+//import { useUser } from '../stores/user';
 
 <<<<<<< HEAD
 <<<<<<< HEAD

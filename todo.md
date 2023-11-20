@@ -6,6 +6,7 @@
 <<<<<<< HEAD
 - [] check the port (ie localhost:3000/api/auth/callback)
 <<<<<<< HEAD
+<<<<<<< HEAD
 - [x] get the user info => auth.service
 - [] onboarding if user doesn't already exist
 - [] else redirect to homepage or game
@@ -17,6 +18,9 @@
 >>>>>>> f54b82a (feat: callback route en cours)
 =======
 - [] get the user info
+=======
+- [x] get the user info => auth.service
+>>>>>>> 810a111 (feat: exploring user store)
 - [] onboarding if user doesn't already exist
 - [] else redirect to homepage or game
 - [] 2FA
