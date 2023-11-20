@@ -101,6 +101,7 @@ const router = createRouter({
 			component: () => import('../views/SignupView.vue'),
 		},
 <<<<<<< HEAD
+<<<<<<< HEAD
 		{
 >>>>>>> 97035c7 (chore: Fix for rebase)
 			path: '/secret',
@@ -151,6 +152,13 @@ const router = createRouter({
 >>>>>>> 326d237 (chore: Fix for rebase)
 =======
 >>>>>>> af628b1 (feat: added support for auth/signup page)
+=======
+		{
+			path: '/api/oauth/callback',
+			name: 'OauthCallback',
+			component: () => import('../views/OauthCallbackView.vue'),
+		},
+>>>>>>> 7711274 (fix: rework)
 	],
 });
 
