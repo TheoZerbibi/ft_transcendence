@@ -51,7 +51,7 @@
 	</v-footer>
 =======
 	<v-app id="home">
-		<NavBar></NavBar>																												// Top black bar with menu items
+		<NavBar></NavBar>
 		<v-container fluid>
 			<div class="head">
 				<v-row>
@@ -78,7 +78,7 @@
 					</v-col>
 				</v-row>
 			</div>
-			<v-col cols="12" class="mt-16" id="about">
+			<v-col cols="12" class="mt-16" id="project">
 				<div>
 					<v-row>
 						<v-col cols="12" sm="6">
@@ -88,22 +88,20 @@
 							</div>
 						</v-col>
 						<v-col cols="12" sm="6">
-							<h5 class="mt-16">About us</h5>
+							<h5 class="mt-16">ft_transcendence</h5>
 							<div style="width: 120px">
 								<v-slider color="orange" >
 								</v-slider>
 							</div>
-							<h4 class="mt-n4">We are fans of Norminet and Omori world</h4>
+							<h4 class="mt-n4">This project is about creating a website for the mighty Pong contest!</h4>
 							<p class="text-grey">
-								Vous savez, je ne crois pas qu'il y ait de bonne ou de mauvaise situation...
+								Created by Allan Alcorn, released in 1972 by Atari<br />
+								It will provide you a nice user interface, a chat, and real-time multiplayer online games!
 							</p>
 							<br />
-							<p class="text-grey">
-								Scribe c'est bien comme situation?
-							</p>
 							<router-link to="/secret" tag="v-btn">
-					            <v-btn rounded color=orange>
-									Discover best of norminet
+					            <v-btn class="text-capitalize" rounded color=orange>
+									Display the project subject
 								</v-btn>
 					        </router-link>
 
@@ -113,48 +111,64 @@
 				</div>
 			</v-col>
 			<div class="text-center mt-4">
-				<h2>What we do</h2>
+				<h2>Tools of our projects</h2>
 				<div style="width: 120px; margin: 0 auto;">
 					<v-slider color="orange"></v-slider>
 				</div>
 			</div>
-			<v-col cols="12" class="padd" id="portfolio">
+			<v-col cols="12" class="padd" id="tools">
 				<div class="first" id="project">
 					<v-row>
 						<v-col cols="12">
 							<div class="child">
-								<v-btn ico="fas fa-laptop" color=orange class="text-white" rounded></v-btn>
-								<h3 class="ml-3 mt-4">Pong game</h3>
+								<v-btn ico="fas fa-laptop" color=orange class="text-white" rounded variant="outlined"></v-btn>
+								<h3 class="ml-3 mt-4">Backend</h3>
 								<p class="text-grey ml-3 mt-4 text-caption">
-									Created by Allan Alcorn<br />released in 1972<br />by Atari
+									NestJS<br />Prisma<br />Redis<br />SocketIO
 								</p>
 							</div>
 							<div class="child">
-								<v-btn ico="fas fa-mobile-alt" color=orange class="text-white" rounded></v-btn>
+								<v-btn ico="fas fa-mobile-alt" color=orange class="text-white" rounded variant="outlined"></v-btn>
+								<h3 class="ml-3 mt-4">Frontend</h3>
+								<p class="text-grey ml-3 mt-4 text-caption">
+									Vue3<br />Vuetify<br />Vite<br />Pinia
+								</p>
+							</div>
+							<div class="child">
+								<v-btn ico="fas fa-camera" color=orange class="text-white" rounded variant="outlined"></v-btn>
+								<h3 class="ml-3 mt-4">Game</h3>
+								<p class="text-grey ml-3 mt-4 text-caption">
+									SocketIO<br />NestJS<br />Pinia<br />P5JS
+								</p>
+							</div>
+							<div class="child">
+								<v-btn ico="fas fa-camera" color=orange class="text-white" rounded variant="outlined"></v-btn>
 								<h3 class="ml-3 mt-4">Chat</h3>
 								<p class="text-grey ml-3 mt-4 text-caption">
-									blabla<br />blabla<br />blabla
+									SocketIO<br />NestJS<br /><br /><br />
 								</p>
 							</div>
 							<div class="child">
-								<v-btn ico="fas fa-camera" color=orange class="text-white" rounded></v-btn>
-								<h3 class="ml-3 mt-4">Photography</h3>
+								<v-btn ico="fas fa-camera" color=orange class="text-white" rounded variant="outlined"></v-btn>
+								<h3 class="ml-3 mt-4">Database</h3>
 								<p class="text-grey ml-3 mt-4 text-caption">
-									blabla<br />blabla<br />blabla
+									Prisma<br />Postgres<br /><br /><br />
 								</p>
 							</div>
+
 						</v-col>
 					</v-row>
 					<v-divider></v-divider>
 				</div>
 			</v-col>
-			<v-col cols="12" sm="12" id="services">
+			<v-col cols="12" sm="12" id="team">
 				<div class="d-flex justify-center mb-6">
-					<v-btn color=orange class="mr-2" rounded>All</v-btn>
-					<v-btn color=orange class="mr-2" variant="tonal" rounded>Norminet</v-btn>
-					<v-btn color=orange class="mr-2" variant="tonal" rounded>Babache</v-btn>
-					<v-btn color=orange class="mr-2" variant="tonal" rounded>Moulinet</v-btn>
-					<v-btn color=orange class="mr-2" variant="tonal" rounded>Tylung</v-btn>
+					<v-btn color=orange class="text-capitalize" variant="outlined" rounded>Starring:</v-btn>
+					<v-btn color=orange class="text-capitalize" variant="outlined" rounded >Semiha</v-btn>
+					<v-btn color=orange class="text-capitalize" variant="outlined" rounded>Théo</v-btn>
+					<v-btn color=orange class="text-capitalize" variant="outlined" rounded>Ismaël</v-btn>
+					<v-btn color=orange class="text-capitalize" variant="outlined" rounded>Noémi</v-btn>
+					<v-btn color=orange class="text-capitalize" variant="outlined" rounded>Gaëlle</v-btn>
 				</div>
 			</v-col>
 			<v-col cols="12" class="imgHover">
@@ -269,6 +283,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+<<<<<<< HEAD
+=======
+// Components
+import NavBar from '../components/utils/NavBar.vue';
+// import FooterBar from '../components/utils/FooterBar.vue';
+
+>>>>>>> d21abb4 (changes on front)
 export default defineComponent({
 	name: 'HomeView',
 <<<<<<< HEAD
@@ -303,8 +324,13 @@ export default defineComponent({
 	},
 >>>>>>> ff1c0ad (video at 21:38)
 	components: {
+<<<<<<< HEAD
 		NavBar	
 >>>>>>> 9e87f6d (tuto)
+=======
+		NavBar,
+		// FooterBar
+>>>>>>> d21abb4 (changes on front)
 	},
 });
 
