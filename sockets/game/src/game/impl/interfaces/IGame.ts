@@ -15,6 +15,8 @@ export interface IGame {
 	looser: IUser;
 >>>>>>> 7cff344 (refactor(pong): Fix EndGame condition (Crash when player refresh))
 
+	removeGame: () => void;
+
 	isInProgress: () => boolean;
 	isEnded: () => boolean;
 

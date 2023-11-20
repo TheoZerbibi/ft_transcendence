@@ -106,12 +106,20 @@ export class GameService {
 		if (!gameUser) return;
 		game.removeUser(gameUser);
 
+<<<<<<< HEAD
 		if (!gameUser.isSpec && !game.isEnded()) {
 			gameUser.isConnected = false;
+=======
+		if (!gameUser.isSpec) {
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 			if (game.getUsersInGame().length === 0) {
 				game.removeGame();
 				return null;
 			} else {
+<<<<<<< HEAD
+=======
+				gameUser.isConnected = false;
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 				const winnerSide: SIDE = gameUser.playerData.side === SIDE.LEFT ? SIDE.RIGHT : SIDE.LEFT;
 				const winner: IUser = game.getPlayerBySide(winnerSide);
 				game.winGame(winner, gameUser);

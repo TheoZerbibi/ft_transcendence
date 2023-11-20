@@ -14,8 +14,13 @@ export const useSocketStore = defineStore('webSocket', {
 		getSocket: (state) => state.socket,
 	},
 	actions: {
+<<<<<<< HEAD
 		async connect(jwt: string, port: number): Promise<Socket> {
 			const serverURL = `http://${import.meta.env.VITE_HOST}:${port}`;
+=======
+		async connect(jwt: string, port: any): Promise<Socket> {
+			const serverURL = `http://${import.meta.env.VITE_HOST}:4000`;
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 			if (!this.isConnected) {
 				this.socket = await new Promise((resolve, reject) => {
 					const socket = io(serverURL, {

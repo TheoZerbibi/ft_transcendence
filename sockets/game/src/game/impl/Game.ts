@@ -257,5 +257,4 @@ export class Game implements IGame {
 			}
 		}, 1);
 	}
-
 }

@@ -12,6 +12,10 @@ export const useUser = defineStore('user', {
 			return state.JWT;
 		},
 		getUser: (state) => {
+<<<<<<< HEAD
+=======
+			return { login: state.login, displayName: state.displayName, avatar: state.avatar };
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 		},
 	},
 	actions: {
@@ -40,7 +44,11 @@ export const useUser = defineStore('user', {
 				this.avatar = undefined;
 				throw new Error(data.message);
 			}
+<<<<<<< HEAD
 
+=======
+			console.log(data);
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 			this.login = data.login;
 			this.displayName = data.display_name;
 			this.avatar = data.avatar;

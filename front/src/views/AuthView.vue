@@ -22,7 +22,11 @@ export default {
 		const userStore = useUser();
 		const jwtInput = ref('');
 
+<<<<<<< HEAD
 		const JWT: any = computed(() => userStore.getJWT);
+=======
+		const JWT = computed(() => userStore.getJWT);
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 		const user = computed(() => userStore.getUser);
 
 		const setJWT = (jwt: string) => {
@@ -36,5 +40,12 @@ export default {
 			setJWT,
 		};
 	},
+<<<<<<< HEAD
+=======
+	mounted() {
+		console.log(this.JWT);
+		console.log(this.user);
+	},
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 };
 </script>

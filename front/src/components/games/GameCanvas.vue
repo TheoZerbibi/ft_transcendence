@@ -1,6 +1,7 @@
 <template>
 	<v-container class="d-flex align-center justify-center">
 		<div id="app">
+<<<<<<< HEAD
 			<div v-if="waitingOpp">
 				<span class="d-flex align-center justify-center" min-height="100%">
 					<h4>Waiting for a opponant</h4>
@@ -91,6 +92,27 @@
 					</div>
 				</div>
 				</div>
+=======
+			<v-card color="transparent" theme="dark">
+				<div class="d-flex justify-space-between align-center">
+					<!-- Ajout de la classe align-center -->
+					<div class="mr-auto">
+						<v-avatar class="avatar-responsive">
+							<v-img :src="userData.leftPlayer.avatar" />
+						</v-avatar>
+						<h2>{{ userData.leftPlayer.name }}</h2>
+					</div>
+					<div>
+						<h1 class="title">Versus</h1>
+					</div>
+					<div class="ml-auto">
+						<v-avatar class="avatar-responsive">
+							<v-img :src="userData.rightPlayer.avatar" />
+						</v-avatar>
+						<h2>{{ userData.rightPlayer.name }}</h2>
+					</div>
+				</div>
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 			</v-card>
 			<div id="game-canvas" />
 	</div>
@@ -139,18 +161,25 @@ export default {
 	data() {
 		return {
 			showCountdown: false,
+<<<<<<< HEAD
 			waitingOpp: true,
+=======
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 			userData: {
 				leftPlayer: {
 					name: '',
 					avatar: '',
+<<<<<<< HEAD
 					cadre: '/game/UI/cadres/cadre0.png',
 					relaseEnergy: false,
 					isDead: false,
+=======
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 				},
 				rightPlayer: {
 					name: 'AI',
 					avatar: 'https://cdn-icons-png.flaticon.com/512/4529/4529980.png',
+<<<<<<< HEAD
 					cadre: '/game/UI/cadres/cadre0.png',
 					relaseEnergy: false,
 					isDead: false,
@@ -162,6 +191,17 @@ export default {
 				leftUser: false,
 				rightUser: false,
 			},
+=======
+				},
+			},
+		};
+	},
+	beforeMount() {
+		console.log(this.user);
+		this.userData.leftPlayer = {
+			name: this.user.displayName,
+			avatar: this.user.avatar,
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 		};
 	},
 	beforeMount() {
@@ -358,11 +398,124 @@ export default {
 				}
 			};
 
+<<<<<<< HEAD
 			new P5(script);
 		});
 		this.socket.on('game-start', async (data: any) => {
 			await p5jsReadyPromise;
 			this.waitingOpp = false;
+=======
+			p5.setup = () => {
+				if (!cDiv) return;
+				width = cDiv.offsetWidth;
+				height = cDiv.offsetWidth / 2 - 200;
+				const canvas = p5.createCanvas(width, height);
+				canvas.parent('game-canvas');
+
+				gameData.ball = new Ball(p5, width / 2, height / 2, 10);
+				gameData.leftUser = new Paddle(p5, 20, height / 2 - 50, 10, 100, SIDE.LEFT);
+				gameData.leftUser.setUser(gameData.user.displayName, gameData.user.avatar);
+				gameData.rightUser = new Paddle(p5, width - 30, height / 2 - 50, 10, 100, SIDE.RIGHT);
+			};
+
+			p5.draw = () => {
+				p5.background(51);
+				movePaddles();
+				backdrop();
+				if (!gameData.leftUser || !gameData.rightUser || !gameData.ball) return;
+				gameData.ball.outOfBounds();
+				if (gameData.go) gameData.ball.update();
+				gameData.ball.hit(gameData.leftUser, gameData.rightUser);
+				gameData.leftUser.show();
+				gameData.rightUser.show();
+				gameData.ball.show();
+			};
+
+			/**
+			 * Function for write score and drawing line in the center.
+			 */
+			function backdrop() {
+				if (!gameData.leftUser || !gameData.rightUser) return;
+				p5.stroke(80);
+				p5.strokeWeight(width / 200);
+
+				const dottedLength = width / 100;
+				let y = dottedLength / 2;
+
+				while (y < p5.height) {
+					p5.line(p5.width / 2, y, p5.width / 2, y + dottedLength);
+					y += dottedLength * 2;
+				}
+
+				const _r = width / 1736;
+				const _size = 100 * _r;
+				p5.textFont(retroFont);
+				p5.textSize(_size);
+				p5.noStroke();
+				p5.fill(80);
+
+				p5.textAlign(p5.RIGHT, p5.TOP);
+				p5.text(gameData.leftUser.score, width / 2 - textOffsetX, textOffsetY);
+
+				p5.textAlign(p5.LEFT);
+				p5.text(gameData.rightUser.score, width / 2 + textOffsetX, textOffsetY);
+			}
+
+			p5.windowResized = () => {
+				if (!cDiv || !gameData.ball || !gameData.leftUser || !gameData.rightUser) return;
+				const oldWidth: number = width;
+				const oldHeight: number = height;
+				width = cDiv.offsetWidth;
+				height = cDiv.offsetWidth / 2;
+				p5.resizeCanvas(width, height);
+				gameData.ball.resizeUpdate(width, height, oldWidth, oldHeight);
+				gameData.leftUser.resizeUpdate(height, width, oldWidth, oldHeight);
+				gameData.rightUser.resizeUpdate(height, width, oldWidth, oldHeight);
+			};
+
+			/**
+			 * Function for moving the player Paddle.
+			 */
+			function movePaddles() {
+				if (!gameData.ball || !gameData.socket) return;
+				if (!gameData.player || !gameData.start) {
+					localMovePaddles();
+					return;
+				}
+
+				if (p5.keyIsDown(87)) {
+					gameData.socket.emit('player-move', {
+						gameUID: gameData.gameUID,
+						direction: DIRECTION.DOWN,
+					});
+				}
+
+				if (p5.keyIsDown(83)) {
+					gameData.socket.emit('player-move', {
+						gameUID: gameData.gameUID,
+						direction: DIRECTION.UP,
+					});
+				}
+			}
+
+			/**
+			 * Function for moving the player Paddle in local.
+			 */
+			function localMovePaddles() {
+				if (!gameData.ball || !gameData.leftUser || gameData.start) return;
+				if (p5.keyIsDown(87)) {
+					gameData.leftUser.move(-5);
+				}
+
+				if (p5.keyIsDown(83)) {
+					gameData.leftUser.move(5);
+				}
+			}
+		};
+		new P5(script);
+
+		this.socket.on('game-start', () => {
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 			gameData.socket = this.socket;
 			gameData.go = false;
 			gameData.waiting = true;
@@ -401,14 +554,38 @@ export default {
 			}
 		});
 
+<<<<<<< HEAD
 		this.socket.on('player-side', async (data: any) => {
 			await p5jsReadyPromise;
+=======
+		this.socket.on('game-update', (data: any) => {
+			gameData.ball?.serverUpdate(data.position, data.velocity, data.speed);
+		});
+
+		this.socket.on('player-moved', (data: any) => {
+			if (data.leftUser)
+				gameData.leftUser?.update(data.leftUser.position, data.leftUser.width, data.leftUser.height);
+			if (data.rightUser)
+				gameData.rightUser?.update(data.rightUser.position, data.rightUser.width, data.rightUser.height);
+		});
+
+		this.socket.on('game-score', (data: any) => {
+			gameData.leftUser?.setPoint(data.leftUser);
+			gameData.rightUser?.setPoint(data.rightUser);
+		});
+
+		this.socket.on('player-side', (data: any) => {
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 			if (data.side == SIDE.LEFT) {
 				gameData.player = gameData.leftUser;
 				if (!gameData.player) {
 					this.socket.disconnect();
 					console.error('Player is null');
+<<<<<<< HEAD
 					return this.$router.push({ name: 'GameCreator' });
+=======
+					return;
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 				}
 				gameData.player.setSide(SIDE.LEFT);
 			} else if (data.side == SIDE.RIGHT) {
@@ -416,14 +593,22 @@ export default {
 				if (!gameData.player) {
 					this.socket.disconnect();
 					console.error('Player is null');
+<<<<<<< HEAD
 					return this.$router.push({ name: 'GameCreator' });
+=======
+					return;
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 				}
 				gameData.player.setSide(SIDE.RIGHT);
 			}
 			if (!gameData.player) {
 				this.socket.disconnect();
 				console.error('Player is null');
+<<<<<<< HEAD
 				return this.$router.push({ name: 'GameCreator' });
+=======
+				return;
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 			}
 			console.log(data);
 			gameData.player.update(data.position);
@@ -557,6 +742,7 @@ html {
 	overflow: hidden;
 }
 
+<<<<<<< HEAD
 .cadre-responsive {
 	width: 6vw;
 	height: 8vw;
@@ -583,21 +769,33 @@ html {
 }
 .dead {
 	filter: grayscale(100%);
+=======
+.avatar-responsive {
+	width: 5vw;
+	height: 5vw;
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 }
 
 .align-center {
 	align-items: center;
 }
 
+<<<<<<< HEAD
 .versus {
 	font-family: 'OMORI_DISTURBED', sans-serif;
 	font-size: 4.5vw;
+=======
+h1 {
+	font-family: 'OMORI_DISTURBED';
+	font-size: 3.5vw;
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 	text-align: center;
 	color: white;
 	text-shadow:
 		1px 1px 2px plum,
 		0 0 1em purple,
 		0 0 0.2em goldenrod;
+<<<<<<< HEAD
 	position: absolute;
 	top: 50%;
 	transform: translateY(-50%);
@@ -635,10 +833,24 @@ h4 {
 	text-align: center;
 	color: white;
 	line-height: 1;
+=======
+	margin: auto;
+}
+
+h2 {
+	font-family: 'OMORI_MAIN';
+	font-size: xx-large;
+	text-align: center;
+	color: white;
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 	text-shadow:
 		1px 1px 2px plum,
 		0 0 1em purple,
 		0 0 0.2em goldenrod;
+<<<<<<< HEAD
+=======
+	margin: auto;
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 }
 
 canvas {

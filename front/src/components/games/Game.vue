@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
 	<main>
 		<div
 			v-if="apiData"
@@ -10,6 +11,80 @@
 			class="container d-flex align-center justify-center"
 		>
 			<div>
+=======
+	<v-container>
+		<div v-if="apiData">
+			<!-- <v-card color="#1d2028" class="mx-auto" max-width="500">
+				<v-card-title class="d-flex align-center justify-center" :style="{ backgroundColor: '#191b22' }">
+					<p>Game info</p>
+				</v-card-title>
+				<v-card-text class="px-5">
+					<span>GameUID : </span>
+					<span class="font-weight-bold">
+						{{ apiData.uid }}
+					</span>
+					<br />
+					<span>Creation Date : </span>
+					<span class="font-weight-bold">
+						{{ apiData.created_at }}
+					</span>
+					<br />
+					<div v-if="apiData.started_at">
+						<span>Started Date : </span>
+						<span class="font-weight-bold">
+							{{ apiData.started_at }}
+						</span>
+					</div>
+					<div v-if="apiData.end_at">
+						<span>Ended Date : </span>
+						<span class="font-weight-bold">
+							{{ apiData.end_at }}
+						</span>
+					</div>
+					<span>
+						Socket Connection :
+						<span :style="{ color: `${isConnected ? '#00E676' : '#D50000'}` }" class="font-weight-bold">
+							{{ isConnected }}
+						</span>
+					</span>
+				</v-card-text>
+			</v-card>
+
+			<v-card v-if="players.length > 0" color="#272b35" class="mx-auto mt-3" max-width="500">
+				<v-card-title class="d-flex align-center justify-center" :style="{ backgroundColor: '#21242d' }">
+					<span>Players in Game</span>
+				</v-card-title>
+				<v-card-text class="px-5" :style="{ backgroundColor: 'transparent' }">
+					<v-list dense :style="{ backgroundColor: 'transparent', color: 'white' }">
+						<v-list-item v-for="player in players" :key="player.id">
+							{{ player.id }} -
+							<v-avatar>
+								<v-img :src="player.avatar" />
+							</v-avatar>
+							{{ player.displayName }} :
+							<span
+								:style="{ color: `${player.isSpec ? '#00E676' : '#D50000'}` }"
+								class="font-weight-bold"
+							>
+								Spectator
+							</span>
+						</v-list-item>
+					</v-list>
+				</v-card-text>
+			</v-card> -->
+			<!-- <v-btn
+				v-if="isConnected"
+				color="primary"
+				dark
+				absolute
+				class="d-flex mx-auto align-center justify-center mt-3"
+				top:style="{left: '50%', transform:'translateX(-50%)'}"
+				@click="test()"
+			>
+				Connect FakeUser
+			</v-btn> -->
+			<div v-if="isConnected">
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 				<GameCanvas />
 				<span class="d-flex justify-center align-center ga-10">
 					<span class="d-flex justify-center ga-1">
@@ -134,6 +209,7 @@ export default {
 				return response.json();
 			})
 			.then(async (data) => {
+<<<<<<< HEAD
 				if (data.end_at) {
 					this.apiData = data;
 					snackbarStore.showSnackbar('Game is ended', 3000, 'primary');
@@ -148,12 +224,26 @@ export default {
 									if (data[i].user) this.players.push(data[i].user);
 								}
 							});
+=======
+				await this.connect(this.JWT, import.meta.env.VITE_GAME_SOCKET_PORT)
+					.then(() => {
+						this.socketListen();
+						this.socket.on('session-info', (data: any) => {
+							this.players = [];
+							for (let i = 0; i < data.length; i++) {
+								console.log(data);
+								data[i].user.isSpec = data[i].isSpec;
+								if (data[i].user) this.players.push(data[i].user);
+							}
+						});
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 
 							this.socket.on('game-start', (data: any) => {
 								snackbarStore.showSnackbar('Game Starting !', 3000, 'green');
 								this.apiData.started_at = data.startDate;
 							});
 
+<<<<<<< HEAD
 							this.socket.on('game-end', (data: any) => {
 								this.disconnect();
 								if (!snackbarStore.snackbar)
@@ -164,6 +254,13 @@ export default {
 								this.gameEnded = true;
 								if (data.winner) console.log(`Winner : ${data.winner.user.login}`);
 							});
+=======
+						this.socket.on('game-end', (data: any) => {
+							this.disconnect();
+							// if (!snackbarStore.snackbar) snackbarStore.showSnackbar('Game is ended', 3000, 'primary');
+							if (data.winner) console.log(`Winner : ${data.winner.user.login}`);
+						});
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 
 							this.socket.on('game-win', () => {
 								console.log('Win!');
@@ -187,10 +284,21 @@ export default {
 							snackbarStore.showSnackbar(error, 3000, 'red');
 							return;
 						});
+<<<<<<< HEAD
 					this.apiData = data;
 					if (data.isSpec) snackbarStore.showSnackbar('Connecting to the game session.', 3000, 'orange');
 					else snackbarStore.showSnackbar('Joining game session.', 3000, 'green');
 				}
+=======
+					})
+					.catch((error: any) => {
+						snackbarStore.showSnackbar(error, 3000, 'red');
+						return;
+					});
+				this.apiData = data;
+				if (data.isSpec) snackbarStore.showSnackbar('Connecting to the game session.', 3000, 'orange');
+				else snackbarStore.showSnackbar('Joining game session.', 3000, 'green');
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 			})
 			.catch((error) => {
 				console.error(error);
@@ -198,11 +306,20 @@ export default {
 	},
 	mounted() {},
 	methods: {
+<<<<<<< HEAD
 		openDialog() {
 			this.gameEnded = true;
 			this.apiData = { "winner": { "user": { "id": 2, "login": "norminet", "displayName": "Norminet", "avatar": "https://preview.redd.it/sky2ka084ns11.jpg?width=640&crop=smart&auto=webp&s=a7f060f539797578a109af48a5ee75909f7661cb" }, "score": 6, "side": 1 }, "loser": { "user": { "id": 1, "login": "thzeribi", "displayName": "Theo", "avatar": "https://i.imgur.com/XXxzteU.png" }, "score": 1, "side": 0 }, "startDate": "2023-11-20T12:00:38.537Z", "endingDate": "2023-11-20T12:01:24.445Z" };
 			this.isLoser = true;
 			this.dialogVisible = true;
+=======
+		test() {
+			if (this.isConnected) {
+				this.socket.emit('session-join-test', {
+					gameUID: this.gameUID,
+				});
+			}
+>>>>>>> ef81387 (feat(pong): Start Responsive)
 		},
 	},
 };
