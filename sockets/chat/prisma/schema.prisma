@@ -51,12 +51,13 @@ model friends {
 }
 
 model games {
-  id         Int       @id @unique @default(autoincrement())
-  uid        String    @unique
-  is_private Boolean   @default(false)
-  created_at DateTime  @default(now())
-  started_at DateTime?
-  end_at     DateTime?
+  id           Int            @id @unique @default(autoincrement())
+  uid          String         @unique
+  is_private   Boolean        @default(false)
+  created_at   DateTime       @default(now())
+  started_at   DateTime?
+  end_at       DateTime?
+  game_players game_players[]
 }
 
 model users {
@@ -120,9 +121,23 @@ model direct_messages {
   channel_users                    channel_users[]
   friends_friends_friend_idTousers friends[]       @relation("friends_friend_idTousers")
   friends_friends_user_idTousers   friends[]       @relation("friends_user_idTousers")
+  game_players                     game_players[]
 }
 
+<<<<<<< HEAD
 /// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
 // model gamePlayers {
 // }
 >>>>>>> 977750d (chore: Fix prisma.schema)
+=======
+model game_players {
+  player_id Int
+  game_id   Int
+  is_win    Boolean?
+  is_spec   Boolean?
+  games     games    @relation(fields: [game_id], references: [id], onDelete: Cascade)
+  users     users    @relation(fields: [player_id], references: [id])
+
+  @@id([player_id, game_id])
+}
+>>>>>>> 8ad44c4 (chore: Fix prisma.schema)
