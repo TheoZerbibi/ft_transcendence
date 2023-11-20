@@ -72,6 +72,7 @@
 	},
 	"devDependencies": {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		"@fortawesome/fontawesome-free": "^6.4.2",
 		"@mdi/font": "7.3.67",
 =======
@@ -88,6 +89,9 @@
 		"@fortawesome/fontawesome-free": "^6.4.2",
 		"@mdi/font": "7.2.96",
 >>>>>>> 976f2cd (chore: update all module dependencies)
+=======
+		"@fortawesome/fontawesome-free": "^6.4.2",
+>>>>>>> a3e984a (home black bar)
 		"@rushstack/eslint-patch": "^1.5.1",
 		"@types/p5": "^1.7.3",
 		"@vue/eslint-config-prettier": "^8.0.0",
