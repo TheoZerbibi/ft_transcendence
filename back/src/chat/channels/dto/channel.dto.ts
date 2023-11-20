@@ -28,6 +28,11 @@ export class ChannelListElemDto {
 	@IsString()
 	// eslint-disable-next-line
 	name: string;
+
+	@ApiProperty()
+	@IsDate()
+	// eslint-disable-next-line
+	updated_at: Date;
 }
 
 export class ChannelSettingsDto {

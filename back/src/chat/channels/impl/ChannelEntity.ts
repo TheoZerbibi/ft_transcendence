@@ -16,7 +16,6 @@ export class ChannelEntity implements IChannel {
 	constructor(channel: Channel, channelUsers: ChannelUser[], channelMessages?: ChannelMessage[]) {
 		this.id = channel.id;
 		this.name = channel.name;
-		this.is_pwd = channel.password ? true : false;
 		this.password = channel.password ? channel.password : '';
 		this.isPublic = channel.public;
 		this.created_at = channel.created_at;

@@ -52,7 +52,7 @@ export class ChannelService {
 	// Discover channels : list of public channels
 	async getAllPublicChannels(): Promise<ChannelListElemDto[] | null> {
 		const publicChannels = this.localChannels.filter((channel) => channel.getIsPublic());
-		return publicChannels.map((channel) => ({ name: channel.getName() }));
+		return publicChannels.map((channel) => ({ name: channel.getName(), updated_at: channel.getUpdatedAt() }));
 	}
 
 	// List joined channels
@@ -65,7 +65,7 @@ export class ChannelService {
 			const channelUser = channel.getUsers().find((channelUser) => channelUser.getUserId() === user.id);
 			return !channelUser.isBanned();
 		});
-		return allowedChannels.map((channel) => ({ name: channel.getName() }));
+		return allowedChannels.map((channel) => ({ name: channel.getName(), updated_at: channel.getUpdatedAt() }));
 	}
 
 	/********************************** Channel Access *********************************/
