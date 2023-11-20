@@ -23,10 +23,14 @@ export default {
 		const jwtInput = ref('');
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		const JWT: any = computed(() => userStore.getJWT);
 =======
 		const JWT = computed(() => userStore.getJWT);
 >>>>>>> ef81387 (feat(pong): Start Responsive)
+=======
+		const JWT: any = computed(() => userStore.getJWT);
+>>>>>>> c7368ae (feat(pong): Front for the Pong)
 		const user = computed(() => userStore.getUser);
 
 		const setJWT = (jwt: string) => {

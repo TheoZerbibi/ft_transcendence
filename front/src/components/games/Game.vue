@@ -1,5 +1,6 @@
 <template>
 <<<<<<< HEAD
+<<<<<<< HEAD
 	<main>
 		<div
 			v-if="apiData"
@@ -15,6 +16,17 @@
 	<v-container>
 		<div v-if="apiData">
 			<!-- <v-card color="#1d2028" class="mx-auto" max-width="500">
+=======
+	<div
+		v-if="apiData"
+		:style="{
+			backgroundImage: `url(${background})`,
+			backgroundPosition: 'center center',
+			backgroundSize: 'cover',
+		}"
+	>
+		<!-- <v-card color="#1d2028" class="mx-auto" max-width="500">
+>>>>>>> c7368ae (feat(pong): Front for the Pong)
 				<v-card-title class="d-flex align-center justify-center" :style="{ backgroundColor: '#191b22' }">
 					<p>Game info</p>
 				</v-card-title>
@@ -72,7 +84,7 @@
 					</v-list>
 				</v-card-text>
 			</v-card> -->
-			<!-- <v-btn
+		<!-- <v-btn
 				v-if="isConnected"
 				color="primary"
 				dark
@@ -83,6 +95,7 @@
 			>
 				Connect FakeUser
 			</v-btn> -->
+<<<<<<< HEAD
 			<div v-if="isConnected">
 >>>>>>> ef81387 (feat(pong): Start Responsive)
 				<GameCanvas />
@@ -102,6 +115,13 @@
 		<v-btn color="primary" @click="openDialog">Open Dialog</v-btn>
 		<Snackbar />
 	</main>
+=======
+		<div v-if="isConnected">
+			<GameCanvas />
+		</div>
+	</div>
+	<Snackbar />
+>>>>>>> c7368ae (feat(pong): Front for the Pong)
 </template>
 
 <script lang="ts">
@@ -161,10 +181,13 @@ export default {
 			gameUID: null as string | null,
 			players: [] as any[],
 			background: null as any,
+<<<<<<< HEAD
 			dialogVisible: false as boolean,
 			isWinner: false as boolean,
 			isLoser: false as boolean,
 			test: 'test',
+=======
+>>>>>>> c7368ae (feat(pong): Front for the Pong)
 		};
 	},
 	async beforeUnmount() {
@@ -180,12 +203,20 @@ export default {
 		snackbarStore.hideSnackbar();
 
 		const backgroundList: string[] = [];
+<<<<<<< HEAD
 		const images = import.meta.glob('/public/game/battleBackground/*.png');
+=======
+		const images = import.meta.glob('/public/battleBackground/*.png');
+		console.log(images);
+>>>>>>> c7368ae (feat(pong): Front for the Pong)
 		for (const path in images) {
 			backgroundList.push(path);
 		}
 		this.background = backgroundList[Math.floor(Math.random() * backgroundList.length)];
+<<<<<<< HEAD
 		this.background = this.background.replace('/public', '');
+=======
+>>>>>>> c7368ae (feat(pong): Front for the Pong)
 
 		const requestOptions = {
 			method: 'POST',
