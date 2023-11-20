@@ -11,41 +11,7 @@
 <script>
 export default {
 	name: 'ChannelList',
-	data() {
-		return {
-			channels: [], // to store the channels
-		};
-	},
-	beforeMount() {
-		this.fetchChannels();
-	},
-	mounted() {},
-	methods: {
-		async fetchChannels() {
-		try {
-			const response = await fetch(
-				`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/joined`,
-				{
-					method: 'GET',
-					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${JWT}`,
-						'Access-Control-Allow-Origin': '*',
-					},
-				}
-			);
-			if (response.ok) {
-				const data = await response.json();
-				this.channels = data; // store the response in channels
-				console.log(channels);
-			} else {
-				console.error('Failed to fetch channels');
-			}
-		} catch (error) {
-			console.error(error);
-		}
-	},	
-	}
+	
 };
 </script>
 
