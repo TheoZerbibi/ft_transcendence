@@ -20,6 +20,7 @@ import { users } from '@prisma/client';
 import { SIDE } from './engine/enums/Side';
 import { PlayerData } from './engine/PlayerData';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { instrument } from '@socket.io/admin-ui';
 
 @WebSocketGateway({
 	cors: {
@@ -173,8 +174,12 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		});
 	}
 
-	public afterInit() {
-		return this.logger.log('Init');
+	afterInit() {
+		instrument(this.server, {
+			auth: false,
+			mode: 'development',
+			namespaceName: '/game',
+		});
 	}
 
 	public handleDisconnect(client: Socket): void {
