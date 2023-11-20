@@ -3,6 +3,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Body, Controller, HttpCode, HttpStatus, Post, Get, UseGuards, Req, Res } from '@nestjs/common';
 =======
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
@@ -30,6 +31,9 @@ import { AuthGuard } from '@nestjs/passport';
 >>>>>>> 2433f86 (fix: rework)
 =======
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+=======
+import { Body, Controller, HttpCode, HttpStatus, Post, Redirect, Get, Req, Res } from '@nestjs/common';
+>>>>>>> 76ed767 (feat: sign  with 42 redirection)
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -47,6 +51,7 @@ export class AuthController {
 		return this.authService.signup(dto);
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -86,6 +91,14 @@ export class AuthController {
 >>>>>>> 2326550 (chore: Update module dependencies)
 =======
 >>>>>>> a0d2e7f (fix: callback controller rework)
+=======
+	@Get('oauth/callback')
+	async redirectFromOAuth(@Req() req, @Res() res) {
+		const token = await this.authService.signup(req.user);
+		res.redirect(`${process.env.API42_REDIRECT_URI}?token=${token}`);
+	}
+
+>>>>>>> 76ed767 (feat: sign  with 42 redirection)
 	@Post('signin')
 	@HttpCode(HttpStatus.OK)
 	@ApiOperation({ summary: 'Log as user.' })
