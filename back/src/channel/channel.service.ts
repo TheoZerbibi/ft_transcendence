@@ -307,6 +307,31 @@ export class ChannelService {
 	// 		fetching channel by name
 	// 		fetching user by name
 	// 		fetching channel_user by channel and user
+	//Need to end implementing User modding
+
+
+	async modChannel(dto: UpdateChannelDto,  me: User)
+	{
+
+		const isOwner: boolean = await this.isOwner(me, dto.name);
+
+		if (!isOwner) throw new ForbiddenException('You are not authorized to operate on this channel');
+
+		const channel = await this.prisma.channel.update({
+			where: {
+					id: dto.id,
+			},
+			data: {
+				...dto,
+			},
+
+		});
+		if (!channel) return null;// Do things accordingly
+
+		return channel;
+	}
+
+	// Utils
 	async getPrivilegesLvl(user: User, channel_name: string) : Promise<PrivilegeStatus | null>
 	{
 		const channelDto = await this.getChannel(channel_name);

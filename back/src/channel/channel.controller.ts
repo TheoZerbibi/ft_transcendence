@@ -3,14 +3,13 @@ import {
 	Post,
 	Controller,
 	Get,
-	//BadRequestException,
 	Param,
 	UseGuards,
 	//ClassSerializerInterceptor,
 	BadRequestException,
 	Patch,
 	//UseInterceptors,
-	//Delete,
+	Delete,
 } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard';
 import { ChannelService } from './channel.service';
@@ -20,6 +19,7 @@ import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ForbiddenException } from '@nestjs/common';
 import { ChannelDto, ChannelUserDto } from './dto/channel.dto';
+import { UpdateChannelDto, UpdateChannelUserDto } from './dto/update-channel.dto';
 //import { UserService } from '../user/user.service';
 //import { UpdateChannelDto } from './dto/update-channel.dto';
 
@@ -93,21 +93,16 @@ export class ChannelController {
 	}
 
 
-	//Get all msg in a channel (for debbugging purpose only)
-	@Get(':channel/msg')
-	@UseGuards(JwtGuard) // Needed to access user attribute
-	@ApiOperation({ summary: 'Get all accessible channel user' })
-	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async getChannelMsg()
-	
-
-	@Get('allUser')
-	@UseGuards(JwtGuard) // Needed to access user attribute
-	@ApiOperation({ summary: 'Get all accessible channel user' })
-	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async allUsers() {
-		return this.channelService.getAllUser();
-	}
+//	@Get(':channel/user')
+//	@UseGuards(JwtGuard) // Needed to access user attribute
+//	@ApiOperation({ summary: 'retrieve user of channel' })
+//	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
+//	async	allChannelUsers(@GetUser() user: User, @Param('channel') channel_name: string): Promise<ChannelUser>
+//	{
+//		const channel: ChannelDto | undefined = await this.channelService.getChannel(channel_name);
+//		if (!channel) throw new BadRequestException('Channel don\'t exist\n');
+//		return  await this.channelService.getChannelUser(user, channel.name);
+//	}
 
 <<<<<<< HEAD
 
@@ -133,10 +128,9 @@ export class ChannelController {
 	//@Get('create')
 	@ApiOperation({ summary: 'mod Channel' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async modChannel(@Body() createChannelDto: CreateChannelDto, @GetUser() user: User) {
-		console.log(createChannelDto);
-		console.log(user);
-		return null;
+	async modChannel(@Body() dto: UpdateChannelDto, @GetUser() me: User) {
+
+		return await this.channelService.modChannel(dto, me);
 	}
 
 =======
@@ -152,16 +146,21 @@ export class ChannelController {
 	@ApiOperation({ summary: 'Get all accessible channel' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
 <<<<<<< HEAD
+<<<<<<< HEAD
 	updateUser(@GetUser() user: User, @Param('user') target: string, @Param('mod') mod: string)
 =======
 	updateUser(@Body() dto: updateChannelUserDto, @GetUser() user: User, @Param('user') target: string)
 >>>>>>> dd0b860 (fix: Fix for rebase)
+=======
+	updateUser(@Body() dto: UpdateChannelUserDto, @GetUser() user: User): Promise<boolean>
+>>>>>>> 8b07d1f (fix: Fix for rebase)
 	{
 		if (mod !== "kick" && mod !== "mute" && mod !== "ban") throw new ForbiddenException(mod + ': Unknown channel moderation on a user');
 
 		return null;
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 	//POST MESSAGE
@@ -179,4 +178,64 @@ export class ChannelController {
 	//	remove(@Param('channel') name: string) {
 	//	return this.channelService.remove(+name);
 	//}
+=======
+
+	@Get('public')
+	@UseGuards(JwtGuard) // Needed to access user attribute
+	@ApiOperation({ summary: 'Get all public channel' })
+	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
+	async public()
+	{
+		return null;
+	}
+	
+
+	// Get all channel where there is a channel User attached to it
+	@Get('subscribed')
+	@UseGuards(JwtGuard) // Needed to access user attribute
+	@ApiOperation({ summary: 'Get all channel i subscribed to' })
+	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
+	async subscribed(@GetUser() me: User): Promise<ChannelUser>
+	{
+		return null;
+	}
+
+	@Post('join')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'Join a channel' })
+	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
+	async join(@GetUser() me: User, @Body() dto: ChannelDto): Promise<ChannelUser | null>
+	{
+		return null;
+	}
+
+	//Get all msg in a channel: if you are banned you can't access it
+	@Get('msg')
+	@UseGuards(JwtGuard) // Needed to access user attribute
+	@ApiOperation({ summary: 'Get all accessible channel user' })
+	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
+	async getChannelMsg(@GetUser() me: User, @Body() channel: ChannelDto): Promise<ChannelMessage[] | null>
+	{
+		return null;
+	}
+
+	@Delete('delete')
+	@UseGuards(JwtGuard) // Needed to access user attribute
+	@ApiOperation({ summary: 'Delete Channel' })
+	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
+	async delete(@GetUser() me: User, @Body() channel: ChannelDto): Promise<boolean>
+	{
+		return false;
+	}
+
+	//Delete channel User of me.id and channel_id:id
+	@Delete('leave')
+	@UseGuards(JwtGuard) // Needed to access user attribute
+	@ApiOperation({ summary: 'Get all accessible channel user' })
+	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
+	async leave(@GetUser() me: User, @Body() channel: ChannelDto): Promise<boolean>
+	{
+		return false;
+	}
+>>>>>>> 8b07d1f (fix: Fix for rebase)
 }

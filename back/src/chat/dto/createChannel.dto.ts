@@ -50,6 +50,13 @@ export class ChannelUserDto {
 	is_owner: boolean;
 }
 
+export class joinChannelDto extends ChannelUserDto {
+	@ApiProperty()
+	@IsString()
+	@IsOptional()
+	chan_password: string;
+}
+
 export class messageDto{
 
 	@ApiProperty()
