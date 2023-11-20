@@ -162,9 +162,20 @@ export default defineComponent({
 >>>>>>> 3b9f6f4 (clean files)
 =======
 	<header>
-		<h1>This is the profile page</h1>
-		<v-btn class="neonPolice" @click="$router.push('chat')">Chat &#129418;</v-btn>
+		<h1 class="neonPolice" color=ẅhite>This is the profile page</h1>
 	</header>
+	<main>
+		<section>
+			<v-container class="profileHome">
+				<v-card>
+					<v-btn class="neonPolice" @click="$router.push('chat')">Chat &#129418;</v-btn>
+				</v-card>
+				<v-card>Card 1</v-card>
+				<v-card>Card 2</v-card>
+				<v-card>Card 3</v-card>
+			</v-container>
+		</section>
+	</main>
 	<nav>
 		<p>This is a navbar to display after authentification, vertically left better?</p>
 		<!--Cf ul and li balises-->
@@ -190,35 +201,15 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.homepage {
-	display: flex;
+.profileHome{
+	display:flex;
+	flex-direction: row;
+	justify-content: space-around;
+	height: 600px;
 	align-items: center;
-	flex-direction: column;
-	background: linear-gradient(90deg, #8360c3, #2ebf91);
-}
-
-.title {
-	display: flex;
-	align-items: flex-start;
-	margin: 20px;
-	padding: 20px;
-}
-
-.teamLeader {
-	font-weight: bold;
-	color: darkmagenta;
-}
-
-#authButton:hover {
-	/* box-shadow: 6px 6px 0px rgba(0, 0, 0);  Button with shadow non gradient*/
-	box-shadow: 6px 6px 25px rgba(0, 0, 0, 0.5);
-	border: double;
-}
-
-.auth:hover {
-	color: darkmagenta;
 }
 </style>
+<<<<<<< HEAD
 
 <script></script>
 
@@ -233,3 +224,5 @@ export default defineComponent({
 =======
 <style></style>
 >>>>>>> 3b9f6f4 (clean files)
+=======
+>>>>>>> 4790b5f (container boxes prottotype in profile page)
