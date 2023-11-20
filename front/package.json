@@ -67,6 +67,7 @@
 		"webfontloader": "^1.6.28"
 	},
 	"devDependencies": {
+<<<<<<< HEAD
 		"@fortawesome/fontawesome-free": "^6.4.2",
 		"@mdi/font": "7.3.67",
 =======
@@ -78,6 +79,11 @@
 	},
 	"devDependencies": {
 >>>>>>> e3b6b2e (fix(Frontend): Downgrade version (Build error))
+=======
+
+		"@fortawesome/fontawesome-free": "^6.4.2",
+		"@mdi/font": "7.2.96",
+>>>>>>> 976f2cd (chore: update all module dependencies)
 		"@rushstack/eslint-patch": "^1.5.1",
 		"@types/p5": "^1.7.3",
 		"@vue/eslint-config-prettier": "^8.0.0",

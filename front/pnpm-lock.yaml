@@ -450,7 +450,13 @@ importers:
         specifier: ^1.6.28
         version: 1.6.28
     devDependencies:
+<<<<<<< HEAD
 >>>>>>> e3b6b2e (fix(Frontend): Downgrade version (Build error))
+=======
+      '@fortawesome/fontawesome-free':
+        specifier: ^6.4.2
+        version: 6.4.2
+>>>>>>> 976f2cd (chore: update all module dependencies)
       '@rushstack/eslint-patch':
         specifier: ^1.5.1
         version: 1.5.1
@@ -1277,6 +1283,12 @@ packages:
   /@eslint/js@8.53.0:
     resolution: {integrity: sha512-Kn7K8dx/5U6+cT1yEhpX1w4PCSg0M+XyRILPgvwcEBjerFWCwQj5sbr3/VmxqV0JGHCBCzyd6LxypEuehypY1w==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+
+  /@fortawesome/fontawesome-free@6.4.2:
+    resolution: {integrity: sha512-m5cPn3e2+FDCOgi1mz0RexTUvvQibBebOUlUlW0+YrMjDTPkiJ6VTKukA1GRsvRw+12KyJndNjj0O4AgTxm2Pg==}
+    engines: {node: '>=6'}
+    requiresBuild: true
+    dev: true
 
   /@hapi/hoek@9.3.0:
     resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}
