@@ -100,24 +100,18 @@ model users {
 >>>>>>> 8ad44c4 (chore: Fix prisma.schema)
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 6c47f89 (suite tuto to fix)
 model game_players {
   player_id Int
   game_id   Int
   is_win    Boolean?
   is_spec   Boolean?
-<<<<<<< HEAD
   score     Int      @default(0)
-=======
->>>>>>> 6c47f89 (suite tuto to fix)
   games     games    @relation(fields: [game_id], references: [id], onDelete: Cascade)
   users     users    @relation(fields: [player_id], references: [id])
 
   @@id([player_id, game_id])
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 
@@ -174,3 +168,5 @@ model game_players {
   @@id([player_id, game_id])
 }
 >>>>>>> 6c47f89 (suite tuto to fix)
+=======
+>>>>>>> c830bb2 (fix(Frontend): Merge Conflict)
