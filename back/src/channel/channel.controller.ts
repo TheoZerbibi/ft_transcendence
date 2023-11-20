@@ -38,36 +38,12 @@ export class ChannelController {
 		return this.channelService.create(createChannelDto, id);
 	}
 
-	@Get('test')
-	@UseGuards(JwtGuard) // Needed to access user attribute
-	@ApiOperation({ summary: 'Create channel' })
-	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async	test()
-	{
-		return this.channelService.test();
-	}	
-
-	@Get('user')
-	@UseGuards(JwtGuard) // Needed to access user attribute
-	@ApiOperation({ summary: 'fetch all user' })
-	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async	user()
-	{
-		return this.channelService.findAll();
-	}	
-
 	@Get('all')
 	@UseGuards(JwtGuard) // Needed to access user attribute
-	@ApiOperation({ summary: 'Create channel' })
+	@ApiOperation({ summary: 'FetchAllChannel' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
 	async all() {
 		return await this.channelService.findAll();
-	}
-
-	@Get(':channel/users')
-	async getChannelUsers(@GetUser() user: User, @Param('channel') channel_name: string)
-	{
-		return await this.channelService.getChannelUsers(user, channel_name);
 	}
 
 	@Get(':name')
@@ -76,6 +52,13 @@ export class ChannelController {
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
 	async fetch(@Param('name') channel_name: string) {
 		return this.channelService.getChannel(channel_name);
+	}
+
+
+	@Get(':channel/users')
+	async getChannelUsers(@GetUser() user: User, @Param('channel') channel_name: string)
+	{
+		return await this.channelService.getChannelUsers(user, channel_name);
 	}
 
 	@Get('allUser')

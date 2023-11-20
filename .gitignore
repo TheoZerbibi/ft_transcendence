@@ -2,9 +2,13 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=yarn,visualstudiocode,node
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *.vim
 =======
 >>>>>>> c80165e (fix: github issue)
+=======
+*.vim
+>>>>>>> 977cbef (fix: Fix for rebase)
 ### Node ###
 # Logs
 logs
