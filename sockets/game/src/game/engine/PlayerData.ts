@@ -5,6 +5,7 @@ import { constrain } from './utils/MathUtils';
 import { DIRECTION } from './enums/Direction';
 
 export class PlayerData implements IPlayerData {
+	private moveSpeed: number = 5;
 	pos: Vector;
 	w: number;
 	h: number;
@@ -27,21 +28,17 @@ export class PlayerData implements IPlayerData {
 		this.h = h;
 	}
 
+	setMoveSpeed(speed: number): void {
+		this.moveSpeed = speed;
+	}
+
 	move(direction: DIRECTION) {
-		if (direction === DIRECTION.UP) this.pos.y += 5;
-		else if (direction === DIRECTION.DOWN) this.pos.y -= 5;
+		if (direction === DIRECTION.UP) this.pos.y += this.moveSpeed;
+		else if (direction === DIRECTION.DOWN) this.pos.y -= this.moveSpeed;
 		this.pos.y = constrain(this.pos.y, 0, this.height - this.h);
 	}
 
 	addPoint() {
 		this.score++;
-	}
-
-	move(direction: number) {
-		if (direction === 1) {
-			if (this.pos.y > 0) this.pos.y -= 10;
-		} else if (direction === 2) {
-			if (this.pos.y + this.h < this.height) this.pos.y += 10;
-		}
 	}
 }

@@ -430,6 +430,7 @@ export default {
 		});
 
 		this.socket.on('game-update', (data: any) => {
+			// console.log(data);
 			gameData.ball?.serverUpdate(data.position, data.velocity, data.speed);
 			gameData.waiting = false;
 		});
@@ -728,3 +729,4 @@ canvas {
 	 right: -2px;
 }
 </style>
+../../plugins/Paddle
