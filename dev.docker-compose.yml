@@ -17,14 +17,18 @@ services:
     depends_on:
       api:
         condition: service_started
-      game:
-        condition: service_started
+      # game:
+        # condition: service_started
       # chat:
+<<<<<<< HEAD
 <<<<<<< HEAD
       #   condition: service_started
 =======
         # condition: service_started
 >>>>>>> c9c7a2b (halloween colors)
+=======
+        # condition: service_started
+>>>>>>> baf17ac (chore: Fix for rebase)
     environment:
       NODE_ENV: ${NODE_ENV}
       VITE_HOST: ${HOSTNAME}
@@ -38,36 +42,36 @@ services:
     command: sh -c "tail -f /dev/null"
     restart: always
 
-  game:
-    build:
-      context: ./sockets/game
-      target: socket
-      dockerfile: ../../docker/node/Dockerfile
-    container_name: game
-    ports:
-    - ${GAME_SOCKET_PORT}:${GAME_SOCKET_PORT}
-    volumes:
-      - ./sockets/game:/home/node/app
-      # - /home/node/app/node_modules
-      - /home/node/app/.pnpm-store
-    depends_on:
-      api:
-        condition: service_started
-      redis:
-        condition: service_healthy
-    environment:
-      REDIS_HOST: ${REDIS_HOST}
-      REDIS_PORT: ${REDIS_PORT}
-      REDIS_PASS: ${REDIS_PASS}
-      REDIS_URL: ${REDIS_URL}
-      NODE_ENV: ${NODE_ENV}
-      DATABASE_URL: ${DATABASE_URL}
-      JWT_SECRET: ${JWT_SECRET}
-      HOST: ${HOSTNAME}
-      PORT: ${GAME_SOCKET_PORT}
-    # command: sh -c "pnpm db:pull && pnpm start:dev"
-    command: sh -c "tail -f /dev/null"
-    restart: always
+  # game:
+  #   build:
+  #     context: ./sockets/game
+  #     target: socket
+  #     dockerfile: ../../docker/node/Dockerfile
+  #   container_name: game
+  #   ports:
+  #   - ${GAME_SOCKET_PORT}:${GAME_SOCKET_PORT}
+  #   volumes:
+  #     - ./sockets/game:/home/node/app
+  #     - /home/node/app/node_modules
+  #     - /home/node/app/.pnpm-store
+  #   depends_on:
+  #     api:
+  #       condition: service_started
+  #     redis:
+  #       condition: service_healthy
+  #   environment:
+  #     REDIS_HOST: ${REDIS_HOST}
+  #     REDIS_PORT: ${REDIS_PORT}
+  #     REDIS_PASS: ${REDIS_PASS}
+  #     REDIS_URL: ${REDIS_URL}
+  #     NODE_ENV: ${NODE_ENV}
+  #     DATABASE_URL: ${DATABASE_URL}
+  #     JWT_SECRET: ${JWT_SECRET}
+  #     HOST: ${HOSTNAME}
+  #     PORT: ${GAME_SOCKET_PORT}
+  #   command: sh -c "pnpm db:pull && pnpm start:dev"
+  #   # command: sh -c "tail -f /dev/null"
+  #   restart: always
 
 <<<<<<< HEAD
 <<<<<<< HEAD
