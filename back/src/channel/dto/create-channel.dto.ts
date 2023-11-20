@@ -38,3 +38,14 @@ export class CreateChannelUserDto {
 	// eslint-disable-next-line
 	is_owner: boolean;
 }
+
+export class CreateChannelMessageDto {
+	@ApiProperty()
+	@IsNumber()
+	channel_id: number;
+
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	content: string;
+}

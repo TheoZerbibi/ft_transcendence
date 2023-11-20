@@ -49,3 +49,14 @@ export class ChannelUserDto {
 	// eslint-disable-next-line
 	is_owner: boolean;
 }
+
+export class messageDto{
+
+	@ApiProperty()
+	@IsString()
+	content: string;
+
+	@ApiProperty()
+	@IsNumber()
+	channel_user_id: number;
+}
