@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Body, Controller, HttpCode, HttpStatus, Post, Get, UseGuards, Req, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
@@ -18,6 +19,12 @@ import { AuthDto } from './dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 >>>>>>> 2433f86 (fix: rework)
+=======
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { AuthService } from './auth.service';
+import { AuthDto } from './dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+>>>>>>> 755e714 (fix(back): Revert Auth module)
 
 @Controller('auth')
 @ApiTags('Authentication')
@@ -31,6 +38,7 @@ export class AuthController {
 		return this.authService.signup(dto);
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -66,4 +74,12 @@ export class AuthController {
 	// 	return this.authService.login(dto);
 	// }
 >>>>>>> 2433f86 (fix: rework)
+=======
+	@Post('signin')
+	@HttpCode(HttpStatus.OK)
+	@ApiOperation({ summary: 'Log as user.' })
+	async signin(@Body() dto: AuthDto) {
+		return this.authService.signin(dto);
+	}
+>>>>>>> 755e714 (fix(back): Revert Auth module)
 }

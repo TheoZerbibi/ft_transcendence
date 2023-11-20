@@ -92,10 +92,9 @@ export class GameService {
 		spec: boolean = false,
 	): Promise<GamePlayerDto | undefined> {
 		try {
-			console.log(user);
 			const gamePlayer: GamePlayerDto = await this.prisma.gamePlayer.create({
 				data: {
-					player_id: user.userId,
+					player_id: user.id,
 					game_id: game.id,
 					is_spec: spec,
 					is_win: false,

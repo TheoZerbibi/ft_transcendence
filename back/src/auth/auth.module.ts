@@ -1,4 +1,4 @@
-/* import { Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
@@ -10,6 +10,7 @@ import { JwtStrategy } from './strategy';
 	providers: [AuthService, JwtStrategy],
 })
 export class AuthModule {}
+<<<<<<< HEAD
  */
 // auth.module.ts
 import { Module } from '@nestjs/common';
@@ -48,3 +49,5 @@ import { AuthController } from './auth.controller';
 	exports: [PassportModule, JwtModule],
 })
 export class AuthModule {}
+=======
+>>>>>>> 755e714 (fix(back): Revert Auth module)
