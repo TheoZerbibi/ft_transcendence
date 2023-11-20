@@ -866,5 +866,12 @@ a {
 >>>>>>> 66803a1 (shadow and color change when hover auth button)
 =======
 
+<<<<<<< HEAD
 >>>>>>> 027b4cc (core:feat homepage almost done)
+=======
+a {
+	color:black;
+}
+
+>>>>>>> 65f5147 (footer in black police)
 </style>
