@@ -102,6 +102,7 @@ importers:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         specifier: ^20.8.7
         version: 20.8.7
 =======
@@ -116,10 +117,15 @@ importers:
         specifier: ^20.8.10
         version: 20.8.10
 >>>>>>> 402fe16 (chore: Update module depencies)
+=======
+        specifier: ^20.9.0
+        version: 20.9.0
+>>>>>>> 160e18e (chore: Update module depencies)
       '@types/webfontloader':
-        specifier: ^1.6.36
-        version: 1.6.36
+        specifier: ^1.6.37
+        version: 1.6.37
       '@vitejs/plugin-vue':
+<<<<<<< HEAD
         specifier: ^4.4.0
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -141,6 +147,10 @@ importers:
 >>>>>>> 402fe16 (chore: Update module depencies)
 =======
         version: 4.4.0(vite@4.5.0)(vue@3.3.8)
+=======
+        specifier: ^4.4.1
+        version: 4.4.1(vite@4.5.0)(vue@3.3.8)
+>>>>>>> 160e18e (chore: Update module depencies)
       '@vitejs/plugin-vue-jsx':
         specifier: ^3.0.2
         version: 3.0.2(vite@4.5.0)(vue@3.3.8)
@@ -246,6 +256,7 @@ importers:
       vite:
         specifier: ^4.5.0
 <<<<<<< HEAD
+<<<<<<< HEAD
         version: 4.5.0(@types/node@20.8.8)
       vite-plugin-vuetify:
         specifier: ^1.0.2
@@ -319,9 +330,12 @@ importers:
 =======
         version: 4.5.0(@types/node@20.8.10)
 >>>>>>> 402fe16 (chore: Update module depencies)
+=======
+        version: 4.5.0(@types/node@20.9.0)
+>>>>>>> 160e18e (chore: Update module depencies)
       vite-plugin-vuetify:
         specifier: ^1.0.2
-        version: 1.0.2(vite@4.5.0)(vue@3.3.8)(vuetify@3.3.23)
+        version: 1.0.2(vite@4.5.0)(vue@3.3.8)(vuetify@3.4.0)
       volar-service-vetur:
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -345,6 +359,7 @@ importers:
         specifier: ^4.2.5
         version: 4.2.5(vue@3.3.8)
       vuetify:
+<<<<<<< HEAD
         specifier: ^3.3.23
 <<<<<<< HEAD
         version: 3.3.23(typescript@5.2.2)(vite-plugin-vuetify@1.0.2)(vue@3.3.7)
@@ -355,6 +370,10 @@ importers:
 =======
         version: 3.3.23(typescript@5.2.2)(vite-plugin-vuetify@1.0.2)(vue@3.3.8)
 >>>>>>> 6469717 (chore: Update node module version)
+=======
+        specifier: ^3.4.0
+        version: 3.4.0(typescript@5.2.2)(vite-plugin-vuetify@1.0.2)(vue@3.3.8)
+>>>>>>> 160e18e (chore: Update module depencies)
       webfontloader:
         specifier: ^1.6.28
         version: 1.6.28
@@ -370,8 +389,8 @@ importers:
         specifier: ^1.5.1
         version: 1.5.1
       '@types/p5':
-        specifier: ^1.7.2
-        version: 1.7.2
+        specifier: ^1.7.3
+        version: 1.7.3
       '@vue/eslint-config-prettier':
         specifier: ^8.0.0
 <<<<<<< HEAD
@@ -453,6 +472,7 @@ importers:
         version: 2.4.1(vue@3.3.8)
       cypress:
 <<<<<<< HEAD
+<<<<<<< HEAD
         specifier: ^13.3.3
         version: 13.3.3
 >>>>>>> 2b99e9b (chore: Update some modules versions)
@@ -460,6 +480,10 @@ importers:
         specifier: ^13.4.0
         version: 13.4.0
 >>>>>>> 402fe16 (chore: Update module depencies)
+=======
+        specifier: ^13.5.0
+        version: 13.5.0
+>>>>>>> 160e18e (chore: Update module depencies)
       eslint:
         specifier: ^8.53.0
         version: 8.53.0
@@ -4340,7 +4364,7 @@ packages:
   /@types/jsdom@21.1.5:
     resolution: {integrity: sha512-sBK/3YjS3uuPj+HzZyhB4GGTnFmk0mdyQfhzZ/sqs9ciyG41QJdZZdwcPa6OfW97OTNTwl5tBAsfEOm/dui9pQ==}
     dependencies:
-      '@types/node': 20.8.10
+      '@types/node': 20.9.0
       '@types/tough-cookie': 4.0.3
       parse5: 7.1.2
     dev: false
@@ -4360,8 +4384,8 @@ packages:
     resolution: {integrity: sha512-t3rNFBgJRugIhackit2mVcLfF6IRc0JE4oeizPQL8Zrm8n2WY/0wOdpOPhdtG0V9Q2TlW/axbF1MJ6z+Yj/kKQ==}
     dev: true
 
-  /@types/node@20.8.10:
-    resolution: {integrity: sha512-TlgT8JntpcbmKUFzjhsyhGfP2fsiz1Mv56im6enJ905xG1DAYesxJaeSbGqQmAw8OWPdhyJGhGSQGKRNJ45u9w==}
+  /@types/node@20.9.0:
+    resolution: {integrity: sha512-nekiGu2NDb1BcVofVcEKMIwzlx4NjHlcjhoxxKBNLtz15Y1z7MYf549DFvkHSId02Ax6kGwWntIBPC3l/JZcmw==}
     dependencies:
       undici-types: 5.26.5
 
@@ -4369,8 +4393,8 @@ packages:
     resolution: {integrity: sha512-lqa4UEhhv/2sjjIQgjX8B+RBjj47eo0mzGasklVJ78UKGQY1r0VpB9XHDaZZO9qzEFDdy4MrXLuEaSmPrPSe/A==}
     dev: true
 
-  /@types/p5@1.7.2:
-    resolution: {integrity: sha512-39WkTu/2aQyYVSyBEIZb7XTE6t1sZtHskes4ZOlilY5hqWKR+xlx5VUWS66QE2EORJWYLiHfaPcEQCfDIdlWaA==}
+  /@types/p5@1.7.3:
+    resolution: {integrity: sha512-sYeos5Zbb5dx4jp5uDnZDtW3St6+9RtLCi7n2Rl6Ok2a5ofRIWDbXEigl++ppqgAyB20S8czlrrrmzLS1AwJPA==}
     dev: true
 
   /@types/semver@7.5.3:
@@ -4389,15 +4413,15 @@ packages:
     resolution: {integrity: sha512-THo502dA5PzG/sfQH+42Lw3fvmYkceefOspdCwpHRul8ik2Jv1K8I5OZz1AT3/rs46kwgMCe9bSBmDLYkkOMGg==}
     dev: false
 
-  /@types/webfontloader@1.6.36:
-    resolution: {integrity: sha512-zi18nVXGF9m7GFqWCJHZvu1Hxzcsr7B+FFExY9cbuOzq60sqOiaDW1X1BUoDUwQaXxWaiDYXOgFHnlsnSvPasw==}
+  /@types/webfontloader@1.6.37:
+    resolution: {integrity: sha512-/rX4xIG7E4pvkCcXfuZklgb3cwnD3WGLi5DUg0tfBvlklo5qfVom0XiDFonp1styeEGWoXuv1dMQHmEt0cZysA==}
     dev: false
 
   /@types/yauzl@2.10.1:
     resolution: {integrity: sha512-CHzgNU3qYBnp/O4S3yv2tXPlvMTq0YWSTVg2/JYLqWZGHwwgJGAwd00poay/11asPq8wLFwHzubyInqHIFmmiw==}
     requiresBuild: true
     dependencies:
-      '@types/node': 20.8.10
+      '@types/node': 20.9.0
     dev: true
     optional: true
 
@@ -4545,20 +4569,20 @@ packages:
       '@babel/core': 7.23.0
       '@babel/plugin-transform-typescript': 7.22.15(@babel/core@7.23.0)
       '@vue/babel-plugin-jsx': 1.1.5(@babel/core@7.23.0)
-      vite: 4.5.0(@types/node@20.8.10)
+      vite: 4.5.0(@types/node@20.9.0)
       vue: 3.3.8(typescript@5.2.2)
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /@vitejs/plugin-vue@4.4.0(vite@4.5.0)(vue@3.3.8):
-    resolution: {integrity: sha512-xdguqb+VUwiRpSg+nsc2HtbAUSGak25DXYvpQQi4RVU1Xq1uworyoH/md9Rfd8zMmPR/pSghr309QNcftUVseg==}
+  /@vitejs/plugin-vue@4.4.1(vite@4.5.0)(vue@3.3.8):
+    resolution: {integrity: sha512-HCQG8VDFDM7YDAdcj5QI5DvUi+r6xvo9LgvYdk7LSkUNwdpempdB5horkMSZsbdey9Ywsf5aaU8kEPw9M5kREA==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 4.5.0(@types/node@20.8.10)
+      vite: 4.5.0(@types/node@20.9.0)
       vue: 3.3.8(typescript@5.2.2)
     dev: false
 
@@ -4843,6 +4867,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /@vue/typescript@1.8.20(typescript@5.2.2):
     resolution: {integrity: sha512-F0XX1wK71Fo9ewtzLSCSo5dfOuwKrSi/dR2AlI00iTJ4Bfk0wq1BNTRgnlvfx4kz/vQovaGXqwpIkif14W9KrA==}
     dependencies:
@@ -4862,6 +4887,9 @@ packages:
 =======
   /@vuetify/loader-shared@1.7.1(vue@3.3.8)(vuetify@3.3.23):
 >>>>>>> 6469717 (chore: Update node module version)
+=======
+  /@vuetify/loader-shared@1.7.1(vue@3.3.8)(vuetify@3.4.0):
+>>>>>>> 160e18e (chore: Update module depencies)
     resolution: {integrity: sha512-kLUvuAed6RCvkeeTNJzuy14pqnkur8lTuner7v7pNE/kVhPR97TuyXwBSBMR1cJeiLiOfu6SF5XlCYbXByEx1g==}
     peerDependencies:
       vue: ^3.0.0
@@ -4884,8 +4912,12 @@ packages:
 >>>>>>> 402fe16 (chore: Update module depencies)
 =======
       vue: 3.3.8(typescript@5.2.2)
+<<<<<<< HEAD
       vuetify: 3.3.23(typescript@5.2.2)(vite-plugin-vuetify@1.0.2)(vue@3.3.8)
 >>>>>>> 6469717 (chore: Update node module version)
+=======
+      vuetify: 3.4.0(typescript@5.2.2)(vite-plugin-vuetify@1.0.2)(vue@3.3.8)
+>>>>>>> 160e18e (chore: Update module depencies)
     dev: false
 
   /@webassemblyjs/ast@1.11.6:
@@ -5729,6 +5761,7 @@ packages:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /cypress@13.3.2:
     resolution: {integrity: sha512-ArLmZObcLC+xxCp7zJZZbhby9FUf5CueLej9dUM4+5j37FTS4iMSgHxQLDu01PydFUvDXcNoIVRCYrHHxD7Ybg==}
 =======
@@ -5739,6 +5772,10 @@ packages:
   /cypress@13.4.0:
     resolution: {integrity: sha512-KeWNC9xSHG/ewZURVbaQsBQg2mOKw4XhjJZFKjWbEjgZCdxpPXLpJnfq5Jns1Gvnjp6AlnIfpZfWFlDgVKXdWQ==}
 >>>>>>> 402fe16 (chore: Update module depencies)
+=======
+  /cypress@13.5.0:
+    resolution: {integrity: sha512-oh6U7h9w8wwHfzNDJQ6wVcAeXu31DlIYlNOBvfd6U4CcB8oe4akawQmH+QJVOMZlM42eBoCne015+svVqdwdRQ==}
+>>>>>>> 160e18e (chore: Update module depencies)
     engines: {node: ^16.0.0 || ^18.0.0 || >=20.0.0}
     hasBin: true
     requiresBuild: true
@@ -9214,7 +9251,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 20.8.10
+      '@types/node': 20.9.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: false
@@ -22991,6 +23028,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /vite-node@0.34.6(@types/node@20.9.0):
 =======
   /vite-node@0.34.6(@types/node@20.8.7):
@@ -23004,6 +23042,9 @@ packages:
 =======
   /vite-node@0.34.6(@types/node@20.8.10):
 >>>>>>> 402fe16 (chore: Update module depencies)
+=======
+  /vite-node@0.34.6(@types/node@20.9.0):
+>>>>>>> 160e18e (chore: Update module depencies)
     resolution: {integrity: sha512-nlBMJ9x6n7/Amaz6F3zJ97EBwR2FkzhBRxF5e+jE6LA3yi6Wtc2lyTij1OnDMIr34v5g/tVQtsVAzhT0jc5ygA==}
     engines: {node: '>=v14.18.0'}
     hasBin: true
@@ -23013,6 +23054,7 @@ packages:
       mlly: 1.4.2
       pathe: 1.1.1
       picocolors: 1.0.0
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -23030,6 +23072,9 @@ packages:
 =======
       vite: 4.5.0(@types/node@20.8.10)
 >>>>>>> 402fe16 (chore: Update module depencies)
+=======
+      vite: 4.5.0(@types/node@20.9.0)
+>>>>>>> 160e18e (chore: Update module depencies)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -23041,6 +23086,7 @@ packages:
       - terser
     dev: true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -23062,12 +23108,16 @@ packages:
 =======
   /vite-plugin-vuetify@1.0.2(vite@4.5.0)(vue@3.3.8)(vuetify@3.3.23):
 >>>>>>> 6469717 (chore: Update node module version)
+=======
+  /vite-plugin-vuetify@1.0.2(vite@4.5.0)(vue@3.3.8)(vuetify@3.4.0):
+>>>>>>> 160e18e (chore: Update module depencies)
     resolution: {integrity: sha512-MubIcKD33O8wtgQXlbEXE7ccTEpHZ8nPpe77y9Wy3my2MWw/PgehP9VqTp92BLqr0R1dSL970Lynvisx3UxBFw==}
     engines: {node: '>=12'}
     peerDependencies:
       vite: ^2.7.0 || ^3.0.0 || ^4.0.0
       vuetify: ^3.0.0-beta.4
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -23113,11 +23163,19 @@ packages:
       vite: 4.5.0(@types/node@20.8.10)
       vuetify: 3.3.23(typescript@5.2.2)(vite-plugin-vuetify@1.0.2)(vue@3.3.8)
 >>>>>>> 6469717 (chore: Update node module version)
+=======
+      '@vuetify/loader-shared': 1.7.1(vue@3.3.8)(vuetify@3.4.0)
+      debug: 4.3.4(supports-color@8.1.1)
+      upath: 2.0.1
+      vite: 4.5.0(@types/node@20.9.0)
+      vuetify: 3.4.0(typescript@5.2.2)(vite-plugin-vuetify@1.0.2)(vue@3.3.8)
+>>>>>>> 160e18e (chore: Update module depencies)
     transitivePeerDependencies:
       - supports-color
       - vue
     dev: false
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -23135,6 +23193,9 @@ packages:
 =======
   /vite@4.5.0(@types/node@20.8.10):
 >>>>>>> 402fe16 (chore: Update module depencies)
+=======
+  /vite@4.5.0(@types/node@20.9.0):
+>>>>>>> 160e18e (chore: Update module depencies)
     resolution: {integrity: sha512-ulr8rNLA6rkyFAlVWw2q5YJ91v098AFQ2R0PRFwPzREXOUJQPtFUG0t+/ZikhaOCDqFoDhN6/v8Sq0o4araFAw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -23166,6 +23227,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.0
 =======
       '@types/node': 20.8.7
@@ -23179,6 +23241,9 @@ packages:
 =======
       '@types/node': 20.8.10
 >>>>>>> 402fe16 (chore: Update module depencies)
+=======
+      '@types/node': 20.9.0
+>>>>>>> 160e18e (chore: Update module depencies)
       esbuild: 0.18.20
       postcss: 8.4.31
       rollup: 3.29.4
@@ -23222,6 +23287,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@types/node': 20.9.0
 =======
       '@types/node': 20.8.7
@@ -23235,6 +23301,9 @@ packages:
 =======
       '@types/node': 20.8.10
 >>>>>>> 402fe16 (chore: Update module depencies)
+=======
+      '@types/node': 20.9.0
+>>>>>>> 160e18e (chore: Update module depencies)
       '@vitest/expect': 0.34.6
       '@vitest/runner': 0.34.6
       '@vitest/snapshot': 0.34.6
@@ -23258,6 +23327,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       vite: 4.5.0(@types/node@20.9.0)
       vite-node: 0.34.6(@types/node@20.9.0)
 =======
@@ -23276,6 +23346,10 @@ packages:
       vite: 4.5.0(@types/node@20.8.10)
       vite-node: 0.34.6(@types/node@20.8.10)
 >>>>>>> 402fe16 (chore: Update module depencies)
+=======
+      vite: 4.5.0(@types/node@20.9.0)
+      vite-node: 0.34.6(@types/node@20.9.0)
+>>>>>>> 160e18e (chore: Update module depencies)
       why-is-node-running: 2.2.2
     transitivePeerDependencies:
       - less
@@ -23756,16 +23830,22 @@ packages:
 >>>>>>> 6469717 (chore: Update node module version)
       typescript: 5.2.2
 
+<<<<<<< HEAD
   /vuetify@3.3.23(typescript@5.2.2)(vite-plugin-vuetify@1.0.2)(vue@3.3.8):
     resolution: {integrity: sha512-EVEFvDyKr/HK2+hQJyhQSjIDULDaBi9vfgAAB0ekm+2Tvc8AkaDwb7VK44R2eilGFGpju6iN52FV7Uasj8SmIg==}
 <<<<<<< HEAD
 >>>>>>> 2b99e9b (chore: Update some modules versions)
 =======
 >>>>>>> 402fe16 (chore: Update module depencies)
+=======
+  /vuetify@3.4.0(typescript@5.2.2)(vite-plugin-vuetify@1.0.2)(vue@3.3.8):
+    resolution: {integrity: sha512-aW3bJGCUN3fhl62yvsb+Hv6TtMWDqiadN0PTbEB8jd9z46/X1ddzQ/fhMjkqBX69sMFtZvENl3YFGU5c88/8qw==}
+>>>>>>> 160e18e (chore: Update module depencies)
     engines: {node: ^12.20 || >=14.13}
     peerDependencies:
       typescript: '>=4.7'
       vite-plugin-vuetify: ^1.0.0-alpha.12
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -23779,6 +23859,9 @@ packages:
 =======
       vue: ^3.2.0
 >>>>>>> 402fe16 (chore: Update module depencies)
+=======
+      vue: ^3.3.0
+>>>>>>> 160e18e (chore: Update module depencies)
       vue-i18n: ^9.0.0
       webpack-plugin-vuetify: ^2.0.0-alpha.11
     peerDependenciesMeta:
@@ -23792,6 +23875,7 @@ packages:
         optional: true
     dependencies:
       typescript: 5.2.2
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -23817,6 +23901,9 @@ packages:
 >>>>>>> 402fe16 (chore: Update module depencies)
 =======
       vite-plugin-vuetify: 1.0.2(vite@4.5.0)(vue@3.3.8)(vuetify@3.3.23)
+=======
+      vite-plugin-vuetify: 1.0.2(vite@4.5.0)(vue@3.3.8)(vuetify@3.4.0)
+>>>>>>> 160e18e (chore: Update module depencies)
       vue: 3.3.8(typescript@5.2.2)
 >>>>>>> 6469717 (chore: Update node module version)
     dev: false
