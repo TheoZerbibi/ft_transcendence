@@ -27,15 +27,19 @@ const router = createRouter({
 			path: '/game',
 			name: 'GameCreator',
 <<<<<<< HEAD
+<<<<<<< HEAD
 			component: () => import('../views/GameMenuView.vue'),
 =======
 			component: () => import('../views/GameCreateView.vue'),
 >>>>>>> c80165e (fix: github issue)
+=======
+			component: () => import('../views/game/GameMenuView.vue'),
+>>>>>>> 7c05d9e (chore: Change File infra for front)
 		},
 		{
 			path: '/game/:uid',
 			name: 'Game',
-			component: () => import('../views/GameView.vue'),
+			component: () => import('../views/game/GameView.vue'),
 		},
 		{
 			path: '/exemples/snackbar',
@@ -81,7 +85,7 @@ const router = createRouter({
 >>>>>>> 7f206e2 (profile route created)
 			path: '/profile',
 			name: 'profile',
-			component: () => import('../views/ProfileView.vue'),
+			component: () => import('../views/profile/ProfileView.vue'),
 		},
 		{
 <<<<<<< HEAD
@@ -100,20 +104,26 @@ const router = createRouter({
 >>>>>>> c80165e (fix: github issue)
 			path: '/team',
 			name: 'team',
-			component: () => import('../views/TeamView.vue'),
+			component: () => import('../views/profile/TeamView.vue'),
 		},
 		{
 			path: '/team/:login',
 			name: 'TeamProfile',
-			component: () => import('../views/TeamProfileView.vue'),
+			component: () => import('../views/profile/TeamProfileView.vue'),
 		},
 		{
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 			path: '/chat/',
 			name: 'chat',
 			component: () => import('../views/ChatView.vue'),
+=======
+			path: '/auth',
+			name: 'Auth',
+			component: () => import('../views/auth/AuthView.vue'),
+>>>>>>> 7c05d9e (chore: Change File infra for front)
 		},
 		{
 <<<<<<< HEAD
@@ -126,7 +136,7 @@ const router = createRouter({
 >>>>>>> c80165e (fix: github issue)
 			path: '/auth/signup',
 			name: 'Sinup',
-			component: () => import('../views/SignupView.vue'),
+			component: () => import('../views/auth/SignupView.vue'),
 		},
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -135,7 +145,7 @@ const router = createRouter({
 >>>>>>> 97035c7 (chore: Fix for rebase)
 			path: '/secret',
 			name: 'secret',
-			component: () => import('../views/SecretView.vue'),
+			component: () => import('../components/secrets/Secret.vue'),
 		},
 		{
 			path: '/portfolio',
@@ -154,7 +164,7 @@ const router = createRouter({
 		{
 			path: '/colors',
 			name: 'Colors',
-			component: () => import('../views/Colors.vue'),
+			component: () => import('../components/secrets/Colors.vue'),
 		},
 		{
 			path: '/exemples/websocket',
@@ -176,7 +186,7 @@ const router = createRouter({
 		{
 			path: '/api/oauth/callback:token',
 			name: 'OauthCallback',
-			component: () => import('../views/OauthCallbackView.vue'),
+			component: () => import('../views/auth/OauthCallbackView.vue'),
 		},
 >>>>>>> 326d237 (chore: Fix for rebase)
 =======

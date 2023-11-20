@@ -16,6 +16,7 @@ export default {
 	computed: {
 		getComponent() {
 			const componentsMapping = {
+<<<<<<< HEAD:front/src/views/TeamProfileView.vue
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -38,6 +39,12 @@ export default {
 				grannou: defineAsyncComponent(() => import('../components/team/GrannouProfile.vue')),
 				thzeribi: defineAsyncComponent(() => import('../components/team/ThzeribiProfile.vue')),
 >>>>>>> c80165e (fix: github issue)
+=======
+				seozcan: defineAsyncComponent(() => import('../../components/team/SeozcanProfile.vue')),
+				thzeribi: defineAsyncComponent(() => import('../../components/team/ThzeribiProfile.vue')),
+				nfauconn: defineAsyncComponent(() => import('../../components/team/NfauconnProfile.vue')),
+				grannou: defineAsyncComponent(() => import('../../components/team/GrannouProfile.vue')),
+>>>>>>> 7c05d9e (chore: Change File infra for front):front/src/views/profile/TeamProfileView.vue
 			};
 			return componentsMapping[this.login as keyof typeof componentsMapping] || null;
 		},
