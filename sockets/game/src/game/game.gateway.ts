@@ -228,8 +228,8 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		if (winner.isConnected) this.server.to(winner.socketID).emit('game-win');
 		if (loser.isConnected) this.server.to(loser.socketID).emit('game-lose');
 		this.server.to(game.getGameUID()).emit('game-end', {
-			winner: { user: winner.user, score: winner.playerData.score },
-			loser: { user: loser.user, score: loser.playerData.score },
+			winner: { user: winner.user, score: winner.playerData.score, side: winner.playerData.side },
+			loser: { user: loser.user, score: loser.playerData.score, side: loser.playerData.side },
 			startDate: game.getGameData().startingDate,
 			endingDate: game.getGameData().endingDate,
 		});
@@ -239,7 +239,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		game.startGameLoop();
 		const gameLoop = setInterval(async () => {
 			if (!game.isEnded()) {
-				this.sendBallPosition(game);
+				if (!game.isInPause()) this.sendBallPosition(game);
 				if (game.newPoint) {
 					const leftUser: IUser = game.getPlayerBySide(SIDE.LEFT);
 					const rightUser: IUser = game.getPlayerBySide(SIDE.RIGHT);

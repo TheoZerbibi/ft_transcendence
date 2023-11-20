@@ -12,18 +12,44 @@
 				}"
 			>
 				<div class="d-flex justify-space-between align-center">
-					<div class="mr-auto">
+					<div id="leftUser" :class="{ tremble: shouldTremble('leftUser') }" class="mr-auto">
 						<v-img class="cadre-responsive" :src="userData.leftPlayer.cadre">
 							<h2>{{ userData.leftPlayer.name }}</h2>
-							<v-img class="avatar-responsive" :src="userData.leftPlayer.avatar" />
+
+							<v-img
+								v-if="userData.leftPlayer.relaseEnergy"
+								src="/game/UI/releaseEnergy.gif"
+								class="release-energy"
+							/>
+							<v-img
+								v-if="userData.leftPlayer.isDead"
+								src="/game/UI/cadres/toastDead.gif"
+								class="toast-of-death"
+							/>
+							<v-img
+								class="avatar-responsive"
+								:class="{ dead: userData.leftPlayer.isDead }"
+								:src="userData.leftPlayer.avatar"
+							/>
 						</v-img>
 					</div>
 					<div>
 						<h1>Versus</h1>
 					</div>
-					<div class="ml-auto">
+					<div id="rightUser" :class="{ tremble: shouldTremble('rightUser') }" class="ml-auto">
 						<v-img class="cadre-responsive" :src="userData.rightPlayer.cadre">
 							<h2>{{ userData.rightPlayer.name }}</h2>
+
+							<v-img
+								v-if="userData.rightPlayer.relaseEnergy"
+								src="/game/UI/releaseEnergy.gif"
+								class="release-energy"
+							/>
+							<v-img
+								v-if="userData.rightPlayer.isDead"
+								src="/game/UI/cadres/toastDead.gif"
+								class="toast-of-death"
+							/>
 							<v-img class="avatar-responsive" :src="userData.rightPlayer.avatar" />
 						</v-img>
 					</div>
@@ -36,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 import P5 from 'p5';
@@ -80,22 +106,30 @@ export default {
 				leftPlayer: {
 					name: '',
 					avatar: '',
-					cadre: '/game/UI/cadre5.png',
+					cadre: '/game/UI/cadres/cadre0.png',
+					relaseEnergy: false,
+					isDead: false,
 				},
 				rightPlayer: {
 					name: 'AI',
 					avatar: 'https://cdn-icons-png.flaticon.com/512/4529/4529980.png',
-					cadre: '/game/UI/cadre5.png',
+					cadre: '/game/UI/cadres/cadre0.png',
+					relaseEnergy: false,
+					isDead: false,
 				},
 			},
 			background: '',
+			trembleState: {
+				leftUser: false,
+				rightUser: false,
+			},
 		};
 	},
 	beforeMount() {
 		this.userData.leftPlayer = {
 			name: this.user.displayName,
 			avatar: this.user.avatar,
-			cadre: '/game/UI/cadre5.png',
+			cadre: '/game/UI/cadres/cadre0.png',
 		};
 		const backgroundList: string[] = [];
 		const images = import.meta.glob('/public/game/battleParallax/*.png');
@@ -105,7 +139,7 @@ export default {
 		this.background = backgroundList[Math.floor(Math.random() * backgroundList.length)];
 		this.background = this.background.replace('/public', '');
 	},
-	mounted() {
+	async mounted() {
 		const route = useRoute();
 		const gameData = {
 			start: false as boolean,
@@ -118,186 +152,242 @@ export default {
 			ratio: (9 / 20) as number,
 			socket: this.socket as any,
 			gameUID: route.params.uid as string,
+			waiting: false as boolean,
 		};
-		const script = function (p5: any) {
-			const cDiv = document.getElementById('game-canvas');
-			const textOffsetX: number = 50;
-			const textOffsetY: number = 10;
-			let width: number, height: number, retroFont: string;
+		const componentRef = ref(this);
 
-			p5.preload = () => {
-				retroFont = p5.loadFont('/fonts/ARCADECLASSIC.TTF');
-			};
+		const p5jsReadyPromise = new Promise((resolve) => {
+			const script = async function (p5: any) {
+				const cDiv = document.getElementById('game-canvas');
+				const textOffsetX: number = 50;
+				const textOffsetY: number = 10;
+				let width: number,
+					height: number,
+					retroFont: string,
+					ballLeft: P5.Image,
+					ballRight: P5.Image,
+					ball: P5.Image;
 
-			p5.setup = () => {
-				if (!cDiv) return;
-				width = cDiv.offsetWidth;
-				height = cDiv.offsetHeight;
-				const canvas = p5.createCanvas(width, height);
-				canvas.parent('game-canvas');
-
-				gameData.ball = new Ball(p5, width / 2, height / 2, 10);
-				gameData.leftUser = new Paddle(p5, 20, height / 2 - 50, 10, height / 4, SIDE.LEFT);
-				gameData.leftUser.setUser(gameData.user.displayName, gameData.user.avatar);
-				gameData.rightUser = new Paddle(p5, width - 30, height / 2 - 50, 10, height / 4, SIDE.RIGHT);
-				gameData.go = true;
-			};
-
-			p5.draw = () => {
-				p5.clear();
-				movePaddles();
-				backdrop();
-				if (!gameData.leftUser || !gameData.rightUser || !gameData.ball) return;
-				const oob = gameData.ball.outOfBounds();
-				if (oob) {
-					if (oob == 'right') gameData.leftUser.score++;
-					else gameData.rightUser.score++;
-				}
-				if (gameData.go) gameData.ball.update();
-				if (!gameData.start && gameData.go) rightPaddleAI();
-				gameData.ball.hit(gameData.leftUser, gameData.rightUser);
-				gameData.leftUser.show();
-				gameData.rightUser.show();
-				gameData.ball.show();
-			};
-
-			/**
-			 * Function for moving the right Paddle.
-			 */
-			function rightPaddleAI() {
-				if (!gameData.ball || !gameData.rightUser) return;
-
-				const halfWidth = width / 2;
-				if (gameData.ball.vel.x < 0) return;
-
-				if (gameData.ball.pos.x < halfWidth) return;
-				if (gameData.ball.pos.y < gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
-					gameData.rightUser.move(-5);
-				}
-				if (gameData.ball.pos.y > gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
-					gameData.rightUser.move(5);
-				}
-			}
-
-			/**
-			 * Function for write score and drawing line in the center.
-			 */
-			function backdrop() {
-				if (!gameData.leftUser || !gameData.rightUser) return;
-				p5.stroke(255);
-				p5.strokeWeight(width / 200);
-
-				const dottedLength = width / 100;
-				let y = dottedLength / 2;
-
-				while (y < p5.height) {
-					p5.line(p5.width / 2, y, p5.width / 2, y + dottedLength);
-					y += dottedLength * 2;
-				}
-
-				const _r = width / 1736;
-				const _size = 100 * _r;
-				p5.textFont(retroFont);
-				p5.textSize(_size);
-				p5.noStroke();
-				p5.fill(255);
-
-				p5.textAlign(p5.RIGHT, p5.TOP);
-				p5.text(gameData.leftUser.score, width / 2 - textOffsetX, textOffsetY);
-
-				p5.textAlign(p5.LEFT);
-				p5.text(gameData.rightUser.score, width / 2 + textOffsetX, textOffsetY);
-			}
-
-			p5.windowResized = () => {
-				if (!cDiv || !gameData.ball || !gameData.leftUser || !gameData.rightUser) return;
-				const oldWidth: number = width;
-				const oldHeight: number = height;
-				width = cDiv.offsetWidth;
-				height = cDiv.offsetHeight;
-				p5.resizeCanvas(width, height);
-				gameData.ball.resizeUpdate(width, height, oldWidth, oldHeight);
-				gameData.leftUser.resizeUpdate(height, width, oldWidth, oldHeight);
-				gameData.rightUser.resizeUpdate(height, width, oldWidth, oldHeight);
-			};
-
-			/**
-			 * Function for moving the player Paddle.
-			 */
-			function movePaddles() {
-				if (!gameData.ball || !gameData.socket) return;
-				if (!gameData.player || !gameData.start) {
-					localMovePaddles();
-					return;
-				}
-
-				if (p5.keyIsDown(87)) {
-					gameData.socket.emit('player-move', {
-						gameUID: gameData.gameUID,
-						direction: DIRECTION.DOWN,
-					});
-				}
-
-				if (p5.keyIsDown(83)) {
-					gameData.socket.emit('player-move', {
-						gameUID: gameData.gameUID,
-						direction: DIRECTION.UP,
-					});
-				}
-			}
-
-			/**
-			 * Function for moving the player Paddle in local.
-			 */
-			function localMovePaddles() {
-				if (!gameData.ball || !gameData.leftUser || gameData.start) return;
-				if (p5.keyIsDown(87)) {
-					gameData.leftUser.move(-5);
-				}
-
-				if (p5.keyIsDown(83)) {
-					gameData.leftUser.move(5);
-				}
-			}
-		};
-		new P5(script);
-
-		this.socket.on('game-start', (data: any) => {
-			gameData.socket = this.socket;
-			if (data.leftUser) {
-				this.userData.leftPlayer = {
-					name: data.leftUser.name,
-					avatar: data.leftUser.avatar,
-					cadre: '/game/UI/cadre5.png',
+				p5.preload = () => {
+					retroFont = p5.loadFont('/fonts/ARCADECLASSIC.TTF');
+					ball = p5.loadImage('/game/UI/balls/ball.png');
+					ballLeft = p5.loadImage('/game/UI/balls/ball-left.png');
+					ballRight = p5.loadImage('/game/UI/balls/ball-right.png');
 				};
+
+				p5.setup = () => {
+					if (!cDiv) return;
+					width = cDiv.offsetWidth;
+					height = cDiv.offsetHeight;
+					const canvas = p5.createCanvas(width, height);
+					canvas.parent('game-canvas');
+
+					gameData.ball = new Ball(p5, width / 2, height / 2, 10);
+					gameData.leftUser = new Paddle(p5, 20, height / 2 - 50, 10, height / 4, SIDE.LEFT);
+					gameData.leftUser.setUser(gameData.user.displayName, gameData.user.avatar);
+					gameData.rightUser = new Paddle(p5, width - 30, height / 2 - 50, 10, height / 4, SIDE.RIGHT);
+					if (!gameData.start) gameData.go = true;
+					resolve(true);
+				};
+
+				p5.draw = () => {
+					p5.clear();
+					movePaddles();
+					backdrop();
+					if (!gameData.leftUser || !gameData.rightUser || !gameData.ball) return;
+					const oob = gameData.ball.outOfBounds();
+					if (oob) {
+						if (oob == 'right') {
+							gameData.leftUser.score++;
+							componentRef.value.startTremble('rightUser');
+						} else {
+							gameData.rightUser.score++;
+							componentRef.value.startTremble('leftUser');
+						}
+					}
+					if (gameData.go && !gameData.waiting) gameData.ball.update();
+					if (!gameData.start && gameData.go) rightPaddleAI();
+					gameData.ball.hit(gameData.leftUser, gameData.rightUser);
+					gameData.leftUser.show();
+					gameData.rightUser.show();
+					gameData.ball.show(ball, ballLeft, ballRight, gameData.waiting);
+				};
+
+				/**
+				 * Function for moving the right Paddle.
+				 */
+				function rightPaddleAI() {
+					if (!gameData.ball || !gameData.rightUser) return;
+					if (gameData.start) return;
+
+					const halfWidth = width / 2;
+					if (gameData.ball.vel.x < 0) return;
+
+					if (gameData.ball.pos.x < halfWidth) return;
+					if (gameData.ball.pos.y < gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
+						gameData.rightUser.move(-5);
+					}
+					if (gameData.ball.pos.y > gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
+						gameData.rightUser.move(5);
+					}
+				}
+
+				/**
+				 * Function for write score and drawing line in the center.
+				 */
+				function backdrop() {
+					if (!gameData.leftUser || !gameData.rightUser) return;
+					p5.stroke(255);
+					p5.strokeWeight(width / 200);
+
+					const dottedLength = width / 100;
+					let y = dottedLength / 2;
+
+					while (y < p5.height) {
+						p5.line(p5.width / 2, y, p5.width / 2, y + dottedLength);
+						y += dottedLength * 2;
+					}
+
+					const _r = width / 1736;
+					const _size = 100 * _r;
+					p5.textFont(retroFont);
+					p5.textSize(_size);
+					p5.noStroke();
+					p5.fill(255);
+
+					p5.textAlign(p5.RIGHT, p5.TOP);
+					p5.text(gameData.leftUser.score, width / 2 - textOffsetX, textOffsetY);
+
+					p5.textAlign(p5.LEFT);
+					p5.text(gameData.rightUser.score, width / 2 + textOffsetX, textOffsetY);
+				}
+
+				p5.windowResized = () => {
+					if (!cDiv || !gameData.ball || !gameData.leftUser || !gameData.rightUser) return;
+					const oldWidth: number = width;
+					const oldHeight: number = height;
+					width = cDiv.offsetWidth;
+					height = cDiv.offsetHeight;
+					p5.resizeCanvas(width, height);
+					gameData.ball.resizeUpdate(width, height, oldWidth, oldHeight);
+					gameData.leftUser.resizeUpdate(height, width, oldWidth, oldHeight);
+					gameData.rightUser.resizeUpdate(height, width, oldWidth, oldHeight);
+				};
+
+				/**
+				 * Function for moving the player Paddle.
+				 */
+				function movePaddles() {
+					if (!gameData.ball || !gameData.socket) return;
+					if (!gameData.go) return;
+					if (!gameData.player || !gameData.start) {
+						localMovePaddles();
+						return;
+					}
+
+					if (p5.keyIsDown(87)) {
+						gameData.socket.emit('player-move', {
+							gameUID: gameData.gameUID,
+							direction: DIRECTION.DOWN,
+						});
+					}
+
+					if (p5.keyIsDown(83)) {
+						gameData.socket.emit('player-move', {
+							gameUID: gameData.gameUID,
+							direction: DIRECTION.UP,
+						});
+					}
+				}
+
+				/**
+				 * Function for moving the player Paddle in local.
+				 */
+				function localMovePaddles() {
+					if (!gameData.ball || !gameData.leftUser || gameData.start) return;
+					if (p5.keyIsDown(87)) {
+						gameData.leftUser.move(-5);
+					}
+
+					if (p5.keyIsDown(83)) {
+						gameData.leftUser.move(5);
+					}
+				}
+			};
+
+			new P5(script);
+		});
+		this.socket.on('game-start', async (data: any) => {
+			await p5jsReadyPromise;
+			gameData.socket = this.socket;
+			gameData.go = false;
+			gameData.waiting = true;
+			gameData.ball?.resetball();
+			if (!gameData.leftUser || !gameData.rightUser) return this.$router.push({ name: 'GameCreator' });
+			if (gameData.leftUser) gameData.leftUser.score = 0;
+			if (gameData.rightUser) gameData.rightUser.score = 0;
+			if (data.leftUser) {
+				console.log(data.leftUser);
+				this.userData.leftPlayer = {
+					name: data.leftUser.displayName,
+					avatar: data.leftUser.avatar,
+					cadre: '/game/UI/cadres/cadre0.png',
+				};
+				gameData.leftUser.setUser(data.leftUser.displayName, data.leftUser.avatar);
 			}
 			if (data.rightUser) {
 				this.userData.rightPlayer = {
-					name: data.rightUser.name,
+					name: data.rightUser.displayName,
 					avatar: data.rightUser.avatar,
-					cadre: '/game/UI/cadre5.png',
+					cadre: '/game/UI/cadres/cadre0.png',
 				};
+				gameData.rightUser.setUser(data.rightUser.displayName, data.rightUser.avatar);
 			}
-			if (gameData.leftUser) gameData.leftUser.score = 0;
-			if (gameData.rightUser) gameData.rightUser.score = 0;
 			countdownStore.setSeconds(5);
 			this.showCountdown = true;
-			gameData.go = false;
 		});
 
 		this.socket.on('countdown', (data: number) => {
 			countdownStore.setSeconds(data);
 			if (data <= 0) {
-				this.showCountdown = false;
 				gameData.start = true;
-				setTimeout(() => {
-					gameData.go = true;
-				}, 1000);
+				gameData.go = true;
+				gameData.waiting = false;
+				this.showCountdown = false;
 			}
+		});
+
+		this.socket.on('player-side', async (data: any) => {
+			await p5jsReadyPromise;
+			if (data.side == SIDE.LEFT) {
+				gameData.player = gameData.leftUser;
+				if (!gameData.player) {
+					this.socket.disconnect();
+					console.error('Player is null');
+					return this.$router.push({ name: 'GameCreator' });
+				}
+				gameData.player.setSide(SIDE.LEFT);
+			} else if (data.side == SIDE.RIGHT) {
+				gameData.player = gameData.rightUser;
+				if (!gameData.player) {
+					this.socket.disconnect();
+					console.error('Player is null');
+					return this.$router.push({ name: 'GameCreator' });
+				}
+				gameData.player.setSide(SIDE.RIGHT);
+			}
+			if (!gameData.player) {
+				this.socket.disconnect();
+				console.error('Player is null');
+				return this.$router.push({ name: 'GameCreator' });
+			}
+			console.log(data);
+			gameData.player.update(data.position, data.width, data.height);
 		});
 
 		this.socket.on('game-update', (data: any) => {
 			gameData.ball?.serverUpdate(data.position, data.velocity, data.speed);
+			gameData.waiting = false;
 		});
 
 		this.socket.on('player-moved', (data: any) => {
@@ -309,37 +399,61 @@ export default {
 
 		this.socket.on('game-score', (data: any) => {
 			if (!gameData.leftUser || !gameData.rightUser) return;
-			gameData.leftUser?.setPoint(data.leftUser);
-			gameData.rightUser?.setPoint(data.rightUser);
-			if (gameData.rightUser?.score >= 5) this.userData.leftPlayer.cadre = '/game/UI/cadre0.png';
-			if (gameData.leftUser?.score >= 5) this.userData.rightPlayer.cadre = '/game/UI/cadre0.png';
+			if (data.leftUser > gameData.leftUser.getPoint()) this.startTremble('rightUser');
+			if (data.rightUser > gameData.rightUser.getPoint()) this.startTremble('leftUser');
+			gameData.leftUser.setPoint(data.leftUser);
+			gameData.rightUser.setPoint(data.rightUser);
+			if (data.leftUser <= 5 && data.rightUser <= 5) {
+				this.userData.leftPlayer.cadre = `/game/UI/cadres/cadre${gameData.rightUser.score}.png`;
+				this.userData.rightPlayer.cadre = `/game/UI/cadres/cadre${gameData.leftUser.score}.png`;
+			} else if (data.leftUser >= 6 || data.rightUser >= 6) {
+				if (data.leftUser >= 6 && data.rightUser < 6) this.dead('rightPlayer');
+				else if (data.leftUser < 6 && data.rightUser >= 6) this.dead('leftPlayer');
+			}
+			gameData.waiting = true;
 		});
 
-		this.socket.on('player-side', (data: any) => {
-			if (data.side == SIDE.LEFT) {
-				gameData.player = gameData.leftUser;
-				if (!gameData.player) {
-					this.socket.disconnect();
-					console.error('Player is null');
-					return;
-				}
-				gameData.player.setSide(SIDE.LEFT);
-			} else if (data.side == SIDE.RIGHT) {
-				gameData.player = gameData.rightUser;
-				if (!gameData.player) {
-					this.socket.disconnect();
-					console.error('Player is null');
-					return;
-				}
-				gameData.player.setSide(SIDE.RIGHT);
+		this.socket.on('game-end', (data: any) => {
+			gameData.go = false;
+			if (!gameData.leftUser || !gameData.rightUser) return;
+			console.log(data);
+			if (data.loser.side == SIDE.LEFT) {
+				gameData.leftUser.setPoint(data.loser.score);
+				if (!this.userData['leftPlayer'].relaseEnergy) this.dead('leftPlayer');
+				else this.userData['leftPlayer'].dead = true;
+			} else {
+				gameData.rightUser.setPoint(data.loser.score);
+				if (!this.userData['rightPlayer'].relaseEnergy) this.dead('rightPlayer');
+				else this.userData['rightPlayer'].dead = true;
 			}
-			if (!gameData.player) {
-				this.socket.disconnect();
-				console.error('Player is null');
-				return;
+			if (data.winner.side == SIDE.LEFT) {
+				gameData.leftUser.setPoint(data.winner.score);
+			} else {
+				gameData.rightUser.setPoint(data.winner.score);
 			}
-			gameData.player.update(data.position, data.width, data.height);
 		});
+	},
+	methods: {
+		shouldTremble(user: string) {
+			return this.trembleState[user];
+		},
+		startTremble(user: string) {
+			this.trembleState[user] = true;
+			setTimeout(() => {
+				this.stopTremble(user);
+			}, 800);
+		},
+		stopTremble(user: string) {
+			this.trembleState[user] = false;
+		},
+		dead(user: string) {
+			this.userData[user].relaseEnergy = true;
+			setTimeout(() => {
+				this.userData[user].relaseEnergy = false;
+				this.userData[user].isDead = true;
+				this.userData[user].cadre = '/game/UI/cadres/cadre6.png';
+			}, 9000);
+		},
 	},
 };
 </script>
@@ -405,6 +519,23 @@ html {
 	z-index: -999;
 }
 
+.release-energy {
+	width: 6vw;
+	height: 7vw;
+	position: absolute;
+	z-index: -888; /* Position absolue pour positionner par-dessus la deuxième image */
+}
+
+.toast-of-death {
+	width: 6vw;
+	height: 7vw;
+	position: absolute;
+	z-index: -888;
+}
+.dead {
+	filter: grayscale(100%);;
+}
+
 .align-center {
 	align-items: center;
 }
@@ -443,5 +574,31 @@ canvas {
 .blurred-card {
 	padding: 16px;
 	border: 10px double #dddfe2;
+}
+
+.tremble {
+	animation: tremble 0.5s ease-in-out infinite;
+}
+
+.tremble .avatar-responsive {
+	filter: invert(21%) sepia(100%) saturate(1900%) hue-rotate(359deg) brightness(94%) contrast(117%);
+}
+
+@keyframes tremble {
+	0% {
+		transform: translate(0, 0);
+	}
+	25% {
+		transform: translate(-2px, -2px);
+	}
+	50% {
+		transform: translate(2px, 2px);
+	}
+	75% {
+		transform: translate(-2px, 2px);
+	}
+	100% {
+		transform: translate(2px, -2px);
+	}
 }
 </style>

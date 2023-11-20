@@ -52,7 +52,7 @@ export class GameService {
 
 	public addUserToGame(game: IGame, client: Socket, user: users, isSpec: boolean): boolean {
 		if (game.userIsInGame(user.id)) {
-			// client.emit('game-error', 'Already in Game session');
+			client.emit('game-error', 'Already in Game session');
 			return true;
 		}
 
@@ -107,14 +107,12 @@ export class GameService {
 		game.removeUser(gameUser);
 
 		if (!gameUser.isSpec && !game.isEnded()) {
-			console.log(game.getUsersInGame(), game.isEnded());
 			gameUser.isConnected = false;
 			if (game.getUsersInGame().length === 0) {
 				game.removeGame();
 				return null;
 			} else {
 				const winnerSide: SIDE = gameUser.playerData.side === SIDE.LEFT ? SIDE.RIGHT : SIDE.LEFT;
-				console.log(gameUser.playerData.side, winnerSide);
 				const winner: IUser = game.getPlayerBySide(winnerSide);
 				game.winGame(winner, gameUser);
 				return null;

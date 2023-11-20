@@ -102,11 +102,13 @@ export class GameService {
 			});
 			return gamePlayer;
 		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				if (e.code === 'P2002') {
+					return;
+				}
+			}
 			const player = await this.getPlayer(game);
 			if (!player) this.deleteGame(game);
-			if (e instanceof Prisma.PrismaClientKnownRequestError) {
-				if (e.code === 'P2002') throw new ForbiddenException('Error during gamePlayer creation');
-			}
 			throw e;
 		}
 	}
@@ -167,15 +169,13 @@ export class GameService {
 
 			for (const player of playersInGame) {
 				if (player.player_id === user.id) {
-					// if (!player.is_spec) throw new ForbiddenException('User already in this game.');
-					// else
-					return { ...game, ...player };
+					if (!player.is_spec) throw new ForbiddenException('User already in this game.');
+					else return { ...game, ...player };
 				}
 			}
 			if (playersInGame.length >= 2) gamePlayer = await this.createGamePlayer(game, user, true);
 			else {
 				if (gameHistory.length > 0) {
-					console.log('here');
 					for (const games of gameHistory) {
 						if (games.isWin === false || games.game.endAt === null)
 							gamePlayer = await this.createGamePlayer(game, user, true);

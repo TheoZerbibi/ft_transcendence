@@ -36,9 +36,5 @@ export default {
 			setJWT,
 		};
 	},
-	mounted() {
-		console.log(this.JWT);
-		console.log(this.user);
-	},
 };
 </script>

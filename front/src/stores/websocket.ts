@@ -17,7 +17,6 @@ export const useSocketStore = defineStore('webSocket', {
 		async connect(jwt: string, port: number): Promise<Socket> {
 			const serverURL = `http://${import.meta.env.VITE_HOST}:${port}`;
 			if (!this.isConnected) {
-				console.log('Connecting to socket ', serverURL);
 				this.socket = await new Promise((resolve, reject) => {
 					const socket = io(serverURL, {
 						extraHeaders: {
@@ -36,7 +35,6 @@ export const useSocketStore = defineStore('webSocket', {
 		},
 		disconnect() {
 			if (this.isConnected) {
-				console.log('Disconnecting from socket');
 				this.socket?.disconnect();
 				this.socket = null;
 			}
