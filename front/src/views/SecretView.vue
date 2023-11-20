@@ -1,5 +1,8 @@
 <template>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f5dd314 (core:feat /secret done)
 	<div class="row">
 		<div class="column">
 			<img src="/src/assets/OmoriWallpapers/OmoriRecipes01.jpg">
@@ -14,6 +17,7 @@
 			<img src="/src/assets/OmoriWallpaper01.jpg">
 		</div>
 
+<<<<<<< HEAD
 	</div>
 
 =======
@@ -23,6 +27,10 @@
 		<img src="/src/assets/OmoriWallpapers/OmoriRecipes02.jpg" alt="Image 2">
 	</div>
 >>>>>>> 374b499 (/colors page added)
+=======
+	</div>
+
+>>>>>>> f5dd314 (core:feat /secret done)
 </template>
 
 <script></script>
@@ -34,6 +42,9 @@ export default defineComponent({
 	name: 'Secret',
 	data() {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f5dd314 (core:feat /secret done)
 		return {
 			images: [
         	{
@@ -53,11 +64,14 @@ export default defineComponent({
         	},
 		]
 		};
+<<<<<<< HEAD
 =======
 		return;
 		{
 		}
 >>>>>>> 374b499 (/colors page added)
+=======
+>>>>>>> f5dd314 (core:feat /secret done)
 	},
 
 });
@@ -65,6 +79,9 @@ export default defineComponent({
 
 <style>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f5dd314 (core:feat /secret done)
 .row {
   display: flex;
   flex-wrap: wrap;
@@ -99,7 +116,10 @@ export default defineComponent({
     max-width: 100%;
   }
 }
+<<<<<<< HEAD
 =======
 >>>>>>> 374b499 (/colors page added)
+=======
+>>>>>>> f5dd314 (core:feat /secret done)
 
 </style>

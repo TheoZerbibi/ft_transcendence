@@ -511,6 +511,7 @@ export default defineComponent({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	data() {
 		return {
 		};
@@ -569,6 +570,12 @@ export default defineComponent({
       ],
     }),
 >>>>>>> 027b4cc (core:feat homepage almost done)
+=======
+	data() {
+		return {
+		};
+	},
+>>>>>>> f5dd314 (core:feat /secret done)
 });
 
 <<<<<<< HEAD

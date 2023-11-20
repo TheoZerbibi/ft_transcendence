@@ -312,29 +312,6 @@
 >>>>>>> 3b9f6f4 (clean files)
 					</div>
 				</v-col>
-				<!-- <v-col cols="12" class="IntraPictures"> -->
-
-				<!-- <div style="margin-top: 5px;width: 100%;"> -->
-				<!-- <ul  style="display: grid;grid-template-columns:repeat(5,1fr);"> -->
-				<!-- <li v-for="(item,index) in intraPictures" style="width: 20%;display: inline" > -->
-				<!-- <img v-bind:src="item.photo"> -->
-				<!-- </li> -->
-				<!-- </ul> -->
-				<!-- </div> -->
-
-				<!-- <v-row class="fill-height" text-align="center" justify="center"> -->
-				<!-- <template v-for="(intraPictures, i) in intraPictures" :key="i"> -->
-				<!-- <v-col cols="12" md="4"> -->
-				<!-- <v-hover v-slot="{isHovering, props}"> -->
-				<!-- <v-card :elevation="isHovering ? 12: 2" :class="{'on-hover' : isHovering}" v-bind="props"> -->
-				<!-- <v-img :src="item.photo" alt="Image" height="225px" cover></v-img> -->
-				<!-- </v-card> -->
-				<!-- </v-hover> -->
-				<!-- </v-col> -->
-				<!-- </template>  -->
-				<!-- </v-row> -->
-
-				<!-- </v-col> -->
 			</div>
 			<v-col cols="12" sm="12">
 				<div class="d-flex jusify-center mb-6">
