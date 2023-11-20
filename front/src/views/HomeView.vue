@@ -122,6 +122,7 @@
 					size="x-large"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 					href="https://intra.42.fr"
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -148,6 +149,9 @@
 =======
 					@click="redirectToOAuth"
 >>>>>>> 7dd47b2 (fix: Fix for rebase)
+=======
+					@click="redirectToOAuth"
+>>>>>>> f54b82a (feat: callback route en cours)
 				>
 <<<<<<< HEAD
 					<div class="neonPolice">&#129418; Authenticate with 42</div>
@@ -534,6 +538,7 @@
 </template>
 
 <script lang="ts">
+<<<<<<< HEAD
 import Footer from '../components/utils/Footer.vue';
 import { makeid } from '../plugins/makeId';
 
@@ -604,6 +609,26 @@ export default {
 	},
 =======
 export default defineComponent({
+=======
+/**
+ * Generates a random string of the specified length.
+ * @param {number} length The length of the random string.
+ * @returns {string} The random string.
+ */
+ function makeid(length: number): string {
+	let result = '';
+	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	const charactersLength = characters.length;
+	let counter = 0;
+	while (counter < length) {
+		result += characters.charAt(Math.floor(Math.random() * charactersLength));
+		counter += 1;
+	}
+	return result;
+}
+
+export default {
+>>>>>>> f54b82a (feat: callback route en cours)
 	name: 'HomeView',
 >>>>>>> eaeb1b1 (move portfolio homepage to /portfolio)
 =======
@@ -643,10 +668,17 @@ export default defineComponent({
 	methods: {
 		redirectToOAuth() {
 			const clientId = import.meta.env.VITE_API42_UID;
+<<<<<<< HEAD
 			const redirectUri = import.meta.env.VITE_API42_CALLBACK;
 			const responseType = 'code';
 			const scope = 'public';
 			const state = makeid(42);
+=======
+			const redirectUri = import.meta.env.VITE_API42_REDIRECT_URI;
+			const responseType = 'code';
+			const scope = 'public';
+			const state = makeid(32);
+>>>>>>> f54b82a (feat: callback route en cours)
 
 			const params = new URLSearchParams();
 			params.append('client_id', clientId);
@@ -661,7 +693,10 @@ export default defineComponent({
 		},
 	},
 };
+<<<<<<< HEAD
 >>>>>>> 7dd47b2 (fix: Fix for rebase)
+=======
+>>>>>>> f54b82a (feat: callback route en cours)
 </script>
 <!-- <script nomodule="">!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script> -->
 <!-- <script nomodule="" crossorigin="" id="vite-legacy-polyfill" src="/assets/polyfills-legacy.6f6a2d61.js"></script> -->

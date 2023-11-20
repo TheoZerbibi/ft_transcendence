@@ -128,6 +128,7 @@ const router = createRouter({
 		{
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> eaeb1b1 (move portfolio homepage to /portfolio)
 =======
@@ -146,6 +147,8 @@ const router = createRouter({
 >>>>>>> 97035c7 (chore: Fix for rebase)
 =======
 >>>>>>> 7dd47b2 (fix: Fix for rebase)
+=======
+>>>>>>> f54b82a (feat: callback route en cours)
 			path: '/secret',
 			name: 'secret',
 			component: () => import('../components/secrets/Secret.vue'),
@@ -187,6 +190,7 @@ const router = createRouter({
 >>>>>>> 7f206e2 (profile route created)
 =======
 		{
+<<<<<<< HEAD
 			path: '/auth/callback:token?',
 			name: 'AuthCallback',
 			component: () => import('../views/AuthCallbackView.vue'),
@@ -207,6 +211,11 @@ const router = createRouter({
 			name: 'AuthCallback',
 			component: () => import('../views/auth/OauthCallbackView.vue'),
 >>>>>>> 89f4162 (feat(front): Continue Front)
+=======
+			path: '/auth/callback:token',
+			name: 'AuthCallback',
+			component: () => import('../views/AuthCallbackView.vue'),
+>>>>>>> f54b82a (feat: callback route en cours)
 		},
 <<<<<<< HEAD
 >>>>>>> 7711274 (fix: rework)

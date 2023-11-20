@@ -256,6 +256,7 @@ services:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   # prisma:
 <<<<<<< HEAD
   #   container_name: prisma
@@ -339,6 +340,8 @@ services:
 =======
 >>>>>>> 5d4223e (core:feat clean profile page, add borderes)
 =======
+=======
+>>>>>>> f54b82a (feat: callback route en cours)
     # prisma:
     #  container_name: prisma
     #  build:
@@ -360,7 +363,10 @@ services:
     #    HOST: ${HOSTNAME}
     #  command: sh -c "pnpm db:pull && pnpm start:prisma"
     #  restart: always
+<<<<<<< HEAD
 >>>>>>> 7dd47b2 (fix: Fix for rebase)
+=======
+>>>>>>> f54b82a (feat: callback route en cours)
 
   postgres:
     image: postgres:16-alpine3.18

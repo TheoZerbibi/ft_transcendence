@@ -1,4 +1,5 @@
 <script lang="ts">
+<<<<<<< HEAD
 import { useRoute } from 'vue-router';
 
 export default {
@@ -42,6 +43,9 @@ export default {
 			});
 	}
 };
+=======
+
+>>>>>>> f54b82a (feat: callback route en cours)
 </script>
 
 <template>
