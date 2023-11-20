@@ -5,6 +5,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 - [] check the port (ie localhost:3000/api/auth/callback)
+<<<<<<< HEAD
 - [x] get the user info => auth.service
 - [] onboarding if user doesn't already exist
 - [] else redirect to homepage or game
@@ -14,3 +15,9 @@
 =======
 - [] check the port (ie localhost:3000/api/auth/callback)
 >>>>>>> f54b82a (feat: callback route en cours)
+=======
+- [] get the user info
+- [] onboarding if user doesn't already exist
+- [] else redirect to homepage or game
+- [] 2FA
+>>>>>>> aa96008 (fix: new todos)
