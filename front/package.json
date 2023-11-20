@@ -39,10 +39,10 @@
 		"@mdi/font": "7.3.67",
 		"@tsconfig/node18": "^18.2.2",
 		"@types/jsdom": "^21.1.5",
-		"@types/node": "^20.9.0",
+		"@types/node": "^20.9.1",
 		"@types/webfontloader": "^1.6.37",
-		"@vitejs/plugin-vue": "^4.4.1",
-		"@vitejs/plugin-vue-jsx": "^3.0.2",
+		"@vitejs/plugin-vue": "^4.5.0",
+		"@vitejs/plugin-vue-jsx": "^3.1.0",
 		"@vue/tsconfig": "^0.4.0",
 >>>>>>> e3b6b2e (fix(Frontend): Downgrade version (Build error))
 		"gsap": "^3.12.2",
@@ -62,6 +62,7 @@
 		"vue-cli-plugin-vuetify": "~2.5.8",
 		"vue-router": "^4.2.5",
 <<<<<<< HEAD
+<<<<<<< HEAD
 		"vuetify": "^3.4.2",
 		"webfontloader": "^1.6.28"
 	},
@@ -70,6 +71,9 @@
 		"@mdi/font": "7.3.67",
 =======
 		"vuetify": "^3.4.0",
+=======
+		"vuetify": "^3.4.2",
+>>>>>>> 70acdba (chore: Update front dependencies (not vite))
 		"webfontloader": "^1.6.28"
 	},
 	"devDependencies": {
@@ -81,10 +85,14 @@
 		"@vue/test-utils": "^2.4.2",
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		"cypress": "^13.5.1",
 		"eslint": "^8.54.0",
 =======
 		"cypress": "^13.5.0",
+=======
+		"cypress": "^13.5.1",
+>>>>>>> 70acdba (chore: Update front dependencies (not vite))
 		"eslint": "^8.53.0",
 >>>>>>> 1f4dfd0 (feat(pong): Improve IA deplacement + add life visualation)
 =======
@@ -108,6 +116,7 @@
 		"prettier": "^3.1.0",
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		"sass": "^1.69.5",
 		"start-server-and-test": "^2.0.3",
 =======
@@ -116,6 +125,9 @@
 =======
 		"start-server-and-test": "^2.0.2",
 >>>>>>> e3b6b2e (fix(Frontend): Downgrade version (Build error))
+=======
+		"start-server-and-test": "^2.0.3",
+>>>>>>> 70acdba (chore: Update front dependencies (not vite))
 		"stylelint": "^15.11.0",
 		"stylelint-config-recommended-scss": "^13.1.0",
 		"stylelint-config-recommended-vue": "^1.5.0",
