@@ -7,6 +7,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	<!-- <header role="banner" class="site-header hide-on-overlay" data-v-9fb9646a=""> -->
 		<!-- <img class="site-header__logo" width="125" height="76" draggable="false" src="/src/assets/OmoriWallpapers/logo1.png" data-v-9fb9646a=""> -->
 			<!-- <div class="site-header__lightbulb" data-v-9fb9646a=""> -->
@@ -73,8 +74,10 @@
 		<!--Cf ul and li balises-->
 	</nav>
 >>>>>>> ee218da (navbar homepage html prototype)
+=======
+>>>>>>> 027b4cc (core:feat homepage almost done)
 	<v-row align="center" justify="center" class="fill-height" id="background">
-		<v-card class="homepage text-center rounded-card" variant="tonal" color="green darken-4" width="700">
+		<v-card class="homepage text-center blurred-card rounded-card" variant="tonal" color="green darken-4" width="600">
 			<v-card-item>
 				<v-card-title class="title">
 <<<<<<< HEAD
@@ -91,9 +94,6 @@
 			</v-card-item>
 			<v-card-text class="neonPolice text homeSubtitles">
 				<br />students of 42 paris<br />
-				<!-- <strong>students of 42 paris (en gras)</strong><br /> -->
-				<!-- <mark>students of 42 paris (en surligne)</mark><br /> -->
-				<!-- <em>students of 42 paris (en italique)</em><br /> -->
 			</v-card-text>
 			<v-card-actions>
 				<v-btn
@@ -132,6 +132,7 @@
 			</v-card-actions>
 		</v-card>
 	</v-row>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 	<HomepageFooter></HomepageFooter>
@@ -470,6 +471,16 @@
 		<a href="https://www.twitter.com" target="_blank">Twitter </a>
 	</footer>
 >>>>>>> 14a6c34 (add header and footer in homepage)
+=======
+	<HomepageFooter></HomepageFooter>
+	<v-footer class="neonPolice footer blurred-card" alt="Footer">
+		<a href="https://www.instagram.com/42.born2code/" target="_blank">42Instagram</a>
+		&#129418
+		<a href="https://www.facebook.com/42born2code" target="_blank">42Facebook</a>
+		&#129418
+		<a href="https://twitter.com/42born2code?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" target="_blank">42Twitter</a>
+	</v-footer>
+>>>>>>> 027b4cc (core:feat homepage almost done)
 </template>
 
 <script lang="ts">
@@ -485,6 +496,7 @@ import NavBar from '../components/utils/NavBar.vue';
 >>>>>>> d21abb4 (changes on front)
 export default defineComponent({
 	name: 'HomeView',
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 	data() {
@@ -535,6 +547,16 @@ export default defineComponent({
 export default defineComponent({
 	name: 'HomeView',
 >>>>>>> eaeb1b1 (move portfolio homepage to /portfolio)
+=======
+	data: () => ({
+      icons: [
+        'mdi-facebook',
+        'mdi-twitter',
+        'mdi-linkedin',
+        'mdi-instagram',
+      ],
+    }),
+>>>>>>> 027b4cc (core:feat homepage almost done)
 });
 
 <<<<<<< HEAD
@@ -556,6 +578,7 @@ export default defineComponent({
 	display: flex;
 	align-items: center;
 	flex-direction: column;
+<<<<<<< HEAD
 	/* background: linear-gradient(90deg, #8360c3, #2ebf91); */
 =======
 .head{
@@ -762,6 +785,9 @@ a {
 	background-color: transparent;
 	backdrop-filter: blur(3px);
 	padding: 16px;
+=======
+	background: linear-gradient(90deg, #8360c3, #2ebf91);
+>>>>>>> 027b4cc (core:feat homepage almost done)
 }
 
 .title {
@@ -777,8 +803,8 @@ a {
 }
 
 #authButton:hover {
-	/* box-shadow: 6px 6px 0px rgba(0, 0, 0);  Button with shadow non gradient*/
-	box-shadow: 6px 6px 25px rgba(0, 0, 0, 0.5);
+	box-shadow: 6px 6px 0px rgba(0, 0, 0);
+	/* box-shadow: 6px 6px 25px rgba(0, 0, 0, 0.5); */
 	border: double;
 }
 <<<<<<< HEAD
@@ -820,8 +846,21 @@ a {
 >>>>>>> 3b9f6f4 (clean files)
 =======
 
-.auth:hover {
-	color: darkmagenta;
+.footer {
+	display:block;
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    padding-left: 24px;
+    height: 36px;
+    text-align: center;
 }
+<<<<<<< HEAD
 >>>>>>> 66803a1 (shadow and color change when hover auth button)
+=======
+
+>>>>>>> 027b4cc (core:feat homepage almost done)
 </style>
