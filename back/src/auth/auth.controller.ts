@@ -46,6 +46,7 @@ export class AuthController {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 2433f86 (fix: rework)
 	/* @Get('auth/oauth/callback') */
@@ -65,9 +66,15 @@ export class AuthController {
 =======
 =======
 	@Get('oauth/callback')
+=======
+	@Get('/callback:token')
+>>>>>>> 7dd47b2 (fix: Fix for rebase)
 	async redirectFromOAuth(@Req() req, @Res() res) {
-		const token = await this.authService.signup(req.user);
-		res.redirect(`${process.env.API42_REDIRECT_URI}?token=${token}`);
+		const code = req.query.code;
+		const token = await this.authService.getAccessToken(code);
+		const user = await this.authService.getUserInfo(token);
+		const jwt = await this.authService.signToken(user);
+		res.redirect(`http://localhost:3000/auth/callback?token=${jwt.access_token}`);
 	}
 
 >>>>>>> 2326550 (chore: Update module dependencies)

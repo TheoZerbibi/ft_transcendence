@@ -301,6 +301,7 @@ services:
     command: sh -c "tail -f /dev/null"
     restart: always
 
+<<<<<<< HEAD
 =======
 >>>>>>> 46a40e3 (core:feat clean profile page, add borderes)
 =======
@@ -333,6 +334,29 @@ services:
 >>>>>>> 46a40e3 (core:feat clean profile page, add borderes)
 =======
 >>>>>>> 5d4223e (core:feat clean profile page, add borderes)
+=======
+    # prisma:
+    #  container_name: prisma
+    #  build:
+    #    context: ./
+    #    dockerfile: ./docker/prisma/Dockerfile
+    #  ports:
+    #    - 5555:5555
+    #  depends_on:
+    #    api:
+    #      condition: service_started
+    #  environment:
+    #    POSTGRES_DB: ${POSTGRES_DB}
+    #    POSTGRES_USER: ${POSTGRES_USER}
+    #    POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    #    POSTGRES_PORT: ${POSTGRES_PORT}
+    #    POSTGRES_ENABLED: ${POSTGRES_ENABLED}
+    #    NODE_ENV: ${NODE_ENV}
+    #    DATABASE_URL: ${DATABASE_URL}
+    #    HOST: ${HOSTNAME}
+    #  command: sh -c "pnpm db:pull && pnpm start:prisma"
+    #  restart: always
+>>>>>>> 7dd47b2 (fix: Fix for rebase)
 
   postgres:
     image: postgres:16-alpine3.18

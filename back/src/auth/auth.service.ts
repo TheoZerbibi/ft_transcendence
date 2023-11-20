@@ -50,4 +50,40 @@ export class AuthService {
 			access_token: token,
 		};
 	}
+
+	async getAccessToken(code: string) {
+		const data = {
+			grant_type: 'authorization_code',
+			client_id: this.config.get<string>('API42_UID'),
+			client_secret: this.config.get<string>('API42_SECRET'),
+			code: code,
+			redirect_uri: 'http://localhost:3001/auth/callback',
+		};
+		const response = await fetch('https://api.intra.42.fr/oauth/token', {
+			method: 'POST',
+			body: new URLSearchParams(data),
+		});
+		const json = await response.json();
+		return json.access_token;
+	}
+
+	async getUserInfo(token: string) {
+		const response = await fetch('https://api.intra.42.fr/v2/me', {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		const json = await response.json();
+		return json;
+	}
+
+	async getUserInfoByLogin(login: string) {
+		const response = await fetch(`https://api.intra.42.fr/v2/users/${login}`, {
+			headers: {
+				Authorization: `Bearer ${this.config.get<string>('API42_TOKEN')}`,
+			},
+		});
+		const json = await response.json();
+		return json;
+	}
 }

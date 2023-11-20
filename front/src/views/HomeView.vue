@@ -121,6 +121,7 @@
 					variant="outlined"
 					size="x-large"
 <<<<<<< HEAD
+<<<<<<< HEAD
 					href="https://intra.42.fr"
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -144,6 +145,9 @@
 					target="_blank"
 =======
 >>>>>>> 33253f6 (fix(back): Remove target blank)
+=======
+					@click="redirectToOAuth"
+>>>>>>> 7dd47b2 (fix: Fix for rebase)
 				>
 <<<<<<< HEAD
 					<div class="neonPolice">&#129418; Authenticate with 42</div>
@@ -530,9 +534,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
 import Footer from '../components/utils/Footer.vue';
+/**
+ * Generates a random string of the specified length.
+ * @param {number} length The length of the random string.
+ * @returns {string} The random string.
+ */
+ function makeid(length: number): string {
+	let result = '';
+	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	const charactersLength = characters.length;
+	let counter = 0;
+	while (counter < length) {
+		result += characters.charAt(Math.floor(Math.random() * charactersLength));
+		counter += 1;
+	}
+	return result;
+}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -543,6 +563,9 @@ import NavBar from '../components/utils/NavBar.vue';
 
 >>>>>>> d21abb4 (changes on front)
 export default defineComponent({
+=======
+export default {
+>>>>>>> 7dd47b2 (fix: Fix for rebase)
 	name: 'HomeView',
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -616,6 +639,7 @@ export default defineComponent({
 >>>>>>> f5dd314 (core:feat /secret done)
 =======
 	components: { Footer },
+<<<<<<< HEAD
 >>>>>>> 526132c (fix: Move footer in component)
 =======
 	components: { Footer },
@@ -627,6 +651,32 @@ export default defineComponent({
 =======
 >>>>>>> 62efd17 (header lightbulb photo added)
 
+=======
+	data() {
+		return {};
+	},
+	methods: {
+		redirectToOAuth() {
+			const clientId = import.meta.env.VITE_API42_UID;
+			const redirectUri = import.meta.env.VITE_API42_REDIRECT_URI;
+			const responseType = 'code';
+			const scope = 'public';
+			const state = makeid(32);
+
+			const params = new URLSearchParams();
+			params.append('client_id', clientId);
+			params.append('redirect_uri', redirectUri);
+			params.append('response_type', responseType);
+			params.append('scope', scope);
+			params.append('state', state);
+
+			const query = params.toString();
+
+			window.location.href = `https://api.intra.42.fr/oauth/authorize?${query}`;
+		},
+	},
+};
+>>>>>>> 7dd47b2 (fix: Fix for rebase)
 </script>
 <!-- <script nomodule="">!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script> -->
 <!-- <script nomodule="" crossorigin="" id="vite-legacy-polyfill" src="/assets/polyfills-legacy.6f6a2d61.js"></script> -->
