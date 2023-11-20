@@ -37,11 +37,6 @@ export class ChannelListElemDto {
 
 export class ChannelSettingsDto {
 	@ApiProperty()
-	@IsNumber()
-	// eslint-disable-next-line
-	id: number;
-
-	@ApiProperty()
 	@IsString()
 	// eslint-disable-next-line
 	name: string;

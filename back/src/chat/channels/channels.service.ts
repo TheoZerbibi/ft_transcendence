@@ -179,8 +179,9 @@ export class ChannelService {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				if (e.code === 'P2002') throw new BadRequestException('Channel name taken');
 				console.log(e);
+				throw new BadRequestException(e);
 			}
-			throw new BadRequestException(e);
+			throw e;
 		}
 	}
 
