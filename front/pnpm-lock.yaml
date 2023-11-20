@@ -161,9 +161,15 @@ importers:
         specifier: ^2.1.7
         version: 2.1.7(typescript@5.2.2)(vue@3.3.7)
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 2b99e9b (chore: Update some modules versions)
 =======
 >>>>>>> 402fe16 (chore: Update module depencies)
+=======
+      pinia-plugin-persistedstate:
+        specifier: ^3.2.0
+        version: 3.2.0(pinia@2.1.7)
+>>>>>>> b46e0bc (fix(pong): Implement JWT Injection for development + start fixing backend bad position for player)
       roboto-fontface:
         specifier: '*'
         version: 0.10.0
@@ -10808,8 +10814,19 @@ packages:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /pinia@2.1.7(typescript@5.2.2)(vue@3.3.6):
 =======
+=======
+  /pinia-plugin-persistedstate@3.2.0(pinia@2.1.7):
+    resolution: {integrity: sha512-tZbNGf2vjAQcIm7alK40sE51Qu/m9oWr+rEgNm/2AWr1huFxj72CjvpQcIQzMknDBJEkQznCLAGtJTIcLKrKdw==}
+    peerDependencies:
+      pinia: ^2.0.0
+    dependencies:
+      pinia: 2.1.7(typescript@5.2.2)(vue@3.3.7)
+    dev: false
+
+>>>>>>> b46e0bc (fix(pong): Implement JWT Injection for development + start fixing backend bad position for player)
   /pinia@2.1.7(typescript@5.2.2)(vue@3.3.7):
 >>>>>>> 2b99e9b (chore: Update some modules versions)
 =======

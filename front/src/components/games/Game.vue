@@ -182,7 +182,9 @@ export default {
 				console.error(error);
 			});
 	},
-	mounted() {},
+	mounted() {
+		console.log('JWT : ', this.JWT);
+	},
 	methods: {
 		test() {
 			if (this.isConnected) {

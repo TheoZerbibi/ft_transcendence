@@ -38,16 +38,17 @@ export class PlayerData implements IPlayerData {
 	}
 
 	move(direction: number) {
-		const speed: number = (this.ratio * 100) / 80;
+		const speed: number = (this.ratio * 100) / 100;
 
 		direction ? (this.y -= speed) : (this.y += speed);
-		console.log('before : ', this.y);
-		console.log('first : ', (this.ratio * 100) / 150);
-		console.log('second : ', this.ratio * 100 - (this.ratio * 100) / 150 - this.h);
 
-		if (this.y < (this.ratio * 100) / 150) this.y = (this.ratio * 100) / 150;
-		else if (this.y > this.ratio * 100 - (this.ratio * 100) / 150 - this.h)
-			this.y = this.ratio * 100 - (this.ratio * 100) / 150 - this.h;
-		console.log('after : ', this.y);
+		if (this.y < (this.ratio * 100) / 100) {
+			// this.y = (this.ratio * 100) / 100;
+			this.y++;
+		} else if (this.y > this.ratio * 100 - (this.ratio * 100) / 100 - this.h) {
+			console.log(--this.y);
+			this.y--;
+			// this.y = this.ratio * 100 - (this.ratio * 100) / 150 - this.h;
+		}
 	}
 }

@@ -12,7 +12,6 @@ export const useUser = defineStore('user', {
 			return state.JWT;
 		},
 		getUser: (state) => {
-			return { login: state.login, displayName: state.displayName, avatar: state.avatar };
 		},
 	},
 	actions: {
@@ -47,5 +46,4 @@ export const useUser = defineStore('user', {
 			this.avatar = data.avatar;
 		},
 	},
-	persist: true,
 });

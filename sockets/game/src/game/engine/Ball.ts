@@ -36,9 +36,9 @@ export class Ball {
 	hit() {
 		if (!this.rightUser || !this.leftUser) return;
 
-		if (100 / 75 - this.r < this.pos.x && this.pos.x < 100 / 75 + 100 / 75 + this.r) {
+		if (100 / 70 - this.r < this.pos.x && this.pos.x < 100 / 70 + 100 / 70 + this.r) {
 			if (this.leftUser.y - this.r < this.pos.y && this.pos.y < this.leftUser.y + this.leftUser.h + this.r) {
-				const centerX: number = 100 / 75 + 100 / 75 / 2;
+				const centerX: number = 100 / 70 + 100 / 70 / 2;
 				const centerY: number = this.leftUser.y + this.leftUser.h / 2;
 
 				this.vel.x = this.pos.x - centerX;
@@ -71,9 +71,9 @@ export class Ball {
 			}
 		}
 
-		if (100 - (100 / 75) * 2 - this.r <= this.pos.x && this.pos.x <= 100 - (100 / 75) * 2 + 100 / 75 + this.r) {
+		if (100 - (100 / 70) * 2 - this.r <= this.pos.x && this.pos.x <= 100 - (100 / 70) * 2 + 100 / 70 + this.r) {
 			if (this.rightUser.y - this.r <= this.pos.y && this.pos.y <= this.rightUser.y + this.rightUser.h + this.r) {
-				const centerX: number = 100 - (100 / 75) * 2 + 100 / 75 / 2;
+				const centerX: number = 100 - (100 / 70) * 2 + 100 / 70 / 2;
 				const centerY: number = this.rightUser.y + this.rightUser.h / 2;
 
 				this.vel.x = this.pos.x - centerX;
