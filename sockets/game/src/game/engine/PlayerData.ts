@@ -5,7 +5,10 @@ import { constrain } from './utils/MathUtils';
 import { DIRECTION } from './enums/Direction';
 
 export class PlayerData implements IPlayerData {
+<<<<<<< HEAD
 	private moveSpeed: number = 5;
+=======
+>>>>>>> 42c10c0 (refactor(pong): Improve ball deplacement)
 	pos: Vector;
 	w: number;
 	h: number;
@@ -28,6 +31,7 @@ export class PlayerData implements IPlayerData {
 		this.h = h;
 	}
 
+<<<<<<< HEAD
 	setMoveSpeed(speed: number): void {
 		this.moveSpeed = speed;
 	}
@@ -40,5 +44,11 @@ export class PlayerData implements IPlayerData {
 
 	addPoint() {
 		this.score++;
+=======
+	move(direction: DIRECTION) {
+		if (direction === DIRECTION.UP) this.pos.y += 5;
+		else if (direction === DIRECTION.DOWN) this.pos.y -= 5;
+		this.pos.y = constrain(this.pos.y, 0, this.height - this.h);
+>>>>>>> 42c10c0 (refactor(pong): Improve ball deplacement)
 	}
 }
