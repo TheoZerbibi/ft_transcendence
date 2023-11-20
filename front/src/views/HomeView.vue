@@ -131,8 +131,11 @@
 =======
 =======
 					href="/auth/signup"
+<<<<<<< HEAD
 >>>>>>> 0bc9e74 (chore: Fix conflict)
 					target="_blank"
+=======
+>>>>>>> 33253f6 (fix(back): Remove target blank)
 				>
 <<<<<<< HEAD
 					<div class="neonPolice">&#129418; Authenticate with 42</div>
