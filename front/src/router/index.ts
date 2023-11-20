@@ -66,7 +66,7 @@ const router = createRouter({
 <<<<<<< HEAD
 			path: '/exemples/modal',
 			name: 'ModalExemple',
-			component: () => import('../components/exemples/ModalExemple.vue'),
+			component: () => import('../components/utils/GameModal.vue'),
 		},
 		{
 
@@ -184,8 +184,8 @@ const router = createRouter({
 >>>>>>> 7f206e2 (profile route created)
 =======
 		{
-			path: '/api/oauth/callback:token',
-			name: 'OauthCallback',
+			path: '/auth/callback:token?',
+			name: 'AuthCallback',
 			component: () => import('../views/auth/OauthCallbackView.vue'),
 		},
 >>>>>>> 326d237 (chore: Fix for rebase)

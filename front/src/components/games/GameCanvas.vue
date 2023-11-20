@@ -13,8 +13,12 @@
 			<div v-if="waitingOpp">
 				<span class="d-flex align-center justify-center" min-height="100%">
 					<h4>Waiting for a opponant</h4>
+<<<<<<< HEAD
 					<v-progress-circular indeterminate color="primary" />
 >>>>>>> 2903c30 (fix(front): Fix leftUser not grayscale after death)
+=======
+					<v-progress-circular indeterminate color="deep-purple-accent-2" />
+>>>>>>> f9ddb4d (feat(front): Continue Front)
 				</span>
 			</div>
 			<v-card

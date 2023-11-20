@@ -64,9 +64,13 @@
 		"@vitejs/plugin-vue-jsx": "^3.1.0",
 		"@vue/composition-api": "^1.7.2",
 		"@vue/tsconfig": "^0.4.0",
+<<<<<<< HEAD
 >>>>>>> e3b6b2e (fix(Frontend): Downgrade version (Build error))
 =======
 >>>>>>> 790bb55 (nav bar to fix)
+=======
+		"date-fns": "^2.30.0",
+>>>>>>> f9ddb4d (feat(front): Continue Front)
 		"gsap": "^3.12.2",
 <<<<<<< HEAD
 		"p5": "^1.8.0",

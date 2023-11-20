@@ -252,7 +252,13 @@ importers:
       '@vue/tsconfig':
         specifier: ^0.4.0
         version: 0.4.0
+<<<<<<< HEAD
 >>>>>>> d2e5210 (chore(frond): Update vite)
+=======
+      date-fns:
+        specifier: ^2.30.0
+        version: 2.30.0
+>>>>>>> f9ddb4d (feat(front): Continue Front)
       gsap:
         specifier: ^3.12.2
         version: 3.12.2
@@ -1320,6 +1326,13 @@ packages:
       '@babel/helper-create-class-features-plugin': 7.22.15(@babel/core@7.23.3)
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/plugin-syntax-typescript': 7.23.3(@babel/core@7.23.3)
+    dev: false
+
+  /@babel/runtime@7.23.4:
+    resolution: {integrity: sha512-2Yv65nlWnWlSpe3fXEyX5i7fx5kIKo4Qbcj+hMO0odwaneFjfXw5fdum+4yL20O0QiaHpia0cYQ9xpNMqrBwHg==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.14.0
     dev: false
 
   /@babel/template@7.22.15:
@@ -9669,6 +9682,16 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  /date-fns@2.30.0:
+    resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}
+    engines: {node: '>=0.11'}
+    dependencies:
+      '@babel/runtime': 7.23.4
+    dev: false
+
+>>>>>>> f9ddb4d (feat(front): Continue Front)
   /dayjs@1.11.10:
     resolution: {integrity: sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==}
 =======
@@ -20784,6 +20807,10 @@ packages:
       indent-string: 5.0.0
       strip-indent: 4.0.0
     dev: true
+
+  /regenerator-runtime@0.14.0:
+    resolution: {integrity: sha512-srw17NI0TUWHuGa5CFGGmhfNIeja30WMBfbslPNhf6JrqQlLN5gcrvig1oqPxiVaXb0oW0XRKtH6Nngs5lKCIA==}
+    dev: false
 
   /regexp.prototype.flags@1.5.1:
     resolution: {integrity: sha512-sy6TXMN+hnP/wMy+ISxg3krXx7BAtWVO4UouuCN/ziM9UEne0euamVNafDfvC83bRNr95y0V5iijeDQFUNpvrg==}
