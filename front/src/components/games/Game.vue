@@ -197,12 +197,15 @@ import { useSocketStore } from '../../stores/websocket';
 import Snackbar from '../utils/Snackbar.vue';
 import GameModal from '../utils/GameModal.vue';
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import { useSocketStore } from '../../stores/websocket';
 import Snackbar from '../utils/Snackbar.vue';
 >>>>>>> c80165e (fix: github issue)
 =======
 >>>>>>> f9ddb4d (feat(front): Continue Front)
+=======
+>>>>>>> 89f4162 (feat(front): Continue Front)
 
 import GameCanvas from './GameCanvas.vue';
 
@@ -212,8 +215,11 @@ export default {
 	name: 'PongGame',
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> f9ddb4d (feat(front): Continue Front)
+=======
+>>>>>>> 89f4162 (feat(front): Continue Front)
 	components: { Snackbar, GameCanvas, GameModal },
 	setup() {
 		const webSocketStore = useSocketStore();
@@ -275,8 +281,11 @@ export default {
 		return {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> f9ddb4d (feat(front): Continue Front)
+=======
+>>>>>>> 89f4162 (feat(front): Continue Front)
 			gameEnded: false as boolean,
 			apiData: null as any,
 			gameUID: null as string | null,
@@ -284,12 +293,16 @@ export default {
 			background: null as any,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> f9ddb4d (feat(front): Continue Front)
+=======
+>>>>>>> 89f4162 (feat(front): Continue Front)
 			dialogVisible: false as boolean,
 			isWinner: false as boolean,
 			isLoser: false as boolean,
 			test: 'test',
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 >>>>>>> c7368ae (feat(pong): Front for the Pong)
@@ -300,6 +313,8 @@ export default {
 >>>>>>> c80165e (fix: github issue)
 =======
 >>>>>>> f9ddb4d (feat(front): Continue Front)
+=======
+>>>>>>> 89f4162 (feat(front): Continue Front)
 		};
 	},
 	async beforeUnmount() {
@@ -428,12 +443,16 @@ export default {
 									snackbarStore.showSnackbar('Game is ended', 3000, 'primary');
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> f9ddb4d (feat(front): Continue Front)
+=======
+>>>>>>> 89f4162 (feat(front): Continue Front)
 								this.dialogVisible = true;
 								console.log(data);
 								this.apiData = data;
 								this.gameEnded = true;
+<<<<<<< HEAD
 <<<<<<< HEAD
 								if (data.winner) console.log(`Winner : ${data.winner.user.login}`);
 							});
@@ -451,16 +470,22 @@ export default {
 =======
 =======
 >>>>>>> f9ddb4d (feat(front): Continue Front)
+=======
+>>>>>>> 89f4162 (feat(front): Continue Front)
 								if (data.winner) console.log(`Winner : ${data.winner.user.login}`);
 							});
 
 							this.socket.on('game-win', () => {
 								console.log('Win!');
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 6505030 (feat(pong): Responsivity & Design)
 =======
 								this.isWinner = true;
 >>>>>>> f9ddb4d (feat(front): Continue Front)
+=======
+								this.isWinner = true;
+>>>>>>> 89f4162 (feat(front): Continue Front)
 								snackbarStore.showSnackbar('You win!', 3000, 'green');
 							});
 
@@ -468,12 +493,16 @@ export default {
 								console.log('lose!');
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 								this.isLoser = true;
 =======
 >>>>>>> 6505030 (feat(pong): Responsivity & Design)
 =======
 								this.isLoser = true;
 >>>>>>> f9ddb4d (feat(front): Continue Front)
+=======
+								this.isLoser = true;
+>>>>>>> 89f4162 (feat(front): Continue Front)
 								snackbarStore.showSnackbar('You lose!', 3000, 'red');
 							});
 
@@ -557,13 +586,17 @@ export default {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> f9ddb4d (feat(front): Continue Front)
+=======
+>>>>>>> 89f4162 (feat(front): Continue Front)
 		openDialog() {
 			this.gameEnded = true;
 			this.apiData = { "winner": { "user": { "id": 2, "login": "norminet", "displayName": "Norminet", "avatar": "https://preview.redd.it/sky2ka084ns11.jpg?width=640&crop=smart&auto=webp&s=a7f060f539797578a109af48a5ee75909f7661cb" }, "score": 6, "side": 1 }, "loser": { "user": { "id": 1, "login": "thzeribi", "displayName": "Theo", "avatar": "https://i.imgur.com/XXxzteU.png" }, "score": 1, "side": 0 }, "startDate": "2023-11-20T12:00:38.537Z", "endingDate": "2023-11-20T12:01:24.445Z" };
 			this.isLoser = true;
 			this.dialogVisible = true;
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 		test() {
@@ -582,6 +615,8 @@ export default {
 >>>>>>> c80165e (fix: github issue)
 =======
 >>>>>>> f9ddb4d (feat(front): Continue Front)
+=======
+>>>>>>> 89f4162 (feat(front): Continue Front)
 		},
 	},
 };
