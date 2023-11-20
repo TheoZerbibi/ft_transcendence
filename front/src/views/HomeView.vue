@@ -51,9 +51,6 @@ import { makeid } from '../plugins/makeId';
 export default {
 	name: 'HomeView',
 	components: { Footer },
-	data() {
-		return {};
-	},
 	methods: {
 		redirectToOAuth() {
 			const clientId = import.meta.env.VITE_API42_UID;
