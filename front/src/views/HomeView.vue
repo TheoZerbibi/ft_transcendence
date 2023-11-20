@@ -87,7 +87,7 @@
 					<p class="neonPolice">Welcome to NSTG's ft_transcendence</p>
 >>>>>>> 2852cf3 (isma out)
 				</v-card-title>
-				<v-img src="CatsRounded.png" contain max-height="300" alt="These are cute kittens" />
+				<v-img class="rounded-card" src="/src/assets/OmoriPictures/Omori007.jpg" contain max-height="300" alt="These are us" />
 				<v-card-subtitle class="neonPolice homeSubtitles">
 					<br />Gaelle, <span class="teamLeader">Théo</span>, Semiha, Noe
 				</v-card-subtitle>
@@ -579,6 +579,7 @@ export default defineComponent({
 	align-items: center;
 	flex-direction: column;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	/* background: linear-gradient(90deg, #8360c3, #2ebf91); */
 =======
 .head{
@@ -788,6 +789,9 @@ a {
 =======
 	background: linear-gradient(90deg, #8360c3, #2ebf91);
 >>>>>>> 027b4cc (core:feat homepage almost done)
+=======
+	/* background: linear-gradient(90deg, #8360c3, #2ebf91); */
+>>>>>>> 4ecaeef (homepage done)
 }
 
 .title {
