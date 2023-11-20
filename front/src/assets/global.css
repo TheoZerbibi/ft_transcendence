@@ -51,7 +51,7 @@
 		1px 1px 2px plum,
 		0 0 1em purple,
 		0 0 0.2em goldenrod;
-		margin: auto;
+	margin: auto;
 }
 
 .darkNeonPolice {
@@ -91,9 +91,13 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> bac66c6 (core:feat center all boxes buttons and text)
 		margin: auto;
+=======
+	margin: auto;
+>>>>>>> 8f38e0e (chore: Fix linter error)
 }
 
 @font-face {

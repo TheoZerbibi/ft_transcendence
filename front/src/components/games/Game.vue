@@ -440,10 +440,14 @@ export default {
 
 h4 {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	font-family: 'OMORI_MAIN', sans-serif;
 =======
 	font-family: 'OMORI_MAIN';
 >>>>>>> 6505030 (feat(pong): Responsivity & Design)
+=======
+	font-family: 'OMORI_MAIN', sans-serif;
+>>>>>>> 8f38e0e (chore: Fix linter error)
 	font-size: xx-large;
 	text-align: center;
 	color: rgb(65, 37, 37);

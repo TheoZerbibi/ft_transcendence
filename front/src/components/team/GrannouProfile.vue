@@ -17,6 +17,7 @@ export default defineComponent({
 	},
 });
 </script>
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -28,3 +29,5 @@ export default defineComponent({
 =======
 <style></style>
 >>>>>>> 3b9f6f4 (clean files)
+=======
+>>>>>>> 8f38e0e (chore: Fix linter error)

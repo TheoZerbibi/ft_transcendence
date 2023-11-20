@@ -593,6 +593,59 @@ export default defineComponent({
 
 
 <style>
+*,
+:before,
+:after {
+	--tw-border-spacing-x: 0;
+	--tw-border-spacing-y: 0;
+	--tw-translate-x: 0;
+	--tw-translate-y: 0;
+	--tw-rotate: 0;
+	--tw-skew-x: 0;
+	--tw-skew-y: 0;
+	--tw-scale-x: 1;
+	--tw-scale-y: 1;
+	--tw-pan-x: ;
+	--tw-pan-y: ;
+	--tw-pinch-zoom: ;
+	--tw-scroll-snap-strictness: proximity;
+	--tw-ordinal: ;
+	--tw-slashed-zero: ;
+	--tw-numeric-figure: ;
+	--tw-numeric-spacing: ;
+	--tw-numeric-fraction: ;
+	--tw-ring-inset: ;
+	--tw-ring-offset-width: 0px;
+	--tw-ring-offset-color: #fff;
+	--tw-ring-color: rgba(59, 130, 246, 0.5);
+	--tw-ring-offset-shadow: 0 0 #0000;
+	--tw-ring-shadow: 0 0 #0000;
+	--tw-shadow: 0 0 #0000;
+	--tw-shadow-colored: 0 0 #0000;
+	--tw-blur: ;
+	--tw-brightness: ;
+	--tw-contrast: ;
+	--tw-grayscale: ;
+	--tw-hue-rotate: ;
+	--tw-invert: ;
+	--tw-saturate: ;
+	--tw-sepia: ;
+	--tw-drop-shadow: ;
+	--tw-backdrop-blur: ;
+	--tw-backdrop-brightness: ;
+	--tw-backdrop-contrast: ;
+	--tw-backdrop-grayscale: ;
+	--tw-backdrop-hue-rotate: ;
+	--tw-backdrop-invert: ;
+	--tw-backdrop-opacity: ;
+	--tw-backdrop-saturate: ;
+	--tw-backdrop-sepia: ;
+	box-sizing: border-box;
+	border-width: 0;
+	border-style: solid;
+	border-color: currentColor;
+}
+
 #background {
 	background-image: url('/src/assets/OmoriHomepageWallpaper.jpg');
 }
@@ -836,6 +889,13 @@ a {
 	box-shadow: 6px 6px 0px rgba(0, 0, 0);
 	/* box-shadow: 6px 6px 25px rgba(0, 0, 0, 0.5); */
 	border: double;
+<<<<<<< HEAD
+=======
+}
+
+#authButton:hover span {
+	color: white !important;
+>>>>>>> 8f38e0e (chore: Fix linter error)
 }
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -899,7 +959,29 @@ a {
 	color:black;
 }
 
+<<<<<<< HEAD
 >>>>>>> 65f5147 (footer in black police)
 =======
 >>>>>>> 62efd17 (header lightbulb photo added)
+=======
+.site-header {
+	display: flex;
+	image-rendering: -webkit-optimize-contrast;
+	image-rendering: optimize-contrast;
+	image-rendering: crisp-edges;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	-moz-tap-highlight-color: transparent;
+	-webkit-tap-highlight-color: transparent;
+	margin-bottom: 0;
+	min-height: -moz-fit-content;
+	min-height: fit-content;
+	padding-top: 1.5rem;
+
+	@media (min-width: 30rem) {
+		padding-top: 2rem;
+	}
+}
+>>>>>>> 8f38e0e (chore: Fix linter error)
 </style>

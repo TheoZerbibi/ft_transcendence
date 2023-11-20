@@ -15,4 +15,7 @@ export default defineComponent({
 	},
 });
 </script>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8f38e0e (chore: Fix linter error)

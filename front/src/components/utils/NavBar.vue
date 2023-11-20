@@ -18,13 +18,13 @@
 		<!-- </v-btn> -->
 
 		<v-spacer></v-spacer>
-		<v-btn text @click="scroll('home')" class="text-red">Home</v-btn>
-		<v-btn text @click="scroll('project')" class="text-orange">The project</v-btn>
-		<v-btn text @click="scroll('tools')" class="text-yellow">The tools</v-btn>
-		<v-btn text @click="scroll('team')" class="text-green">The team</v-btn>
-		<v-btn text @click="scroll('game')" class="text-blue">The game</v-btn>
-		<v-btn text @click="scroll('blog')" class="text-purple">Blog</v-btn>
-		<v-btn text @click="scroll('contact')" class="text-pink">Contact</v-btn>
+		<v-btn @click="scroll('home')" class="text-red">Home</v-btn>
+		<v-btn @click="scroll('project')" class="text-orange">The project</v-btn>
+		<v-btn @click="scroll('tools')" class="text-yellow">The tools</v-btn>
+		<v-btn @click="scroll('team')" class="text-green">The team</v-btn>
+		<v-btn @click="scroll('game')" class="text-blue">The game</v-btn>
+		<v-btn @click="scroll('blog')" class="text-purple">Blog</v-btn>
+		<v-btn @click="scroll('contact')" class="text-pink">Contact</v-btn>
 	</v-app-bar>
 =======
     <v-app-bar app color="black" dark flat class="px-12">
@@ -66,23 +66,22 @@
 >>>>>>> 3b9f6f4 (clean files)
 </template>
 
-<script>
-import { defineComponent } from 'vue';
-
+<script lang="ts">
 export default {
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
 >>>>>>> 3b9f6f4 (clean files)
 	methods: {
-		scroll(refName) {
+		scroll(refName: any) {
 			const element = document.getElementById(refName);
-			element.scrollIntoView({ behavior: 'smooth' });
+			if (element) element.scrollIntoView({ behavior: 'smooth' });
 		},
 	},
 };
 <<<<<<< HEAD
 </script>
+<<<<<<< HEAD
 
 <style scoped></style>
 =======
@@ -103,3 +102,5 @@ export default {
 
 <style scoped></style>
 >>>>>>> 3b9f6f4 (clean files)
+=======
+>>>>>>> 8f38e0e (chore: Fix linter error)

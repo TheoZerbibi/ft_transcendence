@@ -946,10 +946,8 @@ export default {
 		});
 
 		this.socket.on('player-moved', (data: any) => {
-			if (data.leftUser)
-				gameData.leftUser?.update(data.leftUser.position, data.leftUser.width, data.leftUser.height);
-			if (data.rightUser)
-				gameData.rightUser?.update(data.rightUser.position, data.rightUser.width, data.rightUser.height);
+			if (data.leftUser) gameData.leftUser?.update(data.leftUser.position);
+			if (data.rightUser) gameData.rightUser?.update(data.rightUser.position);
 		});
 
 		this.socket.on('game-score', (data: any) => {

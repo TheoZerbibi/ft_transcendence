@@ -22,9 +22,12 @@ export default defineConfig({
 		},
 	},
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	define: {
 		JWT: '"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6ImdyYW5ub3UiLCJzdWIiOjEsImlhdCI6MTY5ODQyMDI0NCwiZXhwIjoxNjk4NTA2NjQ0fQ.Nmi8JfqxquDiJ9hJ14IMVxmMUnVRBsjLAmT7WAdBmjo"',
 	},
 >>>>>>> dd1f47c (routes created)
+=======
+>>>>>>> 8f38e0e (chore: Fix linter error)
 });

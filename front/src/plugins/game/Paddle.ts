@@ -1,9 +1,11 @@
 import P5 from 'p5';
+
 import { SIDE } from './enums/Side';
 
 export class Paddle {
 	private name: string = 'IA';
 	private avatar: string = 'https://cdn-icons-png.flaticon.com/512/4529/4529980.png';
+	private side: SIDE;
 	pos: P5.Vector;
 	score: number;
 	w: number;
@@ -15,12 +17,13 @@ export class Paddle {
 		y: number,
 		w: number,
 		h: number,
-		private side: SIDE,
+		side: SIDE,
 	) {
 		this.pos = p5.createVector(x, y);
 		this.w = w;
 		this.h = h;
 		this.score = 0;
+		this.side = side;
 	}
 
 	resizeUpdate(height: number, width: number, oldWidth: number, oldHeight: number) {
@@ -38,11 +41,9 @@ export class Paddle {
 		return this.score;
 	}
 
-	update(pos: { x: number; y: number }, width: number, height: number) {
+	update(pos: { x: number; y: number }) {
 		this.pos.x = (pos.x / 700) * this.p5.width;
 		this.pos.y = (pos.y / 400) * this.p5.height;
-		// this.w = (width / 700) * this.p5.width - 50;
-		// this.h = (height / 400) * this.p5.height;
 	}
 
 	setUser(name: string, avatar: string) {
