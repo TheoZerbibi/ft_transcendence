@@ -1,5 +1,8 @@
 <template>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7888572 (fix: Fix for rebase)
 	<Discord></Discord>
 	<!--
 	<v-expansion-panels>
@@ -25,6 +28,7 @@ export default {
 		ChatBox1,
 		Discord,
 	},
+<<<<<<< HEAD
 =======
 <div>
 <h1>Chat App</h1>
@@ -42,5 +46,7 @@ components: {
 		    Chat,
 	    },
 >>>>>>> 4e9a74d (fix: Fix for rebase)
+=======
+>>>>>>> 7888572 (fix: Fix for rebase)
 };
 </script>

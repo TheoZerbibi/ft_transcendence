@@ -42,7 +42,14 @@ export default {
 				},
 			};
 			try {
+<<<<<<< HEAD
 				const response = await fetch(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/game/getEmptyGame`, requestOptions);
+=======
+				const response = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/game/getEmptyGame`,
+					requestOptions,
+				);
+>>>>>>> 7888572 (fix: Fix for rebase)
 				const data = await response.json();
 				if (!data.uid) this.createGame();
 				else if (!response.ok) snackbarStore.showSnackbar('Connecting to the game session.', 3000, 'orange');
@@ -63,7 +70,14 @@ export default {
 			snackbarStore.showSnackbar('Creating a new game...', 3000, 'blue');
 
 			try {
+<<<<<<< HEAD
 				const response = await fetch(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/game/createGame`, requestOptions);
+=======
+				const response = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/game/createGame`,
+					requestOptions,
+				);
+>>>>>>> 7888572 (fix: Fix for rebase)
 				snackbarStore.hideSnackbar();
 				if (!response.ok) {
 					snackbarStore.showSnackbar(response.statusText, 3000, 'red');

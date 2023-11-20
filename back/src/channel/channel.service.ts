@@ -144,6 +144,7 @@ export class ChannelService {
 		return null;
 	}
 
+	// Filtre sur les channel privé dans lequel l'utilisateur n'est pas
 	async findAll()
 	{
 		return this.prisma.channel.findMany({
