@@ -3,7 +3,11 @@ import P5 from 'p5';
 import type { Paddle } from './Paddle';
 export class Ball {
 	private spawn: P5.Vector;
+<<<<<<< HEAD
 	vel: P5.Vector;
+=======
+	private vel: P5.Vector;
+>>>>>>> 3afc756 (feat(pong): Continue responsivity)
 	pos: P5.Vector;
 
 	constructor(

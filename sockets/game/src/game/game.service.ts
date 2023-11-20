@@ -107,11 +107,16 @@ export class GameService {
 		game.removeUser(gameUser);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if (!gameUser.isSpec && !game.isEnded()) {
 			gameUser.isConnected = false;
 =======
 		if (!gameUser.isSpec) {
 >>>>>>> ef81387 (feat(pong): Start Responsive)
+=======
+		if (!gameUser.isSpec && !game.isEnded) {
+			console.log(game.getUsersInGame(), game.isEnded());
+>>>>>>> 3afc756 (feat(pong): Continue responsivity)
 			if (game.getUsersInGame().length === 0) {
 				game.removeGame();
 				return null;

@@ -221,6 +221,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		});
 	}
 
+<<<<<<< HEAD
 	public async sendWinner(game: IGame) {
 		const winner: IUser = game.winner;
 		const loser: IUser = game.loser;
@@ -230,6 +231,17 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		this.server.to(game.getGameUID()).emit('game-end', {
 			winner: { user: winner.user, score: winner.playerData.score, side: winner.playerData.side },
 			loser: { user: loser.user, score: loser.playerData.score, side: loser.playerData.side },
+=======
+	private async sendWinner(game: IGame) {
+		const winner: IUser = game.winner;
+		const looser: IUser = game.winner;
+		await this.gameService.winGame(game, winner);
+		if (winner) this.server.to(winner.socketID).emit('game-win');
+		if (looser) this.server.to(looser.socketID).emit('game-loose');
+		this.server.to(game.getGameUID()).emit('game-end', {
+			winner: { user: winner.user, score: winner.playerData.score },
+			looser: { user: looser.user, score: looser.playerData.score },
+>>>>>>> 3afc756 (feat(pong): Continue responsivity)
 			startDate: game.getGameData().startingDate,
 			endingDate: game.getGameData().endingDate,
 		});
@@ -239,11 +251,16 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		game.startGameLoop();
 		const gameLoop = setInterval(async () => {
 			if (!game.isEnded()) {
+<<<<<<< HEAD
 				if (!game.isInPause()) this.sendBallPosition(game);
 				if (game.newPoint) {
 					const leftUser: IUser = game.getPlayerBySide(SIDE.LEFT);
 					const rightUser: IUser = game.getPlayerBySide(SIDE.RIGHT);
 					if (!leftUser || !leftUser.isConnected || !rightUser || !rightUser.isConnected) return;
+=======
+				this.sendBallPosition(game);
+				if (game.newPoint) {
+>>>>>>> 3afc756 (feat(pong): Continue responsivity)
 					this.server.to(game.getGameUID()).emit('game-score', {
 						leftUser: game.getPlayerBySide(SIDE.LEFT).playerData.score,
 						rightUser: game.getPlayerBySide(SIDE.RIGHT).playerData.score,

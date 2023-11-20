@@ -239,9 +239,15 @@ export class Game implements IGame {
 		user.playerData.score++;
 		this.newPoint = true;
 		this.setPause(true, 3000);
+<<<<<<< HEAD
 		const loserSide: SIDE = side === SIDE.LEFT ? SIDE.RIGHT : SIDE.LEFT;
 		const loser: IUser = this.getPlayerBySide(loserSide);
 		if (user.playerData.score >= 6) this.winGame(user, loser);
+=======
+		const looserSide: SIDE = side === SIDE.LEFT ? SIDE.RIGHT : SIDE.LEFT;
+		const looser: IUser = this.getPlayerBySide(looserSide);
+		if (user.playerData.score >= 11) this.winGame(user, looser);
+>>>>>>> 3afc756 (feat(pong): Continue responsivity)
 	}
 
 	isInPause(): boolean {

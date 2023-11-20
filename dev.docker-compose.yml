@@ -202,12 +202,17 @@ services:
     container_name: postgres
     volumes:
         - pgdata:/var/lib/postgresql/data
+<<<<<<< HEAD
     ports:
 <<<<<<< HEAD
       - '5432:5432'
 =======
       - 5432:5432
 >>>>>>> 6ff4cb1 (feat(game): Start implementing PongGame in Socket Server)
+=======
+    expose:
+      - '5432'
+>>>>>>> 3afc756 (feat(pong): Continue responsivity)
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
       POSTGRES_DB: ${POSTGRES_DB}
