@@ -13,7 +13,7 @@ export class Ball {
 		private x: number,
 		private y: number,
 		private r: number,
-		speed = 10,
+		speed = 5,
 	) {
 		this.spawn = p5.createVector(x, y);
 		this.speed = speed;

@@ -54,4 +54,3 @@ if [[ ! -f .env ]]; then
 else
 	launch_app
 fi
-
