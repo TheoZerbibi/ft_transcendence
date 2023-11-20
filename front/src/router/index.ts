@@ -84,6 +84,7 @@ const router = createRouter({
 		},
 		{
 <<<<<<< HEAD
+<<<<<<< HEAD
 			path: '/chat/',
 			name: 'chat',
 			component: () => import('../views/ChatView.vue'),
@@ -93,10 +94,13 @@ const router = createRouter({
 =======
 >>>>>>> eaeb1b1 (move portfolio homepage to /portfolio)
 =======
+=======
+>>>>>>> af628b1 (feat: added support for auth/signup page)
 			path: '/auth/signup',
 			name: 'Sinup',
 			component: () => import('../views/SignupView.vue'),
 		},
+<<<<<<< HEAD
 		{
 >>>>>>> 97035c7 (chore: Fix for rebase)
 			path: '/secret',
@@ -145,6 +149,8 @@ const router = createRouter({
 			component: () => import('../views/OauthCallbackView.vue'),
 		},
 >>>>>>> 326d237 (chore: Fix for rebase)
+=======
+>>>>>>> af628b1 (feat: added support for auth/signup page)
 	],
 });
 
