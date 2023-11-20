@@ -20,7 +20,7 @@
 		<OnlineList></OnlineList>
 </template>
 
-<script>
+<script lang="ts">
 import AvatarsBar from './AvatarsBar.vue';
 import ChatWindow from './ChatWindow.vue';
 import MessageInput from './MessageInput.vue';
@@ -28,6 +28,13 @@ import OnlineList from './OnlineList.vue';
 import SystemBar from './SystemBar.vue';
 import Toolbar from './Toolbar.vue';
 import ChatWindowVue from './ChatWindow.vue';
+import Snackbar from '../utils/Snackbar.vue';
+import { useSnackbarStore } from '../../stores/snackbar';
+import { useUser } from '../../stores/user';
+import { useSocketStore } from '../../stores/websocket';
+import { computed } from 'vue';
+
+const snackbarStore = useSnackbarStore();
 
 export default {
 	name: "Chat",
@@ -39,6 +46,41 @@ export default {
 		SystemBar,
 		Toolbar,
 		ChatWindowVue,
+		Snackbar,
+	},
+	setup() {
+		
+		const webSocketStore = useSocketStore();
+		const userStore = useUser();
+
+		const isConnected = computed(() => webSocketStore.isConnected);
+		const socket = computed(() => webSocketStore.getSocket);
+		const JWT = computed(() => userStore.getJWT);
+
+		const connect = async (JWT: string) => {
+			await webSocketStore.connect(JWT, import.meta.env.VITE_CHAT_SOCKET_PORT);
+		};
+
+		const disconnect = () => {
+			webSocketStore.disconnect();
+		};
+
+		const socketListen = () => {
+			if (socket.value) {
+				socket.value.on('game-error', (data: any) => {
+					disconnect();
+					snackbarStore.showSnackbar(data, 3000, 'red');
+				});
+			}
+		};
+		return {
+			isConnected,
+			socket,
+			connect,
+			disconnect,
+			socketListen,
+			JWT,
+		};
 	},
 	data() {
 		return {
@@ -58,7 +100,7 @@ export default {
 					method: 'GET',
 					headers: {
 						'Content-Type': 'application/json',
-						Authorization: `Bearer ${JWT}`,
+						Authorization: `Bearer ${this.JWT}`,
 						'Access-Control-Allow-Origin': '*',
 					},
 				}
@@ -66,7 +108,7 @@ export default {
 			if (response.ok) {
 				const data = await response.json();
 				this.channels = data; // store the response in channels
-				console.log(channels);
+				console.log(this.channels);
 			} else {
 				console.error('Failed to fetch channels');
 			}

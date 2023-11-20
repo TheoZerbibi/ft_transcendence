@@ -1,6 +1,5 @@
 <template>
 	<v-app id="inspire">
-
 		<SystemBar></SystemBar>
 
 		<AvatarsBar></AvatarsBar>
@@ -14,21 +13,19 @@
 		<v-main><!--  --></v-main>
 
 		<OnlineList></OnlineList>
-
 	</v-app>
 </template>
 
 <script lang="ts">
-
-import AvatarsBar from './AvatarsBar.vue';
-import ChannelList from './ChannelList.vue';
-import MessageInput from './MessageInput.vue';
-import OnlineList from './OnlineList.vue';
-import SystemBar from './SystemBar.vue';
-import Toolbar from './Toolbar.vue';
+	import AvatarsBar from './AvatarsBar.vue';
+	import ChannelList from './ChannelList.vue';
+	import MessageInput from './MessageInput.vue';
+	import OnlineList from './OnlineList.vue';
+	import SystemBar from './SystemBar.vue';
+	import Toolbar from './Toolbar.vue';
 
 export default {
-	name: "Chat",
+	name: 'Chat',
 	components: {
 		AvatarsBar,
 		ChannelList,
@@ -37,5 +34,5 @@ export default {
 		SystemBar,
 		Toolbar,
 	},
-}
+};
 </script>
