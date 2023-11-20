@@ -18,7 +18,6 @@ const router = createRouter({
 			name: 'GameCreator',
 			component: () => import('../views/GameMenuView.vue'),
 		},
-		// PAS TOUCHE a /game:uid
 		{
 			path: '/game/:uid',
 			name: 'Game',
@@ -134,10 +133,18 @@ const router = createRouter({
 			component: () => import('../components/exemples/P5Exemple.vue'),
 		},
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> eaeb1b1 (move portfolio homepage to /portfolio)
 =======
 >>>>>>> 7f206e2 (profile route created)
+=======
+		{
+			path: '/api/oauth/callback',
+			name: 'OauthCallback',
+			component: () => import('../views/OauthCallbackView.vue'),
+		},
+>>>>>>> 326d237 (chore: Fix for rebase)
 	],
 });
 
