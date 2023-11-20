@@ -5404,6 +5404,7 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
+<<<<<<< HEAD
   /terser-webpack-plugin@5.3.9(webpack@5.89.0):
     resolution: {integrity: sha512-ZuXsqE07EcggTWQjXUj+Aot/OMcD0bMKGgF63f7UxYcu5/AJF53aIpK1YoP5xR9l6s/Hy2b+t1AM0bLNPRuhwA==}
     engines: {node: '>= 10.13.0'}
@@ -5428,6 +5429,8 @@ packages:
       webpack: 5.89.0
     dev: true
 
+=======
+>>>>>>> 4607c5b (chore: Update some modules versions)
   /terser-webpack-plugin@5.3.9(webpack@5.89.0):
     resolution: {integrity: sha512-ZuXsqE07EcggTWQjXUj+Aot/OMcD0bMKGgF63f7UxYcu5/AJF53aIpK1YoP5xR9l6s/Hy2b+t1AM0bLNPRuhwA==}
     engines: {node: '>= 10.13.0'}
@@ -5795,6 +5798,7 @@ packages:
     engines: {node: '>=10.13.0'}
     dev: true
 
+<<<<<<< HEAD
   /webpack@5.89.0:
     resolution: {integrity: sha512-qyfIC10pOr70V+jkmud8tMfajraGCZMBWJtrmuBymQKCrLTRejBI8STDp1MCyZu/QTdZSeacCQYpYNQVOzX5kw==}
     engines: {node: '>=10.13.0'}
@@ -5835,6 +5839,8 @@ packages:
       - uglify-js
     dev: true
 
+=======
+>>>>>>> 4607c5b (chore: Update some modules versions)
   /webpack@5.89.0:
     resolution: {integrity: sha512-qyfIC10pOr70V+jkmud8tMfajraGCZMBWJtrmuBymQKCrLTRejBI8STDp1MCyZu/QTdZSeacCQYpYNQVOzX5kw==}
     engines: {node: '>=10.13.0'}
