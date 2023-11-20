@@ -18,7 +18,7 @@
 	</v-app>
 </template>
 
-<script>
+<script lang="ts">
 
 import AvatarsBar from './AvatarsBar.vue';
 import ChannelList from './ChannelList.vue';
