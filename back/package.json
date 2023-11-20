@@ -79,7 +79,8 @@
 		"reflect-metadata": "^0.1.13",
 >>>>>>> c80165e (fix: github issue)
 		"typeorm": "^0.3.17",
-		"uuid": "^9.0.1"
+		"uuid": "^9.0.1",
+		"passport-42":"^1.0.0"
 	},
 	"devDependencies": {
 <<<<<<< HEAD
