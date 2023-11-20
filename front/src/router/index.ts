@@ -90,8 +90,16 @@ const router = createRouter({
 			component: () => import('../views/ChatView.vue'),
 		},
 		{
+<<<<<<< HEAD
 =======
 >>>>>>> eaeb1b1 (move portfolio homepage to /portfolio)
+=======
+			path: '/auth/signup',
+			name: 'Sinup',
+			component: () => import('../views/SignupView.vue'),
+		},
+		{
+>>>>>>> 97035c7 (chore: Fix for rebase)
 			path: '/secret',
 			name: 'secret',
 			component: () => import('../views/SecretView.vue'),
