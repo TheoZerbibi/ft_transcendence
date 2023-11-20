@@ -36,8 +36,8 @@
 </template>
 
 <script lang="ts">
-import Footer from '../components/utils/Footer.vue';
-import { makeid } from '../plugins/makeId';
+import Footer from '../../components/utils/Footer.vue';
+import { makeid } from '../../plugins/makeId';
 
 export default {
 	name: 'SignIn',
