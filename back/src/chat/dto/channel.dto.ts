@@ -1,5 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
+<<<<<<< HEAD
 import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+=======
+import { IsArray, IsBoolean, IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
+import { ChannelUserDto } from './channel-user.dto';
+>>>>>>> 1c3f4bd (chore: create channel)
 
 export class ChannelDto {
 	@ApiProperty()
@@ -13,15 +18,22 @@ export class ChannelDto {
 	name: string;
 
 	@ApiProperty()
+	@IsBoolean()
+	@IsOptional()
+	// eslint-disable-next-line
+	public: boolean;
+
+	@ApiProperty()
 	@IsString()
 	@IsOptional()
 	// eslint-disable-next-line
 	password: string;
 
 	@ApiProperty()
-	@IsBoolean()
+	@IsDate()
 	@IsOptional()
 	// eslint-disable-next-line
+<<<<<<< HEAD
 	public: boolean;
 }
 
@@ -65,7 +77,41 @@ export class ChannelUserDto {
 export class joinChannelDto extends ChannelUserDto {
 	@ApiProperty()
 	@IsString()
+=======
+	created_at: Date;
+
+	@ApiProperty()
+	@IsDate()
+>>>>>>> 1c3f4bd (chore: create channel)
 	@IsOptional()
 	// eslint-disable-next-line
-	chan_password: string;
+	updated_at: Date;
 }
+<<<<<<< HEAD
+=======
+
+export class ChannelWithUsersDto extends ChannelDto {
+	@ApiProperty()
+	@IsArray()
+	// eslint-disable-next-line
+	users: ChannelUserDto[];
+}
+
+export class CreateChannelDto {
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	name: string;
+
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	password: string;
+
+	@ApiProperty()
+	@IsBoolean()
+	@IsOptional()
+	// eslint-disable-next-line
+	is_public: boolean;
+}
+>>>>>>> 1c3f4bd (chore: create channel)

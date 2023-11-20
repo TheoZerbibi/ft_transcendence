@@ -7,8 +7,12 @@ import { GetUser } from 'src/auth/decorator/get-user.decorator';
 // PRISMA
 import { User, ChannelUser, ChannelMessage } from '@prisma/client';
 // DTO
+<<<<<<< HEAD
 import { CreateChannelDto } from './dto/create-channel.dto';
 import { MessageDto } from './dto/message.dto';
+=======
+import { ChannelDto, CreateChannelDto } from './dto/channel.dto';
+>>>>>>> 1c3f4bd (chore: create channel)
 // SERVICES
 import { ChannelService } from './chat.service';
 import { UserService } from '../user/user.service';
@@ -29,7 +33,7 @@ export class ChannelController {
 	@UseGuards(JwtGuard) // Needed to access user attribute
 	@ApiOperation({ summary: 'Create channel' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async create(@GetUser() user: User, @Body() dto: CreateChannelDto) {
+	async create(@GetUser() user: User, @Body() dto: CreateChannelDto): Promise<ChannelDto> {
 		return await this.channelService.create(dto, user.id);
 	}
 
@@ -49,6 +53,38 @@ export class ChannelController {
 	/* 					Getters					 */
 	/*********************************************/
 
+<<<<<<< HEAD
+=======
+	// DEBUG ONLY
+	@Get('allDebug')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'For debugging purpose only : Get all channels' })
+	@ApiBearerAuth('JWT-auth')
+	async getAllChannels() {
+		return await this.channelService.getAllChannels();
+	}
+
+	/*
+	// Get all public channels
+	@Get('discover')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'Get all public channels' })
+	@ApiBearerAuth('JWT-auth')
+	async getAllPublicChannels(): Promise<ChannelDto[]> {
+		return await this.channelService.getAllPublicChannels();
+	}
+
+	//Get all channels on which user is
+	@Get('all')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: "Get all user's channels" })
+	@ApiBearerAuth('JWT-auth')
+	async getJoinedChannels(@GetUser() user: User): Promise<ChannelDto[] | null> {
+		return await this.channelService.getJoinedChannels(user);
+	}
+
+	// Will show the public infos of the channel and possibility to join it BUT not if you are banned / is private
+>>>>>>> 1c3f4bd (chore: create channel)
 	@Get(':name')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get channel by Name' })
@@ -74,6 +110,7 @@ export class ChannelController {
 	async allUsers() {
 		return await this.channelService.getChannelUsers();
 	}
+	*/
 
 	//Get all user in a channel
 	@Get(':channel/user')
