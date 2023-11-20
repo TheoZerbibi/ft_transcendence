@@ -18,6 +18,7 @@ importers:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@nestjs/common':
         specifier: ^10.2.9
         version: 10.2.9(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
@@ -99,6 +100,11 @@ importers:
         specifier: ^6.4.2
         version: 6.4.2
 >>>>>>> 6b824bb (chore: Fix for merging)
+=======
+      '@fortawesome/fontawesome-free':
+        specifier: ^6.4.2
+        version: 6.4.2
+>>>>>>> f798f8e (chore: Add OMORI police)
       '@mdi/font':
         specifier: 7.3.67
         version: 7.3.67
@@ -583,6 +589,58 @@ importers:
       '@vitejs/plugin-vue-jsx':
         specifier: ^3.0.2
         version: 3.0.2(vite@4.4.11)(vue@3.3.4)
+<<<<<<< HEAD
+=======
+      '@vue/tsconfig':
+        specifier: ^0.4.0
+        version: 0.4.0
+      gsap:
+        specifier: ^3.12.2
+        version: 3.12.2
+      p5:
+        specifier: ^1.7.0
+        version: 1.7.0
+      pinia:
+        specifier: ^2.1.6
+        version: 2.1.6(typescript@5.2.2)(vue@3.3.4)
+      pnpm:
+        specifier: ^8.10.2
+        version: 8.10.2
+      roboto-fontface:
+        specifier: '*'
+        version: 0.10.0
+      socket.io-client:
+        specifier: ^4.7.2
+        version: 4.7.2
+      vite:
+        specifier: ^4.4.11
+        version: 4.4.11(@types/node@20.8.4)
+      vite-plugin-vuetify:
+        specifier: ^1.0.2
+        version: 1.0.2(vite@4.4.11)(vue@3.3.4)(vuetify@3.3.21)
+      volar-service-vetur:
+        specifier: ^0.0.14
+        version: 0.0.14
+      vue:
+        specifier: ^3.3.4
+        version: 3.3.4
+      vue-cli-plugin-vuetify:
+        specifier: ~2.5.8
+        version: 2.5.8(vue@3.3.4)(webpack@5.88.2)
+      vue-router:
+        specifier: ^4.2.5
+        version: 4.2.5(vue@3.3.4)
+      vuetify:
+        specifier: ^3.3.21
+        version: 3.3.21(typescript@5.2.2)(vite-plugin-vuetify@1.0.2)(vue@3.3.4)
+      webfontloader:
+        specifier: ^1.6.28
+        version: 1.6.28
+    devDependencies:
+      '@rushstack/eslint-patch':
+        specifier: ^1.5.1
+        version: 1.5.1
+>>>>>>> f798f8e (chore: Add OMORI police)
       '@vue/eslint-config-prettier':
         specifier: ^8.0.0
         version: 8.0.0(eslint@8.50.0)(prettier@3.0.3)
@@ -15288,6 +15346,12 @@ packages:
       mlly: 1.4.2
       pathe: 1.1.1
     dev: true
+
+  /pnpm@8.10.2:
+    resolution: {integrity: sha512-B4IJPVumx62UYggbwe8HdQFqS0EJ7KHh/tzqbxEBQ69fUJk9s2xCfU+oxivjkgoyJNsS2nGdJGyhndnxgEjDPA==}
+    engines: {node: '>=16.14'}
+    hasBin: true
+    dev: false
 
   /postcss-html@1.5.0:
     resolution: {integrity: sha512-kCMRWJRHKicpA166kc2lAVUGxDZL324bkj/pVOb6RhjB0Z5Krl7mN0AsVkBhVIRZZirY0lyQXG38HCVaoKVNoA==}

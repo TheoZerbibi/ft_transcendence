@@ -82,12 +82,12 @@
 					<br />
 					<br />
 				</v-card-title>
-				<v-img src="CatsRounded.png" contain max-height="300" alt="These are cute kittens"></v-img>
-				<v-card-subtitle class="neonPolice homeSubtitles">
+				<v-img src="CatsRounded.png" contain max-height="300" alt="These are cute kittens" />
+				<v-card-subtitle class="neonPolice text homeSubtitles">
 					<br />Gaëlle, Ismaël, <span class="teamLeader">Théo</span>, Semiha, Noé
 				</v-card-subtitle>
 			</v-card-item>
-			<v-card-text class="neonPolice homeSubtitles">
+			<v-card-text class="neonPolice text homeSubtitles">
 				<br />students of 42 paris<br />
 				<!-- <strong>students of 42 paris (en gras)</strong><br /> -->
 				<!-- <mark>students of 42 paris (en surligne)</mark><br /> -->
@@ -490,6 +490,7 @@ export default defineComponent({
 		};
 =======
 
+<<<<<<< HEAD
 =======
 	setup(){
 		return {
@@ -744,6 +745,9 @@ a {
 >>>>>>> ff1c0ad (video at 21:38)
 =======
 <style scoped>
+=======
+<style>
+>>>>>>> f798f8e (chore: Add OMORI police)
 .homepage {
 	display: flex;
 	align-items: center;
@@ -756,6 +760,21 @@ a {
 	align-items: flex-start;
 	margin: 20px;
 	padding: 20px;
+}
+
+.text {
+	font-family: 'OMORI_MAIN';
+	font-size: 30px;
+}
+
+@font-face {
+	font-family: 'OMORI_MAIN';
+	src: url('../assets/fonts/OMORI_GAME.ttf') format('truetype-variations');
+}
+
+@font-face {
+	font-family: 'OMORI_DISTURBED';
+	src: url('../assets/fonts/OMORI_GAME2.ttf') format('truetype-variations');
 }
 
 .teamLeader {
