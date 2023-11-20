@@ -6,12 +6,15 @@ export default {
 		redirectToOAuth() {
 			// Redirect to your OAuth2 provider's authentication URL
 <<<<<<< HEAD
+<<<<<<< HEAD
 			//window.location.href = 'http://api.intra.42.fr/oauth/authorize';
 			window.location.href = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-b23568e38139d1ec4d826848c6505cd62c143340904bbc2baef28cbf82aea190&redirect_uri=http%3A%2F%2Flocalhost%2Fapi%2Fauth%2Fcallback&response_type=code';
 
 =======
 			// if (process.env.API42_OAUTH_URL) {
 			// 	window.location.href = process.env.API42_OAUTH_URL;
+=======
+>>>>>>> 3f86f7f (feat: ui elements)
 			window.location.href = 'http://api.intra.42.fr/oauth/authorize';
 >>>>>>> c80165e (fix: github issue)
 		},
