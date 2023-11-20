@@ -98,6 +98,9 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 					return;
 				}
 				this.server.to(gameUID).emit('session-info', allUsers);
+				if (!game.isInProgress() && game.getUsersInGame().length === 2) this.startGame(game);
+				if (!game.getPlayerBySide(SIDE.RIGHT) || !game.getPlayerBySide(SIDE.LEFT)) return;
+				if (!game.inProgress) return;
 				this.server.to(client.id).emit('game-score', {
 					p1: game.getPlayerBySide(SIDE.LEFT).playerData.score,
 					p2: game.getPlayerBySide(SIDE.RIGHT).playerData.score,
