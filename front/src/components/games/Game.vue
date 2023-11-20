@@ -628,6 +628,7 @@ h4 {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 6505030 (feat(pong): Responsivity & Design)
@@ -638,6 +639,8 @@ h4 {
 >>>>>>> 6ed663d (feat(pong): Responsivity)
 =======
 >>>>>>> edc9129 (feat(front): Continue Game front, add Border)
+=======
+>>>>>>> 67878fd (feat(front): Continue Game front, add Border)
 </style>
 =======
 >>>>>>> c80165e (fix: github issue)

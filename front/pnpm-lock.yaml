@@ -378,7 +378,10 @@ importers:
 =======
         specifier: ^5.0.0
         version: 5.0.0(@types/node@20.9.1)(sass@1.69.5)
+<<<<<<< HEAD
 >>>>>>> edc9129 (feat(front): Continue Game front, add Border)
+=======
+>>>>>>> 67878fd (feat(front): Continue Game front, add Border)
       vite-plugin-vuetify:
         specifier: ^1.0.2
 <<<<<<< HEAD
@@ -896,6 +899,7 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0
 <<<<<<< HEAD
+<<<<<<< HEAD
       source-map-support:
         specifier: ^0.5.21
         version: 0.5.21
@@ -1013,6 +1017,11 @@ importers:
         specifier: ^2.0.2
         version: 2.0.2
 =======
+=======
+      sass:
+        specifier: ^1.69.5
+        version: 1.69.5
+>>>>>>> 67878fd (feat(front): Continue Game front, add Border)
       start-server-and-test:
         specifier: ^2.0.3
         version: 2.0.3
@@ -3338,6 +3347,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       vite: 4.5.0(@types/node@20.9.1)
 =======
       vite: 5.0.0(@types/node@20.9.1)
@@ -3354,6 +3364,9 @@ packages:
 =======
       vite: 5.0.0(@types/node@20.9.1)(sass@1.69.5)
 >>>>>>> edc9129 (feat(front): Continue Game front, add Border)
+=======
+      vite: 5.0.0(@types/node@20.9.1)(sass@1.69.5)
+>>>>>>> 67878fd (feat(front): Continue Game front, add Border)
       vue: 3.3.8(typescript@5.2.2)
 >>>>>>> e3b6b2e (fix(Frontend): Downgrade version (Build error))
 =======
@@ -3416,6 +3429,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       vite: 4.5.0(@types/node@20.9.1)
 =======
       vite: 5.0.0(@types/node@20.9.1)
@@ -3432,6 +3446,9 @@ packages:
 =======
       vite: 5.0.0(@types/node@20.9.1)(sass@1.69.5)
 >>>>>>> edc9129 (feat(front): Continue Game front, add Border)
+=======
+      vite: 5.0.0(@types/node@20.9.1)(sass@1.69.5)
+>>>>>>> 67878fd (feat(front): Continue Game front, add Border)
       vue: 3.3.8(typescript@5.2.2)
 >>>>>>> e3b6b2e (fix(Frontend): Downgrade version (Build error))
 =======
@@ -17489,6 +17506,7 @@ packages:
   /picomatch@2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -17501,6 +17519,8 @@ packages:
     resolution: {integrity: sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==}
     engines: {node: '>= 6'}
     dev: true
+=======
+>>>>>>> 67878fd (feat(front): Continue Game front, add Border)
 
 <<<<<<< HEAD
 =======
@@ -31051,6 +31071,7 @@ packages:
     engines: {node: '>=8.0'}
     dependencies:
       is-number: 7.0.0
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -31080,6 +31101,8 @@ packages:
     dependencies:
       punycode: 2.3.0
     dev: true
+=======
+>>>>>>> 67878fd (feat(front): Continue Game front, add Border)
 
 <<<<<<< HEAD
   /tree-kill@1.2.2:
@@ -32041,6 +32064,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /vite-node@0.34.6(@types/node@20.9.1):
 =======
   /vite-node@0.34.6(@types/node@20.8.2):
@@ -32054,6 +32078,9 @@ packages:
 =======
   /vite-node@0.34.6(@types/node@20.9.1)(sass@1.69.5):
 >>>>>>> edc9129 (feat(front): Continue Game front, add Border)
+=======
+  /vite-node@0.34.6(@types/node@20.9.1)(sass@1.69.5):
+>>>>>>> 67878fd (feat(front): Continue Game front, add Border)
     resolution: {integrity: sha512-nlBMJ9x6n7/Amaz6F3zJ97EBwR2FkzhBRxF5e+jE6LA3yi6Wtc2lyTij1OnDMIr34v5g/tVQtsVAzhT0jc5ygA==}
     engines: {node: '>=v14.18.0'}
     hasBin: true
@@ -32063,6 +32090,7 @@ packages:
       mlly: 1.4.2
       pathe: 1.1.1
       picocolors: 1.0.0
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -32100,6 +32128,9 @@ packages:
 =======
       vite: 5.0.0(@types/node@20.9.1)(sass@1.69.5)
 >>>>>>> edc9129 (feat(front): Continue Game front, add Border)
+=======
+      vite: 5.0.0(@types/node@20.9.1)(sass@1.69.5)
+>>>>>>> 67878fd (feat(front): Continue Game front, add Border)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -32157,10 +32188,14 @@ packages:
       debug: 4.3.4(supports-color@8.1.1)
       upath: 2.0.1
 <<<<<<< HEAD
+<<<<<<< HEAD
       vite: 4.5.0(@types/node@20.9.1)
 =======
       vite: 5.0.0(@types/node@20.9.1)(sass@1.69.5)
 >>>>>>> edc9129 (feat(front): Continue Game front, add Border)
+=======
+      vite: 5.0.0(@types/node@20.9.1)(sass@1.69.5)
+>>>>>>> 67878fd (feat(front): Continue Game front, add Border)
       vuetify: 3.4.2(typescript@5.2.2)(vite-plugin-vuetify@1.0.2)(vue@3.3.8)
 =======
       '@vuetify/loader-shared': 1.7.1(vue@3.3.4)(vuetify@3.3.21)
@@ -32181,6 +32216,7 @@ packages:
       - vue
     dev: false
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -32233,6 +32269,9 @@ packages:
 >>>>>>> 1db6c33 (fix(deps): update dependency vite to v4.5.0 (minor))
 =======
   /vite@5.0.0(@types/node@20.9.1):
+=======
+  /vite@5.0.0(@types/node@20.9.1)(sass@1.69.5):
+>>>>>>> 67878fd (feat(front): Continue Game front, add Border)
     resolution: {integrity: sha512-ESJVM59mdyGpsiNAeHQOR/0fqNoOyWPYesFto8FFZugfmhdHx8Fzd8sF3Q/xkVhZsyOxHfdM7ieiVAorI9RjFw==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -32309,6 +32348,7 @@ packages:
 <<<<<<< HEAD
       rollup: 4.4.1
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> d2e5210 (chore(frond): Update vite)
 =======
       rollup: 3.29.4
@@ -32328,6 +32368,9 @@ packages:
 =======
       sass: 1.69.5
 >>>>>>> edc9129 (feat(front): Continue Game front, add Border)
+=======
+      sass: 1.69.5
+>>>>>>> 67878fd (feat(front): Continue Game front, add Border)
     optionalDependencies:
       fsevents: 2.3.3
 
@@ -32395,6 +32438,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       vite: 4.5.0(@types/node@20.9.1)
 =======
       vite: 5.0.0(@types/node@20.9.1)
@@ -32419,6 +32463,10 @@ packages:
       vite: 5.0.0(@types/node@20.9.1)(sass@1.69.5)
       vite-node: 0.34.6(@types/node@20.9.1)(sass@1.69.5)
 >>>>>>> edc9129 (feat(front): Continue Game front, add Border)
+=======
+      vite: 5.0.0(@types/node@20.9.1)(sass@1.69.5)
+      vite-node: 0.34.6(@types/node@20.9.1)(sass@1.69.5)
+>>>>>>> 67878fd (feat(front): Continue Game front, add Border)
       why-is-node-running: 2.2.2
     transitivePeerDependencies:
       - less

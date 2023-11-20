@@ -32,6 +32,9 @@
 			>
 			<div class="versus-container-inner">
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 67878fd (feat(front): Continue Game front, add Border)
 				<div class="fill-height d-flex align-center no-gutters">
 					<div
 						:style="{
@@ -84,6 +87,7 @@
 						class="fill-height d-flex justify-end align-center right"
 					>
 						<div id="rightUser" :class="{ tremble: shouldTremble('rightUser') }" class="fill-height mr-3">
+<<<<<<< HEAD
 							<v-img class="cadre-responsive" :src="userData.rightPlayer.cadre">
 								<h2>{{ userData.rightPlayer.name }}</h2>
 								<v-img
@@ -197,6 +201,8 @@
 						class="fill-height d-flex justify-end align-center right"
 					>
 						<div id="rightUser" :class="{ tremble: shouldTremble('rightUser') }" class="fill-height mr-3">
+=======
+>>>>>>> 67878fd (feat(front): Continue Game front, add Border)
 							<v-img class="cadre-responsive" :src="userData.rightPlayer.cadre">
 								<h2>{{ userData.rightPlayer.name }}</h2>
 								<v-img
@@ -215,6 +221,7 @@
 					</div>
 				</div>
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ef81387 (feat(pong): Start Responsive)
 			</v-card>
 			<div id="game-canvas" />
@@ -231,6 +238,12 @@
 			<div id="game-canvas" />
 	</div>
 >>>>>>> edc9129 (feat(front): Continue Game front, add Border)
+=======
+				</div>
+			</v-card>
+			<div id="game-canvas" />
+	</div>
+>>>>>>> 67878fd (feat(front): Continue Game front, add Border)
 		<CountdownOverlay v-if="showCountdown" />
 	</v-container>
 </template>
@@ -1342,11 +1355,19 @@ html {
 	text-align: center;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	width: 70vw;
 =======
 >>>>>>> edc9129 (feat(front): Continue Game front, add Border)
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+=======
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	border: 5px solid #2a3cad;
+	border-radius: 5px;
+	box-shadow: 0px 0px 5px #2a3cad;
+>>>>>>> 67878fd (feat(front): Continue Game front, add Border)
 }
 
 #game-canvas {
@@ -1408,6 +1429,7 @@ html {
 	position: absolute;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	z-index: -888;
 =======
 	z-index: -888; /* Position absolue pour positionner par-dessus la deuxième image */
@@ -1415,6 +1437,9 @@ html {
 =======
 	z-index: -888;
 >>>>>>> edc9129 (feat(front): Continue Game front, add Border)
+=======
+	z-index: -888;
+>>>>>>> 67878fd (feat(front): Continue Game front, add Border)
 }
 
 .toast-of-death {
@@ -1485,6 +1510,7 @@ h1 {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 .versus-container {
 	border: 10px double #dddfe2;
@@ -1497,6 +1523,8 @@ h1 {
 >>>>>>> 51a037d (feat(pong): MORE FRONT)
 =======
 >>>>>>> edc9129 (feat(front): Continue Game front, add Border)
+=======
+>>>>>>> 67878fd (feat(front): Continue Game front, add Border)
 .right {
 	z-index: -666;
 	width: 100%;
@@ -1650,6 +1678,7 @@ canvas {
  .versus-container .versus-container-inner:after {
 	 right: -2px;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	border: 10px double #dddfe2;
 >>>>>>> c7368ae (feat(pong): Front for the Pong)
@@ -1687,4 +1716,7 @@ canvas {
 =======
 }
 >>>>>>> edc9129 (feat(front): Continue Game front, add Border)
+=======
+}
+>>>>>>> 67878fd (feat(front): Continue Game front, add Border)
 </style>
