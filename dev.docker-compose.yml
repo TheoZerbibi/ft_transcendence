@@ -22,6 +22,7 @@ services:
       # chat:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       #   condition: service_started
 =======
         # condition: service_started
@@ -29,6 +30,9 @@ services:
 =======
         # condition: service_started
 >>>>>>> baf17ac (chore: Fix for rebase)
+=======
+        # condition: service_started
+>>>>>>> b0a73ea (test: local dev settings)
     environment:
       NODE_ENV: ${NODE_ENV}
       VITE_HOST: ${HOSTNAME}
@@ -75,6 +79,7 @@ services:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   chat:
     build:
       context: ./sockets/chat
@@ -106,6 +111,8 @@ services:
     command: sh -c "tail -f /dev/null"
     restart: always
 =======
+=======
+>>>>>>> b0a73ea (test: local dev settings)
   # chat:
   #   build:
   #     context: ./sockets/chat
@@ -136,6 +143,7 @@ services:
   #   command: sh -c "pnpm db:pull && pnpm start:dev"
   #   # command: sh -c "tail -f /dev/null"
   #   restart: always
+<<<<<<< HEAD
 >>>>>>> 7441ac6 (chore: Update all depencies)
 =======
   # chat:
@@ -169,6 +177,8 @@ services:
     # command: sh -c "tail -f /dev/null"
     # restart: always
 >>>>>>> c9c7a2b (halloween colors)
+=======
+>>>>>>> b0a73ea (test: local dev settings)
 
   api:
     build:
@@ -181,10 +191,14 @@ services:
     volumes:
       - ./back:/home/node/app
 <<<<<<< HEAD
+<<<<<<< HEAD
       #- /home/node/app/node_modules
 =======
       # - /home/node/app/node_modules
 >>>>>>> 7441ac6 (chore: Update all depencies)
+=======
+      # - /home/node/app/node_modules
+>>>>>>> b0a73ea (test: local dev settings)
       - /home/node/app/.pnpm-store
     depends_on:
       postgres:
@@ -209,10 +223,14 @@ services:
       REDIS_PASS: ${REDIS_PASS}
       REDIS_URL: ${REDIS_URL}
 <<<<<<< HEAD
+<<<<<<< HEAD
     #command: sh -c "pnpm db:deploy && pnpm start:dev"
 =======
     # command: sh -c "pnpm db:deploy && pnpm start:dev"
 >>>>>>> 7441ac6 (chore: Update all depencies)
+=======
+    # command: sh -c "pnpm db:deploy && pnpm start:dev"
+>>>>>>> b0a73ea (test: local dev settings)
     command: sh -c "tail -f /dev/null"
     restart: always
 
