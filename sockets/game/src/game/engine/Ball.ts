@@ -85,11 +85,20 @@ export class Ball {
 						const a = this.vel.heading();
 						this.vel = Vector.fromAngle(Math.PI + a / 2, 10);
 					}
-					if (this.hitCounter >= 100) this.vel.divideBy(5);
-					else if (this.hitCounter >= 50) this.vel.divideBy(10);
-					else if (this.hitCounter >= 30) this.vel.divideBy(13);
-					else if (this.hitCounter >= 20) this.vel.divideBy(15);
-					else if (this.hitCounter >= 15) this.vel.divideBy(18);
+					if (this.hitCounter >= 100) {
+						this.rightUser.setMoveSpeed(7);
+						this.leftUser.setMoveSpeed(7);
+						this.vel.divideBy(5);
+					} else if (this.hitCounter >= 50) {
+						this.rightUser.setMoveSpeed(6.5);
+						this.leftUser.setMoveSpeed(6.5);
+						this.vel.divideBy(10);
+					} else if (this.hitCounter >= 30) this.vel.divideBy(13);
+					else if (this.hitCounter >= 20) {
+						this.rightUser.setMoveSpeed(6);
+						this.leftUser.setMoveSpeed(6);
+						this.vel.divideBy(15);
+					} else if (this.hitCounter >= 15) this.vel.divideBy(18);
 					else if (this.hitCounter >= 10) this.vel.divideBy(20);
 					else this.vel.divideBy(25);
 				}

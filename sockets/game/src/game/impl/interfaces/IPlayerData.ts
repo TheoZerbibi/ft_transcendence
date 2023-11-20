@@ -9,4 +9,5 @@ export interface IPlayerData {
 	score: number;
 
 	move: (direction: number) => void;
+	setMoveSpeed(speed: number): void;
 }
