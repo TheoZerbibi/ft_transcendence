@@ -18,10 +18,14 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategy/jwt.strategy';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { AuthController } from './auth.controller';
 =======
 import { AppController } from 'src/app.controller';
 >>>>>>> c80165e (fix: github issue)
+=======
+import { AuthController } from './auth.controller';
+>>>>>>> 2433f86 (fix: rework)
 
 @Module({
 	imports: [
@@ -32,10 +36,14 @@ import { AppController } from 'src/app.controller';
 		}),
 	],
 <<<<<<< HEAD
+<<<<<<< HEAD
 	controllers: [AuthController],
 =======
 	controllers: [AppController],
 >>>>>>> c80165e (fix: github issue)
+=======
+	controllers: [AuthController],
+>>>>>>> 2433f86 (fix: rework)
 	providers: [AuthService, JwtStrategy],
 	exports: [PassportModule, JwtModule],
 })
