@@ -11,16 +11,25 @@ export class Ball {
 		private x: number,
 		private y: number,
 		private r: number,
+<<<<<<< HEAD:front/src/plugins/game/Ball.ts
 		private speed = 5,
+=======
+		vel: P5.Vector,
+		speed = 5,
+>>>>>>> 6ff4cb1 (feat(game): Start implementing PongGame in Socket Server):front/src/services/Ball.ts
 	) {
 		this.spawn = p5.createVector(x, y);
 		this.speed = speed;
 		this.r = r;
 		this.pos = this.spawn.copy();
-		this.resetball();
+		this.vel = vel;
 	}
 
-	resetball() {
+	resetball(vel: P5.Vector) {
+		this.vel = vel;
+	}
+
+	oldreset() {
 		this.pos = this.spawn.copy();
 		const angle = this.p5.random(-Math.PI / 4, Math.PI / 4);
 		this.vel = P5.Vector.fromAngle(angle, this.speed);
@@ -32,12 +41,12 @@ export class Ball {
 		// return the side, otherwise return false
 
 		if (this.pos.x > this.p5.width + this.r) {
-			this.resetball();
+			this.oldreset();
 			return 'right';
 		}
 
 		if (this.pos.x < -this.r) {
-			this.resetball();
+			this.oldreset();
 			return 'left';
 		}
 
