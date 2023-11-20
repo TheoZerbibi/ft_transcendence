@@ -17,6 +17,7 @@ export default {
 		getComponent() {
 			const componentsMapping = {
 <<<<<<< HEAD
+<<<<<<< HEAD
 				seozcan: defineAsyncComponent(() => import('../components/team/SeozcanProfile.vue')),
 				thzeribi: defineAsyncComponent(() => import('../components/team/ThzeribiProfile.vue')),
 				nfauconn: defineAsyncComponent(() => import('../components/team/NfauconnProfile.vue')),
@@ -26,6 +27,11 @@ export default {
 				thzeribi: defineAsyncComponent(() => import('../components/team/IguidadoProfile.vue')),
 				thzeribi: defineAsyncComponent(() => import('../components/team/NfauconnProfile.vue')),
 >>>>>>> 2e60013 (just vuetify icon works)
+=======
+				seozcan: defineAsyncComponent(() => import('../components/team/SeozcanProfile.vue')),
+				thzeribi: defineAsyncComponent(() => import('../components/team/ThzeribiProfile.vue')),
+				nfauconn: defineAsyncComponent(() => import('../components/team/NfauconnProfile.vue')),
+>>>>>>> 2852cf3 (isma out)
 				grannou: defineAsyncComponent(() => import('../components/team/GrannouProfile.vue')),
 			};
 			return componentsMapping[this.login as keyof typeof componentsMapping] || null;

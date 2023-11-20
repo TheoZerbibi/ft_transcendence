@@ -13,8 +13,12 @@
 =======
 		<v-card class="blurred-card rounded-card">
 			<v-col class="largerSize neonPolice">
+<<<<<<< HEAD
 				<h1>The STING team</h1>
 >>>>>>> 452e6ff (page team prototype done)
+=======
+				<h1>The NSTG team</h1>
+>>>>>>> 2852cf3 (isma out)
 				<h4>Starring</h4>
 				<br />
 				<v-row>
@@ -57,6 +61,7 @@ export default defineComponent({
 		return {
 			backgroundWallpaper,
 <<<<<<< HEAD
+<<<<<<< HEAD
 			prenoms: ['Noe', 'Semiha', 'Théo', 'Gaëlle'],
 			logins: ['nfauconn', 'seozcan', 'thzeribi', 'grannou'],
 			qrCodes: [QRcodeNoemi, QRcodeSemiha, QRcodeTheo, QRcodeGaelle],
@@ -65,6 +70,11 @@ export default defineComponent({
 			logins: ['seozcan', 'thzeribi', 'iguidado', 'nfauconn', 'grannou'],
 			qrCodes: [QRcodeSemiha, QRcodeTheo, QRcodeIsmael, QRcodeNoemi, QRcodeGaelle],
 >>>>>>> 452e6ff (page team prototype done)
+=======
+			prenoms: ['Noe', 'Semiha', 'Théo', 'Gaëlle'],
+			logins: ['nfauconn', 'seozcan', 'thzeribi', 'grannou'],
+			qrCodes: [QRcodeNoemi, QRcodeSemiha, QRcodeTheo, QRcodeGaelle],
+>>>>>>> 2852cf3 (isma out)
 		};
 	},
 	methods: {
