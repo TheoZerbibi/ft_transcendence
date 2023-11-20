@@ -4,7 +4,8 @@ import {
 	IsBoolean,
 	IsNumber,
 	IsOptional,
-	//IsString,
+	IsString,
+	IsDate,
 } from 'class-validator';
 
 import { CreateChannelDto } from './create-channel.dto';

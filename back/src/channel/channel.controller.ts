@@ -7,7 +7,7 @@ import {
 	Param,
 	UseGuards,
 	//ClassSerializerInterceptor,
-	//BadRequestException,
+	BadRequestException,
 	Patch,
 	//UseInterceptors,
 	//Delete,
@@ -33,6 +33,18 @@ export class ChannelController {
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
 	async fetch(@Param('name') channel_name: string) {
 		return this.channelService.getChannel(channel_name);
+	}
+
+	@Get(':channel/user')
+	@UseGuards(JwtGuard) // Needed to access user attribute
+	@ApiOperation({ summary: 'retrieve user of channel' })
+	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
+	async	allChannelUsers(@Param('channel') channel_name: string, @GetUser() user: User)
+	{
+		const channel: channelDto = this.channelService.getChannel(channel_name);
+
+		if (!channel) throw new BadRequestException('Channel don\'t exist\n');
+		return this.channelService.getChannelUser(user, channel);
 	}
 
 	@Post('create')
