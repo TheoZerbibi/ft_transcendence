@@ -33,6 +33,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	constructor(
 		private authService: AuthService,
 		private gameService: GameService,
+		private prismaService: PrismaService,
 	) {}
 	@WebSocketServer() server: Server;
 

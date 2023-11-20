@@ -137,6 +137,10 @@ export class Game implements IGame {
 		return this.usersInGame.find((user) => user.playerData && user.playerData.side === side);
 	}
 
+	getPlayerBySide(side: SIDE): IUser {
+		return this.usersInGame.find((user) => user.playerData && user.playerData.side === side);
+	}
+
 	async startGame(): Promise<void> {
 		this.inProgress = true;
 		this.gameData.startingDate = new Date();

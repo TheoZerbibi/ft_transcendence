@@ -36,4 +36,8 @@ export class PlayerData implements IPlayerData {
 	addPoint() {
 		this.score++;
 	}
+
+	// move(position: IVector) {
+	// 	const speed: number = (this.ratio * 100) / 80;
+	// }
 }

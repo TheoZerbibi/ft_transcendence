@@ -33,39 +33,79 @@ export class Ball {
 		else if (player.side === SIDE.RIGHT) this.rightUser = player;
 	}
 
-	// hit(p1: Paddle, p2: Paddle) {
-	// 	for (const pad of [p1, p2]) {
-	// 		const padX = pad.pos.x;
-	// 		const padY = pad.pos.y;
-	// 		const ballX = this.pos.x;
-	// 		const ballY = this.pos.y;
-	// 		const r = this.r;
+	hit() {
+		if (!this.rightUser || !this.leftUser) return;
 
-	// 		// if ball collides on x-axis
-	// 		if (padX - r < ballX && ballX < padX + pad.w + r) {
-	// 			// and on y-axis
-	// 			if (padY - r < ballY && ballY < padY + pad.h + r) {
-	// 				// ball collided
+		if (100 / 75 - this.r < this.pos.x && this.pos.x < 100 / 75 + 100 / 75 + this.r) {
+			if (this.leftUser.y - this.r < this.pos.y && this.pos.y < this.leftUser.y + this.leftUser.h + this.r) {
+				const centerX: number = 100 / 75 + 100 / 75 / 2;
+				const centerY: number = this.leftUser.y + this.leftUser.h / 2;
 
-	// 				const padCenter = this.p5.createVector(pad.pos.x + pad.w / 2, pad.pos.y + pad.h / 2);
+				this.vel.x = this.pos.x - centerX;
+				this.vel.y = this.pos.y - centerY;
 
-	// 				// Vector from center of pad to center of ball
-	// 				this.vel = this.pos.copy().sub(padCenter);
-	// 				this.vel.limit(10);
+				const magnitude: number = Math.sqrt(this.vel.x ** 2 + this.vel.y ** 2);
 
-	// 				// basically halve that angle so it points more to the center
-	// 				const a = this.vel.heading();
-	// 				if (a > -Math.PI / 2 && a < Math.PI / 2) {
-	// 					this.vel = P5.Vector.fromAngle(a / 2, 10);
-	// 				} else {
-	// 					this.vel.rotate(Math.PI);
-	// 					const a = this.vel.heading();
-	// 					this.vel = P5.Vector.fromAngle(Math.PI + a / 2, 10);
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// }
+				if (magnitude > 10) {
+					this.vel.x = (this.vel.x * 10) / magnitude;
+					this.vel.y = (this.vel.y * 10) / magnitude;
+				}
+
+				const angle: number = Math.atan2(this.vel.y, this.vel.x);
+
+				if (angle > -(Math.PI / 2) && angle < Math.PI / 2) {
+					this.vel.x = Math.cos(angle / 2) * this.speed;
+					this.vel.y = Math.sin(angle / 2) * this.speed;
+				} else {
+					const x: number = this.vel.x;
+					const y: number = this.vel.y;
+
+					this.vel.x = x * Math.cos(Math.PI) - y * Math.sin(Math.PI);
+					this.vel.y = x * Math.sin(Math.PI) + y * Math.cos(Math.PI);
+
+					const angle: number = Math.atan2(this.vel.y, this.vel.x);
+
+					this.vel.x = Math.cos(Math.PI + angle / 2) * this.speed;
+					this.vel.y = Math.sin(Math.PI + angle / 2) * this.speed;
+				}
+			}
+		}
+
+		if (100 - (100 / 75) * 2 - this.r <= this.pos.x && this.pos.x <= 100 - (100 / 75) * 2 + 100 / 75 + this.r) {
+			if (this.rightUser.y - this.r <= this.pos.y && this.pos.y <= this.rightUser.y + this.rightUser.h + this.r) {
+				const centerX: number = 100 - (100 / 75) * 2 + 100 / 75 / 2;
+				const centerY: number = this.rightUser.y + this.rightUser.h / 2;
+
+				this.vel.x = this.pos.x - centerX;
+				this.vel.y = this.pos.y - centerY;
+
+				const magnitude: number = Math.sqrt(this.vel.x ** 2 + this.vel.y ** 2);
+
+				if (magnitude > 10) {
+					//p5.vector.limit
+					this.vel.x = (this.vel.x * 10) / magnitude;
+					this.vel.y = (this.vel.y * 10) / magnitude;
+				}
+				const angle: number = Math.atan2(this.vel.y, this.vel.x); //heading
+
+				if (angle > -Math.PI / 2 && angle < Math.PI / 2) {
+					this.vel.x = Math.cos(angle / 2) * this.speed;
+					this.vel.y = Math.sin(angle / 2) * this.speed;
+				} else {
+					const x: number = this.vel.x;
+					const y: number = this.vel.y;
+
+					this.vel.x = x * Math.cos(Math.PI) - y * Math.sin(Math.PI);
+					this.vel.y = x * Math.sin(Math.PI) + y * Math.cos(Math.PI);
+
+					const angle: number = Math.atan2(this.vel.y, this.vel.x);
+
+					this.vel.x = Math.cos(Math.PI + angle / 2) * this.speed;
+					this.vel.y = Math.sin(Math.PI + angle / 2) * this.speed;
+				}
+			}
+		}
+	}
 
 	public resetBall() {
 		this.pos = this.spawn.copy();

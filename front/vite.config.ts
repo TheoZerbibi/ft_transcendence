@@ -25,7 +25,7 @@ export default defineConfig({
 =======
 	},
 	define: {
-		JWT: '"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTgyODYxODcsImV4cCI6MTY5ODM3MjU4N30.cZokNOSjmtMJ0siOsZGbRtST5vZsPpFH6Mut2VdNaoM"',
+		JWT: '"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTg0MjAxMDcsImV4cCI6MTY5ODUwNjUwN30.qOY3I8rgfMuv2n2Fa8l7VqAAbYRshNSXJfZeeJS1FnA"',
 	},
 >>>>>>> d2c0bb9 (feat(pong): Continue backend logic for PongGame)
 });
