@@ -40,6 +40,7 @@ const router = createRouter({
 			component: () => import('../components/exemples/P5Exemple.vue'),
 		},
 		{
+<<<<<<< HEAD
 			path: '/exemples/modal',
 			name: 'ModalExemple',
 			component: () => import('../components/exemples/ModalExemple.vue'),
@@ -56,6 +57,8 @@ const router = createRouter({
 			component: () => import('../views/ProfileView.vue'),
 		},
 		{
+=======
+>>>>>>> 790bb55 (nav bar to fix)
 			path: '/team',
 			name: 'team',
 			component: () => import('../views/TeamView.vue'),

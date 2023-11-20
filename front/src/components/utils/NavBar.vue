@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
 	<v-app-bar app color="black" dark flat class="px-12">
 		<v-btn>
 			<!-- Icon does not work -->
@@ -21,12 +22,29 @@
 		<v-btn text @click="scroll('blog')" class="text-purple">Blog</v-btn>
 		<v-btn text @click="scroll('contact')" class="text-pink">Contact</v-btn>
 	</v-app-bar>
+=======
+    <v-app-bar app color="black" dark flat class="px-12">
+        <v-btn>
+            <!-- Icon does not work -->
+            <v-icon color="yellow" left class="mr-2">fas fa-signature</v-icon>42 paris 
+        </v-btn>
+        <v-spacer></v-spacer>
+        <v-btn text @click="scroll('home')" class="text-yellow">Home</v-btn>
+        <v-btn text @click="scroll('about')">About</v-btn>
+        <v-btn text @click="scroll('portfolio')">Portfolio</v-btn>
+        <v-btn text @click="scroll('services')">Services</v-btn>
+        <v-btn text @click="scroll('page')">Page</v-btn>
+        <v-btn text @click="scroll('blog')">Blog</v-btn>
+        <v-btn text @click="scroll('contact')">Contact</v-btn>
+    </v-app-bar>
+>>>>>>> 790bb55 (nav bar to fix)
 </template>
 
 <script>
 import { defineComponent } from 'vue';
 
 export default {
+<<<<<<< HEAD
 	methods: {
 		scroll(refName) {
 			const element = document.getElementById(refName);
@@ -37,3 +55,16 @@ export default {
 </script>
 
 <style scoped></style>
+=======
+    methods: {
+        scroll(refName) {
+            const element = document.getElementById(refName);
+            element.scrollIntoView({behavior: "smooth"});
+        }
+    }
+}
+</script>
+
+<style scoped>
+</style>
+>>>>>>> 790bb55 (nav bar to fix)

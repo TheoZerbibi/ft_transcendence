@@ -193,10 +193,13 @@ importers:
 
   .:
     dependencies:
+<<<<<<< HEAD
       '@mdi/font':
         specifier: 7.2.96
         version: 7.2.96
 >>>>>>> a3e984a (home black bar)
+=======
+>>>>>>> 790bb55 (nav bar to fix)
       gsap:
         specifier: ^3.12.2
         version: 3.12.2
@@ -556,6 +559,9 @@ importers:
       '@fortawesome/fontawesome-free':
         specifier: ^6.4.2
         version: 6.4.2
+      '@mdi/font':
+        specifier: 7.2.96
+        version: 7.2.96
       '@rushstack/eslint-patch':
         specifier: ^1.5.1
         version: 1.5.1
@@ -1478,9 +1484,15 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: false
 
+<<<<<<< HEAD
   /@mdi/font@7.3.67:
     resolution: {integrity: sha512-SWxvzRbUQRfewlIV+OF4/YF4DkeTjMWoT8Hh9yeU/5UBVdJZj9Uf4a9+cXjknSIhIaMxZ/4N1O/s7ojApOOGjg==}
     dev: false
+=======
+  /@mdi/font@7.2.96:
+    resolution: {integrity: sha512-e//lmkmpFUMZKhmCY9zdjRe4zNXfbOIJnn6xveHbaV2kSw5aJ5dLXUxcRt1Gxfi7ZYpFLUWlkG2MGSFAiqAu7w==}
+    dev: true
+>>>>>>> 790bb55 (nav bar to fix)
 
   /@microsoft/tsdoc-config@0.16.2:
     resolution: {integrity: sha512-OGiIzzoBLgWWR0UdRJX98oYO+XKGf7tiK4Zk6tQ/E4IJqGCe7dvkTvgDZV5cFJUzLGDOjeAXrnZoA6QkVySuxw==}
