@@ -55,6 +55,7 @@ export class GameService {
 			client.emit('game-error', 'Already in Game session');
 			return true;
 		}
+
 		let side: SIDE;
 		if (game.getUsersInGame().length === 0) side = SIDE.LEFT;
 		else if (game.getUsersInGame().length === 1) side = SIDE.RIGHT;
@@ -193,5 +194,36 @@ export class GameService {
 				is_win: true,
 			},
 		});
+	}
+
+	public gameVerification(client: Socket, gameUID: string, userID: number): IUser | null {
+		const game: IGame = this.getGame(gameUID);
+		if (!game) {
+			client.emit('game-error', 'Game Error, no game found');
+			client.disconnect();
+			return null;
+		}
+		if (!game.userIsInGame(userID)) {
+			client.emit('game-error', 'User is not in the game');
+			client.disconnect();
+			return null;
+		}
+		const player = game.getUser(userID);
+		if (!player) {
+			client.emit('game-error', 'User is not in the game');
+			client.disconnect();
+			return null;
+		}
+		return player;
+	}
+
+	public getUserFromRequest(client: Socket | any): users | null {
+		const user: users = client.handshake.user;
+		if (!user) {
+			client.emit('error', 'Invalid token');
+			client.disconnect();
+			return null;
+		}
+		return user;
 	}
 }
