@@ -12,7 +12,7 @@ export default defineComponent({
 
 	data() {
 		return {
-			login: 'grannou' as string,
+			login: 'seozcan' as string,
 		};
 	},
 });

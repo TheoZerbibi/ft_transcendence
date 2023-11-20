@@ -43,6 +43,15 @@ Table channel_messages {
   channelUsers channel_users [not null]
 }
 
+Table direct_messages {
+  id Int [pk, increment]
+  content String [not null]
+  created_at DateTime [default: `now()`, not null]
+  user_id Int [not null]
+  friend_id Int [not null]
+  user users [not null]
+}
+
 Table games {
   id Int [pk, increment]
   uid String [unique, not null]
@@ -81,16 +90,30 @@ Table users {
   user friends [not null]
   friends friends [not null]
   GamePlayer game_players [not null]
+  directMessages direct_messages [not null]
+  blockedBy blocked [not null]
+  blockedUsers blocked [not null]
 }
 
 Table friends {
   user users [not null]
-  friends users [not null]
+  friend users [not null]
   user_id Int [not null]
   friend_id Int [not null]
 
   indexes {
     (user_id, friend_id) [pk]
+  }
+}
+
+Table blocked {
+  blockedBy users [not null]
+  blocked users [not null]
+  blocked_by_id Int [not null]
+  blocked_id Int [not null]
+
+  indexes {
+    (blocked_by_id, blocked_id) [pk]
   }
 }
 
@@ -100,6 +123,8 @@ Ref: channel_users.user_id > users.id [delete: Cascade]
 
 Ref: channel_messages.channel_user_id > channel_users.id [delete: Cascade]
 
+Ref: direct_messages.user_id > users.id [delete: Cascade]
+
 Ref: game_players.player_id > users.id
 
 Ref: game_players.game_id > games.id [delete: Cascade]
@@ -107,3 +132,7 @@ Ref: game_players.game_id > games.id [delete: Cascade]
 Ref: friends.user_id > users.id
 
 Ref: friends.friend_id > users.id
+
+Ref: blocked.blocked_by_id > users.id
+
+Ref: blocked.blocked_id > users.id

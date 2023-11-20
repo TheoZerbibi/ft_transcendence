@@ -29,11 +29,6 @@ const router = createRouter({
 			component: () => import('../components/exemples/SnackbarExemple.vue'),
 		},
 		{
-			path: '/chat',
-			name: 'chat',
-			component: () => import('../views/ChatView.vue'),
-		},
-		{
 			path: '/exemples/p5',
 			name: 'P5Exemple',
 			component: () => import('../components/exemples/P5Exemple.vue'),
@@ -44,7 +39,17 @@ const router = createRouter({
 			component: () => import('../components/utils/GameModal.vue'),
 		},
 		{
-			path: '/chat',
+			path: '/exemples/websocket',
+			name: 'WebsocketExemple',
+			component: () => import('../components/exemples/WebsocketExemple.vue'),
+		},
+		{
+			path: '/exemples/p5',
+			name: 'P5Exemple',
+			component: () => import('../components/exemples/P5Exemple.vue'),
+		},
+		{
+			path: '/chat/',
 			name: 'chat',
 			component: () => import('../views/ChatView.vue'),
 		},
@@ -69,9 +74,9 @@ const router = createRouter({
 			component: () => import('../views/auth/AuthView.vue'),
 		},
 		{
-			path: '/secret',
-			name: 'secret',
-			component: () => import('../components/secrets/Secret.vue'),
+			path: '/auth/callback:token?',
+			name: 'AuthCallback',
+			component: () => import('../views/auth/AuthCallbackView.vue'),
 		},
 		{
 			path: '/portfolio',
@@ -84,19 +89,9 @@ const router = createRouter({
 			component: () => import('../components/secrets/Colors.vue'),
 		},
 		{
-			path: '/exemples/websocket',
-			name: 'WebsocketExemple',
-			component: () => import('../components/exemples/WebsocketExemple.vue'),
-		},
-		{
-			path: '/exemples/p5',
-			name: 'P5Exemple',
-			component: () => import('../components/exemples/P5Exemple.vue'),
-		},
-		{
-			path: '/auth/callback:token?',
-			name: 'AuthCallback',
-			component: () => import('../views/auth/AuthCallbackView.vue'),
+			path: '/secret',
+			name: 'secret',
+			component: () => import('../components/secrets/Secret.vue'),
 		},
 	],
 });
