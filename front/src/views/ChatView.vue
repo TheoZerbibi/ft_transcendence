@@ -1,23 +1,41 @@
 <template>
-	<Suspense>
-		<template #default>
-			<discord />
-		</template>
+	<v-app id="inspire">
 
-		<template #fallback>
-			<p>Loading Chat</p>
-		</template>
-	</Suspense>
+		<SystemBar></SystemBar>
+
+		<AvatarsBar></AvatarsBar>
+
+		<ChannelList></ChannelList>
+
+		<Toolbar></Toolbar>
+
+		<MessageInput></MessageInput>
+
+		<v-main><!--  --></v-main>
+
+		<OnlineList></OnlineList>
+
+	</v-app>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script>
 
-import Discord from '../components/chat/Discord.vue';
+import AvatarsBar from '../components/chat/AvatarsBar.vue';
+import ChannelList from '../components/chat/ChannelList.vue';
+import MessageInput from '../components/chat/MessageInput.vue';
+import OnlineList from '../components/chat/OnlineList.vue';
+import SystemBar from '../components/chat/SystemBar.vue';
+import Toolbar from '../components/chat/Toolbar.vue';
 
-export default defineComponent({
-	name: 'ChatView',
-
-	components: { Discord },
-});
+export default {
+	name: "Chat",
+	components: {
+		AvatarsBar,
+		ChannelList,
+		MessageInput,
+		OnlineList,
+		SystemBar,
+		Toolbar,
+	},
+}
 </script>
