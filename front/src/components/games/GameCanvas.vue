@@ -1,6 +1,12 @@
 <template>
 	<v-container class="d-flex align-center justify-center">
 		<div id="app">
+			<div v-if="waitingOpp">
+				<span class="d-flex align-center justify-center" min-height="100%">
+					<h4>Waiting for a opponant</h4>
+					<v-progress-circular indeterminate color="primary" />
+				</span>
+			</div>
 			<v-card
 				:style="{
 					backgroundImage: `url(/game/UI/something.gif)`,
@@ -75,7 +81,11 @@
 									src="/game/UI/cadres/toastDead.gif"
 									class="toast-of-death"
 								/>
-								<v-img class="avatar-responsive" :src="userData.rightPlayer.avatar" />
+								<v-img
+										class="avatar-responsive"
+										:class="{ dead: userData.rightPlayer.isDead }"
+										:src="userData.rightPlayer.avatar"
+									/>
 							</v-img>
 						</div>
 					</div>
@@ -129,6 +139,7 @@ export default {
 	data() {
 		return {
 			showCountdown: false,
+			waitingOpp: true,
 			userData: {
 				leftPlayer: {
 					name: '',
@@ -257,10 +268,10 @@ export default {
 
 					if (gameData.ball.pos.x < halfWidth) return;
 					if (gameData.ball.pos.y < gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
-						gameData.rightUser.move(-5);
+						gameData.rightUser.move(-4.5);
 					}
 					if (gameData.ball.pos.y > gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
-						gameData.rightUser.move(5);
+						gameData.rightUser.move(4.5);
 					}
 				}
 
@@ -351,6 +362,7 @@ export default {
 		});
 		this.socket.on('game-start', async (data: any) => {
 			await p5jsReadyPromise;
+			this.waitingOpp = false;
 			gameData.socket = this.socket;
 			gameData.go = false;
 			gameData.waiting = true;
@@ -414,7 +426,7 @@ export default {
 				return this.$router.push({ name: 'GameCreator' });
 			}
 			console.log(data);
-			gameData.player.update(data.position, data.width, data.height);
+			gameData.player.update(data.position);
 		});
 
 		this.socket.on('game-update', (data: any) => {
@@ -482,6 +494,7 @@ export default {
 				this.userData[user].relaseEnergy = false;
 				this.userData[user].isDead = true;
 				this.userData[user].cadre = '/game/UI/cadres/cadre6.png';
+				console.log(this.userData[user].isDead);
 			}, 9000);
 		},
 	},
@@ -521,9 +534,6 @@ html {
 	text-align: center;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	border: 5px solid #2a3cad;
-	border-radius: 5px;
-	box-shadow: 0px 0px 5px #2a3cad;
 }
 
 #game-canvas {
@@ -531,6 +541,10 @@ html {
 	backdrop-filter: blur(5px);
 	width: 69vw;
 	height: 61.2vh;
+	border: 5px solid #b78846;
+	border-top: 0;
+	border-radius: 5px;
+	box-shadow: 0px 0px 5px #b78846;
 }
 
 #vue-canvas {
@@ -608,6 +622,19 @@ h2 {
 	text-align: center;
 	color: white;
 	line-height: 0px;
+	text-shadow:
+		1px 1px 2px plum,
+		0 0 1em purple,
+		0 0 0.2em goldenrod;
+}
+
+h4 {
+	font-family: 'OMORI_MAIN', sans-serif;
+	padding: 10px;
+	font-size: 1.8vw;
+	text-align: center;
+	color: white;
+	line-height: 1;
 	text-shadow:
 		1px 1px 2px plum,
 		0 0 1em purple,
