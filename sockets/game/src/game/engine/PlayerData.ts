@@ -7,12 +7,16 @@ import { DIRECTION } from './enums/Direction';
 export class PlayerData implements IPlayerData {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private moveSpeed: number = 5;
 =======
 >>>>>>> 42c10c0 (refactor(pong): Improve ball deplacement)
 =======
 	private moveSpeed: number = 5;
 >>>>>>> 2f7e46d (feat(game): increment palette speed deplacement with ball speed deplacement)
+=======
+	private moveSpeed: number = 5;
+>>>>>>> 32523cf (feat(game): increment palette speed deplacement with ball speed deplacement)
 	pos: Vector;
 	w: number;
 	h: number;
@@ -37,13 +41,19 @@ export class PlayerData implements IPlayerData {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 2f7e46d (feat(game): increment palette speed deplacement with ball speed deplacement)
+=======
+>>>>>>> 32523cf (feat(game): increment palette speed deplacement with ball speed deplacement)
 	setMoveSpeed(speed: number): void {
 		this.moveSpeed = speed;
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 32523cf (feat(game): increment palette speed deplacement with ball speed deplacement)
 	move(direction: DIRECTION) {
 		if (direction === DIRECTION.UP) this.pos.y += this.moveSpeed;
 		else if (direction === DIRECTION.DOWN) this.pos.y -= this.moveSpeed;
