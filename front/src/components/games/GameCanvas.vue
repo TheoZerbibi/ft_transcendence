@@ -1,6 +1,12 @@
 <template>
 	<v-container class="d-flex align-center justify-center">
 		<div id="app">
+			<div v-if="waitingOpp">
+				<span class="d-flex align-center justify-center" min-height="100%">
+					<h4>Waiting for a opponant</h4>
+					<v-progress-circular indeterminate color="deep-purple-accent-2" />
+				</span>
+			</div>
 			<v-card
 				:style="{
 					backgroundImage: `url(/game/UI/something.gif)`,
@@ -10,6 +16,7 @@
 				}"
 				class="fill-height versus-container"
 			>
+			<div class="versus-container-inner">
 				<div class="fill-height d-flex align-center no-gutters">
 					<div
 						:style="{
@@ -25,7 +32,7 @@
 							<div
 								id="leftUser"
 								:class="{ tremble: shouldTremble('leftUser') }"
-								class="mr-auto fill-height ml-2"
+								class="mr-auto fill-height ml-3"
 							>
 								<v-img class="cadre-responsive" :src="userData.leftPlayer.cadre">
 									<h2>{{ userData.leftPlayer.name }}</h2>
@@ -61,7 +68,7 @@
 						}"
 						class="fill-height d-flex justify-end align-center right"
 					>
-						<div id="rightUser" :class="{ tremble: shouldTremble('rightUser') }" class="fill-height mr-2">
+						<div id="rightUser" :class="{ tremble: shouldTremble('rightUser') }" class="fill-height mr-3">
 							<v-img class="cadre-responsive" :src="userData.rightPlayer.cadre">
 								<h2>{{ userData.rightPlayer.name }}</h2>
 								<v-img
@@ -74,14 +81,19 @@
 									src="/game/UI/cadres/toastDead.gif"
 									class="toast-of-death"
 								/>
-								<v-img class="avatar-responsive" :src="userData.rightPlayer.avatar" />
+								<v-img
+										class="avatar-responsive"
+										:class="{ dead: userData.rightPlayer.isDead }"
+										:src="userData.rightPlayer.avatar"
+									/>
 							</v-img>
 						</div>
 					</div>
 				</div>
+				</div>
 			</v-card>
 			<div id="game-canvas" />
-		</div>
+	</div>
 		<CountdownOverlay v-if="showCountdown" />
 	</v-container>
 </template>
@@ -127,6 +139,7 @@ export default {
 	data() {
 		return {
 			showCountdown: false,
+			waitingOpp: true,
 			userData: {
 				leftPlayer: {
 					name: '',
@@ -255,10 +268,10 @@ export default {
 
 					if (gameData.ball.pos.x < halfWidth) return;
 					if (gameData.ball.pos.y < gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
-						gameData.rightUser.move(-5);
+						gameData.rightUser.move(-4.5);
 					}
 					if (gameData.ball.pos.y > gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
-						gameData.rightUser.move(5);
+						gameData.rightUser.move(4.5);
 					}
 				}
 
@@ -349,6 +362,7 @@ export default {
 		});
 		this.socket.on('game-start', async (data: any) => {
 			await p5jsReadyPromise;
+			this.waitingOpp = false;
 			gameData.socket = this.socket;
 			gameData.go = false;
 			gameData.waiting = true;
@@ -387,7 +401,6 @@ export default {
 			}
 		});
 
-<<<<<<< HEAD
 		this.socket.on('player-side', async (data: any) => {
 			await p5jsReadyPromise;
 			if (data.side == SIDE.LEFT) {
@@ -413,27 +426,7 @@ export default {
 				return this.$router.push({ name: 'GameCreator' });
 			}
 			console.log(data);
-			gameData.player.update(data.position, data.width, data.height);
-=======
-		this.socket.on('game_update', (data: any) => {
-			gameData.ball?.update(data.position, data.velocity, data.speed, data.radius);
-			gameData.ratio = data.ratio;
-		});
-
-		this.socket.on('player_move', (data: any) => {
-			console.log(data.p1);
-			console.log(data.p2);
-			if (data.p1) gameData.p1?.update(data.p1.position, data.p1.width, data.p1.height);
-			if (data.p2) gameData.p2?.update(data.p2.position, data.p2.width, data.p2.height);
-		});
-
-		this.socket.on('new_point', (data: any) => {
-			if (data.side == SIDE.LEFT) {
-				gameData.p1?.setPoint(data.score);
-			} else if (data.side == SIDE.RIGHT) {
-				gameData.p2?.setPoint(data.score);
-			}
->>>>>>> 6d9c762 (fix(pong): Fix GamePlayer creation when player already play game + finish correct game end implementation)
+			gameData.player.update(data.position);
 		});
 
 		this.socket.on('game-update', (data: any) => {
@@ -442,10 +435,8 @@ export default {
 		});
 
 		this.socket.on('player-moved', (data: any) => {
-			if (data.leftUser)
-				gameData.leftUser?.update(data.leftUser.position, data.leftUser.width, data.leftUser.height);
-			if (data.rightUser)
-				gameData.rightUser?.update(data.rightUser.position, data.rightUser.width, data.rightUser.height);
+			if (data.leftUser) gameData.leftUser?.update(data.leftUser.position);
+			if (data.rightUser) gameData.rightUser?.update(data.rightUser.position);
 		});
 
 		this.socket.on('game-score', (data: any) => {
@@ -503,6 +494,7 @@ export default {
 				this.userData[user].relaseEnergy = false;
 				this.userData[user].isDead = true;
 				this.userData[user].cadre = '/game/UI/cadres/cadre6.png';
+				console.log(this.userData[user].isDead);
 			}, 9000);
 		},
 	},
@@ -540,10 +532,8 @@ html {
 	color: #dddfe2;
 	font-family: 'Avenir', Helvetica, Arial, sans-serif;
 	text-align: center;
-	width: 70vw;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	border: 10px double #dddfe2;
 }
 
 #game-canvas {
@@ -551,6 +541,10 @@ html {
 	backdrop-filter: blur(5px);
 	width: 69vw;
 	height: 61.2vh;
+	border: 5px solid #b78846;
+	border-top: 0;
+	border-radius: 5px;
+	box-shadow: 0px 0px 5px #b78846;
 }
 
 #vue-canvas {
@@ -578,7 +572,7 @@ html {
 	width: 6vw;
 	height: 7vw;
 	position: absolute;
-	z-index: -888; /* Position absolue pour positionner par-dessus la deuxième image */
+	z-index: -888;
 }
 
 .toast-of-death {
@@ -596,7 +590,7 @@ html {
 }
 
 .versus {
-	font-family: 'OMORI_DISTURBED';
+	font-family: 'OMORI_DISTURBED', sans-serif;
 	font-size: 4.5vw;
 	text-align: center;
 	color: white;
@@ -608,14 +602,6 @@ html {
 	top: 50%;
 	transform: translateY(-50%);
 	z-index: 99999;
-}
-
-.versus-container {
-	border: 10px double #dddfe2;
-	position: relative;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
 }
 
 .right {
@@ -630,12 +616,25 @@ html {
 }
 
 h2 {
-	font-family: 'OMORI_MAIN';
+	font-family: 'OMORI_MAIN', sans-serif;
 	margin-top: 0.8vw;
 	font-size: 1.5vw;
 	text-align: center;
 	color: white;
 	line-height: 0px;
+	text-shadow:
+		1px 1px 2px plum,
+		0 0 1em purple,
+		0 0 0.2em goldenrod;
+}
+
+h4 {
+	font-family: 'OMORI_MAIN', sans-serif;
+	padding: 10px;
+	font-size: 1.8vw;
+	text-align: center;
+	color: white;
+	line-height: 1;
 	text-shadow:
 		1px 1px 2px plum,
 		0 0 1em purple,
@@ -676,5 +675,56 @@ canvas {
 	100% {
 		transform: translate(2px, -2px);
 	}
+}
+
+.versus-container {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	padding: 5px;
+	overflow: hidden;
+	border: 2px solid #b78846;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+ .versus-container:before, .versus-container:after {
+	content: "•";
+	position: absolute;
+	width: 14px;
+	height: 14px;
+	font-size: 14px;
+	color: #b78846;
+	border: 2px solid #b78846;
+	line-height: 12px;
+	top: 5px;
+	text-align: center;
+}
+ .versus-container:before {
+	 left: 5px;
+}
+ .versus-container:after {
+	 right: 5px;
+}
+ .versus-container .versus-container-inner {
+	 position: relative;
+	 border: 2px solid #b78846;
+}
+ .versus-container .versus-container-inner:before, .versus-container .versus-container-inner:after {
+	 content: "•";
+	 position: absolute;
+	 width: 14px;
+	 height: 14px;
+	 font-size: 14px;
+	 color: #b78846;
+	 border: 2px solid #b78846;
+	 line-height: 12px;
+	 bottom: -2px;
+	 text-align: center;
+}
+ .versus-container .versus-container-inner:before {
+	 left: -2px;
+}
+ .versus-container .versus-container-inner:after {
+	 right: -2px;
 }
 </style>
