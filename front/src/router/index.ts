@@ -69,11 +69,14 @@ const router = createRouter({
 			component: () => import('../views/TeamProfileView.vue'),
 		},
 		{
+<<<<<<< HEAD
 			path: '/chat/',
 			name: 'chat',
 			component: () => import('../views/ChatView.vue'),
 		},
 		{
+=======
+>>>>>>> eaeb1b1 (move portfolio homepage to /portfolio)
 			path: '/secret',
 			name: 'secret',
 			component: () => import('../views/SecretView.vue'),
@@ -83,6 +86,7 @@ const router = createRouter({
 			name: 'portfolio',
 			component: () => import('../views/PortfolioView.vue'),
 		},
+<<<<<<< HEAD
 		{
 			path: '/colors',
 			name: 'Colors',
@@ -98,6 +102,8 @@ const router = createRouter({
 			name: 'P5Exemple',
 			component: () => import('../components/exemples/P5Exemple.vue'),
 		},
+=======
+>>>>>>> eaeb1b1 (move portfolio homepage to /portfolio)
 	],
 });
 

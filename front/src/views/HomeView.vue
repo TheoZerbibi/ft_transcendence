@@ -1,5 +1,6 @@
 <template>
 <<<<<<< HEAD
+<<<<<<< HEAD
 	<!-- <header role="banner" class="site-header hide-on-overlay" data-v-9fb9646a=""> -->
 		<!-- <img class="site-header__logo" width="125" height="76" draggable="false" src="/src/assets/OmoriWallpapers/logo1.png" data-v-9fb9646a=""> -->
 			<!-- <div class="site-header__lightbulb" data-v-9fb9646a=""> -->
@@ -299,11 +300,24 @@
 		<FooterView></FooterView>
 	</v-app>
 >>>>>>> 6c47f89 (suite tuto to fix)
+=======
+	<div>
+		<h1>Home Page</h1>
+		<v-btn @click="$router.push('/portfolio')" class="text-capitalize" rounded color=orange variant="outlined">Go to portfolio</v-btn>
+		<br />
+		<button class="button button1">2px</button>
+		<button class="button button2">4px</button>
+		<button class="button button3">8px</button>
+		<button class="button button4">12px</button>
+		<button class="button button5">50%</button>
+	</div>
+>>>>>>> eaeb1b1 (move portfolio homepage to /portfolio)
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 // Components
@@ -358,8 +372,13 @@ export default defineComponent({
 		// FooterBar
 >>>>>>> d21abb4 (changes on front)
 	},
+=======
+export default defineComponent({
+	name: 'HomeView',
+>>>>>>> eaeb1b1 (move portfolio homepage to /portfolio)
 });
 
+<<<<<<< HEAD
 
 </script>
 <!-- <script nomodule="">!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script> -->
@@ -567,4 +586,38 @@ a {
 	margin-top: -24px;
 }
 >>>>>>> ff1c0ad (video at 21:38)
+=======
+<style scoped>
+	.button {
+	  background-color: orange;
+	  border: none;
+	  color: black;
+	  padding: 20px;
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	  font-size: 16px;
+	  margin: 4px 2px;
+	}
+
+	.button1 {border-radius: 2px;}
+	.button2 {border-radius: 4px;}
+	.button3 {border-radius: 8px;}
+	.button4 {border-radius: 12px;}
+	.button5 {border-radius: 50%;}
+>>>>>>> eaeb1b1 (move portfolio homepage to /portfolio)
 </style>
+
+
+<!-- Vue3 shapes: 
+	v-rect, 
+	v-circle, 
+	v-ellipse, 
+	v-line, 
+	v-image, 
+	v-text, 
+	v-text-path, 
+	v-star, 
+	v-label, 
+	v-path, 
+	v-regular-polygon -->
