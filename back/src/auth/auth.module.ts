@@ -17,7 +17,11 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategy/jwt.strategy';
+<<<<<<< HEAD
 import { AuthController } from './auth.controller';
+=======
+import { AppController } from 'src/app.controller';
+>>>>>>> c80165e (fix: github issue)
 
 @Module({
 	imports: [
@@ -27,7 +31,11 @@ import { AuthController } from './auth.controller';
 			signOptions: { expiresIn: '1h' }, // Adjust token expiration as needed
 		}),
 	],
+<<<<<<< HEAD
 	controllers: [AuthController],
+=======
+	controllers: [AppController],
+>>>>>>> c80165e (fix: github issue)
 	providers: [AuthService, JwtStrategy],
 	exports: [PassportModule, JwtModule],
 })

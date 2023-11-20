@@ -2,12 +2,25 @@ name: Master CI
 
 on:
   pull_request:
+<<<<<<< HEAD
     branches: [master]
   release:
     types: [published]
 
 env:
   NODE_VERSION: 21
+=======
+    branches:
+      - "master"
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+
+env:
+  NODE_VERSION: 20
+>>>>>>> c80165e (fix: github issue)
 
 jobs:
   setup:

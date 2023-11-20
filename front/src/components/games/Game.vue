@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 6505030 (feat(pong): Responsivity & Design)
 	<main>
@@ -33,6 +34,11 @@
 	>
 		<!-- <v-card color="#1d2028" class="mx-auto" max-width="500">
 >>>>>>> c7368ae (feat(pong): Front for the Pong)
+=======
+	<v-container>
+		<div v-if="apiData">
+			<v-card color="#1d2028" class="mx-auto" max-width="500">
+>>>>>>> c80165e (fix: github issue)
 				<v-card-title class="d-flex align-center justify-center" :style="{ backgroundColor: '#191b22' }">
 					<p>Game info</p>
 				</v-card-title>
@@ -40,6 +46,7 @@
 					<span>GameUID : </span>
 					<span class="font-weight-bold">
 						{{ apiData.uid }}
+<<<<<<< HEAD
 =======
 			<div v-if="isConnected">
 =======
@@ -57,6 +64,14 @@
 						<h4 class="ml-2">DOWN</h4>
 					</span>
 <<<<<<< HEAD
+=======
+					</span>
+					<br />
+					<span>Creation Date : </span>
+					<span class="font-weight-bold">
+						{{ apiData.created_at }}
+					</span>
+>>>>>>> c80165e (fix: github issue)
 					<br />
 					<div v-if="apiData.started_at">
 						<span>Started Date : </span>
@@ -86,11 +101,15 @@
 				<v-card-text class="px-5" :style="{ backgroundColor: 'transparent' }">
 					<v-list dense :style="{ backgroundColor: 'transparent', color: 'white' }">
 						<v-list-item v-for="player in players" :key="player.id">
+<<<<<<< HEAD
 							{{ player.id }} -
 							<v-avatar>
 								<v-img :src="player.avatar" />
 							</v-avatar>
 							{{ player.displayName }} :
+=======
+							{{ player.id }} - {{ player.displayName }} :
+>>>>>>> c80165e (fix: github issue)
 							<span
 								:style="{ color: `${player.isSpec ? '#00E676' : '#D50000'}` }"
 								class="font-weight-bold"
@@ -100,8 +119,13 @@
 						</v-list-item>
 					</v-list>
 				</v-card-text>
+<<<<<<< HEAD
 			</v-card> -->
 		<!-- <v-btn
+=======
+			</v-card>
+			<v-btn
+>>>>>>> c80165e (fix: github issue)
 				v-if="isConnected"
 				color="primary"
 				dark
@@ -111,6 +135,7 @@
 				@click="test()"
 			>
 				Connect FakeUser
+<<<<<<< HEAD
 			</v-btn> -->
 <<<<<<< HEAD
 			<div v-if="isConnected">
@@ -150,6 +175,15 @@
 		<Snackbar />
 	</main>
 >>>>>>> 6505030 (feat(pong): Responsivity & Design)
+=======
+			</v-btn>
+			<div v-if="isConnected">
+				<GameCanvas />
+			</div>
+		</div>
+		<Snackbar />
+	</v-container>
+>>>>>>> c80165e (fix: github issue)
 </template>
 
 <script lang="ts">
@@ -157,10 +191,15 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { useSnackbarStore } from '../../stores/snackbar';
+<<<<<<< HEAD
 import { useUser } from '../../stores/user';
 import { useSocketStore } from '../../stores/websocket';
 import Snackbar from '../utils/Snackbar.vue';
 import GameModal from '../utils/GameModal.vue';
+=======
+import { useSocketStore } from '../../stores/websocket';
+import Snackbar from '../utils/Snackbar.vue';
+>>>>>>> c80165e (fix: github issue)
 
 import GameCanvas from './GameCanvas.vue';
 
@@ -168,6 +207,7 @@ const snackbarStore = useSnackbarStore();
 
 export default {
 	name: 'PongGame',
+<<<<<<< HEAD
 	components: { Snackbar, GameCanvas, GameModal },
 	setup() {
 		const webSocketStore = useSocketStore();
@@ -179,6 +219,17 @@ export default {
 
 		const connect = async (JWT: string) => {
 			await webSocketStore.connect(JWT, import.meta.env.VITE_GAME_SOCKET_PORT);
+=======
+	components: { Snackbar, GameCanvas },
+	setup() {
+		const webSocketStore = useSocketStore();
+
+		const isConnected = computed(() => webSocketStore.isConnected);
+		const socket = computed(() => webSocketStore.getSocket);
+
+		const connect = async (JWT: string) => {
+			await webSocketStore.connect(JWT);
+>>>>>>> c80165e (fix: github issue)
 		};
 
 		const disconnect = () => {
@@ -186,10 +237,19 @@ export default {
 		};
 
 		const socketListen = () => {
+<<<<<<< HEAD
 			if (socket.value) {
 				socket.value.on('game-error', (data: any) => {
 					disconnect();
 					snackbarStore.showSnackbar(data, 3000, 'red');
+=======
+			console.log('socket : ', socket.value);
+			if (socket.value) {
+				socket.value.on('game_error', (data: any) => {
+					disconnect();
+					snackbarStore.showSnackbar(data, 3000, 'red');
+					console.log('Données reçues du canal game_error :', data);
+>>>>>>> c80165e (fix: github issue)
 				});
 			}
 		};
@@ -199,11 +259,15 @@ export default {
 			connect,
 			disconnect,
 			socketListen,
+<<<<<<< HEAD
 			JWT,
+=======
+>>>>>>> c80165e (fix: github issue)
 		};
 	},
 	data() {
 		return {
+<<<<<<< HEAD
 			gameEnded: false as boolean,
 			apiData: null as any,
 			gameUID: null as string | null,
@@ -216,6 +280,11 @@ export default {
 			test: 'test',
 =======
 >>>>>>> c7368ae (feat(pong): Front for the Pong)
+=======
+			apiData: null as any,
+			gameUID: null as string | null,
+			players: [] as any[],
+>>>>>>> c80165e (fix: github issue)
 		};
 	},
 	async beforeUnmount() {
@@ -230,6 +299,7 @@ export default {
 		if (!this.gameUID) return;
 		snackbarStore.hideSnackbar();
 
+<<<<<<< HEAD
 		const backgroundList: string[] = [];
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -257,19 +327,29 @@ export default {
 		this.background = this.background.replace('/public', '');
 >>>>>>> 1f4dfd0 (feat(pong): Improve IA deplacement + add life visualation)
 
+=======
+>>>>>>> c80165e (fix: github issue)
 		const requestOptions = {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
+<<<<<<< HEAD
 				Authorization: `Bearer ${this.JWT}`,
+=======
+				Authorization: `Bearer ${JWT}`,
+>>>>>>> c80165e (fix: github issue)
 				'Access-Control-Allow-Origin': '*',
 			},
 		};
 		// eslint-disable-next-line no-undef
+<<<<<<< HEAD
 		await fetch(
 			`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/game/${this.gameUID}`,
 			requestOptions,
 		)
+=======
+		await fetch(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/game/${this.gameUID}`, requestOptions)
+>>>>>>> c80165e (fix: github issue)
 			.then(async (response) => {
 				if (!response.ok) {
 					const data = await response.json();
@@ -279,6 +359,7 @@ export default {
 				return response.json();
 			})
 			.then(async (data) => {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -390,14 +471,53 @@ export default {
 					})
 					.catch((error: any) => {
 						snackbarStore.showSnackbar(error, 3000, 'red');
+=======
+				await this.connect(JWT)
+					.then(() => {
+						console.log('connected');
+						this.socketListen();
+						this.socket.on('session-info', (data: any) => {
+							this.players = [];
+							console.log('Données reçues du canal session-info :', data);
+							for (let i = 0; i < data.length; i++) {
+								data[i].user.isSpec = data[i].isSpec;
+								if (data[i].user) this.players.push(data[i].user);
+								console.log(data[i].user);
+							}
+						});
+						this.socket.on('game_start', (data: any) => {
+							console.log('game_start');
+							snackbarStore.showSnackbar(data, 3000, 'green');
+							this.apiData.started_at = new Date();
+							console.log('Données reçues du canal game_start :', data);
+						});
+						this.socket.on('game_end', (data: any) => {
+							console.log('game_end');
+							this.disconnect();
+							snackbarStore.showSnackbar(data, 3000, 'primary');
+							console.log('Données reçues du canal game_end :', data);
+						});
+						this.socket.emit('session-join', {
+							gameUID: this.gameUID,
+							userID: data.player_id,
+							isSpec: data.is_spec,
+						});
+					})
+					.catch((error: any) => {
+						snackbarStore.showSnackbar(error, 3000, 'red');
+						console.log('error : ', error);
+>>>>>>> c80165e (fix: github issue)
 						return;
 					});
 				this.apiData = data;
 				if (data.isSpec) snackbarStore.showSnackbar('Connecting to the game session.', 3000, 'orange');
 				else snackbarStore.showSnackbar('Joining game session.', 3000, 'green');
+<<<<<<< HEAD
 >>>>>>> ef81387 (feat(pong): Start Responsive)
 =======
 >>>>>>> 6505030 (feat(pong): Responsivity & Design)
+=======
+>>>>>>> c80165e (fix: github issue)
 			})
 			.catch((error) => {
 				console.error(error);
@@ -406,6 +526,7 @@ export default {
 	mounted() {},
 	methods: {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		openDialog() {
 			this.gameEnded = true;
 			this.apiData = { "winner": { "user": { "id": 2, "login": "norminet", "displayName": "Norminet", "avatar": "https://preview.redd.it/sky2ka084ns11.jpg?width=640&crop=smart&auto=webp&s=a7f060f539797578a109af48a5ee75909f7661cb" }, "score": 6, "side": 1 }, "loser": { "user": { "id": 1, "login": "thzeribi", "displayName": "Theo", "avatar": "https://i.imgur.com/XXxzteU.png" }, "score": 1, "side": 0 }, "startDate": "2023-11-20T12:00:38.537Z", "endingDate": "2023-11-20T12:01:24.445Z" };
@@ -413,16 +534,24 @@ export default {
 			this.dialogVisible = true;
 =======
 		test() {
+=======
+		test() {
+			console.log(this.isConnected);
+>>>>>>> c80165e (fix: github issue)
 			if (this.isConnected) {
 				this.socket.emit('session-join-test', {
 					gameUID: this.gameUID,
 				});
 			}
+<<<<<<< HEAD
 >>>>>>> ef81387 (feat(pong): Start Responsive)
+=======
+>>>>>>> c80165e (fix: github issue)
 		},
 	},
 };
 </script>
+<<<<<<< HEAD
 <style scoped>
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -472,3 +601,5 @@ h4 {
 }
 >>>>>>> 6ed663d (feat(pong): Responsivity)
 </style>
+=======
+>>>>>>> c80165e (fix: github issue)

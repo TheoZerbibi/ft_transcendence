@@ -22,6 +22,10 @@ export class AuthService {
 			});
 			return user as users;
 		} catch (e) {
+<<<<<<< HEAD
+=======
+			console.log(e);
+>>>>>>> c80165e (fix: github issue)
 			throw new ForbiddenException('Invalid token');
 		}
 	}
@@ -37,6 +41,10 @@ export class AuthService {
 
 			return userId;
 		} catch (e) {
+<<<<<<< HEAD
+=======
+			console.log(e);
+>>>>>>> c80165e (fix: github issue)
 			throw new ForbiddenException('Invalid token');
 		}
 	}

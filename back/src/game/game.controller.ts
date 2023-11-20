@@ -20,7 +20,12 @@ export class GameController {
 	@ApiOperation({ summary: 'Create a new Game' })
 	@ApiBearerAuth('JWT-auth')
 	@HttpCode(HttpStatus.OK)
+<<<<<<< HEAD
 	createNewGame() {
+=======
+	createNewGame(@GetUser() user: User) {
+		console.log(user);
+>>>>>>> c80165e (fix: github issue)
 		return this.gameService.createNewGame();
 	}
 
@@ -40,12 +45,20 @@ export class GameController {
 	@HttpCode(HttpStatus.OK)
 	async joinGame(@GetUser() user: User, @Param('uuid') gameUUID: string) {
 		const response = await this.gameService.joinGame(user, gameUUID);
+<<<<<<< HEAD
 		if (response) {
 			const isEnded: boolean = response.end_at ? true : false;
 			await this.redisService.connectClientToSocket(response.id, gameUUID, user.id, response.is_spec, isEnded);
 			if (isEnded) {
 				return response;
 			}
+=======
+		console.log('Join');
+		if (response) {
+			const isEnded: boolean = response.end_at ? true : false;
+			console.log(response);
+			await this.redisService.connectClientToSocket(gameUUID, user.id, response.is_spec, isEnded);
+>>>>>>> c80165e (fix: github issue)
 			return response;
 		}
 		return { error: 'Game not found' };

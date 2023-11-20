@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 import { Body, Controller, HttpCode, HttpStatus, Post, Get, UseGuards, Req, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+=======
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { AuthService } from './auth.service';
+import { AuthDto } from './dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+>>>>>>> c80165e (fix: github issue)
 
 @Controller('auth')
 @ApiTags('Authentication')
@@ -16,6 +23,7 @@ export class AuthController {
 		return this.authService.signup(dto);
 	}
 
+<<<<<<< HEAD
 	/* @Get('auth/oauth/callback') */
 	@Get('signup')
 	@UseGuards(AuthGuard('jwt'))
@@ -29,4 +37,12 @@ export class AuthController {
 	// async signin(@Body() dto: AuthDto) {
 	// 	return this.authService.login(dto);
 	// }
+=======
+	@Post('signin')
+	@HttpCode(HttpStatus.OK)
+	@ApiOperation({ summary: 'Log as user.' })
+	async signin(@Body() dto: AuthDto) {
+		return this.authService.signin(dto);
+	}
+>>>>>>> c80165e (fix: github issue)
 }

@@ -3,6 +3,7 @@ module.exports = {
 		browser: true,
 		es2021: true,
 	},
+<<<<<<< HEAD
 	parser: 'vue-eslint-parser',
 	extends: [
 		'plugin:vue/base',
@@ -14,6 +15,20 @@ module.exports = {
 	],
 	parserOptions: {
 		ecmaVersion: 2023,
+=======
+	extends: [
+		'plugin:vue/recommended',
+		'plugin:import/recommended',
+		'plugin:import/typescript',
+		'plugin:vuejs-accessibility/recommended',
+		'plugin:@typescript-eslint/recommended',
+		'@vue/eslint-config-prettier',
+		'eslint:recommended',
+	],
+	parser: 'vue-eslint-parser',
+	parserOptions: {
+		ecmaVersion: 'latest',
+>>>>>>> c80165e (fix: github issue)
 		parser: '@typescript-eslint/parser',
 		sourceType: 'module',
 		createDefaultProgram: true,

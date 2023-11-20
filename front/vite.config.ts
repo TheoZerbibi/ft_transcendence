@@ -23,6 +23,7 @@ export default defineConfig({
 	},
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	define: {
 		JWT: '"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6ImdyYW5ub3UiLCJzdWIiOjEsImlhdCI6MTY5ODQyMDI0NCwiZXhwIjoxNjk4NTA2NjQ0fQ.Nmi8JfqxquDiJ9hJ14IMVxmMUnVRBsjLAmT7WAdBmjo"',
@@ -30,4 +31,9 @@ export default defineConfig({
 >>>>>>> dd1f47c (routes created)
 =======
 >>>>>>> 8f38e0e (chore: Fix linter error)
+=======
+	define: {
+		JWT: '"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRoemVyaWJpIiwic3ViIjoxLCJpYXQiOjE2OTcyMjEwNTEsImV4cCI6MTY5NzMwNzQ1MX0.trubkPtb_Pcv8y5VEX4u2nk8UxbzOdpXA_z95SGcnNk"',
+	},
+>>>>>>> c80165e (fix: github issue)
 });

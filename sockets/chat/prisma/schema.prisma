@@ -16,7 +16,11 @@ model channel_messages {
 }
 
 model channel_users {
+<<<<<<< HEAD
   id               Int                @id @default(autoincrement())
+=======
+  id               Int                @id(map: "channel_users_pk") @default(autoincrement())
+>>>>>>> c80165e (fix: github issue)
   channel_id       Int
   user_id          Int
   is_muted         DateTime?
@@ -28,12 +32,20 @@ model channel_users {
   channels         channels           @relation(fields: [channel_id], references: [id], onDelete: Cascade)
   users            users              @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
+<<<<<<< HEAD
   @@unique([channel_id, user_id])
+=======
+  @@unique([channel_id, user_id], map: "channel_users_channel_id_user_id_uindex")
+>>>>>>> c80165e (fix: github issue)
 }
 
 model channels {
   id            Int             @id @default(autoincrement())
+<<<<<<< HEAD
   name          String          @unique
+=======
+  name          String
+>>>>>>> c80165e (fix: github issue)
   public        Boolean         @default(true)
   password      String?
   created_at    DateTime        @default(now())
@@ -61,6 +73,7 @@ model games {
 }
 
 model users {
+<<<<<<< HEAD
 <<<<<<< HEAD
   id                                   Int               @id @default(autoincrement())
   login                                String            @unique
@@ -109,6 +122,8 @@ model direct_messages {
   users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 =======
+=======
+>>>>>>> c80165e (fix: github issue)
   id                               Int             @id @default(autoincrement())
   login                            String          @unique
   display_name                     String
@@ -127,6 +142,7 @@ model direct_messages {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 /// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
 // model gamePlayers {
 // }
@@ -134,6 +150,8 @@ model direct_messages {
 =======
 =======
 >>>>>>> 6c47f89 (suite tuto to fix)
+=======
+>>>>>>> c80165e (fix: github issue)
 model game_players {
   player_id Int
   game_id   Int
@@ -145,6 +163,7 @@ model game_players {
   @@id([player_id, game_id])
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 8ad44c4 (chore: Fix prisma.schema)
 =======
 /// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
@@ -153,3 +172,5 @@ model game_players {
 >>>>>>> 89e81b3 (ca marche sur mon ordi en plein festival ou on me sort que je suis une sorciere blanche ahaha alors que je suis de l;'akatsuki mdr)
 =======
 >>>>>>> 6c47f89 (suite tuto to fix)
+=======
+>>>>>>> c80165e (fix: github issue)

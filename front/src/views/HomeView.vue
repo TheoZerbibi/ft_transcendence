@@ -9,6 +9,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 62efd17 (header lightbulb photo added)
 	<!-- <header role="banner" class="site-header hide-on-overlay" data-v-9fb9646a=""> -->
@@ -496,11 +497,15 @@
 		<span style="color:black"> ☆⋆｡𖦹°‧★ </span>
 	</v-footer>
 >>>>>>> 027b4cc (core:feat homepage almost done)
+=======
+	<hello-world />
+>>>>>>> c80165e (fix: github issue)
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -985,3 +990,14 @@ a {
 }
 >>>>>>> 8f38e0e (chore: Fix linter error)
 </style>
+=======
+// Components
+import HelloWorld from '../components/main/HelloWorld.vue';
+
+export default defineComponent({
+	name: 'HomeView',
+
+	components: { HelloWorld },
+});
+</script>
+>>>>>>> c80165e (fix: github issue)

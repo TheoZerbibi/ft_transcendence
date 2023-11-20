@@ -22,6 +22,7 @@ export class UserService {
 		return user as UserDto;
 	}
 
+<<<<<<< HEAD
 	async getUserById(userId: number): Promise<UserDto | undefined> {
 		const prismaUser: User = await this.prisma.user.findUnique({
 			where: {
@@ -33,6 +34,8 @@ export class UserService {
 		return user as UserDto;
 	}
 
+=======
+>>>>>>> c80165e (fix: github issue)
 	async editUser(userId: number, dto: EditUserDto): Promise<UserDto> {
 		const user = await this.prisma.user.update({
 			where: {

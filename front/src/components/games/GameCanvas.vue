@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
 	<v-container class="d-flex align-center justify-center">
 		<div id="app">
 <<<<<<< HEAD
@@ -203,12 +204,19 @@
 			</v-card>
 			<div id="game-canvas" />
 	</div>
+=======
+	<v-container>
+		<div id="app">
+			<div id="game-canvas" />
+		</div>
+>>>>>>> c80165e (fix: github issue)
 		<CountdownOverlay v-if="showCountdown" />
 	</v-container>
 </template>
 
 <script lang="ts">
 import { computed, ref } from 'vue';
+<<<<<<< HEAD
 import { useRoute } from 'vue-router';
 
 import P5 from 'p5';
@@ -219,6 +227,14 @@ import { DIRECTION } from '../../plugins/game/enums/Direction';
 import { SIDE } from '../../plugins/game/enums/Side';
 import { useCountdownStore } from '../../stores/countdown';
 import { useUser } from '../../stores/user';
+=======
+
+import P5 from 'p5';
+
+import { Ball } from '../../services/Ball';
+import { Paddle } from '../../services/Paddle';
+import { useCountdownStore } from '../../stores/countdown';
+>>>>>>> c80165e (fix: github issue)
 import { useSocketStore } from '../../stores/websocket';
 import CountdownOverlay from '../utils/Countdown.vue';
 
@@ -231,23 +247,33 @@ export default {
 	},
 	setup() {
 		const webSocketStore = useSocketStore();
+<<<<<<< HEAD
 		const userStore = useUser();
 
 		const isConnected = computed(() => webSocketStore.isConnected);
 		const socket = computed(() => webSocketStore.getSocket);
 		const user = computed(() => userStore.getUser);
 		const JWT = computed(() => userStore.getJWT);
+=======
+
+		const isConnected = computed(() => webSocketStore.isConnected);
+		const socket = computed(() => webSocketStore.getSocket);
+>>>>>>> c80165e (fix: github issue)
 
 		return {
 			isConnected,
 			socket,
+<<<<<<< HEAD
 			user,
 			JWT,
+=======
+>>>>>>> c80165e (fix: github issue)
 		};
 	},
 	data() {
 		return {
 			showCountdown: false,
+<<<<<<< HEAD
 <<<<<<< HEAD
 			waitingOpp: true,
 =======
@@ -571,10 +597,57 @@ export default {
 				gameData.ball.hit(gameData.leftUser, gameData.rightUser);
 				gameData.leftUser.show();
 				gameData.rightUser.show();
+=======
+		};
+	},
+	mounted() {
+		const gameData = {
+			go: false,
+			p1: null as Paddle | null,
+			p2: null as Paddle | null,
+			ball: null as Ball | null,
+		};
+		const script = function (p5: any) {
+			let textOffsetX: number = 50;
+			let textOffsetY: number = 10;
+
+			p5.setup = () => {
+				const canvas = p5.createCanvas(1200, 900);
+				canvas.parent('game-canvas');
+				gameData.ball = new Ball(p5, p5.width / 2, p5.height / 2, 10, 10);
+				gameData.p1 = new Paddle(p5, 20, p5.height / 2 - 50, 10, 100);
+				gameData.p2 = new Paddle(p5, p5.width - 30, p5.height / 2 - 50, 10, 100);
+			};
+			p5.draw = () => {
+				p5.background(51);
+				backdrop();
+				movePaddles();
+				if (!gameData.p1 || !gameData.p2 || !gameData.ball) return;
+				gameData.p1.show();
+				gameData.p2.show();
+
+				let oob = gameData.ball.outOfBounds();
+				if (oob) {
+					// the ball stays at spawn till go = true
+					gameData.go = false;
+					if (oob == 'right') {
+						gameData.p1.score++;
+					} else {
+						gameData.p2.score++;
+					}
+					setTimeout(() => {
+						gameData.go = true;
+					}, 1000);
+				}
+
+				if (gameData.go) gameData.ball.update();
+				gameData.ball.hit(gameData.p1, gameData.p2);
+>>>>>>> c80165e (fix: github issue)
 				gameData.ball.show();
 			};
 
 			/**
+<<<<<<< HEAD
 			 * Function for moving the right Paddle.
 			 */
 			function rightPaddleAI() {
@@ -589,10 +662,25 @@ export default {
 				}
 				if (gameData.ball.pos.y > gameData.rightUser.pos.y + gameData.rightUser.h / 2) {
 					gameData.rightUser.move(5);
+=======
+			 * Function for moving the player Paddle.
+			 */
+			function movePaddles() {
+				if (!gameData.p1 || !gameData.p2 || !gameData.ball || !gameData.go) return;
+				// 65 = 'a'
+				if (p5.keyIsDown(65)) {
+					gameData.p1.move(-5);
+				}
+
+				// 90 = 'z'
+				if (p5.keyIsDown(90)) {
+					gameData.p1.move(5);
+>>>>>>> c80165e (fix: github issue)
 				}
 			}
 
 			/**
+<<<<<<< HEAD
 			 * Function for write score and drawing line in the center.
 			 */
 			function backdrop() {
@@ -601,6 +689,17 @@ export default {
 				p5.strokeWeight(width / 200);
 
 				const dottedLength = width / 100;
+=======
+			 * Function for moving the player Paddle.
+			 */
+			function backdrop() {
+				if (!gameData.p1 || !gameData.p2) return;
+				p5.stroke(80);
+				p5.strokeWeight(8);
+
+				let dottedLength = 20;
+
+>>>>>>> c80165e (fix: github issue)
 				let y = dottedLength / 2;
 
 				while (y < p5.height) {
@@ -608,6 +707,7 @@ export default {
 					y += dottedLength * 2;
 				}
 
+<<<<<<< HEAD
 				const _r = width / 1736;
 				const _size = 100 * _r;
 				p5.textFont(retroFont);
@@ -1117,11 +1217,65 @@ export default {
 				this.userData[user].cadre = '/game/UI/cadres/cadre6.png';
 			}, 9000);
 		},
+=======
+				p5.textSize(100);
+				p5.noStroke();
+				p5.fill(80);
+
+				p5.textAlign(p5.RIGHT, p5.TOP);
+				p5.text(gameData.p1.score, p5.width / 2 - textOffsetX, textOffsetY);
+
+				p5.textAlign(p5.LEFT);
+				p5.text(gameData.p2.score, p5.width / 2 + textOffsetX, textOffsetY);
+			}
+
+			/**
+			 * Function for moving the player Paddle.
+			 */
+			p5.keyTyped = () => {
+				if (!gameData.p1 || !gameData.p2 || !gameData.ball) return;
+				if (p5.key == ' ') {
+					gameData.go = true;
+				}
+
+				if (p5.key == 'r') {
+					gameData.p1.score = 0;
+					gameData.p2.score = 0;
+					gameData.ball.resetball();
+					gameData.go = false;
+				}
+
+				// for safety
+				return false;
+			};
+		};
+		new P5(script);
+
+		this.socket.on('game_start', (data: any) => {
+			console.log('game_start');
+			countdownStore.setSeconds(5);
+			this.showCountdown = true;
+			console.log('Données reçues du canal game_start :', data);
+		});
+
+		this.socket.on('countdown', (data: number) => {
+			console.log('countdown');
+			console.log(data);
+			countdownStore.setSeconds(data);
+			if (data <= 0) {
+				this.showCountdown = false;
+				setTimeout(() => {
+					gameData.go = true;
+				}, 1000);
+			}
+		});
+>>>>>>> c80165e (fix: github issue)
 	},
 };
 </script>
 
 <style scoped>
+<<<<<<< HEAD
 @font-face {
 	font-family: 'Arcade_Classic';
 	src: url('/fonts/ARCADECLASSIC.TTF');
@@ -1137,21 +1291,27 @@ export default {
 	src: url('/fonts/OMORI_GAME2.ttf') format('truetype-variations');
 }
 
+=======
+>>>>>>> c80165e (fix: github issue)
 body,
 html {
 	margin: 0;
 	padding: 0;
 }
 
+<<<<<<< HEAD
 .fill-height {
 	overflow: hidden;
 }
 
+=======
+>>>>>>> c80165e (fix: github issue)
 #app {
 	margin-top: 60px;
 	color: #dddfe2;
 	font-family: 'Avenir', Helvetica, Arial, sans-serif;
 	text-align: center;
+<<<<<<< HEAD
 	width: 70vw;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -1174,6 +1334,10 @@ html {
 	border-top: 0;
 	border-radius: 5px;
 	box-shadow: 0px 0px 5px #b78846;
+=======
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+>>>>>>> c80165e (fix: github issue)
 }
 
 #vue-canvas {
@@ -1185,6 +1349,7 @@ html {
 	border-radius: 20px;
 	overflow: hidden;
 }
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1468,4 +1633,6 @@ canvas {
 		transform: translate(2px, -2px);
 	}
 }
+=======
+>>>>>>> c80165e (fix: github issue)
 </style>

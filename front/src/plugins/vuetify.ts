@@ -3,6 +3,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import '@mdi/font/css/materialdesignicons.css';
 =======
 import 'vuetify/styles';
@@ -93,3 +94,17 @@ export default createVuetify({
 =======
 });
 >>>>>>> 3b9f6f4 (clean files)
+=======
+import '@mdi/font/css/materialdesignicons.css';
+import 'vuetify/styles';
+
+// Vuetify
+import { createVuetify } from 'vuetify';
+
+export default createVuetify({
+	theme: {
+		defaultTheme: 'dark',
+	},
+});
+// https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
+>>>>>>> c80165e (fix: github issue)

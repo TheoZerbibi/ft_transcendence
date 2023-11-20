@@ -54,3 +54,7 @@ if [[ ! -f .env ]]; then
 else
 	launch_app
 fi
+<<<<<<< HEAD
+=======
+
+>>>>>>> c80165e (fix: github issue)

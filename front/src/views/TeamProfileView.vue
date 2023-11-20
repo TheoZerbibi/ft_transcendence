@@ -18,6 +18,7 @@ export default {
 			const componentsMapping = {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 				seozcan: defineAsyncComponent(() => import('../components/team/SeozcanProfile.vue')),
 				thzeribi: defineAsyncComponent(() => import('../components/team/ThzeribiProfile.vue')),
 				nfauconn: defineAsyncComponent(() => import('../components/team/NfauconnProfile.vue')),
@@ -33,6 +34,10 @@ export default {
 				nfauconn: defineAsyncComponent(() => import('../components/team/NfauconnProfile.vue')),
 >>>>>>> 2852cf3 (isma out)
 				grannou: defineAsyncComponent(() => import('../components/team/GrannouProfile.vue')),
+=======
+				grannou: defineAsyncComponent(() => import('../components/team/GrannouProfile.vue')),
+				thzeribi: defineAsyncComponent(() => import('../components/team/ThzeribiProfile.vue')),
+>>>>>>> c80165e (fix: github issue)
 			};
 			return componentsMapping[this.login as keyof typeof componentsMapping] || null;
 		},
@@ -41,5 +46,11 @@ export default {
 		const route = useRoute();
 		this.login = route.params.login;
 	},
+<<<<<<< HEAD
+=======
+	mounted() {
+		console.log(this.login);
+	},
+>>>>>>> c80165e (fix: github issue)
 };
 </script>

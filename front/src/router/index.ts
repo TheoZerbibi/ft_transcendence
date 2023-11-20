@@ -5,8 +5,18 @@ const router = createRouter({
 	routes: [
 		{
 			path: '/',
+<<<<<<< HEAD
 			name: 'home',
 			component: () => import('../views/HomeView.vue'),
+=======
+			name: 'Home',
+			component: () => import('../views/Homepage.vue'),
+		},
+		{
+			path: '/secret',
+			name: 'secret',
+			component: () => import('../views/SecretView.vue'),
+>>>>>>> c80165e (fix: github issue)
 		},
 		{
 			path: '/test',
@@ -16,7 +26,11 @@ const router = createRouter({
 		{
 			path: '/game',
 			name: 'GameCreator',
+<<<<<<< HEAD
 			component: () => import('../views/GameMenuView.vue'),
+=======
+			component: () => import('../views/GameCreateView.vue'),
+>>>>>>> c80165e (fix: github issue)
 		},
 		{
 			path: '/game/:uid',
@@ -30,6 +44,9 @@ const router = createRouter({
 		},
 		{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> c80165e (fix: github issue)
 			path: '/exemples/websocket',
 			name: 'WebsocketExemple',
 			component: () => import('../components/exemples/WebsocketExemple.vue'),
@@ -40,6 +57,7 @@ const router = createRouter({
 			component: () => import('../components/exemples/P5Exemple.vue'),
 		},
 		{
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 			path: '/exemples/modal',
@@ -73,6 +91,13 @@ const router = createRouter({
 >>>>>>> dd1f47c (routes created)
 =======
 >>>>>>> 7f206e2 (profile route created)
+=======
+			path: '/secret',
+			name: 'secret',
+			component: () => import('../views/SecretView.vue'),
+		},
+		{
+>>>>>>> c80165e (fix: github issue)
 			path: '/team',
 			name: 'team',
 			component: () => import('../views/TeamView.vue'),
@@ -83,6 +108,7 @@ const router = createRouter({
 			component: () => import('../views/TeamProfileView.vue'),
 		},
 		{
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 			path: '/chat/',
@@ -96,10 +122,13 @@ const router = createRouter({
 =======
 =======
 >>>>>>> af628b1 (feat: added support for auth/signup page)
+=======
+>>>>>>> c80165e (fix: github issue)
 			path: '/auth/signup',
 			name: 'Sinup',
 			component: () => import('../views/SignupView.vue'),
 		},
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 		{
@@ -153,12 +182,17 @@ const router = createRouter({
 =======
 >>>>>>> af628b1 (feat: added support for auth/signup page)
 =======
+=======
+>>>>>>> c80165e (fix: github issue)
 		{
 			path: '/api/oauth/callback',
 			name: 'OauthCallback',
 			component: () => import('../views/OauthCallbackView.vue'),
 		},
+<<<<<<< HEAD
 >>>>>>> 7711274 (fix: rework)
+=======
+>>>>>>> c80165e (fix: github issue)
 	],
 });
 

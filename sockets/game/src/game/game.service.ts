@@ -6,9 +6,12 @@ import { users } from '@prisma/client';
 import { IUser } from './impl/interfaces/IUser';
 import { Socket } from 'socket.io';
 import { PrismaService } from 'src/prisma/prisma.service';
+<<<<<<< HEAD
 import { PlayerData } from './engine/PlayerData';
 import { SIDE } from './engine/enums/Side';
 import { IPlayerData } from './impl/interfaces/IPlayerData';
+=======
+>>>>>>> c80165e (fix: github issue)
 
 @Injectable()
 export class GameService {
@@ -16,16 +19,20 @@ export class GameService {
 
 	constructor(private prismaService: PrismaService) {}
 
+<<<<<<< HEAD
 	public handleRedisMessage(channel: string, message: any): void {
 		const data = JSON.parse(message);
 		if (!this.gameExists(data.gameUID)) this.createGame(data.gameID, data.gameUID, data.isEnded);
 		this.addWaitingConnection(data);
 	}
 
+=======
+>>>>>>> c80165e (fix: github issue)
 	public addWaitingConnection(joinUser: GameJoinDto) {
 		this.waitingConnections.set(joinUser.userID, joinUser);
 	}
 
+<<<<<<< HEAD
 	public isUserWaiting(client: Socket, gameUID: string, userID: number): GameJoinDto | null {
 		if (!this.waitingConnections.has(userID)) return null;
 		const wainting = this.waitingConnections.get(userID);
@@ -34,6 +41,13 @@ export class GameService {
 			client.disconnect();
 			return null;
 		}
+=======
+	public isUserWaiting(gameUID: string, userID: number): GameJoinDto | null {
+		console.log(`isUserWaiting :`, this.waitingConnections);
+		if (!this.waitingConnections.has(userID)) return null;
+		const wainting = this.waitingConnections.get(userID);
+		if (wainting.gameUID !== gameUID) return null;
+>>>>>>> c80165e (fix: github issue)
 		return wainting;
 	}
 
@@ -45,13 +59,21 @@ export class GameService {
 		return Game.getGamesFromUID(gameUID);
 	}
 
+<<<<<<< HEAD
 	public createGame(gameID: number, gameUID: string, isEnded: boolean = false): IGame {
 		const game = new Game(this.prismaService, gameID, gameUID, isEnded);
+=======
+	public createGame(gameUID: string, isEnded: boolean = false): IGame {
+		console.log('new game : ', gameUID, ' isEnded :', isEnded);
+		const game = new Game(this.prismaService, gameUID, isEnded);
+		console.log('new game created');
+>>>>>>> c80165e (fix: github issue)
 		return game;
 	}
 
 	public addUserToGame(game: IGame, client: Socket, user: users, isSpec: boolean): boolean {
 		if (game.userIsInGame(user.id)) {
+<<<<<<< HEAD
 			client.emit('game-error', 'Already in Game session');
 			return true;
 		}
@@ -92,11 +114,21 @@ export class GameService {
 			isConnected: true,
 			isSpec: isSpec,
 			playerData: playerData,
+=======
+			// client.emit('game_error', 'Already in Game session');
+			return true;
+		}
+		const gameUser: IUser = {
+			user: { id: user.id, login: user.login, displayName: user.display_name, avatar: user.avatar },
+			socketID: client.id,
+			isSpec: isSpec,
+>>>>>>> c80165e (fix: github issue)
 		};
 		game.addUser(gameUser);
 		return true;
 	}
 
+<<<<<<< HEAD
 	public removeUserFromGame(client: Socket | any): IGame | null {
 		const user: users = client.handshake.user;
 		if (!user) return;
@@ -249,5 +281,22 @@ export class GameService {
 			return null;
 		}
 		return user;
+=======
+	public removeUserFromGame(client: Socket | any): void {
+		console.log('removeUserFromGame');
+		const user: users = client.handshake.user;
+		console.log('user : ', user);
+		if (!user) return;
+		console.log('user : ', user.id);
+		const game: IGame = Game.getGamesFromUser(user.id);
+		if (!game) return;
+		const gameUser = game.getUser(user.id);
+		if (!gameUser) return;
+		game.removeUser(gameUser);
+
+		if (game.getUsersInGame.length === 0) {
+			game.endGame();
+		}
+>>>>>>> c80165e (fix: github issue)
 	}
 }

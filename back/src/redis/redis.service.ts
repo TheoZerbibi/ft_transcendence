@@ -37,11 +37,19 @@ export class RedisService implements OnModuleDestroy {
 		await this.redisClient.publish(channel, message);
 	}
 
+<<<<<<< HEAD
 	async connectClientToSocket(gameID: number, gameUID: string, userID: number, isSpec: boolean, isEnded: boolean) {
 		if (gameUID !== null && gameUID !== undefined)
 			await this.redisClient.publish(
 				'new-connection',
 				JSON.stringify({ gameID, gameUID: gameUID, userID: userID, isSpec: isSpec, isEnded: isEnded }),
+=======
+	async connectClientToSocket(gameUID: string, userID: number, isSpec: boolean, isEnded: boolean) {
+		if (gameUID !== null && gameUID !== undefined)
+			await this.redisClient.publish(
+				'new-connection',
+				JSON.stringify({ gameUID: gameUID, userID: userID, isSpec: isSpec, isEnded: isEnded }),
+>>>>>>> c80165e (fix: github issue)
 			);
 	}
 }

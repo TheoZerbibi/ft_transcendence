@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 
 export const useUser = defineStore('user', {
 	state: () => ({
+<<<<<<< HEAD
 		JWT: null as string | null,
 		login: null as string | null,
 		displayName: null as string | null,
@@ -56,6 +57,16 @@ export const useUser = defineStore('user', {
 			this.login = data.login;
 			this.displayName = data.display_name;
 			this.avatar = data.avatar;
+=======
+		isLoggedIn: false,
+	}),
+	actions: {
+		login() {
+			this.isLoggedIn = true;
+		},
+		logout() {
+			this.isLoggedIn = false;
+>>>>>>> c80165e (fix: github issue)
 		},
 	},
 });
