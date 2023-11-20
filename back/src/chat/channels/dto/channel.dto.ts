@@ -46,6 +46,11 @@ export class ChannelSettingsDto {
 	@IsOptional()
 	// eslint-disable-next-line
 	is_public: boolean;
+
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	password: string;
 }
 
 export class ChannelModPwdDto {
@@ -63,4 +68,35 @@ export class ChannelModPwdDto {
 	@IsString()
 	// eslint-disable-next-line
 	new_pwd_confirm: string;
+}
+
+export class JoinChannelDto {
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	name: string;
+
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	password: string;
+}
+
+export class AdminModUserDto {
+	@ApiProperty()
+	@IsNumber()
+	// eslint-disable-next-line
+	target_id: number;
+
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	password: string;
+}
+
+export class PasswordRequiredActionDto {
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	password: string;
 }

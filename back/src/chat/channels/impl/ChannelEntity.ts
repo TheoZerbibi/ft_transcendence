@@ -6,7 +6,6 @@ import { ChannelMessageEntity } from './ChannelMessageEntity';
 export class ChannelEntity implements IChannel {
 	private id: number;
 	private name: string;
-	private is_pwd: boolean;
 	private password: string;
 	private isPublic: boolean;
 	private created_at: Date;

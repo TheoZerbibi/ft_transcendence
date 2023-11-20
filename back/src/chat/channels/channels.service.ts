@@ -7,12 +7,13 @@ import { ChannelMessageEntity } from './impl/ChannelMessageEntity';
 // PRISMA
 import { Prisma, User, Channel, ChannelUser, ChannelMessage } from '@prisma/client';
 // DTO
-import { ChannelListElemDto, CreateChannelDto, ChannelSettingsDto, ChannelModPwdDto } from './dto/channel.dto';
+import { ChannelListElemDto, CreateChannelDto, ChannelSettingsDto, ChannelModPwdDto, JoinChannelDto, AdminModUserDto, PasswordRequiredActionDto } from './dto/channel.dto';
 import { ChannelMessageDto } from './dto/channel-message.dto';
 // SERVICES
 import { PrismaService } from 'src/prisma/prisma.service';
 // PWD HASHING
 import argon2d from 'argon2';
+import { channel } from 'diagnostics_channel';
 
 @Injectable()
 export class ChannelService {
@@ -70,24 +71,22 @@ export class ChannelService {
 	/********************************** Channel Access *********************************/
 
 	// Get a channel by its name if allowed
-	async accessChannelByName(user: User, channel_name: string, pwd: string): Promise<ChannelEntity | null> {
+	async accessChannelByName(user: User, channel_name: string): Promise<ChannelEntity | null> {
 		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
-		this.checkChannelExists(channelEntity);
+		if (!channelEntity) throw new BadRequestException("Channel doesn't exist");
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		this.checkUserAccess(channelUser, channelEntity);
-		this.checkPassword(channelEntity, pwd);
 		return channelEntity;
 	}
 
 	/************************************** Users ***********************************/
 
 	// Gett all users in a channel if allowed
-	async getAllChannelUsers(user: User, channel_id: number, pwd: string): Promise<ChannelUserEntity[] | null> {
-		const channel: ChannelEntity = await this.findChannelById(channel_id);
-		this.checkChannelExists(channel);
+	async getAllChannelUsers(user: User, channel_name: string): Promise<ChannelUserEntity[] | null> {
+		const channel: ChannelEntity = await this.findChannelByName(channel_name);
+		if (!channel) throw new BadRequestException("Channel doesn't exist");
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channel);
 		this.checkUserAccess(channelUser, channel);
-		this.checkPassword(channel, pwd);
 
 		return channel.getUsers() || null;
 	}
@@ -124,16 +123,16 @@ export class ChannelService {
 		}
 	}
 
-	async joinChannel(user: User, channel_name: string, pwd: string): Promise<void> {
+	async joinChannel(user: User, channel_name: string, dto: JoinChannelDto): Promise<void> {
 		try {
 			const channel: ChannelEntity | null = await this.findChannelByName(channel_name);
-			this.checkChannelExists(channel);
+			if (!channel) throw new BadRequestException("Channel doesn't exist");
 			const channelUserEntity: ChannelUserEntity | null = await this.findChannelUser(user, channel);
 			if (channelUserEntity) {
 				if (channelUserEntity.isBanned()) throw new ForbiddenException('You are banned from this channel');
 				throw new BadRequestException('You are already on this channel');
 			}
-			this.checkPassword(channel, pwd);
+			if (!channel.getIsPublic() && !argon2d.verify(channel.getPassword(), dto.password)) throw new BadRequestException('Wrong password');
 
 			const channelUser: ChannelUser = await this.prisma.channelUser.create({
 				data: {
@@ -155,21 +154,21 @@ export class ChannelService {
 
 	/************************************ Channels *************************************/
 
-	async modChannel(user: User, channel_id: number, pwd: string, newParamsdto: ChannelSettingsDto): Promise<void> {
+	async modChannel(user: User, channel_name: string, newParamsdto: ChannelSettingsDto): Promise<void> {
 		try {
-			const channelEntity: ChannelEntity | null = await this.findChannelById(channel_id);
-			this.checkChannelExists(channelEntity);
+			const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
+			if (!channelEntity) throw new BadRequestException("Channel doesn't exist");
 			const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 			this.checkUserAccess(channelUser, channelEntity);
 			if (!channelUser.isAdmin())
 				throw new ForbiddenException('You are not authorized to operate on this channel');
-			this.checkPassword(channelEntity, pwd);
+			if (!channelEntity.getIsPublic() && !argon2d.verify(channelEntity.getPassword(), newParamsdto.password)) throw new BadRequestException('Wrong password');
 
 			channelEntity.setName(newParamsdto.name);
 			channelEntity.setIsPublic(newParamsdto.is_public);
 			await this.prisma.channel.update({
 				where: {
-					id: channel_id,
+					name: channel_name,
 				},
 				data: {
 					name: channelEntity.getName(),
@@ -185,14 +184,15 @@ export class ChannelService {
 		}
 	}
 
-	async modChannelPwd(user: User, channel_id: number, dto: ChannelModPwdDto): Promise<void> {
-		const channelEntity: ChannelEntity | null = await this.findChannelById(channel_id);
-		this.checkChannelExists(channelEntity);
+	async modChannelPwd(user: User, channel_name: string, dto: ChannelModPwdDto): Promise<void> {
+		throw new BadRequestException("Not implemented yet");
+		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
+		if (!channelEntity) throw new BadRequestException("Channel doesn't exist");
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		this.checkUserAccess(channelUser, channelEntity);
 		if (!channelUser.isOwner())
 			throw new ForbiddenException('You are not authorized to set or modify the password on this channel');
-		this.checkPassword(channelEntity, dto.prev_pwd);
+		if (!argon2d.verify(channelEntity.getPassword(), dto.prev_pwd)) throw new BadRequestException('Wrong password');
 
 		if (dto.new_pwd.length > 20 || dto.new_pwd_confirm.length > 20)
 			throw new BadRequestException('Password too long (max 20 characters)');
@@ -204,7 +204,7 @@ export class ChannelService {
 
 		await this.prisma.channel.update({
 			where: {
-				id: channel_id,
+				name: channel_name,
 			},
 			data: {
 				public: channelEntity.getIsPublic(),
@@ -215,24 +215,24 @@ export class ChannelService {
 
 	/************************************** Users ***********************************/
 
-	async setChannelUserAsAdmin(user: User, channel_id: number, target_user_id: number, pwd: string): Promise<void> {
-		const channelEntity: ChannelEntity | null = await this.findChannelById(channel_id);
-		this.checkChannelExists(channelEntity);
+	async setChannelUserAsAdmin(user: User, channel_name: string, dto: AdminModUserDto): Promise<void> {
+		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
+		if (!channelEntity) throw new BadRequestException("Channel doesn't exist");
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		this.checkUserAccess(channelUser, channelEntity);
-		this.checkPassword(channelEntity, pwd);
+		if (!channelEntity.getIsPublic() && !argon2d.verify(channelEntity.getPassword(), dto.password)) throw new BadRequestException('Wrong password');
 
 		if (!channelUser.isOwner()) throw new BadRequestException('You cannot set someone as admin on this channel');
 		const targetChanUser: ChannelUserEntity | null = channelEntity.getUsers().find((channelUser) => {
-			return channelUser.getUserId() === target_user_id;
+			return channelUser.getUserId() === dto.target_id;
 		});
 		if (!targetChanUser) throw new BadRequestException('User is not on this channel');
 		if (targetChanUser.isAdmin()) throw new BadRequestException('User is already admin on this channel');
 		targetChanUser.setIsAdmin(true);
 		await this.prisma.channelUser.update({
 			where: {
-				id: channel_id,
-				user_id: target_user_id,
+				id: targetChanUser.getId(),
+				user_id: dto.target_id,
 			},
 			data: {
 				is_admin: targetChanUser.isAdmin(),
@@ -240,19 +240,19 @@ export class ChannelService {
 		});
 	}
 
-	async muteChannelUser(user: User, channel_id: number, target_user_id: number, pwd: string): Promise<void> {
+	async muteChannelUser(user: User, channel_name: string, dto: AdminModUserDto): Promise<void> {
 		const targetChanUser: ChannelUserEntity | null = await this.targetIfAllowed(
 			user,
-			channel_id,
-			target_user_id,
+			channel_name,
+			dto.target_id,
 			'mute',
-			pwd,
+			dto.password,
 		);
 		targetChanUser.setIsMuted(new Date());
 		await this.prisma.channelUser.update({
 			where: {
-				id: channel_id,
-				user_id: target_user_id,
+				id: targetChanUser.getId(),
+				user_id: dto.target_id,
 			},
 			data: {
 				is_muted: targetChanUser.isMuted(),
@@ -260,19 +260,19 @@ export class ChannelService {
 		});
 	}
 
-	async unmuteChannelUser(user: User, channel_id: number, target_user_id: number, pwd: string): Promise<void> {
+	async unmuteChannelUser(user: User, channel_name: string, dto: AdminModUserDto): Promise<void> {
 		const targetChanUser: ChannelUserEntity | null = await this.targetIfAllowed(
 			user,
-			channel_id,
-			target_user_id,
+			channel_name,
+			dto.target_id,
 			'unmute',
-			pwd,
+			dto.password,
 		);
 		targetChanUser.setIsMuted(null);
 		await this.prisma.channelUser.update({
 			where: {
-				id: channel_id,
-				user_id: target_user_id,
+				id: targetChanUser.getId(),
+				user_id: dto.target_id,
 			},
 			data: {
 				is_muted: targetChanUser.isMuted(),
@@ -280,37 +280,37 @@ export class ChannelService {
 		});
 	}
 
-	async kickChannelUser(user: User, channel_id: number, target_user_id: number, pwd: string): Promise<void> {
+	async kickChannelUser(user: User, channel_name: string, dto: AdminModUserDto): Promise<void> {
 		const targetChanUser: ChannelUserEntity | null = await this.targetIfAllowed(
 			user,
-			channel_id,
-			target_user_id,
+			channel_name,
+			dto.target_id,
 			'kick',
-			pwd,
+			dto.password,
 		);
 		await this.prisma.channelUser.delete({
 			where: {
-				id: channel_id,
-				user_id: target_user_id,
+				id: targetChanUser.getId(),
+				user_id: dto.target_id,
 			},
 		});
-		const channel = this.localChannels.find((c) => c.getId() === channel_id);
+		const channel = this.localChannels.find((c) => c.getName() === channel_name);
 		channel.removeUser(targetChanUser);
 	}
 
-	async banChannelUser(user: User, channel_id: number, target_user_id: number, pwd: string): Promise<void> {
+	async banChannelUser(user: User, channel_name: string, dto: AdminModUserDto): Promise<void> {
 		const targetChanUser: ChannelUserEntity | null = await this.targetIfAllowed(
 			user,
-			channel_id,
-			target_user_id,
+			channel_name,
+			dto.target_id,
 			'ban',
-			pwd,
+			dto.password,
 		);
 		targetChanUser.setIsBanned(true);
 		await this.prisma.channelUser.update({
 			where: {
-				id: channel_id,
-				user_id: target_user_id,
+				id: targetChanUser.getId(),
+				user_id: dto.target_id,
 			},
 			data: {
 				is_ban: targetChanUser.isBanned(),
@@ -318,21 +318,21 @@ export class ChannelService {
 		});
 	}
 
-	async unbanChannelUser(user: User, channel_id: number, target_user_id: number, pwd: string): Promise<void> {
+	async unbanChannelUser(user: User, channel_name: string, dto: AdminModUserDto): Promise<void> {
 		const targetChanUser: ChannelUserEntity | null = await this.targetIfAllowed(
 			user,
-			channel_id,
-			target_user_id,
+			channel_name,
+			dto.target_id,
 			'unban',
-			pwd,
+			dto.password,
 		);
 		await this.prisma.channelUser.delete({
 			where: {
-				id: channel_id,
-				user_id: target_user_id,
+				id: targetChanUser.getId(),
+				user_id: dto.target_id,
 			},
 		});
-		const channel = this.localChannels.find((c) => c.getId() === channel_id);
+		const channel = this.localChannels.find((c) => c.getName() === channel_name);
 		channel.removeUser(targetChanUser);
 	}
 
@@ -340,45 +340,45 @@ export class ChannelService {
 	/* 									Deletion									   */
 	/***********************************************************************************/
 
-	async leaveChannel(user: User, channel_id: number): Promise<void> {
-		const channelEntity: ChannelEntity | null = await this.findChannelById(channel_id);
-		this.checkChannelExists(channelEntity);
+	async leaveChannel(user: User, channel_name: string): Promise<void> {
+		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
+		if (!channelEntity) throw new BadRequestException("Channel doesn't exist");
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		this.checkUserAccess(channelUser, channelEntity);
 
 		if (channelUser.isOwner()) throw new BadRequestException('You cannot leave a channel you own');
 		await this.prisma.channelUser.delete({
 			where: {
-				id: channel_id,
+				id: channelUser.getId(),
 				user_id: channelUser.getUserId(),
 			},
 		});
 		channelEntity.removeUser(channelUser);
 	}
 
-	async deleteChannel(user: User, channel_id: number, pwd: string): Promise<void> {
-		const channelEntity: ChannelEntity | null = await this.findChannelById(channel_id);
-		this.checkChannelExists(channelEntity);
+	async deleteChannel(user: User, channel_name: string, dto: PasswordRequiredActionDto): Promise<void> {
+		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
+		if (!channelEntity) throw new BadRequestException("Channel doesn't exist");
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		this.checkUserAccess(channelUser, channelEntity);
-		this.checkPassword(channelEntity, pwd);
+		if (!channelEntity.getIsPublic() && !argon2d.verify(channelEntity.getPassword(), dto.password)) throw new BadRequestException('Wrong password');
 
 		if (!channelUser.isOwner()) throw new BadRequestException('You cannot delete a channel you do not own');
 		await this.prisma.channel.delete({
 			where: {
-				id: channel_id,
+				name: channel_name,
 			},
 		});
-		this.localChannels = this.localChannels.filter((channel) => channel.getId() !== channel_id);
+		this.localChannels = this.localChannels.filter((channel) => channel.getName() !== channel_name);
 	}
 
 	/***********************************************************************************/
 	/* 										Messages								   */
 	/***********************************************************************************/
 
-	async sendMessage(user: User, channel_id: number, messageDto: ChannelMessageDto): Promise<ChannelMessageEntity> {
-		const channelEntity: ChannelEntity | null = await this.findChannelById(channel_id);
-		this.checkChannelExists(channelEntity);
+	async sendMessage(user: User, channel_name: string, messageDto: ChannelMessageDto): Promise<ChannelMessageEntity> {
+		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
+		if (!channelEntity) throw new BadRequestException("Channel doesn't exist");
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		this.checkUserAccess(channelUser, channelEntity);
 
@@ -397,12 +397,12 @@ export class ChannelService {
 		return messageEntity;
 	}
 
-	async getLastMessages(user: User, channel_id: number, pwd: string): Promise<ChannelMessageEntity[] | null> {
-		const channelEntity: ChannelEntity | null = await this.findChannelById(channel_id);
-		this.checkChannelExists(channelEntity);
+	async getLastMessages(user: User, channel_name: string, dto: PasswordRequiredActionDto): Promise<ChannelMessageEntity[] | null> {
+		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
+		if (!channelEntity) throw new BadRequestException("Channel doesn't exist");
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		this.checkUserAccess(channelUser, channelEntity);
-		this.checkPassword(channelEntity, pwd);
+		if (!channelEntity.getIsPublic() && !argon2d.verify(channelEntity.getPassword(), dto.password)) throw new BadRequestException('Wrong password');
 
 		const messages = await this.prisma.channelMessage.findMany({
 			where: {
@@ -418,9 +418,9 @@ export class ChannelService {
 		return messages.map((message) => new ChannelMessageEntity(message));
 	}
 
-	async deleteMessage(user: User, channel_id: number, message_id: number): Promise<void> {
-		const channelEntity: ChannelEntity | null = await this.findChannelById(channel_id);
-		this.checkChannelExists(channelEntity);
+	async deleteMessage(user: User, channel_name: string, message_id: number): Promise<void> {
+		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
+		if (!channelEntity) throw new BadRequestException("Channel doesn't exist");
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		this.checkUserAccess(channelUser, channelEntity);
 
@@ -449,20 +449,7 @@ export class ChannelService {
 		const channel: ChannelEntity | null = this.localChannels.find(
 			(channel: ChannelEntity) => channel.getName() === channel_name,
 		);
-		return channel || null;
-	}
-
-	// Get a channel by its id and return null if it doesn't exist
-	async findChannelById(channel_id: number): Promise<ChannelEntity | null> {
-		const channel: ChannelEntity | null = this.localChannels.find(
-			(channel: ChannelEntity) => channel.getId() == channel_id,
-		);
-		return channel || null;
-	}
-
-	// Get a channel by its name and throw an error if it doesn't exist
-	async checkChannelExists(channelEntity: ChannelEntity): Promise<void> {
-		if (!channelEntity) throw new BadRequestException("Channel doesn't exist");
+		return channel;
 	}
 
 	/************************************ User Access *********************************/
@@ -472,7 +459,7 @@ export class ChannelService {
 		const channelUser: ChannelUserEntity | null = channelEntity
 			.getUsers()
 			.find((channelUser) => channelUser.getUserId() === user.id);
-		return channelUser || null;
+		return channelUser;
 	}
 
 	/*********************************** Permissions **********************************/
@@ -484,27 +471,20 @@ export class ChannelService {
 		if (channelUser && channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
 	}
 
-	// Check if channel has a password and if it matches the one given
-	async checkPassword(channel: ChannelEntity, pwd?: string): Promise<void> {
-		if (channel.getIsPublic()) return;
-		if (argon2d.verify(channel.getPassword(), pwd)) return;
-		else throw new BadRequestException('Wrong password');
-	}
-
 	/*********************************** Privileges **********************************/
 
 	async targetIfAllowed(
 		user: User,
-		channel_id: number,
+		channel_name: string,
 		target_user_id: number,
 		action: string,
 		pwd: string,
 	): Promise<ChannelUserEntity> {
-		const channelEntity: ChannelEntity | null = await this.findChannelById(channel_id);
-		this.checkChannelExists(channelEntity);
+		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
+		if (!channelEntity) throw new BadRequestException("Channel doesn't exist");
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		this.checkUserAccess(channelUser, channelEntity);
-		this.checkPassword(channelEntity, pwd);
+		if (!channelEntity.getIsPublic() && !argon2d.verify(channelEntity.getPassword(), pwd)) throw new BadRequestException('Wrong password');
 		if (!channelUser.isAdmin())
 			throw new ForbiddenException(`You are not authorized to ${action} someone on this channel`);
 
