@@ -93,9 +93,6 @@ export class Chat {
 	}
 
 	//************* Setter *******************
-	public static addChannelChatUser() {
-
-	}
 
 	public static addChatUser(socket: Socket, channels_usr: channel_users[]) {
 
@@ -107,8 +104,6 @@ export class Chat {
 
 		const user = new ChatUser(socket, channels);
 		Chat.user_lst.push(user);
-		//Chercher dans les channels du user si il y en a déjà sur la board
-		//
 
 		for (let i = 0; i < channels_usr.length; i++)
 		{
@@ -132,7 +127,6 @@ export class Chat {
 
 
 
-
 	//************* Remove ******************
 	//** Remove funcion return removed element so we can send this information
 	//** to frontend 
@@ -142,83 +136,12 @@ export class Chat {
 		const user: ChatUser = Chat.user_lst.find((user) => user.getSocket() === socket);
 
 		Chat.user_lst = Chat.user_lst.filter((user) => !(user.getSocket() === socket));
+
+
+		// TODO: Remove all reference to user in channel and delete channel if no user inside
 		return user;
 	}
 
 	public static removeChannel() {
 	}
-
-
-
-	//	public static getChannelsFromUID(gameUID: string): IChannel {
-	//		return this.channel.get(gameUID);
-	//	}
-	//	
-	//	public static getChannelsFromChatUser(userID: number): IChannel {
-	//		console.log(userID);
-	//		for (const game of this.games.values()) {
-	//			if (game.userIsInChannel(userID)) return game;
-	//		}
-	//		console.log('after');
-	//		return null;
-	//	}
-	//	
-	//	isEnded(): boolean {
-	//		return this.isEnd;
-	//	}
-	//	
-	//	getChannelUID(): string {
-	//		return this.gameUID;
-	//	}
-	//	
-	//	addChatUser(user: IChatUser): void {
-	//		this.usersInChannel.push(user);
-	//	}
-	//	
-	//	removeChatUser(user: IChatUser): void {
-	//		this.usersInChannel = this.usersInChannel.filter((u) => u.user.id !== user.user.id);
-	//	}
-	//	
-	//	getChatUser(userID: number) {
-	//		return this.usersInChannel.find((user) => user.user.id === userID);
-	//	}
-	//	
-	//	getChatUsersInChannel(): Array<IChatUser> {
-	//		return this.usersInChannel.filter((user) => !user.isSpec);
-	//	}
-
-	//	
-	//	async startChannel(): Promise<void> {
-	//		this.inProgress = true;
-	//		console.log('Channel started');
-	//		await this.prismaService.games.update({
-	//			where: {
-	//				uid: this.gameUID,
-	//			},
-	//			data: {
-	//				started_at: new Date(),
-	//			},
-	//		});
-	//	}
-	//	
-	//	async endChannel(): Promise<void> {
-	//		this.isEnd = true;
-	//		console.log('Channel ended');
-	//		await this.prismaService.games.update({
-	//			where: {
-	//				uid: this.gameUID,
-	//			},
-	//			data: {
-	//				end_at: new Date(),
-	//			},
-	//		});
-	//	}
-	//	
-	//	userIsInChannel(userId: number): boolean {
-	//		return this.usersInChannel.some((user) => user.user.id === userId);
-	//	}
-	//	
-	//	userIsSpectator(userId: number): boolean {
-	//		return this.usersInChannel.some((user) => user.user.id === userId && user.isSpec);
-	//	}
 }

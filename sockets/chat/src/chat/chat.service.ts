@@ -22,14 +22,13 @@ export class ChatService {
 	/******** Setter *********/
 	public async registerUser(socket: Socket, id: number) {
 
+
+		// Can probably use channel_users inside of user instead of doing a prisma call
 		const user: users = await this.retrieveUser(id);
 		const channels_usr: channel_users[] = await this.retrieveUserChannel(user);
 
 
 		Chat.addChatUser(socket, channels_usr);
-//	
-//	
-//		Chat.addMessage
 	}
 
 	private async retrieveUserChannel(user: users): Promise<channel_users[]> {
@@ -51,26 +50,8 @@ export class ChatService {
 		});
 	}
 
-//	public async updateChannel(channel: channels)
-//	{
-//		const channel_bdd: channels = await this.prismaService.channels.findUnique({
-//			where : {
-//				id: channel.id,
-//			},
-//			include : {
-//				channelUser: true,
-//			},
-//		
-//		});
-//		if (!channel_bdd)
-//			throw new WsException('channel don\'t exist in database');
-//	
-//		Chat.updateChannel(channel_bdd);
-//	}
-
 	public removeUser(client: Socket)
 	{
 		Chat.removeChatUser(client);
-		
 	}
 }
