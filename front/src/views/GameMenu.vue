@@ -25,7 +25,7 @@
 <script lang="ts">
 import { computed } from 'vue';
 
-import Snackbar from '../../components/utils/Snackbar.vue';
+import Snackbar from '../../components/layout/Snackbar.vue';
 import { useSnackbarStore } from '../../stores/snackbar';
 import { useUser } from '../../stores/user';
 

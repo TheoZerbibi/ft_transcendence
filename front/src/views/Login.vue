@@ -36,15 +36,15 @@
 </template>
 
 <script lang="ts">
-import Footer from '../../components/utils/Footer.vue';
-import { makeid } from '../../plugins/makeId';
+import Footer from '../components/layout/Footer.vue';
+/* import { makeid } from '../plugins/makeId'; */
 
 export default {
 	name: 'SignIn',
 	components: { Footer },
 	methods: {
 		redirectToOAuth() {
-			const clientId = import.meta.env.VITE_API42_UID;
+/* 			const clientId = import.meta.env.VITE_API42_UID;
 			const redirectUri = import.meta.env.VITE_API42_CALLBACK;
 			const responseType = 'code';
 			const scope = 'public';
@@ -59,7 +59,7 @@ export default {
 
 			const query = params.toString();
 
-			window.location.href = `https://api.intra.42.fr/oauth/authorize?${query}`;
+			window.location.href = `https://api.intra.42.fr/oauth/authorize?${query}`; */
 		},
 	},
 };

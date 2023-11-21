@@ -28,7 +28,7 @@ import OnlineList from './OnlineList.vue';
 import SystemBar from './SystemBar.vue';
 import Toolbar from './Toolbar.vue';
 import ChatWindowVue from './ChatWindow.vue';
-import Snackbar from '../utils/Snackbar.vue';
+import Snackbar from '../layout/Snackbar.vue';
 import { useSnackbarStore } from '../../stores/snackbar';
 import { useUser } from '../../stores/user';
 import { useSocketStore } from '../../stores/websocket';
