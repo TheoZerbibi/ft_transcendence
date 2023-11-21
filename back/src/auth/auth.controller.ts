@@ -4,7 +4,6 @@ import { AuthDto } from './dto';
 import { Response } from 'express';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FortyTwoGuard } from './guard';
-import { Public } from './decorator/public.decorator';
 
 @Controller('auth')
 @ApiTags('Authentication')
@@ -25,7 +24,6 @@ export class AuthController {
 		return this.authService.signin(dto);
 	}
 
-	@Public()
 	@UseGuards(FortyTwoGuard)
 	@Get('42/callback')
 	@ApiOperation({ summary: 'Callback from 42 API.' })

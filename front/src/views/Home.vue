@@ -16,5 +16,8 @@ export default {
 <style>
 #background {
 	background-image: url('/src/assets/OmoriWallpapers/OmoriHeadSpace.png');
+	background-repeat: no-repeat;
+	background-position: center;
+
 }
 </style>
