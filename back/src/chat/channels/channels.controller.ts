@@ -11,6 +11,7 @@ import { ChannelUserEntity } from './impl/ChannelUserEntity';
 import { User } from '@prisma/client';
 // DTO
 import { ChannelDto, ChannelListElemDto, CreateChannelDto, ChannelSettingsDto, ChannelModPwdDto, createChannelUserDto, AdminModUserDto, PasswordRequiredActionDto } from './dto/channel.dto';
+import { ChannelUserDto } from './dto/channel-user.dto';
 import { ChannelMessageContentDto, ChannelMessageDto } from './dto/channel-message.dto';
 // SERVICES
 import { ChannelService } from './channels.service';
@@ -64,7 +65,7 @@ export class ChannelController {
 	async getAllChannelUsers(
 		@GetUser() user: User,
 		@Param('channel_name') channel_name: string,
-	): Promise<ChannelUserEntity[] | null> {
+	): Promise<ChannelUserDto[] | null> {
 		return await this.channelService.getAllChannelUsers(user, channel_name);
 	}
 
