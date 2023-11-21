@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import { SIDE } from '../../plugins/game/enums/Side';
-import Date from '../layout/Date.vue';
+import Date from './Date.vue';
 
 export default {
 	components: { Date },
