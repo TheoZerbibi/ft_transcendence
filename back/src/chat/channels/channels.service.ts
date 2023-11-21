@@ -88,13 +88,36 @@ export class ChannelService {
 	/************************************** Users ***********************************/
 
 	// Gett all users in a channel if allowed
-	async getAllChannelUsers(user: User, channel_name: string): Promise<ChannelUserEntity[] | null> {
+	async getAllChannelUsers(user: User, channel_name: string): Promise<ChannelUserDto[] | null> {
 		const channel: ChannelEntity = await this.findChannelByName(channel_name);
 		if (!channel) throw new BadRequestException("Channel doesn't exist");
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channel);
 		this.checkUserAccess(channelUser, channel);
 
-		return channel.getUsers() || null;
+		const channelUsers: any[] = await this.prisma.channelUser.findMany({
+			where: {
+				channel_id: channel.getId(),
+			},
+			include : {
+				user: {
+					select: {
+						login: true,
+						avatar: true,
+					},
+				},
+			},
+		});
+		const channelUserDtos: ChannelUserDto[] = channelUsers.map((channelUser) => {
+			return {
+				username: channelUser.user.login,
+				avatar: channelUser.user,
+				is_owner: channelUser.is_owner,
+				is_admin: channelUser.is_admin,
+				is_muted: channelUser.is_muted,
+				is_banned: channelUser.is_ban,
+			};
+		});
+		return channelUserDtos;
 	}
 
 	/************************************* Messages ************************************/
