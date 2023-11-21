@@ -8,7 +8,7 @@ import { ChannelMessageEntity } from './impl/ChannelMessageEntity';
 import { Prisma, User, Channel, ChannelUser, ChannelMessage } from '@prisma/client';
 // DTO
 import { ChannelListElemDto, CreateChannelDto, ChannelSettingsDto, ChannelModPwdDto, JoinChannelDto, AdminModUserDto, PasswordRequiredActionDto } from './dto/channel.dto';
-import { ChannelMessageDto } from './dto/channel-message.dto';
+import { ChannelMessageContentDto, ChannelMessageDto } from './dto/channel-message.dto';
 // SERVICES
 import { PrismaService } from 'src/prisma/prisma.service';
 // PWD HASHING
@@ -382,7 +382,7 @@ export class ChannelService {
 	/* 										Messages								   */
 	/***********************************************************************************/
 
-	async sendMessage(user: User, channel_name: string, messageDto: ChannelMessageDto): Promise<ChannelMessageEntity> {
+	async sendMessage(user: User, channel_name: string, messageDto: ChannelMessageContentDto): Promise<ChannelMessageDto> {
 		if (messageDto.content.length === 0) throw new BadRequestException('Message cannot be empty');
 		if (messageDto.content.length > 200) throw new BadRequestException('Message too long (max 200 characters)');
 		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
@@ -402,7 +402,12 @@ export class ChannelService {
 		});
 		const messageEntity: ChannelMessageEntity = new ChannelMessageEntity(channelMessage);
 		channelEntity.addMessage(messageEntity);
-		return messageEntity;
+		const channelMessageDto: ChannelMessageDto = {
+			username: user.login,
+			content: messageEntity.getContent(),
+			created_at: messageEntity.getCreatedAt(),
+		};
+		return channelMessageDto;
 	}
 
 	async getLastMessages(user: User, channel_name: string): Promise<ChannelMessageEntity[] | null> {
