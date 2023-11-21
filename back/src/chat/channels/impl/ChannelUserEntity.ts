@@ -1,7 +1,6 @@
 import { ChannelUser } from '@prisma/client';
-import { IChannelUser } from './interfaces/IChannelUser';
 
-export class ChannelUserEntity implements IChannelUser {
+export class ChannelUserEntity {
 	private id: number;
 	private channel_id: number;
 	private user_id: number;
@@ -26,27 +25,21 @@ export class ChannelUserEntity implements IChannelUser {
 	public getId(): number {
 		return this.id;
 	}
-
 	public getChannelId(): number {
 		return this.channel_id;
 	}
-
 	public getUserId(): number {
 		return this.user_id;
 	}
-
 	public isOwner(): boolean {
 		return this.is_owner;
 	}
-
 	public isAdmin(): boolean {
 		return this.is_admin;
 	}
-
 	public isMuted(): Date {
 		return this.is_muted;
 	}
-
 	public isBanned(): boolean {
 		return this.is_banned;
 	}
@@ -58,15 +51,12 @@ export class ChannelUserEntity implements IChannelUser {
 	public setIsOwner(isOwner: boolean): void {
 		this.is_owner = isOwner;
 	}
-
 	public setIsAdmin(isAdmin: boolean): void {
 		this.is_admin = isAdmin;
 	}
-
 	public setIsMuted(isMuted: Date): void {
 		this.is_muted = isMuted;
 	}
-
 	public setIsBanned(isBanned: boolean): void {
 		this.is_banned = isBanned;
 	}
