@@ -25,8 +25,8 @@ export default {
 		};
 	},
 	async beforeMount() {
-		if (!this.JWT) {
-			const token = this.$cookies.get('token');
+		const token = this.$cookies.get('token');
+		if (!this.JWT || token) {
 			if (token) {
 				this.$cookies.remove('token');
 				try {
