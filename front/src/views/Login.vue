@@ -37,7 +37,6 @@
 
 <script lang="ts">
 import Footer from '../components/layout/Footer.vue';
-/* import { makeid } from '../plugins/makeId'; */
 
 export default {
 	name: 'SignIn',

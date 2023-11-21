@@ -25,9 +25,9 @@
 <script lang="ts">
 import { computed } from 'vue';
 
-import Snackbar from '../../components/layout/Snackbar.vue';
-import { useSnackbarStore } from '../../stores/snackbar';
-import { useUser } from '../../stores/user';
+import Snackbar from '../components/layout/Snackbar.vue';
+import { useSnackbarStore } from '../stores/snackbar';
+import { useUser } from '../stores/user';
 
 const snackbarStore = useSnackbarStore();
 
@@ -41,8 +41,11 @@ export default {
 	setup() {
 		const userStore = useUser();
 		const JWT = computed(() => userStore.getJWT);
+		const user = computed(() => userStore.getUser);
+
 		return {
 			JWT,
+			user,
 		};
 	},
 	data() {
@@ -50,6 +53,11 @@ export default {
 			color: '#2e2e2e',
 			showOverlay: false,
 		};
+	},
+	beforeMount() {
+		if (!this.JWT || !this.user) {
+			return this.$router.push({ name: `Login` });
+		}
 	},
 	methods: {
 		checkExistingGame: async function () {
@@ -66,9 +74,14 @@ export default {
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/game/getEmptyGame`,
 					requestOptions,
 				);
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					console.log(response);
+					return;
+				}
 				const data = await response.json();
+				console.log(response);
 				if (!data.uid) this.createGame();
-				else if (!response.ok) snackbarStore.showSnackbar('Connecting to the game session.', 3000, 'orange');
 				else this.$router.push({ name: `Game`, params: { uid: data.uid } });
 			} catch (error) {
 				console.error(error);
