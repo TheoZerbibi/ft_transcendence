@@ -5,7 +5,6 @@ import { Response } from 'express';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FortyTwoGuard } from './guard';
 import { Public } from './decorator/public.decorator';
-import { Connection } from './connection/connection.entity';
 
 @Controller('auth')
 @ApiTags('Authentication')
@@ -31,15 +30,7 @@ export class AuthController {
 	@Get('42/callback')
 	@ApiOperation({ summary: 'Callback from 42 API.' })
 	async callback(@Req() req: any, @Res() res: Response) {
-		// const conn: Connection = await this.authService.signIn(req.user);
-		// console.log('c', conn);
-		// return this.authService.callback(dto);
-
-		// if (!conn) {
-		// 	console.log('Bad payload, unauthorized user!');
-		// 	res.status(HttpStatus.FORBIDDEN).send();
-		// 	req.redirect(`http://made-f0Cr2s5.clusters.42paris.fr:3000/`);
-		// 	return ;
-		// }
+		console.log(req.user);
+		res.redirect(`http://localhost:3000/`);
 	}
 }
