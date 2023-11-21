@@ -12,7 +12,7 @@ import { ChannelMessageEntity } from './impl/ChannelMessageEntity';
 import { User } from '@prisma/client';
 // DTO
 import { ChannelListElemDto, CreateChannelDto, ChannelSettingsDto, ChannelModPwdDto, JoinChannelDto, AdminModUserDto, PasswordRequiredActionDto } from './dto/channel.dto';
-import { ChannelMessageDto } from './dto/channel-message.dto';
+import { ChannelMessageContentDto, ChannelMessageDto } from './dto/channel-message.dto';
 // SERVICES
 import { ChannelService } from './channels.service';
 
@@ -237,9 +237,9 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Send message to channel' })
 	@ApiBearerAuth('JWT-auth')
-	async sendMessage( @GetUser() user: User, @Param('channel_name') channel_name: string, @Body() channelMessageDto: ChannelMessageDto,
-	): Promise<ChannelMessageEntity> {
-		return await this.channelService.sendMessage(user, channel_name, channelMessageDto);
+	async sendMessage( @GetUser() user: User, @Param('channel_name') channel_name: string, @Body() ChannelMessageContentDto: ChannelMessageContentDto,
+	): Promise<ChannelMessageDto> {
+		return await this.channelService.sendMessage(user, channel_name, ChannelMessageContentDto);
 	}
 
 	@Get('messages/:channel_name')
