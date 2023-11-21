@@ -44,22 +44,10 @@ export default {
 	components: { Footer },
 	methods: {
 		redirectToOAuth() {
-/* 			const clientId = import.meta.env.VITE_API42_UID;
-			const redirectUri = import.meta.env.VITE_API42_CALLBACK;
-			const responseType = 'code';
-			const scope = 'public';
-			const state = makeid(42);
+			const HOST = import.meta.env.VITE_HOST;
+			const PORT = import.meta.env.VITE_API_PORT;
 
-			const params = new URLSearchParams();
-			params.append('client_id', clientId);
-			params.append('redirect_uri', redirectUri);
-			params.append('response_type', responseType);
-			params.append('scope', scope);
-			params.append('state', state);
-
-			const query = params.toString();
-
-			window.location.href = `https://api.intra.42.fr/oauth/authorize?${query}`; */
+			window.location.href = `http://${HOST}:${PORT}/auth/42/callback`;
 		},
 	},
 };
