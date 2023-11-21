@@ -36,7 +36,7 @@ import { useRoute } from 'vue-router';
 import { useSnackbarStore } from '../../stores/snackbar';
 import { useUser } from '../../stores/user';
 import { useSocketStore } from '../../stores/websocket';
-import Snackbar from '../utils/Snackbar.vue';
+import Snackbar from '../layout/Snackbar.vue';
 import GameModal from '../utils/GameModal.vue';
 
 import GameCanvas from './GameCanvas.vue';
