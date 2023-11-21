@@ -52,7 +52,10 @@ export class ChannelService {
 	// Discover channels : list of public channels
 	async getAllPublicChannels(): Promise<ChannelListElemDto[] | null> {
 		const publicChannels = this.localChannels.filter((channel) => channel.getIsPublic());
-		return publicChannels.map((channel) => ({ name: channel.getName(), updated_at: channel.getUpdatedAt() }));
+		const sortedChannels = publicChannels
+			.sort((a, b) => b.getUpdatedAt().getTime() - a.getUpdatedAt().getTime())
+			.slice(0, 20);
+		return sortedChannels.map((channel) => ({ name: channel.getName(), updated_at: channel.getUpdatedAt() }));
 	}
 
 	// List joined channels
@@ -65,7 +68,10 @@ export class ChannelService {
 			const channelUser = channel.getUsers().find((channelUser) => channelUser.getUserId() === user.id);
 			return !channelUser.isBanned();
 		});
-		return allowedChannels.map((channel) => ({ name: channel.getName(), updated_at: channel.getUpdatedAt() }));
+		const  sortedChannels = allowedChannels
+			.sort((a, b) => b.getUpdatedAt().getTime() - a.getUpdatedAt().getTime())
+			.slice(0, 20);
+		return sortedChannels.map((channel) => ({ name: channel.getName(), updated_at: channel.getUpdatedAt() }));
 	}
 
 	/********************************** Channel Access *********************************/
@@ -186,7 +192,6 @@ export class ChannelService {
 	}
 
 	async modChannelPwd(user: User, channel_name: string, dto: ChannelModPwdDto): Promise<void> {
-		throw new BadRequestException("Not implemented yet");
 		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
 		if (!channelEntity) throw new BadRequestException("Channel doesn't exist");
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
@@ -378,6 +383,8 @@ export class ChannelService {
 	/***********************************************************************************/
 
 	async sendMessage(user: User, channel_name: string, messageDto: ChannelMessageDto): Promise<ChannelMessageEntity> {
+		if (messageDto.content.length === 0) throw new BadRequestException('Message cannot be empty');
+		if (messageDto.content.length > 200) throw new BadRequestException('Message too long (max 200 characters)');
 		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
 		if (!channelEntity) throw new BadRequestException("Channel doesn't exist");
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
@@ -398,12 +405,11 @@ export class ChannelService {
 		return messageEntity;
 	}
 
-	async getLastMessages(user: User, channel_name: string, dto: PasswordRequiredActionDto): Promise<ChannelMessageEntity[] | null> {
+	async getLastMessages(user: User, channel_name: string): Promise<ChannelMessageEntity[] | null> {
 		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
 		if (!channelEntity) throw new BadRequestException("Channel doesn't exist");
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		this.checkUserAccess(channelUser, channelEntity);
-		if (!channelEntity.getIsPublic() && !argon2d.verify(channelEntity.getPassword(), dto.password)) throw new BadRequestException('Wrong password');
 
 		const messages = await this.prisma.channelMessage.findMany({
 			where: {

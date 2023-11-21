@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsBoolean, IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 import { ChannelUserDto } from './channel-user.dto';
+import { ChannelMessageDto } from './channel-message.dto';
 
 export class ChannelDto {
 	@ApiProperty()
@@ -33,6 +34,43 @@ export class ChannelListElemDto {
 	@IsDate()
 	// eslint-disable-next-line
 	updated_at: Date;
+}
+
+export class ChannelAccessDto {
+	@ApiProperty()
+	@IsNumber()
+	// eslint-disable-next-line
+	id: number;
+
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	name: string;
+
+	@ApiProperty()
+	@IsBoolean()
+	// eslint-disable-next-line
+	is_public: boolean;
+
+	@ApiProperty()
+	@IsDate()
+	// eslint-disable-next-line
+	created_at: Date;
+
+	@ApiProperty()
+	@IsDate()
+	// eslint-disable-next-line
+	updated_at: Date;
+
+	@ApiProperty()
+	@IsArray()
+	// eslint-disable-next-line
+	users: ChannelUserDto[];
+
+	@ApiProperty()
+	@IsArray()
+	// eslint-disable-next-line
+	messages: ChannelMessageDto[];
 }
 
 export class ChannelSettingsDto {

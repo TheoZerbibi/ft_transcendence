@@ -1,5 +1,5 @@
 // COMMON
-import { UseGuards, Controller, Body, Param, Get, Patch, Post, Delete } from '@nestjs/common';
+import { UseGuards, Controller, Body, Param, Get, Patch, Post, Delete, BadRequestException } from '@nestjs/common';
 // AUTH
 import { JwtGuard } from 'src/auth/guard';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -29,7 +29,7 @@ export class ChannelController {
 	/*********************************** Channels Lists ********************************/
 
 	// Get all public channels
-	@Get('discover')
+	@Get('list/discover')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get all public channels' })
 	@ApiBearerAuth('JWT-auth')
@@ -38,7 +38,7 @@ export class ChannelController {
 	}
 
 	//Get all channels on which user is
-	@Get('joined')
+	@Get('list/joined')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get joined channel names' })
 	@ApiBearerAuth('JWT-auth')
@@ -49,7 +49,7 @@ export class ChannelController {
 	/********************************** Channel Access *********************************/
 
 	// Get a channel by its name
-	@Get(':name')
+	@Get('access/:name')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Access to a channel by its name' })
 	@ApiBearerAuth('JWT-auth')
@@ -63,7 +63,7 @@ export class ChannelController {
 	/*************************************** Users ************************************/
 
 	//Get all users in a channel
-	@Get(':channel_name/users')
+	@Get('access/:channel_name/users')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get all channel users' })
 	@ApiBearerAuth('JWT-auth')
@@ -86,7 +86,7 @@ export class ChannelController {
 		return await this.channelService.createChannel(dto, user.id);
 	}
 
-	@Post(':channel/join')
+	@Post('join/:channel')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Add user to channel' })
 	@ApiBearerAuth('JWT-auth')
@@ -233,7 +233,7 @@ export class ChannelController {
 	/* 										Messages								   */
 	/***********************************************************************************/
 
-	@Post(':channel_name/message')
+	@Post('messages/:channel_name/message')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Send message to channel' })
 	@ApiBearerAuth('JWT-auth')
@@ -242,19 +242,18 @@ export class ChannelController {
 		return await this.channelService.sendMessage(user, channel_name, channelMessageDto);
 	}
 
-	@Get(':channel_name/messages')
+	@Get('messages/:channel_name')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get 20 last messages from channel' })
 	@ApiBearerAuth('JWT-auth')
 	async getLastMessages(
 		@GetUser() user: User,
 		@Param('channel_name') channel_name: string,
-		@Body() dto: PasswordRequiredActionDto,
 	): Promise<ChannelMessageEntity[]> {
-		return await this.channelService.getLastMessages(user, channel_name, dto);
+		return await this.channelService.getLastMessages(user, channel_name);
 	}
 
-	@Delete(':channel_name/:message_id')
+	@Delete('messages/:channel_name/:message_id')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Delete message from channel' })
 	@ApiBearerAuth('JWT-auth')
@@ -271,16 +270,18 @@ export class ChannelController {
 	/* 										DEBUG									   */
 	/***********************************************************************************/
 	// DEBUG ONLY
-	@Get('allChannelsDebug')
+	@Get('list/allChannelsDebug')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'For debugging purpose only : Get all channels' })
 	@ApiBearerAuth('JWT-auth')
-	async getAllChannelsDebug(): Promise<ChannelEntity[]> {
-		return await this.channelService.getAllChannelsDebug();
+	//async getAllChannelsDebug(): Promise<ChannelEntity[]> {
+	async getAllChannelsDebug(): Promise<ChannelListElemDto[]> {
+		//return await this.channelService.getAllChannelsDebug();
+		return await this.channelService.getAllPublicChannels();
 	}
 
 	// DEBUG ONLY
-	@Get('allChannelUsersDebug')
+	@Get('list/allChannelUsersDebug')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'For debugging purpose only : Get all channel users' })
 	@ApiBearerAuth('JWT-auth')
