@@ -1,8 +1,11 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
-import { CallbackDto } from './dto/callback.dto';
+import { Response } from 'express';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { FortyTwoGuard } from './guard';
+import { Public } from './decorator/public.decorator';
+import { Connection } from './connection/connection.entity';
 
 @Controller('auth')
 @ApiTags('Authentication')
@@ -23,10 +26,20 @@ export class AuthController {
 		return this.authService.signin(dto);
 	}
 
-	@Post('callback')
-	@HttpCode(HttpStatus.FOUND)
+	@Public()
+	@UseGuards(FortyTwoGuard)
+	@Get('42/callback')
 	@ApiOperation({ summary: 'Callback from 42 API.' })
-	async callback(@Body() dto: CallbackDto) {
-		return this.authService.callback(dto);
+	async callback(@Req() req: any, @Res() res: Response) {
+		// const conn: Connection = await this.authService.signIn(req.user);
+		// console.log('c', conn);
+		// return this.authService.callback(dto);
+
+		// if (!conn) {
+		// 	console.log('Bad payload, unauthorized user!');
+		// 	res.status(HttpStatus.FORBIDDEN).send();
+		// 	req.redirect(`http://made-f0Cr2s5.clusters.42paris.fr:3000/`);
+		// 	return ;
+		// }
 	}
 }

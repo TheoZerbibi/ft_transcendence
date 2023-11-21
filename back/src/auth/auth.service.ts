@@ -4,6 +4,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { Connection } from './connection/connection.entity';
+import { ConnectionService } from './connection/connection.service';
 
 @Injectable()
 export class AuthService {
@@ -11,6 +13,7 @@ export class AuthService {
 		private prisma: PrismaService,
 		private jwt: JwtService,
 		private config: ConfigService,
+		// private readonly connectionService: ConnectionService,
 	) {}
 
 	async signup(dto: AuthDto) {
@@ -40,6 +43,27 @@ export class AuthService {
 		});
 		if (!user) throw new ForbiddenException('Invalid credentials');
 		return this.signToken(user);
+	}
+
+	async signIn(payload: any): Promise<Connection> {
+		console.log(payload);
+
+		if (!payload || payload.id == undefined) {
+			return null;
+		}
+
+		// // Get existing connection from the provided user42
+		// let con = await this.connectionService.get({ user42ID: payload.id }, ['user']);
+
+		// // Create new one if not existant
+		// if (!con) {
+		// 	const user = await this.userService.create();					// New user
+		// 	con = await this.connectionService.create(user, payload.id);	// Make a new connection for this user
+		// }
+
+		// // Return Connection
+		// return con;
+		return null;
 	}
 
 	async signToken(user: Prisma.UserGetPayload<{}>): Promise<{ access_token: string }> {
