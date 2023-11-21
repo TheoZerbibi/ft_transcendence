@@ -7,9 +7,9 @@ import { ConfigService } from '@nestjs/config';
 export class FortyTwoStrategy extends PassportStrategy(Strategy) {
 	constructor(config: ConfigService) {
 		super({
-			clientID: config.get('API42_UID'),
-			clientSecret: config.get('API42_SECRET'),
-			callbackURL: config.get('API42_CALLBACK'),
+			clientID: config.get<string>('API42_UID'),
+			clientSecret: config.get<string>('API42_SECRET'),
+			callbackURL: config.get<string>('API42_CALLBACK'),
 		});
 	}
 
