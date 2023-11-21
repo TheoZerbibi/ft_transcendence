@@ -3,17 +3,16 @@ import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/com
 // ENTITIES
 import { ChannelEntity } from './impl/ChannelEntity';
 import { ChannelUserEntity } from './impl/ChannelUserEntity';
-import { ChannelMessageEntity } from './impl/ChannelMessageEntity';
 // PRISMA
 import { Prisma, User, Channel, ChannelUser, ChannelMessage } from '@prisma/client';
 // DTO
-import { ChannelListElemDto, CreateChannelDto, ChannelSettingsDto, ChannelModPwdDto, JoinChannelDto, AdminModUserDto, PasswordRequiredActionDto } from './dto/channel.dto';
+import { ChannelListElemDto, CreateChannelDto, ChannelSettingsDto, ChannelModPwdDto, createChannelUserDto, AdminModUserDto, PasswordRequiredActionDto, ChannelDto } from './dto/channel.dto';
+import { ChannelUserDto } from './dto/channel-user.dto';
 import { ChannelMessageContentDto, ChannelMessageDto } from './dto/channel-message.dto';
 // SERVICES
 import { PrismaService } from 'src/prisma/prisma.service';
 // PWD HASHING
 import argon2d from 'argon2';
-import { channel } from 'diagnostics_channel';
 
 @Injectable()
 export class ChannelService {
@@ -27,15 +26,12 @@ export class ChannelService {
 		try {
 			const channels: Channel[] = await this.prisma.channel.findMany();
 			const channelPromises = channels.map(async (channel: Channel) => {
-				const [channelUsers, channelMessages] = await Promise.all([
+				const [channelUsers] = await Promise.all([
 					this.prisma.channelUser.findMany({
 						where: { channel_id: channel.id },
 					}),
-					this.prisma.channelMessage.findMany({
-						where: { channel_user_id: channel.id },
-					}),
 				]);
-				return new ChannelEntity(channel, channelUsers, channelMessages);
+				return new ChannelEntity(channel, channelUsers);
 			});
 			this.localChannels = await Promise.all(channelPromises);
 		} catch (e) {
@@ -49,7 +45,6 @@ export class ChannelService {
 
 	/*********************************** Channels Lists ********************************/
 
-	// Discover channels : list of public channels
 	async getAllPublicChannels(): Promise<ChannelListElemDto[] | null> {
 		const publicChannels = this.localChannels.filter((channel) => channel.getIsPublic());
 		const sortedChannels = publicChannels
@@ -58,7 +53,6 @@ export class ChannelService {
 		return sortedChannels.map((channel) => ({ name: channel.getName(), updated_at: channel.getUpdatedAt() }));
 	}
 
-	// List joined channels
 	async getJoinedChannelNames(user: User): Promise<ChannelListElemDto[] | null> {
 		const joinedChannels = this.localChannels.filter((channel) => {
 			const channelUsers = channel.getUsers();
@@ -77,12 +71,18 @@ export class ChannelService {
 	/********************************** Channel Access *********************************/
 
 	// Get a channel by its name if allowed
-	async accessChannelByName(user: User, channel_name: string): Promise<ChannelEntity | null> {
+	async accessChannelByName(user: User, channel_name: string): Promise<ChannelDto | null> {
 		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
 		if (!channelEntity) throw new BadRequestException("Channel doesn't exist");
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		this.checkUserAccess(channelUser, channelEntity);
-		return channelEntity;
+		const channelDto: ChannelDto = {
+			name: channelEntity.getName(),
+			is_public: channelEntity.getIsPublic(),
+			created_at: channelEntity.getCreatedAt(),
+			updated_at: channelEntity.getUpdatedAt(),
+		};
+		return channelDto;
 	}
 
 	/************************************** Users ***********************************/
@@ -97,9 +97,66 @@ export class ChannelService {
 		return channel.getUsers() || null;
 	}
 
+	/************************************* Messages ************************************/
+
+	async getLastMessages(user: User, channel_name: string): Promise<ChannelMessageDto[] | null> {
+		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
+		if (!channelEntity) throw new BadRequestException("Channel doesn't exist");
+		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
+		this.checkUserAccess(channelUser, channelEntity);
+
+		const messages = await this.prisma.channelMessage.findMany({
+			where: {
+				channel_user_id: {
+					in: channelEntity.getUsers().map((user) => user.getId()),
+				},
+			},
+			orderBy: {
+				created_at: 'asc',
+			},
+			take: 50,
+		});
+
+		const messageDtos: ChannelMessageDto[] = await Promise.all(
+			messages.map(async (message) => {
+				const channelUser = await this.prisma.channelUser.findUnique({
+					where: {
+						id: message.channel_user_id,
+					},
+					select: {
+						user: {
+							select: {
+								login: true,
+								avatar: true,
+							},
+						},
+					},
+				});
+				const formattedDate = new Date(message.created_at).toLocaleString('en-US', {
+					month: '2-digit',
+					day: '2-digit',
+					year: 'numeric',
+					hour: 'numeric',
+					minute: 'numeric',
+					hour12: true,
+				});
+				return {
+					username: channelUser?.user?.login || '?',
+					avatar: channelUser?.user?.avatar || '',
+					content: message.content,
+					created_at: formattedDate,
+				};
+			})
+		);
+		return messageDtos;
+	}
+
+
 	/***********************************************************************************/
 	/* 										Creation								   */
 	/***********************************************************************************/
+
+	/*********************************** Channels **************************************/
 
 	async createChannel(dto: CreateChannelDto, userId: number): Promise<ChannelEntity> {
 		try {
@@ -129,7 +186,9 @@ export class ChannelService {
 		}
 	}
 
-	async joinChannel(user: User, channel_name: string, dto: JoinChannelDto): Promise<void> {
+	/************************************** Users ***********************************/
+
+	async createChannelUser(user: User, channel_name: string, dto: createChannelUserDto): Promise<void> {
 		try {
 			const channel: ChannelEntity | null = await this.findChannelByName(channel_name);
 			if (!channel) throw new BadRequestException("Channel doesn't exist");
@@ -154,6 +213,43 @@ export class ChannelService {
 		}
 	}
 
+	/************************************* Messages ************************************/
+
+	async createChannelMessage(user: User, channel_name: string, messageDto: ChannelMessageContentDto): Promise<ChannelMessageDto> {
+		if (messageDto.content.length === 0) throw new BadRequestException('Message cannot be empty');
+		if (messageDto.content.length > 200) throw new BadRequestException('Message too long (max 200 characters)');
+		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
+		if (!channelEntity) throw new BadRequestException("Channel doesn't exist");
+		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
+		this.checkUserAccess(channelUser, channelEntity);
+
+		if (channelUser.isMuted() && channelUser.isMuted() > new Date()) throw new ForbiddenException('You are muted on this channel');
+		if (messageDto.content.length > 200) throw new BadRequestException('Message too long (max 200 characters)');
+
+		const channelMessage: ChannelMessage = await this.prisma.channelMessage.create({
+			data: {
+				channel_user_id: channelUser.getId(),
+				content: messageDto.content,
+				created_at: new Date(),
+			},
+		});
+		const formattedDate = new Date(channelMessage.created_at).toLocaleString('en-US', {
+			month: '2-digit',
+			day: '2-digit',
+			year: 'numeric',
+			hour: 'numeric',
+			minute: 'numeric',
+			hour12: true,
+		});
+		const channelMessageDto: ChannelMessageDto = {
+			username: user.login || '?',
+			avatar: user.avatar || '',
+			content: channelMessage.content,
+			created_at: formattedDate,
+		};
+		return channelMessageDto;
+	}
+
 	/***********************************************************************************/
 	/* 									Modification								   */
 	/***********************************************************************************/
@@ -170,17 +266,18 @@ export class ChannelService {
 				throw new ForbiddenException('You are not authorized to operate on this channel');
 			if (!channelEntity.getIsPublic() && !argon2d.verify(channelEntity.getPassword(), newParamsdto.password)) throw new BadRequestException('Wrong password');
 
-			channelEntity.setName(newParamsdto.name);
-			channelEntity.setIsPublic(newParamsdto.is_public);
-			await this.prisma.channel.update({
+			const channelPrisma = await this.prisma.channel.update({
 				where: {
 					name: channel_name,
 				},
 				data: {
-					name: channelEntity.getName(),
-					public: channelEntity.getIsPublic(),
+					name: newParamsdto.name,
+					public: newParamsdto.is_public,
 				},
 			});
+			channelEntity.setName(newParamsdto.name);
+			channelEntity.setIsPublic(newParamsdto.is_public);
+			channelEntity.setUpdatedAt(channelPrisma.updated_at);
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				if (e.code === 'P2002') throw new BadRequestException('Channel name taken');
@@ -217,6 +314,7 @@ export class ChannelService {
 				password: channelEntity.getPassword(),
 			},
 		});
+		channelEntity.setUpdatedAt(new Date());
 	}
 
 	/************************************** Users ***********************************/
@@ -244,6 +342,7 @@ export class ChannelService {
 				is_admin: targetChanUser.isAdmin(),
 			},
 		});
+		channelEntity.setUpdatedAt(new Date());
 	}
 
 	async muteChannelUser(user: User, channel_name: string, dto: AdminModUserDto): Promise<void> {
@@ -346,21 +445,7 @@ export class ChannelService {
 	/* 									Deletion									   */
 	/***********************************************************************************/
 
-	async leaveChannel(user: User, channel_name: string): Promise<void> {
-		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
-		if (!channelEntity) throw new BadRequestException("Channel doesn't exist");
-		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
-		this.checkUserAccess(channelUser, channelEntity);
-
-		if (channelUser.isOwner()) throw new BadRequestException('You cannot leave a channel you own');
-		await this.prisma.channelUser.delete({
-			where: {
-				id: channelUser.getId(),
-				user_id: channelUser.getUserId(),
-			},
-		});
-		channelEntity.removeUser(channelUser);
-	}
+	/*********************************** Channels **************************************/
 
 	async deleteChannel(user: User, channel_name: string, dto: PasswordRequiredActionDto): Promise<void> {
 		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
@@ -378,76 +463,23 @@ export class ChannelService {
 		this.localChannels = this.localChannels.filter((channel) => channel.getName() !== channel_name);
 	}
 
-	/***********************************************************************************/
-	/* 										Messages								   */
-	/***********************************************************************************/
+	/************************************ Users *************************************/
 
-	async sendMessage(user: User, channel_name: string, messageDto: ChannelMessageContentDto): Promise<ChannelMessageDto> {
-		if (messageDto.content.length === 0) throw new BadRequestException('Message cannot be empty');
-		if (messageDto.content.length > 200) throw new BadRequestException('Message too long (max 200 characters)');
+	async deleteChannelUser(user: User, channel_name: string): Promise<void> {
 		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
 		if (!channelEntity) throw new BadRequestException("Channel doesn't exist");
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		this.checkUserAccess(channelUser, channelEntity);
 
-		if (channelUser.isMuted() && channelUser.isMuted() > new Date()) throw new ForbiddenException('You are muted on this channel');
-		if (messageDto.content.length > 200) throw new BadRequestException('Message too long (max 200 characters)');
-
-		const channelMessage: ChannelMessage = await this.prisma.channelMessage.create({
-			data: {
-				channel_user_id: channelUser.getId(),
-				content: messageDto.content,
-				created_at: new Date(),
-			},
-		});
-		const messageEntity: ChannelMessageEntity = new ChannelMessageEntity(channelMessage);
-		channelEntity.addMessage(messageEntity);
-		const channelMessageDto: ChannelMessageDto = {
-			username: user.login,
-			content: messageEntity.getContent(),
-			created_at: messageEntity.getCreatedAt(),
-		};
-		return channelMessageDto;
-	}
-
-	async getLastMessages(user: User, channel_name: string): Promise<ChannelMessageEntity[] | null> {
-		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
-		if (!channelEntity) throw new BadRequestException("Channel doesn't exist");
-		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
-		this.checkUserAccess(channelUser, channelEntity);
-
-		const messages = await this.prisma.channelMessage.findMany({
+		if (channelUser.isOwner()) throw new BadRequestException('You cannot leave a channel you own');
+		await this.prisma.channelUser.delete({
 			where: {
-				channel_user_id: {
-					in: channelEntity.getUsers().map((user) => user.getId()),
-				},
-			},
-			orderBy: {
-				created_at: 'desc',
-			},
-			take: 50,
-		});
-		return messages.map((message) => new ChannelMessageEntity(message));
-	}
-
-	async deleteMessage(user: User, channel_name: string, message_id: number): Promise<void> {
-		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
-		if (!channelEntity) throw new BadRequestException("Channel doesn't exist");
-		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
-		this.checkUserAccess(channelUser, channelEntity);
-
-		const messageEntity: ChannelMessageEntity | null = channelEntity
-			.getMessages()
-			.find((message) => message.getMessageId() === message_id);
-		if (!messageEntity) throw new BadRequestException('Message does not exist');
-		if (messageEntity.getChannelUserId() !== channelUser.getId())
-			throw new BadRequestException('You cannot delete someone else message');
-		await this.prisma.channelMessage.delete({
-			where: {
-				id: message_id,
+				id: channelUser.getId(),
+				user_id: channelUser.getUserId(),
 			},
 		});
-		channelEntity.removeMessage(messageEntity);
+		channelEntity.removeUser(channelUser);
+		channelEntity.setUpdatedAt(new Date());
 	}
 
 	/***********************************************************************************/

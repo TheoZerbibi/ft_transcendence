@@ -16,9 +16,14 @@ export class ChannelMessageDto {
 	username: string;
 
 	@ApiProperty()
-	@IsDate()
+	@IsString()
 	// eslint-disable-next-line
-	created_at: Date;
+	avatar: string;
+
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	created_at: string;
 
 	@ApiProperty()
 	@IsString()

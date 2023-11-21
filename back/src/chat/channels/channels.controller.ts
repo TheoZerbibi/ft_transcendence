@@ -7,11 +7,10 @@ import { GetUser } from 'src/auth/decorator/get-user.decorator';
 // ENTITIES
 import { ChannelEntity } from './impl/ChannelEntity';
 import { ChannelUserEntity } from './impl/ChannelUserEntity';
-import { ChannelMessageEntity } from './impl/ChannelMessageEntity';
 // PRISMA
 import { User } from '@prisma/client';
 // DTO
-import { ChannelListElemDto, CreateChannelDto, ChannelSettingsDto, ChannelModPwdDto, JoinChannelDto, AdminModUserDto, PasswordRequiredActionDto } from './dto/channel.dto';
+import { ChannelDto, ChannelListElemDto, CreateChannelDto, ChannelSettingsDto, ChannelModPwdDto, createChannelUserDto, AdminModUserDto, PasswordRequiredActionDto } from './dto/channel.dto';
 import { ChannelMessageContentDto, ChannelMessageDto } from './dto/channel-message.dto';
 // SERVICES
 import { ChannelService } from './channels.service';
@@ -27,7 +26,6 @@ export class ChannelController {
 	/***********************************************************************************/
 
 	/*********************************** Channels Lists ********************************/
-
 	// Get all public channels
 	@Get('list/discover')
 	@UseGuards(JwtGuard)
@@ -47,8 +45,6 @@ export class ChannelController {
 	}
 
 	/********************************** Channel Access *********************************/
-
-	// Get a channel by its name
 	@Get('access/:name')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Access to a channel by its name' })
@@ -56,13 +52,11 @@ export class ChannelController {
 	async accessChannelByName(
 		@GetUser() user: User,
 		@Param('name') channel_name: string,
-	): Promise<ChannelEntity | null> {
+	): Promise<ChannelDto | null> {
 		return await this.channelService.accessChannelByName(user, channel_name);
 	}
 
 	/*************************************** Users ************************************/
-
-	//Get all users in a channel
 	@Get('access/:channel_name/users')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get all channel users' })
@@ -74,10 +68,23 @@ export class ChannelController {
 		return await this.channelService.getAllChannelUsers(user, channel_name);
 	}
 
+	/************************************* Messages ************************************/
+	@Get('messages/:channel_name/list')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'Get 20 last messages from channel' })
+	@ApiBearerAuth('JWT-auth')
+	async getLastMessages(
+		@GetUser() user: User,
+		@Param('channel_name') channel_name: string,
+	): Promise<ChannelMessageDto[]> {
+		return await this.channelService.getLastMessages(user, channel_name);
+	}
+
 	/***********************************************************************************/
 	/* 										Creation								   */
 	/***********************************************************************************/
 
+	/************************************** Channel ************************************/
 	@Post('create')
 	@UseGuards(JwtGuard) // Needed to access user attribute
 	@ApiOperation({ summary: 'Create channel' })
@@ -86,16 +93,27 @@ export class ChannelController {
 		return await this.channelService.createChannel(dto, user.id);
 	}
 
+	/*************************************** Users ************************************/
 	@Post('join/:channel')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Add user to channel' })
 	@ApiBearerAuth('JWT-auth')
-	async joinChannel(
+	async createChannelUser(
 		@GetUser() user: User,
 		@Param(':channel') channel_name: string,
-		@Body() dto: JoinChannelDto,
+		@Body() dto: createChannelUserDto,
 	): Promise<void> {
-		return await this.channelService.joinChannel(user, channel_name, dto);
+		return await this.channelService.createChannelUser(user, channel_name, dto);
+	}
+
+	/************************************* Messages ************************************/
+	@Post('messages/:channel_name/send')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'Send message to channel' })
+	@ApiBearerAuth('JWT-auth')
+	async createChannelMessage( @GetUser() user: User, @Param('channel_name') channel_name: string, @Body() ChannelMessageContentDto: ChannelMessageContentDto,
+	): Promise<ChannelMessageDto> {
+		return await this.channelService.createChannelMessage(user, channel_name, ChannelMessageContentDto);
 	}
 
 	/***********************************************************************************/
@@ -103,7 +121,6 @@ export class ChannelController {
 	/***********************************************************************************/
 
 	/*********************************** Channel Settings ******************************/
-
 	@Patch('settings/:channel_name/general')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Mod channel name & privacy' })
@@ -129,7 +146,6 @@ export class ChannelController {
 	}
 
 	/*************************************** Users ************************************/
-
 	@Patch('settings/:channel_name/admin')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Set user as admin of channel' })
@@ -210,11 +226,11 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Leave channel' })
 	@ApiBearerAuth('JWT-auth')
-	async leaveChannel(
+	async deleteChannelUser(
 		@GetUser() user: User,
 		@Param('channel_name') channel_name: string,
 	): Promise<void> {
-		return await this.channelService.leaveChannel(user, channel_name);
+		return await this.channelService.deleteChannelUser(user, channel_name);
 	}
 
 	@Delete(':channel_name')
@@ -230,43 +246,6 @@ export class ChannelController {
 	}
 
 	/***********************************************************************************/
-	/* 										Messages								   */
-	/***********************************************************************************/
-
-	@Post('messages/:channel_name/message')
-	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Send message to channel' })
-	@ApiBearerAuth('JWT-auth')
-	async sendMessage( @GetUser() user: User, @Param('channel_name') channel_name: string, @Body() ChannelMessageContentDto: ChannelMessageContentDto,
-	): Promise<ChannelMessageDto> {
-		return await this.channelService.sendMessage(user, channel_name, ChannelMessageContentDto);
-	}
-
-	@Get('messages/:channel_name')
-	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Get 20 last messages from channel' })
-	@ApiBearerAuth('JWT-auth')
-	async getLastMessages(
-		@GetUser() user: User,
-		@Param('channel_name') channel_name: string,
-	): Promise<ChannelMessageEntity[]> {
-		return await this.channelService.getLastMessages(user, channel_name);
-	}
-
-	@Delete('messages/:channel_name/:message_id')
-	@UseGuards(JwtGuard)
-	@ApiOperation({ summary: 'Delete message from channel' })
-	@ApiBearerAuth('JWT-auth')
-	async deleteMessage(
-		@GetUser() user: User,
-		@Param('channel_name') channel_name: string,
-		@Param('message_id') message_id_string: string,
-	): Promise<void> {
-		const message_id: number = parseInt(message_id_string, 10);
-		return await this.channelService.deleteMessage(user, channel_name, message_id);
-	}
-
-	/***********************************************************************************/
 	/* 										DEBUG									   */
 	/***********************************************************************************/
 	// DEBUG ONLY
@@ -274,12 +253,9 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'For debugging purpose only : Get all channels' })
 	@ApiBearerAuth('JWT-auth')
-	//async getAllChannelsDebug(): Promise<ChannelEntity[]> {
-	async getAllChannelsDebug(): Promise<ChannelListElemDto[]> {
-		//return await this.channelService.getAllChannelsDebug();
-		return await this.channelService.getAllPublicChannels();
+	async getAllChannelsDebug(): Promise<ChannelEntity[]> {
+		return await this.channelService.getAllChannelsDebug();
 	}
-
 	// DEBUG ONLY
 	@Get('list/allChannelUsersDebug')
 	@UseGuards(JwtGuard)

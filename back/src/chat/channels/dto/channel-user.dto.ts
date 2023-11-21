@@ -3,19 +3,14 @@ import { IsBoolean, IsDate, IsNumber, IsOptional, IsString } from 'class-validat
 
 export class ChannelUserDto {
 	@ApiProperty()
-	@IsNumber()
+	@IsString()
 	// eslint-disable-next-line
-	id: number;
-
-	@ApiProperty()
-	@IsNumber()
-	// eslint-disable-next-line
-	channel_id: number;
+	username: string;
 
 	@ApiProperty()
 	@IsString()
 	// eslint-disable-next-line
-	user_id: string;
+	avatar: string;
 
 	@ApiProperty()
 	@IsBoolean()
