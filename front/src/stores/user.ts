@@ -5,7 +5,9 @@ export const useUser = defineStore('user', {
 		JWT: null as string | null,
 		login: null as string | null,
 		displayName: null as string | null,
+		email: null as string | null,
 		avatar: undefined as string | undefined,
+		created_at: null as Date | null,
 	}),
 	getters: {
 		getJWT: (state) => {
@@ -16,7 +18,7 @@ export const useUser = defineStore('user', {
 		},
 	},
 	actions: {
-		async setJWT(jwt: string) {
+		async setJWT(jwt: string): Promise<void> {
 			this.JWT = jwt;
 			const requestOptions = {
 				method: 'GET',
@@ -26,25 +28,31 @@ export const useUser = defineStore('user', {
 					'Access-Control-Allow-Origin': '*',
 				},
 			};
-			const response: any = await new Promise((resolve) => {
-				const res = fetch(
+			try {
+				const response = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/me`,
 					requestOptions,
 				);
-				resolve(res);
-			});
-			const data = await response.json();
-			if (!response.ok) {
-				this.JWT = null;
-				this.login = null;
-				this.displayName = null;
-				this.avatar = undefined;
-				throw new Error(data.message);
-			}
 
-			this.login = data.login;
-			this.displayName = data.display_name;
-			this.avatar = data.avatar;
+				if (!response.ok) {
+					const errorData = await response.json();
+					this.JWT = null;
+					this.login = null;
+					this.displayName = null;
+					this.avatar = undefined;
+					return Promise.reject(errorData);
+				}
+
+				const data = await response.json();
+				this.login = data.login;
+				this.displayName = data.display_name;
+				this.email = data.email;
+				this.created_at = new Date(data.created_at);
+				this.avatar = data.avatar;
+				return Promise.resolve(data);
+			} catch (error) {
+				return Promise.reject(error);
+			}
 		},
 	},
 	persist: true,

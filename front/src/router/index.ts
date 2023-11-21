@@ -5,12 +5,12 @@ const router = createRouter({
 	routes: [
 		{
 			path: '/',
-			name: 'home',
+			name: 'Home',
 			component: () => import('../views/Home.vue'),
 		},
 		{
 			path: '/login',
-			name: 'login',
+			name: 'Login',
 			component: () => import('../views/Login.vue'),
 		},
 		{
@@ -25,12 +25,12 @@ const router = createRouter({
 		},
 		{
 			path: '/chat',
-			name: 'chat',
+			name: 'Chat',
 			component: () => import('../views/Chat.vue'),
 		},
 		{
 			path: '/profile',
-			name: 'profile',
+			name: 'Profile',
 			component: () => import('../views/Profile.vue'),
 		},
 	],

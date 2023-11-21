@@ -74,6 +74,9 @@ importers:
       vue-cli-plugin-vuetify:
         specifier: ~2.5.8
         version: 2.5.8(vue@3.3.8)(webpack@5.89.0)
+      vue-cookies:
+        specifier: ^1.8.3
+        version: 1.8.3
       vue-router:
         specifier: ^4.2.5
         version: 4.2.5(vue@3.3.8)
@@ -6340,6 +6343,10 @@ packages:
   /vue-component-type-helpers@1.8.22:
     resolution: {integrity: sha512-LK3wJHs3vJxHG292C8cnsRusgyC5SEZDCzDCD01mdE/AoREFMl2tzLRuzwyuEsOIz13tqgBcnvysN3Lxsa14Fw==}
     dev: true
+
+  /vue-cookies@1.8.3:
+    resolution: {integrity: sha512-VBRsyRMVdahBgFfh389TMHPmDdr4URDJNMk4FKSCfuNITs7+jitBDhwyL4RJd3WUsfOYNNjPAkfbehyH9AFuoA==}
+    dev: false
 
   /vue-demi@0.14.6(@vue/composition-api@1.7.2)(vue@3.3.8):
     resolution: {integrity: sha512-8QA7wrYSHKaYgUxDA5ZC24w+eHm3sYCbp0EzcDwKqN3p6HqtTCGR/GVsPyZW92unff4UlcSh++lmqDWN3ZIq4w==}

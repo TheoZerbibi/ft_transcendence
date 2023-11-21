@@ -52,10 +52,26 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { useUser } from '../stores/user';
+import { computed, defineComponent } from 'vue';
 
 export default defineComponent({
 	name: 'HomeView',
+	setup() {
+		const userStore = useUser();
+		const JWT = computed(() => userStore.getJWT);
+		const user = computed(() => userStore.getUser);
+
+		return {
+			JWT,
+			user,
+		};
+	},
+	beforeMount() {
+		if (!this.JWT || !this.user) {
+			return this.$router.push({ name: `Login` });
+		}
+	},
 });
 </script>
 

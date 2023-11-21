@@ -6,6 +6,7 @@ import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { RedisService } from 'src/redis/redis.service';
 
+@UseGuards(JwtGuard)
 @Controller('game')
 @ApiBearerAuth()
 @ApiTags('Game')
@@ -15,16 +16,6 @@ export class GameController {
 		private readonly redisService: RedisService,
 	) {}
 
-	@UseGuards(JwtGuard)
-	@Post('createGame')
-	@ApiOperation({ summary: 'Create a new Game' })
-	@ApiBearerAuth('JWT-auth')
-	@HttpCode(HttpStatus.OK)
-	createNewGame() {
-		return this.gameService.createNewGame();
-	}
-
-	@UseGuards(JwtGuard)
 	@Get('getEmptyGame')
 	@ApiOperation({ summary: 'Get game waiting for a second opponent.' })
 	@ApiBearerAuth('JWT-auth')
@@ -33,7 +24,15 @@ export class GameController {
 		return this.gameService.getEmptyGame();
 	}
 
-	@UseGuards(JwtGuard)
+	@Post('createGame')
+	@ApiOperation({ summary: 'Create a new Game' })
+	@ApiBearerAuth('JWT-auth')
+	@HttpCode(HttpStatus.OK)
+	createNewGame() {
+		return this.gameService.createNewGame();
+	}
+
+
 	@Post(':uuid')
 	@ApiOperation({ summary: 'Join a Game' })
 	@ApiBearerAuth('JWT-auth')

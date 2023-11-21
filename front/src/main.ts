@@ -1,6 +1,7 @@
 import 'vuetify/styles';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
+import VueCookies from 'vue-cookies';
 
 import piniaPluginPersistedState from 'pinia-plugin-persistedstate';
 
@@ -28,4 +29,4 @@ loadFonts();
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedState);
 
-createApp(App).use(router).use(vuetify).use(pinia).mount('#app');
+createApp(App).use(router).use(vuetify).use(pinia).use(VueCookies).mount('#app');

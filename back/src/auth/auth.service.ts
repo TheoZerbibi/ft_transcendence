@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthDto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
@@ -15,6 +15,15 @@ export class AuthService {
 		private config: ConfigService,
 		// private readonly connectionService: ConnectionService,
 	) {}
+
+	validateJwt(token: string): any {
+		try {
+			const decodedToken = this.jwt.verify(token, this.config.get('JWT_SECRET'));
+			return decodedToken;
+		} catch (error) {
+			throw new UnauthorizedException('Invalid token');
+		}
+	}
 
 	async signup(dto: AuthDto) {
 		try {
@@ -45,27 +54,6 @@ export class AuthService {
 		return this.signToken(user);
 	}
 
-	async signIn(payload: any): Promise<Connection> {
-		console.log(payload);
-
-		if (!payload || payload.id == undefined) {
-			return null;
-		}
-
-		// // Get existing connection from the provided user42
-		// let con = await this.connectionService.get({ user42ID: payload.id }, ['user']);
-
-		// // Create new one if not existant
-		// if (!con) {
-		// 	const user = await this.userService.create();					// New user
-		// 	con = await this.connectionService.create(user, payload.id);	// Make a new connection for this user
-		// }
-
-		// // Return Connection
-		// return con;
-		return null;
-	}
-
 	async signToken(user: Prisma.UserGetPayload<{}>): Promise<{ access_token: string }> {
 		const payload = { login: user.login, sub: user.id };
 		const secret = this.config.get<string>('JWT_SECRET');
@@ -75,63 +63,23 @@ export class AuthService {
 		};
 	}
 
-	async getUserInfo(token: string) {
-		const response = await fetch('https://api.intra.42.fr/v2/me', {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		});
-		const json = await response.json();
-		return json;
-	}
-
-	async getUserInfoByLogin(login: string) {
-		const response = await fetch(`https://api.intra.42.fr/v2/users/${login}`, {
-			headers: {
-				Authorization: `Bearer ${this.config.get<string>('API42_TOKEN')}`,
-			},
-		});
-		const json = await response.json();
-		return json;
-	}
-
-	async callback(dto: { code: string }) {
+	async getUser(user: any) {
 		try {
-			const formData = new FormData();
-			formData.append('grant_type', 'authorization_code');
-			formData.append('client_id', this.config.get<string>('API42_UID'));
-			formData.append('client_secret', this.config.get<string>('API42_SECRET'));
-			formData.append('code', dto.code);
-			formData.append('redirect_uri', 'http://localhost:3000/auth/callback');
-
-			const access_token: any = await fetch('https://api.intra.42.fr/oauth/token', {
-				method: 'POST',
-				body: formData,
-			});
-			const json = await access_token.json();
-			this.getUserFromAuthServer(json.access_token);
-		} catch (e) {
-			throw new ForbiddenException('Invalid request');
-		}
-	}
-
-	async getUserFromAuthServer(access_token: string) {
-		try {
-			const userInfo = await this.getUserInfo(access_token);
-			console.log(userInfo);
-			const user = await this.prisma.user.findUnique({
+			const userPrisma = await this.prisma.user.findUnique({
 				where: {
-					login: userInfo.login,
+					login: user.login,
 				},
 			});
-			if (!user) {
+			if (!userPrisma) {
 				const newUser = {
-					login: userInfo.login,
-					email: userInfo.email,
+					login: user.login,
+					email: user.email,
+					avatar: user.image.link,
 				};
 				return newUser;
 			} else {
-				return { access_token: this.signToken(user), user: user };
+				const token = await this.signToken(userPrisma);
+				return { ...token, ...userPrisma };
 			}
 		} catch (e) {
 			console.log(e);
