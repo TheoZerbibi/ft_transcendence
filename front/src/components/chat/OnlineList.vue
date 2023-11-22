@@ -1,25 +1,25 @@
 <template>
-	<v-navigation-drawer location="right">
-		<v-list>
-			<v-list-item v-for="n in 5" :key="n" :title="`Item ${n}`" link></v-list-item>
-		</v-list>
-	</v-navigation-drawer>
+	<v-list>
+		<template v-for="item in getListItems()" :key="item">
+			<v-list-item :title="item" link></v-list-item>
+		</template>
+	</v-list>
 </template>
 
-<script>
+<script lang="ts">
 export default {
-	name: 'ChannelList',
-	data() {
-		return {
-			// Données spécifiques à la ChannelList
-		};
-	},
+	name: 'ChannelsList',
 	methods: {
-		selectChannel(channel) {
-			// Gestion du choix d'un canal
+		getListItems() {
+			const items = [];
+			for (let n = 1; n <= 5; n++) {
+				items.push(`Item ${n}`);
+			}
+			return items;
 		},
-		// Autres méthodes spécifiques à la ChannelList
 	},
-	// ...
 };
 </script>
+
+<style scoped>
+</style>
