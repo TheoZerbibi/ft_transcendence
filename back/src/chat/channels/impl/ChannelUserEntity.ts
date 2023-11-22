@@ -4,6 +4,8 @@ export class ChannelUserEntity {
 	private id: number;
 	private channel_id: number;
 	private user_id: number;
+	private login: string;
+	private avatar: string;
 	private is_owner: boolean;
 	private is_admin: boolean;
 	private is_muted: Date;
@@ -30,6 +32,12 @@ export class ChannelUserEntity {
 	}
 	public getUserId(): number {
 		return this.user_id;
+	}
+	public getLogin(): string {
+		return this.login;
+	}
+	public getAvatar(): string {
+		return this.avatar;
 	}
 	public isOwner(): boolean {
 		return this.is_owner;

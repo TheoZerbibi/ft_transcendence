@@ -86,30 +86,6 @@ export class ChannelModPwdDto {
 	new_pwd_confirm: string;
 }
 
-export class createChannelUserDto {
-	@ApiProperty()
-	@IsString()
-	// eslint-disable-next-line
-	name: string;
-
-	@ApiProperty()
-	@IsString()
-	// eslint-disable-next-line
-	password: string;
-}
-
-export class AdminModUserDto {
-	@ApiProperty()
-	@IsNumber()
-	// eslint-disable-next-line
-	target_id: number;
-
-	@ApiProperty()
-	@IsString()
-	// eslint-disable-next-line
-	password: string;
-}
-
 export class PasswordRequiredActionDto {
 	@ApiProperty()
 	@IsString()
