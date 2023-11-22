@@ -1,9 +1,11 @@
 <template>
-	<main class="pageBackground"
+	<main
 		:style="{
-			backgroundImage: `url(/ui/OmoriBedroom.png)`,
+			backgroundImage: 'url(/ui/OmoriBedroom.png)',
 			backgroundPosition: 'center center',
-			backgroundSize: 'cover',
+			backgroundSize: '100% 100%', // Déforme l'image pour s'adapter à 100% de la largeur et de la hauteur
+			height: '100vh', // Hauteur de la vue à 100%
+			margin: 0, // Supprime les marges par défaut du body
 		}"
 	>
 		<!-- <v-container class="gridContainer"> -->
