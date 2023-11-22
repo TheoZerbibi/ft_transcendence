@@ -21,12 +21,17 @@
 	border-radius: 50px;
 }
 
+.omoriPolice {
+	font-family: 'OMORI_MAIN';
+	text-align: center;
+	color: white;
+	margin: auto;
+}
+
 .neonPolice {
 	font-family: 'OMORI_MAIN';
-
 	font-size: xx-large;
 	text-align: center;
-	/* color: black; */
 	color: white;
 	text-shadow:
 		1px 1px 2px plum,
@@ -37,7 +42,6 @@
 
 .darkNeonPolice {
 	font-family: 'OMORI_MAIN';
-
 	font-size: xx-large;
 	text-align: center;
 	color: black;
