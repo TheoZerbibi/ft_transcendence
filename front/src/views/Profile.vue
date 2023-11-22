@@ -1,5 +1,11 @@
 <template>
-	<main class="pageBackground">
+	<main class="pageBackground"
+		:style="{
+			backgroundImage: `url(/ui/OmoriBedroom.png)`,
+			backgroundPosition: 'center center',
+			backgroundSize: 'cover',
+		}"
+	>
 		<!-- <v-container class="gridContainer"> -->
 		<!-- <div class="box one"> -->
 		<!-- <link rel="icon" href="/favicon.ico" /> -->
@@ -83,19 +89,14 @@ a:hover {
 	cursor: url(https://www.omori-game.com/img/cursor/cursor.png), auto;
 }
 .pageBackground {
-	background-image: url('../public/ui/OmoriBedroom.png');
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
 	margin: 0;
-	display: flex;
 	align-items: center;
 	justify-content: center;
 	background-color: black;
 	top: 0;
 	left: 0;
-	width: 100%;
-	height: 100%;
+	width: 100vw;
+	height: 100vw;
 	z-index: -1;
 }
 
