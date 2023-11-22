@@ -33,4 +33,29 @@ export class UserService {
 		});
 		return user as UserDto;
 	}
+
+	async deleteUser(userId: number): Promise<void> {
+		const user = await this.prisma.user.delete({
+			where: {
+				id: userId,
+			},
+		});
+	}
+
+	async getFriends(userLogin: string): Promise<UserDto[]> {
+		const friends = await this.prisma.user.findUnique({
+			where: {
+				login: userLogin,
+			},
+			select: {
+				friends: {
+					select: {
+						friend: true,
+					},
+				},
+			},
+		});
+		return friends.friends.map((friend) => this.exclude(friend.friend, ['dAuth', 'email', 'updated_at'])) as UserDto[];
+	}
+
 }
