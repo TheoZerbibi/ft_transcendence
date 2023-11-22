@@ -36,6 +36,7 @@ export class ChannelService {
 			this.localChannels = await Promise.all(channelPromises);
 		} catch (e) {
 			console.error('Failed to initialize local channels ', e);
+			throw e;
 		}
 	}
 
@@ -96,30 +97,35 @@ export class ChannelService {
 		if (!channelUser) throw new BadRequestException(`You are not on this channel`);
 		if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
 
-		const channelUsers: any[] = await this.prisma.channelUser.findMany({
-			where: {
-				channel_id: channel.getId(),
-			},
-			include : {
-				user: {
-					select: {
-						login: true,
-						avatar: true,
+		try {
+			const channelUsers: any[] = await this.prisma.channelUser.findMany({
+				where: {
+					channel_id: channel.getId(),
+				},
+				include : {
+					user: {
+						select: {
+							login: true,
+							avatar: true,
+						},
 					},
 				},
-			},
-		});
-		const channelUserDtos: ChannelUserDto[] = channelUsers.map((channelUser) => {
-			return {
-				username: channelUser.user.login,
-				avatar: channelUser.user.avatar,
-				is_owner: channelUser.is_owner,
-				is_admin: channelUser.is_admin,
-				is_muted: channelUser.is_muted,
-				is_banned: channelUser.is_ban,
-			};
-		});
-		return channelUserDtos;
+			});
+			const channelUserDtos: ChannelUserDto[] = channelUsers.map((channelUser) => {
+				return {
+					username: channelUser.user.login,
+					avatar: channelUser.user.avatar,
+					is_owner: channelUser.is_owner,
+					is_admin: channelUser.is_admin,
+					is_muted: channelUser.is_muted,
+					is_banned: channelUser.is_ban,
+				};
+			});
+			return channelUserDtos;
+		} catch (e) {
+			console.error(e);
+			throw e;
+		}
 	}
 
 	/************************************* Messages ************************************/
@@ -131,50 +137,55 @@ export class ChannelService {
 		if (!channelUser) throw new BadRequestException(`You are not on this channel`);
 		if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
 
-		const messages = await this.prisma.channelMessage.findMany({
-			where: {
-				channel_user_id: {
-					in: channelEntity.getUsers().map((user) => user.getId()),
-				},
-			},
-			orderBy: {
-				created_at: 'asc',
-			},
-			take: 50,
-		});
-
-		const messageDtos: ChannelMessageDto[] = await Promise.all(
-			messages.map(async (message) => {
-				const channelUser = await this.prisma.channelUser.findUnique({
-					where: {
-						id: message.channel_user_id,
+		try {
+			const messages = await this.prisma.channelMessage.findMany({
+				where: {
+					channel_user_id: {
+						in: channelEntity.getUsers().map((user) => user.getId()),
 					},
-					select: {
-						user: {
-							select: {
-								login: true,
-								avatar: true,
+				},
+				orderBy: {
+					created_at: 'asc',
+				},
+				take: 50,
+			});
+
+			const messageDtos: ChannelMessageDto[] = await Promise.all(
+				messages.map(async (message) => {
+					const channelUser = await this.prisma.channelUser.findUnique({
+						where: {
+							id: message.channel_user_id,
+						},
+						select: {
+							user: {
+								select: {
+									login: true,
+									avatar: true,
+								},
 							},
 						},
-					},
-				});
-				const formattedDate = new Date(message.created_at).toLocaleString('en-US', {
-					month: '2-digit',
-					day: '2-digit',
-					year: 'numeric',
-					hour: 'numeric',
-					minute: 'numeric',
-					hour12: true,
-				});
-				return {
-					username: channelUser?.user?.login || '?',
-					avatar: channelUser?.user?.avatar || '',
-					content: message.content,
-					created_at: formattedDate,
-				};
-			})
-		);
-		return messageDtos;
+					});
+					const formattedDate = new Date(message.created_at).toLocaleString('en-US', {
+						month: '2-digit',
+						day: '2-digit',
+						year: 'numeric',
+						hour: 'numeric',
+						minute: 'numeric',
+						hour12: true,
+					});
+					return {
+						username: channelUser?.user?.login || '?',
+						avatar: channelUser?.user?.avatar || '',
+						content: message.content,
+						created_at: formattedDate,
+					};
+				})
+			);
+			return messageDtos;
+		} catch (e) {
+			console.error(e);
+			throw e;
+		}
 	}
 
 
@@ -226,24 +237,28 @@ export class ChannelService {
 
 		if (!channel.getIsPublic() && !argon2d.verify(channel.getPassword(), dto.chan_password)) throw new BadRequestException('Wrong password');
 
-		const channelUser: ChannelUser = await this.prisma.channelUser.create({
-			data: {
-				channel_id: channel.getId(),
-				user_id: user.id,
-			},
-		});
+		try {
+			const channelUser: ChannelUser = await this.prisma.channelUser.create({
+				data: {
+					channel_id: channel.getId(),
+					user_id: user.id,
+				},
+			});
 
-		this.localChannels
-			.find((channelEntity) => channelEntity.getName() === channel_name)
-			.addUser(new ChannelUserEntity(channelUser));
+			this.localChannels
+				.find((channelEntity) => channelEntity.getName() === channel_name)
+				.addUser(new ChannelUserEntity(channelUser));
 
-		const channelDto: ChannelDto = {
-			name: channel.getName(),
-			is_public: channel.getIsPublic(),
-			created_at: channel.getCreatedAt(),
-			updated_at: channel.getUpdatedAt(),
-		};
-		return channelDto;
+			const channelDto: ChannelDto = {
+				name: channel.getName(),
+				is_public: channel.getIsPublic(),
+				created_at: channel.getCreatedAt(),
+				updated_at: channel.getUpdatedAt(),
+			};
+			return channelDto;
+		} catch (e) {
+			throw e;
+		}
 	}
 
 	/************************************* Messages ************************************/
@@ -260,28 +275,32 @@ export class ChannelService {
 		if (messageDto.content.length === 0) throw new BadRequestException('Message cannot be empty');
 		if (messageDto.content.length > 200) throw new BadRequestException('Message too long (max 200 characters)');
 
-		const channelMessage: ChannelMessage = await this.prisma.channelMessage.create({
-			data: {
-				channel_user_id: channelUser.getId(),
-				content: messageDto.content,
-				created_at: new Date(),
-			},
-		});
-		const formattedDate = new Date(channelMessage.created_at).toLocaleString('en-US', {
-			month: '2-digit',
-			day: '2-digit',
-			year: 'numeric',
-			hour: 'numeric',
-			minute: 'numeric',
-			hour12: true,
-		});
-		const channelMessageDto: ChannelMessageDto = {
-			username: user.login || '?',
-			avatar: user.avatar || '',
-			content: channelMessage.content,
-			created_at: formattedDate,
-		};
-		return channelMessageDto;
+		try {
+			const channelMessage: ChannelMessage = await this.prisma.channelMessage.create({
+				data: {
+					channel_user_id: channelUser.getId(),
+					content: messageDto.content,
+					created_at: new Date(),
+				},
+			});
+			const formattedDate = new Date(channelMessage.created_at).toLocaleString('en-US', {
+				month: '2-digit',
+				day: '2-digit',
+				year: 'numeric',
+				hour: 'numeric',
+				minute: 'numeric',
+				hour12: true,
+			});
+			const channelMessageDto: ChannelMessageDto = {
+				username: user.login || '?',
+				avatar: user.avatar || '',
+				content: channelMessage.content,
+				created_at: formattedDate,
+			};
+			return channelMessageDto;
+		} catch (e) {
+			throw e;
+		}
 	}
 
 	/***********************************************************************************/
@@ -347,16 +366,20 @@ export class ChannelService {
 		const hashedPwd = await argon2d.hash(dto.new_pwd);
 		channelEntity.setPassword(hashedPwd);
 
-		await this.prisma.channel.update({
-			where: {
-				name: channel_name,
-			},
-			data: {
-				public: channelEntity.getIsPublic(),
-				password: channelEntity.getPassword(),
-			},
-		});
-		channelEntity.setUpdatedAt(new Date());
+		try {
+			await this.prisma.channel.update({
+				where: {
+					name: channel_name,
+				},
+				data: {
+					public: channelEntity.getIsPublic(),
+					password: channelEntity.getPassword(),
+				},
+			});
+			channelEntity.setUpdatedAt(new Date());
+		} catch	(e) {
+			throw e;
+		}
 	}
 
 	/************************************** Users ***********************************/
@@ -373,34 +396,38 @@ export class ChannelService {
 
 		if (!channelUser.isOwner()) throw new BadRequestException('You cannot set someone as admin on this channel');
 
-		const target = await this.prisma.user.findUnique({
-			where: {
-				login: dto.target_login,
-			},
-			select: {
-				id: true,
-			},
-		});
-		if (!target) throw new BadRequestException('User does not exist');
-		if (target.id === user.id) throw new BadRequestException('You cannot set yourself as admin');
+		try {
+			const target = await this.prisma.user.findUnique({
+				where: {
+					login: dto.target_login,
+				},
+				select: {
+					id: true,
+				},
+			});
+			if (!target) throw new BadRequestException('User does not exist');
+			if (target.id === user.id) throw new BadRequestException('You cannot set yourself as admin');
 
-		const targetChanUser: ChannelUserEntity | null = channelEntity.getUsers().find((channelUser) => {
-			return channelUser.getUserId() === target.id;
-		});
-		if (!targetChanUser) throw new BadRequestException('User is not on this channel');
-		if (targetChanUser.isAdmin()) throw new BadRequestException('User is already admin on this channel');
+			const targetChanUser: ChannelUserEntity | null = channelEntity.getUsers().find((channelUser) => {
+				return channelUser.getUserId() === target.id;
+			});
+			if (!targetChanUser) throw new BadRequestException('User is not on this channel');
+			if (targetChanUser.isAdmin()) throw new BadRequestException('User is already admin on this channel');
 
-		targetChanUser.setIsAdmin(true);
+			targetChanUser.setIsAdmin(true);
 
-		await this.prisma.channelUser.update({
-			where: {
-				id: targetChanUser.getId(),
-			},
-			data: {
-				is_admin: targetChanUser.isAdmin(),
-			},
-		});
-		channelEntity.setUpdatedAt(new Date());
+			await this.prisma.channelUser.update({
+				where: {
+					id: targetChanUser.getId(),
+				},
+				data: {
+					is_admin: targetChanUser.isAdmin(),
+				},
+			});
+			channelEntity.setUpdatedAt(new Date());
+		} catch (e) {
+			throw e;
+		}
 	}
 
 	async modChannelUser(user:User, channel_name: string, dto: ModChannelUserDto): Promise<void> {
@@ -437,28 +464,36 @@ export class ChannelService {
 				targetChanUser.setIsBanned(true);
 				break;
 			case 'kick'|| 'unban':
-				await this.prisma.channelUser.delete({
-					where: {
-						id: targetChanUser.getId(),
-						user_id: target.id,
-					},
-				});
-				const channel = this.localChannels.find((c) => c.getName() === channel_name);
-				channel.removeUser(targetChanUser);
-				return;
+				try {
+					await this.prisma.channelUser.delete({
+						where: {
+							id: targetChanUser.getId(),
+							user_id: target.id,
+						},
+					});
+					const channel = this.localChannels.find((c) => c.getName() === channel_name);
+					channel.removeUser(targetChanUser);
+					return;
+				} catch (e) {
+					throw e;
+				}
 			default:
 				throw new BadRequestException(`Action ${dto.action} not supported`);
 		}
-		await this.prisma.channelUser.update({
-			where: {
-				id: targetChanUser.getId(),
-				user_id: target.id,
-			},
-			data: {
-				is_ban: targetChanUser.isBanned(),
-				is_muted: targetChanUser.isMuted(),
-			},
-		});
+		try {
+			await this.prisma.channelUser.update({
+				where: {
+					id: targetChanUser.getId(),
+					user_id: target.id,
+				},
+				data: {
+					is_ban: targetChanUser.isBanned(),
+					is_muted: targetChanUser.isMuted(),
+				},
+			});
+		} catch (e) {
+			throw e;
+		}
 	}
 
 	/***********************************************************************************/
@@ -478,11 +513,15 @@ export class ChannelService {
 		if (!channelEntity.getIsPublic() && !argon2d.verify(channelEntity.getPassword(), dto.password)) throw new BadRequestException('Wrong password');
 
 		if (!channelUser.isOwner()) throw new BadRequestException('You cannot delete a channel you do not own');
-		await this.prisma.channel.delete({
-			where: {
-				name: channel_name,
-			},
-		});
+		try {
+			await this.prisma.channel.delete({
+				where: {
+					name: channel_name,
+				},
+			});
+		} catch (e) {
+			throw e;
+		}
 		this.localChannels = this.localChannels.filter((channel) => channel.getName() !== channel_name);
 	}
 
@@ -497,14 +536,18 @@ export class ChannelService {
 		if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
 		if (channelUser.isOwner()) throw new BadRequestException('You cannot leave a channel you own');
 
-		await this.prisma.channelUser.delete({
-			where: {
-				id: channelUser.getId(),
-				user_id: channelUser.getUserId(),
-			},
-		});
-		channelEntity.removeUser(channelUser);
-		channelEntity.setUpdatedAt(new Date());
+		try {
+			await this.prisma.channelUser.delete({
+				where: {
+					id: channelUser.getId(),
+					user_id: channelUser.getUserId(),
+				},
+			});
+			channelEntity.removeUser(channelUser);
+			channelEntity.setUpdatedAt(new Date());
+		} catch (e) {
+			throw e;
+		}
 	}
 
 	/***********************************************************************************/
