@@ -54,6 +54,9 @@ export const useUser = defineStore('user', {
 				return Promise.reject(error);
 			}
 		},
+		setAvatar(avatar: string): void {
+			this.avatar = avatar;
+		}
 	},
 	persist: true,
 });

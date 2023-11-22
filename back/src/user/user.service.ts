@@ -3,14 +3,18 @@ import { PrismaService } from '../prisma/prisma.service';
 import { EditUserDto, UserDto } from './dto';
 import { Prisma, User } from '@prisma/client';
 import { CreateUserDto } from './dto/create-user.dto';
+import * as fs from 'fs';
 import { ConfigService } from '@nestjs/config';
+import { v2 as cloudinary } from 'cloudinary';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
+	private cloudinary;
+
 	constructor(
-		private readonly prisma: PrismaService,
-		private readonly config: ConfigService,
+		private prisma: PrismaService,
+		private config: ConfigService,
 		private jwt: JwtService,
 	) {}
 
@@ -132,6 +136,38 @@ export class UserService {
 			const token = await this.signToken(user);
 			return { ...token, ...user };
 		} catch (e) {
+			throw e;
+		}
+	}
+
+	async setAvatar(userId: number, avatar: string): Promise<void> {
+		try {
+			await this.prisma.user.update({
+				where: {
+					id: userId,
+				},
+				data: {
+					avatar: avatar,
+				},
+			});
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	async getCloudinaryLink(userId: number, file: Express.Multer.File): Promise<any> {
+		cloudinary.config({
+			cloud_name: this.config.get('CLOUDINARY_CLOUD_NAME'),
+			api_key: this.config.get('CLOUDINARY_API_KEY'),
+			api_secret: this.config.get('CLOUDINARY_API_SECRET'),
+		});
+		try {
+			const cloudinaryResponse = await cloudinary.uploader.upload(file.path);
+			fs.unlinkSync(file.path);
+			this.setAvatar(userId, cloudinaryResponse.secure_url);
+			return { avatar: cloudinaryResponse.secure_url };
+		} catch (e) {
+			fs.unlinkSync(file.path);
 			throw e;
 		}
 	}
