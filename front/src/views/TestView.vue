@@ -1,6 +1,12 @@
 <template>
 	<v-file-input v-model="selectedImage" label="Choose a file"></v-file-input>
 	<v-btn @click="uploadImage">Upload</v-btn>
+	<v-avatar>
+		<img :style="{
+			width: '100%',
+			height: '100%',
+		}" :src="user.avatar" />
+	</v-avatar>
 	<Snackbar />
 </template>
 
@@ -18,9 +24,13 @@ export default {
 	setup() {
 		const userStore = useUser();
 		const JWT = computed(() => userStore.getJWT);
+		const user = computed(() => userStore.getUser);
+		const setAvatar = computed(() => userStore.setAvatar);
 
 		return {
 			JWT,
+			user,
+			setAvatar,
 		};
 	},
 	data() {
@@ -31,13 +41,11 @@ export default {
 	methods: {
 		async uploadImage() {
 			const formData = new FormData();
-			console.log(this.selectedImage);
-			formData.append('file', this.selectedImage);
-			for (const value of formData.values()) {
-				if (value instanceof File) {
-					const v: File = value;
-					console.log(v);
-				}
+
+			if (this.selectedImage[0] instanceof File) {
+				formData.append('file', this.selectedImage[0]);
+			} else {
+				return console.error('this.selectedImage is not a File object.');
 			}
 
 			try {
@@ -51,15 +59,15 @@ export default {
 						},
 					},
 				);
-
 				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					const error = await response.json()
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					console.log(response);
 					return;
 				}
 
 				const data = await response.json();
-				console.log(data);
+				this.setAvatar(data.avatar);
 			} catch (error) {
 				console.error(error);
 			}

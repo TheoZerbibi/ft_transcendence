@@ -4,10 +4,8 @@ import {
 	Body,
 	ClassSerializerInterceptor,
 	Controller,
-	FileTypeValidator,
 	Get,
 	Param,
-	ParseFilePipe,
 	Patch,
 	Post,
 	UploadedFile,
@@ -22,7 +20,6 @@ import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
 import { Express } from 'express';
 import { multerOptions } from './multer/multer.config';
 
@@ -56,9 +53,8 @@ export class UserController {
 	@ApiOperation({ summary: 'Get Avatar Link from Cloudinary API' })
 	@ApiBearerAuth('JWT-auth')
 	@UseInterceptors(FileInterceptor('file', multerOptions))
-	async getLink(@UploadedFile() file: Express.Multer.File): Promise<string> {
-		console.log(file);
-		return 'null';
+	async getLink(@GetUser('id') userId: number, @UploadedFile() file: Express.Multer.File): Promise<any> {
+		return this.userService.getCloudinaryLink(userId, file);
 	}
 
 	@Post()
