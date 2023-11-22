@@ -26,20 +26,16 @@
 export default {
   name: 'Sidebar',
   data() {
-    return {
-      // Données spécifiques à la sidebar
-    };
+    return { 
+
+	};
   },
   methods: {
     selectChannel(channel) {
-      // Gestion du choix d'un canal
     },
-    // Autres méthodes spécifiques à la sidebar
   },
-  // ...
 };
 </script>
 
 <style scoped>
-/* Styles pour Sidebar */
 </style>

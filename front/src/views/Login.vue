@@ -1,38 +1,128 @@
-<template>
-	<v-row align="center" justify="center" class="fill-height background d-flex" id="bg">
-		<img src="/ui/Door.png" class="polaroid" alt="These are us" @click="redirectToOAuth" id="polaroid" />
-		<!-- <div class="homepage text-center d-flex">
-			 <v-card-item>
-					<v-card-title class="title">
-						<p class="neonPolice">Welcome to NSTG's ft_transcendence</p>
-					</v-card-title>
-					<v-card-subtitle class="neonPolice homeSubtitles">
-						<br />Gaelle, <span class="teamLeader">Theo</span>, Semiha, Noe
-					</v-card-subtitle>
-				</v-card-item>
-			<v-card-text class="neonPolice text homeSubtitles"> <br />students of 42 paris<br /> </v-card-text>
-			<v-card-actions>
-				<v-btn id="authButton" class="text-capitalize" size="x-large" @click="redirectToOAuth">
-					<span class="neonPolice"> 💡 Sign in with 42 </span>
-				</v-btn>
-			</v-card-actions>
-		</div> -->
+<template >
+	<v-row align="center" justify="center" class="fill-height  d-flex" :class="{'background' : step === 0, 'black-background': step > 0 }">
+		<div v-if="step === 0">
+			<img src="/ui/Door.png" class="door" @click="redirectToOAuth"/>
+		</div>
+		<div v-if="step > 0">
+			<v-card class="card-container" color="tranparent">
+				<div v-if="step === 1" class="card-content">
+        	    	<input type="text" @keyup.enter="nextStep" v-model="newUser.display_name" placeholder=" ENTER YOUR NAME " class="input"/>
+        	    	<button @click="nextStep" class="next-button"></button>
+				</div>
+				<div v-if="step === 2" class="card-content">
+					<UploadFile v-model="newUser.avatar"/>
+					<img v-if="newUser.avatar" :src="newUser.avatar" class="uploaded-image" alt="Uploaded Image"/>
+					<button @click="nextStep" class="next-button"></button>
+				</div>
+			</v-card>
+			<img src="/ui/ALBUM.png" class="album" alt="Album"/>
+		</div>
 	</v-row>
-	<!-- <Footer /> -->
-</template>
+</template>'
+
 
 <script lang="ts">
-import Footer from '../components/layout/Footer.vue';
+import Snackbar from '../components/layout/Snackbar.vue';
+import UploadFile from '../components/layout/UploadFile.vue';
+import { computed } from 'vue';
+import { useUser } from '../stores/user';
+import { useSnackbarStore } from '../stores/snackbar';
+
+const userStore = useUser();
+const snackbarStore = useSnackbarStore();
 
 export default {
-	name: 'SignIn',
-	components: { Footer },
+	name: 'Login',
+	components: { Snackbar, UploadFile },
+	beforeRouteLeave(to: any, from: any, next: any) {
+		snackbarStore.hideSnackbar();
+		next();
+	},
+	setup() {
+		const JWT = computed(() => userStore.getJWT);
+		const user = computed(() => userStore.getUser);
+		const newUser = {
+			login: '' as string,
+			email: '' as string,
+			display_name: '' as string,
+			avatar: '' as string};
+
+		return {
+			JWT,
+			user,
+			newUser,
+		};
+	},
+	data() {
+		return {
+			step: 0 as number,
+			avatar: null as File | null,
+		};
+	},
+	async beforeMount() {
+		if (this.$cookies.get('token')) {
+			const token = this.$cookies.get('token');
+			this.$cookies.remove('token');
+			try {
+				await userStore.setJWT(token);
+			} catch (err) {
+				snackbarStore.showSnackbar('Invalid credentials', 3000, 'red');
+				return this.$router.push({ name: `Home` });
+			}
+		}
+		else if (this.$cookies.get('userOnboarding')) {
+			const cookie = this.$cookies.get('userOnboarding');
+			console.log(cookie);
+			this.step = 1;
+			this.newUser.login = cookie.login;
+			this.newUser.email = cookie.email;
+			this.newUser.avatar = cookie.avatar;
+		}
+		else {
+			this.step = 0;
+		}
+	},
 	methods: {
+		async postToUsers() {
+			const requestOptions = {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': '*',
+				},
+				body: JSON.stringify(this.newUser),
+			}
+			console.log(requestOptions);
+			await fetch(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users`,
+			requestOptions
+			).then(async (response) => {
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					console.log(response);
+					return;
+				}
+				const data = await response.json();
+				console.log(response);
+				if (data) {
+					this.$cookies.set('token', 'true');
+					this.$router.push({ name: `Home` });
+				}
+			}).catch((error) => {
+				console.error(error);
+			});
+
+		},
 		redirectToOAuth() {
 			const HOST = import.meta.env.VITE_HOST;
 			const PORT = import.meta.env.VITE_API_PORT;
 
 			window.location.href = `http://${HOST}:${PORT}/auth/42/callback`;
+		},
+		async nextStep() {
+			this.step++;
+			if (this.step >= 3) {
+				await this.postToUsers();
+			}
 		},
 	},
 };
@@ -44,31 +134,63 @@ export default {
 	pointer-events: none;
 }
 
-.homepage {
-	display: flex;
-	align-items: center;
-	flex-direction: column;
+.black-background {
+	background-color: black;
 }
 
-.title {
-	display: flex;
-	align-items: flex-start;
-	margin: 20px;
-	padding: 20px;
-}
-
-.teamLeader {
-	font-weight: bold;
-	color: darkmagenta;
-}
-
-.polaroid {
+.door {
 	height: 40vw;
-	z-index: 99999999;
 	pointer-events: auto;
 }
 
-.polaroid:hover {
+.album {
+    position: fixed;
+	bottom: -15%;
+    left: 0;
+    right: 0;
+    margin: auto;
+	width: 300px;
+}
+
+.input {
+	font-family: 'OMORI_MAIN', sans-serif;
+	outline: thick double white;
+	word-wrap: break-word;
+	margin: 16px;
+	height: 30px;
+	
+}
+
+.next-button {
+	outline: thick double white;
+	margin: 16px;
+	height: 30px;
+	width: 30px;
+}
+
+.card-container {
+	display: flex;
+	flex-direction: line;
+	align-items: center;
+	justify-content: center;
+}
+
+.card-content {
+	display: flex;
+	flex-direction: line;
+	align-items: center;
+	justify-content: center;
+}
+
+.file-input {
+	display: none;
+}
+
+.file-input + .next-button {
+	margin-top: 10px;
+}
+
+.door:hover {
 	-webkit-filter: brightness(10);
 	filter: brightness(10);
 	filter: invert(1);
@@ -84,19 +206,18 @@ export default {
 	transition: 1s ease-in-out all;
 }
 
-.group-image {
-	height: 100%;
-	width: 100%;
-	z-index: -99999999;
+.input:hover {
+	cursor: url(https://www.omori-game.com/img/cursor/cursor.png), auto;
 }
 
-#authButton:hover {
-	background-color: black;
-	box-shadow: 6px 6px 0px rgba(0, 0, 0);
-	border: double;
+.next-button:hover {
+	cursor: url(https://www.omori-game.com/img/cursor/cursor.png), auto;
 }
 
-#authButton:hover span {
-	color: white !important;
+.uploaded-image {
+    width: 100px;
+    height: 100px;
+    margin-left: 10px;
+    object-fit: cover;
 }
 </style>
