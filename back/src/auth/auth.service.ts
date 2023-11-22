@@ -1,11 +1,10 @@
 import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthDto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Prisma } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { Connection } from './connection/connection.entity';
-import { ConnectionService } from './connection/connection.service';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
@@ -13,7 +12,7 @@ export class AuthService {
 		private prisma: PrismaService,
 		private jwt: JwtService,
 		private config: ConfigService,
-		// private readonly connectionService: ConnectionService,
+		private readonly userService: UserService,
 	) {}
 
 	validateJwt(token: string): any {
@@ -63,19 +62,16 @@ export class AuthService {
 		};
 	}
 
-	async getUser(user: any) {
+	async authUser(user: any) {
 		try {
-			const userPrisma = await this.prisma.user.findUnique({
-				where: {
-					login: user.login,
-				},
-			});
+			const userPrisma: User = await this.userService.getUser(user.login);
 			if (!userPrisma) {
 				const newUser = {
 					login: user.login,
 					email: user.email,
 					avatar: user.image.link,
 				};
+				this.userService.addUserOnboarding(newUser.login);
 				return newUser;
 			} else {
 				const token = await this.signToken(userPrisma);

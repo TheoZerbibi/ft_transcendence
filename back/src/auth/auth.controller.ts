@@ -30,7 +30,7 @@ export class AuthController {
 	async callback(@Req() req: any, @Res() res: Response) {
 		const url = new URL(`${req.protocol}:${req.hostname}`);
 		url.port = process.env.FRONT_PORT;
-		const user: any = await this.authService.getUser(req.user._json);
+		const user: any = await this.authService.authUser(req.user._json);
 		if (user.access_token) {
 			res.cookie('token', user.access_token, {
 				httpOnly: false,

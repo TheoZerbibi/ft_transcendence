@@ -6,6 +6,7 @@ import {
 	Get,
 	Param,
 	Patch,
+	Post,
 	UseGuards,
 	UseInterceptors,
 } from '@nestjs/common';
@@ -15,6 +16,7 @@ import { UserService } from './user.service';
 import { EditUserDto, UserDto } from './dto';
 import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('users')
 @ApiBearerAuth()
@@ -39,6 +41,12 @@ export class UserController {
 		const user: UserDto | undefined = await this.userService.getUserByLogin(userLogin);
 		if (!user) throw new BadRequestException('Invalid user');
 		return user;
+	}
+
+	@Post()
+	@ApiOperation({ summary: 'Create a user' })
+	create(@Body() dto: CreateUserDto): Promise<User> {
+		return this.userService.createUser(dto);
 	}
 
 	@UseGuards(JwtGuard)
