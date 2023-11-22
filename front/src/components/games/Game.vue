@@ -159,20 +159,17 @@ export default {
 								if (!snackbarStore.snackbar)
 									snackbarStore.showSnackbar('Game is ended', 3000, 'primary');
 								this.dialogVisible = true;
-								console.log(data);
 								this.apiData = data;
 								this.gameEnded = true;
 								if (data.winner) console.log(`Winner : ${data.winner.user.login}`);
 							});
 
 							this.socket.on('game-win', () => {
-								console.log('Win!');
 								this.isWinner = true;
 								snackbarStore.showSnackbar('You win!', 3000, 'green');
 							});
 
 							this.socket.on('game-lose', () => {
-								console.log('lose!');
 								this.isLoser = true;
 								snackbarStore.showSnackbar('You lose!', 3000, 'red');
 							});

@@ -1,21 +1,39 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { EditUserDto, UserDto } from './dto';
-import { User } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import { CreateUserDto } from './dto/create-user.dto';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
-	constructor(private prisma: PrismaService) {}
+	constructor(
+		private readonly prisma: PrismaService,
+		private readonly config: ConfigService,
+		private jwt: JwtService,
+	) {}
 
-	private userOnboarding: Array<string> = new Array<string>();
+	private static userOnboarding: Array<string> = new Array<string>();
 
 	exclude<User>(user: User, keys: string[]) {
 		return Object.fromEntries(Object.entries(user).filter(([key]) => !keys.includes(key)));
 	}
 
-	addUserOnboarding(login: string) {
+	static addUserOnboarding(login: string) {
 		this.userOnboarding.push(login);
+	}
+
+	static getUserOnboarding(): Array<string> {
+		return this.userOnboarding;
+	}
+
+	static isOnBoarding(login: string): boolean {
+		return this.userOnboarding.includes(login);
+	}
+
+	static removeUserOnboarding(login: string) {
+		this.userOnboarding = this.userOnboarding.filter((userLogin) => userLogin !== login);
 	}
 
 	verifyDisplayName(displayName: string): boolean {
@@ -44,8 +62,8 @@ export class UserService {
 		try {
 			if (dto.display_name) {
 				const displayName = await this.checkDisplayName(dto.display_name);
-				if (displayName) throw new Error('Display name already taken');
-				if (!this.verifyDisplayName(dto.display_name)) throw new Error('Invalid display name');
+				if (displayName) throw new ForbiddenException('Display name already taken');
+				if (!this.verifyDisplayName(dto.display_name)) throw new ForbiddenException('Invalid display name');
 			}
 			const user = await this.prisma.user.update({
 				where: {
@@ -87,12 +105,21 @@ export class UserService {
 		}
 	}
 
+	async signToken(user: Prisma.UserGetPayload<{}>): Promise<{ access_token: string }> {
+		const payload = { login: user.login, sub: user.id };
+		const secret = this.config.get<string>('JWT_SECRET');
+		const token = await this.jwt.signAsync(payload, { expiresIn: '1d', secret: secret });
+		return {
+			access_token: token,
+		};
+	}
+
 	async createUser(dto: CreateUserDto): Promise<User> {
-		if (!this.userOnboarding.includes(dto.login)) throw new Error('User not onboarding');
 		try {
+			if (!UserService.isOnBoarding(dto.login)) throw new ForbiddenException('User not onboarding');
 			const displayName = await this.checkDisplayName(dto.display_name);
-			if (displayName) throw new Error('Display name already taken');
-			if (!this.verifyDisplayName(dto.display_name)) throw new Error('Invalid display name');
+			if (displayName) throw new ForbiddenException('Display name already taken');
+			if (!this.verifyDisplayName(dto.display_name)) throw new ForbiddenException('Invalid display name');
 			const user = await this.prisma.user.create({
 				data: {
 					login: dto.login,
@@ -101,8 +128,9 @@ export class UserService {
 					avatar: dto.avatar,
 				},
 			});
-			this.userOnboarding = this.userOnboarding.filter((login) => login !== dto.login);
-			return user;
+			UserService.removeUserOnboarding(dto.login);
+			const token = await this.signToken(user);
+			return { ...token, ...user };
 		} catch (e) {
 			throw e;
 		}

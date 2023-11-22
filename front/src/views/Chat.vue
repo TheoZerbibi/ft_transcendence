@@ -108,7 +108,6 @@ methods: {
 		if (response.ok) {
 			const data = await response.json();
 			this.channels = data; // store the response in channels
-			console.log(this.channels);
 		} else {
 			console.error('Failed to fetch channels');
 		}
