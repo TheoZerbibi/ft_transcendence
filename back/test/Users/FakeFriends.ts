@@ -30,7 +30,7 @@ async function getUser(login: string): Promise<User> {
 				login: login,
 			},
 		});
-		if (!user) throw new Error(`User ${login} not found`);
+		if (!user) return null;
 		return user;
 	} catch (e) {
 		throw e;
