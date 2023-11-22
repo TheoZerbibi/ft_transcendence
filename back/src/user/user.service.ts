@@ -18,45 +18,73 @@ export class UserService {
 		this.userOnboarding.push(login);
 	}
 
+	verifyDisplayName(displayName: string): boolean {
+		const regex = /^[a-zA-Z0-9]+$/;
+		if (displayName.length < 3 || displayName.length > 15) return false;
+		if (!regex.test(displayName)) return false;
+		return true;
+	}
+
 	async getUserByLogin(userLogin: string): Promise<UserDto | undefined> {
-		const prismaUser: User = await this.prisma.user.findUnique({
-			where: {
-				login: userLogin,
-			},
-		});
-		if (!prismaUser) return undefined;
-		const user = this.exclude(prismaUser, ['dAuth', 'email', 'updated_at']);
-		return user as UserDto;
+		try {
+			const prismaUser: User = await this.prisma.user.findUnique({
+				where: {
+					login: userLogin,
+				},
+			});
+			if (!prismaUser) return undefined;
+			const user = this.exclude(prismaUser, ['dAuth', 'email', 'updated_at']);
+			return user as UserDto;
+		} catch (e) {
+			throw e;
+		}
 	}
 
 	async editUser(userId: number, dto: EditUserDto): Promise<UserDto> {
-		const user = await this.prisma.user.update({
-			where: {
-				id: userId,
-			},
-			data: {
-				...dto,
-			},
-		});
-		return user as UserDto;
+		try {
+			if (dto.display_name) {
+				const displayName = await this.checkDisplayName(dto.display_name);
+				if (displayName) throw new Error('Display name already taken');
+				if (!this.verifyDisplayName(dto.display_name)) throw new Error('Invalid display name');
+			}
+			const user = await this.prisma.user.update({
+				where: {
+					id: userId,
+				},
+				data: {
+					...dto,
+				},
+			});
+			return user as UserDto;
+		} catch (e) {
+			throw e;
+		}
 	}
 
 	async getUser(login: string): Promise<User> {
-		const user: User = await this.prisma.user.findUnique({
-			where: {
-				login: login,
-			},
-		});
-		return user as User;
+		try {
+			const user: User = await this.prisma.user.findUnique({
+				where: {
+					login: login,
+				},
+			});
+			return user as User;
+		} catch (e) {
+			throw e;
+		}
 	}
 
 	async checkDisplayName(displayName: string): Promise<boolean> {
-		const user = await this.prisma.user.findUnique({
-			where: {
-				display_name: displayName,
-			},
-		});
-		return user ? true : false;
+		try {
+			const user = await this.prisma.user.findUnique({
+				where: {
+					display_name: displayName,
+				},
+			});
+			return user ? true : false;
+		} catch (e) {
+			throw e;
+		}
 	}
 
 	async createUser(dto: CreateUserDto): Promise<User> {
@@ -64,6 +92,7 @@ export class UserService {
 		try {
 			const displayName = await this.checkDisplayName(dto.display_name);
 			if (displayName) throw new Error('Display name already taken');
+			if (!this.verifyDisplayName(dto.display_name)) throw new Error('Invalid display name');
 			const user = await this.prisma.user.create({
 				data: {
 					login: dto.login,
@@ -75,8 +104,7 @@ export class UserService {
 			this.userOnboarding = this.userOnboarding.filter((login) => login !== dto.login);
 			return user;
 		} catch (e) {
-			console.log(e);
+			throw e;
 		}
-		return null;
 	}
 }
