@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { EditUserDto, UserDto } from './dto';
 import { User } from '@prisma/client';
@@ -43,7 +43,63 @@ export class UserService {
 		});
 	}
 
-/* 	async getFriends(userLogin: string): Promise<UserDto[]> {
+	async findUserByName(username: string): Promise<User | null> {
+		try {
+			const user = await this.prisma.user.findUnique({
+				where: {
+					login: username,
+				},
+			});
+			if (!user) return null;
+			return user;
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	async addFriend(username: string, friendUsername: string): Promise<void> {
+		try {
+			const targetUser = await this.findUserByName(friendUsername);
+			if (!targetUser) throw new ForbiddenException('User not found');
+
+			const user = await this.prisma.user.findUnique({
+				where: {
+					login: username,
+				},
+				include: {
+					friends: true,
+				},
+			});
+			if (!user) throw new ForbiddenException('User not found');
+
+			const friend = user.friends.find((friend) => friend.friend_id === targetUser.id);
+			if (friend) {
+				throw new BadRequestException('You are already friend with this user');
+			}
+
+			const blocked = await this.prisma.blocked.findUnique({
+				where: {
+					blocked_by_id_blocked_id: {
+						blocked_by_id: targetUser.id,
+						blocked_id: user.id,
+					},
+				},
+			});
+			if (blocked) throw new ForbiddenException('You are blocked by this user');
+
+			await this.prisma.friends.create({
+				data: {
+					user_id: user.id,
+					friend_id: targetUser.id,
+				},
+			});
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	/*
+ 	async getFriends(userLogin: string): Promise<UserDto[]> {
 		try {
 			const user = await this.prisma.user.findUnique({
 				where: {
@@ -73,8 +129,8 @@ export class UserService {
 		} catch (e) {
 			throw e;
 		}
-	} */
-/* 
+	}
+
 	async addFriend(userLogin: string, friendLogin: string): Promise<void> {
 		const user = await this.prisma.user.findUnique({
 			where: {
@@ -134,5 +190,5 @@ export class UserService {
 			throw e;
 		}
 	}
-*/
+	*/
 }
