@@ -6,8 +6,12 @@ import { ChannelUserEntity } from './impl/ChannelUserEntity';
 // PRISMA
 import { Prisma, User, Channel, ChannelUser, ChannelMessage } from '@prisma/client';
 // DTO
+<<<<<<< HEAD
 import { ChannelListElemDto, CreateChannelDto, ChannelSettingsDto, ChannelModPwdDto, createChannelUserDto, AdminModUserDto, PasswordRequiredActionDto, ChannelDto } from './dto/channel.dto';
 import { ChannelUserDto } from './dto/channel-user.dto';
+=======
+import { ChannelListElemDto, CreateChannelDto, ChannelSettingsDto, ChannelModPwdDto, JoinChannelDto, AdminModUserDto, PasswordRequiredActionDto } from './dto/channel.dto';
+>>>>>>> f4f94d8 (feat: send channel message returns username + content + created at)
 import { ChannelMessageContentDto, ChannelMessageDto } from './dto/channel-message.dto';
 // SERVICES
 import { PrismaService } from 'src/prisma/prisma.service';
