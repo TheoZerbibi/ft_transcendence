@@ -79,7 +79,7 @@ Table game_players {
 Table users {
   id Int [pk, increment]
   login String [unique, not null]
-  display_name String [not null]
+  display_name String [unique, not null]
   email String [not null]
   dAuth Boolean [not null, default: false]
   avatar String [not null]
