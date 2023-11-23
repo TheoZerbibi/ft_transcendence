@@ -72,7 +72,6 @@ export default {
 		}
 		else if (this.$cookies.get('userOnboarding')) {
 			const cookie = this.$cookies.get('userOnboarding');
-			console.log(cookie);
 			this.step = 1;
 			this.newUser.login = cookie.login;
 			this.newUser.email = cookie.email;
@@ -92,19 +91,18 @@ export default {
 				},
 				body: JSON.stringify(this.newUser),
 			}
-			console.log(requestOptions);
+			this.$cookies.remove('userOnboarding');
 			await fetch(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users`,
 			requestOptions
 			).then(async (response) => {
 				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
-					console.log(response);
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
 				const data = await response.json();
-				console.log(response);
 				if (data) {
-					this.$cookies.set('token', 'true');
+					this.$cookies.set('token', data.access_token, '1m');
 					this.$router.push({ name: `Home` });
 				}
 			}).catch((error) => {

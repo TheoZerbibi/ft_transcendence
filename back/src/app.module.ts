@@ -14,9 +14,9 @@ import { RedisModule } from './redis/redis.module';
 		ConfigModule.forRoot({
 			isGlobal: true,
 		}),
+		AuthModule,
 		PrismaModule,
 		RedisModule,
-		AuthModule,
 		UserModule,
 		DirectMessageModule,
 		ChannelModule,

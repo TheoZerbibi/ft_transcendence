@@ -179,8 +179,6 @@ export default {
 		this.backgroundLeft = this.backgroundLeft.replace('/public', '');
 		this.backgroundRight = backgroundList[Math.floor(Math.random() * backgroundList.length)];
 		this.backgroundRight = this.backgroundRight.replace('/public', '');
-		console.log(this.backgroundLeft);
-		console.log(this.backgroundRight);
 	},
 	async mounted() {
 		const route = useRoute();
@@ -371,7 +369,6 @@ export default {
 			if (gameData.leftUser) gameData.leftUser.score = 0;
 			if (gameData.rightUser) gameData.rightUser.score = 0;
 			if (data.leftUser) {
-				console.log(data.leftUser);
 				this.userData.leftPlayer = {
 					name: data.leftUser.displayName,
 					avatar: data.leftUser.avatar,
@@ -425,7 +422,6 @@ export default {
 				console.error('Player is null');
 				return this.$router.push({ name: 'GameCreator' });
 			}
-			console.log(data);
 			gameData.player.update(data.position);
 		});
 
@@ -458,7 +454,6 @@ export default {
 		this.socket.on('game-end', (data: any) => {
 			gameData.go = false;
 			if (!gameData.leftUser || !gameData.rightUser) return;
-			console.log(data);
 			if (data.loser.side == SIDE.LEFT) {
 				gameData.leftUser.setPoint(data.loser.score);
 				if (!this.userData['leftPlayer'].relaseEnergy) this.dead('leftPlayer');
@@ -494,7 +489,6 @@ export default {
 				this.userData[user].relaseEnergy = false;
 				this.userData[user].isDead = true;
 				this.userData[user].cadre = '/game/UI/cadres/cadre6.png';
-				console.log(this.userData[user].isDead);
 			}, 9000);
 		},
 	},

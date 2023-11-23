@@ -67,10 +67,8 @@ export default {
 	},
 	methods: {
 		processData(data: any) {
-			console.log('data', data);
 			const start = new Date(data.startDate);
 			const end = new Date(data.endingDate);
-			console.log(data);
 			const durationInMilliseconds = end.getTime() - start.getTime();
 			const minutes = Math.floor((durationInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
 			const seconds = Math.floor((durationInMilliseconds % (1000 * 60)) / 1000);

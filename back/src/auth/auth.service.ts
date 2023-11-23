@@ -71,14 +71,13 @@ export class AuthService {
 					email: user.email,
 					avatar: user.image.link,
 				};
-				this.userService.addUserOnboarding(newUser.login);
+				UserService.addUserOnboarding(user.login);
 				return newUser;
 			} else {
 				const token = await this.signToken(userPrisma);
 				return { ...token, ...userPrisma };
 			}
 		} catch (e) {
-			console.log(e);
 			throw new ForbiddenException('Invalid request');
 		}
 	}

@@ -76,11 +76,9 @@ export default {
 				);
 				if (!response.ok) {
 					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
-					console.log(response);
 					return;
 				}
 				const data = await response.json();
-				console.log(response);
 				if (!data.uid) this.createGame();
 				else this.$router.push({ name: `Game`, params: { uid: data.uid } });
 			} catch (error) {
