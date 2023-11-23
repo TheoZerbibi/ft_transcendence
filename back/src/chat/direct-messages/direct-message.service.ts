@@ -18,7 +18,7 @@ export class DirectMessageService {
 
 	/******************************* DirectMessage Access ******************************/
 
-	async findUserByName(username: string): Promise<User> {
+	async findUserByName(username: string): Promise<User | null> {
 		try {
 			const user = await this.prisma.user.findUnique({
 				where: {
@@ -105,12 +105,12 @@ export class DirectMessageService {
 		target_name: string,
 		dto: CreateDirectMessageDto,
 	): Promise<DirectMessageDto> {
-		const targetUser = this.findUserByName(target_name);
+		const targetUser: User | null = await this.findUserByName(target_name);
 		if (!targetUser) throw new BadRequestException('User not found');
 
 		const friend = await this.prisma.friends.findMany({
 			where: {
-				OR : [
+				OR: [
 					{
 						user_id: user.id,
 						friend_id: targetUser.id,
@@ -119,7 +119,7 @@ export class DirectMessageService {
 						user_id: targetUser.id,
 						friend_id: user.id,
 					},
-				]
+				],
 			},
 		});
 		if (!friend) {
