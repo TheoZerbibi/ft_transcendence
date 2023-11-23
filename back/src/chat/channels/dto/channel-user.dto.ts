@@ -65,7 +65,3 @@ export class ModChannelUserDto {
 	// eslint-disable-next-line
 	muted_until: Date;
 }
-
-export class TargetInfos {
-	
-}

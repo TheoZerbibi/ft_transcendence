@@ -6,13 +6,20 @@ import { ChannelUserEntity } from './impl/ChannelUserEntity';
 // PRISMA
 import { Prisma, User, Channel, ChannelUser, ChannelMessage } from '@prisma/client';
 // DTO
-import { ChannelListElemDto, CreateChannelDto, ChannelSettingsDto, ChannelModPwdDto, PasswordRequiredActionDto, ChannelDto } from './dto/channel.dto';
+import {
+	ChannelListElemDto,
+	CreateChannelDto,
+	ChannelSettingsDto,
+	ChannelModPwdDto,
+	PasswordRequiredActionDto,
+	ChannelDto,
+} from './dto/channel.dto';
 import { ChannelUserDto, CreateChannelUserDto, ModChannelUserDto } from './dto/channel-user.dto';
 import { ChannelMessageContentDto, ChannelMessageDto } from './dto/channel-message.dto';
 // SERVICES
 import { PrismaService } from 'src/prisma/prisma.service';
 // PWD HASHING
-import argon2d from 'argon2';
+import * as argon2 from 'argon2';
 
 @Injectable()
 export class ChannelService {
@@ -63,7 +70,7 @@ export class ChannelService {
 			const channelUser = channel.getUsers().find((channelUser) => channelUser.getUserId() === user.id);
 			return !channelUser.isBanned();
 		});
-		const  sortedChannels = allowedChannels
+		const sortedChannels = allowedChannels
 			.sort((a, b) => b.getUpdatedAt().getTime() - a.getUpdatedAt().getTime())
 			.slice(0, 20);
 		return sortedChannels.map((channel) => ({ name: channel.getName(), updated_at: channel.getUpdatedAt() }));
@@ -226,21 +233,24 @@ export class ChannelService {
 	/************************************** Users ***********************************/
 
 	async createChannelUser(user: User, channel_name: string, dto: CreateChannelUserDto): Promise<ChannelDto> {
-		const channel: ChannelEntity | null = await this.findChannelByName(channel_name);
-		if (!channel) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
+		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
+		if (!channelEntity) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
 
-		const channelUserEntity: ChannelUserEntity | null = await this.findChannelUser(user, channel);
+		const channelUserEntity: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		if (channelUserEntity) {
 			if (channelUserEntity.isBanned()) throw new ForbiddenException('You are banned from this channel');
 			throw new BadRequestException('You are already on this channel');
 		}
 
-		if (!channel.getIsPublic() && !argon2d.verify(channel.getPassword(), dto.chan_password)) throw new BadRequestException('Wrong password');
+		if (!channelEntity.getIsPublic()) {
+			const passwordMatch = await argon2.verify(channelEntity.getPassword(), dto.chan_password);
+			if (!passwordMatch) throw new BadRequestException('Wrong password');
+		}
 
 		try {
 			const channelUser: ChannelUser = await this.prisma.channelUser.create({
 				data: {
-					channel_id: channel.getId(),
+					channel_id: channelEntity.getId(),
 					user_id: user.id,
 				},
 			});
@@ -250,10 +260,10 @@ export class ChannelService {
 				.addUser(new ChannelUserEntity(channelUser));
 
 			const channelDto: ChannelDto = {
-				name: channel.getName(),
-				is_public: channel.getIsPublic(),
-				created_at: channel.getCreatedAt(),
-				updated_at: channel.getUpdatedAt(),
+				name: channelEntity.getName(),
+				is_public: channelEntity.getIsPublic(),
+				created_at: channelEntity.getCreatedAt(),
+				updated_at: channelEntity.getUpdatedAt(),
 			};
 			return channelDto;
 		} catch (e) {
@@ -263,7 +273,11 @@ export class ChannelService {
 
 	/************************************* Messages ************************************/
 
-	async createChannelMessage(user: User, channel_name: string, messageDto: ChannelMessageContentDto): Promise<ChannelMessageDto> {
+	async createChannelMessage(
+		user: User,
+		channel_name: string,
+		messageDto: ChannelMessageContentDto,
+	): Promise<ChannelMessageDto> {
 		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
 		if (!channelEntity) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
 
@@ -321,7 +335,8 @@ export class ChannelService {
 			if (!channelUser.isAdmin())
 				throw new ForbiddenException('You are not authorized to operate on this channel');
 
-			if (!channelEntity.getIsPublic() && !argon2d.verify(channelEntity.getPassword(), newParamsdto.password)) throw new BadRequestException('Wrong password');
+			if (!channelEntity.getIsPublic() && !argon2.verify(channelEntity.getPassword(), newParamsdto.password))
+				throw new BadRequestException('Wrong password');
 
 			const channelPrisma = await this.prisma.channel.update({
 				where: {
@@ -356,14 +371,17 @@ export class ChannelService {
 		if (!channelUser.isOwner())
 			throw new ForbiddenException('You are not authorized to set or modify the password on this channel');
 
-		if (!argon2d.verify(channelEntity.getPassword(), dto.prev_pwd)) throw new BadRequestException('Wrong password');
+		if (!channelEntity.getIsPublic()) {
+			const passwordMatch = await argon2.verify(channelEntity.getPassword(), dto.prev_pwd);
+			if (!passwordMatch) throw new BadRequestException('Wrong previous password');
+		}
 
 		if (dto.new_pwd.length > 20 || dto.new_pwd_confirm.length > 20)
 			throw new BadRequestException('Password too long (max 20 characters)');
 		if (dto.new_pwd !== dto.new_pwd_confirm) throw new BadRequestException('Passwords do not match');
 
 		dto.new_pwd ? channelEntity.setIsPublic(false) : channelEntity.setIsPublic(true);
-		const hashedPwd = await argon2d.hash(dto.new_pwd);
+		const hashedPwd = await argon2.hash(dto.new_pwd);
 		channelEntity.setPassword(hashedPwd);
 
 		try {
@@ -377,7 +395,7 @@ export class ChannelService {
 				},
 			});
 			channelEntity.setUpdatedAt(new Date());
-		} catch	(e) {
+		} catch (e) {
 			throw e;
 		}
 	}
@@ -392,7 +410,10 @@ export class ChannelService {
 		if (!channelUser) throw new BadRequestException(`You are not on this channel`);
 		if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
 
-		if (!channelEntity.getIsPublic() && !argon2d.verify(channelEntity.getPassword(), dto.password)) throw new BadRequestException('Wrong password');
+		if (!channelEntity.getIsPublic()) {
+			const passwordMatch = await argon2.verify(channelEntity.getPassword(), dto.password);
+			if (!passwordMatch) throw new BadRequestException('Wrong password');
+		}
 
 		if (!channelUser.isOwner()) throw new BadRequestException('You cannot set someone as admin on this channel');
 
@@ -510,7 +531,10 @@ export class ChannelService {
 		if (!channelUser) throw new BadRequestException(`You are not on this channel`);
 		if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
 
-		if (!channelEntity.getIsPublic() && !argon2d.verify(channelEntity.getPassword(), dto.password)) throw new BadRequestException('Wrong password');
+		if (!channelEntity.getIsPublic()) {
+			const passwordMatch = await argon2.verify(channelEntity.getPassword(), dto.password);
+			if (!passwordMatch) throw new BadRequestException('Wrong password');
+		}
 
 		if (!channelUser.isOwner()) throw new BadRequestException('You cannot delete a channel you do not own');
 		try {
@@ -588,7 +612,10 @@ export class ChannelService {
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		if (!channelUser) throw new BadRequestException(`You are not on this channel`);
 		if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
-		if (!channelEntity.getIsPublic() && !argon2d.verify(channelEntity.getPassword(), pwd)) throw new BadRequestException('Wrong password');
+		if (!channelEntity.getIsPublic()) {
+			const passwordMatch = await argon2.verify(channelEntity.getPassword(), pwd);
+			if (!passwordMatch) throw new BadRequestException('Wrong password');
+		}
 		if (!channelUser.isAdmin())
 			throw new ForbiddenException(`You are not authorized to ${action} someone on this channel`);
 
