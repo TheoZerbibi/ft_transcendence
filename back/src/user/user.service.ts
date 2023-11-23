@@ -1,19 +1,22 @@
-
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { EditUserDto, UserDto } from './dto';
-import { FriendRequestDto } from './dto/friend.dto';
 import { Prisma, User } from '@prisma/client';
+import { FriendRequestDto } from './dto/friend.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as fs from 'fs';
 import { ConfigService } from '@nestjs/config';
 import { v2 as cloudinary } from 'cloudinary';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
+	private cloudinary;
+
 	constructor(
 		private prisma: PrismaService,
 		private config: ConfigService,
+		private jwt: JwtService,
 	) {}
 
 	private static userOnboarding: Array<string> = new Array<string>();

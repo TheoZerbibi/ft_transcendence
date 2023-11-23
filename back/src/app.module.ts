@@ -21,6 +21,7 @@ import { RedisModule } from './redis/redis.module';
 		DirectMessageModule,
 		ChannelModule,
 		GameModule,
+		UserModule,
 	],
 })
 export class AppModule {}
