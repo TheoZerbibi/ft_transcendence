@@ -1,25 +1,36 @@
-<template >
-	<v-row align="center" justify="center" class="fill-height  d-flex" :class="{'background' : step === 0, 'black-background': step > 0 }">
+<template>
+	<v-row
+		align="center"
+		justify="center"
+		class="fill-height d-flex"
+		:class="{ background: step === 0, 'black-background': step > 0 }"
+	>
 		<div v-if="step === 0">
-			<img src="/ui/Door.png" class="door" @click="redirectToOAuth"/>
+			<img src="/ui/Door.png" class="door" @click="redirectToOAuth" />
 		</div>
 		<div v-if="step > 0">
 			<v-card class="card-container" color="tranparent">
 				<div v-if="step === 1" class="card-content">
-        	    	<input type="text" @keyup.enter="nextStep" v-model="newUser.display_name" placeholder=" ENTER YOUR NAME " class="input"/>
-        	    	<button @click="nextStep" class="next-button"></button>
+					<input
+						type="text"
+						@keyup.enter="nextStep"
+						v-model="newUser.display_name"
+						placeholder=" ENTER YOUR NAME "
+						class="input"
+					/>
+					<button @click="nextStep" class="next-button"></button>
 				</div>
 				<div v-if="step === 2" class="card-content">
-					<UploadFile v-model="newUser.avatar"/>
-					<img v-if="newUser.avatar" :src="newUser.avatar" class="uploaded-image" alt="Uploaded Image"/>
+					<UploadFile v-model="newUser.avatar" />
+					<img v-if="newUser.avatar" :src="newUser.avatar" class="uploaded-image" alt="Uploaded Image" />
 					<button @click="nextStep" class="next-button"></button>
 				</div>
 			</v-card>
-			<img src="/ui/ALBUM.png" class="album" alt="Album"/>
+			<img src="/ui/ALBUM.png" class="album" alt="Album" />
 		</div>
 	</v-row>
-</template>'
-
+</template>
+'
 
 <script lang="ts">
 import Snackbar from '../components/layout/Snackbar.vue';
@@ -45,7 +56,8 @@ export default {
 			login: '' as string,
 			email: '' as string,
 			display_name: '' as string,
-			avatar: '' as string};
+			avatar: '' as string,
+		};
 
 		return {
 			JWT,
@@ -69,15 +81,13 @@ export default {
 				snackbarStore.showSnackbar('Invalid credentials', 3000, 'red');
 				return this.$router.push({ name: `Home` });
 			}
-		}
-		else if (this.$cookies.get('userOnboarding')) {
+		} else if (this.$cookies.get('userOnboarding')) {
 			const cookie = this.$cookies.get('userOnboarding');
 			this.step = 1;
 			this.newUser.login = cookie.login;
 			this.newUser.email = cookie.email;
 			this.newUser.avatar = cookie.avatar;
-		}
-		else {
+		} else {
 			this.step = 0;
 		}
 	},
@@ -90,25 +100,24 @@ export default {
 					'Access-Control-Allow-Origin': '*',
 				},
 				body: JSON.stringify(this.newUser),
-			}
+			};
 			this.$cookies.remove('userOnboarding');
-			await fetch(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users`,
-			requestOptions
-			).then(async (response) => {
-				if (!response.ok) {
-					const error = await response.json();
-					snackbarStore.showSnackbar(error.message, 3000, 'red');
-					return;
-				}
-				const data = await response.json();
-				if (data) {
-					this.$cookies.set('token', data.access_token, '1m');
-					this.$router.push({ name: `Home` });
-				}
-			}).catch((error) => {
-				console.error(error);
-			});
-
+			await fetch(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users`, requestOptions)
+				.then(async (response) => {
+					if (!response.ok) {
+						const error = await response.json();
+						snackbarStore.showSnackbar(error.message, 3000, 'red');
+						return;
+					}
+					const data = await response.json();
+					if (data) {
+						this.$cookies.set('token', data.access_token, '1m');
+						this.$router.push({ name: `Home` });
+					}
+				})
+				.catch((error) => {
+					console.error(error);
+				});
 		},
 		redirectToOAuth() {
 			const HOST = import.meta.env.VITE_HOST;
@@ -142,11 +151,11 @@ export default {
 }
 
 .album {
-    position: fixed;
+	position: fixed;
 	bottom: -15%;
-    left: 0;
-    right: 0;
-    margin: auto;
+	left: 0;
+	right: 0;
+	margin: auto;
 	width: 300px;
 }
 
@@ -156,7 +165,6 @@ export default {
 	word-wrap: break-word;
 	margin: 16px;
 	height: 30px;
-	
 }
 
 .next-button {
@@ -213,9 +221,9 @@ export default {
 }
 
 .uploaded-image {
-    width: 100px;
-    height: 100px;
-    margin-left: 10px;
-    object-fit: cover;
+	width: 100px;
+	height: 100px;
+	margin-left: 10px;
+	object-fit: cover;
 }
 </style>
