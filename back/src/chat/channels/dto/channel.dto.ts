@@ -8,6 +8,21 @@ export class ChannelDto {
 	@IsString()
 	// eslint-disable-next-line
 	name: string;
+
+	@ApiProperty()
+	@IsBoolean()
+	// eslint-disable-next-line
+	is_public: boolean;
+
+	@ApiProperty()
+	@IsDate()
+	// eslint-disable-next-line
+	created_at: Date;
+
+	@ApiProperty()
+	@IsDate()
+	// eslint-disable-next-line
+	updated_at: Date;
 }
 
 export class ChannelWithUsersDto extends ChannelDto {
@@ -34,43 +49,6 @@ export class ChannelListElemDto {
 	@IsDate()
 	// eslint-disable-next-line
 	updated_at: Date;
-}
-
-export class ChannelAccessDto {
-	@ApiProperty()
-	@IsNumber()
-	// eslint-disable-next-line
-	id: number;
-
-	@ApiProperty()
-	@IsString()
-	// eslint-disable-next-line
-	name: string;
-
-	@ApiProperty()
-	@IsBoolean()
-	// eslint-disable-next-line
-	is_public: boolean;
-
-	@ApiProperty()
-	@IsDate()
-	// eslint-disable-next-line
-	created_at: Date;
-
-	@ApiProperty()
-	@IsDate()
-	// eslint-disable-next-line
-	updated_at: Date;
-
-	@ApiProperty()
-	@IsArray()
-	// eslint-disable-next-line
-	users: ChannelUserDto[];
-
-	@ApiProperty()
-	@IsArray()
-	// eslint-disable-next-line
-	messages: ChannelMessageDto[];
 }
 
 export class ChannelSettingsDto {
@@ -106,30 +84,6 @@ export class ChannelModPwdDto {
 	@IsString()
 	// eslint-disable-next-line
 	new_pwd_confirm: string;
-}
-
-export class JoinChannelDto {
-	@ApiProperty()
-	@IsString()
-	// eslint-disable-next-line
-	name: string;
-
-	@ApiProperty()
-	@IsString()
-	// eslint-disable-next-line
-	password: string;
-}
-
-export class AdminModUserDto {
-	@ApiProperty()
-	@IsNumber()
-	// eslint-disable-next-line
-	target_id: number;
-
-	@ApiProperty()
-	@IsString()
-	// eslint-disable-next-line
-	password: string;
 }
 
 export class PasswordRequiredActionDto {

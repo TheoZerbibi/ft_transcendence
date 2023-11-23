@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { DirectMessageModule } from './chat/direct-messages/direct-message.module';
 import { ChannelModule } from './chat/channels/channels.module';
 import { GameModule } from './game/game.module';
 import { RedisModule } from './redis/redis.module';
@@ -16,6 +17,9 @@ import { RedisModule } from './redis/redis.module';
 		AuthModule,
 		PrismaModule,
 		RedisModule,
+		AuthModule,
+		UserModule,
+		DirectMessageModule,
 		ChannelModule,
 		GameModule,
 		UserModule,

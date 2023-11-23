@@ -1,21 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class ChannelUserDto {
 	@ApiProperty()
-	@IsNumber()
+	@IsString()
 	// eslint-disable-next-line
-	id: number;
-
-	@ApiProperty()
-	@IsNumber()
-	// eslint-disable-next-line
-	channel_id: number;
+	username: string;
 
 	@ApiProperty()
 	@IsString()
 	// eslint-disable-next-line
-	user_id: string;
+	avatar: string;
 
 	@ApiProperty()
 	@IsBoolean()
@@ -40,24 +36,36 @@ export class ChannelUserDto {
 
 export class CreateChannelUserDto {
 	@ApiProperty()
-	@IsNumber()
-	// eslint-disable-next-line
-	user_id: number;
-
-	@ApiProperty()
-	@IsNumber()
-	// eslint-disable-next-line
-	channel_id: number;
-
-	@ApiProperty()
-	@IsOptional()
-	@IsBoolean()
-	// eslint-disable-next-line
-	is_owner: boolean;
-
-	@ApiProperty()
 	@IsString()
 	@IsOptional()
 	// eslint-disable-next-line
 	chan_password: string;
+}
+
+export class ModChannelUserDto {
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	target_login: string;
+
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	password: string;
+
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	action: string;
+
+	@ApiProperty()
+    @Transform(({ value }) => new Date(value), { toClassOnly: true })
+	@IsDate()
+	@IsOptional()
+	// eslint-disable-next-line
+	muted_until: Date;
+}
+
+export class TargetInfos {
+	
 }

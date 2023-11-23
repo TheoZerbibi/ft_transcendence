@@ -3,8 +3,7 @@ import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/com
 // PRISMA
 import { Prisma, User, DirectMessage, Friends, Blocked } from '@prisma/client';
 // DTO
-import { DirectMessageDto } from './dto/direct-message.dto';
-import { ConversationDto } from './dto/conversation.dto';
+import { CreateDirectMessageDto, DirectMessageDto } from './dto/direct-message.dto';
 // SERVICES
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserService } from 'src/user/user.service';
@@ -17,94 +16,137 @@ export class DirectMessageService {
 	/* 										Getters									   */
 	/***********************************************************************************/
 
-	/******************************* Direct Message Lists ******************************/
-
-	/*
-	async getLastConversations(user: User): Promise<User[]> {
-		const friends = await this.prisma.directMessage.findMany({
-			where: {
-				OR: [
-					{
-						user_id: user.id,
-					},
-					{
-						friend_id: user.id,
-					},
-				],
-			},
-			select: {
-				user: {
-					select: {
-						id: true,
-						login: true,
-						avatar: true,
-					},
-				},
-				friend: {
-					select: {
-						id: true,
-						login: true,
-						avatar: true,
-					},
-				},
-			},
-			orderBy: {
-				created_at: 'desc',
-			},
-			take: 10, // Limit the result to 10 records
-		});
-
-		const usersSet = new Set<User>();
-		friends.forEach((friend) => {
-			if (friend.user.id !== user.id) {
-				usersSet.add(friend.user);
-			}
-			if (friend.friend.id !== user.id) {
-				usersSet.add(friend.friend);
-			}
-		});
-
-		const usersList = Array.from(usersSet).slice(0, 10);
-		return usersList;
-	}
-	*/
-
 	/******************************* DirectMessage Access ******************************/
 
-	/*
-	async accessConversation(user: User, friend_login: string): Promise<DirectMessage[]> {
-
-		
+	async findUserByName(username: string): Promise<User> {
+		try {
+			const user = await this.prisma.user.findUnique({
+				where: {
+					login: username,
+				},
+			});
+			if (!user) return null;
+			return user;
+		} catch (e) {
+			throw e;
+		}
 	}
 
-	async findConversationByUsername() {}
-	*/
+	async accessDirectMessagesWith(user: User, target_name: string): Promise<DirectMessageDto[]> {
+		try {
+			const targetUser = await this.findUserByName(target_name);
+			if (!targetUser) throw new BadRequestException('User not found');
+
+			const sender = await this.prisma.user.findUnique({
+				where: {
+					login: target_name,
+				},
+				include: {
+					friends: true,
+				},
+			});
+			if (!sender || !targetUser) throw new BadRequestException('User not found');
+
+			let friend = sender.friends.find((friend) => friend.friend_id === targetUser.id);
+			friend = friend ? friend : sender.friends.find((friend) => friend.user_id === targetUser.id);
+			if (!friend) {
+				throw new BadRequestException('You are not friend with this user');
+			}
+
+			const blocked = await this.prisma.blocked.findUnique({
+				where: {
+					blocked_by_id_blocked_id: {
+						blocked_by_id: targetUser.id,
+						blocked_id: user.id,
+					},
+				},
+			});
+			if (blocked) {
+				throw new ForbiddenException('You are blocked by this user');
+			}
+
+			const directMessages: DirectMessage[] = await this.prisma.directMessage.findMany({
+				where: {
+					OR: [
+						{
+							id: user.id,
+							friend_id: targetUser.id,
+						},
+						{
+							id: targetUser.id,
+							friend_id: user.id,
+						},
+					],
+				},
+				orderBy: {
+					created_at: 'asc',
+				},
+				take: 50,
+			});
+			const directMessageDtos: DirectMessageDto[] = directMessages.map((directMessage) => ({
+				id: directMessage.id,
+				content: directMessage.content,
+				created_at: directMessage.created_at,
+				user_id: directMessage.user_id,
+				friend_id: directMessage.friend_id,
+			}));
+			return directMessageDtos;
+		} catch (e) {
+			throw e;
+		}
+	}
 
 	/***********************************************************************************/
 	/* 										Creation								   */
 	/***********************************************************************************/
 
-	//async createConversation(user: User, friend_login: string, content: string): Promise<ConversationDto> { }
+	async createDirectMessageWith(
+		user: User,
+		target_name: string,
+		dto: CreateDirectMessageDto,
+	): Promise<DirectMessageDto> {
+		const targetUser = this.findUserByName(target_name);
+		if (!targetUser) throw new BadRequestException('User not found');
 
-	/***********************************************************************************/
-	/* 									Modification								   */
-	/***********************************************************************************/
-
-	/********************************* DirectMessages **********************************/
-
-	//async answerInConversation() {}
-
-	/************************************** Users **************************************/
-
-	//async blockFriend() {}
-
-	/***********************************************************************************/
-	/* 									Deletion									   */
-	/***********************************************************************************/
-
-	//async deleteDirectMessage() {}
-
-	/***********************************************************************************/
-	/* 										UTILS									   */
-	/***********************************************************************************/
+		const friend = await this.prisma.friends.findMany({
+			where: {
+				OR : [
+					{
+						user_id: user.id,
+						friend_id: targetUser.id,
+					},
+					{
+						user_id: targetUser.id,
+						friend_id: user.id,
+					},
+				]
+			},
+		});
+		if (!friend) {
+			throw new BadRequestException('You are not friend with this user');
+		}
+		const blocked = await this.prisma.blocked.findMany({
+			where: {
+				blocked_by_id: targetUser.id,
+				blocked_id: user.id,
+			},
+		});
+		if (blocked) {
+			throw new ForbiddenException('You are blocked by this user');
+		}
+		const directMessage: DirectMessage = await this.prisma.directMessage.create({
+			data: {
+				content: dto.content,
+				user_id: user.id,
+				friend_id: targetUser.id,
+			},
+		});
+		const directMessageDto: DirectMessageDto = {
+			content: directMessage.content,
+			created_at: directMessage.created_at,
+			user_id: directMessage.user_id,
+			friend_id: directMessage.friend_id,
+		};
+		return directMessageDto;
+	}
 }
