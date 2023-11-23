@@ -10,14 +10,7 @@ import { ChannelUserEntity } from './impl/ChannelUserEntity';
 // PRISMA
 import { User } from '@prisma/client';
 // DTO
-import {
-	ChannelDto,
-	ChannelListElemDto,
-	CreateChannelDto,
-	ChannelSettingsDto,
-	ChannelModPwdDto,
-	PasswordRequiredActionDto,
-} from './dto/channel.dto';
+import { ChannelDto, ChannelListElemDto, CreateChannelDto, ChannelSettingsDto, ChannelModPwdDto, PasswordRequiredActionDto } from './dto/channel.dto';
 import { ChannelUserDto, CreateChannelUserDto, ModChannelUserDto } from './dto/channel-user.dto';
 import { ChannelMessageContentDto, ChannelMessageDto } from './dto/channel-message.dto';
 // SERVICES
@@ -119,10 +112,7 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Send message to channel' })
 	@ApiBearerAuth('JWT-auth')
-	async createChannelMessage(
-		@GetUser() user: User,
-		@Param('channel_name') channel_name: string,
-		@Body() ChannelMessageContentDto: ChannelMessageContentDto,
+	async createChannelMessage( @GetUser() user: User, @Param('channel_name') channel_name: string, @Body() ChannelMessageContentDto: ChannelMessageContentDto,
 	): Promise<ChannelMessageDto> {
 		return await this.channelService.createChannelMessage(user, channel_name, ChannelMessageContentDto);
 	}
@@ -189,7 +179,10 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Leave channel' })
 	@ApiBearerAuth('JWT-auth')
-	async deleteChannelUser(@GetUser() user: User, @Param('channel_name') channel_name: string): Promise<void> {
+	async deleteChannelUser(
+		@GetUser() user: User,
+		@Param('channel_name') channel_name: string,
+	): Promise<void> {
 		return await this.channelService.deleteChannelUser(user, channel_name);
 	}
 
@@ -224,4 +217,5 @@ export class ChannelController {
 	async getAllChannelUsersDebug(): Promise<ChannelUserEntity[]> {
 		return await this.channelService.getAllChannelUsersDebug();
 	}
+
 }

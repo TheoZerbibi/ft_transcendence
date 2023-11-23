@@ -109,7 +109,7 @@ export class ChannelService {
 				where: {
 					channel_id: channel.getId(),
 				},
-				include: {
+				include : {
 					user: {
 						select: {
 							login: true,
@@ -186,7 +186,7 @@ export class ChannelService {
 						content: message.content,
 						created_at: formattedDate,
 					};
-				}),
+				})
 			);
 			return messageDtos;
 		} catch (e) {
@@ -194,6 +194,7 @@ export class ChannelService {
 			throw e;
 		}
 	}
+
 
 	/***********************************************************************************/
 	/* 										Creation								   */
@@ -283,8 +284,7 @@ export class ChannelService {
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		if (!channelUser) throw new BadRequestException(`You are not on this channel`);
 		if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
-		if (channelUser.isMuted() && channelUser.isMuted() > new Date())
-			throw new ForbiddenException('You are muted on this channel');
+		if (channelUser.isMuted() && channelUser.isMuted() > new Date()) throw new ForbiddenException('You are muted on this channel');
 
 		if (messageDto.content.length === 0) throw new BadRequestException('Message cannot be empty');
 		if (messageDto.content.length > 200) throw new BadRequestException('Message too long (max 200 characters)');
@@ -451,14 +451,8 @@ export class ChannelService {
 		}
 	}
 
-	async modChannelUser(user: User, channel_name: string, dto: ModChannelUserDto): Promise<void> {
-		if (
-			dto.action != 'mute' &&
-			dto.action != 'unmute' &&
-			dto.action != 'kick' &&
-			dto.action != 'ban' &&
-			dto.action != 'unban'
-		)
+	async modChannelUser(user:User, channel_name: string, dto: ModChannelUserDto): Promise<void> {
+		if (dto.action != 'mute' && dto.action != 'unmute' && dto.action != 'kick' && dto.action != 'ban' && dto.action != 'unban')
 			throw new BadRequestException(`Action "${dto.action}" not supported`);
 		const target = await this.prisma.user.findUnique({
 			where: {
@@ -480,7 +474,8 @@ export class ChannelService {
 		);
 		switch (dto.action) {
 			case 'mute':
-				if (!dto.muted_until) throw new BadRequestException('You must specify a date to mute until');
+				if (!dto.muted_until) 
+					throw new BadRequestException('You must specify a date to mute until');
 				targetChanUser.setIsMuted(dto.muted_until);
 				break;
 			case 'unmute':
@@ -489,7 +484,7 @@ export class ChannelService {
 			case 'ban':
 				targetChanUser.setIsBanned(true);
 				break;
-			case 'kick' || 'unban':
+			case 'kick'|| 'unban':
 				try {
 					await this.prisma.channelUser.delete({
 						where: {
@@ -596,7 +591,7 @@ export class ChannelService {
 	/************************************ User Access *********************************/
 
 	// Find a channel user in the channel entity and return null if it doesn't exist
-	async findChannelUser(user: User, channelEntity: ChannelEntity): Promise<ChannelUserEntity | null> {
+ 	async findChannelUser(user: User, channelEntity: ChannelEntity): Promise<ChannelUserEntity | null> {
 		const channelUser: ChannelUserEntity | null = channelEntity
 			.getUsers()
 			.find((channelUser) => channelUser.getUserId() === user.id);
