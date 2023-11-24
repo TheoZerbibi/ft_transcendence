@@ -11,10 +11,10 @@ import { Socket, Server } from 'socket.io';
 import { Logger, UseGuards } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { ChatService } from './chat.service';
-import { IChannel } from './impl/interfaces/IChannel';
-import { IUser } from './impl/interfaces/IUser';
+import { Chat, Channel, User } from './impl/Chat'
 import { JwtGuard } from 'src/auth/guard';
-import { users } from '@prisma/client';
+import { users, channel_users } from '@prisma/client';
+// import { direct_messages } from '@prisma/client';
 
 @WebSocketGateway({
 	cors: {
@@ -31,8 +31,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	) {}
 
 	@WebSocketServer() server: Server;
-
-
 	public async handleConnection(client: Socket): Promise<void> {
 		try {
 			if (!client.handshake.headers.authorization) throw new Error('Invalid token');
@@ -46,29 +44,57 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		}
 	}
 
-	@SubscribeMessage('connection')
-	public async connection(client: Socket, data: any): Promise<void> {
-		const userId: number = data;
-
-		return await this.chatService.registerUser(client, userId);
+	// Await for a stringified channel_users as body
+	@SubscribeMessage('new-connection')
+	public async connection(client: Socket, data: any) {
+		const user: any = JSON.parse(data);
+		const newUser: User = await this.chatService.registerUser(client, user.id);
+		const channels: Channel[] = newUser.getChannels();
+	
+		this.emitToChannels('new-connection', channels, user);
 	}
 
+	@SubscribeMessage('new-direct-message')
+	public dirmsg(client: Socket, data: any): void
+	{
+		const msg:any = JSON.parse(data);
+		const user: User | undefined = this.chatService.getUserById(msg.friend_id);
+
+		if (user  !== undefined) {
+			user.getSocket().emit('new-direct-msg', data);
+		}
+	}
+
+	// transmit channelEntity data to everyone in the channel
 	@SubscribeMessage('channel-update')
 	channelUpdate(client: Socket, data: any): void {
-		// handle update from redis
-		// Transmite data to user on same channel
+
+		const channelData: any = JSON.parse(data);
+		const channelBuf: Channel = this.chatService.getChannelById(channelData.id);
+
+		this.emitToChannel('channel-updated', channelBuf, channelData);
 	}
 
-	@SubscribeMessage('message-posted')
-	messagePosted(client: any, data: any)
+	@SubscribeMessage('new-channel-user')
+	newChannelUser(client: Socket, data: any): void
 	{
-		//Handle new message posted should include Channel on which message are posted
-	}
+		const channel_user: channel_users = JSON.parse(data);
+		console.log('Channel join event triggered');
+		const channel: Channel = this.chatService.getChannelById(channel_user.channel_id);
+		if (!channel) {
+			console.log('Failure channel not found in memory');
+			return;
+		}
+		const user: User = this.chatService.getUserById(channel_user.user_id);
+		if (!user) {
+			console.log('Failure user not found in memory');
+			return;
+		}
 
-	@SubscribeMessage('channel-join')
-	clientJoin(client: any, data: any)
-	{
-		// need to add client to internal channel for channel Update
+
+		this.emitToChannel('channel-user', channel, channel_user);
+		channel.addUser(user);
+		console.log ('Channel join event resolved');
 	}
 
 	public handleDisconnect(client: Socket): void {
@@ -76,38 +102,23 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		this.chatService.removeUser(client);
 		return this.logger.debug(`Client disconnected: ${client.id}`);
 	}
-	
-//	Where should i use this ?
-//	@UseGuards(JwtGuard)
 
+	private emitToChannel(event: string, channel: Channel, data: any)
+	{
+		console.log('emitting to channel ' + channel.getId);
+		const chatUsers = channel.getUsers();
 
-	public afterInit() {
-		return this.logger.log('Init');
+		for (let i = 0; i < chatUsers.length; i++)
+		{
+			chatUsers[i].getSocket().emit(event, JSON.stringify(data));
+		}
 	}
 
-
-
-//	public handleRedisMessage(channel: string, message: any): void {
-//		const data = JSON.parse(message);
-//			console.log(data);
-//			if (data.isEnded) this.gameService.createGame(data.gameUID, data.isEnded);
-//			this.gameService.addWaitingConnection(data);
-//			return this.logger.debug(`New redis-message, user ${data.userID} is waiting for game ${data.gameUID}`);
-//		}
-//	
-//		private startGame(game: IGame): void {
-//			game.startGame();
-//			this.server.to(game.getGameUID()).emit('game_start', 'Game started');
-//	
-//			let countdown = 4;
-//			const countdownInterval = setInterval(() => {
-//				if (countdown > 0) {
-//					this.server.to(game.getGameUID()).emit('countdown', countdown);
-//					countdown--;
-//				} else {
-//					this.server.to(game.getGameUID()).emit('countdown', 0);
-//					clearInterval(countdownInterval);
-//				}
-//			}, 1000);
-//		}
+	private emitToChannels(event: string, channels: Channel[], data: any)
+	{
+		for (let i = 0; i < channels.length; i++)
+		{
+			this.emitToChannel(event, channels[i], data);
+		}
+	}
 }
