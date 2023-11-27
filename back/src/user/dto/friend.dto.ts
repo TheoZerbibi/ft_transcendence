@@ -6,15 +6,10 @@ export class FriendRequestDto {
 	@ApiProperty()
 	@IsString()
 	// eslint-disable-next-line
-	user_name: string;
+	author_username: string;
 
 	@ApiProperty()
 	@IsString()
 	// eslint-disable-next-line
 	avatar: string;
-
-	@ApiProperty()
-	@IsDate()
-	// eslint-disable-next-line
-	created_at: Date;
 }

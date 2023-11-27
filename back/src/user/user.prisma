@@ -1,3 +1,8 @@
+enum RequestStatus {
+	DECLINED
+	PENDING
+	ACCEPTED
+}
 
 model User {
 	id				Int				@id @default(autoincrement())
@@ -23,10 +28,11 @@ model User {
 }
 
 model Friends {
-	user		User	@relation("user", fields: [user_id], references: [id])
-	friend		User	@relation("friends", fields: [friend_id], references: [id])
+	user		User			@relation("user", fields: [user_id], references: [id])
+	friend		User			@relation("friends", fields: [friend_id], references: [id])
 	user_id		Int	
 	friend_id	Int
+	status		Int
 
 	@@id([user_id, friend_id])
 	@@map("friends")
