@@ -1,7 +1,7 @@
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { EditUserDto, UserDto } from './dto';
-import { User } from '@prisma/client';
+import { User, Friends } from '@prisma/client';
 import { FriendRequestDto } from './dto/friend.dto';
 
 enum RequestStatus {
@@ -18,7 +18,7 @@ export class UserService {
 		return Object.fromEntries(Object.entries(user).filter(([key]) => !keys.includes(key)));
 	}
 
-	async findUserByName(username: string): Promise<User | null> {
+	async findUserByName(username: string): Promise<User> {
 		try {
 			const user = await this.prisma.user.findUnique({
 				where: {
@@ -43,7 +43,7 @@ export class UserService {
 		return user as UserDto;
 	}
 
-	async getFriend(user: User, target: User): Promise<UserDto | null> {
+	async getFriend(user: User, target: User): Promise<Friends | null> {
 		let friend = await this.prisma.friends.findUnique({
 			where: {
 				user_id_friend_id: {
@@ -63,8 +63,7 @@ export class UserService {
 				},
 			});
 		if (!friend) return null;
-		const friendDto = this.exclude(friend, ['dAuth', 'email', 'updated_at']);
-		return friendDto as UserDto;
+		return friend;
 	}
 
 	async editUser(userId: number, dto: EditUserDto): Promise<UserDto> {
@@ -158,7 +157,7 @@ export class UserService {
 			});
 			if (blocked) throw new ForbiddenException('You are blocked by this user');
 
-			const friend: User | null = await this.getFriend(user, targetUser);
+			const friend: Friends | null = await this.getFriend(user, targetUser);
 			if (friend) {
 				switch (friend.status) {
 				case RequestStatus.PENDING:
