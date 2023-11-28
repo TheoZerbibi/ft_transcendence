@@ -6,7 +6,27 @@
 		:class="{ background: step === 0, 'black-background': step > 0 }"
 	>
 		<div v-if="step === 0">
-			<img src="/ui/Door.png" class="door" @click="redirectToOAuth" />
+			<img
+				src="/ui/Door.png"
+				class="door"
+				@click="startZoomEffect"
+				:style="{
+					transform: `scale(${zoomLevel})`,
+					transformOrigin: '90% 45%',
+					transition: zooming ? 'transform 1s ease-in-out' : 'none',
+				}"
+			/>
+			<img
+				v-if="something"
+				src="https://static.wikia.nocookie.net/omori/images/2/26/Something_White_Space.gif"
+				class="something"
+				:style="{
+					width: `95vw`,
+					height: 'auto',
+					top: '0',
+					left: '0',
+				}"
+			/>
 		</div>
 		<div v-if="step > 0">
 			<v-card class="card-container" color="tranparent">
@@ -69,6 +89,9 @@ export default {
 		return {
 			step: 0 as number,
 			avatar: null as File | null,
+			zooming: false,
+			zoomLevel: 1,
+			something: false,
 		};
 	},
 	async beforeMount() {
@@ -129,6 +152,33 @@ export default {
 			this.step++;
 			if (this.step >= 3) {
 				await this.postToUsers();
+			}
+		},
+		startZoomEffect() {
+			this.zooming = true;
+			// this.something = true;
+			this.zoomIn();
+		},
+		zoomIn() {
+			if (this.zoomLevel < 100) {
+				this.zoomLevel += 8;
+				this.somethingTop = 50 - this.zoomLevel / 2;
+				this.somethingLeft = 60 - this.zoomLevel / 2;
+
+				setTimeout(() => {
+					this.zoomIn();
+				}, 100);
+			} else {
+				// Réinitialiser le zoom
+				setTimeout(() => {
+					this.something = true;
+				}, 300);
+				setTimeout(() => {
+					this.zooming = false;
+					this.zoomLevel = 1;
+					this.something = false;
+					this.redirectToOAuth();
+				}, 1000);
 			}
 		},
 	},
@@ -218,6 +268,14 @@ export default {
 
 .next-button:hover {
 	cursor: url(https://www.omori-game.com/img/cursor/cursor.png), auto;
+}
+
+.something {
+	position: absolute;
+	transition:
+		width 1s ease-in-out,
+		top 1s ease-in-out,
+		left 1s ease-in-out;
 }
 
 .uploaded-image {
