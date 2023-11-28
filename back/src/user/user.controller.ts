@@ -3,6 +3,7 @@ import {
 	Body,
 	ClassSerializerInterceptor,
 	Controller,
+	Delete,
 	Get,
 	Param,
 	Patch,
@@ -114,5 +115,41 @@ export class UserController {
 	}
 
 	/************************************* Friends *************************************/
-	
+	@UseGuards(JwtGuard)
+	@Patch('friends/requests/:target')
+	@ApiOperation({ summary: 'Accept a friend request' })
+	@ApiBearerAuth('JWT-auth')
+	async acceptFriendRequest(@GetUser() user: User, @Param('target') username: string): Promise<void> {
+		await this.userService.acceptFriendRequest(user, username);
+	}
+
+	/***********************************************************************************/
+	/* 										Deletion								   */
+	/***********************************************************************************/
+
+	/*************************************** Users *************************************/
+	@UseGuards(JwtGuard)
+	@Delete('profile/:id')
+	@ApiOperation({ summary: 'Delete a user' })
+	@ApiBearerAuth('JWT-auth')
+	@UseInterceptors(ClassSerializerInterceptor)
+	async deleteUser(@Param('id') user_id: number) : Promise<void> {
+		await this.userService.deleteUser(user_id);
+	}
+
+	/************************************* Friends *************************************/
+	@UseGuards(JwtGuard)
+	@Delete('friends/requests/:target')
+	@ApiOperation({ summary: 'Decline a friend request' })
+	async declineFriendRequest(@GetUser() user: User, @Param('target') username: string): Promise<void> {
+		await this.userService.declineFriendRequest(user, username);
+	}
+
+	/*********************************** Blocked *************************************/
+	@UseGuards(JwtGuard)
+	@Delete('blocked/:target')
+	@ApiOperation({ summary: 'Unblock a user' })
+	async unblockUser(@GetUser() user: User, @Param('target') username: string): Promise<void> {
+		await this.userService.unblockUser(user, username);
+	}
 }
