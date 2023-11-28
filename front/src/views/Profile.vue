@@ -1,11 +1,11 @@
 <template>
 	<main
 		:style="{
-			backgroundImage: 'url(/ui/OmoriBedroom.png)',
+			backgroundImage: 'url(/ui/ProfileBackground.png)',
 			backgroundPosition: 'center center',
-			backgroundSize: '100% 100%',										// Déforme l'image pour s'adapter à 100% de la largeur et de la hauteur
+			backgroundSize: '120% 100%',										// Déforme l'image pour s'adapter à 100% de la largeur et de la hauteur
 			height: '100vh',													// Hauteur de la vue à 100%
-			margin: 0,															// Supprime les marges par défaut du body
+			// margin: 0,															// Supprime les marges par défaut du body
 		}"
 	>
 		<a href="https://bibliotheques.paris.fr/" target="_blank" class="clickable-area link1"></a>
