@@ -112,16 +112,25 @@ export class DirectMessageService {
 		if (!friend) {
 			throw new BadRequestException('You are not friend with this user');
 		}
-		const blocked = await this.prisma.blocked.findUnique({
+		const blocked = await this.prisma.blocked.findMany({
 			where: {
-				blocked_by_id_blocked_id: {
-					blocked_by_id: targetUser.id,
-					blocked_id: user.id,
-				},
+				OR: [
+					{
+						blocked_by_id: targetUser.id,
+						blocked_id: user.id,
+					},
+					{
+						blocked_by_id: user.id,
+						blocked_id: targetUser.id,
+					},
+				],
 			},
 		});
 		if (blocked) {
-			throw new ForbiddenException('You are blocked by this user');
+			if (blocked.some((block) => block.blocked_id === user.id))
+				throw new ForbiddenException('You are blocked by this user');
+			else if (blocked.some((block) => block.blocked_by_id === user.id))
+				throw new ForbiddenException("You've blocked this user");
 		}
 		const directMessage: DirectMessage = await this.prisma.directMessage.create({
 			data: {

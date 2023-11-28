@@ -306,6 +306,7 @@ export class UserService {
 			if (!user) throw new ForbiddenException('User not found');
 			const targetUser = await this.util_findUserByName(friendUsername);
 			if (!targetUser) throw new ForbiddenException('User not found');
+			if (targetUser === user) throw new BadRequestException('You cannot decline yourself');
 
 			/*
 			const blocked = await this.prisma.blocked.findUnique({
@@ -344,6 +345,8 @@ export class UserService {
 					});
 					break;
 				}
+			} else {
+				throw new BadRequestException('You did not receive a friend request from this user');
 			}
 		} catch (e) {
 			throw e;
@@ -355,6 +358,7 @@ export class UserService {
 		try {
 			const targetUser = await this.util_findUserByName(friendUsername);
 			if (!targetUser) throw new BadRequestException('User not found');
+			if (targetUser === user) throw new BadRequestException('You cannot unblock yourself');
 
 			await this.prisma.blocked.delete({
 				where: {

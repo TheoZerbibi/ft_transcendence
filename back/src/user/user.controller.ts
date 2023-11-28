@@ -97,6 +97,7 @@ export class UserController {
 	@UseGuards(JwtGuard)
 	@Post('block/:target')
 	@ApiOperation({ summary: 'Block a user' })
+	@ApiBearerAuth('JWT-auth')
 	async blockUser(@GetUser() user: User, @Param('target') username: string): Promise<void> {
 		await this.userService.blockUser(user, username);
 	}
@@ -132,15 +133,16 @@ export class UserController {
 	@Delete('profile/:id')
 	@ApiOperation({ summary: 'Delete a user' })
 	@ApiBearerAuth('JWT-auth')
-	@UseInterceptors(ClassSerializerInterceptor)
-	async deleteUser(@Param('id') user_id: number) : Promise<void> {
-		await this.userService.deleteUser(user_id);
+	async deleteUser(@Param('id') user_id: string): Promise<void> {
+		const user_id_int = parseInt(user_id);
+		await this.userService.deleteUser(user_id_int);
 	}
 
 	/************************************* Friends *************************************/
 	@UseGuards(JwtGuard)
 	@Delete('friends/requests/:target')
 	@ApiOperation({ summary: 'Decline a friend request' })
+	@ApiBearerAuth('JWT-auth')
 	async declineFriendRequest(@GetUser() user: User, @Param('target') username: string): Promise<void> {
 		await this.userService.declineFriendRequest(user, username);
 	}
@@ -149,6 +151,7 @@ export class UserController {
 	@UseGuards(JwtGuard)
 	@Delete('blocked/:target')
 	@ApiOperation({ summary: 'Unblock a user' })
+	@ApiBearerAuth('JWT-auth')
 	async unblockUser(@GetUser() user: User, @Param('target') username: string): Promise<void> {
 		await this.userService.unblockUser(user, username);
 	}

@@ -119,7 +119,6 @@ Table blocked {
 }
 
 Enum RequestStatus {
-  DECLINED
   PENDING
   ACCEPTED
 }
@@ -136,10 +135,10 @@ Ref: game_players.player_id > users.id
 
 Ref: game_players.game_id > games.id [delete: Cascade]
 
-Ref: friends.user_id > users.id
+Ref: friends.user_id > users.id [delete: Cascade]
 
-Ref: friends.friend_id > users.id
+Ref: friends.friend_id > users.id [delete: Cascade]
 
-Ref: blocked.blocked_by_id > users.id
+Ref: blocked.blocked_by_id > users.id [delete: Cascade]
 
-Ref: blocked.blocked_id > users.id
+Ref: blocked.blocked_id > users.id [delete: Cascade]

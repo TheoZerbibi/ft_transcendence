@@ -93,7 +93,6 @@ model GamePlayer {
 	@@map("game_players")
 }
 enum RequestStatus {
-	DECLINED
 	PENDING
 	ACCEPTED
 }
@@ -122,8 +121,8 @@ model User {
 }
 
 model Friends {
-	user		User			@relation("user", fields: [user_id], references: [id])
-	friend		User			@relation("friends", fields: [friend_id], references: [id])
+	user		User			@relation("user", fields: [user_id], references: [id], onDelete: Cascade)
+	friend		User			@relation("friends", fields: [friend_id], references: [id], onDelete: Cascade)
 	user_id		Int	
 	friend_id	Int
 	status		Int
@@ -133,8 +132,8 @@ model Friends {
 }
 
 model Blocked {
-	blockedBy			User	@relation("user", fields: [blocked_by_id], references: [id])
-	blocked				User	@relation("blocked", fields: [blocked_id], references: [id])
+	blockedBy			User	@relation("user", fields: [blocked_by_id], references: [id], onDelete: Cascade)
+	blocked				User	@relation("blocked", fields: [blocked_id], references: [id], onDelete: Cascade)
 	blocked_by_id		Int	
 	blocked_id			Int
 
