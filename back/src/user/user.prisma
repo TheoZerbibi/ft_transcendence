@@ -1,5 +1,4 @@
 enum RequestStatus {
-	DECLINED
 	PENDING
 	ACCEPTED
 }

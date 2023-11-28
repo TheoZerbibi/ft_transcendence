@@ -16,6 +16,7 @@ import { UserService } from './user.service';
 import { EditUserDto, UserDto } from './dto';
 import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
+import { FriendRequestDto } from './dto/friend.dto';
 
 @Controller('users')
 @ApiBearerAuth()
@@ -30,7 +31,7 @@ export class UserController {
 	/*************************************** Users *************************************/
 	// Get personal informations
 	@UseGuards(JwtGuard)
-	@Get('me')
+	@Get('profile/me')
 	@ApiOperation({ summary: 'Get personal profile' })
 	@ApiBearerAuth('JWT-auth')
 	getMe(@GetUser() user: User): User {
@@ -39,7 +40,7 @@ export class UserController {
 
 	// Get other user informations
 	@UseGuards(JwtGuard)
-	@Get(':login')
+	@Get('profile/:login')
 	@ApiOperation({ summary: "Get other user's profile" })
 	@ApiBearerAuth('JWT-auth')
 	@UseInterceptors(ClassSerializerInterceptor)
@@ -50,13 +51,41 @@ export class UserController {
 	}
 
 	/************************************* Friends *************************************/
+	// Get friends list
+	@UseGuards(JwtGuard)
+	@Get('friends')
+	@ApiOperation({ summary: 'Get friends list' })
+	@ApiBearerAuth('JWT-auth')
+	async getFriends(@GetUser() user: User): Promise<UserDto[]> {
+		return await this.userService.getFriendsOfUser(user);
+	}
+
+	// get friend requests list
+	@UseGuards(JwtGuard)
+	@Get('friends/requests')
+	@ApiOperation({ summary: 'Get friend requests sent to user' })
+	@ApiBearerAuth('JWT-auth')
+	async getFriendRequests(@GetUser() user: User): Promise<FriendRequestDto[]> {
+		return await this.userService.getFriendRequestsOfUser(user);
+	}
+
+	// Get blocked list
+	@UseGuards(JwtGuard)
+	@Get('blocked')
+	@ApiOperation({ summary: 'Get blocked users list' })
+	@ApiBearerAuth('JWT-auth')
+	async getBlockedUsers(@GetUser() user: User): Promise<UserDto[]> {
+		return await this.userService.getBlockedUsers(user);
+	}
 
 	/***********************************************************************************/
 	/* 										Creation								   */
 	/***********************************************************************************/
+
+	/************************************* Friends *************************************/
 	// Create friends (pending)
 	@UseGuards(JwtGuard)
-	@Post('request/:target')
+	@Post('friends/request/:target')
 	@ApiOperation({ summary: 'Send request to a user' })
 	@ApiBearerAuth('JWT-auth')
 	async addFriend(@GetUser() user: User, @Param('target') friendUsername: string): Promise<void> {
@@ -74,11 +103,16 @@ export class UserController {
 	/***********************************************************************************/
 	/* 									Modification								   */
 	/***********************************************************************************/
+
+	/*************************************** Users *************************************/
 	@UseGuards(JwtGuard)
-	@Patch('me')
+	@Patch('profile/me')
 	@ApiOperation({ summary: 'Change display_name or Avatar for the user' })
 	@ApiBearerAuth('JWT-auth')
 	editUser(@GetUser('id') userId: number, @Body() dto: EditUserDto): Promise<User> {
 		return this.userService.editUser(userId, dto);
 	}
+
+	/************************************* Friends *************************************/
+	
 }

@@ -37,7 +37,7 @@ async function getUser(login: string): Promise<User> {
 	}
 }
 
-async function getFriends() {
+async function getFriendsOfUser() {
 	try {
 		const norminet = await getUser('norminet');
 		if (!norminet) return;
@@ -100,7 +100,7 @@ async function main() {
 	if (!norminet) await prisma.user.create({ data: users[0] }).catch(console.error);
 	if (!garfield) await prisma.user.create({ data: users[1] }).catch(console.error);
 	await makeFriends();
-	await getFriends();
+	await getFriendsOfUser();
 }
 
 main()
