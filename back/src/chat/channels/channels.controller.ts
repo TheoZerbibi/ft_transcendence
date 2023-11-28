@@ -179,10 +179,7 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Leave channel' })
 	@ApiBearerAuth('JWT-auth')
-	async deleteChannelUser(
-		@GetUser() user: User,
-		@Param('channel_name') channel_name: string,
-	): Promise<void> {
+	async deleteChannelUser(@GetUser() user: User, @Param('channel_name') channel_name: string): Promise<void> {
 		return await this.channelService.deleteChannelUser(user, channel_name);
 	}
 
@@ -217,5 +214,4 @@ export class ChannelController {
 	async getAllChannelUsersDebug(): Promise<ChannelUserEntity[]> {
 		return await this.channelService.getAllChannelUsersDebug();
 	}
-
 }
