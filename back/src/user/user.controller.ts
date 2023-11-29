@@ -19,11 +19,11 @@ import { UserService } from './user.service';
 import { EditUserDto, UserDto } from './dto';
 import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
+import { FriendRequestDto } from './dto/friend.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import { multerOptions } from './multer/multer.config';
-import { FriendRequestDto } from './dto/friend.dto';
 
 @Controller('users')
 @ApiBearerAuth()
@@ -85,13 +85,9 @@ export class UserController {
 		return await this.userService.getBlockedUsers(user);
 	}
 
-	/***********************************************************************************/
-	/* 										Creation								   */
-	/***********************************************************************************/
-
-	/************************************* Friends *************************************/
-	// Create friends (pending)
+	/************************************ Cloudinary **********************************/
 	@UseGuards(JwtGuard)
+	@Patch('profile/me')
 	@Post('getCloudinaryLink')
 	@ApiOperation({ summary: 'Get Avatar Link from Cloudinary API' })
 	@ApiBearerAuth('JWT-auth')
@@ -100,14 +96,13 @@ export class UserController {
 		return this.userService.getCloudinaryLink(userId, file);
 	}
 
-	@Post()
-	@ApiOperation({ summary: 'Create a user' })
-	create(@Body() dto: CreateUserDto): Promise<User> {
-		return this.userService.createUser(dto);
-	}
+	/***********************************************************************************/
+	/* 										Creation								   */
+	/***********************************************************************************/
 
+	/************************************* Friends *************************************/
+	// Create friends (pending)
 	@UseGuards(JwtGuard)
-	@Patch()
 	@Post('friends/request/:target')
 	@ApiOperation({ summary: 'Send request to a user' })
 	@ApiBearerAuth('JWT-auth')
@@ -129,8 +124,14 @@ export class UserController {
 	/***********************************************************************************/
 
 	/*************************************** Users *************************************/
+	@Post()
+	@ApiOperation({ summary: 'Create a user' })
+	create(@Body() dto: CreateUserDto): Promise<User> {
+		return this.userService.createUser(dto);
+	}
+
 	@UseGuards(JwtGuard)
-	@Patch('profile/me')
+	@Patch()
 	@ApiOperation({ summary: 'Change display_name or Avatar for the user' })
 	@ApiBearerAuth('JWT-auth')
 	editUser(@GetUser('id') userId: number, @Body() dto: EditUserDto): Promise<User> {
