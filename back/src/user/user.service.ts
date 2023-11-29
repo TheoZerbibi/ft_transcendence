@@ -282,7 +282,8 @@ export class UserService {
 			const targetUser = await this.util_findUserByName(friendUsername);
 			if (!targetUser) throw new ForbiddenException('User not found');
 
-/* 			const blocked = await this.prisma.blocked.findUnique({
+			/*
+ 			const blocked = await this.prisma.blocked.findUnique({
 				where: {
 					blocked_by_id_blocked_id: {
 						blocked_by_id: targetUser.id,
@@ -291,7 +292,7 @@ export class UserService {
 				},
 			});
 			if (blocked) throw new ForbiddenException('You are blocked by this user');
- */
+			*/
 			const friend = await this.prisma.friends.findUnique({
 				where: {
 					user_id_friend_id: {
@@ -356,7 +357,8 @@ export class UserService {
 			const targetUser = await this.util_findUserByName(friendUsername);
 			if (!targetUser) throw new ForbiddenException('User not found');
 
-			/* 			const blocked = await this.prisma.blocked.findUnique({
+			/*
+			const blocked = await this.prisma.blocked.findUnique({
 				where: {
 					blocked_by_id_blocked_id: {
 						blocked_by_id: targetUser.id,
@@ -364,7 +366,8 @@ export class UserService {
 					},
 				},
 			});
-			if (blocked) throw new ForbiddenException('You are blocked by this user'); */
+			if (blocked) throw new ForbiddenException('You are blocked by this user');
+			*/
 
 			const friend = await this.prisma.friends.findUnique({
 				where: {
