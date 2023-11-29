@@ -38,17 +38,20 @@
 						placeholder=" ENTER YOUR NAME "
 						class="input"
 					/>
-					<button @click="nextStep" class="next-button"></button>
+					<button @click="nextStep" class="next-button" />
 				</div>
 				<div v-if="step === 2" class="card-content">
-					<UploadFile v-model="newUser.avatar" />
-					<img v-if="newUser.avatar" :src="newUser.avatar" class="uploaded-image" alt="Uploaded Image" />
-					<button @click="nextStep" class="next-button"></button>
+					<UploadFile @imageChanged="updateAvatar" />
+					<v-img v-if="newUser.avatar" :src="newUser.avatar" class="uploaded-image" alt="Uploaded Image">
+						<v-progress-circular indeterminate color="deep-purple-accent-2" v-if="cantSkip" />
+					</v-img>
+					<button @click="nextStep" class="next-button" :disabled="cantSkip" />
 				</div>
 			</v-card>
 			<img src="/ui/ALBUM.png" class="album" alt="Album" />
 		</div>
 	</v-row>
+	<Snackbar />
 </template>
 '
 
@@ -88,7 +91,8 @@ export default {
 	data() {
 		return {
 			step: 0 as number,
-			avatar: null as File | null,
+			avatar: undefined as File | undefined,
+			cantSkip: false,
 			zooming: false,
 			zoomLevel: 1,
 			something: false,
@@ -147,6 +151,40 @@ export default {
 			const PORT = import.meta.env.VITE_API_PORT;
 
 			window.location.href = `http://${HOST}:${PORT}/auth/42/callback`;
+		},
+		async updateAvatar(newAvatar: File) {
+			const formData = new FormData();
+			if (newAvatar) {
+				formData.append('file', newAvatar);
+			} else {
+				return console.error('newAvatar is not a File object');
+			}
+			this.cantSkip = true;
+			try {
+				const response = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/getCloudinaryLink`,
+					{
+						method: 'POST',
+						body: formData,
+						headers: {
+							Authorization: `Bearer ${this.JWT}`,
+						},
+					},
+				);
+				if (!response.ok) {
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					this.cantSkip = false;
+					return;
+				}
+
+				const data = await response.json();
+				this.newUser.avatar = data.avatar;
+				this.cantSkip = false;
+			} catch (error) {
+				this.cantSkip = false;
+				console.error(error);
+			}
 		},
 		async nextStep() {
 			this.step++;

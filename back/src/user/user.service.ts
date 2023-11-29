@@ -494,7 +494,7 @@ export class UserService {
 		};
 	}
 
-	async getCloudinaryLink(userId: number, file: Express.Multer.File): Promise<any> {
+	async getCloudinaryLink(file: Express.Multer.File): Promise<any> {
 		cloudinary.config({
 			cloud_name: this.config.get('CLOUDINARY_CLOUD_NAME'),
 			api_key: this.config.get('CLOUDINARY_API_KEY'),
@@ -503,7 +503,6 @@ export class UserService {
 		try {
 			const cloudinaryResponse = await cloudinary.uploader.upload(file.path);
 			fs.unlinkSync(file.path);
-			this.setAvatar(userId, cloudinaryResponse.secure_url);
 			return { avatar: cloudinaryResponse.secure_url };
 		} catch (e) {
 			fs.unlinkSync(file.path);

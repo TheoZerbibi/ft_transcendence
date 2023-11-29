@@ -86,13 +86,11 @@ export class UserController {
 	}
 
 	/************************************ Cloudinary **********************************/
-	@UseGuards(JwtGuard)
 	@Post('getCloudinaryLink')
 	@ApiOperation({ summary: 'Get Avatar Link from Cloudinary API' })
-	@ApiBearerAuth('JWT-auth')
 	@UseInterceptors(FileInterceptor('file', multerOptions))
-	async getLink(@GetUser('id') userId: number, @UploadedFile() file: Express.Multer.File): Promise<any> {
-		return this.userService.getCloudinaryLink(userId, file);
+	async getLink(@UploadedFile() file: Express.Multer.File): Promise<any> {
+		return this.userService.getCloudinaryLink(file);
 	}
 
 	/***********************************************************************************/
