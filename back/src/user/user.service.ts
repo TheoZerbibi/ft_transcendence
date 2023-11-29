@@ -6,6 +6,7 @@ import { FriendRequestDto } from './dto/friend.dto';
 import * as fs from 'fs';
 import { ConfigService } from '@nestjs/config';
 import { v2 as cloudinary } from 'cloudinary';
+import { CreateUserDto } from './dto/create-user.dto';
 
 enum RequestStatus {
 	DECLINED,
