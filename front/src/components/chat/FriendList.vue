@@ -4,16 +4,15 @@
 		<ul v-if="friendRequests.length">
 			<li v-for="request in friendRequests" :key="request.id">
 				{{ request.author_username }} <!-- L'objet contient aussi l'avatar si tu veux -->
-				<button @click="acceptFriendRequest(request.id)">Accept</button>
-				<span>&nbsp;</span>
-				<button @click="declineFriendRequest(request.id)">Decline</button>
+				<button @click="acceptFriendRequest(request.author_username)">Accept</button>
+				<button @click="declineFriendRequest(request.author_username)">Decline</button>
 			</li>
 		</ul>
 		<p v-else>~ sorry, no friend request for now ~</p>
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -47,7 +46,6 @@ export default {
 	methods: {
 		fetchFriendRequests: async function() {
 			try {
-				const route = useRoute();
 				const response = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/requests`,
 					{
@@ -67,6 +65,43 @@ export default {
 				console.log(data);
 			} catch (error) {
 				console.log(error);
+				// TODO
+			}
+		},
+		acceptFriendRequest: async function(username: string) {
+			try {
+				await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/requests/${username}`,
+					{
+						method: 'PATCH',
+						headers: {
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+					}
+				);
+
+			} catch (error) {
+				console.log(error);
+				// TODO
+			}
+		},
+		declineFriendRequest: async function(username: string) {
+			try {
+				await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/requests/${username}`,
+					{
+						method: 'DELETE',
+						headers: {
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+					}
+				);
+
+			} catch (error) {
+				console.log(error);
+				// TODO
 			}
 		},
 	}
