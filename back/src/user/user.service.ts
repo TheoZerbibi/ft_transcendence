@@ -431,7 +431,7 @@ export class UserService {
 				},
 			});
 		} catch (e) {
-			if (e instanceof Error && e.message === 'User not found') {
+			if (e instanceof Error && (e.message === 'User not found' || e.message === 'You cannot unblock yourself')) {
 				throw e;
 			}
 			throw new BadRequestException('You did not block this user');
