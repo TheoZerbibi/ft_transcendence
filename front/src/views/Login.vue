@@ -18,7 +18,7 @@
 			/>
 			<img
 				v-if="something"
-				src="https://static.wikia.nocookie.net/omori/images/2/26/Something_White_Space.gif"
+				src="/ui/Something_White_Space.gif"
 				class="something"
 				:style="{
 					width: `95vw`,
