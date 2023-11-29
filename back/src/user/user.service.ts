@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { EditUserDto, UserDto } from './dto';
@@ -54,50 +55,6 @@ export class UserService {
 		return true;
 	}
 
-	async getUserByLogin(userLogin: string): Promise<UserDto | undefined> {
-		try {
-			const prismaUser: User = await this.prisma.user.findUnique({
-				where: {
-					login: userLogin,
-				},
-			});
-			if (!prismaUser) return undefined;
-			const user = this.exclude(prismaUser, ['dAuth', 'email', 'updated_at']);
-			return user as UserDto;
-		} catch (e) {
-			throw e;
-		}
-	}
-
-	async editUser(userId: number, dto: EditUserDto): Promise<UserDto> {
-		try {
-			if (dto.display_name) {
-				const displayName = await this.checkDisplayName(dto.display_name);
-				if (displayName) throw new ForbiddenException('Display name already taken');
-				if (!this.verifyDisplayName(dto.display_name)) throw new ForbiddenException('Invalid display name');
-			}
-			const user = await this.prisma.user.update({
-				where: {
-					id: userId,
-				},
-				data: {
-					...dto,
-				},
-			});
-			return user as UserDto;
-		} catch (e) {
-			throw e;
-		}
-	}
-
-	async deleteUser(userId: number): Promise<void> {
-		const user = await this.prisma.user.delete({
-			where: {
-				id: userId,
-			},
-		});
-	}
-
 	async findUserByName(username: string): Promise<User | null> {
 		try {
 			const user = await this.prisma.user.findUnique({
@@ -111,7 +68,11 @@ export class UserService {
 			throw e;
 		}
 	}
+	/***********************************************************************************/
+	/* 										Getters									   */
+	/***********************************************************************************/
 
+	/*************************************** Users *************************************/
 	async getUserByLogin(userLogin: string): Promise<UserDto | undefined> {
 		const prismaUser: User = await this.prisma.user.findUnique({
 			where: {
@@ -123,42 +84,8 @@ export class UserService {
 		return user as UserDto;
 	}
 
-	async getFriend(user: User, target: User): Promise<Friends | null> {
-		let friend = await this.prisma.friends.findUnique({
-			where: {
-				user_id_friend_id: {
-					user_id: target.id,
-					friend_id: user.id,
-				},
-			},
-		});
-		friend = friend
-			? friend
-			: await this.prisma.friends.findUnique({
-				where: {
-					user_id_friend_id: {
-						user_id: user.id,
-						friend_id: target.id,
-					},
-				},
-			});
-		if (!friend) return null;
-		return friend;
-	}
-
-	async editUser(userId: number, dto: EditUserDto): Promise<UserDto> {
-		const user = await this.prisma.user.update({
-			where: {
-				id: userId,
-			},
-			data: {
-				...dto,
-			},
-		});
-		return user as UserDto;
-	}
-
-	async getFriends(user: User): Promise<UserDto[]> {
+	/************************************* Friends *************************************/
+	async getFriendsOfUser(user: User): Promise<UserDto[]> {
 		try {
 			const friends = await this.prisma.friends.findMany({
 				where: {
@@ -177,11 +104,6 @@ export class UserService {
 					friend: true,
 				},
 			});
-			const usersWhoBlockedUser = await this.prisma.blocked.findMany({
-				where: {
-					blocked_id: user.id,
-				},
-			});
 
 			const friendsDto: UserDto[] = friends.map((f) => {
 				if (f.user_id === user.id) {
@@ -190,16 +112,13 @@ export class UserService {
 					return this.exclude(f.user, ['dAuth', 'email', 'updated_at']) as UserDto;
 				}
 			});
-			const friendsWithoutBlockedUsers = friendsDto.filter((friend) => {
-				return !usersWhoBlockedUser.some((blockedUser) => blockedUser.blocked_by_id === friend.id);
-			});
-			return friendsWithoutBlockedUsers;
+			return friendsDto;
 		} catch (e) {
 			throw e;
 		}
 	}
 
-	async getFriendRequests(user: User): Promise<FriendRequestDto[]> {
+	async getFriendRequestsOfUser(user: User): Promise<FriendRequestDto[]> {
 		try {
 			const friendRequests = await this.prisma.friends.findMany({
 				where: {
@@ -220,10 +139,35 @@ export class UserService {
 		}
 	}
 
+	/*********************************** Blocked *************************************/
+	async getBlockedUsers(user: User): Promise<UserDto[]> {
+		try {
+			const blockedUsers = await this.prisma.blocked.findMany({
+				where: {
+					blocked_by_id: user.id,
+				},
+				include: {
+					blocked: true,
+				},
+			});
+			const blockedUsersDto: UserDto[] = blockedUsers.map((blockedUser) => {
+				return this.exclude(blockedUser.blocked, ['dAuth', 'email', 'updated_at']) as UserDto;
+			});
+			return blockedUsersDto;
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	/***********************************************************************************/
+	/* 										Creation								   */
+	/***********************************************************************************/
+
+	/************************************* Friends *************************************/
 	async makeFriendRequest(user: User, friendUsername: string): Promise<void> {
 		try {
 			if (!user) throw new ForbiddenException('User not found');
-			const targetUser = await this.findUserByName(friendUsername);
+			const targetUser = await this.util_findUserByName(friendUsername);
 			if (!targetUser) throw new ForbiddenException('User not found');
 			if (targetUser === user) throw new BadRequestException('You cannot add yourself as a friend');
 
@@ -237,7 +181,7 @@ export class UserService {
 			});
 			if (blocked) throw new ForbiddenException('You are blocked by this user');
 
-			const friend: Friends | null = await this.getFriend(user, targetUser);
+			const friend: Friends | null = await this.util_getFriend(user, targetUser);
 			if (friend) {
 				switch (friend.status) {
 				case RequestStatus.PENDING:
@@ -272,10 +216,70 @@ export class UserService {
 		}
 	}
 
+	/*********************************** Blocked *************************************/
+	async blockUser(user: User, friendUsername: string): Promise<void> {
+		try {
+			const targetUser = await this.util_findUserByName(friendUsername);
+			if (!targetUser) throw new ForbiddenException('User not found');
+			if (targetUser === user) throw new BadRequestException('You cannot block yourself');
+
+			const blocked = await this.prisma.blocked.findUnique({
+				where: {
+					blocked_by_id_blocked_id: {
+						blocked_by_id: user.id,
+						blocked_id: targetUser.id,
+					},
+				},
+			});
+			if (blocked) throw new BadRequestException("You've already blocked this user");
+
+			await this.prisma.blocked.create({
+				data: {
+					blocked_by_id: user.id,
+					blocked_id: targetUser.id,
+				},
+			});
+			await this.prisma.friends.deleteMany({
+				where: {
+					OR: [
+						{
+							user_id: user.id,
+							friend_id: targetUser.id,
+						},
+						{
+							user_id: targetUser.id,
+							friend_id: user.id,
+						},
+					],
+				},
+			});
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	/***********************************************************************************/
+	/* 									Modification								   */
+	/***********************************************************************************/
+
+	/*************************************** Users *************************************/
+	async editUser(userId: number, dto: EditUserDto): Promise<UserDto> {
+		const user = await this.prisma.user.update({
+			where: {
+				id: userId,
+			},
+			data: {
+				...dto,
+			},
+		});
+		return user as UserDto;
+	}
+
+	/************************************* Friends *************************************/
 	async acceptFriendRequest(user: User, friendUsername: string): Promise<void> {
 		try {
 			if (!user) throw new ForbiddenException('User not found');
-			const targetUser = await this.findUserByName(friendUsername);
+			const targetUser = await this.util_findUserByName(friendUsername);
 			if (!targetUser) throw new ForbiddenException('User not found');
 
 			const blocked = await this.prisma.blocked.findUnique({
@@ -322,97 +326,11 @@ export class UserService {
 		}
 	}
 
-	async declineFriendRequest(user: User, friendUsername: string): Promise<void> {
-		try {
-			if (!user) throw new ForbiddenException('User not found');
-			const targetUser = await this.findUserByName(friendUsername);
-			if (!targetUser) throw new ForbiddenException('User not found');
+	/***********************************************************************************/
+	/* 										Deletion								   */
+	/***********************************************************************************/
 
-			const blocked = await this.prisma.blocked.findUnique({
-				where: {
-					blocked_by_id_blocked_id: {
-						blocked_by_id: targetUser.id,
-						blocked_id: user.id,
-					},
-				},
-			});
-			if (blocked) throw new ForbiddenException('You are blocked by this user');
-
-			const friend = await this.prisma.friends.findUnique({
-				where: {
-					user_id_friend_id: {
-						user_id: targetUser.id,
-						friend_id: user.id,
-					},
-				},
-			});
-			if (friend) {
-				switch (friend.status) {
-				case RequestStatus.DECLINED:
-					throw new BadRequestException('Friend request already declined');
-				case RequestStatus.ACCEPTED:
-					throw new BadRequestException('You are already friend with this user');
-				case RequestStatus.PENDING:
-					await this.prisma.friends.update({
-						where: {
-							user_id_friend_id: {
-								user_id: targetUser.id,
-								friend_id: user.id,
-							},
-						},
-						data: {
-							status: RequestStatus.DECLINED,
-						},
-					});
-					break;
-				}
-			}
-		} catch (e) {
-			throw e;
-		}
-	}
-
-	async blockUser(user: User, friendUsername: string): Promise<void> {
-		try {
-			const targetUser = await this.findUserByName(friendUsername);
-			if (!targetUser) throw new ForbiddenException('User not found');
-			if (targetUser === user) throw new BadRequestException('You cannot block yourself');
-
-			const blocked = await this.prisma.blocked.findUnique({
-				where: {
-					blocked_by_id_blocked_id: {
-						blocked_by_id: user.id,
-						blocked_id: targetUser.id,
-					},
-				},
-			});
-			if (blocked) throw new BadRequestException("You've already blocked this user");
-
-			await this.prisma.blocked.create({
-				data: {
-					blocked_by_id: user.id,
-					blocked_id: targetUser.id,
-				},
-			});
-			await this.prisma.friends.deleteMany({
-				where: {
-					OR: [
-						{
-							user_id: user.id,
-							friend_id: targetUser.id,
-						},
-						{
-							user_id: targetUser.id,
-							friend_id: user.id,
-						},
-					],
-				},
-			});
-		} catch (e) {
-			throw e;
-		}
-	}
-
+	/*************************************** Users *************************************/
 	async deleteUser(userId: number): Promise<void> {
 		try {
 			const user: User = await this.prisma.user.findUnique({
@@ -431,14 +349,49 @@ export class UserService {
 		}
 	}
 
-	async getUser(login: string): Promise<User> {
+	/************************************* Friends *************************************/
+	async declineFriendRequest(user: User, friendUsername: string): Promise<void> {
 		try {
-			const user: User = await this.prisma.user.findUnique({
+			if (!user) throw new ForbiddenException('User not found');
+			const targetUser = await this.util_findUserByName(friendUsername);
+			if (!targetUser) throw new ForbiddenException('User not found');
+
+			/* 			const blocked = await this.prisma.blocked.findUnique({
 				where: {
-					login: login,
+					blocked_by_id_blocked_id: {
+						blocked_by_id: targetUser.id,
+						blocked_id: user.id,
+					},
 				},
 			});
-			return user as User;
+			if (blocked) throw new ForbiddenException('You are blocked by this user'); */
+
+			const friend = await this.prisma.friends.findUnique({
+				where: {
+					user_id_friend_id: {
+						user_id: targetUser.id,
+						friend_id: user.id,
+					},
+				},
+			});
+			if (friend) {
+				switch (friend.status) {
+				case RequestStatus.ACCEPTED:
+					throw new BadRequestException(
+						"You already accepted this friend request, and can't decline it anymore",
+					);
+				case RequestStatus.PENDING:
+					await this.prisma.friends.delete({
+						where: {
+							user_id_friend_id: {
+								user_id: targetUser.id,
+								friend_id: user.id,
+							},
+						},
+					});
+					break;
+				}
+			}
 		} catch (e) {
 			throw e;
 		}
@@ -452,6 +405,46 @@ export class UserService {
 				},
 			});
 			return user ? true : false;
+		} catch (e) {
+			throw e;
+		}
+	}
+	/*********************************** Blocked *************************************/
+	async unblockUser(user: User, friendUsername: string): Promise<void> {
+		try {
+			const targetUser = await this.util_findUserByName(friendUsername);
+			if (!targetUser) throw new ForbiddenException('User not found');
+
+			await this.prisma.blocked.delete({
+				where: {
+					blocked_by_id_blocked_id: {
+						blocked_by_id: user.id,
+						blocked_id: targetUser.id,
+					},
+				},
+			});
+		} catch (e) {
+			if (e instanceof this.prisma.PrismaClientKnownRequestError) {
+				if (e.code === 'P2025') throw new BadRequestException('You did not block this user');
+			}
+			throw e;
+		}
+	}
+
+	/***********************************************************************************/
+	/* 										Utils									   */
+	/***********************************************************************************/
+
+	/*************************************** Users *************************************/
+	async util_findUserByName(username: string): Promise<User> {
+		try {
+			const user = await this.prisma.user.findUnique({
+				where: {
+					login: username,
+				},
+			});
+			if (!user) return null;
+			return user;
 		} catch (e) {
 			throw e;
 		}
@@ -518,5 +511,29 @@ export class UserService {
 			fs.unlinkSync(file.path);
 			throw e;
 		}
+	}
+
+	/************************************* Friends *************************************/
+	async util_getFriend(user: User, target: User): Promise<Friends | null> {
+		let friend = await this.prisma.friends.findUnique({
+			where: {
+				user_id_friend_id: {
+					user_id: target.id,
+					friend_id: user.id,
+				},
+			},
+		});
+		friend = friend
+			? friend
+			: await this.prisma.friends.findUnique({
+				where: {
+					user_id_friend_id: {
+						user_id: user.id,
+						friend_id: target.id,
+					},
+				},
+			  });
+		if (!friend) return null;
+		return friend;
 	}
 }
