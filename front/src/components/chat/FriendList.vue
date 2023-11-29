@@ -1,0 +1,62 @@
+<template>
+	<div>
+		<h2>Friend Requests</h2>
+		<ul v-if="friendRequests.length">
+			<li v-for="request in friendRequests" :key="request.id">
+				{{ request.username }}
+				<button @click="acceptFriendRequest(request.id)">Accept</button>
+				<button @click="declineFriendRequest(request.id)">Decline</button>
+			</li>
+		</ul>
+		<p v-else>~ sorry, no friend request for now ~</p>
+	</div>
+</template>
+
+<script>
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+
+import { useSnackbarStore } from '../../stores/snackbar';
+import { useUser } from '../../stores/user';
+import { useSocketStore } from '../../stores/websocket';
+import Snackbar from '../layout/Snackbar.vue';
+
+const snackbarStore = useSnackbarStore();
+
+export default {
+	data() {
+		return {
+			friendRequests: []
+		};
+	},
+	beforeMount() {
+		this.fetchFriendRequests();
+	},
+	mounted() {},
+	methods: {
+	fetchFriendRequests: async function() {
+		try {
+			const route = useRoute();
+			const response = await fetch(
+				`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/user/friends/requests`,
+				{
+					method: 'GET',
+					headers: {
+						Authorization: `Bearer ${this.JWT}`,
+						'Access-Control-Allow-Origin': '*',
+					},
+				}
+			);
+			if (!response.ok) {
+				console.error('error');
+				// TODO
+			}
+			const data = await response.json();
+			this.friendRequests = data;
+		} catch (error) {
+			console.log(error);
+		}
+	},
+	}
+}
+</script>
