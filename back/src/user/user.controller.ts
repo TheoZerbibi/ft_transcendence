@@ -87,7 +87,6 @@ export class UserController {
 
 	/************************************ Cloudinary **********************************/
 	@UseGuards(JwtGuard)
-	@Patch('profile/me')
 	@Post('getCloudinaryLink')
 	@ApiOperation({ summary: 'Get Avatar Link from Cloudinary API' })
 	@ApiBearerAuth('JWT-auth')

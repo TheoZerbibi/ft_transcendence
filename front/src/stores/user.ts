@@ -30,7 +30,7 @@ export const useUser = defineStore('user', {
 			};
 			try {
 				const response = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/me`,
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/profile/me`,
 					requestOptions,
 				);
 
