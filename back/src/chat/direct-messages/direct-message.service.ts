@@ -28,7 +28,7 @@ export class DirectMessageService {
 
 			const sender = await this.prisma.user.findUnique({
 				where: {
-					login: target_name,
+					login: user.login,
 				},
 				include: {
 					friends: true,

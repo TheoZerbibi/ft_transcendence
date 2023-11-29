@@ -100,6 +100,7 @@ Table friends {
   friend users [not null]
   user_id Int [not null]
   friend_id Int [not null]
+  status Int [not null]
 
   indexes {
     (user_id, friend_id) [pk]
@@ -115,6 +116,12 @@ Table blocked {
   indexes {
     (blocked_by_id, blocked_id) [pk]
   }
+}
+
+Enum RequestStatus {
+  DECLINED
+  PENDING
+  ACCEPTED
 }
 
 Ref: channel_users.channel_id > channels.id [delete: Cascade]

@@ -44,6 +44,7 @@ model channels {
 model friends {
   user_id                        Int
   friend_id                      Int
+  status                         Int
   users_friends_friend_idTousers users @relation("friends_friend_idTousers", fields: [friend_id], references: [id])
   users_friends_user_idTousers   users @relation("friends_user_idTousers", fields: [user_id], references: [id])
 
@@ -107,4 +108,10 @@ model direct_messages {
   friend_id  Int
   user_id    Int
   users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+enum RequestStatus {
+  DECLINED
+  PENDING
+  ACCEPTED
 }
