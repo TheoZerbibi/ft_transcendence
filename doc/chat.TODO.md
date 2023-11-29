@@ -67,16 +67,14 @@
 
 ## USERS / FRIENDS / DM
 
-**[ ] List of dms**
+**[b] List of dms**
 >	usernames
 
-**[ ] Send direct messages to other users**
+**[b] Send direct messages to other users**
 >	not if blocked
 >	not if not friends?
 
-**[ ] Block a user**
+**[b] Block a user**
 >	 This way, they will see no more messages from the account they blocked.
 
-**[ ] Invite to play pong game**
-
-**[ ] Access other profiles**
+**[b] Access other profiles**
