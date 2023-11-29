@@ -6,7 +6,7 @@ enum RequestStatus {
 model User {
 	id				Int				@id @default(autoincrement())
 	login			String 			@unique
-	display_name	String
+	display_name	String			@unique
 	email			String
 	dAuth			Boolean 		@default(false)
 	avatar			String

@@ -1,46 +1,13 @@
 <template>
-	<v-row align="center" justify="center" class="fill-height" id="background">
-		<v-card class="homepage text-center blurred-card rounded-card" variant="tonal" width="600">
-			<v-card-item>
-				<v-card-title class="title">
-					<p class="neonPolice">Welcome to NSTG's ft_transcendence</p>
-				</v-card-title>
-				<v-img
-					class="rounded-card"
-					src="/src/assets/OmoriPictures/Omori007.jpg"
-					contain
-					max-height="300"
-					alt="These are us"
-				/>
-				<v-card-subtitle class="neonPolice homeSubtitles">
-					<br />Gaelle, <span class="teamLeader">Theo</span>, Semiha, Noe
-				</v-card-subtitle>
-			</v-card-item>
-			<v-card-text class="neonPolice text homeSubtitles"> <br />students of 42 paris<br /> </v-card-text>
-			<v-card-actions>
-				<v-btn
-					id="authButton"
-					class="text-capitalize"
-					rounded="xl"
-					color="#C306DF"
-					variant="outlined"
-					size="x-large"
-					@click="redirectToOAuth"
-				>
-					<span class="neonPolice"> 💡 Sign in with 42 </span>
-				</v-btn>
-			</v-card-actions>
-		</v-card>
+	<v-row align="center" justify="center" class="fill-height background d-flex" id="bg">
+		<img src="/ui/Door.png" class="door" alt="These are us" @click="redirectToOAuth" id="polaroid" />
 	</v-row>
-	<Footer />
 </template>
 
 <script lang="ts">
-import Footer from '../components/layout/Footer.vue';
 
 export default {
 	name: 'SignIn',
-	components: { Footer },
 	methods: {
 		redirectToOAuth() {
 			const HOST = import.meta.env.VITE_HOST;
@@ -53,37 +20,31 @@ export default {
 </script>
 
 <style>
-#background {
-	background-image: url('/src/assets/OmoriHomepageWallpaper.jpg');
+.background {
+	background-color: white;
+	pointer-events: none;
 }
 
-.homepage {
-	display: flex;
-	align-items: center;
-	flex-direction: column;
-	/* background: linear-gradient(90deg, #8360c3, #2ebf91); */
+.door {
+	height: 40vw;
+	z-index: 99999999;
+	pointer-events: auto;
 }
 
-.title {
-	display: flex;
-	align-items: flex-start;
-	margin: 20px;
-	padding: 20px;
+.door:hover {
+	-webkit-filter: brightness(10);
+	filter: brightness(10);
+	filter: invert(1);
+	cursor: url(https://www.omori-game.com/img/cursor/cursor.png), auto;
+	-webkit-box-shadow: 0 4px 4px -2px #000000;
+	-moz-box-shadow: 0 4px 4px -2px #000000;
+	box-shadow: 0 40px 40px -2px #000000;
+	transition: 0.5s ease-in-out all;
 }
 
-.teamLeader {
-	font-weight: bold;
-	color: darkmagenta;
-}
-
-#authButton:hover {
+.background:hover {
 	background-color: black;
-	box-shadow: 6px 6px 0px rgba(0, 0, 0);
-	/* box-shadow: 6px 6px 25px rgba(0, 0, 0, 0.5); */
-	border: double;
+	transition: 1s ease-in-out all;
 }
 
-#authButton:hover span {
-	color: white !important;
-}
 </style>

@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import {
 	BadRequestException,
 	Body,
@@ -8,6 +9,7 @@ import {
 	Param,
 	Patch,
 	Post,
+	UploadedFile,
 	UseGuards,
 	UseInterceptors,
 } from '@nestjs/common';
@@ -18,6 +20,10 @@ import { EditUserDto, UserDto } from './dto';
 import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { FriendRequestDto } from './dto/friend.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Express } from 'express';
+import { multerOptions } from './multer/multer.config';
 
 @Controller('users')
 @ApiBearerAuth()
@@ -79,6 +85,17 @@ export class UserController {
 		return await this.userService.getBlockedUsers(user);
 	}
 
+	/************************************ Cloudinary **********************************/
+	@UseGuards(JwtGuard)
+	@Patch('profile/me')
+	@Post('getCloudinaryLink')
+	@ApiOperation({ summary: 'Get Avatar Link from Cloudinary API' })
+	@ApiBearerAuth('JWT-auth')
+	@UseInterceptors(FileInterceptor('file', multerOptions))
+	async getLink(@GetUser('id') userId: number, @UploadedFile() file: Express.Multer.File): Promise<any> {
+		return this.userService.getCloudinaryLink(userId, file);
+	}
+
 	/***********************************************************************************/
 	/* 										Creation								   */
 	/***********************************************************************************/
@@ -107,8 +124,14 @@ export class UserController {
 	/***********************************************************************************/
 
 	/*************************************** Users *************************************/
+	@Post()
+	@ApiOperation({ summary: 'Create a user' })
+	create(@Body() dto: CreateUserDto): Promise<User> {
+		return this.userService.createUser(dto);
+	}
+
 	@UseGuards(JwtGuard)
-	@Patch('profile/me')
+	@Patch()
 	@ApiOperation({ summary: 'Change display_name or Avatar for the user' })
 	@ApiBearerAuth('JWT-auth')
 	editUser(@GetUser('id') userId: number, @Body() dto: EditUserDto): Promise<User> {

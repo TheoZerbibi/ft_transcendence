@@ -15,7 +15,7 @@
 <script lang="ts">
 import { computed } from 'vue';
 
-import { useCountdownStore } from '../stores/countdown';
+import { useCountdownStore } from '../../stores/countdown';
 
 export default {
 	name: 'GameCountdown',
