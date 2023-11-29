@@ -70,19 +70,10 @@ export default {
 </script>
 
 <style scoped>
-@font-face {
-	font-family: 'Shizuru';
-	font-style: normal;
-	font-display: swap;
-	font-weight: 400;
-	src:
-		url(https://cdn.jsdelivr.net/fontsource/fonts/shizuru@latest/latin-400-normal.woff2) format('woff2'),
-		url(https://cdn.jsdelivr.net/fontsource/fonts/shizuru@latest/latin-400-normal.woff) format('woff');
-}
 
 h1 {
-	font-family: Shizuru;
-	font-size: 40px;
+	font-family: 'OMORI_DISTURBED';
+	font-size: 7vh;
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
