@@ -282,7 +282,7 @@ export class UserService {
 			const targetUser = await this.util_findUserByName(friendUsername);
 			if (!targetUser) throw new ForbiddenException('User not found');
 
-			const blocked = await this.prisma.blocked.findUnique({
+/* 			const blocked = await this.prisma.blocked.findUnique({
 				where: {
 					blocked_by_id_blocked_id: {
 						blocked_by_id: targetUser.id,
@@ -291,7 +291,7 @@ export class UserService {
 				},
 			});
 			if (blocked) throw new ForbiddenException('You are blocked by this user');
-
+ */
 			const friend = await this.prisma.friends.findUnique({
 				where: {
 					user_id_friend_id: {
@@ -413,7 +413,7 @@ export class UserService {
 	async unblockUser(user: User, friendUsername: string): Promise<void> {
 		try {
 			const targetUser = await this.util_findUserByName(friendUsername);
-			if (!targetUser) throw new ForbiddenException('User not found');
+			if (!targetUser) throw new BadRequestException('User not found');
 
 			await this.prisma.blocked.delete({
 				where: {
@@ -424,10 +424,10 @@ export class UserService {
 				},
 			});
 		} catch (e) {
-			if (e instanceof this.prisma.PrismaClientKnownRequestError) {
-				if (e.code === 'P2025') throw new BadRequestException('You did not block this user');
+			if (e instanceof Error && e.message === 'User not found') {
+				throw e;
 			}
-			throw e;
+			throw new BadRequestException('You did not block this user');
 		}
 	}
 
