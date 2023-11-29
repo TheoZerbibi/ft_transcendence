@@ -64,7 +64,7 @@ export class AuthService {
 
 	async authUser(user: any) {
 		try {
-			const userPrisma: User = await this.userService.getUser(user.login);
+			const userPrisma: User = await this.userService.findUserByName(user.login);
 			if (!userPrisma) {
 				const newUser = {
 					login: user.login,

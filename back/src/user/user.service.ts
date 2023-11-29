@@ -67,20 +67,6 @@ export class UserService {
 		return user as UserDto;
 	}
 	
-	async findUserByName(username: string): Promise<User | null> {
-		try {
-			const user = await this.prisma.user.findUnique({
-				where: {
-					login: username,
-				},
-			});
-			if (!user) return null;
-			return user;
-		} catch (e) {
-			throw e;
-		}
-	}
-
 	/************************************* Friends *************************************/
 	async getFriendsOfUser(user: User): Promise<UserDto[]> {
 		try {
@@ -187,7 +173,7 @@ export class UserService {
 	async makeFriendRequest(user: User, friendUsername: string): Promise<void> {
 		try {
 			if (!user) throw new ForbiddenException('User not found');
-			const targetUser = await this.util_findUserByName(friendUsername);
+			const targetUser = await this.findUserByName(friendUsername);
 			if (!targetUser) throw new ForbiddenException('User not found');
 			if (targetUser === user) throw new BadRequestException('You cannot add yourself as a friend');
 
@@ -239,7 +225,7 @@ export class UserService {
 	/*********************************** Blocked *************************************/
 	async blockUser(user: User, friendUsername: string): Promise<void> {
 		try {
-			const targetUser = await this.util_findUserByName(friendUsername);
+			const targetUser = await this.findUserByName(friendUsername);
 			if (!targetUser) throw new ForbiddenException('User not found');
 			if (targetUser === user) throw new BadRequestException('You cannot block yourself');
 
@@ -314,7 +300,7 @@ export class UserService {
 	async acceptFriendRequest(user: User, friendUsername: string): Promise<void> {
 		try {
 			if (!user) throw new ForbiddenException('User not found');
-			const targetUser = await this.util_findUserByName(friendUsername);
+			const targetUser = await this.findUserByName(friendUsername);
 			if (!targetUser) throw new ForbiddenException('User not found');
 
 			/*
@@ -389,7 +375,7 @@ export class UserService {
 	async declineFriendRequest(user: User, friendUsername: string): Promise<void> {
 		try {
 			if (!user) throw new ForbiddenException('User not found');
-			const targetUser = await this.util_findUserByName(friendUsername);
+			const targetUser = await this.findUserByName(friendUsername);
 			if (!targetUser) throw new ForbiddenException('User not found');
 			if (targetUser === user) throw new BadRequestException('You cannot decline yourself');
 
@@ -453,7 +439,7 @@ export class UserService {
 	/*********************************** Blocked *************************************/
 	async unblockUser(user: User, friendUsername: string): Promise<void> {
 		try {
-			const targetUser = await this.util_findUserByName(friendUsername);
+			const targetUser = await this.findUserByName(friendUsername);
 			if (!targetUser) throw new BadRequestException('User not found');
 			if (targetUser === user) throw new BadRequestException('You cannot unblock yourself');
 
@@ -478,7 +464,7 @@ export class UserService {
 	/***********************************************************************************/
 
 	/*************************************** Users *************************************/
-	async util_findUserByName(username: string): Promise<User> {
+	async findUserByName(username: string): Promise<User | null> {
 		try {
 			const user = await this.prisma.user.findUnique({
 				where: {
