@@ -9,6 +9,7 @@ import {
 	Param,
 	Patch,
 	Post,
+	Req,
 	UploadedFile,
 	UseGuards,
 	UseInterceptors,
@@ -57,6 +58,19 @@ export class UserController {
 		return user;
 	}
 
+	@Post('getDisplayName')
+	@ApiOperation({ summary: 'Check if displayName is available' })
+	async getDisplayName(@Body() body: Record<string, any>): Promise<any> {
+		const login = body.login;
+		const displayName = body.displayName;
+
+		if (!displayName || !login) {
+			throw new BadRequestException('Invalid request');
+		}
+
+		return { response: await this.userService.getDisplayName(displayName, login) };
+	}
+
 	/************************************* Friends *************************************/
 	// Get friends list
 	@UseGuards(JwtGuard)
@@ -89,8 +103,8 @@ export class UserController {
 	@Post('getCloudinaryLink')
 	@ApiOperation({ summary: 'Get Avatar Link from Cloudinary API' })
 	@UseInterceptors(FileInterceptor('file', multerOptions))
-	async getLink(@UploadedFile() file: Express.Multer.File): Promise<any> {
-		return this.userService.getCloudinaryLink(file);
+	async getLink(@UploadedFile() file: Express.Multer.File, @Body('login') login: string): Promise<any> {
+		return this.userService.getCloudinaryLink(login, file);
 	}
 
 	/***********************************************************************************/

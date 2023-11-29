@@ -156,6 +156,7 @@ export default {
 			const formData = new FormData();
 			if (newAvatar) {
 				formData.append('file', newAvatar);
+				formData.append('login', this.newUser.login);
 			} else {
 				return console.error('newAvatar is not a File object');
 			}
@@ -166,9 +167,6 @@ export default {
 					{
 						method: 'POST',
 						body: formData,
-						headers: {
-							Authorization: `Bearer ${this.JWT}`,
-						},
 					},
 				);
 				if (!response.ok) {
@@ -187,14 +185,50 @@ export default {
 			}
 		},
 		async nextStep() {
+			if (this.step === 1) {
+				if (!this.newUser.display_name) {
+					snackbarStore.showSnackbar('Please enter a name', 3000, 'red');
+					return;
+				}
+				const result = await this.checkDisplayName();
+				if (!result.success) return;
+			}
 			this.step++;
 			if (this.step >= 3) {
 				await this.postToUsers();
 			}
 		},
+		async checkDisplayName(): Promise<any> {
+			try {
+				const body = {
+					login: this.newUser.login,
+					displayName: this.newUser.display_name,
+				};
+				const response = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/getDisplayName`,
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(body),
+					},
+				);
+
+				if (!response.ok) {
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					return { success: false, error };
+				}
+
+				const data = await response.json();
+				return { success: true, data };
+			} catch (error) {
+				return { success: false, error };
+			}
+		},
 		startZoomEffect() {
 			this.zooming = true;
-			// this.something = true;
 			this.zoomIn();
 		},
 		zoomIn() {
@@ -207,16 +241,17 @@ export default {
 					this.zoomIn();
 				}, 100);
 			} else {
-				// Réinitialiser le zoom
 				setTimeout(() => {
 					this.something = true;
 				}, 300);
 				setTimeout(() => {
+					this.redirectToOAuth();
+				}, 600);
+				setTimeout(() => {
 					this.zooming = false;
 					this.zoomLevel = 1;
 					this.something = false;
-					this.redirectToOAuth();
-				}, 1000);
+				}, 3000);
 			}
 		},
 	},
