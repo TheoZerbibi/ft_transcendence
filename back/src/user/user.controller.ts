@@ -70,4 +70,12 @@ export class UserController {
 	editUser(@GetUser('id') userId: number, @Body() dto: EditUserDto): Promise<User> {
 		return this.userService.editUser(userId, dto);
 	}
+
+	@UseGuards(JwtGuard)
+	@Post(':login/friend/:friend_login')
+	@ApiOperation({ summary: 'Become friend with a user (follow)' })
+	@ApiBearerAuth('JWT-auth')
+	async addFriend(@Param('login') username: string, @Param('friend_login') friendUsername: string): Promise<void> {
+		await this.userService.addFriend(username, friendUsername);
+	}
 }

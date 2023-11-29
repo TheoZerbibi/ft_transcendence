@@ -59,7 +59,7 @@ export class ModChannelUserDto {
 	action: string;
 
 	@ApiProperty()
-    @Transform(({ value }) => new Date(value), { toClassOnly: true })
+	@Transform(({ value }) => new Date(value), { toClassOnly: true })
 	@IsDate()
 	@IsOptional()
 	// eslint-disable-next-line

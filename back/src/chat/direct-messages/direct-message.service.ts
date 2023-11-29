@@ -10,7 +10,10 @@ import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class DirectMessageService {
-	constructor(private prisma: PrismaService) {}
+	constructor(
+		private prisma: PrismaService,
+		private userService: UserService,
+	) {}
 
 	/***********************************************************************************/
 	/* 										Getters									   */
@@ -18,23 +21,9 @@ export class DirectMessageService {
 
 	/******************************* DirectMessage Access ******************************/
 
-	async findUserByName(username: string): Promise<User | null> {
-		try {
-			const user = await this.prisma.user.findUnique({
-				where: {
-					login: username,
-				},
-			});
-			if (!user) return null;
-			return user;
-		} catch (e) {
-			throw e;
-		}
-	}
-
 	async accessDirectMessagesWith(user: User, target_name: string): Promise<DirectMessageDto[]> {
 		try {
-			const targetUser = await this.findUserByName(target_name);
+			const targetUser = await this.userService.findUserByName(target_name);
 			if (!targetUser) throw new BadRequestException('User not found');
 
 			const sender = await this.prisma.user.findUnique({
@@ -45,7 +34,7 @@ export class DirectMessageService {
 					friends: true,
 				},
 			});
-			if (!sender || !targetUser) throw new BadRequestException('User not found');
+			if (!sender) throw new BadRequestException('User not found');
 
 			let friend = sender.friends.find((friend) => friend.friend_id === targetUser.id);
 			friend = friend ? friend : sender.friends.find((friend) => friend.user_id === targetUser.id);
@@ -61,9 +50,7 @@ export class DirectMessageService {
 					},
 				},
 			});
-			if (blocked) {
-				throw new ForbiddenException('You are blocked by this user');
-			}
+			if (blocked) throw new ForbiddenException('You are blocked by this user');
 
 			const directMessages: DirectMessage[] = await this.prisma.directMessage.findMany({
 				where: {
@@ -105,7 +92,7 @@ export class DirectMessageService {
 		target_name: string,
 		dto: CreateDirectMessageDto,
 	): Promise<DirectMessageDto> {
-		const targetUser: User | null = await this.findUserByName(target_name);
+		const targetUser: User | null = await this.userService.findUserByName(target_name);
 		if (!targetUser) throw new BadRequestException('User not found');
 
 		const friend = await this.prisma.friends.findMany({
@@ -125,10 +112,12 @@ export class DirectMessageService {
 		if (!friend) {
 			throw new BadRequestException('You are not friend with this user');
 		}
-		const blocked = await this.prisma.blocked.findMany({
+		const blocked = await this.prisma.blocked.findUnique({
 			where: {
-				blocked_by_id: targetUser.id,
-				blocked_id: user.id,
+				blocked_by_id_blocked_id: {
+					blocked_by_id: targetUser.id,
+					blocked_id: user.id,
+				},
 			},
 		});
 		if (blocked) {
