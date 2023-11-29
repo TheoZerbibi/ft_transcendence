@@ -51,6 +51,22 @@ export class UserService {
 		this.userOnboarding = this.userOnboarding.filter((userLogin) => userLogin !== login);
 	}
 
+	async getDisplayName(displayName: string, login: string): Promise<boolean> {
+		try {
+			if (!this.verifyDisplayName(displayName)) throw new BadRequestException('Invalid display name');
+			if (!UserService.isOnBoarding(login)) throw new ForbiddenException('User not onboarding');
+			const user = await this.prisma.user.findUnique({
+				where: {
+					display_name: displayName,
+				},
+			});
+			if (!user) return true;
+			return false;
+		} catch (e) {
+			throw e;
+		}
+	}
+
 	/***********************************************************************************/
 	/* 										Getters									   */
 	/***********************************************************************************/
@@ -478,6 +494,7 @@ export class UserService {
 		}
 	}
 
+
 	verifyDisplayName(displayName: string): boolean {
 		const regex = /^[a-zA-Z0-9]+$/;
 		if (displayName.length < 3 || displayName.length > 15) return false;
@@ -494,13 +511,14 @@ export class UserService {
 		};
 	}
 
-	async getCloudinaryLink(file: Express.Multer.File): Promise<any> {
+	async getCloudinaryLink(login:string, file: Express.Multer.File): Promise<any> {
 		cloudinary.config({
 			cloud_name: this.config.get('CLOUDINARY_CLOUD_NAME'),
 			api_key: this.config.get('CLOUDINARY_API_KEY'),
 			api_secret: this.config.get('CLOUDINARY_API_SECRET'),
 		});
 		try {
+			if (!UserService.isOnBoarding(login)) throw new ForbiddenException('User not onboarding');
 			const cloudinaryResponse = await cloudinary.uploader.upload(file.path);
 			fs.unlinkSync(file.path);
 			return { avatar: cloudinaryResponse.secure_url };
