@@ -18,7 +18,6 @@ enum RequestStatus {
 
 @Injectable()
 export class UserService {
-	private cloudinary;
 
 	constructor(
 		private prisma: PrismaService,
@@ -31,6 +30,10 @@ export class UserService {
 	exclude<User>(user: User, keys: string[]) {
 		return Object.fromEntries(Object.entries(user).filter(([key]) => !keys.includes(key)));
 	}
+
+	/***********************************************************************************/
+	/* 										Onboarding								   */
+	/***********************************************************************************/
 
 	static addUserOnboarding(login: string) {
 		this.userOnboarding.push(login);
@@ -48,13 +51,22 @@ export class UserService {
 		this.userOnboarding = this.userOnboarding.filter((userLogin) => userLogin !== login);
 	}
 
-	verifyDisplayName(displayName: string): boolean {
-		const regex = /^[a-zA-Z0-9]+$/;
-		if (displayName.length < 3 || displayName.length > 15) return false;
-		if (!regex.test(displayName)) return false;
-		return true;
+	/***********************************************************************************/
+	/* 										Getters									   */
+	/***********************************************************************************/
+	
+	/*************************************** Users *************************************/
+	async getUserByLogin(userLogin: string): Promise<UserDto | undefined> {
+		const prismaUser: User = await this.prisma.user.findUnique({
+			where: {
+				login: userLogin,
+			},
+		});
+		if (!prismaUser) return undefined;
+		const user = this.exclude(prismaUser, ['dAuth', 'email', 'updated_at']);
+		return user as UserDto;
 	}
-
+	
 	async findUserByName(username: string): Promise<User | null> {
 		try {
 			const user = await this.prisma.user.findUnique({
@@ -67,21 +79,6 @@ export class UserService {
 		} catch (e) {
 			throw e;
 		}
-	}
-	/***********************************************************************************/
-	/* 										Getters									   */
-	/***********************************************************************************/
-
-	/*************************************** Users *************************************/
-	async getUserByLogin(userLogin: string): Promise<UserDto | undefined> {
-		const prismaUser: User = await this.prisma.user.findUnique({
-			where: {
-				login: userLogin,
-			},
-		});
-		if (!prismaUser) return undefined;
-		const user = this.exclude(prismaUser, ['dAuth', 'email', 'updated_at']);
-		return user as UserDto;
 	}
 
 	/************************************* Friends *************************************/
@@ -162,6 +159,29 @@ export class UserService {
 	/***********************************************************************************/
 	/* 										Creation								   */
 	/***********************************************************************************/
+
+	/*************************************** Users *************************************/
+	async createUser(dto: CreateUserDto): Promise<User> {
+		try {
+			if (!UserService.isOnBoarding(dto.login)) throw new ForbiddenException('User not onboarding');
+			const displayName = await this.checkDisplayName(dto.display_name);
+			if (displayName) throw new ForbiddenException('Display name already taken');
+			if (!this.verifyDisplayName(dto.display_name)) throw new ForbiddenException('Invalid display name');
+			const user = await this.prisma.user.create({
+				data: {
+					login: dto.login,
+					display_name: dto.display_name,
+					email: dto.email,
+					avatar: dto.avatar,
+				},
+			});
+			UserService.removeUserOnboarding(dto.login);
+			const token = await this.signToken(user);
+			return { ...token, ...user };
+		} catch (e) {
+			throw e;
+		}
+	}
 
 	/************************************* Friends *************************************/
 	async makeFriendRequest(user: User, friendUsername: string): Promise<void> {
@@ -273,6 +293,21 @@ export class UserService {
 			},
 		});
 		return user as UserDto;
+	}
+
+	async setAvatar(userId: number, avatar: string): Promise<void> {
+		try {
+			await this.prisma.user.update({
+				where: {
+					id: userId,
+				},
+				data: {
+					avatar: avatar,
+				},
+			});
+		} catch (e) {
+			throw e;
+		}
 	}
 
 	/************************************* Friends *************************************/
@@ -457,6 +492,13 @@ export class UserService {
 		}
 	}
 
+	verifyDisplayName(displayName: string): boolean {
+		const regex = /^[a-zA-Z0-9]+$/;
+		if (displayName.length < 3 || displayName.length > 15) return false;
+		if (!regex.test(displayName)) return false;
+		return true;
+	}
+
 	async signToken(user: Prisma.UserGetPayload<{}>): Promise<{ access_token: string }> {
 		const payload = { login: user.login, sub: user.id };
 		const secret = this.config.get<string>('JWT_SECRET');
@@ -464,43 +506,6 @@ export class UserService {
 		return {
 			access_token: token,
 		};
-	}
-
-	async createUser(dto: CreateUserDto): Promise<User> {
-		try {
-			if (!UserService.isOnBoarding(dto.login)) throw new ForbiddenException('User not onboarding');
-			const displayName = await this.checkDisplayName(dto.display_name);
-			if (displayName) throw new ForbiddenException('Display name already taken');
-			if (!this.verifyDisplayName(dto.display_name)) throw new ForbiddenException('Invalid display name');
-			const user = await this.prisma.user.create({
-				data: {
-					login: dto.login,
-					display_name: dto.display_name,
-					email: dto.email,
-					avatar: dto.avatar,
-				},
-			});
-			UserService.removeUserOnboarding(dto.login);
-			const token = await this.signToken(user);
-			return { ...token, ...user };
-		} catch (e) {
-			throw e;
-		}
-	}
-
-	async setAvatar(userId: number, avatar: string): Promise<void> {
-		try {
-			await this.prisma.user.update({
-				where: {
-					id: userId,
-				},
-				data: {
-					avatar: avatar,
-				},
-			});
-		} catch (e) {
-			throw e;
-		}
 	}
 
 	async getCloudinaryLink(userId: number, file: Express.Multer.File): Promise<any> {
