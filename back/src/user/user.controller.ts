@@ -38,6 +38,24 @@ export class UserController {
 	/***********************************************************************************/
 
 	/*************************************** Users *************************************/
+	// Get users list
+	@UseGuards(JwtGuard)
+	@Get('all')
+	@ApiOperation({ summary: 'Get users list' })
+	@ApiBearerAuth('JWT-auth')
+	async getUsers(): Promise<UserDto[]> {
+		return await this.userService.getUsers();
+	}
+
+	// Get users starting with
+	@UseGuards(JwtGuard)
+	@Get('search/:start')
+	@ApiOperation({ summary: 'Get users list starting with' })
+	@ApiBearerAuth('JWT-auth')
+	async getUsersStartingWith(@Param('start') start: string): Promise<UserDto[]> {
+		return await this.userService.getUsersStartingWith(start);
+	}
+
 	// Get personal informations
 	@UseGuards(JwtGuard)
 	@Get('profile/me')
