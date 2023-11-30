@@ -6,6 +6,10 @@
 		:class="{ background: step === 0, 'black-background': step > 0 }"
 	>
 		<div v-if="step === 0">
+			<audio controls id="myVideo" autoplay loop hidden>
+				<source src="/sounds/002-WHITE SPACE.mp3" type="audio/wav" />
+				Your browser does not support the audio element.
+			</audio>
 			<img
 				src="/ui/Door.png"
 				class="door"
@@ -29,6 +33,10 @@
 			/>
 		</div>
 		<div v-if="step > 0">
+			<audio controls id="myVideo" autoplay loop hidden>
+				<source src="/sounds/004-Spaces In-between.mp3" type="audio/wav" />
+				Your browser does not support the audio element.
+			</audio>
 			<v-card class="card-container" color="tranparent">
 				<div v-if="step === 1" class="card-content">
 					<input
@@ -163,7 +171,9 @@ export default {
 			this.cantSkip = true;
 			try {
 				const response = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/getCloudinaryLink`,
+					`http://${import.meta.env.VITE_HOST}:${
+						import.meta.env.VITE_API_PORT
+					}/users/getCloudinaryLinkOnboarding`,
 					{
 						method: 'POST',
 						body: formData,
