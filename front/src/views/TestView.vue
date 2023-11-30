@@ -1,12 +1,20 @@
 <template>
-	<v-file-input v-model="selectedImage" label="Choose a file"></v-file-input>
-	<v-btn @click="uploadImage">Upload</v-btn>
-	<v-avatar>
-		<img :style="{
-			width: '100%',
-			height: '100%',
-		}" :src="user.avatar" />
-	</v-avatar>
+	<v-container>
+		<!-- Utilisez les composants Vuetify pour la mise en page -->
+		<v-row>
+			<v-col>
+				<v-btn @click="generateQRCode">Generate QR Code</v-btn>
+			</v-col>
+			<v-col>
+				<v-btn @click="activateTwoFactorAuthentication">Activate 2FA</v-btn>
+			</v-col>
+		</v-row>
+
+		<!-- Utilisez un composant QR Code pour afficher le QR Code -->
+		<qrcode :text="qrCodeData" v-if="qrCodeData" />
+
+		<!-- Autres éléments d'interface utilisateur pour gérer la 2FA -->
+	</v-container>
 	<Snackbar />
 </template>
 
@@ -15,63 +23,63 @@ import { computed } from 'vue';
 import Snackbar from '../components/layout/Snackbar.vue';
 import { useSnackbarStore } from '../stores/snackbar';
 import { useUser } from '../stores/user';
+import QrcodeVue from 'qrcode.vue'
 
 const snackbarStore = useSnackbarStore();
 
 export default {
 	name: 'TestView',
-	components: { Snackbar },
+	components: { Snackbar, QrcodeVue },
 	setup() {
 		const userStore = useUser();
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
-		const setAvatar = computed(() => userStore.setAvatar);
 
 		return {
 			JWT,
 			user,
-			setAvatar,
 		};
 	},
 	data() {
 		return {
-			selectedImage: undefined as File[] | undefined,
+			qrCodeData: null,
+			// Autres données nécessaires pour la page 2FA
 		};
 	},
 	methods: {
-		async uploadImage() {
-			const formData = new FormData();
-
-			if (this.selectedImage[0] instanceof File) {
-				formData.append('file', this.selectedImage[0]);
-			} else {
-				return console.error('this.selectedImage is not a File object.');
-			}
-
+		async generateQRCode() {
+			const requestOptions = {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${this.JWT}`,
+					'Access-Control-Allow-Origin': '*',
+				},
+			};
 			try {
 				const response = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/getCloudinaryLink`,
-					{
-						method: 'POST',
-						body: formData,
-						headers: {
-							Authorization: `Bearer ${this.JWT}`,
-						},
-					},
+					`http://${import.meta.env.VITE_HOST}:${
+						import.meta.env.VITE_API_PORT
+					}/2fa/generate`,
+					requestOptions,
 				);
 				if (!response.ok) {
-					const error = await response.json()
+					const error = await response.json();
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
-					console.log(response);
+					this.cantSkip = false;
 					return;
 				}
 
 				const data = await response.json();
-				this.setAvatar(data.avatar);
+				console.log(data);
 			} catch (error) {
 				console.error(error);
 			}
 		},
+		async activateTwoFactorAuthentication() {
+			// Appel API pour activer la 2FA
+		},
+		// Autres méthodes nécessaires
 	},
 };
 </script>
