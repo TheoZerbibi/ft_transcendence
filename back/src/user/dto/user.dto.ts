@@ -37,6 +37,13 @@ export class UserDto {
 	avatar: string;
 
 	@ApiProperty()
+	@IsString()
+	@IsOptional()
+	@Exclude()
+	// eslint-disable-next-line
+	secret: string;
+
+	@ApiProperty()
 	@IsDate()
 	// eslint-disable-next-line
 	created_at: Date;

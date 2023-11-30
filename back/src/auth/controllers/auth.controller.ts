@@ -1,28 +1,14 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthDto } from './dto';
+import { AuthService } from '../services/auth.service';
+import { AuthDto } from '../dto';
 import { Response } from 'express';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { FortyTwoGuard } from './guard';
+import { FortyTwoGuard } from '../guard';
 
 @Controller('auth')
 @ApiTags('Authentication')
 export class AuthController {
 	constructor(private authService: AuthService) {}
-
-	@Post('signup')
-	@HttpCode(HttpStatus.CREATED)
-	@ApiOperation({ summary: 'Create a new user.' })
-	async signup(@Body() dto: AuthDto) {
-		return this.authService.signup(dto);
-	}
-
-	@Post('signin')
-	@HttpCode(HttpStatus.OK)
-	@ApiOperation({ summary: 'Log as user.' })
-	async signin(@Body() dto: AuthDto) {
-		return this.authService.signin(dto);
-	}
 
 	@UseGuards(FortyTwoGuard)
 	@Get('42/callback')
@@ -31,6 +17,7 @@ export class AuthController {
 		const url = new URL(`${req.protocol}:${req.hostname}`);
 		url.port = process.env.FRONT_PORT;
 		const user: any = await this.authService.authUser(req.user._json);
+		if (user.dAuth) return;
 		if (user.access_token) {
 			res.cookie('token', user.access_token, {
 				httpOnly: false,

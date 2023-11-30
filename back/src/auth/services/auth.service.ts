@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
-import { AuthDto } from './dto';
+import { AuthDto } from '../dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma, User } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
@@ -24,37 +24,8 @@ export class AuthService {
 		}
 	}
 
-	async signup(dto: AuthDto) {
-		try {
-			const user = await this.prisma.user.create({
-				data: {
-					login: dto.login,
-					display_name: dto.login,
-					email: `${dto.login}@student.42.fr`,
-					avatar: `https://cdn.intra.42.fr/users/${dto.login}.jpg`,
-				},
-			});
-			return this.signToken(user);
-		} catch (e) {
-			if (e instanceof Prisma.PrismaClientKnownRequestError) {
-				if (e.code === 'P2002') throw new ForbiddenException('Credentials taken');
-			}
-			throw e;
-		}
-	}
-
-	async signin(dto: AuthDto) {
-		const user = await this.prisma.user.findUnique({
-			where: {
-				login: dto.login,
-			},
-		});
-		if (!user) throw new ForbiddenException('Invalid credentials');
-		return this.signToken(user);
-	}
-
-	async signToken(user: Prisma.UserGetPayload<{}>): Promise<{ access_token: string }> {
-		const payload = { login: user.login, sub: user.id };
+	async signToken(user: Prisma.UserGetPayload<{}>, dAuth: boolean): Promise<{ access_token: string }> {
+		const payload = { id: user.id, sub: dAuth };
 		const secret = this.config.get<string>('JWT_SECRET');
 		const token = await this.jwt.signAsync(payload, { expiresIn: '1d', secret: secret });
 		return {
@@ -62,7 +33,7 @@ export class AuthService {
 		};
 	}
 
-	async authUser(user: any) {
+	async authUser(user: any, dAuth: boolean = false) {
 		try {
 			const userPrisma: User = await this.userService.findUserByName(user.login);
 			if (!userPrisma) {
@@ -74,11 +45,18 @@ export class AuthService {
 				UserService.addUserOnboarding(user.login);
 				return newUser;
 			} else {
-				const token = await this.signToken(userPrisma);
+				const token = await this.signToken(userPrisma, dAuth);
 				return { ...token, ...userPrisma };
 			}
 		} catch (e) {
 			throw new ForbiddenException('Invalid request');
 		}
+	}
+
+	public async getCookieWithJwtAccessToken(userId: number, isSecondFactorAuthenticated: boolean = false) {
+		const payload = { id: userId, sub: isSecondFactorAuthenticated };
+		const secret = this.config.get<string>('JWT_SECRET');
+		const token = await this.jwt.signAsync(payload, { expiresIn: '1d', secret: secret });
+		return `Authentication=${token}; HttpOnly; Path=/; Max-Age=1d`;
 	}
 }
