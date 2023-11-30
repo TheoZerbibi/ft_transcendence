@@ -33,8 +33,6 @@ export default {
 			JWT,
 			user,
 		};
-
-
 	},
 	data() {
 		return {
