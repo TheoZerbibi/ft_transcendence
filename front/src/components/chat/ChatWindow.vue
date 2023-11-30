@@ -5,7 +5,9 @@
 			:style="{
 				backgroundImage: `url(${background})`,
 				backgroundPosition: 'center center',
-				backgroundSize: 'cover',
+				backgroundSize: 'contain',
+				backgroundRepeat: 'no-repeat',
+				backgroundColor: 'black',
 			}"
 			class="container d-flex align-center justify-center"
 		>
@@ -29,7 +31,7 @@ export default {
 	data() {
 		return {
 			apiData: null as any,
-			background: '/chat/background/space-parallax.png', // Set the fixed background image path here
+			background: '/chat/omorichat.png',
 		};
 	},
 	mounted() {
