@@ -35,6 +35,10 @@
 			</v-col>
 		</v-row>
 	</v-container>
+	<audio controls id="myVideo" autoplay loop hidden>
+		<source src="/sounds/014-Acrophobia.mp3" type="audio/wav" />
+		Your browser does not support the audio element.
+	</audio>
 </template>
 
 <script lang="ts">
@@ -70,7 +74,6 @@ export default {
 </script>
 
 <style scoped>
-
 h1 {
 	font-family: 'OMORI_DISTURBED';
 	font-size: 7vh;

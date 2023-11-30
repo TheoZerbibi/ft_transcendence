@@ -2,11 +2,11 @@
 	<v-overlay :model-value="showOverlay" class="align-center justify-center countdown-overlay" persistent>
 		<v-container>
 			<v-col>
-				<v-card class="countdown-card" color="transparent">
-					<v-card-text>
+				<div class="countdown-card" color="transparent">
+					<span>
 						<v-row justify="center" class="countdown-icon"> {{ seconds }} </v-row>
-					</v-card-text>
-				</v-card>
+					</span>
+				</div>
 			</v-col>
 		</v-container>
 	</v-overlay>

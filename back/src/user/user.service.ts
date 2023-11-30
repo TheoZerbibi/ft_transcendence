@@ -518,7 +518,6 @@ export class UserService {
 			api_secret: this.config.get('CLOUDINARY_API_SECRET'),
 		});
 		try {
-			if (!UserService.isOnBoarding(login)) throw new ForbiddenException('User not onboarding');
 			const cloudinaryResponse = await cloudinary.uploader.upload(file.path);
 			fs.unlinkSync(file.path);
 			return { avatar: cloudinaryResponse.secure_url };

@@ -5,6 +5,7 @@ import {
 	ClassSerializerInterceptor,
 	Controller,
 	Delete,
+	ForbiddenException,
 	Get,
 	Param,
 	Patch,
@@ -100,10 +101,23 @@ export class UserController {
 	}
 
 	/************************************ Cloudinary **********************************/
-	@Post('getCloudinaryLink')
+	@Post('getCloudinaryLinkOnboarding')
 	@ApiOperation({ summary: 'Get Avatar Link from Cloudinary API' })
 	@UseInterceptors(FileInterceptor('file', multerOptions))
-	async getLink(@UploadedFile() file: Express.Multer.File, @Body('login') login: string): Promise<any> {
+	async getLinkOnboard(@UploadedFile() file: Express.Multer.File, @Body('login') login: string): Promise<any> {
+		if (!file) throw new BadRequestException('No file provided');
+		if (!login) throw new BadRequestException('No login provided');
+		if (!UserService.isOnBoarding(login)) throw new ForbiddenException('User not unauthorized');
+		return this.userService.getCloudinaryLink(login, file);
+	}
+
+	@UseGuards(JwtGuard)
+	@Post('getCloudinaryLink')
+	@ApiOperation({ summary: 'Get Avatar Link from Cloudinary API' })
+	@ApiBearerAuth('JWT-auth')
+	@UseInterceptors(FileInterceptor('file', multerOptions))
+	async getLink(@UploadedFile() file: Express.Multer.File, @GetUser('login') login: string): Promise<any> {
+		if (!file) throw new BadRequestException('No file provided');
 		return this.userService.getCloudinaryLink(login, file);
 	}
 
