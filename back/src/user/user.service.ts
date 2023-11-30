@@ -56,6 +56,36 @@ export class UserService {
 	/***********************************************************************************/
 	
 	/*************************************** Users *************************************/
+	async getUsers(): Promise<UserDto[]> {
+		try {
+			const users = await this.prisma.user.findMany();
+			const usersDto: UserDto[] = users.map((user) => {
+				return this.exclude(user, ['dAuth', 'email', 'updated_at']) as UserDto;
+			});
+			return usersDto;
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	async getUsersStartingWith(startingWith: string): Promise<UserDto[]> {
+		try {
+			const users = await this.prisma.user.findMany({
+				where: {
+					login: {
+						startsWith: startingWith,
+					},
+				},
+			});
+			const usersDto: UserDto[] = users.map((user) => {
+				return this.exclude(user, ['dAuth', 'email', 'updated_at']) as UserDto;
+			});
+			return usersDto;
+		} catch (e) {
+			throw e;
+		}
+	}
+
 	async getUserByLogin(userLogin: string): Promise<UserDto | undefined> {
 		const prismaUser: User = await this.prisma.user.findUnique({
 			where: {
@@ -113,7 +143,7 @@ export class UserService {
 				},
 			});
 			const friendRequestsDto: FriendRequestDto[] = friendRequests.map((friendRequest) => ({
-				author_username: friendRequest.user.login,
+				login: friendRequest.user.login,
 				avatar: friendRequest.user.avatar,
 			}));
 			return friendRequestsDto;

@@ -6,7 +6,7 @@ export class FriendRequestDto {
 	@ApiProperty()
 	@IsString()
 	// eslint-disable-next-line
-	author_username: string;
+	login: string;
 
 	@ApiProperty()
 	@IsString()
