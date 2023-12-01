@@ -5,11 +5,11 @@
 			<ul class="no-bullets" v-if="friendRequests.length">
 				<li v-for="request in friendRequests" :key="request.id">
 					{{ request.display_name }} <!-- L'objet contient aussi l'avatar si tu veux -->
-					<button @click="acceptFriendRequest(request.login)">Accept</button>
-					<button @click="declineFriendRequest(request.login)">Decline</button>
+					<button class="button-spacing" @click="respondRequest(request.login, true)">v</button>
+					<button class="button-spacing" @click="respondRequest(request.login, false)">X</button>
 				</li>
 			</ul>
-			<p v-else>~ sorry, no friend request for now ~</p>
+			<p v-else>~ no friend request here ~</p>
 		</div>
 	</div>
 </template>
@@ -65,10 +65,10 @@ export default {
 				console.error(error);
 			}
 		},
-		acceptFriendRequest: async function(username: string) {
+		respondRequest: async function(login: string, response: boolean) {
 			try {
 				await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/requests`,
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/respond-request`,
 					{
 						method: 'PATCH',
 						headers: {
@@ -76,33 +76,19 @@ export default {
 							Authorization: `Bearer ${this.JWT}`,
 							'Access-Control-Allow-Origin': '*',
 						},
-						body: JSON.stringify({ username }),
+						body: JSON.stringify({
+							login: login,
+							response: response,
+						}),
 					}
-				);
-
+				)
+				.catch((error: any) => {
+					snackbarStore.showSnackbar(error, 3000, 'red');
+					return;
+				});
+				this.fetchFriendRequests();
 			} catch (error) {
 				console.log(error);
-				// TODO
-			}
-		},
-		declineFriendRequest: async function(username: string) {
-			try {
-				await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/requests`,
-					{
-						method: 'DELETE',
-						headers: {
-							'Content-Type': 'application/json',
-							Authorization: `Bearer ${this.JWT}`,
-							'Access-Control-Allow-Origin': '*',
-						},
-						body: JSON.stringify({ username }),
-					}
-				);
-
-			} catch (error) {
-				console.log(error);
-				// TODO
 			}
 		},
 	}
@@ -130,6 +116,9 @@ h2 {
 }
 .no-bullets {
 	list-style-type: none;
+}
+.button-spacing {
+	margin-left: 1rem;
 }
 .friend-requests-container {
 	position: absolute;

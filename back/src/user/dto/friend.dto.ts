@@ -2,14 +2,14 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Exclude } from 'class-transformer';
 
-export class FriendRequestDto {
+export class FriendRequestResponseDto {
 	@ApiProperty()
 	@IsString()
 	// eslint-disable-next-line
 	login: string;
 
 	@ApiProperty()
-	@IsString()
+	@IsBoolean()
 	// eslint-disable-next-line
-	avatar: string;
+	response: boolean;
 }
