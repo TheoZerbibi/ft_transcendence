@@ -1,17 +1,13 @@
-
-
-**NE PAS OUBLIER**
-- [ ] display name / login
-
 **LIST**
-- [ ] List of friends (+ status)
+- [x] List of friends
+  - [ ] (+ status)
 - [ ] Invite friend to play pong game (must be in chat interface)
 - [ ] Send dm to friend
 
 - [x] List of friend requests
 	- [x] accept
 	- [x] decline 
-- [ ] Send a friend request : *A DEBUGER*
+- [x] Send a friend request
 
 - [ ] Stats of a user :
 	- [ ] wins
@@ -24,8 +20,8 @@
 	- [ ] ladder
 
 - [x] List of blocked users
-- [ ] Block a user
-- [ ] Unblock a blocked user
+- [x] Block a user
+- [x] Unblock a blocked user
 
 - [ ] Update login
 - [ ] Update avatar
