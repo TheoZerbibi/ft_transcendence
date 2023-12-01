@@ -4,8 +4,8 @@
 			<h2>Users</h2>
 			<ul class="no-bullets" v-if="users.length">
 				<li v-for="userElem in users" :key="userElem.id"> <!-- I call it "user elem" so we dont overlap the userStore.getUser that get the author of the request -->
-					<!-- <button class="button-spacing" @click="sendFriendRequest(userElem.login)">Add</button> -->
-					{{ userElem.login }}
+					{{ userElem.display_name }}
+					<button class="button-spacing" @click="sendFriendRequest(userElem.login)">+</button>
 				</li>
 			</ul>
 			<p v-else>~ sorry, no users for now ~</p>
@@ -60,11 +60,37 @@ export default {
 				});
 				const data = await response.json();
 				this.users = data;
+				console.log(this.users);
 			} catch (error) {
 				console.error(error);
 			}
 		},
-		//sendFriendRequest: 
+		sendFriendRequest: async function(username: string) {
+			try {
+				await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/send-request`,
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+						body: JSON.stringify({
+							login: username,
+						 }),
+					}
+				)
+				.catch((error: any) => {
+					console.log(error);
+					snackbarStore.showSnackbar(error, 3000, 'red');
+					return;
+				});
+				console.log('Friend request sent to', username);
+			} catch (error) {
+				console.error(error);
+			}
+		},
 	}
 }
 </script>

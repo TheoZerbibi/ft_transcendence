@@ -4,7 +4,7 @@
 			<h2>Friends</h2>
 			<ul class="no-bullets" v-if="friends.length">
 				<li v-for="friend in friends" :key="friend.id">
-					{{ friend.login }}
+					{{ friend.display_name }}
 				</li>
 			</ul>
 			<p v-else>~ sorry, no friends for now ~</p>

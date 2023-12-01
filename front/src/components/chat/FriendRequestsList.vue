@@ -4,7 +4,7 @@
 			<h2>Friend Requests</h2>
 			<ul class="no-bullets" v-if="friendRequests.length">
 				<li v-for="request in friendRequests" :key="request.id">
-					{{ request.login }} <!-- L'objet contient aussi l'avatar si tu veux -->
+					{{ request.display_name }} <!-- L'objet contient aussi l'avatar si tu veux -->
 					<button @click="acceptFriendRequest(request.login)">Accept</button>
 					<button @click="declineFriendRequest(request.login)">Decline</button>
 				</li>
@@ -68,13 +68,15 @@ export default {
 		acceptFriendRequest: async function(username: string) {
 			try {
 				await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/requests/${username}`,
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/requests`,
 					{
 						method: 'PATCH',
 						headers: {
+							'Content-Type': 'application/json',
 							Authorization: `Bearer ${this.JWT}`,
 							'Access-Control-Allow-Origin': '*',
 						},
+						body: JSON.stringify({ username }),
 					}
 				);
 
@@ -86,13 +88,15 @@ export default {
 		declineFriendRequest: async function(username: string) {
 			try {
 				await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/requests/${username}`,
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/requests`,
 					{
 						method: 'DELETE',
 						headers: {
+							'Content-Type': 'application/json',
 							Authorization: `Bearer ${this.JWT}`,
 							'Access-Control-Allow-Origin': '*',
 						},
+						body: JSON.stringify({ username }),
 					}
 				);
 

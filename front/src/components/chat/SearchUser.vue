@@ -9,7 +9,7 @@
 			/>
 			<ul v-if="users.length">
 				<li v-for="user in users" :key="user.id">
-					{{ user.login }}
+					{{ user.display_name }}
 				</li>
 			</ul>
 		</div>

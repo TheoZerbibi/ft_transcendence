@@ -52,3 +52,10 @@ export class UserDto {
 	// eslint-disable-next-line
 	last_login: Date;
 }
+
+export class UserLoginDto {
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	login: string;
+}
