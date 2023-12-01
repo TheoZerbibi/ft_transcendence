@@ -111,11 +111,9 @@ export default {
 	font-family: 'OMORI_MAIN';
 	src: url('/fonts/OMORI_GAME.ttf') format('truetype-variations');
 }
-
 div {
 	font-family: 'OMORI_MAIN';
 }
-
 h2 {
 	font-family: 'OMORI_MAIN', sans-serif;
 	font-size: xx-large;
@@ -126,11 +124,9 @@ h2 {
 		0 0 1em rgb(255, 123, 255),
 		0 0 0.2em rgb(255, 255, 255);
 }
-
 .no-bullets {
 	list-style-type: none;
 }
-
 .friend-requests-container {
 	position: absolute;
 	top: 10%;

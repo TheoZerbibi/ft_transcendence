@@ -31,7 +31,7 @@ export default {
 	data() {
 		return {
 			apiData: null as any,
-			background: '/chat/omorichat.png',
+			//background: '/chat/omorichat.png',
 		};
 	},
 	mounted() {
