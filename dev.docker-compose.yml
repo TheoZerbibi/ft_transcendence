@@ -191,7 +191,7 @@ services:
     volumes:
       - redisdata:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "redis-cli", "ping"]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
       start_period: 1m
       interval: 5s
       timeout: 2s
