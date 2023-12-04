@@ -5,9 +5,10 @@
 			<v-col>
 				<v-btn @click="generateQRCode">Generate QR Code</v-btn>
 			</v-col>
-			<v-col>
-				<v-btn @click="activateTwoFactorAuthentication" v-if="qrCode">Activate 2FA</v-btn>
-			</v-col>
+			<v-form @submit.prevent="activateTwoFactorAuthentication" v-if="qrCode">
+				<v-text-field v-model="verificationCode" label="Enter Verification Code" required></v-text-field>
+				<v-btn type="submit">Activate 2FA</v-btn>
+			</v-form>
 		</v-row>
 
 		<img :src="`${qrCode}`" v-if="qrCode" />
@@ -22,7 +23,7 @@ import { computed, ref } from 'vue';
 import Snackbar from '../components/layout/Snackbar.vue';
 import { useSnackbarStore } from '../stores/snackbar';
 import { useUser } from '../stores/user';
-import QrcodeVue from 'qrcode.vue'
+import QrcodeVue from 'qrcode.vue';
 
 const snackbarStore = useSnackbarStore();
 
@@ -42,7 +43,7 @@ export default {
 	data() {
 		return {
 			qrCode: null,
-			// Autres données nécessaires pour la page 2FA
+			verificationCode: '',
 		};
 	},
 	methods: {
@@ -57,9 +58,7 @@ export default {
 			};
 			try {
 				const response = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${
-						import.meta.env.VITE_API_PORT
-					}/2fa/generate`,
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/2fa/generate`,
 					requestOptions,
 				);
 				if (!response.ok) {
@@ -69,19 +68,33 @@ export default {
 				}
 				const qrCodeArrayBuffer = await response.arrayBuffer();
 				const qrCodeBase64 = btoa(
-					new Uint8Array(qrCodeArrayBuffer).reduce(
-						(data, byte) => data + String.fromCharCode(byte),
-						'',
-					),
+					new Uint8Array(qrCodeArrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), ''),
 				);
 				this.qrCode = 'data:image/png;base64,' + qrCodeBase64;
-				console.log(this.qrCode);
 			} catch (error) {
 				console.error(error);
 			}
 		},
 		async activateTwoFactorAuthentication() {
-			// Appel API pour activer la 2FA
+			const requestBody = { code: this.verificationCode };
+
+			try {
+				const response = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/2fa/turn-on`,
+					{
+						method: 'POST',
+						headers: {
+							Authorization: `Bearer ${this.JWT}`,
+						},
+						body: JSON.stringify(requestBody),
+					},
+				);
+
+				const result = await response.text();
+				console.log(result); // Gérer la réponse du serveur ici
+			} catch (error) {
+				console.error('Error activating 2FA:', error);
+			}
 		},
 		// Autres méthodes nécessaires
 	},
