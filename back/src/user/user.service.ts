@@ -372,6 +372,21 @@ export class UserService {
 		}
 	}
 
+	async turnOffTwoFactorAuthentication(userId: number) {
+		try {
+			await this.prisma.user.update({
+				where: {
+					id: userId,
+				},
+				data: {
+					dAuth: false,
+				},
+			});
+		} catch (e) {
+			throw e;
+		}
+	}
+
 	/************************************* Friends *************************************/
 	async acceptFriendRequest(user: User, friendUsername: string): Promise<void> {
 		try {

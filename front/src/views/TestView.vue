@@ -2,16 +2,20 @@
 	<v-container>
 		<!-- Utilisez les composants Vuetify pour la mise en page -->
 		<v-row>
-			<v-col>
-				<v-btn @click="generateQRCode">Generate QR Code</v-btn>
+			<v-col v-if="!is2FA">
+				<v-btn @click="generateQRCode" v-if="!qrCode">Generate QR Code</v-btn>
 			</v-col>
-			<v-form @submit.prevent="activateTwoFactorAuthentication" v-if="qrCode">
+			<v-form @submit.prevent="disableTwoFactorAuthentication" v-if="is2FA">
+				<v-text-field v-model="verificationCode" label="Enter Verification Code" required></v-text-field>
+				<v-btn type="submit">Disable 2FA</v-btn>
+			</v-form>
+			<v-form @submit.prevent="activateTwoFactorAuthentication" v-if="qrCode && !is2FA">
 				<v-text-field v-model="verificationCode" label="Enter Verification Code" required></v-text-field>
 				<v-btn type="submit">Activate 2FA</v-btn>
 			</v-form>
 		</v-row>
 
-		<img :src="`${qrCode}`" v-if="qrCode" />
+		<img :src="`${qrCode}`" v-if="qrCode && !is2FA" />
 
 		<!-- Autres éléments d'interface utilisateur pour gérer la 2FA -->
 	</v-container>
@@ -34,10 +38,14 @@ export default {
 		const userStore = useUser();
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
+		const set2FA = computed(() => userStore.set2FA);
+		const is2FA = computed(() => userStore.is2FA);
 
 		return {
 			JWT,
 			user,
+			set2FA,
+			is2FA,
 		};
 	},
 	data() {
@@ -57,12 +65,14 @@ export default {
 				},
 			};
 			try {
+				console.log(this.JWT);
 				const response = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/2fa/generate`,
 					requestOptions,
 				);
 				if (!response.ok) {
 					const error = await response.json();
+					console.log(error);
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
@@ -77,6 +87,8 @@ export default {
 		},
 		async activateTwoFactorAuthentication() {
 			const requestBody = { code: this.verificationCode };
+			console.log(JSON.stringify(requestBody));
+			console.log(this.verificationCode);
 
 			try {
 				const response = await fetch(
@@ -84,16 +96,47 @@ export default {
 					{
 						method: 'POST',
 						headers: {
+							'Content-Type': 'application/json',
 							Authorization: `Bearer ${this.JWT}`,
 						},
 						body: JSON.stringify(requestBody),
 					},
 				);
 
-				const result = await response.text();
-				console.log(result); // Gérer la réponse du serveur ici
+				const result = await response.json();
+				console.log(result);
+				snackbarStore.showSnackbar(result.message, 3000, 'green');
+				this.set2FA(true);
 			} catch (error) {
-				console.error('Error activating 2FA:', error);
+				snackbarStore.showSnackbar('Error activating 2FA', 3000, 'red');
+				console.error(error);
+			}
+		},
+		async disableTwoFactorAuthentication() {
+			const requestBody = { code: this.verificationCode };
+			console.log(JSON.stringify(requestBody));
+			console.log(this.verificationCode);
+
+			try {
+				const response = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/2fa/turn-off`,
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${this.JWT}`,
+						},
+						body: JSON.stringify(requestBody),
+					},
+				);
+
+				const result = await response.json();
+				console.log(result);
+				snackbarStore.showSnackbar(result.message, 3000, 'green');
+				this.set2FA(false);
+			} catch (error) {
+				snackbarStore.showSnackbar('Error activating 2FA', 3000, 'red');
+				console.error(error);
 			}
 		},
 		// Autres méthodes nécessaires
