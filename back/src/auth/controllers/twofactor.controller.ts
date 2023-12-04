@@ -36,6 +36,11 @@ export class TwoFactorAuthenticationController {
 	@ApiOperation({ summary: 'Generate 2FA QR code' })
 	@ApiBearerAuth('JWT-auth')
 	async register(@GetUser() user, @Res() response: Response) {
+		try {
+			if (user.dAuth) {
+				throw new UnauthorizedException('2FA already enabled');
+			}
+		} catch (e) {}
 		const { otpauthUrl } = await this.twoFactorAuthenticationService.generateTwoFactorAuthenticationSecret(user);
 
 		return this.twoFactorAuthenticationService.pipeQrCodeStream(response, otpauthUrl);
@@ -47,12 +52,31 @@ export class TwoFactorAuthenticationController {
 	@ApiOperation({ summary: 'Turn on 2FA' })
 	@ApiBearerAuth('JWT-auth')
 	async turnOnTwoFactorAuthentication(@GetUser() user, @Body() body: TwoFactorAuthenticationCodeDto) {
-		const isCodeValid = this.twoFactorAuthenticationService.isTwoFactorAuthenticationCodeValid(body.secret, user);
+		try {
+			if (user.dAuth) {
+				throw new UnauthorizedException('2FA already enabled');
+			}
+		} catch (e) {}
+		const isCodeValid = this.twoFactorAuthenticationService.isTwoFactorAuthenticationCodeValid(body.code, user);
 		if (!isCodeValid) {
 			throw new UnauthorizedException('Wrong authentication code');
 		}
 		await this.userService.turnOnTwoFactorAuthentication(user.id);
 		return { message: 'Two factor authentication enabled' };
+	}
+
+	@Post('turn-off')
+	@HttpCode(200)
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'Turn off 2FA' })
+	@ApiBearerAuth('JWT-auth')
+	async turnOffTwoFactorAuthentication(@GetUser() user, @Body() body: TwoFactorAuthenticationCodeDto) {
+		const isCodeValid = this.twoFactorAuthenticationService.isTwoFactorAuthenticationCodeValid(body.code, user);
+		if (!isCodeValid) {
+			throw new UnauthorizedException('Wrong authentication code');
+		}
+		await this.userService.turnOffTwoFactorAuthentication(user.id);
+		return { message: 'Two factor authentication disabled' };
 	}
 
 	@Post('authenticate')

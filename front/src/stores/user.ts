@@ -5,6 +5,7 @@ export const useUser = defineStore('user', {
 		JWT: null as string | null,
 		login: null as string | null,
 		displayName: null as string | null,
+		dAuth: false as boolean,
 		email: null as string | null,
 		avatar: undefined as string | undefined,
 		created_at: null as Date | null,
@@ -16,6 +17,9 @@ export const useUser = defineStore('user', {
 		getUser: (state) => {
 			return { login: state.login, displayName: state.displayName, avatar: state.avatar };
 		},
+		is2FA: (state) => {
+			return state.dAuth;
+		}
 	},
 	actions: {
 		async setJWT(jwt: string): Promise<void> {
@@ -40,6 +44,7 @@ export const useUser = defineStore('user', {
 					this.login = null;
 					this.displayName = null;
 					this.avatar = undefined;
+					this.dAuth = false;
 					return Promise.reject(errorData);
 				}
 
@@ -49,6 +54,7 @@ export const useUser = defineStore('user', {
 				this.email = data.email;
 				this.created_at = new Date(data.created_at);
 				this.avatar = data.avatar;
+				this.dAuth = data.dAuth;
 				return Promise.resolve(data);
 			} catch (error) {
 				return Promise.reject(error);
@@ -56,7 +62,10 @@ export const useUser = defineStore('user', {
 		},
 		setAvatar(avatar: string): void {
 			this.avatar = avatar;
-		}
+		},
+		set2FA(dAuth: boolean): void {
+			this.dAuth = dAuth;
+		},
 	},
 	persist: true,
 });
