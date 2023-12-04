@@ -45,6 +45,7 @@ export class AuthService {
 				UserService.addUserOnboarding(user.login);
 				return newUser;
 			} else {
+				dAuth = userPrisma.dAuth;
 				const token = await this.signToken(userPrisma, dAuth);
 				return { ...token, ...userPrisma };
 			}

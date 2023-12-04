@@ -84,26 +84,15 @@ export class TwoFactorAuthenticationController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Authentificate with 2FA' })
 	@ApiBearerAuth('JWT-auth')
-	async authenticate(
-		@Req() req: any,
-		@Res() res: Response,
-		@GetUser() user,
-		@Body() body: TwoFactorAuthenticationCodeDto,
-	) {
+	async authenticate(@GetUser() user, @Body() body: TwoFactorAuthenticationCodeDto) {
 		const isCodeValid = this.twoFactorAuthenticationService.isTwoFactorAuthenticationCodeValid(body.code, user);
 		if (!isCodeValid) {
 			throw new UnauthorizedException('Wrong authentication code');
 		}
-		const url = new URL(`${req.protocol}:${req.hostname}`);
-		url.port = process.env.FRONT_PORT;
-		const _user: any = await this.authService.authUser(user, true);
-		if (_user.access_token) {
-			res.cookie('token', _user.access_token, {
-				httpOnly: false,
-				expires: new Date(Date.now() + 1000 * 60),
-			});
-			res.redirect(url.href);
-			return user;
+		const token: any = await this.authService.signToken(user, true);
+		if (token.access_token) {
+			return token;
 		}
+		return { message: 'Two factor authentication error' };
 	}
 }

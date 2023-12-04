@@ -55,6 +55,16 @@
 					</v-img>
 					<button @click="nextStep" class="next-button" :disabled="cantSkip" />
 				</div>
+				<div v-if="step === 4" class="card-content">
+					<v-form @submit.prevent="logTwoFactorAuthentication">
+						<v-text-field
+							v-model="verificationCode"
+							label="Enter Verification Code"
+							required
+						></v-text-field>
+						<v-btn type="submit">Send code</v-btn>
+					</v-form>
+				</div>
 			</v-card>
 			<img src="/ui/ALBUM.png" class="album" alt="Album" />
 		</div>
@@ -100,6 +110,8 @@ export default {
 		return {
 			step: 0 as number,
 			avatar: undefined as File | undefined,
+			verificationCode: '' as string,
+			FAToken: '' as string,
 			cantSkip: false,
 			zooming: false,
 			zoomLevel: 1,
@@ -107,8 +119,14 @@ export default {
 		};
 	},
 	async beforeMount() {
-		if (this.$cookies.get('token')) {
-			const token = this.$cookies.get('token');
+		if (this.$cookies.get('2FA')) {
+			this.FAToken = this.$cookies.get('2FA');
+			console.log(this.FAToken);
+			snackbarStore.showSnackbar('2FA enabled', 3000, 'green');
+			this.step = 4;
+			this.$cookies.remove('2FA');
+		} else if (this.$cookies.get('token')) {
+		 	const token = this.$cookies.get('token');
 			this.$cookies.remove('token');
 			try {
 				await userStore.setJWT(token);
@@ -127,6 +145,35 @@ export default {
 		}
 	},
 	methods: {
+		async logTwoFactorAuthentication() {
+			if (!this.verificationCode) return snackbarStore.showSnackbar('Please enter a code', 3000, 'red');
+			const requestBody = { code: this.verificationCode };
+
+			try {
+				const response = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/2fa/authenticate`,
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${this.FAToken}`,
+						},
+						body: JSON.stringify(requestBody),
+					},
+				);
+				if (!response.ok) {
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					return;
+				}
+				const data = await response.json();
+				this.$cookies.set('token', data.access_token, '1m');
+				this.$router.push({ name: `Home` });
+			} catch (error) {
+				snackbarStore.showSnackbar('Error 2FA', 3000, 'red');
+				console.error(error);
+			}
+		},
 		async postToUsers() {
 			const requestOptions = {
 				method: 'POST',
@@ -204,7 +251,7 @@ export default {
 				if (!result.success) return;
 			}
 			this.step++;
-			if (this.step >= 3) {
+			if (this.step == 3) {
 				await this.postToUsers();
 			}
 		},
