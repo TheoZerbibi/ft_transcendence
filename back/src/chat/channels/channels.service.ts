@@ -53,8 +53,12 @@ export class ChannelService {
 
 	/*********************************** Channels Lists ********************************/
 
-	async getAllPublicChannels(): Promise<ChannelListElemDto[] | null> {
-		const publicChannels = this.localChannels.filter((channel) => channel.getIsPublic());
+	async getAllPublicChannels(user: User): Promise<ChannelListElemDto[] | null> {
+		const publicChannels = this.localChannels.filter((channel) => {
+			const isPublic = channel.getIsPublic();
+			const isNotJoined = channel.getUsers().every((channelUser) => channelUser.getUserId() !== user.id);
+			return isPublic && isNotJoined;
+		});
 		const sortedChannels = publicChannels
 			.sort((a, b) => b.getUpdatedAt().getTime() - a.getUpdatedAt().getTime())
 			.slice(0, 20);

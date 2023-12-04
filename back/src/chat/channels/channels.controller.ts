@@ -39,8 +39,8 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get all public channels' })
 	@ApiBearerAuth('JWT-auth')
-	async getAllPublicChannels(): Promise<ChannelListElemDto[]> {
-		return await this.channelService.getAllPublicChannels();
+	async getAllPublicChannels(@GetUser() user: User): Promise<ChannelListElemDto[]> {
+		return await this.channelService.getAllPublicChannels(user);
 	}
 
 	//Get all channels on which user is

@@ -123,7 +123,7 @@ h2 {
 .users-container {
 	position: absolute;
 	top: 10%;
-	left: 70%;
+	left: 5%;
 	margin: auto;
 	background-color: rgb(0, 0, 0, 0.8);
 	padding: 1rem;

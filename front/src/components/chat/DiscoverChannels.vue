@@ -1,14 +1,13 @@
 <template>
 	<div class="overlay">
-		<div class="friends-container">
-			<h2>Friends</h2>
-			<ul class="no-bullets" v-if="friends.length">
-				<li v-for="friend in friends" :key="friend.id">
-					<span class="online-badge" v-if="friend.isOnline"></span>
-					{{ friend.display_name }}
+		 <div class="discover-channels-list-container">
+			<h2>Discover Channels</h2>
+			<ul class="no-bullets" v-if="discoverChannels.length">
+				<li v-for="channel in discoverChannels" :key="channel.id">
+					{{ channel.name }}
 				</li>
 			</ul>
-			<p v-else>~ sorry, no friends for now ~</p>
+			<p v-else>~ there is no channel to discover ~</p>
 		</div>
 	</div>
 </template>
@@ -33,19 +32,19 @@ export default {
 	},
 	data() {
 		return {
-			friends: []
+			discoverChannels: []
 		};
 	},
 	beforeMount() {
-		this.fetchFriends();
+		this.fetchDiscoverChannels();
 	},
 	mounted() {},
 	methods: {
-		fetchFriends: async function() {
+		fetchDiscoverChannels: async function() {
 			try {
 				const response = await
 				fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends`,
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/list/discover`,
 					{
 						method: 'GET',
 						headers: {
@@ -59,19 +58,21 @@ export default {
 					return;
 				});
 				const data = await response.json();
-				this.friends = data;
+				if (data.error) {
+					snackbarStore.showSnackbar(data.error, 3000, 'red');
+					return;
+				}
+				this.discoverChannels = data;
 			} catch (error) {
-				console.error(error);
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
-		}
+		},
 	}
 }
 
 </script>
 
-
 <style scoped>
-
 @font-face {
 	font-family: 'OMORI_MAIN';
 	src: url('/fonts/OMORI_GAME.ttf') format('truetype-variations');
@@ -82,7 +83,7 @@ div {
 }
 
 h2 {
-	font-family: 'OMORI_MAIN', sans-serif;
+	font-family: 'OMORI_MAIN';
 	font-size: xx-large;
 	text-align: center;
 	color: rgb(65, 37, 37);
@@ -94,26 +95,18 @@ h2 {
 
 .no-bullets {
 	list-style-type: none;
+	padding-left: 0;
+	margin-left: 0;
 }
 
-.friends-container {
+.discover-channels-list-container {
 	position: absolute;
-	top: 10%;
-	left: 35%;
+	top: 40%;
+	left: 5%;
 	margin: auto;
 	background-color: rgb(0, 0, 0, 0.8);
 	padding: 1rem;
 	border-radius: 1rem;
 	overflow: auto;
 }
-
-.online-badge {
-  height: 10px;
-  width: 10px;
-  background-color: green;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 5px;
-}
-
 </style>

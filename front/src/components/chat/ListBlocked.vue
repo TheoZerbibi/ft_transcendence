@@ -121,7 +121,7 @@ h2 {
 .blocked-list-container {
 	position: absolute;
 	top: 10%;
-	left: 35%;
+	left: 20%;
 	margin: auto;
 	background-color: rgb(0, 0, 0, 0.8);
 	padding: 1rem;

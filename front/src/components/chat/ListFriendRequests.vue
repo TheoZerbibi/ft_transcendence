@@ -2,8 +2,8 @@
 	<div class="overlay">
 		<div class="friend-requests-container">
 			<h2>Friend Requests</h2>
-			<ul class="no-bullets" v-if="friendRequests.length">
-				<li v-for="request in friendRequests" :key="request.id">
+			<ul class="no-bullets" v-if="ListFriendRequests.length">
+				<li v-for="request in ListFriendRequests" :key="request.id">
 					{{ request.display_name }} <!-- L'objet contient aussi l'avatar si tu veux -->
 					<button class="button-spacing" @click="respondRequest(request.login, true)">v</button>
 					<button class="button-spacing" @click="respondRequest(request.login, false)">X</button>
@@ -34,15 +34,15 @@ export default {
 	},
 	data() {
 		return {
-			friendRequests: []
+			ListFriendRequests: []
 		};
 	},
 	beforeMount() {
-		this.fetchFriendRequests();
+		this.fetchListFriendRequests();
 	},
 	mounted() {},
 	methods: {
-		fetchFriendRequests: async function() {
+		fetchListFriendRequests: async function() {
 			try {
 				const response = await
 				fetch(
@@ -60,7 +60,7 @@ export default {
 					return;
 				});
 				const data = await response.json();
-				this.friendRequests = data;
+				this.ListFriendRequests = data;
 			} catch (error) {
 				console.error(error);
 			}
@@ -86,7 +86,7 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				this.fetchFriendRequests();
+				this.fetchListFriendRequests();
 			} catch (error) {
 				console.log(error);
 			}
@@ -123,7 +123,7 @@ h2 {
 .friend-requests-container {
 	position: absolute;
 	top: 10%;
-	left: 5%;
+	left: 50%;
 	margin: auto;
 	background-color: rgb(0, 0, 0, 0.8);
 	padding: 1rem;
