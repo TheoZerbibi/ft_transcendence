@@ -1,4 +1,4 @@
-FROM node:21-alpine AS common
+FROM node:20-alpine AS common
 LABEL org.opencontainers.image.source=https://github.com/TheoZerbibi/ft_transcendence
 LABEL org.opencontainers.image.description="Container image for ft_transcendence project"
 
