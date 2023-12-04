@@ -6,12 +6,11 @@
 				<v-btn @click="generateQRCode">Generate QR Code</v-btn>
 			</v-col>
 			<v-col>
-				<v-btn @click="activateTwoFactorAuthentication">Activate 2FA</v-btn>
+				<v-btn @click="activateTwoFactorAuthentication" v-if="qrCode">Activate 2FA</v-btn>
 			</v-col>
 		</v-row>
 
-		<!-- Utilisez un composant QR Code pour afficher le QR Code -->
-		<qrcode :text="qrCodeData" v-if="qrCodeData" />
+		<img :src="`${qrCode}`" v-if="qrCode" />
 
 		<!-- Autres éléments d'interface utilisateur pour gérer la 2FA -->
 	</v-container>
@@ -19,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import Snackbar from '../components/layout/Snackbar.vue';
 import { useSnackbarStore } from '../stores/snackbar';
 import { useUser } from '../stores/user';
@@ -42,7 +41,7 @@ export default {
 	},
 	data() {
 		return {
-			qrCodeData: null,
+			qrCode: null,
 			// Autres données nécessaires pour la page 2FA
 		};
 	},
@@ -66,12 +65,17 @@ export default {
 				if (!response.ok) {
 					const error = await response.json();
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
-					this.cantSkip = false;
 					return;
 				}
-
-				const data = await response.json();
-				console.log(data);
+				const qrCodeArrayBuffer = await response.arrayBuffer();
+				const qrCodeBase64 = btoa(
+					new Uint8Array(qrCodeArrayBuffer).reduce(
+						(data, byte) => data + String.fromCharCode(byte),
+						'',
+					),
+				);
+				this.qrCode = 'data:image/png;base64,' + qrCodeBase64;
+				console.log(this.qrCode);
 			} catch (error) {
 				console.error(error);
 			}
