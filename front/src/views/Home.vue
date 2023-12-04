@@ -2,9 +2,9 @@
 	<v-main id="background">
 		<table>
 			<tr>
-				<th>omoriFont</th>
-				<th>omoriDisturbed</th>
-				<th>Arcade</th>
+				<th>class="omoriFont"</th>
+				<th>class="omoriDisturbed"</th>
+				<th>class="omoriArcade"</th>
 			</tr>
 			<tr>
 				<td><h1 class="omoriFont">Titre h1</h1></td>
