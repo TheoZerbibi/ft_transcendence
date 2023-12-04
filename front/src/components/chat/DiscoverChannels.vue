@@ -5,9 +5,17 @@
 			<ul class="no-bullets" v-if="discoverChannels.length">
 				<li v-for="channel in discoverChannels" :key="channel.id">
 					{{ channel.name }}
+					<button @click="joinChannel(channel.name, channel.is_public)">+</button>
 				</li>
 			</ul>
 			<p v-else>~ there is no channel to discover ~</p>
+		</div>
+		<div class="modal" v-if="showModal">
+			<h2>Enter Password</h2>
+			<form @submit.prevent="joinPrivateChannel(pwd)">
+				<input type="password" v-model="pwd" />
+				<button type="submit">Submit</button>
+			</form>
 		</div>
 	</div>
 </template>
@@ -32,7 +40,10 @@ export default {
 	},
 	data() {
 		return {
-			discoverChannels: []
+			discoverChannels: [],
+			pwd: '',
+			showModal: false,
+			selectedPrivChannel: '',
 		};
 	},
 	beforeMount() {
@@ -57,14 +68,68 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				const data = await response.json();
-				if (data.error) {
-					snackbarStore.showSnackbar(data.error, 3000, 'red');
+				this.discoverChannels = await response.json();
+			} catch (error) {
+				console.error(error);
+			}
+		},
+		joinChannel: async function(channel_name: string, is_public: boolean) {
+			try {
+				console.log(`${channel_name}: is_public = ${is_public}`);
+				if (is_public) {
+					await fetch(
+						`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${channel_name}/join`,
+						{
+							method: 'POST',
+							headers: {
+								Authorization: `Bearer ${this.JWT}`,
+								'Access-Control-Allow-Origin': '*',
+							},
+							body: JSON.stringify({
+								chan_password: '',
+							}),
+						}
+					).catch((error: any) => {
+						snackbarStore.showSnackbar(error, 3000, 'red');
+						return;
+					});
+					this.fetchDiscoverChannels();
+				} else {
+					this.selectedPrivChannel = channel_name;
+					this.showModal = true;
+				}
+			} catch (error) {
+				console.error(error);
+			}
+		},
+		joinPrivateChannel: async function(pwd: string) {
+			try {
+				if (!pwd) {
+					snackbarStore.showSnackbar('Please enter a password', 3000, 'red');
 					return;
 				}
-				this.discoverChannels = data;
+				console.log(`${this.selectedPrivChannel}: user input pwd = ${pwd}`);
+				await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedPrivChannel}/join`,
+					{
+						method: 'POST',
+						headers: {
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+						body: JSON.stringify({
+							chan_password: pwd,
+						}),
+					}
+				).catch((error: any) => {
+					snackbarStore.showSnackbar(error, 3000, 'red');
+					return;
+				});
+				this.selectedPrivChannel = '';
+				this.showModal = false;
+				this.fetchDiscoverChannels();
 			} catch (error) {
-				snackbarStore.showSnackbar(error, 3000, 'red');
+				console.error(error);
 			}
 		},
 	}
