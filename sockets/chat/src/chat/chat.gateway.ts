@@ -31,6 +31,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	) {}
 
 	@WebSocketServer() server: Server;
+
+
+
 	public async handleConnection(client: Socket): Promise<void> {
 		try {
 			if (!client.handshake.headers.authorization) throw new Error('Invalid token');

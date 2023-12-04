@@ -125,7 +125,7 @@ export class Chat {
 
 	public static getUserById(id: number): User | undefined
 	{
-		return Chat.user_lst.find((user) => user.getId() === id);
+		return Chat.user_lst.find((user) => { return user.getId() === id});
 	}
 
 
