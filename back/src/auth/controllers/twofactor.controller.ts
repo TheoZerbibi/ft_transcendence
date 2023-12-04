@@ -52,6 +52,7 @@ export class TwoFactorAuthenticationController {
 			throw new UnauthorizedException('Wrong authentication code');
 		}
 		await this.userService.turnOnTwoFactorAuthentication(user.id);
+		return { message: 'Two factor authentication enabled' };
 	}
 
 	@Post('authenticate')
@@ -65,7 +66,7 @@ export class TwoFactorAuthenticationController {
 		@GetUser() user,
 		@Body() body: TwoFactorAuthenticationCodeDto,
 	) {
-		const isCodeValid = this.twoFactorAuthenticationService.isTwoFactorAuthenticationCodeValid(body.secret, user);
+		const isCodeValid = this.twoFactorAuthenticationService.isTwoFactorAuthenticationCodeValid(body.code, user);
 		if (!isCodeValid) {
 			throw new UnauthorizedException('Wrong authentication code');
 		}

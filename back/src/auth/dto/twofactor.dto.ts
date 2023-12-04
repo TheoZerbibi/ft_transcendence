@@ -6,5 +6,5 @@ export class TwoFactorAuthenticationCodeDto {
 	@IsString()
 	@IsNotEmpty()
 	// eslint-disable-next-line
-	secret: string;
+	code: string;
 }
