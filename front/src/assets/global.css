@@ -1,9 +1,55 @@
-.omoriPolice {
+/* use with html elements such as: 
+- <h1 class="omoriFont">
+- <p class ="omoriDisturbed"> */
+.omoriFont {
 	font-family: 'OMORI_MAIN';
-	font-size: xx-large;
-	text-align: center;
 	color: white;
-	margin: auto;
+	margin: 2%;
+}
+
+.omoriDisturbed {
+	font-family: 'OMORI_DISTURBED';
+	color: white;
+	margin: 2%;
+}
+
+.omoriArcade {
+	font-family: 'OMORI_ARCADE';
+	color: white;
+	margin: 2%;
+}
+
+.hoverable {
+
+}
+
+h1 {
+	font-size: xxx-large;
+	font-weight: bold;
+	line-height: 1.4;
+	text-transform: uppercase;
+}
+
+h2 {
+	font-size: xx-large;
+	font-weight: bold;
+	line-height: 1.5;
+	text-transform: uppercase;
+}
+
+h3 {
+	font-size: large;
+	font-weight: bold;
+	line-height: 1.3;
+}
+
+p {
+	font-size: normal;
+	line-height: normal;
+}
+
+button:hover, .hoverable:hover {
+	cursor: url(https://www.omori-game.com/img/cursor/cursor.png), auto;
 }
 
 @font-face {
@@ -14,4 +60,9 @@
 @font-face {
 	font-family: 'OMORI_DISTURBED';
 	src: url('./fonts/OMORI_GAME2.ttf') format('truetype-variations');
+}
+
+@font-face {
+	font-family: 'OMORI_ARCADE';
+	src: url('./fonts/ARCADECLASSIC.TTF') format('truetype-variations');
 }

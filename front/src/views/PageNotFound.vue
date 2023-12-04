@@ -74,6 +74,7 @@ export default {
 </script>
 
 <style scoped>
+
 h1 {
 	font-family: 'OMORI_DISTURBED';
 	font-size: 7vh;
