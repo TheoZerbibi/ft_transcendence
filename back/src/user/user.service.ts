@@ -10,6 +10,7 @@ import * as fs from 'fs';
 import { ConfigService } from '@nestjs/config';
 import { v2 as cloudinary } from 'cloudinary';
 import { JwtService } from '@nestjs/jwt';
+import * as argon2 from 'argon2';
 
 enum RequestStatus {
 	DECLINED,
@@ -344,6 +345,7 @@ export class UserService {
 
 	async setTwoFactorAuthenticationSecret(secret: string, userId: number) {
 		try {
+			// const hashedSecret = await argon2.hash(secret);
 			await this.prisma.user.update({
 				where: {
 					id: userId,
@@ -380,6 +382,7 @@ export class UserService {
 				},
 				data: {
 					dAuth: false,
+					secret: null,
 				},
 			});
 		} catch (e) {
