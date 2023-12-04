@@ -4,6 +4,7 @@
 			<h2>Friends</h2>
 			<ul class="no-bullets" v-if="friends.length">
 				<li v-for="friend in friends" :key="friend.id">
+					<span class="online-badge" v-if="friend.isOnline"></span>
 					{{ friend.display_name }}
 				</li>
 			</ul>
@@ -105,4 +106,14 @@ h2 {
 	border-radius: 1rem;
 	overflow: auto;
 }
+
+.online-badge {
+  height: 10px;
+  width: 10px;
+  background-color: green;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+}
+
 </style>

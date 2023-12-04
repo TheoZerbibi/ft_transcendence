@@ -97,11 +97,11 @@ Table users {
 }
 
 Table friends {
-  user users [not null]
-  friend users [not null]
   user_id Int [not null]
   friend_id Int [not null]
   status Int [not null]
+  user users [not null]
+  friend users [not null]
 
   indexes {
     (user_id, friend_id) [pk]
@@ -109,10 +109,10 @@ Table friends {
 }
 
 Table blocked {
-  blockedBy users [not null]
-  blocked users [not null]
   blocked_by_id Int [not null]
   blocked_id Int [not null]
+  blockedBy users [not null]
+  blocked users [not null]
 
   indexes {
     (blocked_by_id, blocked_id) [pk]
