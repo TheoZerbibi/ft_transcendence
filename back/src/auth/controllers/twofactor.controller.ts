@@ -9,6 +9,7 @@ import {
 	UnauthorizedException,
 	Body,
 	Req,
+	Get,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { JwtGuard } from 'src/auth/guard';
@@ -30,7 +31,7 @@ export class TwoFactorAuthenticationController {
 		private readonly authService: AuthService,
 	) {}
 
-	@Post('generate')
+	@Get('generate')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Generate 2FA QR code' })
 	@ApiBearerAuth('JWT-auth')
