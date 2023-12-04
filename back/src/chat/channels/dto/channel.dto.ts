@@ -46,6 +46,16 @@ export class ChannelListElemDto {
 	name: string;
 
 	@ApiProperty()
+	@IsBoolean()
+	// eslint-disable-next-line
+	is_public: boolean;
+
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	password: string;
+
+	@ApiProperty()
 	@IsDate()
 	// eslint-disable-next-line
 	updated_at: Date;

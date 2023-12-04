@@ -55,14 +55,18 @@ export class ChannelService {
 
 	async getAllPublicChannels(user: User): Promise<ChannelListElemDto[] | null> {
 		const publicChannels = this.localChannels.filter((channel) => {
-			const isPublic = channel.getIsPublic();
 			const isNotJoined = channel.getUsers().every((channelUser) => channelUser.getUserId() !== user.id);
-			return isPublic && isNotJoined;
+			return isNotJoined;
 		});
 		const sortedChannels = publicChannels
 			.sort((a, b) => b.getUpdatedAt().getTime() - a.getUpdatedAt().getTime())
 			.slice(0, 20);
-		return sortedChannels.map((channel) => ({ name: channel.getName(), updated_at: channel.getUpdatedAt() }));
+		return sortedChannels.map((channel) => ({
+			name: channel.getName(),
+			is_public: channel.getIsPublic(),
+			password: channel.getPassword(),
+			updated_at: channel.getUpdatedAt(),
+		}));
 	}
 
 	async getJoinedChannelNames(user: User): Promise<ChannelListElemDto[] | null> {
@@ -77,7 +81,12 @@ export class ChannelService {
 		const sortedChannels = allowedChannels
 			.sort((a, b) => b.getUpdatedAt().getTime() - a.getUpdatedAt().getTime())
 			.slice(0, 20);
-		return sortedChannels.map((channel) => ({ name: channel.getName(), updated_at: channel.getUpdatedAt() }));
+		return sortedChannels.map((channel) => ({
+			name: channel.getName(),
+			updated_at: channel.getUpdatedAt(),
+			is_public: channel.getIsPublic(),
+			password: channel.getPassword(),
+		}));
 	}
 
 	/********************************** Channel Access *********************************/
@@ -247,8 +256,16 @@ export class ChannelService {
 		}
 
 		if (!channelEntity.getIsPublic()) {
-			const passwordMatch = await argon2.verify(channelEntity.getPassword(), dto.chan_password);
-			if (!passwordMatch) throw new BadRequestException('Wrong password');
+			console.log(`channel ${channel_name} password = ${channelEntity.getPassword()}`);
+			try {
+				if (await argon2.verify(channelEntity.getPassword(), dto.chan_password)) console.log('password match');
+				else {
+					console.log('password does not match');
+					throw new BadRequestException('Wrong password');
+				}
+			} catch (e) {
+				throw new BadRequestException('Wrong password');
+			}
 		}
 
 		try {
@@ -376,7 +393,7 @@ export class ChannelService {
 			throw new ForbiddenException('You are not authorized to set or modify the password on this channel');
 
 		if (!channelEntity.getIsPublic()) {
-			const passwordMatch = await argon2.verify(channelEntity.getPassword(), dto.prev_pwd);
+			const passwordMatch: boolean = await argon2.verify(channelEntity.getPassword(), dto.prev_pwd);
 			if (!passwordMatch) throw new BadRequestException('Wrong previous password');
 		}
 
@@ -385,7 +402,7 @@ export class ChannelService {
 		if (dto.new_pwd !== dto.new_pwd_confirm) throw new BadRequestException('Passwords do not match');
 
 		dto.new_pwd ? channelEntity.setIsPublic(false) : channelEntity.setIsPublic(true);
-		const hashedPwd = await argon2.hash(dto.new_pwd);
+		const hashedPwd: string = await argon2.hash(dto.new_pwd);
 		channelEntity.setPassword(hashedPwd);
 
 		try {
@@ -536,7 +553,7 @@ export class ChannelService {
 		if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
 
 		if (!channelEntity.getIsPublic()) {
-			const passwordMatch = await argon2.verify(channelEntity.getPassword(), dto.password);
+			const passwordMatch: boolean = await argon2.verify(channelEntity.getPassword(), dto.password);
 			if (!passwordMatch) throw new BadRequestException('Wrong password');
 		}
 
@@ -617,7 +634,7 @@ export class ChannelService {
 		if (!channelUser) throw new BadRequestException(`You are not on this channel`);
 		if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
 		if (!channelEntity.getIsPublic()) {
-			const passwordMatch = await argon2.verify(channelEntity.getPassword(), pwd);
+			const passwordMatch: boolean = await argon2.verify(channelEntity.getPassword(), pwd);
 			if (!passwordMatch) throw new BadRequestException('Wrong password');
 		}
 		if (!channelUser.isAdmin())
