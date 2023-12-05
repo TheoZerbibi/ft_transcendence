@@ -192,7 +192,7 @@ services:
       - redisdata:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
-start_period: 1m
+      start_period: 1m
       interval: 5s
       timeout: 2s
       retries: 21
