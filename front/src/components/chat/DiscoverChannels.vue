@@ -138,36 +138,5 @@ export default {
 </script>
 
 <style scoped>
-@font-face {
-	font-family: 'OMORI_MAIN';
-	src: url('/fonts/OMORI_GAME.ttf') format('truetype-variations');
-}
 
-div {
-	font-family: 'OMORI_MAIN';
-}
-
-h2 {
-	font-family: 'OMORI_MAIN';
-	font-size: xx-large;
-	text-align: center;
-	color: rgb(65, 37, 37);
-	text-shadow:
-		1px 1px 2px plum,
-		0 0 1em rgb(255, 123, 255),
-		0 0 0.2em rgb(255, 255, 255);
-}
-
-.no-bullets {
-	list-style-type: none;
-	padding-left: 0;
-	margin-left: 0;
-}
-
-.discover-channels-list-container {
-	background-color: rgb(0, 0, 0, 0.8);
-	padding: 1rem;
-	border-radius: 1rem;
-	overflow: auto;
-}
 </style>
