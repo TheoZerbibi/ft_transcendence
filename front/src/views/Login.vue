@@ -126,7 +126,7 @@ export default {
 			this.step = 4;
 			this.$cookies.remove('2FA');
 		} else if (this.$cookies.get('token')) {
-		 	const token = this.$cookies.get('token');
+			const token = this.$cookies.get('token');
 			this.$cookies.remove('token');
 			try {
 				await userStore.setJWT(token);

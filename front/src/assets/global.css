@@ -20,7 +20,6 @@
 }
 
 .hoverable {
-
 }
 
 h1 {
@@ -48,7 +47,8 @@ p {
 	line-height: normal;
 }
 
-button:hover, .hoverable:hover {
+button:hover,
+.hoverable:hover {
 	cursor: url(https://www.omori-game.com/img/cursor/cursor.png), auto;
 }
 

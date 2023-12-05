@@ -4,7 +4,8 @@
 			<h2>Blocked Users</h2>
 			<ul class="no-bullets" v-if="blockedUsers.length">
 				<li v-for="user in blockedUsers" :key="user.id">
-					{{ user.login }} <!-- L'objet contient aussi l'avatar si tu veux -->
+					{{ user.login }}
+					<!-- L'objet contient aussi l'avatar si tu veux -->
 					<button @click="unblockUser(user.login)">Unblock</button>
 				</li>
 			</ul>
@@ -33,7 +34,7 @@ export default {
 	},
 	data() {
 		return {
-			blockedUsers: []
+			blockedUsers: [],
 		};
 	},
 	beforeMount() {
@@ -41,8 +42,7 @@ export default {
 	},
 	mounted() {},
 	methods: {
-
-		unblockUser: async function(login: string) {
+		unblockUser: async function (login: string) {
 			try {
 				const response = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/blocked/${login}`,
@@ -52,7 +52,7 @@ export default {
 							Authorization: `Bearer ${this.JWT}`,
 							'Access-Control-Allow-Origin': '*',
 						},
-					}
+					},
 				).catch((error: any) => {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
@@ -62,7 +62,7 @@ export default {
 				console.error(error);
 			}
 		},
-		fetchBlockedUsers: async function() {
+		fetchBlockedUsers: async function () {
 			try {
 				const response = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/blocked`,
@@ -72,7 +72,7 @@ export default {
 							Authorization: `Bearer ${this.JWT}`,
 							'Access-Control-Allow-Origin': '*',
 						},
-					}
+					},
 				).catch((error: any) => {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
@@ -84,12 +84,11 @@ export default {
 				console.error(error);
 			}
 		},
-	}
-}
+	},
+};
 </script>
 
 <style scoped>
-
 @font-face {
 	font-family: 'OMORI_DISTURBED';
 	src: url('/fonts/OMORI_GAME2.ttf') format('truetype-variations');
@@ -126,5 +125,4 @@ h2 {
 	border-radius: 1rem;
 	overflow: auto;
 }
-
 </style>

@@ -23,7 +23,13 @@
 				</span>
 			</div>
 		</div>
-		<GameModal v-if="gameEnded" :isWinner="isWinner" :isLoser="isLoser" :apiData="apiData" :dialogValue="dialogVisible" />
+		<GameModal
+			v-if="gameEnded"
+			:isWinner="isWinner"
+			:isLoser="isLoser"
+			:apiData="apiData"
+			:dialogValue="dialogVisible"
+		/>
 		<v-btn color="primary" @click="openDialog">Open Dialog</v-btn>
 		<Snackbar />
 	</main>
@@ -197,7 +203,25 @@ export default {
 	methods: {
 		openDialog() {
 			this.gameEnded = true;
-			this.apiData = { "winner": { "user": { "id": 2, "login": "norminet", "displayName": "Norminet", "avatar": "https://preview.redd.it/sky2ka084ns11.jpg?width=640&crop=smart&auto=webp&s=a7f060f539797578a109af48a5ee75909f7661cb" }, "score": 6, "side": 1 }, "loser": { "user": { "id": 1, "login": "thzeribi", "displayName": "Theo", "avatar": "https://i.imgur.com/XXxzteU.png" }, "score": 1, "side": 0 }, "startDate": "2023-11-20T12:00:38.537Z", "endingDate": "2023-11-20T12:01:24.445Z" };
+			this.apiData = {
+				winner: {
+					user: {
+						id: 2,
+						login: 'norminet',
+						displayName: 'Norminet',
+						avatar: 'https://preview.redd.it/sky2ka084ns11.jpg?width=640&crop=smart&auto=webp&s=a7f060f539797578a109af48a5ee75909f7661cb',
+					},
+					score: 6,
+					side: 1,
+				},
+				loser: {
+					user: { id: 1, login: 'thzeribi', displayName: 'Theo', avatar: 'https://i.imgur.com/XXxzteU.png' },
+					score: 1,
+					side: 0,
+				},
+				startDate: '2023-11-20T12:00:38.537Z',
+				endingDate: '2023-11-20T12:01:24.445Z',
+			};
 			this.isLoser = true;
 			this.dialogVisible = true;
 		},
@@ -230,5 +254,4 @@ h4 {
 	overflow: hidden;
 	height: 100vh;
 }
-
 </style>

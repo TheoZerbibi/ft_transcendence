@@ -1,12 +1,7 @@
 <template>
 	<div class="overlay">
 		<div class="user-search-container">
-			<input
-				type="text"
-				placeholder="Search for a user..."
-				v-model="searchTerm"
-				@input="searchUsers"
-			/>
+			<input type="text" placeholder="Search for a user..." v-model="searchTerm" @input="searchUsers" />
 			<ul v-if="users.length">
 				<li v-for="user in users" :key="user.id">
 					{{ user.login }}
@@ -33,12 +28,10 @@ export default {
 			JWT,
 			user,
 		};
-
-
 	},
 	data() {
 		return {
-			users: []
+			users: [],
 		};
 	},
 	beforeMount() {
@@ -46,18 +39,20 @@ export default {
 	},
 	mounted() {},
 	methods: {
-		searchUsers: async function(searchTerm: string) {
+		searchUsers: async function (searchTerm: string) {
 			if (searchTerm.length >= 3) {
 				try {
-					const response = await
-					fetch(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/search/${searchTerm}`,
-					{
-						method: 'GET',
-						headers: {
-							Authorization: `Bearer ${this.JWT}`,
-							'Access-Control-Allow-Origin': '*',
+					const response = await fetch(
+						`http://${import.meta.env.VITE_HOST}:${
+							import.meta.env.VITE_API_PORT
+						}/users/search/${searchTerm}`,
+						{
+							method: 'GET',
+							headers: {
+								Authorization: `Bearer ${this.JWT}`,
+								'Access-Control-Allow-Origin': '*',
+							},
 						},
-					}
 					).catch((error: any) => {
 						snackbarStore.showSnackbar(error, 3000, 'red');
 						return;
@@ -70,13 +65,12 @@ export default {
 			} else {
 				users.value = [];
 			}
-		}
-	}
+		},
+	},
 };
 </script>
 
 <style scoped>
-
 @font-face {
 	font-family: 'OMORI_MAIN';
 	src: url('/fonts/OMORI_GAME.ttf') format('truetype-variations');
