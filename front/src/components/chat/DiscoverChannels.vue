@@ -1,5 +1,7 @@
 <template>
 	<div class="overlay">
+
+		<!-- Channels list -->
 		 <div class="discover-channels-list-container">
 			<h2>Discover Channels</h2>
 			<ul class="no-bullets" v-if="discoverChannels.length">
@@ -10,6 +12,14 @@
 			</ul>
 			<p v-else>~ there is no channel to discover ~</p>
 		</div>
+		
+		<!-- Search bar -->
+		<div>
+			<input type="text" v-model="searchTerm" placeholder="Search for a channel" />
+			<button @click="searchChannels(searchTerm)">Search</button>
+		</div>
+
+		<!-- Modal -->
 		<div class="modal" v-if="showModal">
 			<h2>Enter Password</h2>
 			<form @submit.prevent="joinPrivateChannel(pwd)">
@@ -44,6 +54,7 @@ export default {
 			pwd: '',
 			showModal: false,
 			selectedPrivChannel: '',
+			searchTerm: '',
 		};
 	},
 	beforeMount() {
@@ -132,11 +143,48 @@ export default {
 				console.error(error);
 			}
 		},
+		searchChannels: async function(searchTerm: string) {
+			if (searchTerm.length) {
+				try {
+					const response = await
+					fetch(
+						`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/list/search/${searchTerm}`,
+						{
+							method: 'GET',
+							headers: {
+								Authorization: `Bearer ${this.JWT}`,
+								'Access-Control-Allow-Origin': '*',
+							},
+						}
+					)
+					.catch((error: any) => {
+						snackbarStore.showSnackbar(error, 3000, 'red');
+						return;
+					});
+					this.discoverChannels = await response.json();
+					console.log('searchChannels', this.discoverChannels);
+					this.searchTerm = '';
+				} catch (error) {
+					console.error(error);
+				}
+			} else {
+				this.fetchDiscoverChannels();
+			}
+		},
 	}
 }
 
 </script>
 
 <style scoped>
+
+.modal {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding: 1rem;
+	border-radius: 0.5rem;
+}
 
 </style>
