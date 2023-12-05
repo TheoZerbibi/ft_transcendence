@@ -32,10 +32,10 @@ ________________________________________________________________________________
 ______________________________________________________________________________________
 ## CHANNELS
 
-- [x] List of non joined channels (discover) (cadenas devant ceux qui sont prives?)
-- [ ] Search bar
+- [x] List of non joined channels (discover) (info prive/public: cadenas)
+- [x] Search bar
 - [x] Join a new channel 
-	- [ ] if private: input pwd
+	- [x] if private: input pwd **TO DEBUG**
 
 - [x] List of joined channels
 - [ ] List of messages of a channel
@@ -61,15 +61,9 @@ ________________________________________________________________________________
 ______________________________________________________________________________________
 ## PROFILE 
 
-- [ ] Stats of a user : *Theo*
-	- [ ] wins
-	- [ ] losses
-	- [ ] ladder level 
-	- [ ] achievements
+- [ ] Stats of a user : "wins, losses, ladder level, achievements, ..." *Theo*
 
-- [ ] Match history : *Theo*
-	- [ ] lvl games
-	- [ ] ladder
+- [ ] Match history : "lvl games, ladder,..." *Theo*
 
 ### Settings
 
