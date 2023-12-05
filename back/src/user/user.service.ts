@@ -75,7 +75,6 @@ export class UserService {
 						{ user_id: user.id, },
 						{ friend_id: user.id, },
 					],
-					status: RequestStatus.ACCEPTED,
 				},
 			});
 			const friendsIds = friends.map((friend) => friend.user_id === user.id ? friend.friend_id : friend.user_id );

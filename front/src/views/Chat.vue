@@ -3,13 +3,10 @@
 		<!-- Users and friends -->
 		<v-row>
 			<v-col cols="3">
-				<ListUsers/>
+				<AddFriends/>
 			</v-col>
 			<v-col cols="3">
 				<ListFriends/>
-			</v-col>
-			<v-col cols="3">
-				<ListFriendRequests/>
 			</v-col>
 			<v-col cols="3">
 				<ListBlocked/>
@@ -34,9 +31,8 @@
 import { defineComponent } from 'vue';
 
 // Components
-import ListUsers from '../components/chat/DiscoverUsers.vue';
 import ListFriends from '../components/chat/ListFriends.vue';
-import ListFriendRequests from '../components/chat/ListFriendRequests.vue';
+import AddFriends from '../components/chat/AddFriends.vue';
 import ListBlocked from '../components/chat/ListBlocked.vue';
 import DiscoverChannels from '../components/chat/DiscoverChannels.vue';
 import ListJoinedChannels from '../components/chat/ListJoinedChannels.vue';
@@ -45,9 +41,8 @@ export default defineComponent({
 	name: 'ChatView',
 
 	components: {
-		ListUsers,
+		AddFriends,
 		ListFriends,
-		ListFriendRequests,
 		ListBlocked,
 		DiscoverChannels,
 		ListJoinedChannels
