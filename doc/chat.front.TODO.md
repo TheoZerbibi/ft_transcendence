@@ -3,7 +3,6 @@
 - [ ] pwd verif problem in front (back receives undefined)
 - [ ] responsive
 - [ ] limit input size in front
-- [ ] click on user = modal window user profile
 
 **LIST**
 ______________________________________________________________________________________
@@ -20,7 +19,7 @@ ________________________________________________________________________________
 - [x] List of friends
   - [ ] (+ status) *Isma*
 
-- [ ] Access other users profile through chat interface
+- [x] Access other users profile through chat interface
   - stats of user (cf ### Profile)
   - [ ] block / unblock
   - [ ] challenge *Theo*
