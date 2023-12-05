@@ -9,7 +9,10 @@ import {
 	UnauthorizedException,
 	Body,
 	Req,
+<<<<<<< HEAD
 	Get,
+=======
+>>>>>>> b311b9b (feat(2FA): Start 2FA)
 } from '@nestjs/common';
 import { Response } from 'express';
 import { JwtGuard } from 'src/auth/guard';
@@ -31,7 +34,11 @@ export class TwoFactorAuthenticationController {
 		private readonly authService: AuthService,
 	) {}
 
+<<<<<<< HEAD
 	@Get('generate')
+=======
+	@Post('generate')
+>>>>>>> b311b9b (feat(2FA): Start 2FA)
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Generate 2FA QR code' })
 	@ApiBearerAuth('JWT-auth')
@@ -52,7 +59,10 @@ export class TwoFactorAuthenticationController {
 			throw new UnauthorizedException('Wrong authentication code');
 		}
 		await this.userService.turnOnTwoFactorAuthentication(user.id);
+<<<<<<< HEAD
 		return { message: 'Two factor authentication enabled' };
+=======
+>>>>>>> b311b9b (feat(2FA): Start 2FA)
 	}
 
 	@Post('authenticate')
