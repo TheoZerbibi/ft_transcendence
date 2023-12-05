@@ -17,7 +17,7 @@ import { defineComponent } from 'vue';
 
 // Components
 import ChatWindow from '../components/chat/ChatWindow.vue';
-import ListUsers from '../components/chat/ListUsers.vue';
+import ListUsers from '../components/chat/DiscoverUsers.vue';
 import ListFriends from '../components/chat/ListFriends.vue';
 import ListFriendRequests from '../components/chat/ListFriendRequests.vue';
 import ListBlocked from '../components/chat/ListBlocked.vue';

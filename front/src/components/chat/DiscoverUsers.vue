@@ -1,7 +1,7 @@
 <template>
 	<div class="overlay">
-		<div class="users-container">
-			<h2>Users</h2>
+		<div class="discover-users-container">
+			<h2>Discover users</h2>
 			<ul class="no-bullets" v-if="users.length">
 				<li v-for="userElem in users" :key="userElem.id"> <!-- I call it "user elem" so we dont overlap the userStore.getUser that get the author of the request -->
 					{{ userElem.display_name }}
@@ -120,7 +120,7 @@ h2 {
 .button-spacing {
 	margin: 5px;
 }
-.users-container {
+.discover-users-container {
 	position: absolute;
 	top: 10%;
 	left: 5%;
