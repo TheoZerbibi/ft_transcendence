@@ -25,7 +25,7 @@ ________________________________________________________________________________
 ______________________________________________________________________________________
 ## CHANNELS
 
-- [x] List of non joined channels (discover)
+- [x] List of non joined channels (discover) (cadeans devant ceux qui sont prives?)
 - [ ] Search bar
 - [x] Join a new channel 
 	- [ ] if private: input pwd
