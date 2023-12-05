@@ -165,10 +165,6 @@ h2 {
 }
 
 .discover-channels-list-container {
-	position: absolute;
-	top: 40%;
-	left: 5%;
-	margin: auto;
 	background-color: rgb(0, 0, 0, 0.8);
 	padding: 1rem;
 	border-radius: 1rem;

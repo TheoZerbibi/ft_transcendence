@@ -1,3 +1,8 @@
+**DONT FORGET**
+- [ ] snackbar doesnt work in chat
+- [ ] pwd verif problem in front (back receives undefined)
+- [ ] responsive
+
 **LIST**
 ______________________________________________________________________________________
 ## DIRECT MESSAGES
@@ -5,14 +10,16 @@ ________________________________________________________________________________
 - [x] List of users (discover)
 - [ ] Search bar
 
-- [x] List of friend requests
+- [x] List of friend requests (will be the first users of user list)
 	- [x] accept
 	- [x] decline 
 - [x] Send a friend request
 
 - [x] List of friends
-  - [ ] (+ status)
-- [ ] Invite friend to play pong game (must be in chat interface)
+  - [ ] (+ status) *Isma*
+- [ ] Invite friend to play pong game (must be in chat interface) *Theo*
+- [ ] List of dms with friend
+	- [ ] update of list with received messages *Isma*
 - [ ] Send dm to friend
 
 ### Settings
@@ -21,6 +28,12 @@ ________________________________________________________________________________
 - [x] Block a user
 - [x] Unblock a blocked user
 *(these settings could also be in profile)*
+
+|-------------------|-----------------|---------|-----------------|---------|----|
+| discover users    | search          | friends | friend requests | blocked |... |
+| discover channels | joined channels | ...  	| ... 			  | ...		|... |
+|-------------------|-----------------|---------|-----------------|---------|----|
+
 
 ______________________________________________________________________________________
 ## CHANNELS
@@ -31,6 +44,8 @@ ________________________________________________________________________________
 	- [ ] if private: input pwd
 
 - [x] List of joined channels
+- [ ] List of messages of a channel
+	- [ ] update of list with received messages *Isma*
 - [ ] Send a message on a joined channel
 
 ### Settings
@@ -52,18 +67,18 @@ ________________________________________________________________________________
 ______________________________________________________________________________________
 ## PROFILE 
 
-- [ ] Update login
-- [ ] Update avatar
-- [ ] Enable / disable two-factor identification 
+- [ ] Update username
+- [ ] Update avatar *Theo*
+- [ ] Enable / disable two-factor identification *Theo*
 - [ ] Delete account
 
-- [ ] Stats of a user :
+- [ ] Stats of a user : *Theo*
 	- [ ] wins
 	- [ ] losses
 	- [ ] ladder level 
 	- [ ] achievements
 
-- [ ] Match history :
+- [ ] Match history : *Theo*
 	- [ ] lvl games
 	- [ ] ladder
 
