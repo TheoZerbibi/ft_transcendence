@@ -1,15 +1,20 @@
 <template>
 	<div class="overlay">
+
+		<!-- Friend list -->
 		<div class="friends-container">
 			<h2>Friends</h2>
 			<ul class="no-bullets" v-if="friends.length">
-				<li v-for="friend in friends" :key="friend.id">
+				<li v-for="friend in friends" :key="friend.id" @click="selectFriend(friend)">
 					<span class="online-badge" v-if="friend.isOnline"></span>
 					{{ friend.display_name }}
 				</li>
 			</ul>
 			<p v-else>~ sorry, no friends for now ~</p>
 		</div>
+		
+		<!-- Modal: friend profile -->
+	    <UserModal :user="selectedFriend" :show="showModal" @close="closeModal"/>
 	</div>
 </template>
 
@@ -17,6 +22,7 @@
 import { computed } from 'vue';
 import { useUser } from '../../stores/user';
 import { useSnackbarStore } from '../../stores/snackbar';
+import UserModal from './UserModal.vue';
 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
@@ -31,9 +37,14 @@ export default {
 			user,
 		};
 	},
+	components: {
+		UserModal,
+	},
 	data() {
 		return {
-			friends: []
+			friends: [],
+			showModal: false,
+			selectedFriend: {},
 		};
 	},
 	beforeMount() {
@@ -63,7 +74,15 @@ export default {
 			} catch (error) {
 				console.error(error);
 			}
-		}
+		},
+		selectFriend(friend: any) {
+			this.selectedFriend = friend;
+			this.showModal = true;
+		},
+		closeModal() {
+			this.showModal = false;
+		},
+
 	}
 }
 
