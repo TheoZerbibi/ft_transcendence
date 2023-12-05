@@ -165,6 +165,60 @@ export default defineComponent({
 	cursor: url(/img/cursor/cursor.png), auto;
 }
 
+.eleven {
+	grid-row: 5 / 7;
+}
+
+.twelve {
+	grid-row: 5 / 7;
+}
+
+
+.thirteen {
+	grid-column: 1 / 2;
+	grid-row: 7 / 9;
+}
+
+.fourteen {
+	grid-row: 7 / 9;
+/*  */
+	}
+.fifteen {
+	grid-row: 7 / 9;
+	}
+.sixteen {
+	grid-row: 7 / 9;
+}
+.seventeen {
+	grid-column: 1 / 2;
+	grid-row: 9 / 11;
+	}
+.eighteen {
+	grid-row: 9 / 11;
+}
+.nineteen {
+	grid-row: 9 / 11;
+}
+.twenty {
+	grid-row: 9 / 11;
+}
+.twentyone {
+	grid-column: 1 / 2;
+	grid-row: 11 / 13;
+}
+.twentytwo {
+	grid-row: 11 / 13;
+}
+
+.twentythree {
+	grid-row: 11 / 13;
+}
+
+.twentyfour {
+	grid-row: 11 / 13;
+}
+
+
 @media screen and (max-width: 960px) {
 	.profileHome {
 		flex-direction: column;
