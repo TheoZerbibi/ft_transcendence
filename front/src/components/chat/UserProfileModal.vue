@@ -1,8 +1,10 @@
 <template>
 	<div class="modal" v-if="show">
 		<h2>{{ user.display_name }}</h2>
-		<p>"infos on user"</p>
-		<button @click="close">x</button>
+		<p>...infos on user</p>
+		<p>...infos on user</p>
+		<p>...infos on user</p>
+		<button @click="close">Close</button>
 	</div>
 </template>
 

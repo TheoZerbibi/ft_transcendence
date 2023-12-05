@@ -22,7 +22,7 @@
 import { computed } from 'vue';
 import { useUser } from '../../stores/user';
 import { useSnackbarStore } from '../../stores/snackbar';
-import UserModal from './UserModal.vue';
+import UserModal from './UserProfileModal.vue';
 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
