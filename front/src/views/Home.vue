@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
 	<v-main id="background">
 		<table>
 			<tr>
@@ -31,12 +30,6 @@
 		
 		
 	</v-main>
-=======
-	<v-row align="center" justify="center" class="fill-height" id="background">
-		<h1 class="darkNeonPolice">Bienvenue {{ user.displayName }} !</h1>
-	</v-row>
-	<Footer />
->>>>>>> b2f58d0 (core:feat add dashboard route)
 </template>
 
 <script lang="ts">
@@ -52,11 +45,7 @@ export default {
 	setup() {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
-<<<<<<< HEAD
 		
-=======
-
->>>>>>> b2f58d0 (core:feat add dashboard route)
 		return {
 			JWT,
 			user,
@@ -80,7 +69,6 @@ export default {
 
 <style>
 #background {
-<<<<<<< HEAD
 	/* background-image: url('/src/assets/OmoriWallpapers/OmoriHeadSpace.png'); */
 	background-repeat: no-repeat;
 	background-position: center;
@@ -102,10 +90,4 @@ th, td {
 	align-items: center;
 }
 
-=======
-	background-image: url('/src/assets/OmoriWallpapers/OmoriHeadSpace.png');
-	background-repeat: no-repeat;
-	background-position: center;
-}
->>>>>>> b2f58d0 (core:feat add dashboard route)
 </style>
