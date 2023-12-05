@@ -9,10 +9,7 @@ import {
 	UnauthorizedException,
 	Body,
 	Req,
-<<<<<<< HEAD
 	Get,
-=======
->>>>>>> b311b9b (feat(2FA): Start 2FA)
 } from '@nestjs/common';
 import { Response } from 'express';
 import { JwtGuard } from 'src/auth/guard';
@@ -34,15 +31,16 @@ export class TwoFactorAuthenticationController {
 		private readonly authService: AuthService,
 	) {}
 
-<<<<<<< HEAD
 	@Get('generate')
-=======
-	@Post('generate')
->>>>>>> b311b9b (feat(2FA): Start 2FA)
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Generate 2FA QR code' })
 	@ApiBearerAuth('JWT-auth')
 	async register(@GetUser() user, @Res() response: Response) {
+		try {
+			if (user.dAuth) {
+				throw new UnauthorizedException('2FA already enabled');
+			}
+		} catch (e) {}
 		const { otpauthUrl } = await this.twoFactorAuthenticationService.generateTwoFactorAuthenticationSecret(user);
 
 		return this.twoFactorAuthenticationService.pipeQrCodeStream(response, otpauthUrl);
@@ -54,15 +52,31 @@ export class TwoFactorAuthenticationController {
 	@ApiOperation({ summary: 'Turn on 2FA' })
 	@ApiBearerAuth('JWT-auth')
 	async turnOnTwoFactorAuthentication(@GetUser() user, @Body() body: TwoFactorAuthenticationCodeDto) {
-		const isCodeValid = this.twoFactorAuthenticationService.isTwoFactorAuthenticationCodeValid(body.secret, user);
+		try {
+			if (user.dAuth) {
+				throw new UnauthorizedException('2FA already enabled');
+			}
+		} catch (e) {}
+		const isCodeValid = this.twoFactorAuthenticationService.isTwoFactorAuthenticationCodeValid(body.code, user);
 		if (!isCodeValid) {
 			throw new UnauthorizedException('Wrong authentication code');
 		}
 		await this.userService.turnOnTwoFactorAuthentication(user.id);
-<<<<<<< HEAD
 		return { message: 'Two factor authentication enabled' };
-=======
->>>>>>> b311b9b (feat(2FA): Start 2FA)
+	}
+
+	@Post('turn-off')
+	@HttpCode(200)
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'Turn off 2FA' })
+	@ApiBearerAuth('JWT-auth')
+	async turnOffTwoFactorAuthentication(@GetUser() user, @Body() body: TwoFactorAuthenticationCodeDto) {
+		const isCodeValid = this.twoFactorAuthenticationService.isTwoFactorAuthenticationCodeValid(body.code, user);
+		if (!isCodeValid) {
+			throw new UnauthorizedException('Wrong authentication code');
+		}
+		await this.userService.turnOffTwoFactorAuthentication(user.id);
+		return { message: 'Two factor authentication disabled' };
 	}
 
 	@Post('authenticate')
@@ -70,26 +84,15 @@ export class TwoFactorAuthenticationController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Authentificate with 2FA' })
 	@ApiBearerAuth('JWT-auth')
-	async authenticate(
-		@Req() req: any,
-		@Res() res: Response,
-		@GetUser() user,
-		@Body() body: TwoFactorAuthenticationCodeDto,
-	) {
+	async authenticate(@GetUser() user, @Body() body: TwoFactorAuthenticationCodeDto) {
 		const isCodeValid = this.twoFactorAuthenticationService.isTwoFactorAuthenticationCodeValid(body.code, user);
 		if (!isCodeValid) {
 			throw new UnauthorizedException('Wrong authentication code');
 		}
-		const url = new URL(`${req.protocol}:${req.hostname}`);
-		url.port = process.env.FRONT_PORT;
-		const _user: any = await this.authService.authUser(user, true);
-		if (_user.access_token) {
-			res.cookie('token', _user.access_token, {
-				httpOnly: false,
-				expires: new Date(Date.now() + 1000 * 60),
-			});
-			res.redirect(url.href);
-			return user;
+		const token: any = await this.authService.signToken(user, true);
+		if (token.access_token) {
+			return token;
 		}
+		return { message: 'Two factor authentication error' };
 	}
 }
