@@ -16,8 +16,6 @@
 		</v-row>
 
 		<img :src="`${qrCode}`" v-if="qrCode && !is2FA" />
-
-		<!-- Autres éléments d'interface utilisateur pour gérer la 2FA -->
 	</v-container>
 	<Snackbar />
 </template>
