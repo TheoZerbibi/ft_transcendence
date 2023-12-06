@@ -68,7 +68,7 @@ export default {
 					}
 				)
 				.catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
+					snackbarStore.showSnackbar(error, 2999, 'red');
 					return;
 				});
 				const data = await response.json();
