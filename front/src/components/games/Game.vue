@@ -179,6 +179,10 @@ export default {
 								this.isLoser = true;
 								snackbarStore.showSnackbar('You lose!', 3000, 'red');
 							});
+							this.socket.on('error', (data: any) => {
+								console.error(data);
+								snackbarStore.showSnackbar('error', 3000, 'red');
+							});
 
 							this.socket.emit('session-join', {
 								gameUID: this.gameUID,
@@ -191,15 +195,25 @@ export default {
 							return;
 						});
 					this.apiData = data;
+					if (!this.isConnected) {
+						snackbarStore.showSnackbar('You are not connected to the game server', 3000, 'red');
+						this.$router.push({ name: 'GameMenu' });
+						return;
+					}
 					if (data.isSpec) snackbarStore.showSnackbar('Connecting to the game session.', 3000, 'orange');
 					else snackbarStore.showSnackbar('Joining game session.', 3000, 'green');
 				}
 			})
 			.catch((error) => {
-				console.error(error);
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			});
 	},
-	mounted() {},
+	mounted() {
+		if (!this.isConnected) {
+			this.$router.push({ name: 'GameMenu' });
+			return;
+		}
+	},
 	methods: {
 		openDialog() {
 			this.gameEnded = true;

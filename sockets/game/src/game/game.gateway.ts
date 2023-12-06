@@ -73,6 +73,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	@UseGuards(JwtGuard)
 	@SubscribeMessage('session-join')
 	async handleSessionJoin(@ConnectedSocket() client: Socket | any, @MessageBody() game: GameJoinDto) {
+		this.logger.debug('session-join');
 		const user: users = this.gameService.getUserFromRequest(client);
 		const gameUID: string = game.gameUID;
 		if (!user || !gameUID) return;
@@ -98,7 +99,8 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 					return;
 				}
 				this.server.to(gameUID).emit('session-info', allUsers);
-				if (!game.isInProgress() && game.getUsersInGame().length === 2) this.startGame(game);
+				console.log(game.getUsersInGame().length);
+				// if (!game.isInProgress() && game.getUsersInGame().length === 2) this.startGame(game);
 				if (!game.getPlayerBySide(SIDE.RIGHT) || !game.getPlayerBySide(SIDE.LEFT)) return;
 				if (!game.isInProgress()) return;
 				this.server.to(client.id).emit('game-score', {
@@ -149,14 +151,17 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	}
 
 	async handleConnection(client: Socket): Promise<void> {
+		this.logger.debug(`Client connected: ${client.id}`);
 		try {
 			if (!client.handshake.headers.authorization) throw new Error('Invalid token');
+			console.log(client.handshake.headers.authorization);
 			const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
 			this.authService.verifyToken({ access_token: token });
 			return this.logger.debug(`Client connected: ${client.id}`);
 		} catch (e) {
-			client.emit('error', 'Invalid token');
+			this.logger.error(e);
 			client.disconnect();
+			return e;
 		}
 	}
 

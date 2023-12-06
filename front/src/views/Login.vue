@@ -171,7 +171,6 @@ export default {
 				this.$router.push({ name: `Home` });
 			} catch (error) {
 				snackbarStore.showSnackbar('Error 2FA', 3000, 'red');
-				console.error(error);
 			}
 		},
 		async postToUsers() {
@@ -198,7 +197,7 @@ export default {
 					}
 				})
 				.catch((error) => {
-					console.error(error);
+					snackbarStore.showSnackbar('Can\'t create User.', 3000, 'red');
 				});
 		},
 		redirectToOAuth() {
@@ -238,7 +237,7 @@ export default {
 				this.cantSkip = false;
 			} catch (error) {
 				this.cantSkip = false;
-				console.error(error);
+				snackbarStore.showSnackbar('Error uploading avatar', 3000, 'red');
 			}
 		},
 		async nextStep() {

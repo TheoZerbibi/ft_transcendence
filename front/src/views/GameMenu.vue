@@ -81,8 +81,8 @@ export default {
 				const data = await response.json();
 				if (!data.uid) this.createGame();
 				else this.$router.push({ name: `Game`, params: { uid: data.uid } });
-			} catch (error) {
-				console.error(error);
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 		createGame: async function () {
@@ -109,8 +109,8 @@ export default {
 				snackbarStore.showSnackbar('New game is created, redirecting...', 3000, 'green');
 				const data = await response.json();
 				this.$router.push({ name: `Game`, params: { uid: data.uid } });
-			} catch (error) {
-				console.error(error);
+			} catch (error: any) {
+				snackbarStore.showSnackbar('Can\'t create game.', 3000, 'red');
 			}
 		},
 	},
