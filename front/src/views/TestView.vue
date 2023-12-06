@@ -35,14 +35,14 @@ export default {
 	setup() {
 		const userStore = useUser();
 		const JWT = computed(() => userStore.getJWT);
+		const setJWT = (JWT: string) => userStore.setJWT(JWT);
 		const user = computed(() => userStore.getUser);
-		const set2FA = computed(() => userStore.set2FA);
 		const is2FA = computed(() => userStore.is2FA);
 
 		return {
 			JWT,
+			setJWT,
 			user,
-			set2FA,
 			is2FA,
 		};
 	},
@@ -84,8 +84,6 @@ export default {
 		},
 		async activateTwoFactorAuthentication() {
 			const requestBody = { code: this.verificationCode };
-			console.log(JSON.stringify(requestBody));
-			console.log(this.verificationCode);
 
 			try {
 				const response = await fetch(
@@ -99,19 +97,23 @@ export default {
 						body: JSON.stringify(requestBody),
 					},
 				);
+				if (!response.ok) {
+					const error = await response.json();
+					console.log(error);
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					return;
+				}
 
 				const result = await response.json();
-				console.log(result);
+				this.setJWT(result.access_token);
 				snackbarStore.showSnackbar(result.message, 3000, 'green');
-				this.set2FA(true);
+				this.qrCode = null;
 			} catch (error) {
 				snackbarStore.showSnackbar('Error activating 2FA', 3000, 'red');
 			}
 		},
 		async disableTwoFactorAuthentication() {
 			const requestBody = { code: this.verificationCode };
-			console.log(JSON.stringify(requestBody));
-			console.log(this.verificationCode);
 
 			try {
 				const response = await fetch(
@@ -125,11 +127,16 @@ export default {
 						body: JSON.stringify(requestBody),
 					},
 				);
+				if (!response.ok) {
+					const error = await response.json();
+					console.log(error);
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					return;
+				}
 
 				const result = await response.json();
-				console.log(result);
+				this.setJWT(result.access_token);
 				snackbarStore.showSnackbar(result.message, 3000, 'green');
-				this.set2FA(false);
 			} catch (error) {
 				snackbarStore.showSnackbar('Error activating 2FA', 3000, 'red');
 			}

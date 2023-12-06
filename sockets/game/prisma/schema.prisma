@@ -7,15 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model blocked {
-  blocked_id                         Int
-  blocked_by_id                      Int
-  users_blocked_blocked_by_idTousers users @relation("blocked_blocked_by_idTousers", fields: [blocked_by_id], references: [id], onDelete: Cascade)
-  users_blocked_blocked_idTousers    users @relation("blocked_blocked_idTousers", fields: [blocked_id], references: [id], onDelete: Cascade)
-
-  @@id([blocked_by_id, blocked_id])
-}
-
 model channel_messages {
   id              Int           @id @default(autoincrement())
   content         String
@@ -48,15 +39,6 @@ model channels {
   created_at    DateTime        @default(now())
   updated_at    DateTime        @default(now())
   channel_users channel_users[]
-}
-
-model direct_messages {
-  id         Int      @id @default(autoincrement())
-  content    String
-  created_at DateTime @default(now())
-  friend_id  Int
-  user_id    Int
-  users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model friends {
@@ -109,6 +91,24 @@ model users {
   friends_friends_friend_idTousers     friends[]         @relation("friends_friend_idTousers")
   friends_friends_user_idTousers       friends[]         @relation("friends_user_idTousers")
   game_players                         game_players[]
+}
+
+model blocked {
+  blocked_id                         Int
+  blocked_by_id                      Int
+  users_blocked_blocked_by_idTousers users @relation("blocked_blocked_by_idTousers", fields: [blocked_by_id], references: [id], onDelete: Cascade)
+  users_blocked_blocked_idTousers    users @relation("blocked_blocked_idTousers", fields: [blocked_id], references: [id], onDelete: Cascade)
+
+  @@id([blocked_by_id, blocked_id])
+}
+
+model direct_messages {
+  id         Int      @id @default(autoincrement())
+  content    String
+  created_at DateTime @default(now())
+  friend_id  Int
+  user_id    Int
+  users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 enum RequestStatus {

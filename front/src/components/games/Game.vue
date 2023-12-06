@@ -195,11 +195,6 @@ export default {
 							return;
 						});
 					this.apiData = data;
-					if (!this.isConnected) {
-						snackbarStore.showSnackbar('You are not connected to the game server', 3000, 'red');
-						this.$router.push({ name: 'GameMenu' });
-						return;
-					}
 					if (data.isSpec) snackbarStore.showSnackbar('Connecting to the game session.', 3000, 'orange');
 					else snackbarStore.showSnackbar('Joining game session.', 3000, 'green');
 				}
@@ -207,12 +202,6 @@ export default {
 			.catch((error) => {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			});
-	},
-	mounted() {
-		if (!this.isConnected) {
-			this.$router.push({ name: 'GameMenu' });
-			return;
-		}
 	},
 	methods: {
 		openDialog() {
