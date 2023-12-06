@@ -4,9 +4,9 @@
 		<!-- Friend list -->
 		<div class="friends-container">
 			<h2>Friends</h2>
-			<ul class="no-bullets" v-if="friends.length">
+			<ul v-if="friends.length">
 				<li v-for="friend in friends" :key="friend.id" @click="selectFriend(friend)">
-					<span class="online-badge" v-if="friend.isOnline"></span>
+					<!-- <span class="online-badge" v-if="friend.isOnline"></span> -->
 					{{ friend.display_name }}
 				</li>
 			</ul>
@@ -19,10 +19,12 @@
 </template>
 
 <script lang="ts">
+
 import { computed } from 'vue';
-import { useUser } from '../../stores/user';
-import { useSnackbarStore } from '../../stores/snackbar';
-import UserModal from './UserProfileModal.vue';
+import { useUser } from '../../../stores/user';
+import { useSnackbarStore } from '../../../stores/snackbar';
+
+import UserModal from '../utils/UserProfileModal.vue';
 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
