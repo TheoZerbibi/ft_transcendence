@@ -4,7 +4,7 @@
 		<h2>Add Friends</h2>
 
 		<!-- Friend Requests list -->
-		<ul class="no-bullets" v-if="listFriendRequests.length">
+		<ul v-if="listFriendRequests.length">
 			<li v-for="request in listFriendRequests" :key="request.id">
 				{{ request.display_name }}
 				<AcceptDeclineButton :login="request.login" :response="true" @respond="respondRequest"/>
