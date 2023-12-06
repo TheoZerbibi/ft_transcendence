@@ -16,8 +16,11 @@ import { JwtGuard } from 'src/auth/guard';
 import { users, channel_users } from '@prisma/client';
 // import { direct_messages } from '@prisma/client';
 
-@WebSocketGateway(4001, {
-	cors: true
+@WebSocketGateway({
+	        cors: {
+                origin: '*',
+                credentials: true,
+        },
 })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	private logger: Logger = new Logger('GameGateway');
@@ -28,15 +31,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	) {}
 
 	@WebSocketServer() server: Server;
-
-
-
 	public async handleConnection(client: Socket): Promise<void> {
 		try {
-			if (!client.handshake.headers.authorization) throw new Error('Invalid token');
-			const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
-			this.authService.verifyToken({ access_token: token });
-	
+	//		if (!client.handshake.headers.authorization) throw new Error('Invalid token');
+	//		const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
+	//		this.authService.verifyToken({ access_token: token });
+	//	
 			return this.logger.debug(`Client connected: ${client.id}`);
 		} catch (e) {
 			client.emit('error', 'Invalid token');

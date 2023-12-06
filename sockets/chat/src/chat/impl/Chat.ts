@@ -102,8 +102,8 @@ export class User {
 }
 
 export class Chat {
-	private static channel_lst: Channel[];
-	private static user_lst: Array<User>;
+	private static channel_lst: Channel[] = [];
+	private static user_lst: Array<User> = [];
 
 	constructor(private prismaService: PrismaService) { }
 
@@ -223,9 +223,11 @@ export class Chat {
 		return users;
 	}
 
-	public static removeUserBySocket(client: Socket): Channel[]
+	public static removeUserBySocket(client: Socket): Channel[] | undefined
 	{
-		const user: User = Chat.user_lst.find((user) => user.getSocket() === client);
+		const user: User | undefined = Chat.user_lst.find((user) => user.getSocket() === client);
+		if (user === undefined)
+			return (undefined);
 		return this.removeUser(user);
 	}
 
