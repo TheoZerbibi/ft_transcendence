@@ -58,6 +58,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			socketID: 'null',
 			isConnected: false,
 			isSpec: false,
+			isReady: false,
 			playerData: new PlayerData(gameS.getWidth(), gameS.getHeight(), 670, 150, 10, 100, SIDE.RIGHT),
 		};
 		if (gameS.isInProgress() && !game.isSpec) {
