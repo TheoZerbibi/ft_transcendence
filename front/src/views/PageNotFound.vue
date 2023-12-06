@@ -23,7 +23,7 @@
 			<v-img
 				:src="currentBulbImage"
 				class="bulb"
-				style="image-rendering: pixelated"
+				style="image-rendering: pixelated; width: 100px; height: 100px;"
 				@mouseover="changeBulbImage"
 				@mouseleave="resetBulbImage"
 				@click="redirectToHome"
@@ -31,7 +31,7 @@
 		</div>
 		<v-row align="center" justify="center" class="fill-height">
 			<v-col class="text-center d-flex flex-column align-center">
-				<h1 class="mt-4">Are you lost?</h1>
+				<h3 class="mt-4 omoriFont">...are you lost?</h3>
 			</v-col>
 		</v-row>
 	</v-container>
@@ -74,24 +74,10 @@ export default {
 </script>
 
 <style scoped>
-
-h1 {
-	font-family: 'OMORI_DISTURBED';
-	font-size: 7vh;
-	font-style: normal;
-	font-weight: 400;
-	line-height: normal;
-	margin-top: 0;
-}
-
 .bulb {
 	position: relative;
-	width: 8vw;
-	height: 8vw;
 	transition: opacity 0.3s ease;
+	object-fit: contain; /* Do not scale the image */
 }
 
-.bulb:hover {
-	cursor: url(https://www.omori-game.com/img/cursor/cursor.png), auto;
-}
 </style>

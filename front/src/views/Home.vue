@@ -1,57 +1,83 @@
 <template>
-	<v-main id="background">
-	<Box height="300px" width="600px">	
-		<table>
-			<tr>
-				<th>class="omoriFont"</th>
-				<th>class="omoriDisturbed"</th>
-				<th>class="omoriArcade"</th>
-			</tr>
-			<tr>
-				<td><h1 class="omoriFont">Titre h1</h1></td>
-				<td><h1 class="omoriDisturbed">Titre h1</h1></td>
-				<td><h1 class="omoriArcade">Titre h1</h1></td>
-			</tr>
-			<tr>
-				<td><h2 class="omoriFont">Titre h2</h2></td>
-				<td><h2 class="omoriDisturbed">Titre h2</h2></td>
-				<td><h2 class="omoriArcade">Titre h2</h2></td>
-			</tr>
-			<tr>
-				<td><h3 class="omoriFont">Titre h3</h3></td>
-				<td><h3 class="omoriDisturbed">Titre h3</h3></td>
-				<td><h3 class="omoriArcade">Titre h3</h3></td>
-			</tr>
-			<tr>
-				<td><p class="omoriFont">Paragraphe</p></td>
-				<td><p class="omoriDisturbed">Paragraphe</p></td>
-				<td><p class="omoriArcade">Paragraphe</p></td>
-			</tr>
-		</table>
-	</Box>
-		<div class="box-container">
-		<Box width="240px">This is a box component</Box>
-		<ButtonBox>Click here</ButtonBox>
+	<div>
+		<v-container class="mb-6"> <!-- provides the ability to center and horizontally pad site’s contents. -->
+			<v-row align="center" no-gutters style="height: 150px;">
+					<Button width="150px" height="50px">Click here 01</Button>
+					<Button width="150px" height="50px">Click here 02</Button>
+					<Button width="150px" height="50px">Click here 03</Button>
+				<div>
+					<table>
+						<tr>
+							<th>class="omoriFont"</th>
+							<th>class="omoriDisturbed"</th>
+							<th>class="omoriArcade"</th>
+						</tr>
+						<tr>
+							<td>
+								<h1 class="omoriFont">Titre h1</h1>
+							</td>
+							<td>
+								<h1 class="omoriDisturbed">Titre h1</h1>
+							</td>
+							<td>
+								<h1 class="omoriArcade">Titre h1</h1>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h2 class="omoriFont">Titre h2</h2>
+							</td>
+							<td>
+								<h2 class="omoriDisturbed">Titre h2</h2>
+							</td>
+							<td>
+								<h2 class="omoriArcade">Titre h2</h2>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h3 class="omoriFont">Titre h3</h3>
+							</td>
+							<td>
+								<h3 class="omoriDisturbed">Titre h3</h3>
+							</td>
+							<td>
+								<h3 class="omoriArcade">Titre h3</h3>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p class="omoriFont">Paragraphe</p>
+							</td>
+							<td>
+								<p class="omoriDisturbed">Paragraphe</p>
+							</td>
+							<td>
+								<p class="omoriArcade">Paragraphe</p>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</v-row>
+		</v-container>
 	</div>
-</v-main>
 </template>
 
 <script lang="ts">
-import Box from '../components/layout/Box.vue';
-import ButtonBox from '../components/layout/ButtonBox.vue';
+import Button from '../components/layout/Button.vue';
 import { defineComponent } from 'vue';
 import { useUser } from '../stores/user';
 import { computed } from 'vue';
 
 const userStore = useUser();
 
-export default defineComponent ({
+export default defineComponent({
 	name: 'HomeView',
-	components: { Box, ButtonBox },
+	components: { Button },
 	setup() {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
-		
+
 		return {
 			JWT,
 			user,
@@ -74,13 +100,9 @@ export default defineComponent ({
 </script>
 
 <style>
-#background {
-	/* background-image: url('/src/assets/OmoriWallpapers/OmoriHeadSpace.png'); */
-	background-repeat: no-repeat;
-	background-position: center;
-}
-
-table, th, td {
+table,
+th,
+td {
 	border: 1px solid white;
 	white-space: nowrap;
 	border-collapse: collapse;
@@ -91,9 +113,9 @@ table {
 	width: 70%;
 }
 
-th, td {
+th,
+td {
 	height: auto;
 	align-items: center;
 }
-
 </style>
