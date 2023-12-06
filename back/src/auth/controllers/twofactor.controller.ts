@@ -61,8 +61,8 @@ export class TwoFactorAuthenticationController {
 		if (!isCodeValid) {
 			throw new UnauthorizedException('Wrong authentication code');
 		}
-		await this.userService.turnOnTwoFactorAuthentication(user.id);
-		return { message: 'Two factor authentication enabled' };
+		const token = await this.userService.turnOnTwoFactorAuthentication(user.id);
+		return { message: 'Two factor authentication enabled', ...token };
 	}
 
 	@Post('turn-off')
@@ -75,8 +75,8 @@ export class TwoFactorAuthenticationController {
 		if (!isCodeValid) {
 			throw new UnauthorizedException('Wrong authentication code');
 		}
-		await this.userService.turnOffTwoFactorAuthentication(user.id);
-		return { message: 'Two factor authentication disabled' };
+		const token = await this.userService.turnOffTwoFactorAuthentication(user.id);
+		return { message: 'Two factor authentication disabled', ...token };
 	}
 
 	@Post('authenticate')

@@ -45,7 +45,7 @@ services:
     volumes:
       - ./sockets/game:/home/node/app
       # - /home/node/app/node_modules
-      - /home/node/app/.pnpm-store
+      # - /home/node/app/.pnpm-store
     depends_on:
       api:
         condition: service_started
@@ -107,7 +107,7 @@ services:
     volumes:
       - ./back:/home/node/app
       # - /home/node/app/node_modules
-      - /home/node/app/.pnpm-store
+      # - /home/node/app/.pnpm-store
     depends_on:
       postgres:
         condition: service_healthy

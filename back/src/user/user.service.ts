@@ -359,9 +359,9 @@ export class UserService {
 		}
 	}
 
-	async turnOnTwoFactorAuthentication(userId: number) {
+	async turnOnTwoFactorAuthentication(userId: number): Promise<{ access_token: string }> {
 		try {
-			await this.prisma.user.update({
+			const user = await this.prisma.user.update({
 				where: {
 					id: userId,
 				},
@@ -369,14 +369,16 @@ export class UserService {
 					dAuth: true,
 				},
 			});
+			const token = await this.signToken(user, true);
+			return token;
 		} catch (e) {
 			throw e;
 		}
 	}
 
-	async turnOffTwoFactorAuthentication(userId: number) {
+	async turnOffTwoFactorAuthentication(userId: number): Promise<{ access_token: string }> {
 		try {
-			await this.prisma.user.update({
+			const user = await this.prisma.user.update({
 				where: {
 					id: userId,
 				},
@@ -385,6 +387,8 @@ export class UserService {
 					secret: null,
 				},
 			});
+			const token = await this.signToken(user, false);
+			return (token);
 		} catch (e) {
 			throw e;
 		}
