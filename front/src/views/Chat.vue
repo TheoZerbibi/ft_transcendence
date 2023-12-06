@@ -12,12 +12,19 @@
 		<v-row>
 			<v-col>
 				<v-window v-model="tab">
+
 					<!-- Direct Messages Components -->
 					<v-window-item :value="1">
 						<v-row>
-							<v-col cols="12">
-								<Friends/>
+							<!-- Colonne de gauche pour Friends et AddFriends (1/4 de l'écran) -->
+							<v-col cols="12" md="3">
+								<Friends @friend-selected="showMessages"/>
 								<AddFriends/>
+							</v-col>
+
+							<!-- Colonne de droite pour MessagesBox (3/4 de l'écran) -->
+							<v-col cols="12" md="9">
+								<MessagesBox :friendLogin="selectedFriendLogin"></MessagesBox>
 							</v-col>
 						</v-row>
 					</v-window-item>
@@ -40,7 +47,9 @@
 							</v-col>
 						</v-row>
 					</v-window-item>
+
 				</v-window>
+
 			</v-col>
 		</v-row>
 	</v-container>
@@ -51,6 +60,8 @@ import { defineComponent, ref } from 'vue';
 
 import AddFriends from '../components/chat/direct-messages/AddFriends.vue';
 import Friends from '../components/chat/direct-messages/Friends.vue';
+import MessagesBox from '../components/chat/direct-messages/MessagesBox.vue';
+
 import BlockedUsers from '../components/chat/profile/BlockedUsers.vue';
 import DiscoverChannels from '../components/chat/channels/DiscoverChannels.vue';
 import JoinedChannels from '../components/chat/channels/JoinedChannels.vue';
@@ -62,16 +73,28 @@ export default defineComponent({
 	components: {
 		AddFriends,
 		Friends,
+		MessagesBox,
 		BlockedUsers,
 		DiscoverChannels,
 		JoinedChannels
 	},
-
 	setup() {
 		const tab = ref(0); // Start with the first tab active
 		return {
 			tab
 		};
+	},
+	data() {
+		return { selectedFriendLogin: "", }
+	},
+	beforeMount() {
+	},
+	mounted() {
+	},
+	methods: {
+		showMessages(login) {
+			this.selectedFriendLogin = login;
+		}
 	}
 });
 </script>

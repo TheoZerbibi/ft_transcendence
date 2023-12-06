@@ -4,17 +4,23 @@
 		<!-- Friend list -->
 		<div class="friends-container">
 			<h2>Friends</h2>
-			<ul v-if="friends.length">
-				<li v-for="friend in friends" :key="friend.id" @click="selectFriend(friend)">
-					<!-- <span class="online-badge" v-if="friend.isOnline"></span> -->
-					{{ friend.display_name }}
-				</li>
-			</ul>
+			<v-list v-if="friends.length">
+				<v-list-item
+					v-for="friend in friends"
+					:key="friend.id"
+					@click="displayMessagesWithFriend(friend)"
+				>
+					<v-list-item-content>
+						<v-list-item-title>{{ friend.display_name }}</v-list-item-title>
+						<v-btn color="primary" @click="displayProfile(friend)">infos</v-btn>
+					</v-list-item-content>
+				</v-list-item>
+			</v-list>
 			<p v-else>~ sorry, no friends for now ~</p>
 		</div>
 		
 		<!-- Modal: friend profile -->
-	    <UserModal :user="selectedFriend" :show="showModal" @close="closeModal"/>
+		<UserModal :user="selectedFriend" :show="showModal" @close="closeModal"/>
 	</div>
 </template>
 
@@ -77,12 +83,15 @@ export default {
 				console.error(error);
 			}
 		},
-		selectFriend(friend: any) {
+		displayProfile(friend: any) {
 			this.selectedFriend = friend;
 			this.showModal = true;
 		},
 		closeModal() {
 			this.showModal = false;
+		},
+		displayMessagesWithFriend(friend: any) {
+			this.$emit('friend-selected', friend.login);
 		},
 
 	}
