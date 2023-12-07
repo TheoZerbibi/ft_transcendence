@@ -1,45 +1,46 @@
 <template>
 	<v-container>
-		<h2>Messages</h2>
-		<v-row>
-			<v-col cols="12">
-				<!-- Chat Messages -->
-				<v-card class="pa-3" height="400" style="overflow-y: auto;">
-					<v-list>
-						<v-list-item v-for="message in messages" :key="message.id">
-							{{ message.user_name }}
-							{{ message.created_at }}
-							{{ message.content }}
-						</v-list-item>
-					</v-list>
-				</v-card>
-			</v-col>
-		</v-row>
+			<v-row>
+				<v-col cols="11">
+					<!-- Chat Messages -->
+					<v-card class="scrollable-content" style="overflow-y: auto;">
+						<v-list>
+							<v-list-item v-for="message in messages" :key="message.id">
+								<v-list-item-subtitle>
+									{{ message.user_name }}
+									{{ message.created_at }}
+								</v-list-item-subtitle>
+								{{ message.content }}
+							</v-list-item>
+						</v-list>
+					</v-card>
+				</v-col>
+			</v-row>
 
-		<v-row>
-			<v-col cols="12">
-				<!-- Message Input -->
-				<v-card class="pa-3">
-					<v-row>
-						<v-col cols="10">
-							<v-text-field
-							 	v-model="input.value"
-								input="text"
-								placeholder="Type a message"
-								solo
-								flat
-								hide-details
-								outlined
-								clearable
-							></v-text-field>
-						</v-col>
-						<v-col cols="2">
-							<v-btn @click="sendMessage">Send</v-btn>
-						</v-col>
-					</v-row>
-				</v-card>
-			</v-col>
-		</v-row>
+			<v-row>
+				<v-col cols="11">
+					<!-- Message Input -->
+					<v-card class="pa-4">
+						<v-row>
+							<v-col cols="9">
+								<v-text-field
+									v-model="input"
+									input="text"
+									placeholder="Type a message"
+									solo
+									flat
+									hide-details
+									outlined
+									clearable
+								></v-text-field>
+							</v-col>
+							<v-col cols="1">
+								<v-btn @click="sendMessage">Send</v-btn>
+							</v-col>
+						</v-row>
+					</v-card>
+				</v-col>
+			</v-row>
 	</v-container>
 </template>
 
@@ -81,7 +82,7 @@ export default {
 						},
 					}
 				).catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
+					snackbarStore.showSnackbar(error, 2999, 'red');
 					return;
 				});
 				messages.value = await response.json();
@@ -124,9 +125,9 @@ export default {
 					{
 						method: 'POST',
 						headers: {
+							'Content-Type': 'application/json',
 							Authorization: `Bearer ${this.JWT}`,
 							'Access-Control-Allow-Origin': '*',
-							'Content-Type': 'application/json',
 						},
 						body: JSON.stringify({
 							target: this.selected_friend_login,
@@ -134,7 +135,7 @@ export default {
 						}),
 					}
 				).catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
+					snackbarStore.showSnackbar(error, 2999, 'red');
 					return;
 				});
 				this.fetchMessages();
@@ -148,5 +149,11 @@ export default {
 </script>
 
 <style scoped>
+
+.scrollable-content {
+	height: 70vh;
+	overflow-y: auto;
+}
+
 
 </style>
