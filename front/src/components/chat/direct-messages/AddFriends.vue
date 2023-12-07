@@ -29,7 +29,6 @@
 			 	v-model="searchTerm"
 				placeholder="Search a user..."
 				clearable
-				@click:clear="fetchUsers"
 			></v-text-field>
 		</v-col>
 		<v-col cols="0">
