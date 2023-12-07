@@ -104,10 +104,4 @@ export default defineComponent({
 </script>
 
 <style scoped>
-	.v-tab {
-		color: white; /* Or any other color you need */
-	}
-	.v-tab-item {
-		background-color: #121212; /* Match this with your theme */
-	}
 </style>

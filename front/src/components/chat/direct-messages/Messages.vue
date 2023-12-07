@@ -1,5 +1,6 @@
 <template>
 	<v-container>
+		<h2>Messages</h2>
 		<v-row>
 			<v-col cols="12">
 				<!-- Chat Messages -->

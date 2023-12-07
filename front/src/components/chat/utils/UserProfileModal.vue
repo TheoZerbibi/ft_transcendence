@@ -1,24 +1,31 @@
 <template>
-	<div class="modal" v-if="show">
-		<h2>{{ user.display_name }}</h2>
-		<p>...infos on user</p>
-		<p>...infos on user</p>
-		<p>...infos on user</p>
-		<button @click="close">Close</button>
+	<div class="overlay">
+		<div class="modal" v-if="show">
+			{{ user.display_name }}
+			<p>...infos on user</p>
+			<p>...infos on user</p>
+			<p>...infos on user</p>
+			<button @click="close">Close</button>
+		</div>
 	</div>
 </template>
 
 <script lang="ts">
 export default {
 	props: {
-		user: Object,
+		user: {},
 		show: Boolean,
 	},
+	beforeMount() {
+		console.log("user: " + this.user);
+		console.log("show: " + this.show);
+	},
+	mounted() {},
 	methods: {
 		close() {
 			this.$emit('close');
 		}
-	}
+	},
 };
 </script>
 
@@ -30,7 +37,8 @@ export default {
 	transform: translate(-50%, -50%);
 	padding: 1rem;
 	border-radius: 0.5rem;
-	background-color: white;
+	background-color: deeppink;
+	z-index: 100;
 }
 </style>
 
