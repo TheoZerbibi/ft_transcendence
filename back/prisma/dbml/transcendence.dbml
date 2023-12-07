@@ -119,6 +119,7 @@ Table blocked {
 }
 
 Enum RequestStatus {
+  DECLINED
   PENDING
   ACCEPTED
 }

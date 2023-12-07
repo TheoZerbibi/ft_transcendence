@@ -4,27 +4,40 @@
 		<h2>Add Friends</h2>
 
 		<!-- Friend Requests list -->
-		<ul v-if="listFriendRequests.length">
-			<li v-for="request in listFriendRequests" :key="request.id">
+		<v-list v-if="listFriendRequests.length">
+			<v-list-item v-for="request in listFriendRequests" :key="request.id">
 				{{ request.display_name }}
 				<AcceptDeclineButton :login="request.login" :response="true" @respond="respondRequest"/>
 				<AcceptDeclineButton :login="request.login" :response="false" @respond="respondRequest"/>
-			</li>
-		</ul>
+			</v-list-item>
+		</v-list>
+
+		<v-divider></v-divider>
 
 		<!-- Users list -->
-		<ul class="no-bullets" v-if="users.length">
-			<li v-for="user in users" :key="user.id">
+		<v-list v-if="users.length">
+			<v-list-item v-for="user in users" :key="user.id">
 				{{ user.display_name }}
-				<button @click="sendFriendRequest(user.login)">+</button>
-			</li>
-		</ul>
+				<v-btn @click="sendFriendRequest(user.login)">+</v-btn>
+			</v-list-item>
+		</v-list>
 
 		<!-- Search bar -->
-		<div>
-			<input type="text" v-model="searchTerm" placeholder="Search for a user" />
-			<button @click="searchUsers(searchTerm)">Search</button>
-		</div>
+ 		<!-- clearable = y a une croix a droite pour clear l'input mais jsp comment la rendre visible-->
+		<v-col cols="10">
+			<v-text-field
+			 	label="searchTerm"
+				placeholder="Search a user..."
+				solo
+				flat
+				hide-details
+				clearable
+				@click:clear="fetchUsers"
+			></v-text-field>
+		</v-col>
+		<v-col cols="1">
+			<v-btn @click="searchUsers(searchTerm)">search</v-btn>
+		</v-col>
 	</div>
 </template>
 

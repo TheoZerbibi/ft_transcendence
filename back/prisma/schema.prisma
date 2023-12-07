@@ -93,6 +93,7 @@ model GamePlayer {
 	@@map("game_players")
 }
 enum RequestStatus {
+	DECLINED
 	PENDING
 	ACCEPTED
 }

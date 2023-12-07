@@ -261,16 +261,6 @@ export class UserService {
 					else throw new BadRequestException('You already have a friend request from this user');
 				case RequestStatus.ACCEPTED:
 					throw new BadRequestException('You are already friend with this user');
-				case RequestStatus.DECLINED:
-					await this.prisma.friends.update({
-						where: {
-							user_id_friend_id: {
-								user_id: targetUser.id,
-								friend_id: user.id,
-							},
-						},
-						data: { status: RequestStatus.PENDING, },
-					});
 				}
 			} else {
 				await this.prisma.friends.create({
@@ -407,8 +397,6 @@ export class UserService {
 		try {
 			if (friend) {
 				switch (friend.status) {
-				case RequestStatus.DECLINED:
-					throw new BadRequestException('Friend request already declined');
 				case RequestStatus.ACCEPTED:
 					throw new BadRequestException('You are already friend with this user');
 				case RequestStatus.PENDING:

@@ -6,6 +6,11 @@ export class DirectMessageDto {
 	@ApiProperty()
 	@IsNumber()
 	// eslint-disable-next-line
+	id: number;
+
+	@ApiProperty()
+	@IsNumber()
+	// eslint-disable-next-line
 	user_id: number;
 
 	@ApiProperty()
@@ -28,7 +33,7 @@ export class CreateDirectMessageDto {
 	@ApiProperty()
 	@IsString()
 	// eslint-disable-next-line
-	target_name: string;
+	target_login: string;
 
 	@ApiProperty()
 	@IsString()

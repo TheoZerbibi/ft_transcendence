@@ -6,15 +6,10 @@
 				<v-card class="pa-3" height="400" style="overflow-y: auto;">
 					<v-list>
 						<v-list-item v-for="message in messages" :key="message.id">
-							<v-list-item-avatar>
-								<v-img :src="message.avatar"></v-img>
-							</v-list-item-avatar>
-							<v-list-item-content>
-								<v-list-item-title>{{ message.sender }}</v-list-item-title>
-								<v-list-item-subtitle>{{ message.text }}</v-list-item-subtitle>
-							</v-list-item-content>
+							<v-list-item-title>{{ message.user_id }}</v-list-item-title>
+							<v-list-item-subtitle>{{ message.content }}</v-list-item-subtitle>
 							<v-list-item-action>
-								<v-chip small>{{ message.time }}</v-chip>
+								<v-chip small>{{ message.created_at }}</v-chip>
 							</v-list-item-action>
 						</v-list-item>
 					</v-list>
@@ -29,15 +24,16 @@
 					<v-row>
 						<v-col cols="10">
 							<v-text-field
-								v-model="newMessage"
-								label="Type a message"
+								input="text"
+								placeholder="Type a message"
 								solo
 								flat
 								hide-details
+								clearable
 							></v-text-field>
 						</v-col>
-						<v-col cols="2">
-							<v-btn color="primary" @click="sendMessage">Send</v-btn>
+						<v-col cols="1">
+							<v-btn @click="sendMessage(input); input=''">Send</v-btn>
 						</v-col>
 					</v-row>
 				</v-card>
@@ -47,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useUser } from '../../../stores/user';
 import { useSnackbarStore } from '../../../stores/snackbar';
 
@@ -55,21 +51,60 @@ const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 
 export default {
-	setup() {
-		const JWT = computed(() => userStore.getJWT);
-		const user = computed(() => userStore.getUser);
-
-		return {
-			JWT,
-			user,
-		};
-	},
 	props: {
-		friendLogin: String,
+		selected_friend_login: {
+			type: String,
+			default: '',
+		},
 	},
 	data() {
 		return {
 			messages: [],
+		};
+	},
+	setup(props) {
+		const JWT = computed(() => userStore.getJWT);
+		const user = computed(() => userStore.getUser);
+		const messages = ref([]);
+
+		const fetchMessages = async function() {
+			try {
+				console.log("selected_friend_login: " + props.selected_friend_login);
+				if (!props.selected_friend_login || props.selected_friend_login === '') {
+					/* TODO : display stg ? */
+					return;
+				}
+				const response = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/${props.selected_friend_login}/all`,
+					{
+						method: 'GET',
+						headers: {
+							Authorization: `Bearer ${JWT.value}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+					}
+				).catch((error: any) => {
+					snackbarStore.showSnackbar(error, 3000, 'red');
+					return;
+				});
+				messages.value = await response.json();
+			} catch (error) {
+				console.error(error);
+			}
+		};
+
+		watch(
+			() => props.selected_friend_login,
+			() => {
+				fetchMessages();
+			}
+		);
+
+		return {
+			JWT,
+			user,
+			fetchMessages,
+			messages,
 		};
 	},
 	beforeMount() {
@@ -78,31 +113,11 @@ export default {
 		this.fetchMessages();
 	},
 	methods: {
-		fetchMessages: async function() {
+
+		sendMessage: async function(content: string) {
 			try {
-				const response = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/${this.friendLogin}/all`,
-					{
-						method: 'GET',
-						headers: {
-							Authorization: `Bearer ${this.JWT}`,
-							'Access-Control-Allow-Origin': '*',
-						},
-					}
-				).catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
-					return;
-				});
-				const data = await response.json();
-				this.messages = data;
-			} catch (error) {
-				console.error(error);
-			}
-		},
-		sendMessage: async function() {
-			try {
-				const response = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/${this.friendLogin}`,
+				await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage`,
 					{
 						method: 'POST',
 						headers: {
@@ -111,16 +126,15 @@ export default {
 							'Content-Type': 'application/json',
 						},
 						body: JSON.stringify({
-							target: this.friendLogin,
-							content: this.newMessage,
+							target: this.selected_friend_login,
+							content: content,
 						}),
 					}
 				).catch((error: any) => {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				const data = await response.json();
-				this.messages.push(data);
+				this.fetchMessages();
 			} catch (error) {
 				console.error(error);
 			}
