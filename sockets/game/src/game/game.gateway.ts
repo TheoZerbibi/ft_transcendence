@@ -81,44 +81,50 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		this.logger.debug(`Client WebSocket ${user.login} demande à rejoindre la session : ${gameUID}`);
 		const waiting: GameJoinDto = this.gameService.isUserWaiting(client, gameUID, user.id);
 		if (!waiting) return;
-		// if (this.gameService.gameExists(gameUID)) {
-		// 	const game: IGame = this.gameService.getGame(gameUID);
-		// 	if (game.isEnded()) {
-		// 		this.logger.debug(`Game End`);
-		// 		client.emit('game-end', 'Game is ended');
-		// 		client.disconnect();
-		// 		return;
-		// 	}
-		// 	if (game.isInProgress() && !waiting.isSpec) waiting.isSpec = true;
-		// 	this.logger.debug(`Ok 1`);
-		// 	if (this.gameService.addUserToGame(game, client, user, waiting.isSpec)) {
-		// 		this.logger.debug(`Ok 2`);
-		// 		client.join(gameUID);
-		// 		const allUsers = game.getAllUsersInGame();
-		// 		if (!allUsers) {
-		// 			this.logger.debug(`Error during session join`);
-		// 			client.emit('game-error', 'Error during session join');
-		// 			client.disconnect();
-		// 			return;
-		// 		}
-		// 		this.server.to(gameUID).emit('session-info', allUsers);
-		// 		console.log(game.getUsersInGame().length);
-		// 		// if (!game.isInProgress() && game.getUsersInGame().length === 2) this.startGame(game);
-		// 		if (!game.getPlayerBySide(SIDE.RIGHT) || !game.getPlayerBySide(SIDE.LEFT)) return;
-		// 		if (!game.isInProgress()) return;
-		// 		this.server.to(client.id).emit('game-score', {
-		// 			leftUser: game.getPlayerBySide(SIDE.LEFT).playerData.score,
-		// 			rightUser: game.getPlayerBySide(SIDE.RIGHT).playerData.score,
-		// 		});
-		// 	} else {
-		// 		this.logger.debug(`Error during session join 2`);
-		// 		client.disconnect();
-		// 	}
-		// } else {
-		// 	client.emit('game-error', 'Game not found.');
-		// 	client.disconnect();
-		// 	return;
-		// }
+		if (this.gameService.gameExists(gameUID)) {
+			const game: IGame = this.gameService.getGame(gameUID);
+			if (game.isEnded()) {
+				this.logger.debug(`Game End`);
+				client.emit('game-end', 'Game is ended');
+				client.disconnect();
+				return;
+			}
+			if (game.isInProgress() && !waiting.isSpec) waiting.isSpec = true;
+			this.logger.debug(`Ok 1`);
+			if (this.gameService.addUserToGame(game, client, user, waiting.isSpec)) {
+				this.logger.debug(`Ok 2`);
+				client.join(gameUID);
+				const allUsers = game.getAllUsersInGame();
+				if (!allUsers) {
+					this.logger.debug(`Error during session join`);
+					client.emit('game-error', 'Error during session join');
+					client.disconnect();
+					return;
+				}
+				this.server.to(gameUID).emit('session-info', allUsers);
+				console.log(game.getUsersInGame().length);
+				if (!game.getPlayerBySide(SIDE.RIGHT) || !game.getPlayerBySide(SIDE.LEFT)) return;
+				// if (!game.isInProgress() && game.getUsersInGame().length === 2) this.startGame(game);
+				if (!game.isInProgress() && game.getUsersInGame().length === 2) {
+					this.server.emit('waiting-start', {
+						leftUser: game.getPlayerBySide(SIDE.LEFT).user,
+						rightUser: game.getPlayerBySide(SIDE.RIGHT).user,
+					});
+				}
+				if (!game.isInProgress()) return;
+				this.server.to(client.id).emit('game-score', {
+					leftUser: game.getPlayerBySide(SIDE.LEFT).playerData.score,
+					rightUser: game.getPlayerBySide(SIDE.RIGHT).playerData.score,
+				});
+			} else {
+				this.logger.debug(`Error during session join 2`);
+				client.disconnect();
+			}
+		} else {
+			client.emit('game-error', 'Game not found.');
+			client.disconnect();
+			return;
+		}
 	}
 
 	@UseGuards(JwtGuard)
@@ -140,6 +146,24 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			player.playerData.move(data.direction);
 		}
 		this.sendPosition(game);
+	}
+
+	@UseGuards(JwtGuard)
+	@SubscribeMessage('player-ready')
+	playerIsReady(@ConnectedSocket() client: Socket | any, @MessageBody() data: any) {
+		const user: users = this.gameService.getUserFromRequest(client);
+		const gameUID: string = data.gameUID;
+		if (!user || !gameUID) return;
+
+		const game: IGame = this.gameService.getGame(gameUID);
+		const player = this.gameService.gameVerification(client, gameUID, user.id);
+		if (!player) return;
+		if (player.isSpec || player.isReady) return;
+		player.isReady = true;
+		console.log(player.user.login + ' is ready');
+		const opponent: IUser = game.getPlayerBySide(player.playerData.side === SIDE.LEFT ? SIDE.RIGHT : SIDE.LEFT);
+		if (!opponent) return;
+		if (opponent.isReady) this.startGame(game);
 	}
 
 	public afterInit() {

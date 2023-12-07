@@ -101,7 +101,7 @@
 					</div>
 				</div>
 			</v-card>
-			<div id="game-canvas" />
+			<div id="game-canvas"/>
 		</div>
 		<CountdownOverlay v-if="showCountdown" />
 	</v-container>
@@ -369,13 +369,16 @@ export default {
 
 			new P5(script);
 		});
-		this.socket.on('game-start', async (data: any) => {
+		this.socket.on('waiting-start', async () => {
 			await p5jsReadyPromise;
 			this.waitingOpp = false;
 			gameData.socket = this.socket;
 			gameData.go = false;
 			gameData.waiting = true;
 			gameData.ball?.resetball();
+		});
+		this.socket.on('game-start', async (data: any) => {
+			await p5jsReadyPromise;
 			if (!gameData.leftUser || !gameData.rightUser) return this.$router.push({ name: 'GameMenu' });
 			if (gameData.leftUser) gameData.leftUser.score = 0;
 			if (gameData.rightUser) gameData.rightUser.score = 0;

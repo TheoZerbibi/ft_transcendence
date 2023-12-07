@@ -9,7 +9,10 @@
 			}"
 			class="container d-flex align-center justify-center"
 		>
-			<div>
+			<div v-if="waitingStart" class="d-flex align-center justify-center">
+				<GameOpponent :leftPlayer="leftPlayer" :rightPlayer="rightPlayer" />
+			</div>
+			<div v-else>
 				<GameCanvas />
 				<span class="d-flex justify-center align-center ga-10">
 					<span class="d-flex justify-center ga-1">
@@ -46,12 +49,13 @@ import Snackbar from '../layout/Snackbar.vue';
 import GameModal from '../utils/GameModal.vue';
 
 import GameCanvas from './GameCanvas.vue';
+import GameOpponent from './GameOpponent.vue';
 
 const snackbarStore = useSnackbarStore();
 
 export default {
 	name: 'PongGame',
-	components: { Snackbar, GameCanvas, GameModal },
+	components: { Snackbar, GameCanvas, GameModal, GameOpponent },
 	setup() {
 		const webSocketStore = useSocketStore();
 		const userStore = useUser();
@@ -95,7 +99,19 @@ export default {
 			dialogVisible: false as boolean,
 			isWinner: false as boolean,
 			isLoser: false as boolean,
-			test: 'test',
+			waitingStart: false as boolean,
+			leftPlayer: {
+				id: 0,
+				login: '',
+				displayName: '',
+				avatar: '',
+			},
+			rightPlayer: {
+				id: 0,
+				login: '',
+				displayName: '',
+				avatar: '',
+			},
 		};
 	},
 	async beforeUnmount() {
@@ -155,7 +171,15 @@ export default {
 								}
 							});
 
+							this.socket.on('waiting-start', (data: any) => {
+								this.leftPlayer = data.leftUser;
+								this.rightPlayer = data.rightUser;
+								console.log(this.rightPlayer);
+								console.log(this.leftPlayer);
+								this.waitingStart = true;
+							});
 							this.socket.on('game-start', (data: any) => {
+								this.waitingStart = false;
 								snackbarStore.showSnackbar('Game Starting !', 3000, 'green');
 								this.apiData.started_at = data.startDate;
 							});
