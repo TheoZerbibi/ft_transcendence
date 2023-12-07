@@ -7,7 +7,7 @@
 				<v-list-item
 					v-for="friend in friends"
 					:key="friend.id"
-					@click="displayMessagesWithFriend"
+					@click="displayMessagesWithFriend(friend.login)"
 				>
 				{{ friend.display_name }}
 				<v-btn @click="displayProfile">infos</v-btn>
@@ -53,6 +53,7 @@ export default {
 			friend_infos: {},
 		};
 	},
+	emits: ['friend-selected'],
 	beforeMount() {
 		this.fetchFriends();
 	},
