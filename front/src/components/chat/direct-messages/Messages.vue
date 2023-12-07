@@ -6,11 +6,9 @@
 				<v-card class="pa-3" height="400" style="overflow-y: auto;">
 					<v-list>
 						<v-list-item v-for="message in messages" :key="message.id">
-							<v-list-item-title>{{ message.user_id }}</v-list-item-title>
-							<v-list-item-subtitle>{{ message.content }}</v-list-item-subtitle>
-							<v-list-item-action>
-								<v-chip small>{{ message.created_at }}</v-chip>
-							</v-list-item-action>
+							<v-list-title>{{ message.user_name }}</v-list-title>
+							<v-list-item-subtitle> {{ message.created_at }} </v-list-item-subtitle>
+							{{ message.content }}
 						</v-list-item>
 					</v-list>
 				</v-card>
