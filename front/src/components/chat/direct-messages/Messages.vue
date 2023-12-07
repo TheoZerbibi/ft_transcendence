@@ -22,16 +22,18 @@
 					<v-row>
 						<v-col cols="10">
 							<v-text-field
+							 	v-model="input"
 								input="text"
 								placeholder="Type a message"
 								solo
 								flat
 								hide-details
+								outlined
 								clearable
 							></v-text-field>
 						</v-col>
-						<v-col cols="1">
-							<v-btn @click="sendMessage(input); input=''">Send</v-btn>
+						<v-col cols="2">
+							<v-btn @click="sendMessage">Send</v-btn>
 						</v-col>
 					</v-row>
 				</v-card>
@@ -57,6 +59,7 @@ export default {
 	},
 	data() {
 		return {
+			input: '',
 			messages: [],
 		};
 	},
@@ -86,6 +89,7 @@ export default {
 					return;
 				});
 				messages.value = await response.json();
+				this.message = '';
 			} catch (error) {
 				console.error(error);
 			}
@@ -112,10 +116,14 @@ export default {
 	},
 	methods: {
 
-		sendMessage: async function(content: string) {
+		sendMessage: async function() {
 			try {
+				if (this.input.trim() === '') {
+					return;
+				}
+				console.log("selected_friend_login: " + this.selected_friend_login + "\ninput: " + this.input);
 				await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage`,
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/send`,
 					{
 						method: 'POST',
 						headers: {
@@ -125,7 +133,7 @@ export default {
 						},
 						body: JSON.stringify({
 							target: this.selected_friend_login,
-							content: content,
+							content: this.input,
 						}),
 					}
 				).catch((error: any) => {

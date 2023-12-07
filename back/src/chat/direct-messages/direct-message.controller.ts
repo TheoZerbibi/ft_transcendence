@@ -39,7 +39,7 @@ export class DirectMessageController {
 	/* 										Creation								   */
 	/***********************************************************************************/
 
-	@Post('')
+	@Post('send')
 	@UseGuards(JwtGuard) // Needed to access user attribute
 	@ApiOperation({ summary: 'Create direct message' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
