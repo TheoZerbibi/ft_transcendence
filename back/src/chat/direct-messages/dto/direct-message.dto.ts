@@ -21,6 +21,16 @@ export class DirectMessageDto {
 	@ApiProperty()
 	@IsString()
 	// eslint-disable-next-line
+	user_name: string;
+
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	friend_name: string;
+
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
 	content: string;
 
 	@ApiProperty()

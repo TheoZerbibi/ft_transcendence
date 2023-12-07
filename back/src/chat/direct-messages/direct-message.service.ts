@@ -86,13 +86,26 @@ export class DirectMessageService {
 				},
 				take: 50,
 			});
-			const directMessageDtos: DirectMessageDto[] = directMessages.map((directMessage) => ({
-				id: directMessage.id,
-				content: directMessage.content,
-				created_at: directMessage.created_at,
-				user_id: directMessage.user_id,
-				friend_id: directMessage.friend_id,
-			}));
+			const directMessageDtos: DirectMessageDto[] = await Promise.all(
+				directMessages.map(async (directMessage) => {
+					const user = await this.prisma.user.findUnique({
+						where: { id: directMessage.user_id },
+					});
+					const friend = await this.prisma.user.findUnique({
+						where: { id: directMessage.friend_id },
+					});
+
+					return {
+						id: directMessage.id,
+						content: directMessage.content,
+						created_at: directMessage.created_at,
+						user_id: directMessage.user_id,
+						user_name: user.display_name,
+						friend_id: directMessage.friend_id,
+						friend_name: friend.display_name,
+					};
+				})
+			);
 			return directMessageDtos;
 		} catch (e) {
 			throw e;
@@ -157,7 +170,9 @@ export class DirectMessageService {
 				content: directMessage.content,
 				created_at: directMessage.created_at,
 				user_id: directMessage.user_id,
+				user_name: user.display_name,
 				friend_id: directMessage.friend_id,
+				friend_name: targetUser.display_name,
 			};
 			return directMessageDto;
 		} catch (e) {
