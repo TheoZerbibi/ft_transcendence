@@ -1,7 +1,8 @@
 <template>
-	<div class="overlay">
 
-		<h2>Add Friends</h2>
+	<h2>Add Friends</h2>
+
+	<div class="scrollable-content">
 
 		<!-- Friend Requests list -->
 		<v-list v-if="listFriendRequests.length">
@@ -22,19 +23,20 @@
 			</v-list-item>
 		</v-list>
 
-		<!-- Search bar -->
- 		<!-- clearable = y a une croix a droite pour clear l'input mais jsp comment la rendre visible-->
-		<v-col cols="9">
-			<v-text-field
-			 	v-model="searchTerm"
-				placeholder="Search a user..."
-				clearable
-			></v-text-field>
-		</v-col>
-		<v-col cols="0">
-			<v-btn @click="searchUsers">search</v-btn>
-		</v-col>
 	</div>
+
+	<!-- Search bar -->
+	<!-- clearable = y a une croix a droite pour clear l'input mais jsp comment la rendre visible-->
+	<v-col cols="9">
+		<v-text-field
+			v-model="searchTerm"
+			placeholder="Search a user..."
+			clearable
+		></v-text-field>
+	</v-col>
+	<v-col cols="0">
+		<v-btn @click="searchUsers">search</v-btn>
+	</v-col>
 </template>
 
 <script lang="ts">
@@ -204,5 +206,10 @@ export default {
 </script>
 
 <style scoped>
+
+.scrollable-content {
+	max-height: 40vh;
+	overflow-y: auto;
+}
 
 </style>

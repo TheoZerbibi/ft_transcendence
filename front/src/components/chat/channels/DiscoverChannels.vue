@@ -1,32 +1,29 @@
 <template>
-	<div class="overlay">
+	<!-- Channels list -->
+		<div class="discover-channels-list-container">
+		<h2>Discover Channels</h2>
+		<ul class="no-bullets" v-if="discoverChannels.length">
+			<li v-for="channel in discoverChannels" :key="channel.id">
+				{{ channel.name }}
+				<button @click="joinChannel(channel.name, channel.is_public)">+</button>
+			</li>
+		</ul>
+		<p v-else>~ there is no channel to discover ~</p>
+	</div>
+	
+	<!-- Search bar -->
+	<div>
+		<input type="text" v-model="searchTerm" placeholder="Search for a channel" />
+		<button @click="searchChannels(searchTerm)">Search</button>
+	</div>
 
-		<!-- Channels list -->
-		 <div class="discover-channels-list-container">
-			<h2>Discover Channels</h2>
-			<ul class="no-bullets" v-if="discoverChannels.length">
-				<li v-for="channel in discoverChannels" :key="channel.id">
-					{{ channel.name }}
-					<button @click="joinChannel(channel.name, channel.is_public)">+</button>
-				</li>
-			</ul>
-			<p v-else>~ there is no channel to discover ~</p>
-		</div>
-		
-		<!-- Search bar -->
-		<div>
-			<input type="text" v-model="searchTerm" placeholder="Search for a channel" />
-			<button @click="searchChannels(searchTerm)">Search</button>
-		</div>
-
-		<!-- Modal -->
-		<div class="modal" v-if="showModal">
-			<h2>Enter Password</h2>
-			<form @submit.prevent="joinPrivateChannel(pwd)">
-				<input type="password" v-model="pwd" />
-				<button type="submit">Submit</button>
-			</form>
-		</div>
+	<!-- Modal -->
+	<div class="modal" v-if="showModal">
+		<h2>Enter Password</h2>
+		<form @submit.prevent="joinPrivateChannel(pwd)">
+			<input type="password" v-model="pwd" />
+			<button type="submit">Submit</button>
+		</form>
 	</div>
 </template>
 
@@ -185,6 +182,7 @@ export default {
 	transform: translate(-50%, -50%);
 	padding: 1rem;
 	border-radius: 0.5rem;
+	z-index: 100;
 }
 
 </style>

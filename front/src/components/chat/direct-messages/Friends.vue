@@ -1,25 +1,24 @@
 <template>
-	<div class="overlay">
-
-		<!-- Friend list -->
-		<div class="friends-container">
-			<h2>Friends</h2>
+	<!-- Friend list -->
+	<div class="friends-container">
+		<h2>Friends</h2>
+		<div class="scrollable-content">
 			<v-list v-if="friends.length">
 				<v-list-item
 					v-for="friend in friends"
 					:key="friend.id"
-					@click="displayMessagesWithFriend(friend.login)"
+					@click="displayMessagesWithFriend"
 				>
 				{{ friend.display_name }}
-				<!-- <v-btn @click="displayProfile(friend)">infos</v-btn> --> 
+				<v-btn @click="displayProfile">infos</v-btn>
 				</v-list-item>
 			</v-list>
-			<p v-else>~ sorry, no friends for now ~</p>
+		<p v-else>~ sorry, no friends for now ~</p>
 		</div>
-		
-		<!-- Modal: friend profile -->
-		<!-- UserModal :user="friend_selected_for_infos" :show="showModal" @close="closeModal"/> -->
 	</div>
+	
+	<!-- Modal: friend profile -->
+	<UserModal :user="friend_infos" :show="show_infos" @close="closeModal"/>
 </template>
 
 <script lang="ts">
@@ -49,9 +48,9 @@ export default {
 	data() {
 		return {
 			friends: [],
-			showModal: false,
-			selected_friend_login: '',
-			//friend_selected_for_infos: {},
+			login_messages: '',
+			show_infos: false,
+			friend_infos: {},
 		};
 	},
 	beforeMount() {
@@ -78,21 +77,21 @@ export default {
 				});
 				const data = await response.json();
 				this.friends = data;
-				this.selected_friend_login = this.friends[0] || null;
+				this.login_messages = this.friends[0] || null;
 			} catch (error) {
 				console.error(error);
 			}
 		},
-/* 		displayProfile(friend: object) {
-			this.friend_selected_for_infos = friend;
-			this.showModal = true;
+		displayProfile(friend: any) {
+			this.friend_infos = friend;
+			this.show_infos = true;
 		},
 		closeModal() {
-			this.showModal = false;
-		}, */
+			this.show_infos = false;
+		},
 		displayMessagesWithFriend(login: string) {
-			this.selected_friend_login = login;
-			this.$emit('friend-selected', this.selected_friend_login);
+			this.login_messages = login;
+			this.$emit('friend-selected', this.login_messages);
 		},
 	}
 }
@@ -101,5 +100,11 @@ export default {
 
 
 <style scoped>
+
+.scrollable-content {
+	max-height: 40vh;
+	overflow-y: auto;
+}
+
 
 </style>
