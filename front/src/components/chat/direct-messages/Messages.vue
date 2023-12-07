@@ -23,7 +23,7 @@
 					<v-row>
 						<v-col cols="10">
 							<v-text-field
-							 	v-model="input"
+							 	v-model="input.value"
 								input="text"
 								placeholder="Type a message"
 								solo
@@ -58,16 +58,11 @@ export default {
 			default: '',
 		},
 	},
-	data() {
-		return {
-			input: '',
-			messages: [],
-		};
-	},
 	setup(props) {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
-		const messages = ref([]);
+		let messages = ref([]);
+		let input = ref('');
 
 		const fetchMessages = async function() {
 			try {
@@ -90,7 +85,7 @@ export default {
 					return;
 				});
 				messages.value = await response.json();
-				this.message = '';
+				input.value = '';
 			} catch (error) {
 				console.error(error);
 			}
@@ -108,6 +103,7 @@ export default {
 			user,
 			fetchMessages,
 			messages,
+			input,
 		};
 	},
 	beforeMount() {
