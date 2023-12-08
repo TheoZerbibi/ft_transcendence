@@ -106,7 +106,9 @@ export class ChannelController {
 	@ApiOperation({ summary: 'Create channel' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
 	async createChannel(@GetUser() user: User, @Body() dto: CreateChannelDto): Promise<ChannelEntity> {
-		return await this.channelService.createChannel(dto, user.id);
+		const channel: ChannelEntity = await this.channelService.createChannel(dto, user.id);
+		this.channelService.publishOnRedis('channel-creation', JSON.stringify(channel));
+		return channel;
 	}
 
 	/*************************************** Users ************************************/

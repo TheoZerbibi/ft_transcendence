@@ -32,7 +32,6 @@ export class GameController {
 		return this.gameService.createNewGame();
 	}
 
-
 	@Post(':uuid')
 	@ApiOperation({ summary: 'Join a Game' })
 	@ApiBearerAuth('JWT-auth')

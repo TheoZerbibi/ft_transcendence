@@ -44,9 +44,9 @@ model channels {
 model friends {
   user_id                        Int
   friend_id                      Int
-  status                         Int
-  users_friends_friend_idTousers users @relation("friends_friend_idTousers", fields: [friend_id], references: [id], onDelete: Cascade)
-  users_friends_user_idTousers   users @relation("friends_user_idTousers", fields: [user_id], references: [id], onDelete: Cascade)
+  status                         Int   @default(0)
+  users_friends_friend_idTousers users @relation("friends_friend_idTousers", fields: [friend_id], references: [id])
+  users_friends_user_idTousers   users @relation("friends_user_idTousers", fields: [user_id], references: [id])
 
   @@id([user_id, friend_id])
 }
@@ -95,8 +95,8 @@ model game_players {
 model blocked {
   blocked_id                         Int
   blocked_by_id                      Int
-  users_blocked_blocked_by_idTousers users @relation("blocked_blocked_by_idTousers", fields: [blocked_by_id], references: [id], onDelete: Cascade)
-  users_blocked_blocked_idTousers    users @relation("blocked_blocked_idTousers", fields: [blocked_id], references: [id], onDelete: Cascade)
+  users_blocked_blocked_by_idTousers users @relation("blocked_blocked_by_idTousers", fields: [blocked_by_id], references: [id])
+  users_blocked_blocked_idTousers    users @relation("blocked_blocked_idTousers", fields: [blocked_id], references: [id])
 
   @@id([blocked_by_id, blocked_id])
 }
@@ -111,6 +111,8 @@ model direct_messages {
 }
 
 enum RequestStatus {
+  INEXISTENT
   PENDING
   ACCEPTED
+  DECLINED
 }
