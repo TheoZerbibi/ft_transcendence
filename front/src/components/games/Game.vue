@@ -158,7 +158,7 @@ export default {
 			.then(async (data) => {
 				if (data.end_at) {
 					this.apiData = data;
-					snackbarStore.showSnackbar('Game is ended', 3000, 'primary');
+					snackbarStore.showSnackbar('Game is ended', 3000);
 				} else {
 					await this.connect(this.JWT, import.meta.env.VITE_GAME_SOCKET_PORT)
 						.then(() => {
@@ -174,10 +174,16 @@ export default {
 							this.socket.on('waiting-start', (data: any) => {
 								this.leftPlayer = data.leftUser;
 								this.rightPlayer = data.rightUser;
-								console.log(this.rightPlayer);
-								console.log(this.leftPlayer);
 								this.waitingStart = true;
 							});
+
+							this.socket.on('cancel-waiting', () => {
+								this.waitingStart = false;
+								this.leftPlayer = null;
+								this.rightPlayer = null;
+								snackbarStore.showSnackbar('Your opponent has left the game', 3000);
+							});
+
 							this.socket.on('game-start', (data: any) => {
 								this.waitingStart = false;
 								snackbarStore.showSnackbar('Game Starting !', 3000, 'green');
@@ -187,7 +193,7 @@ export default {
 							this.socket.on('game-end', (data: any) => {
 								this.disconnect();
 								if (!snackbarStore.snackbar)
-									snackbarStore.showSnackbar('Game is ended', 3000, 'primary');
+									snackbarStore.showSnackbar('Game is ended', 3000);
 								this.dialogVisible = true;
 								this.apiData = data;
 								this.gameEnded = true;

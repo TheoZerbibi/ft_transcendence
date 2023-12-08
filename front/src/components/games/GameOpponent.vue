@@ -10,7 +10,6 @@
 			</v-img>
 		</div>
 
-		<!-- Cadre en bas à droite -->
 		<div id="rightUser" class="player-frame bottom-right">
 			<v-img class="cadre-responsive" :src="'/game/UI/cadres/cadre0.png'">
 				<h2>{{ rightPlayer.displayName }}</h2>
@@ -22,7 +21,9 @@
 			absolute
 			width="22vw"
 			:style="buttonStyle"
+			:disabled="hasAccepted"
 			class="fight-button"
+			:class="{ accepted: hasAccepted }"
 			@mouseover="showOverlay = true"
 			@mouseleave="showOverlay = false"
 			@click="userIsReady()"
@@ -106,10 +107,12 @@ export default {
 			},
 			buttonBottomPosition: '10%',
 			buttonLeftPosition: '50%',
+			hasAccepted: false,
 		};
 	},
 	methods: {
 		userIsReady() {
+			this.hasAccepted = true;
 			this.socket.emit('player-ready', {
 				gameUID: this.gameUID,
 			});
@@ -169,6 +172,10 @@ h2 {
 	left: 50%;
 	top: 90%;
 	transform: translateX(-50%);
+}
+
+.accepted {
+	filter: grayscale(100%);
 }
 
 .diagonal-split {

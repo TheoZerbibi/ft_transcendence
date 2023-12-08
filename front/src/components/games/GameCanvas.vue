@@ -369,35 +369,26 @@ export default {
 
 			new P5(script);
 		});
+
 		this.socket.on('waiting-start', async () => {
 			await p5jsReadyPromise;
-			this.waitingOpp = false;
 			gameData.socket = this.socket;
 			gameData.go = false;
 			gameData.waiting = true;
 			gameData.ball?.resetball();
 		});
+
+		this.socket.on('cancel-waiting', async () => {
+			await p5jsReadyPromise;
+			this.waitingOpp = true;
+			gameData.go = true;
+			gameData.waiting = false;
+		});
+
 		this.socket.on('game-start', async (data: any) => {
 			await p5jsReadyPromise;
-			if (!gameData.leftUser || !gameData.rightUser) return this.$router.push({ name: 'GameMenu' });
-			if (gameData.leftUser) gameData.leftUser.score = 0;
-			if (gameData.rightUser) gameData.rightUser.score = 0;
-			if (data.leftUser) {
-				this.userData.leftPlayer = {
-					name: data.leftUser.displayName,
-					avatar: data.leftUser.avatar,
-					cadre: '/game/UI/cadres/cadre0.png',
-				};
-				gameData.leftUser.setUser(data.leftUser.displayName, data.leftUser.avatar);
-			}
-			if (data.rightUser) {
-				this.userData.rightPlayer = {
-					name: data.rightUser.displayName,
-					avatar: data.rightUser.avatar,
-					cadre: '/game/UI/cadres/cadre0.png',
-				};
-				gameData.rightUser.setUser(data.rightUser.displayName, data.rightUser.avatar);
-			}
+			this.waitingOpp = false;
+			this.setData(gameData.user, gameData);
 			countdownStore.setSeconds(5);
 			this.showCountdown = true;
 		});
@@ -485,6 +476,27 @@ export default {
 		});
 	},
 	methods: {
+		setData(data: any, gameData: any) {
+			if (!gameData.leftUser || !gameData.rightUser) return this.$router.push({ name: 'GameMenu' });
+			if (gameData.leftUser) gameData.leftUser.score = 0;
+			if (gameData.rightUser) gameData.rightUser.score = 0;
+			if (data.leftUser) {
+				this.userData.leftPlayer = {
+					name: data.leftUser.displayName,
+					avatar: data.leftUser.avatar,
+					cadre: '/game/UI/cadres/cadre0.png',
+				};
+				gameData.leftUser.setUser(data.leftUser.displayName, data.leftUser.avatar);
+			}
+			if (data.rightUser) {
+				this.userData.rightPlayer = {
+					name: data.rightUser.displayName,
+					avatar: data.rightUser.avatar,
+					cadre: '/game/UI/cadres/cadre0.png',
+				};
+				gameData.rightUser.setUser(data.rightUser.displayName, data.rightUser.avatar);
+			}
+		},
 		shouldTremble(user: string) {
 			return this.trembleState[user];
 		},
