@@ -169,8 +169,9 @@ export class GameService {
 
 			for (const player of playersInGame) {
 				if (player.player_id === user.id) {
-					if (!player.is_spec) throw new ForbiddenException('User already in this game.');
-					else return { ...game, ...player };
+					// if (!player.is_spec) throw new ForbiddenException('User already in this game.');
+					// else
+					return { ...game, ...player };
 				}
 			}
 			if (playersInGame.length >= 2) gamePlayer = await this.createGamePlayer(game, user, true);

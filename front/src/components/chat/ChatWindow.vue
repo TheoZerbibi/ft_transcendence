@@ -10,8 +10,7 @@
 				backgroundColor: 'black',
 			}"
 			class="container d-flex align-center justify-center"
-		>
-		</div>
+		></div>
 	</main>
 </template>
 
@@ -41,10 +40,8 @@ export default {
 </script>
 
 <style scoped>
-
 .container {
 	overflow: hidden;
 	height: 100vh;
 }
-
 </style>

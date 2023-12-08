@@ -1,9 +1,9 @@
 <template>
 	<div class="chat-view">
-		<ChatWindow/>
+		<ChatWindow />
 		<div class="side-panel">
-			<FriendRequests/>
-			<BlockedList/>
+			<FriendRequests />
+			<BlockedList />
 		</div>
 	</div>
 </template>

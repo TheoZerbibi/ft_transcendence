@@ -9,7 +9,10 @@
 			}"
 			class="container d-flex align-center justify-center"
 		>
-			<div>
+			<div v-if="waitingStart" class="d-flex align-center justify-center">
+				<GameOpponent :leftPlayer="leftPlayer" :rightPlayer="rightPlayer" />
+			</div>
+			<div v-else>
 				<GameCanvas />
 				<span class="d-flex justify-center align-center ga-10">
 					<span class="d-flex justify-center ga-1">
@@ -23,7 +26,13 @@
 				</span>
 			</div>
 		</div>
-		<GameModal v-if="gameEnded" :isWinner="isWinner" :isLoser="isLoser" :apiData="apiData" :dialogValue="dialogVisible" />
+		<GameModal
+			v-if="gameEnded"
+			:isWinner="isWinner"
+			:isLoser="isLoser"
+			:apiData="apiData"
+			:dialogValue="dialogVisible"
+		/>
 		<v-btn color="primary" @click="openDialog">Open Dialog</v-btn>
 		<Snackbar />
 	</main>
@@ -40,12 +49,13 @@ import Snackbar from '../layout/Snackbar.vue';
 import GameModal from '../utils/GameModal.vue';
 
 import GameCanvas from './GameCanvas.vue';
+import GameOpponent from './GameOpponent.vue';
 
 const snackbarStore = useSnackbarStore();
 
 export default {
 	name: 'PongGame',
-	components: { Snackbar, GameCanvas, GameModal },
+	components: { Snackbar, GameCanvas, GameModal, GameOpponent },
 	setup() {
 		const webSocketStore = useSocketStore();
 		const userStore = useUser();
@@ -89,7 +99,19 @@ export default {
 			dialogVisible: false as boolean,
 			isWinner: false as boolean,
 			isLoser: false as boolean,
-			test: 'test',
+			waitingStart: false as boolean,
+			leftPlayer: {
+				id: 0,
+				login: '',
+				displayName: '',
+				avatar: '',
+			},
+			rightPlayer: {
+				id: 0,
+				login: '',
+				displayName: '',
+				avatar: '',
+			},
 		};
 	},
 	async beforeUnmount() {
@@ -149,7 +171,15 @@ export default {
 								}
 							});
 
+							this.socket.on('waiting-start', (data: any) => {
+								this.leftPlayer = data.leftUser;
+								this.rightPlayer = data.rightUser;
+								console.log(this.rightPlayer);
+								console.log(this.leftPlayer);
+								this.waitingStart = true;
+							});
 							this.socket.on('game-start', (data: any) => {
+								this.waitingStart = false;
 								snackbarStore.showSnackbar('Game Starting !', 3000, 'green');
 								this.apiData.started_at = data.startDate;
 							});
@@ -173,6 +203,10 @@ export default {
 								this.isLoser = true;
 								snackbarStore.showSnackbar('You lose!', 3000, 'red');
 							});
+							this.socket.on('error', (data: any) => {
+								console.error(data);
+								snackbarStore.showSnackbar('error', 3000, 'red');
+							});
 
 							this.socket.emit('session-join', {
 								gameUID: this.gameUID,
@@ -190,14 +224,31 @@ export default {
 				}
 			})
 			.catch((error) => {
-				console.error(error);
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			});
 	},
-	mounted() {},
 	methods: {
 		openDialog() {
 			this.gameEnded = true;
-			this.apiData = { "winner": { "user": { "id": 2, "login": "norminet", "displayName": "Norminet", "avatar": "https://preview.redd.it/sky2ka084ns11.jpg?width=640&crop=smart&auto=webp&s=a7f060f539797578a109af48a5ee75909f7661cb" }, "score": 6, "side": 1 }, "loser": { "user": { "id": 1, "login": "thzeribi", "displayName": "Theo", "avatar": "https://i.imgur.com/XXxzteU.png" }, "score": 1, "side": 0 }, "startDate": "2023-11-20T12:00:38.537Z", "endingDate": "2023-11-20T12:01:24.445Z" };
+			this.apiData = {
+				winner: {
+					user: {
+						id: 2,
+						login: 'norminet',
+						displayName: 'Norminet',
+						avatar: 'https://preview.redd.it/sky2ka084ns11.jpg?width=640&crop=smart&auto=webp&s=a7f060f539797578a109af48a5ee75909f7661cb',
+					},
+					score: 6,
+					side: 1,
+				},
+				loser: {
+					user: { id: 1, login: 'thzeribi', displayName: 'Theo', avatar: 'https://i.imgur.com/XXxzteU.png' },
+					score: 1,
+					side: 0,
+				},
+				startDate: '2023-11-20T12:00:38.537Z',
+				endingDate: '2023-11-20T12:01:24.445Z',
+			};
 			this.isLoser = true;
 			this.dialogVisible = true;
 		},
@@ -230,5 +281,4 @@ h4 {
 	overflow: hidden;
 	height: 100vh;
 }
-
 </style>

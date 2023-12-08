@@ -126,7 +126,7 @@ export default {
 			this.step = 4;
 			this.$cookies.remove('2FA');
 		} else if (this.$cookies.get('token')) {
-		 	const token = this.$cookies.get('token');
+			const token = this.$cookies.get('token');
 			this.$cookies.remove('token');
 			try {
 				await userStore.setJWT(token);
@@ -171,7 +171,6 @@ export default {
 				this.$router.push({ name: `Home` });
 			} catch (error) {
 				snackbarStore.showSnackbar('Error 2FA', 3000, 'red');
-				console.error(error);
 			}
 		},
 		async postToUsers() {
@@ -198,7 +197,7 @@ export default {
 					}
 				})
 				.catch((error) => {
-					console.error(error);
+					snackbarStore.showSnackbar('Can\'t create User.', 3000, 'red');
 				});
 		},
 		redirectToOAuth() {
@@ -238,7 +237,7 @@ export default {
 				this.cantSkip = false;
 			} catch (error) {
 				this.cantSkip = false;
-				console.error(error);
+				snackbarStore.showSnackbar('Error uploading avatar', 3000, 'red');
 			}
 		},
 		async nextStep() {

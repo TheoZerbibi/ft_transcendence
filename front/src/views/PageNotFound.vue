@@ -35,15 +35,15 @@
 			</v-col>
 		</v-row>
 	</v-container>
-	<audio controls id="myVideo" autoplay loop hidden>
-		<source src="/sounds/014-Acrophobia.mp3" type="audio/wav" />
-		Your browser does not support the audio element.
-	</audio>
+	<Sound :folder="'/sounds/404'" />
 </template>
 
 <script lang="ts">
+import Sound from '../components/utils/Sound.vue';
+
 export default {
 	name: 'PageNotFound',
+	components: { Sound },
 	data() {
 		return {
 			bulbImages: ['/ui/404/bulb0.png', '/ui/404/bulb1.png', '/ui/404/bulb2.png'],
@@ -74,7 +74,6 @@ export default {
 </script>
 
 <style scoped>
-
 h1 {
 	font-family: 'OMORI_DISTURBED';
 	font-size: 7vh;

@@ -5,5 +5,6 @@ export interface IUser {
 	socketID: string;
 	isConnected: boolean;
 	isSpec: boolean;
+	isReady: boolean;
 	playerData: IPlayerData;
 }

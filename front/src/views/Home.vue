@@ -27,8 +27,6 @@
 				<td><p class="omoriArcade">Paragraphe</p></td>
 			</tr>
 		</table>
-		
-		
 	</v-main>
 </template>
 
@@ -45,7 +43,7 @@ export default {
 	setup() {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
-		
+
 		return {
 			JWT,
 			user,
@@ -74,9 +72,11 @@ export default {
 	background-position: center;
 }
 
-table, th, td {
+table,
+th,
+td {
 	border: 1px solid white;
-    white-space: nowrap;
+	white-space: nowrap;
 	border-collapse: collapse;
 	padding: auto;
 }
@@ -85,9 +85,9 @@ table {
 	width: 70%;
 }
 
-th, td {
+th,
+td {
 	height: auto;
 	align-items: center;
 }
-
 </style>

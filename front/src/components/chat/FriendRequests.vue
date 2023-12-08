@@ -4,7 +4,8 @@
 			<h2>Friend Requests</h2>
 			<ul class="no-bullets" v-if="friendRequests.length">
 				<li v-for="request in friendRequests" :key="request.id">
-					{{ request.login }} <!-- L'objet contient aussi l'avatar si tu veux -->
+					{{ request.login }}
+					<!-- L'objet contient aussi l'avatar si tu veux -->
 					<button @click="acceptFriendRequest(request.login)">Accept</button>
 					<button @click="declineFriendRequest(request.login)">Decline</button>
 				</li>
@@ -34,7 +35,7 @@ export default {
 	},
 	data() {
 		return {
-			friendRequests: []
+			friendRequests: [],
 		};
 	},
 	beforeMount() {
@@ -42,10 +43,9 @@ export default {
 	},
 	mounted() {},
 	methods: {
-		fetchFriendRequests: async function() {
+		fetchFriendRequests: async function () {
 			try {
-				const response = await
-				fetch(
+				const response = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/requests`,
 					{
 						method: 'GET',
@@ -53,9 +53,8 @@ export default {
 							Authorization: `Bearer ${this.JWT}`,
 							'Access-Control-Allow-Origin': '*',
 						},
-					}
-				)
-				.catch((error: any) => {
+					},
+				).catch((error: any) => {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
@@ -65,48 +64,49 @@ export default {
 				console.error(error);
 			}
 		},
-		acceptFriendRequest: async function(username: string) {
+		acceptFriendRequest: async function (username: string) {
 			try {
 				await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/requests/${username}`,
+					`http://${import.meta.env.VITE_HOST}:${
+						import.meta.env.VITE_API_PORT
+					}/users/friends/requests/${username}`,
 					{
 						method: 'PATCH',
 						headers: {
 							Authorization: `Bearer ${this.JWT}`,
 							'Access-Control-Allow-Origin': '*',
 						},
-					}
+					},
 				);
-
 			} catch (error) {
 				console.log(error);
 				// TODO
 			}
 		},
-		declineFriendRequest: async function(username: string) {
+		declineFriendRequest: async function (username: string) {
 			try {
 				await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/requests/${username}`,
+					`http://${import.meta.env.VITE_HOST}:${
+						import.meta.env.VITE_API_PORT
+					}/users/friends/requests/${username}`,
 					{
 						method: 'DELETE',
 						headers: {
 							Authorization: `Bearer ${this.JWT}`,
 							'Access-Control-Allow-Origin': '*',
 						},
-					}
+					},
 				);
-
 			} catch (error) {
 				console.log(error);
 				// TODO
 			}
 		},
-	}
-}
+	},
+};
 </script>
 
 <style scoped>
-
 @font-face {
 	font-family: 'OMORI_MAIN';
 	src: url('/fonts/OMORI_GAME.ttf') format('truetype-variations');
