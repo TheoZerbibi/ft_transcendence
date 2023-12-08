@@ -111,6 +111,17 @@ model direct_messages {
   users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
+model User {
+  id        Int      @id @unique @default(autoincrement())
+  username  String
+  email     String
+  dAuth     Boolean  @default(false)
+  avatar    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  lastLogin DateTime @default(now())
+}
+
 enum RequestStatus {
   PENDING
   ACCEPTED
