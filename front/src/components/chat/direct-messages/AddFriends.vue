@@ -26,16 +26,13 @@
 	</div>
 
 	<!-- Search bar -->
-	<!-- clearable = y a une croix a droite pour clear l'input mais jsp comment la rendre visible-->
 	<v-col cols="9">
-		<v-text-field
+		<input
 			v-model="searchTerm"
+			@keyup.enter="searchUsers"
 			placeholder="Search a user..."
-			clearable
-		></v-text-field>
-	</v-col>
-	<v-col cols="0">
-		<v-btn @click="searchUsers">search</v-btn>
+		/>
+		<button @click="searchUsers">search</button>
 	</v-col>
 </template>
 
@@ -89,7 +86,7 @@ export default {
 					}
 				)
 				.catch((error: any) => {
-					snackbarStore.showSnackbar(error, 2999, 'red');
+					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
 				const data = await response.json();
@@ -116,7 +113,7 @@ export default {
 					}
 				)
 				.catch((error: any) => {
-					snackbarStore.showSnackbar(error, 2999, 'red');
+					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
 				this.fetchlistFriendRequests();
@@ -138,7 +135,7 @@ export default {
 					}
 				)
 				.catch((error: any) => {
-					snackbarStore.showSnackbar(error, 2999, 'red');
+					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
 				const data = await response.json();
@@ -166,7 +163,7 @@ export default {
 				)
 				.catch((error: any) => {
 					console.log(error);
-					snackbarStore.showSnackbar(error, 2999, 'red');
+					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
 				console.log('Friend request sent to', username);
@@ -188,7 +185,7 @@ export default {
 						},
 					}
 					).catch((error: any) => {
-						snackbarStore.showSnackbar(error, 2999, 'red');
+						snackbarStore.showSnackbar(error, 3000, 'red');
 						return;
 					});
 					this.users = await response.json();

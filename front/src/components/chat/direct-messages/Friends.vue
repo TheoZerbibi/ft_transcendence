@@ -10,7 +10,7 @@
 					@click="displayMessagesWithFriend(friend.login)"
 				>
 				{{ friend.display_name }}
-				<v-btn @click="displayProfile">infos</v-btn>
+				<v-btn @click="displayProfile(friend.login)">infos</v-btn>
 				</v-list-item>
 			</v-list>
 		<p v-else>~ sorry, no friends for now ~</p>
@@ -18,7 +18,7 @@
 	</div>
 	
 	<!-- Modal: friend profile -->
-	<UserModal :user="login_infos" :show="show_infos" @close="closeModal"/>
+	<UserModal :selected_user_login="selected_friend" :show="show_infos" @close="closeModal"/>
 </template>
 
 <script lang="ts">
@@ -48,17 +48,15 @@ export default {
 	data() {
 		return {
 			friends: [],
-			login_messages: String,
+			selected_friend: String,
 			show_infos: false,
-			login_infos: String,
 		};
 	},
 	emits: ['friend-selected'],
 	beforeMount() {
 		this.fetchFriends();
-		this.login_messages = this.friends[0] || null;
-		this.$emit('friend-selected', this.login_messages);
-		this.login_infos = this.friends[0] || null;
+		this.selected_friend = this.friends[0] ? this.friends[0].login : null;
+		this.$emit('friend-selected', this.selected_friend);
 	},
 	mounted() {},
 	methods: {
@@ -76,26 +74,26 @@ export default {
 					}
 				)
 				.catch((error: any) => {
-					snackbarStore.showSnackbar(error, 2999, 'red');
+					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
 				const data = await response.json();
 				this.friends = data;
-				this.login_messages = this.friends[0] || null;
+				this.selected_friend = this.friends[0].login || null;
 			} catch (error) {
 				console.error(error);
 			}
 		},
 		displayProfile(infos_login: string) {
-			this.login_infos = infos_login;
+			this.selected_friend = infos_login;
 			this.show_infos = true;
 		},
 		closeModal() {
 			this.show_infos = false;
 		},
 		displayMessagesWithFriend(login: string) {
-			this.login_messages = login;
-			this.$emit('friend-selected', this.login_messages);
+			this.selected_friend = login;
+			this.$emit('friend-selected', this.selected_friend);
 		},
 	}
 }
