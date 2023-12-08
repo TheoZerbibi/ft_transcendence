@@ -64,7 +64,6 @@ export default {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
 		let messages = ref([]);
-
 		const fetchMessages = async function() {
 			try {
 				console.log("[Message.vue:fetchMessages] selected_friend_login: " + props.selected_friend_login);
