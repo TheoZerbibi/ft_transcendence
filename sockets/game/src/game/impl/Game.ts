@@ -14,6 +14,7 @@ export class Game implements IGame {
 	private height: number = 400;
 
 	public inProgress: boolean = false;
+	public waitingState: boolean = false;
 	public newPoint: boolean = false;
 	public gameData: IGameData = { ball: new Ball(this.width, this.height), startingDate: null, endingDate: null };
 	public pause: boolean = false;
@@ -38,6 +39,14 @@ export class Game implements IGame {
 
 	isInProgress(): boolean {
 		return this.inProgress;
+	}
+
+	isWaitingState(): boolean {
+		return this.waitingState;
+	}
+
+	setWaitingState(state: boolean) {
+		this.waitingState = state;
 	}
 
 	async removeGame(): Promise<void> {
