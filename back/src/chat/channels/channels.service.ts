@@ -21,11 +21,14 @@ import { PrismaService } from 'src/prisma/prisma.service';
 // PWD HASHING
 import * as argon2 from 'argon2';
 
+import { RedisService } from 'src/redis/redis.service';
+
 @Injectable()
 export class ChannelService {
 	localChannels: ChannelEntity[] = [];
 
-	constructor(private prisma: PrismaService) {
+	constructor(private prisma: PrismaService,
+		   private readonly redisService: RedisService) {
 		this.initLocalChannels();
 	}
 
@@ -311,6 +314,7 @@ export class ChannelService {
 				content: channelMessage.content,
 				created_at: formattedDate,
 			};
+			this.publishOnRedis('new-channel-message', JSON.stringify({channel_id: channelUser.getChannelId(), ...channelMessageDto}));
 			return channelMessageDto;
 		} catch (e) {
 			throw e;
@@ -567,6 +571,7 @@ export class ChannelService {
 					user_id: channelUser.getUserId(),
 				},
 			});
+			this.publishOnRedis('channel-quitted', JSON.stringify(channelUser));
 			channelEntity.removeUser(channelUser);
 			channelEntity.setUpdatedAt(new Date());
 		} catch (e) {
@@ -646,5 +651,11 @@ export class ChannelService {
 			});
 		});
 		return channelUsers;
+	}
+
+	async publishOnRedis(event: string, msg: string)
+	{
+		console.info(`Publishing ${event} event to redis`);
+		await this.redisService.publish(event, msg);
 	}
 }

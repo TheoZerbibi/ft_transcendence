@@ -8,7 +8,7 @@ import { channel_users, users } from '@prisma/client'
 // and new message to connected client
 
 export class Channel {
-	private users: Array<User>;
+	private users: Array<User> = [];
 	private id: number;
 
 	constructor(id, user) {
@@ -64,16 +64,45 @@ export class Channel {
 		this.users = this.users.filter((userBuf) => userBuf === user);
 	}
 
-	public removeUserBySocket(client: Socket)
+	public removeUserById(id: number)
 	{
-		this.users= this.users.filter((user) => user.getSocket() === client);
+		this.users = this.users.filter((user) => user.getId() === id);
+	}
+
+	public  removeUserBySocket(client: Socket): User | undefined
+	{
+		const user = this.users.find((user) => user.getSocket() === client);
+		if (user === undefined)
+			return undefined;
+		this.removeUser(user);;
+		return user;
+	}
+}
+
+export class UserDto {
+	id: number;
+
+	constructor(user: User)
+	{
+		this.id = user.getId();
+	}
+}
+
+export class ChannelDto {
+	id: number;
+	users: UserDto[] = []; 
+
+	constructor(channel: Channel)
+	{
+		this.id = channel.getId();
+		channel.getUsers().map((user) => new UserDto(user));
 	}
 }
 
 export class User {
 	private  socket: Socket;
 	private  id: number;
-	private  channels: Channel[];
+	private  channels: Channel[] = [];
 
 	constructor(socket: Socket, id: number, channels: Channel[] = []) {
 		this.socket = socket;
@@ -98,6 +127,10 @@ export class User {
 		if (!this.channels.find((chan) => chan.getId() === channel.getId())) {
 			this.channels.push(channel);
 		}
+	}
+	public setChannels(channels: Channel[])
+	{
+		this.channels = channels;
 	}
 }
 
@@ -163,11 +196,10 @@ export class Chat {
 		return user;
 	}
 	
-//	
-//	public static addChannel(channelId: number, user: User) {
-//		Chat.channel_lst.push(new Channel(channelId, user));
-//	}
-//	
+	public static addChannel(channelId: number, user: User) {
+		Chat.channel_lst.push(new Channel(channelId, user));
+	}
+
 //	//public static addUserToChannel(channelId: number, user
 //	
 //	
@@ -211,9 +243,28 @@ export class Chat {
 		return  channels;
 	}
 
-	private static removeUserFromChannel(user: User) {}
+	public static removeUserFromChannel(user_id: number, channel_id: number): Channel | undefined {
+		const channel: Channel | undefined = Chat.getChannelById(channel_id);
+		if (channel === undefined) {
+			console.error('Trying to remove a user from a channel that don\'t exist');
+			return undefined;
+		}
+		const user: User | undefined = Chat.getUserById(user_id);
+		if (user === undefined) {
+			console.error('Trying to remove a user from a channel that don\'t exist');
+			return undefined;
+			}
+		channel.removeUser(user);
+		return channel;
+	}
 
-	public static removeChannelById(id: number) {}
+	public static removeChannelById(id: number) {
+		Chat.user_lst.forEach((user) => {
+			const updatedChannels = user.getChannels().filter((channel) => channel.getId() === id);
+			user.setChannels(updatedChannels);
+		});
+		Chat.channel_lst = Chat.channel_lst.filter((channel) => channel.getId() === id);
+	}
 
 
 
@@ -223,12 +274,13 @@ export class Chat {
 		return users;
 	}
 
-	public static removeUserBySocket(client: Socket): Channel[] | undefined
+	public static removeUserBySocket(client: Socket): User | undefined
 	{
 		const user: User | undefined = Chat.user_lst.find((user) => user.getSocket() === client);
 		if (user === undefined)
 			return (undefined);
-		return this.removeUser(user);
+		this.removeUser(user);
+		return user;
 	}
 
 	public static removeUserById(id: number): Channel[]

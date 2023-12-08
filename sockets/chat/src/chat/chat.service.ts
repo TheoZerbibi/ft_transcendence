@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { users, channel_users, channels } from '@prisma/client';
 import { Socket } from 'socket.io';
-import { Chat, Channel, User } from './impl/Chat';
+import { Chat, Channel, User, ChannelDto, UserDto } from './impl/Chat';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -26,6 +26,11 @@ export class ChatService {
 		return Chat.getChannelById(id);
 	}
 
+	public addChannel(channelId: number, user: User): void
+	{
+		Chat.addChannel(channelId, user);
+	}
+
 //	
 //	public async getChannelByChannelUserId(channel_user_id: number): Channel {
 //		const channel_user: channel_users = await this.retrieveChannelUser(channel_user_id);
@@ -36,6 +41,7 @@ export class ChatService {
 //	}
 	
 //	
+
 //	/******** Setter *********/
 	public async registerUser(socket: Socket, id: number): Promise<User>{
 	
@@ -44,13 +50,19 @@ export class ChatService {
 	
 		return Chat.addUser(socket, id, channels_usr);
 	}
-	
-	public removeUser(client: Socket)
+
+	public removeUser(client: Socket): User | undefined
 	{
-		Chat.removeUserBySocket(client);
+		return Chat.removeUserBySocket(client);
 	}
 
-	//******************   Operation on Bdd can be replaced by better API-socket interface *********
+	// return removed user socket
+	public removeUserFromChannelById(user_id: number, channel_id: number): Channel | undefined
+	{
+		return Chat.removeUserFromChannel(user_id, channel_id);
+	}
+
+	//******** Operation on Bdd can be replaced by better API-socket interface *********
 
 	private async retrieveUserChannel(user: users): Promise<channel_users[]> {
 		return await this.prismaService.channel_users.findMany({
@@ -59,7 +71,7 @@ export class ChatService {
 			},
 		});
 	}
-	
+
 	private async retrieveChannelUser(id: number)
 	{
 		const channel_user: channel_users = await this.prismaService.channel_users.findUnique({

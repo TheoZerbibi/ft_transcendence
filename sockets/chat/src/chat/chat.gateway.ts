@@ -11,10 +11,18 @@ import { Socket, Server } from 'socket.io';
 import { Logger, UseGuards } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { ChatService } from './chat.service';
-import { Chat, Channel, User } from './impl/Chat'
+import { Chat, Channel, User, ChannelDto, UserDto } from './impl/Chat'
 import { JwtGuard } from 'src/auth/guard';
 import { users, channel_users } from '@prisma/client';
 // import { direct_messages } from '@prisma/client';
+
+
+
+// Gateway emit mostly the data he received in the case of message, new user_channel or channel-update event
+//
+// Else it will return ChannelDto which hold list of users_id connected to the channel
+//
+// Since Front never make direct call to socket function don't return data
 
 @WebSocketGateway({
 	        cors: {
@@ -31,19 +39,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	) {}
 
 	@WebSocketServer() server: Server;
-	public async handleConnection(client: Socket): Promise<void> {
-		try {
-	//		if (!client.handshake.headers.authorization) throw new Error('Invalid token');
-	//		const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
-	//		this.authService.verifyToken({ access_token: token });
-	//	
-			return this.logger.debug(`Client connected: ${client.id}`);
-		} catch (e) {
-			client.emit('error', 'Invalid token');
-			client.disconnect();
-		}
-	}
-
 	// Await for a stringified channel_users as body
 	@SubscribeMessage('new-connection')
 	public async connection(client: Socket, data: any) {
@@ -54,15 +49,29 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		this.emitToChannels('new-connection', channels, user);
 	}
 
+	// To_test
 	@SubscribeMessage('new-direct-message')
 	public dirmsg(client: Socket, data: any): void
 	{
 		const msg:any = JSON.parse(data);
 		const user: User | undefined = this.chatService.getUserById(msg.friend_id);
 
-		if (user  !== undefined) {
-			user.getSocket().emit('new-direct-msg', data);
+		if (user !== undefined) {
+			user.getSocket().emit('new-direct-message', data);
 		}
+	}
+
+	// To_test
+	@SubscribeMessage('new-channel-message')
+	public msg(client: Socket, data: any): void
+	{
+		const msg: any = JSON.parse(data);
+		const channel: Channel | undefined = this.chatService.getChannelById(msg.channel_id);
+
+		if (channel === undefined)
+			console.log('No one is connected to this channel atm');
+		else
+			this.emitToChannel('new-channel-message', channel, msg)
 	}
 
 	// transmit channelEntity data to everyone in the channel
@@ -75,33 +84,92 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		this.emitToChannel('channel-updated', channelBuf, channelData);
 	}
 
-	@SubscribeMessage('new-channel-user')
-	newChannelUser(client: Socket, data: any): void
+//	@SubscribeMessage('channel-creation')
+	channelCreation(data: any): void {
+	
+		const channelData: any = JSON.parse(data);
+		const user: User | undefined = this.chatService.getUserById(channelData.users[0].user_id);
+		let userSocket;
+
+		this.chatService.addChannel(channelData.id, user);
+		console.log(`New channel registered in socket with ${user}`);
+		const { ['password']: excludedPassword, ...newChannel } = channelData;
+		console.log('Sending these information to everyone connected to chat :');
+		console.log(newChannel);
+		if (user === undefined) {
+			console.log('User who created channel is not connected');
+			this.emitToEveryone('channel-creation', newChannel);
+		}
+		else {
+			this.emitToEveryoneExceptOne('channel-creation', newChannel, user.getSocket());
+		}
+	}
+
+	@SubscribeMessage('channel-joined')
+	channelJoined(data: any): void
 	{
 		const channel_user: channel_users = JSON.parse(data);
 		console.log('Channel join event triggered');
+
 		const channel: Channel = this.chatService.getChannelById(channel_user.channel_id);
 		if (!channel) {
 			console.log('Failure channel not found in memory');
 			return;
 		}
+
 		const user: User = this.chatService.getUserById(channel_user.user_id);
 		if (!user) {
 			console.log('Failure user not found in memory');
 			return;
 		}
 
-
-		this.emitToChannel('channel-user', channel, channel_user);
 		channel.addUser(user);
+		this.emitToChannel('channel-joined', channel, channel_user);
 		console.log ('Channel join event resolved');
+	}
+
+	// Send to everyone in the channel of leaver, leaver information 
+	public channelQuitted(data: any): void {
+		const channel_user: any =  JSON.parse(data);
+		const channel: Channel | undefined = this.chatService.removeUserFromChannelById(channel_user.user_id, channel_user.channel_id);
+
+		if (channel === undefined)
+			return;
+		this.emitToChannel('user-quitted-channel', channel, JSON.stringify(new ChannelDto(channel)));
+	}
+	// list of event association to front 
+
+	// 'channel-quitted' --> 'user-quitted'
+	// 'channel-quitted' --> 'user-quitted'
+	// 'channel-quitted' --> 'user-quitted'
+	
+
+	//----------------------  Deco/Connection handler ---------------------------------------------
+
+	public async handleConnection(client: Socket): Promise<void> {
+		try {
+			if (!client.handshake.headers.authorization) throw new Error('Invalid token');
+			const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
+			this.authService.verifyToken({ access_token: token });
+		//	const user = client.handshake.user;
+			return this.logger.debug(`Client connected: ${client.id}`);
+		} catch (e) {
+			client.emit('error', 'Invalid token');
+			client.disconnect();
+		}
 	}
 
 	public handleDisconnect(client: Socket): void {
 		console.log('disconnect');
-		this.chatService.removeUser(client);
+		const user: User = this.chatService.removeUser(client);
+
+		const userDTOs: UserDto[] = this.chatService.getUsers().map((user) => new UserDto(user));
+
+		this.emitToChannels('User-Disconnected', user.getChannels(), userDTOs);
 		return this.logger.debug(`Client disconnected: ${client.id}`);
 	}
+
+	//----------------------  Emitting Function ------------------------------------
 
 	private emitToChannel(event: string, channel: Channel, data: any)
 	{
@@ -120,5 +188,15 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		{
 			this.emitToChannel(event, channels[i], data);
 		}
+	}
+
+	private emitToEveryoneExceptOne(event: string, data: any, excludedClient: Socket)
+	{
+		this.server.emit(event, JSON.stringify(data), {except: excludedClient.id});
+	}
+
+	private emitToEveryone(event: string, data: any)
+	{
+		this.server.emit(event, JSON.stringify(data));
 	}
 }
