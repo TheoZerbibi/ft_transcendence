@@ -32,13 +32,6 @@ export class DirectMessageService {
 			const targetUser = await this.userService.findUserByName(target_name);
 			if (!targetUser) throw new BadRequestException(`User ${target_name} not found`);
 
-			const sender = await this.prisma.user.findUnique({
-				where: {
-					login: user.login,
-				},
-			});
-			if (!sender) throw new BadRequestException(`User ${target_name} not found`);
-
 			const friend = await this.prisma.friends.findMany({
 				where: {
 					OR: [
@@ -118,6 +111,7 @@ export class DirectMessageService {
 
 	async createDirectMessageWith(user: User, dto: CreateDirectMessageDto): Promise<DirectMessageDto> {
 		try {
+			console.log('[direct-message.service.ts:createDM]: dto: ' + dto);
 			const targetUser: User | null = await this.userService.findUserByName(dto.target_login);
 			if (!targetUser) throw new BadRequestException(`User ${dto.target_login} not found`);
 

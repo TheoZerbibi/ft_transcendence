@@ -532,11 +532,11 @@ export class UserService {
 	/***********************************************************************************/
 
 	/*************************************** Users *************************************/
-	async findUserByName(username: string): Promise<User | null> {
+	async findUserByName(user_login: string): Promise<User | null> {
 		try {
 			const user = await this.prisma.user.findUnique({
 				where: {
-					login: username,
+					login: user_login,
 				},
 			});
 			if (!user) return null;
