@@ -194,6 +194,12 @@ export class ChannelController {
 	}
 
 	@Delete(':channel_name')
+	async sendMessage( @GetUser() user: User, @Param('channel_name') channel_name: string, @Body() channelMessageDto: ChannelMessageDto,
+	): Promise<ChannelMessageEntity> {
+		return await this.channelService.sendMessage(user, channel_name, channelMessageDto);
+	}
+
+	@Get(':channel_name/messages')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Delete channel' })
 	@ApiBearerAuth('JWT-auth')
