@@ -13,6 +13,16 @@
 								{{ message.content }}
 							</v-list-item>
 						</v-list>
+<!-- HTML VERSION -->
+<!--
+ 						<div class="messages">
+							<div v-for="message in messages" :key="message.id" class="message">
+								{{ message.user_name }}
+								{{ message.created_at }}
+								{{ message.content }}
+							</div>
+						</div>
+-->
 					</v-card>
 				</v-col>
 			</v-row>
@@ -23,19 +33,10 @@
 					<v-card class="pa-4">
 						<v-row>
 							<v-col cols="9">
-								<v-text-field
-									v-model="input"
-									input="text"
-									placeholder="Type a message"
-									solo
-									flat
-									hide-details
-									outlined
-									clearable
-								></v-text-field>
+								<input v-model="input" @keyup.enter="sendMessage" placeholder="Type you message..." />
 							</v-col>
 							<v-col cols="1">
-								<v-btn @click="sendMessage">Send</v-btn>
+								<button @click="sendMessage">-></button>
 							</v-col>
 						</v-row>
 					</v-card>
@@ -63,11 +64,10 @@ export default {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
 		let messages = ref([]);
-		let input = ref('');
 
 		const fetchMessages = async function() {
 			try {
-				console.log("selected_friend_login: " + props.selected_friend_login);
+				console.log("[Message.vue:fetchMessages] selected_friend_login: " + props.selected_friend_login);
 				if (!props.selected_friend_login || props.selected_friend_login === '') {
 					/* TODO : display stg ? */
 					return;
@@ -82,44 +82,50 @@ export default {
 						},
 					}
 				).catch((error: any) => {
-					snackbarStore.showSnackbar(error, 2999, 'red');
+					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
 				messages.value = await response.json();
-				input.value = '';
 			} catch (error) {
 				console.error(error);
 			}
 		};
-
 		watch(
 			() => props.selected_friend_login,
 			() => {
 				fetchMessages();
 			}
 		);
-
 		return {
 			JWT,
 			user,
 			fetchMessages,
 			messages,
-			input,
 		};
 	},
+	data: () => ({
+		input: String,
+	}),
 	beforeMount() {
 	},
 	mounted() {
 		this.fetchMessages();
+		this.input = '';
 	},
 	methods: {
-
 		sendMessage: async function() {
 			try {
+				if (!this.selected_friend_login || this.selected_friend_login === '') {
+					/* TODO : display stg ? */
+					return;
+				}
 				if (this.input.trim() === '') {
 					return;
 				}
-				console.log("selected_friend_login: " + this.selected_friend_login + "\ninput: " + this.input);
+				console.log("[Message.vue:sendMessage] selected_friend_login: " + this.selected_friend_login
+								+ "\ntype: " + this.selected_friend_login.type 
+								+ "\ninput: " + this.input
+								+ "\ntype: " + this.input.type);
 				await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/send`,
 					{
@@ -130,17 +136,19 @@ export default {
 							'Access-Control-Allow-Origin': '*',
 						},
 						body: JSON.stringify({
-							target: this.selected_friend_login,
+							target_login: this.selected_friend_login,
 							content: this.input,
 						}),
 					}
 				).catch((error: any) => {
-					snackbarStore.showSnackbar(error, 2999, 'red');
+					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
+				this.input = '';
 				this.fetchMessages();
 			} catch (error) {
 				console.error(error);
+				console.log(error.message);
 			}
 		},
 	},

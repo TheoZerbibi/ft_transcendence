@@ -97,7 +97,7 @@ export default defineComponent({
 	methods: {
 		updateSelectedFriend(selected_friend_login: string) {
 			this.selected_friend_login = selected_friend_login;
-			console.log("selected_friend_login received in chat: " + this.selected_friend_login);
+			console.log("[Chat.vue:updateSelectedFriend] selected_friend_login: " + this.selected_friend_login);
 		},
 	}
 });

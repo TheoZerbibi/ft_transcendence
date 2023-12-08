@@ -18,7 +18,7 @@
 	</div>
 	
 	<!-- Modal: friend profile -->
-	<UserModal :user="friend_infos" :show="show_infos" @close="closeModal"/>
+	<UserModal :user="login_infos" :show="show_infos" @close="closeModal"/>
 </template>
 
 <script lang="ts">
@@ -48,14 +48,17 @@ export default {
 	data() {
 		return {
 			friends: [],
-			login_messages: '',
+			login_messages: String,
 			show_infos: false,
-			friend_infos: {},
+			login_infos: String,
 		};
 	},
 	emits: ['friend-selected'],
 	beforeMount() {
 		this.fetchFriends();
+		this.login_messages = this.friends[0] || null;
+		this.$emit('friend-selected', this.login_messages);
+		this.login_infos = this.friends[0] || null;
 	},
 	mounted() {},
 	methods: {
@@ -83,8 +86,8 @@ export default {
 				console.error(error);
 			}
 		},
-		displayProfile(friend: any) {
-			this.friend_infos = friend;
+		displayProfile(infos_login: string) {
+			this.login_infos = infos_login;
 			this.show_infos = true;
 		},
 		closeModal() {
