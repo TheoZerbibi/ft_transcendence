@@ -18,7 +18,7 @@
 	</div>
 	
 	<!-- Modal: friend profile -->
-	<UserModal :selected_user_login="selected_friend" :show="show_infos" @close="closeModal"/>
+	<UserModal :selected_friend_login="selectedFriend" :show="show_infos" @close="closeModal"/>
 </template>
 
 <script lang="ts">
@@ -48,15 +48,15 @@ export default {
 	data() {
 		return {
 			friends: [],
-			selected_friend: String,
+			selectedFriend: String,
 			show_infos: false,
 		};
 	},
 	emits: ['friend-selected'],
 	beforeMount() {
 		this.fetchFriends();
-		this.selected_friend = this.friends[0] ? this.friends[0].login : null;
-		this.$emit('friend-selected', this.selected_friend);
+		this.selectedFriend = this.friends[0] ? this.friends[0].login : null; // doesnt work
+		this.$emit('friend-selected', this.selectedFriend);					 // doesnt work
 	},
 	mounted() {},
 	methods: {
@@ -77,23 +77,24 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				const data = await response.json();
-				this.friends = data;
-				this.selected_friend = this.friends[0].login || null;
+				this.friends = await response.json();
+				//console.log("[Friends.vue:fetchFriends]\nthis.friends: " + JSON.stringify(this.friends, null, 2));
+				this.selectedFriend = this.friends[0].login ? this.friends[0].login : null;
+				this.$emit('friend-selected', this.selectedFriend);
 			} catch (error) {
 				console.error(error);
 			}
 		},
 		displayProfile(infos_login: string) {
-			this.selected_friend = infos_login;
+			this.selectedFriend = infos_login;
 			this.show_infos = true;
 		},
 		closeModal() {
 			this.show_infos = false;
 		},
 		displayMessagesWithFriend(login: string) {
-			this.selected_friend = login;
-			this.$emit('friend-selected', this.selected_friend);
+			this.selectedFriend = login;
+			this.$emit('friend-selected', this.selectedFriend);
 		},
 	}
 }

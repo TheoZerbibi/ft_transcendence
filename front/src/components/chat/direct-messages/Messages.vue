@@ -13,16 +13,6 @@
 								{{ message.content }}
 							</v-list-item>
 						</v-list>
-<!-- HTML VERSION -->
-<!--
- 						<div class="messages">
-							<div v-for="message in messages" :key="message.id" class="message">
-								{{ message.user_name }}
-								{{ message.created_at }}
-								{{ message.content }}
-							</div>
-						</div>
--->
 					</v-card>
 				</v-col>
 			</v-row>
@@ -49,16 +39,17 @@
 import { computed, ref, watch } from 'vue';
 import { useUser } from '../../../stores/user';
 import { useSnackbarStore } from '../../../stores/snackbar';
+import Date from '../../utils/Date.vue';
 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 
 export default {
+	components: {
+		Date,
+	},
 	props: {
-		selected_friend_login: {
-			type: String,
-			default: '',
-		},
+		selectedFriendLogin: String
 	},
 	setup(props) {
 		const JWT = computed(() => userStore.getJWT);
@@ -66,13 +57,13 @@ export default {
 		let messages = ref([]);
 		const fetchMessages = async function() {
 			try {
-				console.log("[Message.vue:fetchMessages] selected_friend_login: " + props.selected_friend_login);
-				if (!props.selected_friend_login || props.selected_friend_login === '') {
+				console.log("[Message.vue:fetchMessages] selectedFriendLogin: " + props.selectedFriendLogin);
+				if (!props.selectedFriendLogin || props.selectedFriendLogin === '') {
 					/* TODO : display stg ? */
 					return;
 				}
 				const response = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/${props.selected_friend_login}/all`,
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/${props.selectedFriendLogin}/all`,
 					{
 						method: 'GET',
 						headers: {
@@ -90,7 +81,7 @@ export default {
 			}
 		};
 		watch(
-			() => props.selected_friend_login,
+			() => props.selectedFriendLogin,
 			() => {
 				fetchMessages();
 			}
@@ -114,15 +105,15 @@ export default {
 	methods: {
 		sendMessage: async function() {
 			try {
-				if (!this.selected_friend_login || this.selected_friend_login === '') {
+				if (!this.selectedFriendLogin || this.selectedFriendLogin === '') {
 					/* TODO : display stg ? */
 					return;
 				}
 				if (this.input.trim() === '') {
 					return;
 				}
-				console.log("[Message.vue:sendMessage] selected_friend_login: " + this.selected_friend_login
-								+ "\ntype: " + this.selected_friend_login.type 
+				console.log("[Message.vue:sendMessage] selectedFriendLogin: " + this.selectedFriendLogin
+								+ "\ntype: " + this.selectedFriendLogin.type 
 								+ "\ninput: " + this.input
 								+ "\ntype: " + this.input.type);
 				await fetch(
@@ -135,7 +126,7 @@ export default {
 							'Access-Control-Allow-Origin': '*',
 						},
 						body: JSON.stringify({
-							target_login: this.selected_friend_login,
+							target_login: this.selectedFriendLogin,
 							content: this.input,
 						}),
 					}

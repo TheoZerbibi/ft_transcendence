@@ -1,15 +1,25 @@
 <template>
-	<div class="overlay">
-		 <div class="joined-channels-list-container">
-			<h2>Joined Channels</h2>
-			<ul class="no-bullets" v-if="joinedChannels.length">
-				<li v-for="channel in joinedChannels" :key="channel.id">
-					{{ channel.name }}
-				</li>
-			</ul>
-			<p v-else>~ u didn't join any channel for now ~</p>
+
+	<!-- Joined Channels list -->
+	<div class="joinedChannels-container">
+		<h2>Joined Channels</h2>
+		<div class="scrollable-content">
+			<v-list v-if="joinedChannels.length">
+				<v-list-item
+					v-for="channel in joinedChannels"
+					:key="channel.id"
+					@click="displayMessagesOfChannel(channel.name)"
+				>
+				{{ channel.name }}
+				<v-btn @click="displaySettings(channel.name)">infos</v-btn>
+				</v-list-item>
+			</v-list>
+		<p v-else>~ sorry, no joinedChannels for now ~</p>
 		</div>
 	</div>
+	
+	<!-- Modal: channel settings -->
+	<ChannelSettingsModal :selected_channel_name="selected_channel" :show="show_infos" @close="closeModal"/>
 </template>
 
 <script lang="ts">
@@ -17,10 +27,15 @@ import { computed } from 'vue';
 import { useUser } from '../../../stores/user';
 import { useSnackbarStore } from '../../../stores/snackbar';
 
+import ChannelSettingsModal from '../utils/ChannelSettingsModal.vue';
+
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 
 export default {
+	components: {
+		ChannelSettingsModal,
+	},
 	setup() {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
@@ -32,9 +47,12 @@ export default {
 	},
 	data() {
 		return {
-			joinedChannels: []
+			joinedChannels: [],
+			selected_channel: '',
+			show_infos: false
 		};
 	},
+	emits: ['channel-selected'],
 	beforeMount() {
 		this.fetchJoinedChannels();
 	},
@@ -67,6 +85,20 @@ export default {
 			} catch (error) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
+		},
+		displaySettings: function(channel_name: string) {
+			console.log('displaySettings');
+			this.selected_channel = channel_name;
+			this.show_infos = true;
+			this.$emit('channel-selected', channel_name);
+		},
+		closeModal() {
+			this.show_infos = false;
+		},
+		displayMessagesOfChannel: function(channel_name: string) {
+			console.log('displayMessagesOfChannel');
+			this.selected_channel = channel_name;
+			this.$emit('channel-selected', channel_name);
 		},
 	}
 }
