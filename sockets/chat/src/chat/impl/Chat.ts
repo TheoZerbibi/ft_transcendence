@@ -161,6 +161,11 @@ export class Chat {
 		return Chat.user_lst.find((user) => { return user.getId() === id});
 	}
 
+	public static getChannelDtos(): ChannelDto[]
+	{
+		const channelDtos: ChannelDto []= Chat.channel_lst.map((channel) => new ChannelDto(channel));
+		return channelDtos;
+	}
 
 //	
 //	public static getChannelConnectedUser(channelID: number): Socket[] {
@@ -192,7 +197,6 @@ export class Chat {
 
 			user.addChannel(channel_tmp);
 		}
-	
 		return user;
 	}
 	
@@ -204,7 +208,6 @@ export class Chat {
 //	
 //	
 //	
-//	//************* Remove ******************
 //	//** Remove funcion return removed element so we can send this information
 //	//** to frontend 
 //	
@@ -227,6 +230,12 @@ export class Chat {
 //	public static removeChannel() {
 //
 //	}
+
+
+
+
+
+//**************************** Remove ******************
 	// Remove element
 	private static removeUser(user: User): Channel[]
 	{
@@ -265,8 +274,6 @@ export class Chat {
 		});
 		Chat.channel_lst = Chat.channel_lst.filter((channel) => channel.getId() === id);
 	}
-
-
 
 	public static removeChannel(channel: Channel): User[]
 	{

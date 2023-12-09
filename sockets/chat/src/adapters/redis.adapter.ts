@@ -31,9 +31,9 @@ export class RedisIoAdapter extends IoAdapter {
 		subClient.subscribe('channel-quitted'); 
 		subClient.subscribe('new-channel-message');
 //		//---------- Direct message interaction
-//		subClient.subscribe('new-direct-message');
+		subClient.subscribe('new-direct-message');
 //		//---------- Channel interaction
-//		subClient.subscribe('channel-update');
+		subClient.subscribe('channel-update');
 //		subClient.subscribe('channel-deleted');
 		subClient.on('connect', () => {
 			this.logger.log('Redis subClient connected');
@@ -44,8 +44,11 @@ export class RedisIoAdapter extends IoAdapter {
 			else if (channel === 'channel-creation') this.app.get(ChatGateway).channelCreation(message);
 			else if (channel === 'channel-quitted') this.app.get(ChatGateway).channelQuitted(message);
 			else if (channel === 'new-channel-message') this.app.get(ChatGateway).msg(message);
-//			else if (channel === 'channel-joined') this.app.get(ChatGateway).ChannelJoined(message);
-//			else if (channel === 'channel-joined') this.app.get(ChatGateway).ChannelJoined(message);
+			else if (channel === 'new-direct-message') this.app.get(ChatGateway).dirmsg(message);
+			else if (channel === 'channel-update') this.app.get(ChatGateway).channelUpdate(message);
+			else if (channel === 'channel-deleted') this.app.get(ChatGateway).channelDeleted(message);
+
+//			else if (channel === 'channel-joined') this.app.get(ChatGateway).channelJoined(message);
 			console.log('Message received: ', channel, message);
 		});
 		this.adapterConstructor = createAdapter(pubClient, subClient);

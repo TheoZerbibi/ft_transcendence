@@ -8,11 +8,14 @@ import { CreateDirectMessageDto, DirectMessageDto } from './dto/direct-message.d
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserService } from 'src/user/user.service';
 
+import { RedisService } from 'src/redis/redis.service';
+
 @Injectable()
 export class DirectMessageService {
 	constructor(
 		private prisma: PrismaService,
 		private userService: UserService,
+		private redisService: RedisService,
 	) {}
 
 	/***********************************************************************************/
@@ -145,6 +148,13 @@ export class DirectMessageService {
 			user_id: directMessage.user_id,
 			friend_id: directMessage.friend_id,
 		};
+
+		this.publishToRedis('new-direct-message', JSON.stringify(directMessageDto));
 		return directMessageDto;
+	}
+
+	private publishToRedis(event: string, msg: string)
+	{
+		this.redisService.publish(event, msg);
 	}
 }

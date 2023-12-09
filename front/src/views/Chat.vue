@@ -52,13 +52,22 @@ components: { ChatWindow, UsersList, FriendsList, FriendRequests, BlockedList },
 				const disconnect = () => {
 					webSocketStore.disconnect();
 				};
-			
+
 				const socketListen = () => {
 					if (socket.value) {
 						socket.value.on('chat-error', (data: any) => { disconnect(); snackbarStore.showSnackbar(data, 3000, 'red'); });
+					//	socket.value.on('welcome', (data: any) => { connectedUsers = JSON.parse(data) });
+					//	socket.value.on('', (data: any) => { connectedUsers = JSON.parse(data) });
+					//	socket.value.on('welcome', (data: any) => { connectedUsers = JSON.parse(data) });
+					//	socket.value.on('welcome', (data: any) => { connectedUsers = JSON.parse(data) });
+					//	socket.value.on('welcome', (data: any) => { connectedUsers = JSON.parse(data) });
+					//	socket.value.on('welcome', (data: any) => { connectedUsers = JSON.parse(data) });
+					//	socket.value.on('welcome', (data: any) => { connectedUsers = JSON.parse(data) });
+					//	socket.value.on('welcome', (data: any) => { connectedUsers = JSON.parse(data) });
+					//	socket.value.on('welcome', (data: any) => { connectedUsers = JSON.parse(data) });
+					//	socket.value.on('welcome', (data: any) => { connectedUsers = JSON.parse(data) });
 						}
 				};
-
 
 				onMounted(() => {
 						connect(JWT.value);

@@ -218,6 +218,7 @@ export class ChannelController {
 	async getAllChannelsDebug(): Promise<ChannelEntity[]> {
 		return await this.channelService.getAllChannelsDebug();
 	}
+
 	// DEBUG ONLY
 	@Get('list/allChannelUsersDebug')
 	@UseGuards(JwtGuard)

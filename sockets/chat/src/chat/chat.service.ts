@@ -31,6 +31,10 @@ export class ChatService {
 		Chat.addChannel(channelId, user);
 	}
 
+	public getChannelDtos(): ChannelDto[]
+	{
+		return Chat.getChannelDtos();
+	}
 //	
 //	public async getChannelByChannelUserId(channel_user_id: number): Channel {
 //		const channel_user: channel_users = await this.retrieveChannelUser(channel_user_id);
@@ -41,7 +45,6 @@ export class ChatService {
 //	}
 	
 //	
-
 //	/******** Setter *********/
 	public async registerUser(socket: Socket, id: number): Promise<User>{
 	
@@ -90,5 +93,13 @@ export class ChatService {
 				channel_users: true,
 			},
 		});
+	}
+
+	public	deleteChannel(channelEntity: any): Channel
+	{
+		const channel: Channel = Chat.getChannelById(channelEntity.getId());
+
+		Chat.removeChannel(channel);;
+		return channel;
 	}
 }
