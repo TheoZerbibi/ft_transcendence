@@ -19,7 +19,7 @@
 	</div>
 	
 	<!-- Modal: channel settings -->
-	<ChannelSettingsModal :selected_channel_name="selected_channel" :show="show_infos" @close="closeModal"/>
+	<ChannelSettingsModal v-if="showInfos" :selectedChannelName="selectedChannel" :show="showInfos" @close="closeModal"/>
 </template>
 
 <script lang="ts">
@@ -48,8 +48,8 @@ export default {
 	data() {
 		return {
 			joinedChannels: [],
-			selected_channel: '',
-			show_infos: false
+			selectedChannel: '',
+			showInfos: false
 		};
 	},
 	emits: ['channel-selected'],
@@ -88,16 +88,16 @@ export default {
 		},
 		displaySettings: function(channel_name: string) {
 			console.log('displaySettings');
-			this.selected_channel = channel_name;
-			this.show_infos = true;
+			this.selectedChannel = channel_name;
+			this.showInfos = true;
 			this.$emit('channel-selected', channel_name);
 		},
 		closeModal() {
-			this.show_infos = false;
+			this.showInfos = false;
 		},
 		displayMessagesOfChannel: function(channel_name: string) {
 			console.log('displayMessagesOfChannel');
-			this.selected_channel = channel_name;
+			this.selectedChannel = channel_name;
 			this.$emit('channel-selected', channel_name);
 		},
 	}

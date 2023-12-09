@@ -112,12 +112,53 @@ export default {
 	methods: {
 		fetchChannelInfos: async function() {
 			try {
-			// Logic to fetch the channel infos
+				const response = await
+				fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannelName}/access`,
+					{
+						method: 'GET',
+						headers: {
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+					}
+				)
+				.catch((error: any) => {
+					snackbarStore.showSnackbar(error, 3000, 'red');
+					return;
+				});
+				const channelInfos = await response.json();
+				this.channelName = channelInfos.name;
+				this.channelIsPublic = channelInfos.is_public;
+				this.channelUpdatedAt = channelInfos.updated_at; // to watch
+				this.fetchChannelUsersInfos();
 			} catch (error) {
 				console.error(error);
 			}
 		},
-		toggleBan(user) {
+		fetchChannelUsersInfos: async function() {
+			try {
+				const response = await
+				fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannelName}/access/users`,
+					{
+						method: 'GET',
+						headers: {
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+					}
+				)
+				.catch((error: any) => {
+					snackbarStore.showSnackbar(error, 3000, 'red');
+					return;
+				});
+				this.users = await response.json();
+			} catch (error) {
+				console.error(error);
+			}
+		},
+/* 		toggleBan(user) {
 			// Logic to ban or unban the user
 		},
 		kickUser(user) {
@@ -135,7 +176,7 @@ export default {
 		},
 		leaveChannel() {
 			// Logic to leave the channel
-		},
+		}, */
 	},
 };
 </script>
