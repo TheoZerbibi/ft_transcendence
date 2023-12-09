@@ -101,7 +101,6 @@ model users {
   created_at                           DateTime          @default(now())
   updated_at                           DateTime
   last_login                           DateTime          @default(now())
-  secret                               String?
   blocked_blocked_blocked_by_idTousers blocked[]         @relation("blocked_blocked_by_idTousers")
   blocked_blocked_blocked_idTousers    blocked[]         @relation("blocked_blocked_idTousers")
   channel_users                        channel_users[]

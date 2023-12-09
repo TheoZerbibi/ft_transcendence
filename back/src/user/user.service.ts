@@ -9,7 +9,6 @@ import * as fs from 'fs';
 import { ConfigService } from '@nestjs/config';
 import { v2 as cloudinary } from 'cloudinary';
 import { JwtService } from '@nestjs/jwt';
-import * as argon2 from 'argon2';
 
 enum RequestStatus {
 	DECLINED,
@@ -19,6 +18,7 @@ enum RequestStatus {
 
 @Injectable()
 export class UserService {
+
 	constructor(
 		private prisma: PrismaService,
 		private config: ConfigService,
@@ -70,7 +70,7 @@ export class UserService {
 	/***********************************************************************************/
 	/* 										Getters									   */
 	/***********************************************************************************/
-
+	
 	/*************************************** Users *************************************/
 	async getUsers(): Promise<UserDto[]> {
 		try {
@@ -151,10 +151,10 @@ export class UserService {
 			},
 		});
 		if (!prismaUser) return undefined;
-		const user = this.exclude(prismaUser, ['dAuth', 'secret', 'email', 'updated_at']);
+		const user = this.exclude(prismaUser, ['dAuth', 'email', 'updated_at']);
 		return user as UserDto;
 	}
-
+	
 	/************************************* Friends *************************************/
 	async getFriendsOfUser(user: User): Promise<UserDto[]> {
 		try {
@@ -174,9 +174,9 @@ export class UserService {
 
 			const friendsDto: UserDto[] = friends.map((f) => {
 				if (f.user_id === user.id) {
-					return this.exclude(f.friend, ['dAuth', 'secret', 'email', 'updated_at']) as UserDto;
+					return this.exclude(f.friend, ['dAuth', 'email', 'updated_at']) as UserDto;
 				} else {
-					return this.exclude(f.user, ['dAuth', 'secret', 'email', 'updated_at']) as UserDto;
+					return this.exclude(f.user, ['dAuth', 'email', 'updated_at']) as UserDto;
 				}
 			});
 			return friendsDto;
@@ -217,7 +217,7 @@ export class UserService {
 				},
 			});
 			const blockedUsersDto: UserDto[] = blockedUsers.map((blockedUser) => {
-				return this.exclude(blockedUser.blocked, ['dAuth', 'secret', 'email', 'updated_at']) as UserDto;
+				return this.exclude(blockedUser.blocked, ['dAuth', 'email', 'updated_at']) as UserDto;
 			});
 			return blockedUsersDto;
 		} catch (e) {
@@ -245,7 +245,7 @@ export class UserService {
 				},
 			});
 			UserService.removeUserOnboarding(dto.login);
-			const token = await this.signToken(user, false);
+			const token = await this.signToken(user);
 			return { ...token, ...user };
 		} catch (e) {
 			throw e;
@@ -278,18 +278,6 @@ export class UserService {
 					else throw new BadRequestException('You already have a friend request from this user');
 				case RequestStatus.ACCEPTED:
 					throw new BadRequestException('You are already friend with this user');
-				case RequestStatus.DECLINED:
-					await this.prisma.friends.update({
-						where: {
-							user_id_friend_id: {
-								user_id: targetUser.id,
-								friend_id: user.id,
-							},
-						},
-						data: {
-							status: RequestStatus.PENDING,
-						},
-					});
 				}
 			} else {
 				await this.prisma.friends.create({
@@ -473,16 +461,14 @@ export class UserService {
 		try {
 			if (friend) {
 				switch (friend.status) {
-				case RequestStatus.DECLINED:
-					throw new BadRequestException('Friend request already declined');
 				case RequestStatus.ACCEPTED:
 					throw new BadRequestException('You are already friend with this user');
 				case RequestStatus.PENDING:
 					await this.prisma.friends.update({
 						where: {
 							user_id_friend_id: {
-								user_id: targetUser.id,
-								friend_id: user.id,
+								user_id: target_id,
+								friend_id: user_id,
 							},
 						},
 						data: {
@@ -542,25 +528,28 @@ export class UserService {
 					],
 				},
 			});
-			if (friend) {
-				switch (friend.status) {
-				case RequestStatus.ACCEPTED:
-					throw new BadRequestException(
-						"You already accepted this friend request, and can't decline it anymore",
-					);
-				case RequestStatus.PENDING:
-					await this.prisma.friends.delete({
-						where: {
-							user_id_friend_id: {
-								user_id: targetUser.id,
-								friend_id: user.id,
-							},
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	async declineFriendRequest(user_id: number, target_id: number, friend: Friends): Promise<void> {
+		try {
+			switch (friend.status) {
+			case RequestStatus.ACCEPTED:
+				throw new BadRequestException(
+					"You already accepted this friend request, and can't decline it anymore",
+				);
+			case RequestStatus.PENDING:
+				await this.prisma.friends.delete({
+					where: {
+						user_id_friend_id: {
+							user_id: target_id,
+							friend_id: user_id,
 						},
-					});
-					break;
-				}
-			} else {
-				throw new BadRequestException('You did not receive a friend request from this user');
+					},
+				});
+				break;
 			}
 		} catch (e) {
 			throw e;
@@ -607,11 +596,11 @@ export class UserService {
 	/***********************************************************************************/
 
 	/*************************************** Users *************************************/
-	async findUserByName(user_login: string): Promise<User | null> {
+	async findUserByName(username: string): Promise<User | null> {
 		try {
 			const user = await this.prisma.user.findUnique({
 				where: {
-					login: user_login,
+					login: username,
 				},
 			});
 			if (!user) return null;
