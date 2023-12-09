@@ -128,6 +128,7 @@ export class User {
 			this.channels.push(channel);
 		}
 	}
+
 	public setChannels(channels: Channel[])
 	{
 		this.channels = channels;
@@ -167,17 +168,6 @@ export class Chat {
 		return channelDtos;
 	}
 
-//	
-//	public static getChannelConnectedUser(channelID: number): Socket[] {
-//		const channel: Channel = Chat.channel_lst.find((channel) => channel.getId() === channelID);
-//	
-//		return channel.getUsersSocket();
-//	}
-//	
-//	public getChannelById(id: number): Channel
-//	{
-//		return Chat.channel_lst.find((channel) => channel.id === id);
-//	}
 	
 //	//************* Setter *******************
 //	
@@ -200,8 +190,10 @@ export class Chat {
 		return user;
 	}
 	
-	public static addChannel(channelId: number, user: User) {
-		Chat.channel_lst.push(new Channel(channelId, user));
+	public static addChannel(channelId: number, user: User): Channel {
+		const channel: Channel = new Channel(channelId, user);
+		Chat.channel_lst.push(channel);
+		return (channel);
 	}
 
 //	//public static addUserToChannel(channelId: number, user
@@ -230,8 +222,6 @@ export class Chat {
 //	public static removeChannel() {
 //
 //	}
-
-
 
 
 

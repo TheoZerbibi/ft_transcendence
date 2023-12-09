@@ -81,7 +81,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			this.emitToChannel('new-channel-message', channel, msg)
 	}
 
-	// transmit channelEntity data to everyone in the channel
+//	transmit channelEntity data to everyone in the channel
 //	@SubscribeMessage('channel-update')
 	channelUpdate(data: any): void {
 		const channelData: any = JSON.parse(data);
@@ -90,7 +90,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		this.emitToChannel('channel-updated', channelBuf, channelData);
 	}
 
-//	@SubscribeMessage('channel-creation')
+//		@SubscribeMessage('channel-creation')
 	channelCreation(data: any): void {
 		const channelData: any = JSON.parse(data);
 		const user: User | undefined = this.chatService.getUserById(channelData.users[0].user_id);
@@ -110,17 +110,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		}
 	}
 
-//	@SubscribeMessage('channel-joined')
+	//	@SubscribeMessage('channel-joined')
 	channelJoined(data: any): void
 	{
 		const channel_user: channel_users = JSON.parse(data);
-		console.log('Channel join event triggered');
-
-		const channel: Channel = this.chatService.getChannelById(channel_user.channel_id);
-		if (!channel) {
-			console.error('Failure channel not found in memory');
-			return;
-		}
 
 		const user: User = this.chatService.getUserById(channel_user.user_id);
 		if (!user) {
@@ -128,6 +121,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			return;
 		}
 
+		let channel: Channel | undefined = this.chatService.getChannelById(channel_user.channel_id);
+		if (channel === undefined) {
+			channel = this.chatService.addChannel(channel_user.channel_id, user);
+		}
 		channel.addUser(user);
 		this.emitToChannel('channel-joined', channel, channel_user);
 	}
@@ -138,11 +135,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		const channel_user: any =  JSON.parse(data);
 		const channel: Channel | undefined = this.chatService.removeUserFromChannelById(channel_user.user_id, channel_user.channel_id);
 
-		if (channel === undefined) {
+		if (channel === undefined)
 			console.info('No one is connected to this channel atm');
-			return;
-		}
-		this.emitToChannel('user-quitted-channel', channel, JSON.stringify(new ChannelDto(channel)));
+		else
+			this.emitToChannel('user-quitted-channel', channel, JSON.stringify(new ChannelDto(channel)));
 	}
 
 	// 'channel-deleted'
@@ -153,10 +149,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 		if (!channel) {
 			console.info('No one is connected to this channel atm');
-			}
+		}
 		const { ['password']: excludedPassword, ...tmpChannel } = channelEntity;
 		const { ['users']: excludedUsers, ...channelReturned } = tmpChannel;
-
 		this.emitToEveryone('channel-deleted', JSON.stringify(channelReturned));
 	}
 
@@ -167,9 +162,19 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			if (!client.handshake.headers.authorization) throw new Error('Invalid token');
 			const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
 			this.authService.verifyToken({ access_token: token });
+			const user: users = await this.authService.getUser(token);
 
-		//	const user = client.handshake.user;
-			return this.logger.debug(`Client connected: ${client.id}`);
+			console.log(`user id = ${user.id}`);
+			console.log(`User connect = ${user}`);
+			this.chatService.addUser(client, user);
+
+			const channelDtos: ChannelDto[] = this.chatService.getChannelDtos();
+			client.emit('welcome', JSON.stringify(channelDtos));
+			this.emitToEveryoneExceptOne('new-connection', user.id, client);
+			this.logger.debug(`Client connected: ${client.id}`);
+		//	this.logger.debug(`Sending this to client ${channelDtos}`);
+			console.log(channelDtos);
+
 		} catch (e) {
 			client.emit('error', 'Invalid token');
 			client.disconnect();
@@ -181,7 +186,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		const user: User = this.chatService.removeUser(client);
 
 		const userDTOs: UserDto[] = this.chatService.getUsers().map((user) => new UserDto(user));
-
 		this.emitToChannels('User-Disconnected', user.getChannels(), userDTOs);
 		return this.logger.debug(`Client disconnected: ${client.id}`);
 	}
