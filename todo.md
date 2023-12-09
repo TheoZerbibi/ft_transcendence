@@ -29,6 +29,7 @@ legend : x ended, t testing phase, i implementing phase
 
 - Deco/Connection
 - [ ] handleConnection { Add user and all his active channel, send list of connected user by channel to everyone}
+> Need to get user from token
 - [ ] handleDisconnect { remove user and reference of user in all channel with connected user .}
 
 - creation

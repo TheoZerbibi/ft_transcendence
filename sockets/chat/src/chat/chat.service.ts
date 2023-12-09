@@ -26,11 +26,6 @@ export class ChatService {
 		return Chat.getChannelById(id);
 	}
 
-	public addChannel(channelId: number, user: User): void
-	{
-		Chat.addChannel(channelId, user);
-	}
-
 	public getChannelDtos(): ChannelDto[]
 	{
 		return Chat.getChannelDtos();
@@ -46,12 +41,26 @@ export class ChatService {
 	
 //	
 //	/******** Setter *********/
-	public async registerUser(socket: Socket, id: number): Promise<User>{
-	
-		const user: users = await this.retrieveUser(id);
+
+	public addChannel(channelId: number, user: User): Channel
+	{
+		return Chat.addChannel(channelId, user);
+	}
+
+//	Function to remove if test ok
+//	public async registerUser(socket: Socket, id: number): Promise<User>{
+//	
+//		const user: users = await this.retrieveUser(id);
+//		const channels_usr: channel_users[] = await this.retrieveUserChannel(user);
+//	
+//		return Chat.addUser(socket, id, channels_usr);
+//	}
+
+	public async addUser(socket: Socket, user: users)
+	{
 		const channels_usr: channel_users[] = await this.retrieveUserChannel(user);
-	
-		return Chat.addUser(socket, id, channels_usr);
+		
+		return Chat.addUser(socket, user.id, channels_usr);
 	}
 
 	public removeUser(client: Socket): User | undefined
