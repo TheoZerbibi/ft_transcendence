@@ -245,7 +245,7 @@ export class UserService {
 				},
 			});
 			UserService.removeUserOnboarding(dto.login);
-			const token = await this.signToken(user);
+			const token = await this.signToken(user, false);
 			return { ...token, ...user };
 		} catch (e) {
 			throw e;
