@@ -18,7 +18,7 @@
 	</div>
 	
 	<!-- Modal: friend profile -->
-	<UserModal :selected_friend_login="selectedFriend" :show="show_infos" @close="closeModal"/>
+	<UserModal v-if="showInfos" :selectedFriendLogin="selectedFriend" :show="showInfos" @close="closeModal"/>
 </template>
 
 <script lang="ts">
@@ -49,7 +49,7 @@ export default {
 		return {
 			friends: [],
 			selectedFriend: String,
-			show_infos: false,
+			showInfos: false,
 		};
 	},
 	emits: ['friend-selected'],
@@ -87,10 +87,10 @@ export default {
 		},
 		displayProfile(infos_login: string) {
 			this.selectedFriend = infos_login;
-			this.show_infos = true;
+			this.showInfos = true;
 		},
 		closeModal() {
-			this.show_infos = false;
+			this.showInfos = false;
 		},
 		displayMessagesWithFriend(login: string) {
 			this.selectedFriend = login;

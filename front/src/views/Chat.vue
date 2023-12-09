@@ -24,7 +24,7 @@
 
 							<!-- Colonne de droite pour MessagesBox (3/4 de l'écran) -->
 							<v-col cols="12" md="9">
-								<MessagesBox :selected-friend-login="selectedFriendLogin"></MessagesBox>
+								<MessagesBox :selectedFriendLogin="selectedFriendLogin"></MessagesBox>
 							</v-col>
 						</v-row>
 					</v-window-item>
