@@ -1,24 +1,16 @@
 <template>
-	<input
+	<form @submit.prevent="handleInput" id="input">
+		<input
 		type="text"
-		class="white--text omoriFont font-weight-black uppercase-placeholder"
+		class="white--text omoriFont font-weight-black input-field uppercase-placeholder"
 		:placeholder="placeholder"
-		@input="handleInput"
-		style="{
-			background-color: #000000;
-			border-color: #ffffff;
-			border: 3px solid;
-			padding: 6px;
-			position: relative;
-			font-size: 20px;
-			height: 50px;
-			width: 250px;
-		}"
-	/>
+		v-model="inputValue"
+		/>
+	</form>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
 	name: "InputBar",
@@ -28,11 +20,18 @@ export default defineComponent({
 			default: 'Input'
 		},
 	},
-	methods: {
-		handleInput(event: any) {
-			const input = event.target.value;
-			this.$emit("newInput", input);
-		},
+	setup(props, { emit }) {
+		const inputValue = ref(''); // Use Vue 3's ref to create a reactive variable
+
+		function handleInput() {
+			emit("newInput", inputValue.value);
+			inputValue.value = ''; // Clear the input field
+		}
+
+		return {
+			inputValue,
+			handleInput
+		};
 	},
 });
 </script>
@@ -40,5 +39,34 @@ export default defineComponent({
 <style scoped>
 .uppercase-placeholder::placeholder {
     text-transform: uppercase;
+}
+
+.input-field-stroke {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #ffffff;
+	position: relative;
+	width: 250px;
+	height: 50px;
+}
+
+.input-field {
+	position: relative;
+	width: 250px;
+	height: 50px;
+	background-color: #000000;
+	border: 3px solid;
+	box-sizing: border-box;
+	border-color: #ffffff;
+	font-size: 20px;
+	letter-spacing: 0;
+	line-height: normal;
+	white-space: nowrap;
+	padding: 0px 0px 0px 10px;
+}
+
+input:focus {
+	outline: none;
 }
 </style>

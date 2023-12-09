@@ -1,59 +1,105 @@
 <template>
-	<v-container :class="{ background: step === 0, 'black-background': step > 0 }">
-        <v-row align="center" no-gutters class="justify-center align-center" style="height: 100vh;">			<div v-if="step === 0">
+	<v-container 
+		fill-height
+		fluid 
+		id="background"
+		:class="{ 
+			'bg-black': hovering || clicked || step > 0,
+			'bg-white': !hovering && !clicked && step === 0,
+		}"
+		>
+        <v-row 
+			align="center"
+			no-gutters
+			xs12
+			md6
+			class="d-flex justify-center align-center"
+			style="height: 100vh;"
+		>
+			
+			<div v-if="step === 0" class="door-container">
 				<audio controls id="myVideo" autoplay loop hidden>
 					<source src="/sounds/002-WHITE SPACE.mp3" type="audio/wav" />
 					Your browser does not support the audio element.
 				</audio>
-				<v-img 
-					src="/ui/Door.png"
-					class="door"
-					@click="startZoomEffect"
-					cover
-					:height="400"
-					:width="130"
-					:style="{
-						transform: `scale(${zoomLevel})`,
-						transformOrigin: '90% 45%',
-						transition: zooming ? 'transform 1s ease-in-out' : 'none',
-					}"
-				/>
-				<v-img v-if="something" src="/ui/Something_White_Space.gif" class="something" :style="{
-					width: `95vw`,
-					height: 'auto',
-					top: '0',
-					left: '0',
-				}" />
+					<v-img 
+						id="door"
+						src="/ui/Door.png"
+						class="hoverable"
+						@click="startZoomEffect"
+						@mouseover="hovering = true"
+						@mouseleave="hovering = false"
+						:class="{zooming: isZooming}"
+						cover
+						:height="400"
+						:width="130"
+						:style="{
+							transform: `scale(${zoomLevel})`,
+							transformOrigin: '90% 45%',
+							transition: isZooming ? 'transform 1s ease-in-out' : 'none',
+						}"
+					/>
+					<v-img 
+						v-show="something"
+						id="something" 
+						src="/ui/Something_White_Space.gif"
+						cover
+						:height="100"
+						:width="100"
+						:style="{
+						transform: 'translate(-50%, -50%)',
+						maxWidth: '100%',
+						maxHeight: '100%',
+					}" />
 			</div>
+			
 			<div v-if="step > 0">
 				<audio controls id="myVideo" autoplay loop hidden>
 					<source src="/sounds/004-Spaces In-between.mp3" type="audio/wav" />
 					Your browser does not support the audio element.
-				</audio>
-				<v-card-text>
-					<div v-if="step === 1" class="d-flex justify-center">
-						<InputBar 
-							v-model="newUser.display_name"
-							placeholder="Enter your name please..."
-							@keyup-enter="nextStep"/>
-						<Button @click="nextStep">Next</Button>
+				</audio>	
+				
+				<div v-if="step === 1" >
+					<h3 class="omoriFont">Hello there... what's your name?</h3>
+					<InputBar 
+						@newInput="newUser.display_name = $event"
+						placeholder="Enter your name here..."
+						@keyup.enter="nextStep"
+						/>
+					<Button @click="nextStep" width="250px">that's my name!</Button>
+				</div>
+				
+				<div v-if="step === 2" align="center" class="align-center justify-center">
+					<h3 class="omoriFont">Nice to meet you {{ newUser.display_name }}! Is that you on the picture?</h3>
+					<div class="image-container">
+						<UploadFile @imageChanged="updateAvatar" class="upload-file hoverable" >
+							<template v-slot:image>
+								<v-img 
+									v-if="newUser.avatar"
+									:src="newUser.avatar"
+									class="hoverable"
+									alt="Uploaded Image">
+									<v-progress-circular 
+										indeterminate
+										color="red-accent-2"
+										v-if="cantSkip"
+									/>
+								</v-img>
+							</template>
+						</UploadFile>
 					</div>
-					<div v-if="step === 2" class="card-content" align="center">
-						<UploadFile @imageChanged="updateAvatar" />
-						<v-img v-if="newUser.avatar" :src="newUser.avatar" class="uploaded-image" alt="Uploaded Image">
-							<v-progress-circular indeterminate color="deep-purple-accent-2" v-if="cantSkip" />
-						</v-img>
-						<Button @click="nextStep" :disabled="cantSkip">Next</Button>
-					</div>
-					<div v-if="step === 4" class="card-content">
-						<v-form @submit.prevent="logTwoFactorAuthentication">
-							<InputBar v-model="verificationCode" label="Enter Verification Code"
-								required></InputBar>
-							<Button type="submit">Send code</Button>
-						</v-form>
-					</div>
-				</v-card-text>
-				<img src="/ui/ALBUM.png" class="album" alt="Album" />
+					<Button @click="nextStep" :disabled="cantSkip" width="250px">That's me!</Button>
+				</div>
+				
+				<div v-if="step === 4">
+					<v-form @submit.prevent="logTwoFactorAuthentication">
+						<InputBar v-model="verificationCode" label="Enter Verification Code"
+							required></InputBar>
+						<Button type="submit">Send code</Button>
+					</v-form>
+				</div>
+				
+				<img src="/ui/ALBUM.png" :style="albumStyle" id="album" alt="Album" />
 			</div>
 		</v-row>
 		<Snackbar />
@@ -103,19 +149,34 @@ export default {
 			verificationCode: '' as string,
 			FAToken: '' as string,
 			cantSkip: false,
-			zooming: false,
+			isZooming: false,
 			zoomLevel: 1,
 			something: false,
+			hovering: false,
+			clicked: false,
 		};
+	},
+	computed: { 
+		albumStyle() {
+			const scale = 1 + this.step * 0.1;
+			const translateY = this.step * 25;
+			return {
+				transform: `scale(${scale}) translateY(${translateY}px)`,
+			};
+		},
 	},
 	async beforeMount() {
 		if (this.$cookies.get('2FA')) {
+
 			this.FAToken = this.$cookies.get('2FA');
 			console.log(this.FAToken);
 			snackbarStore.showSnackbar('2FA enabled', 3000, 'green');
 			this.step = 4;
 			this.$cookies.remove('2FA');
-		} else if (this.$cookies.get('token')) {
+		} 
+		
+		else if (this.$cookies.get('token')) {
+
 			const token = this.$cookies.get('token');
 			this.$cookies.remove('token');
 			try {
@@ -124,18 +185,23 @@ export default {
 				snackbarStore.showSnackbar('Invalid credentials', 3000, 'red');
 				return this.$router.push({ name: `Home` });
 			}
-		} else if (this.$cookies.get('userOnboarding')) {
+		}
+		
+		else if (this.$cookies.get('userOnboarding')) {
 			const cookie = this.$cookies.get('userOnboarding');
 			this.step = 1;
 			this.newUser.login = cookie.login;
 			this.newUser.email = cookie.email;
 			this.newUser.avatar = cookie.avatar;
-		} else {
+		}
+		
+		else {
 			this.step = 0;
 		}
 	},
 	methods: {
 		async logTwoFactorAuthentication() {
+
 			if (!this.verificationCode) return snackbarStore.showSnackbar('Please enter a code', 3000, 'red');
 			const requestBody = { code: this.verificationCode };
 
@@ -151,20 +217,26 @@ export default {
 						body: JSON.stringify(requestBody),
 					},
 				);
+
 				if (!response.ok) {
 					const error = await response.json();
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
+
 				const data = await response.json();
 				this.$cookies.set('token', data.access_token, '1m');
 				this.$router.push({ name: `Home` });
-			} catch (error) {
+			} 
+			
+			catch (error) {
 				snackbarStore.showSnackbar('Error 2FA', 3000, 'red');
 				console.error(error);
 			}
 		},
+
 		async postToUsers() {
+
 			const requestOptions = {
 				method: 'POST',
 				headers: {
@@ -173,6 +245,7 @@ export default {
 				},
 				body: JSON.stringify(this.newUser),
 			};
+
 			this.$cookies.remove('userOnboarding');
 			await fetch(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users`, requestOptions)
 				.then(async (response) => {
@@ -191,12 +264,14 @@ export default {
 					console.error(error);
 				});
 		},
+
 		redirectToOAuth() {
 			const HOST = import.meta.env.VITE_HOST;
 			const PORT = import.meta.env.VITE_API_PORT;
 
 			window.location.href = `http://${HOST}:${PORT}/auth/42/callback`;
 		},
+
 		async updateAvatar(newAvatar: File) {
 			const formData = new FormData();
 			if (newAvatar) {
@@ -231,12 +306,17 @@ export default {
 			}
 		},
 		async nextStep() {
+			console.log("step" + this.step);
 			if (this.step === 1) {
+
 				if (!this.newUser.display_name) {
-					console.log(this.newUser.display_name);
+
+					console.log("step" + this.step + " = " + this.newUser.login);
 					snackbarStore.showSnackbar('Please enter a name', 3000, 'red');
 					return;
 				}
+				
+				console.log("step" + this.step + " = " + this.newUser.display_name);
 				const result = await this.checkDisplayName();
 				if (!result.success) return;
 			}
@@ -275,14 +355,13 @@ export default {
 			}
 		},
 		startZoomEffect() {
-			this.zooming = true;
+			this.clicked = true;
+			this.isZooming = true;
 			this.zoomIn();
 		},
 		zoomIn() {
 			if (this.zoomLevel < 100) {
 				this.zoomLevel += 8;
-				this.somethingTop = 50 - this.zoomLevel / 2;
-				this.somethingLeft = 60 - this.zoomLevel / 2;
 
 				setTimeout(() => {
 					this.zoomIn();
@@ -295,7 +374,8 @@ export default {
 					this.redirectToOAuth();
 				}, 600);
 				setTimeout(() => {
-					this.zooming = false;
+					this.isZooming = false;
+					this.clicked = false;
 					this.zoomLevel = 1;
 					this.something = false;
 				}, 3000);
@@ -306,16 +386,7 @@ export default {
 </script>
 
 <style>
-.background {
-	background-color: white;
-	pointer-events: none;
-}
-
-.black-background {
-	background-color: black;
-}
-
-.door {
+#door {
 	image-rendering: optimizeQuality;
 	pointer-events: auto;
 	position: relative;
@@ -323,7 +394,16 @@ export default {
 	object-fit: contain; /* Do not scale the image */
 }
 
-.album {
+#something {
+	image-rendering: optimizeQuality;
+	position: relative;
+	object-fit: contain; /* Do not scale the image */
+	transition:
+		width 1s ease-in-out,
+		top 1s ease-in-out,
+		left 1s ease-in-out;
+}
+#album {
 	position: fixed;
 	bottom: -15%;
 	left: 0;
@@ -332,57 +412,67 @@ export default {
 	width: 300px;
 }
 
-.card-container {
-	display: flex;
-	flex-direction: line;
-	align-items: center;
+#background {
+	background-color: black;
+}
+
+.door-container {
+	transition: box-shadow 0.5s ease-in-out;
+}
+
+.image-container {
+	top: 0;
+	left: 0;
+	position: relative;
 	justify-content: center;
-}
-
-.card-content {
 	display: flex;
-	flex-direction: line;
 	align-items: center;
-	justify-content: center;
+	height: 300px;
+	width: 250px;
 }
 
-.file-input {
-	display: none;
+.upload-file {
+	position: absolute;
+	height: 100%;
+	width: 100%;
 }
 
-.file-input+.next-Button {
-	margin-top: 10px;
-}
-
-.door:hover {
+.zooming, #door:hover {
 	filter: brightness(10);
 	filter: invert(1);
-	cursor: url(https://www.omori-game.com/img/cursor/cursor.png), auto;
-	box-shadow: 0px 10px 20px 2px #000000;
-	transition: 0.5s ease-in-out all;
 }
 
-.background:hover {
-	background-color: black;
-	transition: 1s ease-in-out all;
+#background.bg-white {
+    background-color: white;
+    transition: all 0.2s ease-out;
 }
 
-.input:hover {
-	cursor: url(https://www.omori-game.com/img/cursor/cursor.png), auto;
+#background.bg-black {
+    background-color: black;
+    transition: all 0.2s ease-out;
 }
 
-.something {
-	position: absolute;
-	transition:
-		width 1s ease-in-out,
-		top 1s ease-in-out,
-		left 1s ease-in-out;
+/* .image-container:hover .upload-file {
+	opacity: 0.8;
+}
+ */
+.door-container:hover {
+    animation: neon-light 0.5s 0.3s, heartbeat 0.8s infinite 0.8s;
+    box-shadow: 0 3px 20px #ff0000, 0 3px 30px #ff0000;
 }
 
-.uploaded-image {
-	width: 100px;
-	height: 100px;
-	margin-left: 10px;
-	object-fit: cover;
+@keyframes neon-light {
+    0%, 100% { box-shadow: 0 3px 5px #ff0000; }
+    50% { box-shadow: 0 3px 20px #ff0000, 0 3px 30px #ff0000; }
+}
+
+@keyframes faint-pulse {
+    0%, 100% { box-shadow: 0 3px 5px #ff0000; }
+    50% { box-shadow: 0 3px 20px #ff0000, 0 3px 30px #ff0000; }
+}
+
+@keyframes heartbeat {
+	0%, 100% { box-shadow: 0 3px 15px #ff0000; }
+    50% { box-shadow: 0 3px 30px #ff0000, 0 3px 40px #ff0000; }
 }
 </style>
