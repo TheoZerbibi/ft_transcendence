@@ -59,8 +59,6 @@ export default {
 	emits: ['friend-selected'],
 	beforeMount() {
 		this.fetchFriends();
-		this.selectedFriend = this.friends[0] ? this.friends[0].login : null; // doesnt work
-		this.$emit('friend-selected', this.selectedFriend);					 // doesnt work
 	},
 	mounted() {},
 	methods: {
@@ -82,9 +80,6 @@ export default {
 					return;
 				});
 				this.friends = await response.json();
-				//console.log("[Friends.vue:fetchFriends]\nthis.friends: " + JSON.stringify(this.friends, null, 2));
-				this.selectedFriend = this.friends[0].login ? this.friends[0].login : null;
-				this.$emit('friend-selected', this.selectedFriend);
 			} catch (error) {
 				console.error(error);
 			}

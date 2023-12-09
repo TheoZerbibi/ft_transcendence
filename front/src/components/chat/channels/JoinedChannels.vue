@@ -11,7 +11,7 @@
 					@click="displayMessagesOfChannel(channel.name)"
 				>
 				{{ channel.name }}
-				<v-btn @click="displaySettings(channel.name)">infos</v-btn>
+				<v-btn @click="displaySettings(channel.name)">Settings</v-btn>
 				</v-list-item>
 			</v-list>
 		<p v-else>~ sorry, no joinedChannels for now ~</p>
