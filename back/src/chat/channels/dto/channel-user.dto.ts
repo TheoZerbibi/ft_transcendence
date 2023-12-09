@@ -1,12 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsDate, IsOptional, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class ChannelUserDto {
 	@ApiProperty()
 	@IsString()
 	// eslint-disable-next-line
-	username: string;
+	login: string;
+
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	display_name: string;
 
 	@ApiProperty()
 	@IsString()

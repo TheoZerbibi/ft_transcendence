@@ -58,7 +58,7 @@ export default {
 	setup(props) {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
-		let messages = ref([]);
+		const messages = ref([]);
 		const fetchMessages = async function() {
 			try {
 				console.log("[Message.vue:fetchMessages] selectedChannelName: " + props.selectedChannelName);

@@ -1,7 +1,7 @@
 // COMMON
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 // PRISMA
-import { Prisma, User, DirectMessage, Friends, Blocked } from '@prisma/client';
+import { User, DirectMessage } from '@prisma/client';
 // DTO
 import { CreateDirectMessageDto, DirectMessageDto } from './dto/direct-message.dto';
 // SERVICES
@@ -97,7 +97,7 @@ export class DirectMessageService {
 						friend_id: directMessage.friend_id,
 						friend_name: friend.display_name,
 					};
-				})
+				}),
 			);
 			return directMessageDtos;
 		} catch (e) {

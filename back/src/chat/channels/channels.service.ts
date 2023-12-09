@@ -91,7 +91,9 @@ export class ChannelService {
 
 	async searchChannels(user: User, search: string): Promise<ChannelListElemDto[] | null> {
 		const result = this.localChannels.filter((channel) => {
-			const isBanned = channel.getUsers().every((channelUser) => channelUser.getUserId() === user.id && channelUser.isBanned());
+			const isBanned = channel
+				.getUsers()
+				.every((channelUser) => channelUser.getUserId() === user.id && channelUser.isBanned());
 			return channel.getName().includes(search) && !isBanned;
 		});
 		return result.map((channel) => {
@@ -133,14 +135,15 @@ export class ChannelService {
 		if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
 
 		try {
-			const channelUsers: any[] = await this.prisma.channelUser.findMany({
+			const channelUsers = await this.prisma.channelUser.findMany({
 				where: {
 					channel_id: channel.getId(),
 				},
-				include : {
+				include: {
 					user: {
 						select: {
 							login: true,
+							display_name: true,
 							avatar: true,
 						},
 					},
@@ -148,7 +151,8 @@ export class ChannelService {
 			});
 			const channelUserDtos: ChannelUserDto[] = channelUsers.map((channelUser) => {
 				return {
-					username: channelUser.user.login,
+					login: channelUser.user.login,
+					display_name: channelUser.user.display_name,
 					avatar: channelUser.user.avatar,
 					is_owner: channelUser.is_owner,
 					is_admin: channelUser.is_admin,
@@ -195,6 +199,7 @@ export class ChannelService {
 							user: {
 								select: {
 									login: true,
+									display_name: true,
 									avatar: true,
 								},
 							},
@@ -209,12 +214,13 @@ export class ChannelService {
 						hour12: true,
 					});
 					return {
-						username: channelUser?.user?.login || '?',
+						login: channelUser?.user?.login || '?',
+						username: channelUser?.user?.display_name || '?',
 						avatar: channelUser?.user?.avatar || '',
 						content: message.content,
 						created_at: formattedDate,
 					};
-				})
+				}),
 			);
 			return messageDtos;
 		} catch (e) {
@@ -222,7 +228,6 @@ export class ChannelService {
 			throw e;
 		}
 	}
-
 
 	/***********************************************************************************/
 	/* 										Creation								   */
@@ -320,7 +325,8 @@ export class ChannelService {
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		if (!channelUser) throw new BadRequestException(`You are not on this channel`);
 		if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
-		if (channelUser.isMuted() && channelUser.isMuted() > new Date()) throw new ForbiddenException('You are muted on this channel');
+		if (channelUser.isMuted() && channelUser.isMuted() > new Date())
+			throw new ForbiddenException('You are muted on this channel');
 
 		if (messageDto.content.length === 0) throw new BadRequestException('Message cannot be empty');
 		if (messageDto.content.length > 200) throw new BadRequestException('Message too long (max 200 characters)');
@@ -342,7 +348,8 @@ export class ChannelService {
 				hour12: true,
 			});
 			const channelMessageDto: ChannelMessageDto = {
-				username: user.login || '?',
+				login: user.login ? user.login : '?',
+				username: user.display_name ? user.display_name : '?',
 				avatar: user.avatar || '',
 				content: channelMessage.content,
 				created_at: formattedDate,
@@ -487,8 +494,14 @@ export class ChannelService {
 		}
 	}
 
-	async modChannelUser(user:User, channel_name: string, dto: ModChannelUserDto): Promise<void> {
-		if (dto.action != 'mute' && dto.action != 'unmute' && dto.action != 'kick' && dto.action != 'ban' && dto.action != 'unban')
+	async modChannelUser(user: User, channel_name: string, dto: ModChannelUserDto): Promise<void> {
+		if (
+			dto.action != 'mute' &&
+			dto.action != 'unmute' &&
+			dto.action != 'kick' &&
+			dto.action != 'ban' &&
+			dto.action != 'unban'
+		)
 			throw new BadRequestException(`Action "${dto.action}" not supported`);
 		const target = await this.prisma.user.findUnique({
 			where: {
@@ -520,7 +533,7 @@ export class ChannelService {
 			case 'ban':
 				targetChanUser.setIsBanned(true);
 				break;
-			case 'kick'|| 'unban':
+			case 'kick' || 'unban':
 				try {
 					await this.prisma.channelUser.delete({
 						where: {
@@ -627,7 +640,7 @@ export class ChannelService {
 	/************************************ User Access *********************************/
 
 	// Find a channel user in the channel entity and return null if it doesn't exist
- 	async findChannelUser(user: User, channelEntity: ChannelEntity): Promise<ChannelUserEntity | null> {
+	async findChannelUser(user: User, channelEntity: ChannelEntity): Promise<ChannelUserEntity | null> {
 		const channelUser: ChannelUserEntity | null = channelEntity
 			.getUsers()
 			.find((channelUser) => channelUser.getUserId() === user.id);

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 //import { Exclude } from 'class-transformer';
 
 export class ChannelMessageContentDto {
@@ -10,6 +10,11 @@ export class ChannelMessageContentDto {
 }
 
 export class ChannelMessageDto {
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	login: string;
+
 	@ApiProperty()
 	@IsString()
 	// eslint-disable-next-line

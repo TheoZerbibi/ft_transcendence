@@ -24,7 +24,7 @@
 
 							<!-- Colonne de droite pour DirectMessages (3/4 de l'écran) -->
 							<v-col cols="12" md="9">
-								<DirectMessages :selectedFriendLogin="selectedFriendLogin"></DirectMessages>
+								<DirectMessages v-if="isSelectedFriend" :selectedFriendLogin="selectedFriendLogin"></DirectMessages>
 							</v-col>
 						</v-row>
 					</v-window-item>
@@ -38,9 +38,13 @@
 								<DiscoverChannels/>
 							</v-col>
 
-							<!-- Colonne de droite pour MessagesselectedChannelName (3/4 de l'écran) -->
-							<v-col cols="12" md="9">
-								<ChannelMessages :selectedChannelName="selectedChannelName"></ChannelMessages>
+							<!-- Colonne du milieu pour Messages (3/4 de l'écran) -->
+							<v-col cols="12" md="6">
+								<ChannelMessages v-if="isSelectedChannel" :selectedChannelName="selectedChannelName"></ChannelMessages>
+							</v-col>
+
+							<v-col cols="12" md="3">
+								<ChannelUsers v-if="isSelectedChannel" :selectedChannelName="selectedChannelName"></ChannelUsers>
 							</v-col>
 						</v-row>
 					</v-window-item>
@@ -71,6 +75,7 @@ import DirectMessages from '../components/chat/direct-messages/DirectMessages.vu
 import DiscoverChannels from '../components/chat/channels/DiscoverChannels.vue';
 import JoinedChannels from '../components/chat/channels/JoinedChannels.vue';
 import ChannelMessages from '../components/chat/channels/ChannelMessages.vue';
+import ChannelUsers from '../components/chat/channels/ChannelUsers.vue';
 
 import BlockedUsers from '../components/chat/profile/BlockedUsers.vue';
 
@@ -84,6 +89,7 @@ export default defineComponent({
 		DiscoverChannels,
 		JoinedChannels,
 		ChannelMessages,
+		ChannelUsers,
 		BlockedUsers,
 	},
 	setup() {
@@ -94,7 +100,9 @@ export default defineComponent({
 	},
 	data() {
 		return {
+			isSelectedFriend: false,
 			selectedFriendLogin: '',
+			isSelectedChannel: false,
 			selectedChannelName: '',
 		}
 	},
@@ -105,9 +113,11 @@ export default defineComponent({
 	},
 	methods: {
 		updateSelectedFriend(selectedFriendLogin: string) {
+			this.isSelectedFriend = true;
 			this.selectedFriendLogin = selectedFriendLogin;
 		},
 		updateSelectedChannel(selectedChannelName: string) {
+			this.isSelectedChannel = true;
 			this.selectedChannelName = selectedChannelName;
 		}
 	}
