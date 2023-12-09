@@ -22,9 +22,9 @@
 								<AddFriends/>
 							</v-col>
 
-							<!-- Colonne de droite pour MessagesBox (3/4 de l'écran) -->
+							<!-- Colonne de droite pour DirectMessages (3/4 de l'écran) -->
 							<v-col cols="12" md="9">
-								<MessagesBox :selectedFriendLogin="selectedFriendLogin"></MessagesBox>
+								<DirectMessages :selectedFriendLogin="selectedFriendLogin"></DirectMessages>
 							</v-col>
 						</v-row>
 					</v-window-item>
@@ -32,9 +32,15 @@
 					<!-- Channels Components -->
 					<v-window-item :value="2">
 						<v-row>
-							<v-col cols="12">
-								<JoinedChannels/>
+							<!-- Colonne de gauche pour JoinedChannels et Discover (1/4 de l'écran) -->
+							<v-col cols="12" md="3">
+								<JoinedChannels @channel-selected="updateSelectedChannel"/>
 								<DiscoverChannels/>
+							</v-col>
+
+							<!-- Colonne de droite pour MessagesselectedChannelName (3/4 de l'écran) -->
+							<v-col cols="12" md="9">
+								<ChannelMessages :selectedChannelName="selectedChannelName"></ChannelMessages>
 							</v-col>
 						</v-row>
 					</v-window-item>
@@ -60,12 +66,13 @@ import { defineComponent, ref } from 'vue';
 
 import AddFriends from '../components/chat/direct-messages/AddFriends.vue';
 import Friends from '../components/chat/direct-messages/Friends.vue';
-import MessagesBox from '../components/chat/direct-messages/Messages.vue';
+import DirectMessages from '../components/chat/direct-messages/DirectMessages.vue';
 
-import BlockedUsers from '../components/chat/profile/BlockedUsers.vue';
 import DiscoverChannels from '../components/chat/channels/DiscoverChannels.vue';
 import JoinedChannels from '../components/chat/channels/JoinedChannels.vue';
+import ChannelMessages from '../components/chat/channels/ChannelMessages.vue';
 
+import BlockedUsers from '../components/chat/profile/BlockedUsers.vue';
 
 export default defineComponent({
 	name: 'ChatView',
@@ -73,10 +80,11 @@ export default defineComponent({
 	components: {
 		AddFriends,
 		Friends,
-		MessagesBox,
-		BlockedUsers,
+		DirectMessages,
 		DiscoverChannels,
-		JoinedChannels
+		JoinedChannels,
+		ChannelMessages,
+		BlockedUsers,
 	},
 	setup() {
 		const tab = ref(0); // Start with the first tab active
@@ -87,6 +95,7 @@ export default defineComponent({
 	data() {
 		return {
 			selectedFriendLogin: '',
+			selectedChannelName: '',
 		}
 	},
 	beforeMount() {
@@ -97,8 +106,10 @@ export default defineComponent({
 	methods: {
 		updateSelectedFriend(selectedFriendLogin: string) {
 			this.selectedFriendLogin = selectedFriendLogin;
-			console.log("[Chat.vue:updateSelectedFriend] selectedFriendLogin: " + this.selectedFriendLogin);
 		},
+		updateSelectedChannel(selectedChannelName: string) {
+			this.selectedChannelName = selectedChannelName;
+		}
 	}
 });
 </script>

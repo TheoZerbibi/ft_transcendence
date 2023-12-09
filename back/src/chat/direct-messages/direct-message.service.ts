@@ -93,7 +93,7 @@ export class DirectMessageService {
 						content: directMessage.content,
 						created_at: directMessage.created_at,
 						user_id: directMessage.user_id,
-						user_name: user.display_name,
+						username: user.display_name,
 						friend_id: directMessage.friend_id,
 						friend_name: friend.display_name,
 					};
@@ -163,7 +163,7 @@ export class DirectMessageService {
 				content: directMessage.content,
 				created_at: directMessage.created_at,
 				user_id: directMessage.user_id,
-				user_name: user.display_name,
+				username: user.display_name,
 				friend_id: directMessage.friend_id,
 				friend_name: targetUser.display_name,
 			};
