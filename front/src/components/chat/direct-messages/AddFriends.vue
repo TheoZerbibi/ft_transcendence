@@ -34,6 +34,7 @@
 		/>
 		<button @click="searchUsers">search</button>
 	</v-col>
+	<Snackbar></Snackbar>
 </template>
 
 <script lang="ts">
@@ -41,6 +42,8 @@
 import { computed } from 'vue';
 import { useUser } from '../../../stores/user';
 import { useSnackbarStore } from '../../../stores/snackbar';
+
+import Snackbar from '../../layout/Snackbar.vue';
 import AcceptDeclineButton from '../utils/AcceptDeclineButton.vue';
 
 const userStore = useUser();
@@ -48,6 +51,7 @@ const snackbarStore = useSnackbarStore();
 
 export default {
 	components: {
+		Snackbar,
 		AcceptDeclineButton,
 	},
 	setup() {

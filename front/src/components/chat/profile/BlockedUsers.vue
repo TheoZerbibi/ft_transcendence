@@ -11,6 +11,8 @@
 			<p v-else>~ u havent blocked anyone for now ~</p>
 		</div>
 	</div>
+
+	<Snackbar></Snackbar>
 </template>
 
 <script lang="ts">
@@ -18,10 +20,15 @@ import { computed } from 'vue';
 import { useUser } from '../../../stores/user';
 import { useSnackbarStore } from '../../../stores/snackbar';
 
+import Snackbar from '../../layout/Snackbar.vue';
+
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 
 export default {
+	components: {
+		Snackbar,
+	},
 	setup() {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
