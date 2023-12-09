@@ -59,55 +59,6 @@ $ pnpm run test:e2e
 
 The Api use JWT for security. When you create or signin into a account, the api return a `access_token`.
 
-### Create new user
-
-```http
-  POST auth/signup
-```
-
-| Parameter | Type     | Description            |
-| :-------- | :------- | :--------------------- |
-| `login`   | `string` | **Required**. A login. |
-
-    curl -i --location 'http://localhost:3001/auth/signup' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'login=${login}
-
-#### Response
-
-    HTTP/1.1 201 Created
-    X-Powered-By: Express
-    Content-Type: application/json; charset=utf-8
-    Content-Length: 183
-    ETag: W/"b7-mgmS/sYKZpDzGP3KXpEdavqgj+U"
-    Date: Mon, 11 Sep 2023 10:47:30 GMT
-    Connection: keep-alive
-    Keep-Alive: timeout=5
-
-    {"access_token":"<access_token>"}
-
-### Log into a user
-
-```http
-  POST auth/signin
-```
-
-| Parameter | Type     | Description            |
-| :-------- | :------- | :--------------------- |
-| `login`   | `string` | **Required**. A login. |
-
-    curl -i --location 'http://localhost:3001/auth/signin' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'login=${login}'
-
-#### Response
-
-    HTTP/1.1 200 OK
-    X-Powered-By: Express
-    Content-Type: application/json; charset=utf-8
-    Content-Length: 183
-    ETag: W/"b7-AqqNu4sQZEMVYVwXaye1nxB+5I8"
-    Date: Mon, 11 Sep 2023 10:48:52 GMT
-    Connection: keep-alive
-    Keep-Alive: timeout=5
-
-    {"access_token":"<access_token>"}
 
 ### Get user information
 

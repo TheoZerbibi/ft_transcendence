@@ -11,6 +11,7 @@ model User {
 	email			String
 	dAuth			Boolean 		@default(false)
 	avatar			String
+	secret			String?
 	created_at		DateTime 		@default(now())
 	updated_at		DateTime 		@updatedAt
 	last_login		DateTime 		@default(now())

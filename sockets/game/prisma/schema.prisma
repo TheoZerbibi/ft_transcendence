@@ -7,6 +7,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model blocked {
+  blocked_id                         Int
+  blocked_by_id                      Int
+  users_blocked_blocked_by_idTousers users @relation("blocked_blocked_by_idTousers", fields: [blocked_by_id], references: [id], onDelete: Cascade)
+  users_blocked_blocked_idTousers    users @relation("blocked_blocked_idTousers", fields: [blocked_id], references: [id], onDelete: Cascade)
+
+  @@id([blocked_by_id, blocked_id])
+}
+
 model channel_messages {
   id              Int           @id @default(autoincrement())
   content         String
@@ -41,6 +50,15 @@ model channels {
   channel_users channel_users[]
 }
 
+model direct_messages {
+  id         Int      @id @default(autoincrement())
+  content    String
+  created_at DateTime @default(now())
+  friend_id  Int
+  user_id    Int
+  users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
 model friends {
   user_id                        Int
   friend_id                      Int
@@ -49,6 +67,18 @@ model friends {
   users_friends_user_idTousers   users @relation("friends_user_idTousers", fields: [user_id], references: [id], onDelete: Cascade)
 
   @@id([user_id, friend_id])
+}
+
+model game_players {
+  player_id Int
+  game_id   Int
+  is_win    Boolean?
+  is_spec   Boolean?
+  score     Int      @default(0)
+  games     games    @relation(fields: [game_id], references: [id], onDelete: Cascade)
+  users     users    @relation(fields: [player_id], references: [id])
+
+  @@id([player_id, game_id])
 }
 
 model games {
@@ -71,6 +101,7 @@ model users {
   created_at                           DateTime          @default(now())
   updated_at                           DateTime
   last_login                           DateTime          @default(now())
+  secret                               String?
   blocked_blocked_blocked_by_idTousers blocked[]         @relation("blocked_blocked_by_idTousers")
   blocked_blocked_blocked_idTousers    blocked[]         @relation("blocked_blocked_idTousers")
   channel_users                        channel_users[]
@@ -78,36 +109,6 @@ model users {
   friends_friends_friend_idTousers     friends[]         @relation("friends_friend_idTousers")
   friends_friends_user_idTousers       friends[]         @relation("friends_user_idTousers")
   game_players                         game_players[]
-}
-
-model game_players {
-  player_id Int
-  game_id   Int
-  is_win    Boolean?
-  is_spec   Boolean?
-  score     Int      @default(0)
-  games     games    @relation(fields: [game_id], references: [id], onDelete: Cascade)
-  users     users    @relation(fields: [player_id], references: [id])
-
-  @@id([player_id, game_id])
-}
-
-model blocked {
-  blocked_id                         Int
-  blocked_by_id                      Int
-  users_blocked_blocked_by_idTousers users @relation("blocked_blocked_by_idTousers", fields: [blocked_by_id], references: [id], onDelete: Cascade)
-  users_blocked_blocked_idTousers    users @relation("blocked_blocked_idTousers", fields: [blocked_id], references: [id], onDelete: Cascade)
-
-  @@id([blocked_by_id, blocked_id])
-}
-
-model direct_messages {
-  id         Int      @id @default(autoincrement())
-  content    String
-  created_at DateTime @default(now())
-  friend_id  Int
-  user_id    Int
-  users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 enum RequestStatus {

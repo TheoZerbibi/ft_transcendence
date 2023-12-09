@@ -1,77 +1,143 @@
 <template>
-	<v-file-input v-model="selectedImage" label="Choose a file"></v-file-input>
-	<v-btn @click="uploadImage">Upload</v-btn>
-	<v-avatar>
-		<img :style="{
-			width: '100%',
-			height: '100%',
-		}" :src="user.avatar" />
-	</v-avatar>
+	<v-container>
+		<!-- Utilisez les composants Vuetify pour la mise en page -->
+		<v-row>
+			<v-col v-if="!is2FA">
+				<v-btn @click="generateQRCode" v-if="!qrCode">Generate QR Code</v-btn>
+			</v-col>
+			<v-form @submit.prevent="disableTwoFactorAuthentication" v-if="is2FA">
+				<v-text-field v-model="verificationCode" label="Enter Verification Code" required></v-text-field>
+				<v-btn type="submit">Disable 2FA</v-btn>
+			</v-form>
+			<v-form @submit.prevent="activateTwoFactorAuthentication" v-if="qrCode && !is2FA">
+				<v-text-field v-model="verificationCode" label="Enter Verification Code" required></v-text-field>
+				<v-btn type="submit">Activate 2FA</v-btn>
+			</v-form>
+		</v-row>
+
+		<img :src="`${qrCode}`" v-if="qrCode && !is2FA" />
+	</v-container>
 	<Snackbar />
 </template>
 
 <script lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import Snackbar from '../components/layout/Snackbar.vue';
 import { useSnackbarStore } from '../stores/snackbar';
 import { useUser } from '../stores/user';
+import QrcodeVue from 'qrcode.vue';
 
 const snackbarStore = useSnackbarStore();
 
 export default {
 	name: 'TestView',
-	components: { Snackbar },
+	components: { Snackbar, QrcodeVue },
 	setup() {
 		const userStore = useUser();
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
-		const setAvatar = computed(() => userStore.setAvatar);
+		const set2FA = computed(() => userStore.set2FA);
+		const is2FA = computed(() => userStore.is2FA);
 
 		return {
 			JWT,
 			user,
-			setAvatar,
+			set2FA,
+			is2FA,
 		};
 	},
 	data() {
 		return {
-			selectedImage: undefined as File[] | undefined,
+			qrCode: null,
+			verificationCode: '',
 		};
 	},
 	methods: {
-		async uploadImage() {
-			const formData = new FormData();
-
-			if (this.selectedImage[0] instanceof File) {
-				formData.append('file', this.selectedImage[0]);
-			} else {
-				return console.error('this.selectedImage is not a File object.');
-			}
-
+		async generateQRCode() {
+			const requestOptions = {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${this.JWT}`,
+					'Access-Control-Allow-Origin': '*',
+				},
+			};
 			try {
+				console.log(this.JWT);
 				const response = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/getCloudinaryLink`,
-					{
-						method: 'POST',
-						body: formData,
-						headers: {
-							Authorization: `Bearer ${this.JWT}`,
-						},
-					},
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/2fa/generate`,
+					requestOptions,
 				);
 				if (!response.ok) {
-					const error = await response.json()
+					const error = await response.json();
+					console.log(error);
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
-					console.log(response);
 					return;
 				}
-
-				const data = await response.json();
-				this.setAvatar(data.avatar);
+				const qrCodeArrayBuffer = await response.arrayBuffer();
+				const qrCodeBase64 = btoa(
+					new Uint8Array(qrCodeArrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), ''),
+				);
+				this.qrCode = 'data:image/png;base64,' + qrCodeBase64;
 			} catch (error) {
 				console.error(error);
 			}
 		},
+		async activateTwoFactorAuthentication() {
+			const requestBody = { code: this.verificationCode };
+			console.log(JSON.stringify(requestBody));
+			console.log(this.verificationCode);
+
+			try {
+				const response = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/2fa/turn-on`,
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${this.JWT}`,
+						},
+						body: JSON.stringify(requestBody),
+					},
+				);
+
+				const result = await response.json();
+				console.log(result);
+				snackbarStore.showSnackbar(result.message, 3000, 'green');
+				this.set2FA(true);
+			} catch (error) {
+				snackbarStore.showSnackbar('Error activating 2FA', 3000, 'red');
+				console.error(error);
+			}
+		},
+		async disableTwoFactorAuthentication() {
+			const requestBody = { code: this.verificationCode };
+			console.log(JSON.stringify(requestBody));
+			console.log(this.verificationCode);
+
+			try {
+				const response = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/2fa/turn-off`,
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${this.JWT}`,
+						},
+						body: JSON.stringify(requestBody),
+					},
+				);
+
+				const result = await response.json();
+				console.log(result);
+				snackbarStore.showSnackbar(result.message, 3000, 'green');
+				this.set2FA(false);
+			} catch (error) {
+				snackbarStore.showSnackbar('Error activating 2FA', 3000, 'red');
+				console.error(error);
+			}
+		},
+		// Autres méthodes nécessaires
 	},
 };
 </script>

@@ -1,53 +1,27 @@
 <template>
-	<main>
-		<!-- <section> -->
-			<v-container class="profileHome neonPolice">
-				<div class="box one">
-					Settings;
-					<link rel="icon" href="/favicon.ico" />
-					<v-btn class="customButton darkNeonPolice" rounded>About ℹ️</v-btn>
-					<v-btn class="customButton darkNeonPolice" rounded>Rules 📄</v-btn>
-					<v-btn class="customButton darkNeonPolice" rounded>Help ❓</v-btn>
-				</div>
-				<div class="box two">
-					User infos
-					<div>Profile picture</div>
-					<div>name 1</div>
-					<div>does not display username</div>
-				</div>
-				<div class="box three"></div>
-				<div class="box four">
-					<v-btn class="customButton darkNeonPolice" rounded>Modify 🖋</v-btn>
-					<v-btn class="customButton darkNeonPolice" rounded>Logout 🚪</v-btn>
-				</div>
-				<div class="box five">
-					Game stats;
-					<div></div>
-					<div></div>
-				</div>
-				<div class="box six">
-					<v-btn class="customButton darkNeonPolice" rounded @click="$router.push('chat')"
-						>Chat</v-btn
-					>
-				</div>
-				<div class="box seven">
-					Security
-					<v-btn class="customButton darkNeonPolice" rounded>Enable 2FA &#128506;</v-btn>
-				</div>
-				<div class="box eight">
-					Privacy;
-					<v-btn class="customButton darkNeonPolice" rounded>Delete account ❌</v-btn>
-				</div>
-				<div class="box nine">Match history</div>
-				<div class="box ten">
-					<br />
-					<br />
-					<v-btn class="customButton darkNeonPolice" rounded @click="$router.push('chat')"
-						>Play ▶️</v-btn
-					>
-				</div>
-			</v-container>
-		<!-- </section> -->
+	<main
+		:style="{
+			backgroundImage: 'url(/ui/ProfileBackground.png)',
+			backgroundPosition: 'center center',
+			backgroundSize: '120% 100%',										// Déforme l'image pour s'adapter à 100% de la largeur et de la hauteur
+			height: '100vh',													// Hauteur de la vue à 100%
+			// margin: 0,															// Supprime les marges par défaut du body
+		}"
+	>
+		<a href="https://bibliotheques.paris.fr/" target="_blank" class="clickable-area link1"></a>
+		<a href="/chat" class="clickable-area link2"></a>
+		<a href="https://meta.intra.42.fr/articles/read-the-french-manual-of-42paris" class="clickable-area link3"></a>
+		<div class="clickable-area link4" onclick="openModal()">
+        <!-- Utilisation de Vue pour gérer l'ouverture du modal -->
+        <div @click="openModal" class="clickable-area link2">
+            <div v-if="isModalOpen" class="modal">
+                <div class="modal-content">
+                    <span @click="closeModal" class="close">&times;</span>
+                    <p>Contenu du modal ici</p>
+                </div>
+            </div>
+        </div>
+    </div>
 	</main>
 </template>
 
@@ -72,92 +46,123 @@ export default defineComponent({
 			return this.$router.push({ name: `Login` });
 		}
 	},
+	data() {
+        return {
+            isModalOpen: false,
+        };
+    },
+	methods: {
+                redirectToPage(url) {
+                    window.location.href = url;
+                },
+                openModal() {
+                    this.isModalOpen = true;
+                },
+                closeModal() {
+                    this.isModalOpen = false;
+                },
+            },
 });
 </script>
 
 <style scoped>
-.profileHome {
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
-	grid-template-rows: 70px 70px 70px 70px 70px 70px 70px 70px 70px 70px 70px;
-	gap: 10px;
-	/* background-image: url(/src/assets/OmoriWallpapers/OmoriJournal01.png); */
-	/* background-size: cover; */
-}
-
-.box {
-	background-color: darkgreen;
-	background-size: cover;
-	display: flex;
-	flex-direction: column;
-	align-items: center; /* Align buttons to the bottom */
-	justify-content: space-between; /* Align items to the bottom */
-	border: 2px solid #333; /* Couleur de la bordure et épaisseur */
-	padding: 10px; /* Ajoutez un espace intérieur pour rendre la bordure plus visible */
-	text-align: center;
-	border: 5px solid transparent;
-  	border-image: linear-gradient(to right, #470979, #00d4ff) 5 repeat;
-}
-.one {
-	grid-row: 1 / 6;
-	background: url(/src/assets/OmoriPictures/Omori443.jpg) center no-repeat;
-	background-size: cover;
-}
-
-.customButton {
-	display: flex;
+.pageBackground {
+	margin: 0;
 	align-items: center;
-	min-width: auto;
-	padding-left: 20px;
+	justify-content: center;
+	background-color: black;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vw;
+	z-index: -1;
 }
 
-.two {
-	grid-row: 1 / 5;
-	background: url(/src/assets/OmoriPictures/Omori228.jpg) center no-repeat;
-	background-size: cover;
+.clickable-area {
+	position: absolute;
+	cursor: pointer;
 }
-.three {
-	grid-row: 1 / 5;
-	background: url(/src/assets/OmoriPictures/Omori244.jpg) center no-repeat;
-	background-size: cover;
+.clickable-area:hover {
+		cursor: url(https://www.omori-game.com/img/cursor/cursor.png), auto;
+	}
+
+
+.link1 {
+	top: 13%;
+	left: 5%;
+	width: 10%;
+	height: 20%;
+	/* Background color pour montrer la zone cliquable, vous pouvez le supprimer */
+	background-color: rgba(25, 218, 167, 0.3);
 }
-.four {
-	grid-row: 1 / 5;
-	background: url(/src/assets/OmoriPictures/Omori277.jpg) center no-repeat;
-	background-size: cover;
+.link2 {
+	top: 15%;
+	left: 17%;
+	width: 11%;
+	height: 13%;
+	/* Background color pour montrer la zone cliquable, vous pouvez le supprimer */
+	background-color: rgba(25, 218, 167, 0.3);
 }
-.five {
-	grid-column: 2 / 5;
-	grid-row: 5 / 8;
-	background: url(/src/assets/OmoriPictures/Omori416.jpg) center no-repeat;
-	background-size: cover;
+
+.link3 {
+	top: 70%;
+	left: 5%;
+	width: 8%;
+	height: 5%;
+	/* Background color pour montrer la zone cliquable, vous pouvez le supprimer */
+	background-color: rgba(25, 218, 167, 0.3);
 }
-.six {
-	grid-row: 6 / 8;
-	background: url(/src/assets/OmoriWallpapers/OmoriJournal02.png) center no-repeat;
-	background-size: cover;
+.link4 {
+	top: 10%;
+	left: 38%;
+	width: 7%;
+	height: 8%;
+	/* Background color pour montrer la zone cliquable, vous pouvez le supprimer */
+	background-color: rgba(25, 218, 167, 0.3);
 }
-.seven {
-	grid-row: 8 / 10;
-	background: url(/src/assets/OmoriPictures/Omori361.jpg) center no-repeat;
-	background-size: cover;
+
+/* Style du modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #fff;
+    z-index: 2;
 }
-.eight {
-	grid-row: 10 / 12;
-	background: url(/src/assets/OmoriPictures/Omori355.jpg) center no-repeat;
-	background-size: cover;
+
+.modal-content {
+    text-align: center;
 }
-.nine {
-	grid-column: 2 / 4;
-	grid-row: 8 / 12;
-	background: url(/src/assets/OmoriPictures/Omori358.jpg) center no-repeat;
-	background-size: cover;
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
-.ten {
-	grid-column: 4 / 5;
-	grid-row: 8 / 12;
-	background: url(/src/assets/OmoriPictures/Omori409.jpg) center no-repeat;
-	background-size: cover;
+
+.omoriButton {
+	max-width: 4.5rem;
+	padding: 0.25rem 0.125rem;
+	position: relative;
+	top: 0px;
+	flex: 0 0 calc(25% - 15px);
+	--tw-bg-opacity: 1;
+	background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+	--tw-text-opacity: 1;
+	color: rgb(255 255 255 / var(--tw-text-opacity));
+	box-shadow:
+		inset 0 0 0 1px #000,
+		inset 0 0 0 3px #fff;
+	text-transform: uppercase;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	-moz-tap-highlight-color: transparent;
+	-webkit-tap-highlight-color: transparent;
+	cursor: url(/img/cursor/cursor.png), auto;
 }
 
 @media screen and (max-width: 960px) {
