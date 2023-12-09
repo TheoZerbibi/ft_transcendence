@@ -1,30 +1,28 @@
 <template>
-	<!-- Channels list -->
-		<div class="discover-channels-list-container">
-		<h2>Discover Channels</h2>
-		<ul class="no-bullets" v-if="discoverChannels.length">
-			<li v-for="channel in discoverChannels" :key="channel.id">
+
+	<h2>Discover Channels</h2>
+
+	<div class="scrollable-content">
+
+		<!-- Users list -->
+		<v-list v-if="nonJoinedChannels.length">
+			<v-list-item v-for="channel in nonJoinedChannels" :key="channel.id">
 				{{ channel.name }}
-				<button @click="joinChannel(channel.name, channel.is_public)">+</button>
-			</li>
-		</ul>
-		<p v-else>~ there is no channel to discover ~</p>
-	</div>
-	
-	<!-- Search bar -->
-	<div>
-		<input type="text" v-model="searchTerm" placeholder="Search for a channel" />
-		<button @click="searchChannels(searchTerm)">Search</button>
+				<v-btn @click="joinChannel(channel.name)">+</v-btn>
+			</v-list-item>
+		</v-list>
+
 	</div>
 
-	<!-- Modal -->
-	<div class="modal" v-if="showModal">
-		<h2>Enter Password</h2>
-		<form @submit.prevent="joinPrivateChannel(pwd)">
-			<input type="password" v-model="pwd" />
-			<button type="submit">Submit</button>
-		</form>
-	</div>
+	<!-- Search bar -->
+	<v-col cols="9">
+		<input
+			v-model="searchTerm"
+			@keyup.enter="searchChannels"
+			placeholder="Search a channel..."
+		/>
+		<button @click="searchChannels">search</button>
+	</v-col>
 </template>
 
 <script lang="ts">
@@ -47,7 +45,7 @@ export default {
 	},
 	data() {
 		return {
-			discoverChannels: [],
+			nonJoinedChannels: [],
 			pwd: '',
 			showModal: false,
 			selectedPrivChannel: '',
@@ -55,11 +53,11 @@ export default {
 		};
 	},
 	beforeMount() {
-		this.fetchDiscoverChannels();
+		this.fetchNonJoinedChannels();
 	},
 	mounted() {},
 	methods: {
-		fetchDiscoverChannels: async function() {
+		fetchNonJoinedChannels: async function() {
 			try {
 				const response = await
 				fetch(
@@ -76,7 +74,7 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				this.discoverChannels = await response.json();
+				this.nonJoinedChannels = await response.json();
 			} catch (error) {
 				console.error(error);
 			}
@@ -101,7 +99,7 @@ export default {
 						snackbarStore.showSnackbar(error, 3000, 'red');
 						return;
 					});
-					this.fetchDiscoverChannels();
+					this.fetchNonJoinedChannels();
 				} else {
 					this.selectedPrivChannel = channel_name;
 					this.showModal = true;
@@ -135,7 +133,7 @@ export default {
 				});
 				this.selectedPrivChannel = '';
 				this.showModal = false;
-				this.fetchDiscoverChannels();
+				this.fetchNonJoinedChannels();
 			} catch (error) {
 				console.error(error);
 			}
@@ -158,14 +156,14 @@ export default {
 						snackbarStore.showSnackbar(error, 3000, 'red');
 						return;
 					});
-					this.discoverChannels = await response.json();
-					console.log('searchChannels', this.discoverChannels);
+					this.nonJoinedChannels = await response.json();
+					console.log('searchChannels', this.nonJoinedChannels);
 					this.searchTerm = '';
 				} catch (error) {
 					console.error(error);
 				}
 			} else {
-				this.fetchDiscoverChannels();
+				this.fetchNonJoinedChannels();
 			}
 		},
 	}
@@ -183,6 +181,10 @@ export default {
 	padding: 1rem;
 	border-radius: 0.5rem;
 	z-index: 100;
+}
+.scrollable-content {
+	max-height: 40vh;
+	overflow-y: auto;
 }
 
 </style>

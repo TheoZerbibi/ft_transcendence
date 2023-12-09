@@ -2,13 +2,15 @@
 	<div class="overlay" v-if="show">
 		<div class="modal">
 			<div class="modal-header">
-				<h3>@username</h3>
+				<h3>@
+				{{ selectedUserLogin }}
+				</h3>
 				<button @click="close" class="close-button">X</button>
 			</div>
 			<div class="modal-body">
 				<div class="user-info">
 					<img src="avatar.jpg" alt="Avatar" class="avatar"/>
-					<h3>displayName</h3>
+					<h3>{{ selectedUser.displayName }}</h3>
 				</div>
 				<div class="user-stats">
 					<h4>Stats</h4>
@@ -28,9 +30,9 @@
 	</div>
 <!-- 	<div class="overlay">
 		<div class="modal" v-if="show">
-			<div class="modal-content" v-if="selected_user">
-				<img :src="selected_user.avatar" alt="avatar" />
-				<h3>{{ selected_user.display_name }}</h3>
+			<div class="modal-content" v-if="selectedUser">
+				<img :src="selectedUser.avatar" alt="avatar" />
+				<h3>{{ selectedUser.display_name }}</h3>
 				<p>...infos on user</p>
 				<p>...infos on user</p>
 				<p>...infos on user</p>
@@ -50,7 +52,7 @@ const snackbarStore = useSnackbarStore();
 
 export default {
 	props: {
-		selected_user_login: {
+		selectedUserLogin: {
 			type: String,
 			default: '',
 		},
@@ -67,7 +69,7 @@ export default {
 	},
 	data() {
 		return {
-			selected_user: {},
+			selectedUser: {},
 		};
 	},
 	beforeMount() {
@@ -79,13 +81,13 @@ export default {
 			try {
 				console.log("[UserProfileModal.vue:fetchSelectedUserInfos]" 
 							+ "\nshow_modal: " + this.show 
-							+ "\nselected_user_login: " + this.selected_user_login);
-				if (!this.show || !this.selected_user_login || this.selected_user_login === '') {
+							+ "\nselected_user_login: " + this.selectedUserLogin);
+				if (!this.show || !this.selectedUserLogin || this.selectedUserLogin === '') {
 					// TODO : display stg ?
 					return;
 				}
 				const response = await fetch (
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/profile/${this.selected_user_login}`, 
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/profile/${this.selectedUserLogin}`, 
 					{
 						method: 'GET',
 						headers: {
@@ -98,7 +100,7 @@ export default {
 					return;
 				});
 				console.log("[UserProfileModal.vue:fetchSelectedUserInfos] response: " + response);
-				this.selected_user = await response.json();
+				this.selectedUser = await response.json();
 			} catch (error) {
 				console.error(error);
 			}
@@ -110,15 +112,15 @@ export default {
 /* 	setup(props) {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
-		const selected_user = ref({});
+		const selectedUser = ref({});
 		const fetchSelectedUserInfos = async function() {
 			try {
-				if (!props.show || !props.selected_user_login || props.selected_user_login === '') {
+				if (!props.show || !props.selectedUserLogin || props.selectedUserLogin === '') {
 					// TODO : display stg ?
 					return;
 				}
 				const response = await fetch (
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/profile/${props.selected_user_login.value}`, 
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/profile/${props.selectedUserLogin.value}`, 
 					{
 						method: 'GET',
 						headers: {
@@ -130,22 +132,22 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				selected_user.value = await response.json();
+				selectedUser.value = await response.json();
 			} catch (error) {
 				console.error(error);
 			}
-			console.log("[Friends.vue:setup(props)] selected_user: " + selected_user.value);
+			console.log("[Friends.vue:setup(props)] selectedUser: " + selectedUser.value);
 			console.log("[Friends.vue:setup(props)] show: " + props.show);
 		};
 		return {
 			JWT,
 			user,
-			selected_user,
+			selectedUser,
 			fetchSelectedUserInfos,
 		};
 	},
 	beforeMount() {
-		console.log("[Friends.vue:beforeMount] selected_user: " + this.selected_user);
+		console.log("[Friends.vue:beforeMount] selectedUser: " + this.selectedUser);
 		console.log("[Friends.vue:beforeMount] show: " + this.show);
 		this.fetchSelectedUserInfos();
 	},

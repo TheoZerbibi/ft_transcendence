@@ -24,7 +24,7 @@
 
 							<!-- Colonne de droite pour MessagesBox (3/4 de l'écran) -->
 							<v-col cols="12" md="9">
-								<MessagesBox :selected_friend_login="selected_friend_login"></MessagesBox>
+								<MessagesBox :selected-friend-login="selectedFriendLogin"></MessagesBox>
 							</v-col>
 						</v-row>
 					</v-window-item>
@@ -86,7 +86,7 @@ export default defineComponent({
 	},
 	data() {
 		return {
-			selected_friend_login: '',
+			selectedFriendLogin: '',
 		}
 	},
 	beforeMount() {
@@ -95,9 +95,9 @@ export default defineComponent({
 	mounted() {
 	},
 	methods: {
-		updateSelectedFriend(selected_friend_login: string) {
-			this.selected_friend_login = selected_friend_login;
-			console.log("[Chat.vue:updateSelectedFriend] selected_friend_login: " + this.selected_friend_login);
+		updateSelectedFriend(selectedFriendLogin: string) {
+			this.selectedFriendLogin = selectedFriendLogin;
+			console.log("[Chat.vue:updateSelectedFriend] selectedFriendLogin: " + this.selectedFriendLogin);
 		},
 	}
 });
