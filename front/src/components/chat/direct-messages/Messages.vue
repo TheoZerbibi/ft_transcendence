@@ -33,12 +33,15 @@
 				</v-col>
 			</v-row>
 	</v-container>
+	<Snackbar></Snackbar>
 </template>
 
 <script lang="ts">
 import { computed, ref, watch } from 'vue';
 import { useUser } from '../../../stores/user';
 import { useSnackbarStore } from '../../../stores/snackbar';
+
+import Snackbar from '../../layout/Snackbar.vue';
 import Date from '../../utils/Date.vue';
 
 const userStore = useUser();
@@ -46,6 +49,7 @@ const snackbarStore = useSnackbarStore();
 
 export default {
 	components: {
+		Snackbar,
 		Date,
 	},
 	props: {

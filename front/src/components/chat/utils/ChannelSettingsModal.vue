@@ -62,30 +62,37 @@
 				</v-card-text>
 				<v-card-actions>
 					<v-spacer></v-spacer>
-					<v-btn color="blue darken-1" text @click="saveSettings">Save</v-btn>
 					<v-btn color="grey darken-1" text @click="dialog = false">Cancel</v-btn>
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
 	</div>
+	<Snackbar></Snackbar>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+
+import { computed } from 'vue';
 import { useUser } from '../../../stores/user';
 import { useSnackbarStore } from '../../../stores/snackbar';
+import type { PropType } from 'vue';
+
+import Snackbar from '../../layout/Snackbar.vue';
 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 
+interface Types {
+	selectedChannelName: string;
+	show: boolean;
+}
+
 export default {
+  components: { Snackbar },
 
 	props: {
-		selectedChannelName: {
-			type: String,
-			default: '',
-		},
-		show: Boolean,
+		selectedChannelName: String as PropType<Types['selectedChannelName']>,
+		show: Boolean as PropType<Types['show']>,
 	},
 	setup() {
 		const JWT = computed(() => userStore.getJWT);
@@ -100,7 +107,7 @@ export default {
 		return {
 			dialog: true,
 			channelName: '',
-			users: [], // This should be a list of users in the channel
+			users: [],
 			selectedUser: null,
 			muteDuration: 0,
 			channelPassword: '',
@@ -158,7 +165,8 @@ export default {
 				console.error(error);
 			}
 		},
-/* 		toggleBan(user) {
+/*
+		toggleBan(user) {
 			// Logic to ban or unban the user
 		},
 		kickUser(user) {
@@ -167,16 +175,52 @@ export default {
 		muteUser(user) {
 			// Logic to mute the user for the specified duration
 		},
-		saveSettings() {
-			// Logic to save the settings
-			this.dialog = false;
+*/
+		deleteChannel: async function() {
+			try {
+				await
+				fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannelName}`,
+					{
+						method: 'DELETE',
+						headers: {
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+					}
+				)
+				.catch((error: any) => {
+					snackbarStore.showSnackbar(error, 3000, 'red');
+					return;
+				});
+				snackbarStore.showSnackbar('Channel deleted', 3000, 'green');
+			} catch (error) {
+				console.error(error);
+			}
 		},
-		deleteChannel() {
-			// Logic to delete the channel
+		leaveChannel: async function() {
+			try {
+				const channelName: string = this.selectedChannelName;
+				await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${channelName}/leave`,
+					{
+						method: 'DELETE',
+						headers: {
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+					}
+				)
+				.catch((error: any) => {
+					snackbarStore.showSnackbar(error, 3000, 'red');
+					return;
+				});
+				snackbarStore.showSnackbar('Channel left', 3000, 'green');
+				//this.$emit('channel-left'); // TODO : emit event to refresh the channel list, messages etc
+			} catch (error) {
+				console.error(error);
+			}
 		},
-		leaveChannel() {
-			// Logic to leave the channel
-		}, */
 	},
 };
 </script>

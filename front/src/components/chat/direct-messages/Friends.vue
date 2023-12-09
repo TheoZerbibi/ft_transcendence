@@ -19,6 +19,8 @@
 	
 	<!-- Modal: friend profile -->
 	<UserModal v-if="showInfos" :selectedFriendLogin="selectedFriend" :show="showInfos" @close="closeModal"/>
+
+	<Snackbar></Snackbar>
 </template>
 
 <script lang="ts">
@@ -27,6 +29,7 @@ import { computed } from 'vue';
 import { useUser } from '../../../stores/user';
 import { useSnackbarStore } from '../../../stores/snackbar';
 
+import Snackbar from '../../layout/Snackbar.vue';
 import UserModal from '../utils/UserProfileModal.vue';
 
 const userStore = useUser();
@@ -43,6 +46,7 @@ export default {
 		};
 	},
 	components: {
+		Snackbar,
 		UserModal,
 	},
 	data() {
