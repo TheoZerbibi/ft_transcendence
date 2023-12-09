@@ -7,7 +7,7 @@
 						<v-list>
 							<v-list-item v-for="message in messages" :key="message.id">
 								<v-list-item-subtitle>
-									{{ message.user_name }}
+									{{ message.username }}
 									{{ message.created_at }}
 								</v-list-item-subtitle>
 								{{ message.content }}
@@ -61,7 +61,6 @@ export default {
 		let messages = ref([]);
 		const fetchMessages = async function() {
 			try {
-				console.log("[Message.vue:fetchMessages] selectedFriendLogin: " + props.selectedFriendLogin);
 				if (!props.selectedFriendLogin || props.selectedFriendLogin === '') {
 					/* TODO : display stg ? */
 					return;
@@ -116,10 +115,6 @@ export default {
 				if (this.input.trim() === '') {
 					return;
 				}
-				console.log("[Message.vue:sendMessage] selectedFriendLogin: " + this.selectedFriendLogin
-								+ "\ntype: " + this.selectedFriendLogin.type 
-								+ "\ninput: " + this.input
-								+ "\ntype: " + this.input.type);
 				await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/send`,
 					{
