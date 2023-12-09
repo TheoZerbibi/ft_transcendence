@@ -111,7 +111,6 @@ export class DirectMessageService {
 
 	async createDirectMessageWith(user: User, dto: CreateDirectMessageDto): Promise<DirectMessageDto> {
 		try {
-			console.log('[direct-message.service.ts:createDM]: dto: ' + dto);
 			const targetUser: User | null = await this.userService.findUserByName(dto.target_login);
 			if (!targetUser) throw new BadRequestException(`User ${dto.target_login} not found`);
 
