@@ -157,6 +157,7 @@ export default {
 </script>
 
 <style scoped>
+<<<<<<< HEAD
 @font-face {
 	font-family: 'OMORI_MAIN';
 	src: url('/fonts/OMORI_GAME.ttf') format('truetype-variations');
@@ -186,4 +187,7 @@ h2 {
 	border-radius: 1rem;
 	overflow: auto;
 }
+=======
+
+>>>>>>> 8efbc10 (style: removed all css from components)
 </style>

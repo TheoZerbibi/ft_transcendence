@@ -72,44 +72,4 @@ export default {
 
 <style scoped>
 
-@font-face {
-	font-family: 'OMORI_MAIN';
-	src: url('/fonts/OMORI_GAME.ttf') format('truetype-variations');
-}
-
-div {
-	font-family: 'OMORI_MAIN';
-}
-
-h2 {
-	font-family: 'OMORI_MAIN', sans-serif;
-	font-size: xx-large;
-	text-align: center;
-	color: rgb(65, 37, 37);
-	text-shadow:
-		1px 1px 2px plum,
-		0 0 1em rgb(255, 123, 255),
-		0 0 0.2em rgb(255, 255, 255);
-}
-
-.no-bullets {
-	list-style-type: none;
-}
-
-.friends-container {
-	background-color: rgb(0, 0, 0, 0.8);
-	padding: 1rem;
-	border-radius: 1rem;
-	overflow: auto;
-}
-
-.online-badge {
-  height: 10px;
-  width: 10px;
-  background-color: green;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 5px;
-}
-
 </style>
