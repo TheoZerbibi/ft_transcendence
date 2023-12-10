@@ -7,9 +7,15 @@
 		<!-- Friend Requests list -->
 		<v-list v-if="listFriendRequests.length">
 			<v-list-item v-for="request in listFriendRequests" :key="request.id">
-				{{ request.display_name }}
-				<AcceptDeclineButton :login="request.login" :response="true" @respond="respondRequest"/>
-				<AcceptDeclineButton :login="request.login" :response="false" @respond="respondRequest"/>
+				<template v-if="request.user_login == user.login">
+					{{ request.target_display_name }}
+					<v-btn @click="cancelRequest(request.target_display_name)">Cancel</v-btn>
+				</template>
+				<template v-else>
+					{{ request.display_name }}
+					<AcceptDeclineButton :login="request.login" :response="true" @respond="respondRequest"/>
+					<AcceptDeclineButton :login="request.login" :response="false" @respond="respondRequest"/>
+				</template>
 			</v-list-item>
 		</v-list>
 
@@ -66,6 +72,7 @@ export default {
 	data() {
 		return {
 			listFriendRequests: [],
+			listPendingRequests: [],
 			users: [],
 			searchTerm: '',
 		};
@@ -93,8 +100,8 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				const data = await response.json();
-				this.listFriendRequests = data;
+				this.listFriendRequests = await response.json();
+				console.log('[AddFriends.vue:fetchlistFriendRequests] user_id: ' + this.user.id);
 			} catch (error) {
 				console.error(error);
 			}
@@ -125,6 +132,31 @@ export default {
 				console.log(error);
 			}
 		},
+		cancelRequest: async function(target_login: string) {
+			try {
+				await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends`,
+					{
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+						body: JSON.stringify({
+							login: target_login,
+						}),
+					}
+				).catch((error: any) => {
+					snackbarStore.showSnackbar(error, 3000, 'red');
+					return;
+				});
+				this.fetchlistFriendRequests();
+				this.fetchUsers();
+			} catch (error) {
+				console.log(error);
+			}
+		},
 		fetchUsers: async function() {
 			try {
 				const response = await
@@ -142,8 +174,7 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				const data = await response.json();
-				this.users = data;
+				this.users = await response.json();
 				console.log(this.users);
 			} catch (error) {
 				console.error(error);
@@ -170,8 +201,8 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				console.log('Friend request sent to', username);
 				this.fetchUsers();
+				this.fetchlistFriendRequests();
 			} catch (error) {
 				console.error(error);
 			}
