@@ -106,6 +106,10 @@ export class GameService {
 		const gameUser: IUser = game.getUser(user.id);
 		if (!gameUser) return;
 		game.removeUser(gameUser);
+		if (!gameUser.isSpec && game.getWaitingState()) {
+			gameUser.isConnected = false;
+			return game;
+		}
 
 		if (!gameUser.isSpec && !game.isEnded()) {
 			gameUser.isConnected = false;

@@ -41,7 +41,7 @@ export class Game implements IGame {
 		return this.inProgress;
 	}
 
-	isWaitingState(): boolean {
+	getWaitingState(): boolean {
 		return this.waitingState;
 	}
 
@@ -150,6 +150,7 @@ export class Game implements IGame {
 
 	async startGame(): Promise<void> {
 		this.inProgress = true;
+		this.waitingState = false;
 		this.gameData.startingDate = new Date();
 		await this.prismaService.games.update({
 			where: {

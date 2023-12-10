@@ -7,12 +7,12 @@
 				backgroundPosition: 'center center',
 				backgroundSize: 'cover',
 			}"
-			class="container d-flex align-center justify-center"
+			class="game-container d-flex align-center justify-center"
 		>
-			<div v-if="waitingStart" class="d-flex align-center justify-center">
+			<div v-if="waitingStart" class="d-flex align-center justify-center game-opponent-overlay">
 				<GameOpponent :leftPlayer="leftPlayer" :rightPlayer="rightPlayer" />
 			</div>
-			<div v-else>
+			<div>
 				<GameCanvas />
 				<span class="d-flex justify-center align-center ga-10">
 					<span class="d-flex justify-center ga-1">
@@ -182,6 +182,8 @@ export default {
 								this.leftPlayer = null;
 								this.rightPlayer = null;
 								snackbarStore.showSnackbar('Your opponent has left the game', 3000);
+								this.disconnect();
+								this.$router.push({ name: 'GameMenu' });
 							});
 
 							this.socket.on('game-start', (data: any) => {
@@ -192,11 +194,12 @@ export default {
 
 							this.socket.on('game-end', (data: any) => {
 								this.disconnect();
-								if (!snackbarStore.snackbar)
-									snackbarStore.showSnackbar('Game is ended', 3000);
+								if (!snackbarStore.snackbar) snackbarStore.showSnackbar('Game is ended', 3000);
 								this.dialogVisible = true;
 								this.apiData = data;
-								this.gameEnded = true;
+								setTimeout(() => {
+									this.gameEnded = true;
+								}, 8800);
 								if (data.winner) console.log(`Winner : ${data.winner.user.login}`);
 							});
 
@@ -262,14 +265,23 @@ export default {
 };
 </script>
 <style scoped>
-@font-face {
-	font-family: 'OMORI_MAIN';
-	src: url('/fonts/OMORI_GAME.ttf') format('truetype-variations');
+.game-container {
+	position: relative;
+	width: 100vw;
+	height: 100vh;
 }
 
-@font-face {
-	font-family: 'OMORI_DISTURBED';
-	src: url('/fonts/OMORI_GAME2.ttf') format('truetype-variations');
+.game-opponent-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10; /* Une valeur élevée pour être au-dessus des autres contenus */
+	background-color: rgba(0, 0, 0, 0.5); /* Optionnel: fond semi-transparent */
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 h4 {

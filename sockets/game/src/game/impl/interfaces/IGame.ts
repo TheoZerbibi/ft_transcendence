@@ -15,7 +15,7 @@ export interface IGame {
 	isInProgress: () => boolean;
 	isEnded: () => boolean;
 
-	isWaitingState: () => boolean;
+	getWaitingState: () => boolean;
 	setWaitingState: (state: boolean) => void;
 
 	getGameUID: () => string;
