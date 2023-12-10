@@ -16,6 +16,9 @@
 			</label>
 		</div>
 	</form>
+	<!-- <Button @click="handleFileChange" :style="{ width: width + 'px', height: height + 'px'}">
+		<slot></slot>
+	</Button> -->
 </template>
 
 <script lang="ts">

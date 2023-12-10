@@ -10,14 +10,20 @@
 		>
         <v-row
 			align="center"
+			justify="center"
 			no-gutters
 			xs12
 			md6
-			class="d-flex justify-center align-center"
+			class="d-flex"
 			style="height: 100vh;"
 		>
 			
-			<div v-if="step === 0" class="door-container align-center justify-center" align="center">
+			<div 
+				v-if="step === 0"
+				class="door-container"
+				align="center"
+				justify="center"
+			>
 				<audio controls id="myVideo" autoplay loop hidden>
 					<source src="/sounds/002-WHITE SPACE.mp3" type="audio/wav" />
 					Your browser does not support the audio element.
@@ -31,8 +37,8 @@
 						@mouseleave="hovering = false"
 						:class="{zooming: isZooming}"
 						cover
-						:height="400"
-						:width="130"
+						height="50dvh"
+						width="16dvh"
 						:style="{
 							transform: `scale(${zoomLevel})`,
 							transformOrigin: '90% 45%',
@@ -53,7 +59,7 @@
 					}" />
 			</div>
 			
-			<div v-if="step > 0" class="align-center justify-center">
+			<div v-if="step > 0" align="center" class="justify-center">
 				<audio controls id="myVideo" autoplay loop hidden>
 					<source src="/sounds/004-Spaces In-between.mp3" type="audio/wav" />
 					Your browser does not support the audio element.
@@ -65,8 +71,13 @@
 						@newInput="newUser.display_name = $event"
 						placeholder="Enter your name here..."
 						@keyup.enter="nextStep"
-						/>
-					<Button @click="nextStep" width="250px">that's my name!</Button>
+						@click="nextStep"
+						:width="250"
+						:height="50"
+						>
+						that's my name!
+					</InputBar>
+
 				</div>
 				
 				<div v-if="step === 2">
@@ -88,7 +99,7 @@
 							</template>
 						</UploadFile>
 					</div>
-					<Button @click="nextStep" :disabled="cantSkip" width="250px">That's me!</Button>
+					<Button @click="nextStep" :disabled="cantSkip" width="250" :height="50">That's me!</Button>
 				</div>
 				
 				<div v-if="step === 4">
@@ -414,7 +425,7 @@ export default {
     		        doorOpacity -= 0.01;
     		        door.style.opacity = doorOpacity as unknown as string;
     		    }
-    		}, 5); 
+    		}, 10); 
 		},
 	},
 };

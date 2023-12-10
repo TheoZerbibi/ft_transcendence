@@ -5,19 +5,36 @@
 		class="white--text omoriFont font-weight-black input-field uppercase-placeholder"
 		:placeholder="placeholder"
 		v-model="inputValue"
+		:style="{ width: width + 'px', height: height + 'px' }"
+		@click.prevent.stop
 		/>
+		<Button @click="handleInput" :style="{ width: width + 'px', height: height + 'px'}">
+			<slot></slot>
+		</Button>
 	</form>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
+import Button from './Button.vue';
 
 export default defineComponent({
 	name: "InputBar",
+	components: {
+		Button
+	},
 	props: {
 		placeholder: {
 			type: String,
 			default: 'Input'
+		},
+		width: {
+			type: String,
+			default: '250px'
+		},
+		height: {
+			type: String,
+			default: '50px'
 		},
 	},
 	setup(props, { emit }) {
@@ -39,16 +56,6 @@ export default defineComponent({
 <style scoped>
 .uppercase-placeholder::placeholder {
     text-transform: uppercase;
-}
-
-.input-field-stroke {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background-color: #ffffff;
-	position: relative;
-	width: 250px;
-	height: 50px;
 }
 
 .input-field {
