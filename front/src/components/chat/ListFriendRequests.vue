@@ -2,8 +2,8 @@
 	<div class="overlay">
 		<div class="friend-requests-container">
 			<h2>Friend Requests</h2>
-			<ul class="no-bullets" v-if="friendRequests.length">
-				<li v-for="request in friendRequests" :key="request.id">
+			<ul class="no-bullets" v-if="ListFriendRequests.length">
+				<li v-for="request in ListFriendRequests" :key="request.id">
 					{{ request.display_name }} <!-- L'objet contient aussi l'avatar si tu veux -->
 					<button class="button-spacing" @click="respondRequest(request.login, true)">v</button>
 					<button class="button-spacing" @click="respondRequest(request.login, false)">X</button>
@@ -34,15 +34,23 @@ export default {
 	},
 	data() {
 		return {
+<<<<<<< HEAD
 			friendRequests: [],
+=======
+			ListFriendRequests: []
+>>>>>>> 75920e1 (feat: discover channel & joined channels)
 		};
 	},
 	beforeMount() {
-		this.fetchFriendRequests();
+		this.fetchListFriendRequests();
 	},
 	mounted() {},
 	methods: {
+<<<<<<< HEAD
 		fetchFriendRequests: async function () {
+=======
+		fetchListFriendRequests: async function() {
+>>>>>>> 75920e1 (feat: discover channel & joined channels)
 			try {
 				const response = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/requests`,
@@ -58,7 +66,7 @@ export default {
 					return;
 				});
 				const data = await response.json();
-				this.friendRequests = data;
+				this.ListFriendRequests = data;
 			} catch (error) {
 				console.error(error);
 			}
@@ -138,7 +146,7 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				this.fetchFriendRequests();
+				this.fetchListFriendRequests();
 			} catch (error) {
 				console.log(error);
 >>>>>>> d4df5e1 (feat(front): accept or decline friend request):front/src/components/chat/ListFriendRequests.vue
@@ -175,7 +183,7 @@ h2 {
 .friend-requests-container {
 	position: absolute;
 	top: 10%;
-	left: 5%;
+	left: 50%;
 	margin: auto;
 	background-color: rgb(0, 0, 0, 0.8);
 	padding: 1rem;
