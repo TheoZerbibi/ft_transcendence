@@ -89,6 +89,21 @@ export class ChannelService {
 		}));
 	}
 
+	async searchChannels(user: User, search: string): Promise<ChannelListElemDto[] | null> {
+		const result = this.localChannels.filter((channel) => {
+			const isBanned = channel.getUsers().every((channelUser) => channelUser.getUserId() === user.id && channelUser.isBanned());
+			return channel.getName().includes(search) && !isBanned;
+		});
+		return result.map((channel) => {
+			return {
+				name: channel.getName(),
+				is_public: channel.getIsPublic(),
+				password: channel.getPassword(),
+				updated_at: channel.getUpdatedAt(),
+			};
+		});
+	}
+
 	/********************************** Channel Access *********************************/
 
 	// Get a channel by its name if allowed

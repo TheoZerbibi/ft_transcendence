@@ -5,7 +5,7 @@
 			<ul class="no-bullets" v-if="blockedUsers.length">
 				<li v-for="user in blockedUsers" :key="user.id">
 					{{ user.display_name }} <!-- L'objet contient aussi l'avatar si tu veux -->
-					<button @click="unblockUser(user.login)">Unblock</button>
+					<button @click="unblockUser(user.login)">x</button>
 				</li>
 			</ul>
 			<p v-else>~ u havent blocked anyone for now ~</p>

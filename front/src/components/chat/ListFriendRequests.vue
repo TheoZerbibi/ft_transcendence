@@ -6,7 +6,7 @@
 				<li v-for="request in ListFriendRequests" :key="request.id">
 					{{ request.display_name }} <!-- L'objet contient aussi l'avatar si tu veux -->
 					<button class="button-spacing" @click="respondRequest(request.login, true)">v</button>
-					<button class="button-spacing" @click="respondRequest(request.login, false)">X</button>
+					<button class="button-spacing" @click="respondRequest(request.login, false)">x</button>
 				</li>
 			</ul>
 			<p v-else>~ no friend request here ~</p>

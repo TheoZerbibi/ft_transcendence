@@ -1,14 +1,22 @@
 <template>
 	<div class="overlay">
-		<div class="discover-users-container">
+
+		<!-- Users list -->
+		<div>
 			<h2>Discover users</h2>
-			<ul class="no-bullets" v-if="users.length">
+			<ul v-if="users.length">
 				<li v-for="userElem in users" :key="userElem.id"> <!-- I call it "user elem" so we dont overlap the userStore.getUser that get the author of the request -->
 					{{ userElem.display_name }}
-					<button class="button-spacing" @click="sendFriendRequest(userElem.login)">+</button>
+					<button @click="sendFriendRequest(userElem.login)">+</button>
 				</li>
 			</ul>
 			<p v-else>~ sorry, no users for now ~</p>
+		</div>
+
+		<!-- Search bar -->
+		<div>
+			<input type="text" v-model="searchTerm" placeholder="Search for a user" />
+			<button @click="searchUsers(searchTerm)">Search</button>
 		</div>
 	</div>
 </template>
@@ -33,15 +41,16 @@ export default {
 	},
 	data() {
 		return {
-			users: []
+			users: [],
+			searchTerm: '',
 		};
 	},
 	beforeMount() {
-		this.fetchusers();
+		this.fetchUsers();
 	},
 	mounted() {},
 	methods: {
-		fetchusers: async function() {
+		fetchUsers: async function() {
 			try {
 				const response = await
 				fetch(
@@ -89,6 +98,32 @@ export default {
 				console.log('Friend request sent to', username);
 			} catch (error) {
 				console.error(error);
+			}
+		},
+		searchUsers: async function(searchTerm: string) {
+			if (searchTerm.length) {
+				try {
+					const response = await
+					fetch(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/search/${searchTerm}`,
+					{
+						method: 'GET',
+						headers: {
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+					}
+					).catch((error: any) => {
+						snackbarStore.showSnackbar(error, 3000, 'red');
+						return;
+					});
+					this.users = await response.json();
+					this.searchTerm = '';
+				} catch (error) {
+					console.error('Search error: ', error);
+				}
+			}
+			else {
+				this.fetchUsers();
 			}
 		},
 	}

@@ -2,19 +2,16 @@
 	<v-container fluid>
 		<!-- Users and friends -->
 		<v-row>
-			<v-col cols="2">
+			<v-col cols="3">
 				<ListUsers/>
 			</v-col>
-			<v-col cols="2">
-				<SearchUser/>
-			</v-col>
-			<v-col cols="2">
+			<v-col cols="3">
 				<ListFriends/>
 			</v-col>
-			<v-col cols="2">
+			<v-col cols="3">
 				<ListFriendRequests/>
 			</v-col>
-			<v-col cols="2">
+			<v-col cols="3">
 				<ListBlocked/>
 			</v-col>
 			<!-- Vous pouvez ajouter plus de composants ici avec <v-col> si nécessaire -->
@@ -38,7 +35,6 @@ import { defineComponent } from 'vue';
 
 // Components
 import ListUsers from '../components/chat/DiscoverUsers.vue';
-import SearchUser from '../components/chat/SearchUser.vue';
 import ListFriends from '../components/chat/ListFriends.vue';
 import ListFriendRequests from '../components/chat/ListFriendRequests.vue';
 import ListBlocked from '../components/chat/ListBlocked.vue';
@@ -48,7 +44,14 @@ import ListJoinedChannels from '../components/chat/ListJoinedChannels.vue';
 export default defineComponent({
 	name: 'ChatView',
 
-	components: { ListUsers, SearchUser, ListFriends, ListFriendRequests, ListBlocked, DiscoverChannels, ListJoinedChannels },
+	components: {
+		ListUsers,
+		ListFriends,
+		ListFriendRequests,
+		ListBlocked,
+		DiscoverChannels,
+		ListJoinedChannels
+	},
 	setup() {
 		const tab = ('users-friends');
 		return {

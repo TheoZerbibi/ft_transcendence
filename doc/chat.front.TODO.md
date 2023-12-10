@@ -2,13 +2,15 @@
 - [ ] snackbar doesnt work in chat
 - [ ] pwd verif problem in front (back receives undefined)
 - [ ] responsive
+- [ ] limit input size in front
+- [ ] click on user = modal window user profile
 
 **LIST**
 ______________________________________________________________________________________
 ## DIRECT MESSAGES
 
 - [x] List of users (discover)
-- [ ] Search bar
+- [x] Search bar
 
 - [x] List of friend requests (will be the first users of user list)
 	- [x] accept
@@ -17,28 +19,20 @@ ________________________________________________________________________________
 
 - [x] List of friends
   - [ ] (+ status) *Isma*
-- [ ] Invite friend to play pong game (must be in chat interface) *Theo*
+
+- [ ] Access other users profile through chat interface
+  - stats of user (cf ### Profile)
+  - [ ] block / unblock
+  - [ ] challenge *Theo*
+
 - [ ] List of dms with friend
 	- [ ] update of list with received messages *Isma*
 - [ ] Send dm to friend
 
-### Settings
-
-- [x] List of blocked users
-- [x] Block a user
-- [x] Unblock a blocked user
-*(these settings could also be in profile)*
-
-|-------------------|-----------------|---------|-----------------|---------|----|
-| discover users    | search          | friends | friend requests | blocked |... |
-| discover channels | joined channels | ...  	| ... 			  | ...		|... |
-|-------------------|-----------------|---------|-----------------|---------|----|
-
-
 ______________________________________________________________________________________
 ## CHANNELS
 
-- [x] List of non joined channels (discover) (cadeans devant ceux qui sont prives?)
+- [x] List of non joined channels (discover) (cadenas devant ceux qui sont prives?)
 - [ ] Search bar
 - [x] Join a new channel 
 	- [ ] if private: input pwd
@@ -57,20 +51,15 @@ ________________________________________________________________________________
 
 - **Owner and admin**
 - [ ] Change channel's name (not mandatory)
-- [ ] Ban / unban channel user
-- [ ] Kick channel user
-- [ ] Mute for a limited time / unmute channel user
+- [ ] Ban / unban channel user (except owner)
+- [ ] Kick channel user (except owner)
+- [ ] Mute for a limited time / unmute channel user (except owner)
 
 **Owner, admin and users**
 - [ ] Leave channel
 
 ______________________________________________________________________________________
 ## PROFILE 
-
-- [ ] Update username
-- [ ] Update avatar *Theo*
-- [ ] Enable / disable two-factor identification *Theo*
-- [ ] Delete account
 
 - [ ] Stats of a user : *Theo*
 	- [ ] wins
@@ -82,4 +71,13 @@ ________________________________________________________________________________
 	- [ ] lvl games
 	- [ ] ladder
 
-- List of blocked users? cf DMs
+### Settings
+
+- [ ] Update username (not mandatory)
+- [ ] Update avatar (not mandatory) *Theo*
+- [ ] Enable / disable two-factor identification *Theo*
+- [ ] Delete account
+
+- [x] List of blocked users
+- [x] Block a user
+- [x] Unblock a blocked user

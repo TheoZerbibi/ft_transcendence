@@ -52,6 +52,14 @@ export class ChannelController {
 		return await this.channelService.getJoinedChannelNames(user);
 	}
 
+	@Get('list/search/:search')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'Search channels' })
+	@ApiBearerAuth('JWT-auth')
+	async searchChannels(@GetUser() user: User, @Param('search') search: string): Promise<ChannelListElemDto[]> {
+		return await this.channelService.searchChannels(user, search);
+	}
+
 	/********************************** Channel Access *********************************/
 	@Get(':channel_name/access')
 	@UseGuards(JwtGuard)
