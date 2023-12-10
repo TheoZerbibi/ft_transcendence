@@ -8,19 +8,17 @@
 				<v-list-item
 					v-for="friend in friends"
 					:key="friend.id"
-					@click="displayMessagesWithFriend(friend)"
+					@click="displayMessagesWithFriend(friend.login)"
 				>
-					<v-list-item-content>
-						<v-list-item-title>{{ friend.display_name }}</v-list-item-title>
-						<v-btn color="primary" @click="displayProfile(friend)">infos</v-btn>
-					</v-list-item-content>
+				{{ friend.display_name }}
+				<!-- <v-btn @click="displayProfile(friend)">infos</v-btn> --> 
 				</v-list-item>
 			</v-list>
 			<p v-else>~ sorry, no friends for now ~</p>
 		</div>
 		
 		<!-- Modal: friend profile -->
-		<UserModal :user="selectedFriend" :show="showModal" @close="closeModal"/>
+		<!-- UserModal :user="friend_selected_for_infos" :show="showModal" @close="closeModal"/> -->
 	</div>
 </template>
 
@@ -52,7 +50,8 @@ export default {
 		return {
 			friends: [],
 			showModal: false,
-			selectedFriend: {},
+			selected_friend_login: '',
+			//friend_selected_for_infos: {},
 		};
 	},
 	beforeMount() {
@@ -79,21 +78,22 @@ export default {
 				});
 				const data = await response.json();
 				this.friends = data;
+				this.selected_friend_login = this.friends[0] || null;
 			} catch (error) {
 				console.error(error);
 			}
 		},
-		displayProfile(friend: any) {
-			this.selectedFriend = friend;
+/* 		displayProfile(friend: object) {
+			this.friend_selected_for_infos = friend;
 			this.showModal = true;
 		},
 		closeModal() {
 			this.showModal = false;
+		}, */
+		displayMessagesWithFriend(login: string) {
+			this.selected_friend_login = login;
+			this.$emit('friend-selected', this.selected_friend_login);
 		},
-		displayMessagesWithFriend(friend: any) {
-			this.$emit('friend-selected', friend.login);
-		},
-
 	}
 }
 

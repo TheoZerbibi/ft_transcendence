@@ -273,23 +273,11 @@ export class UserService {
 			const friend: Friends | null = await this.util_getFriend(user, targetUser);
 			if (friend) {
 				switch (friend.status) {
-					case RequestStatus.PENDING:
-						if (friend.user_id === user.id) throw new BadRequestException('Friend request already sent');
-						else throw new BadRequestException('You already have a friend request from this user');
-					case RequestStatus.ACCEPTED:
-						throw new BadRequestException('You are already friend with this user');
-					case RequestStatus.DECLINED:
-						await this.prisma.friends.update({
-							where: {
-								user_id_friend_id: {
-									user_id: targetUser.id,
-									friend_id: user.id,
-								},
-							},
-							data: {
-								status: RequestStatus.PENDING,
-							},
-						});
+				case RequestStatus.PENDING:
+					if (friend.user_id === user.id) throw new BadRequestException('Friend request already sent');
+					else throw new BadRequestException('You already have a friend request from this user');
+				case RequestStatus.ACCEPTED:
+					throw new BadRequestException('You are already friend with this user');
 				}
 			} else {
 				await this.prisma.friends.create({
@@ -477,21 +465,6 @@ export class UserService {
 		try {
 			if (friend) {
 				switch (friend.status) {
-<<<<<<< HEAD
-					case RequestStatus.DECLINED:
-						throw new BadRequestException('Friend request already declined');
-					case RequestStatus.ACCEPTED:
-						throw new BadRequestException('You are already friend with this user');
-					case RequestStatus.PENDING:
-						await this.prisma.friends.update({
-							where: {
-								user_id_friend_id: {
-									user_id: targetUser.id,
-									friend_id: user.id,
-								},
-=======
-				case RequestStatus.DECLINED:
-					throw new BadRequestException('Friend request already declined');
 				case RequestStatus.ACCEPTED:
 					throw new BadRequestException('You are already friend with this user');
 				case RequestStatus.PENDING:
@@ -500,13 +473,13 @@ export class UserService {
 							user_id_friend_id: {
 								user_id: target_id,
 								friend_id: user_id,
->>>>>>> d4df5e1 (feat(front): accept or decline friend request)
 							},
-							data: {
-								status: RequestStatus.ACCEPTED,
-							},
-						});
-						break;
+						},
+						data: {
+							status: RequestStatus.ACCEPTED,
+						},
+					});
+					break;
 				}
 			}
 		} catch (e) {

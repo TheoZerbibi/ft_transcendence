@@ -18,13 +18,13 @@
 						<v-row>
 							<!-- Colonne de gauche pour Friends et AddFriends (1/4 de l'écran) -->
 							<v-col cols="12" md="3">
-								<Friends @friend-selected="showMessages"/>
+								<Friends @friend-selected="updateSelectedFriend"/>
 								<AddFriends/>
 							</v-col>
 
 							<!-- Colonne de droite pour MessagesBox (3/4 de l'écran) -->
 							<v-col cols="12" md="9">
-								<MessagesBox :friendLogin="selectedFriendLogin"></MessagesBox>
+								<MessagesBox :selected_friend_login="selected_friend_login"></MessagesBox>
 							</v-col>
 						</v-row>
 					</v-window-item>
@@ -60,7 +60,7 @@ import { defineComponent, ref } from 'vue';
 
 import AddFriends from '../components/chat/direct-messages/AddFriends.vue';
 import Friends from '../components/chat/direct-messages/Friends.vue';
-import MessagesBox from '../components/chat/direct-messages/MessagesBox.vue';
+import MessagesBox from '../components/chat/direct-messages/Messages.vue';
 
 import BlockedUsers from '../components/chat/profile/BlockedUsers.vue';
 import DiscoverChannels from '../components/chat/channels/DiscoverChannels.vue';
@@ -85,16 +85,20 @@ export default defineComponent({
 		};
 	},
 	data() {
-		return { selectedFriendLogin: "", }
+		return {
+			selected_friend_login: '',
+		}
 	},
 	beforeMount() {
+
 	},
 	mounted() {
 	},
 	methods: {
-		showMessages(login) {
-			this.selectedFriendLogin = login;
-		}
+		updateSelectedFriend(selected_friend_login: string) {
+			this.selected_friend_login = selected_friend_login;
+			console.log("selected_friend_login received in chat: " + this.selected_friend_login);
+		},
 	}
 });
 </script>
