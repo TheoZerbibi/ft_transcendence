@@ -181,10 +181,6 @@ h2 {
 	margin-left: 1rem;
 }
 .friend-requests-container {
-	position: absolute;
-	top: 10%;
-	left: 50%;
-	margin: auto;
 	background-color: rgb(0, 0, 0, 0.8);
 	padding: 1rem;
 	border-radius: 1rem;

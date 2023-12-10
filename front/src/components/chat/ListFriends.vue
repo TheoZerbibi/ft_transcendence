@@ -97,10 +97,6 @@ h2 {
 }
 
 .friends-container {
-	position: absolute;
-	top: 10%;
-	left: 35%;
-	margin: auto;
 	background-color: rgb(0, 0, 0, 0.8);
 	padding: 1rem;
 	border-radius: 1rem;

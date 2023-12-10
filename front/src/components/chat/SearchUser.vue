@@ -1,13 +1,7 @@
 <template>
-	<div class="overlay">
-		<div class="user-search-container">
-			<input type="text" placeholder="Search for a user..." v-model="searchTerm" @input="searchUsers" />
-			<ul v-if="users.length">
-				<li v-for="user in users" :key="user.id">
-					{{ user.display_name }}
-				</li>
-			</ul>
-		</div>
+	<div class="user-search-container">
+		<h2>Search for a user</h2>
+		<v-text-field placeholder="Search for a user..." @input="searchUsers"></v-text-field>
 	</div>
 </template>
 
@@ -35,7 +29,6 @@ export default {
 		};
 	},
 	beforeMount() {
-		this.fetchUsers();
 	},
 	mounted() {},
 	methods: {
@@ -60,7 +53,7 @@ export default {
 					this.users = await response.json();
 					console.log(this.users);
 				} catch (error) {
-					console.error('Erreur lors de la recherche:', error);
+					console.error('Search error: ', error);
 				}
 			} else {
 				users.value = [];
@@ -96,10 +89,6 @@ h2 {
 }
 
 .user-search-container {
-	position: absolute;
-	top: 10%;
-	left: 5%;
-	margin: auto;
 	background-color: rgb(0, 0, 0, 0.8);
 	padding: 1rem;
 	border-radius: 1rem;
