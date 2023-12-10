@@ -9,6 +9,6 @@
 		"paths": {
 			"@/*": ["./src/*"]
 		},
-		"types": ["vuetify"]
+		"types": ["vuetify", "pinia-plugin-persist"]
 	}
 }

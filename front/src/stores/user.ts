@@ -19,7 +19,7 @@ export const useUser = defineStore('user', {
 		},
 		is2FA: (state) => {
 			return state.dAuth;
-		}
+		},
 	},
 	actions: {
 		async setJWT(jwt: string): Promise<void> {
@@ -67,5 +67,7 @@ export const useUser = defineStore('user', {
 			this.dAuth = dAuth;
 		},
 	},
-	persist: true,
+	persist: {
+		enabled: true,
+	},
 });

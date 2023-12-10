@@ -3,8 +3,8 @@
 		:style="{
 			backgroundImage: 'url(/ui/ProfileBackground.png)',
 			backgroundPosition: 'center center',
-			backgroundSize: '120% 100%',										// Déforme l'image pour s'adapter à 100% de la largeur et de la hauteur
-			height: '100vh',													// Hauteur de la vue à 100%
+			backgroundSize: '120% 100%', // Déforme l'image pour s'adapter à 100% de la largeur et de la hauteur
+			height: '100vh', // Hauteur de la vue à 100%
 			// margin: 0,															// Supprime les marges par défaut du body
 		}"
 	>
@@ -12,16 +12,16 @@
 		<a href="/chat" class="clickable-area link2"></a>
 		<a href="https://meta.intra.42.fr/articles/read-the-french-manual-of-42paris" class="clickable-area link3"></a>
 		<div class="clickable-area link4" onclick="openModal()">
-        <!-- Utilisation de Vue pour gérer l'ouverture du modal -->
-        <div @click="openModal" class="clickable-area link2">
-            <div v-if="isModalOpen" class="modal">
-                <div class="modal-content">
-                    <span @click="closeModal" class="close">&times;</span>
-                    <p>Contenu du modal ici</p>
-                </div>
-            </div>
-        </div>
-    </div>
+			<!-- Utilisation de Vue pour gérer l'ouverture du modal -->
+			<div @click="openModal" class="clickable-area link2">
+				<div v-if="isModalOpen" class="modal">
+					<div class="modal-content">
+						<span @click="closeModal" class="close">&times;</span>
+						<p>Contenu du modal ici</p>
+					</div>
+				</div>
+			</div>
+		</div>
 	</main>
 </template>
 
@@ -47,21 +47,21 @@ export default defineComponent({
 		}
 	},
 	data() {
-        return {
-            isModalOpen: false,
-        };
-    },
+		return {
+			isModalOpen: false,
+		};
+	},
 	methods: {
-                redirectToPage(url) {
-                    window.location.href = url;
-                },
-                openModal() {
-                    this.isModalOpen = true;
-                },
-                closeModal() {
-                    this.isModalOpen = false;
-                },
-            },
+		redirectToPage(url) {
+			window.location.href = url;
+		},
+		openModal() {
+			this.isModalOpen = true;
+		},
+		closeModal() {
+			this.isModalOpen = false;
+		},
+	},
 });
 </script>
 
@@ -83,9 +83,8 @@ export default defineComponent({
 	cursor: pointer;
 }
 .clickable-area:hover {
-		cursor: url(https://www.omori-game.com/img/cursor/cursor.png), auto;
-	}
-
+	cursor: url(https://www.omori-game.com/img/cursor/cursor.png), auto;
+}
 
 .link1 {
 	top: 13%;
@@ -123,24 +122,24 @@ export default defineComponent({
 
 /* Style du modal */
 .modal {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 20px;
-    background-color: #fff;
-    z-index: 2;
+	display: none;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding: 20px;
+	background-color: #fff;
+	z-index: 2;
 }
 
 .modal-content {
-    text-align: center;
+	text-align: center;
 }
 
 .close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+	position: absolute;
+	top: 10px;
+	right: 10px;
 }
 
 .omoriButton {

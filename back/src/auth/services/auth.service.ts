@@ -15,6 +15,25 @@ export class AuthService {
 		private readonly userService: UserService,
 	) {}
 
+	async signup(dto: AuthDto) {
+		try {
+			const user = await this.prisma.user.create({
+				data: {
+					login: dto.login,
+					display_name: dto.login,
+					email: `${dto.login}@student.42.fr`,
+					avatar: `https://cdn.intra.42.fr/users/${dto.login}.jpg`,
+				},
+			});
+			return this.signToken(user, false);
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				if (e.code === 'P2002') throw new ForbiddenException('Credentials taken');
+			}
+			throw e;
+		}
+	}
+
 	validateJwt(token: string): any {
 		try {
 			const decodedToken = this.jwt.verify(token, this.config.get('JWT_SECRET'));

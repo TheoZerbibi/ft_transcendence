@@ -18,7 +18,7 @@
 					<v-avatar size="100">
 						<img :src="leftUser.user.avatar" />
 					</v-avatar>
-					{{  leftUser.score }}
+					{{ leftUser.score }}
 				</div>
 				<div v-if="rightUser" id="rightUser">
 					<v-avatar size="100">

@@ -1,9 +1,8 @@
 <template>
-<v-card class="homepage" text-center variant="tonal" width="600"></v-card>
+	<v-card class="homepage" text-center variant="tonal" width="600"></v-card>
 </template>
 
-<script lang="ts">
-</script>
+<script lang="ts"></script>
 
 <style scoped>
 .homepage {
@@ -11,5 +10,4 @@
 	align-items: center;
 	flex-direction: column;
 }
-
 </style>

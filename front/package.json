@@ -2,8 +2,8 @@
 	"name": "transcendence",
 	"version": "1.0.0",
 	"main": "main.js",
-	"type": "module",
 	"private": true,
+	"type": "module",
 	"scripts": {
 		"preinstall": "npx only-allow pnpm",
 		"build": "vite build --mode production",
@@ -34,7 +34,7 @@
 		"gsap": "^3.12.2",
 		"p5": "^1.8.0",
 		"pinia": "^2.1.7",
-		"pinia-plugin-persistedstate": "^3.2.0",
+		"pinia-plugin-persist": "^1.0.0",
 		"qrcode.vue": "^3.4.1",
 		"roboto-fontface": "*",
 		"socket.io-client": "^4.7.2",
