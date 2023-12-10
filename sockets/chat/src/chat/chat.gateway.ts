@@ -39,25 +39,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 	@WebSocketServer() server: Server;
 
-//	Should register user using handle connection
-//	Keeping it in failcase implementation of the feature in handleConnection
-//
-//
-//	// Await for a stringified channel_users as body
-//	@SubscribeMessage('new-connection')
-//	public async connection(client: Socket, data: any) {
-//		const user: any = JSON.parse(data);
-//		const newUser: User = await this.chatService.registerUser(client, user.id);
-//		const channels: Channel[] = newUser.getChannels();
-//	
-//		this.emitToChannels('new-connection', channels, user);
-//	}
-
-	// To_test
+//	To_test
 //	@SubscribeMessage('new-direct-message')
 	public dirmsg(client: Socket, data: any): void
 	{
-		const msg:any = JSON.parse(data);
+		const msg: any = JSON.parse(data);
 		const user: User | undefined = this.chatService.getUserById(msg.friend_id);
 
 		if (user !== undefined) {
@@ -85,12 +71,27 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 //	@SubscribeMessage('channel-update')
 	channelUpdate(data: any): void {
 		const channelData: any = JSON.parse(data);
-		const channelBuf: Channel = this.chatService.getChannelById(channelData.id);
+		const channelBuf: Channel | undefined = this.chatService.getChannelById(channelData.id);
 
-		this.emitToChannel('channel-updated', channelBuf, channelData);
+		const { ['password']: excludedPassword, ...newChannel } = channelData;
+
+		if (channelData.public)
+			this.emitToEveryone('channel-updated', newChannel);
+		else if (channelBuf !== undefined)
+			this.emitToChannel('channel-updated', channelBuf, newChannel);
 	}
 
-//		@SubscribeMessage('channel-creation')
+	userUpdate(data: any): void {
+		const channelUser: any = JSON.parse(data);
+		const channelBuf: Channel | undefined = this.chatService.getChannelById(channelUser.channel_id);
+
+		if (channelBuf !== undefined) {
+			this.emitToChannel('channel-user-update', channelBuf, channelUser);
+		}
+	}
+
+
+	//		@SubscribeMessage('channel-creation')
 	channelCreation(data: any): void {
 		const channelData: any = JSON.parse(data);
 		const user: User | undefined = this.chatService.getUserById(channelData.users[0].user_id);
@@ -99,8 +100,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		this.chatService.addChannel(channelData.id, user);
 		console.log(`New channel registered in socket with ${user}`);
 		const { ['password']: excludedPassword, ...newChannel } = channelData;
-		console.log('Sending these information to everyone connected to chat :');
-		console.log(newChannel);
+		//		console.log('Sending these information to everyone connected to chat :');
+		//		console.log(newChannel);
 		if (user === undefined) {
 			console.log('User who created channel is not connected');
 			this.emitToEveryone('channel-creation', newChannel);
@@ -110,7 +111,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		}
 	}
 
-	//	@SubscribeMessage('channel-joined')
+	//	'channel-joined'
 	channelJoined(data: any): void
 	{
 		const channel_user: channel_users = JSON.parse(data);
@@ -130,6 +131,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	}
 
 	// Send to everyone in the channel of leaver, leaver information 
+	// need to rework emit (should send the channel_user who got removed)
 	// 'channel-quitted'
 	public channelQuitted(data: any): void {
 		const channel_user: any =  JSON.parse(data);
@@ -172,7 +174,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			client.emit('welcome', JSON.stringify(channelDtos));
 			this.emitToEveryoneExceptOne('new-connection', user.id, client);
 			this.logger.debug(`Client connected: ${client.id}`);
-		//	this.logger.debug(`Sending this to client ${channelDtos}`);
 			console.log(channelDtos);
 
 		} catch (e) {
@@ -221,3 +222,18 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		this.server.emit(event, JSON.stringify(data));
 	}
 }
+
+//	Should register user using handle connection
+//	Keeping it in failcase implementation of the feature in handleConnection
+//
+//
+//	// Await for a stringified channel_users as body
+//	@SubscribeMessage('new-connection')
+//	public async connection(client: Socket, data: any) {
+//		const user: any = JSON.parse(data);
+//		const newUser: User = await this.chatService.registerUser(client, user.id);
+//		const channels: Channel[] = newUser.getChannels();
+//	
+//		this.emitToChannels('new-connection', channels, user);
+//	}
+

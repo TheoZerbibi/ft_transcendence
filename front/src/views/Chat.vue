@@ -126,15 +126,13 @@ components: {
 					if (socket.value) {
 						socket.value.on('chat-error', (data: any) => { disconnect(); snackbarStore.showSnackbar(data, 3000, 'red'); });
 					//	socket.value.on('welcome', (data: any) => { connectedUsers = JSON.parse(data) });
-					//	socket.value.on('', (data: any) => { connectedUsers = JSON.parse(data) });
-					//	socket.value.on('welcome', (data: any) => { connectedUsers = JSON.parse(data) });
-					//	socket.value.on('welcome', (data: any) => { connectedUsers = JSON.parse(data) });
-					//	socket.value.on('welcome', (data: any) => { connectedUsers = JSON.parse(data) });
-					//	socket.value.on('welcome', (data: any) => { connectedUsers = JSON.parse(data) });
-					//	socket.value.on('welcome', (data: any) => { connectedUsers = JSON.parse(data) });
-					//	socket.value.on('welcome', (data: any) => { connectedUsers = JSON.parse(data) });
-					//	socket.value.on('welcome', (data: any) => { connectedUsers = JSON.parse(data) });
-					//	socket.value.on('welcome', (data: any) => { connectedUsers = JSON.parse(data) });
+					//	socket.value.on('new-direct-message', (data: any) => { connectedUsers = JSON.parse(data) });
+					//	socket.value.on('channel-updated', (data: any) => { connectedUsers = JSON.parse(data) });
+					//	socket.value.on('channel-user-update', (data: any) => { connectedUsers = JSON.parse(data) });
+					//	socket.value.on('channel-creation', (data: any) => { connectedUsers = JSON.parse(data) });
+					//	socket.value.on('channel-joined', (data: any) => { connectedUsers = JSON.parse(data) });
+					//	socket.value.on('user-quitted-channel', (data: any) => { connectedUsers = JSON.parse(data) });
+					//	socket.value.on('channel-deleted', (data: any) => { connectedUsers = JSON.parse(data) });
 						}
 				};
 
