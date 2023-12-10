@@ -104,8 +104,8 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				this.server.to(gameUID).emit('session-info', allUsers);
 				console.log(game.getUsersInGame().length);
 				if (!game.getPlayerBySide(SIDE.RIGHT) || !game.getPlayerBySide(SIDE.LEFT)) return;
-				// if (!game.isInProgress() && game.getUsersInGame().length === 2) this.startGame(game);
 				if (!game.isInProgress() && game.getUsersInGame().length === 2) {
+					game.setWaitingState(true);
 					this.server.emit('waiting-start', {
 						leftUser: game.getPlayerBySide(SIDE.LEFT).user,
 						rightUser: game.getPlayerBySide(SIDE.RIGHT).user,
@@ -176,7 +176,14 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 	handleDisconnect(client: Socket): void {
 		const game: IGame = this.gameService.removeUserFromGame(client);
-		if (game) this.server.to(game.getGameUID()).emit('session-info', game.getAllUsersInGame());
+		if (game) {
+			this.server.to(game.getGameUID()).emit('session-info', game.getAllUsersInGame());
+			if (game.getWaitingState()) {
+				game.setWaitingState(false);
+				this.server.to(game.getGameUID()).emit('cancel-waiting');
+				game.removeGame();
+			}
+		}
 		return this.logger.debug(`Client disconnected: ${client.id}`);
 	}
 

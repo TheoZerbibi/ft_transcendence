@@ -1,15 +1,21 @@
 <template>
 	<v-container class="d-flex align-center justify-center">
 		<div id="app">
-			<div v-if="waitingOpp">
+			<div v-if="gameEnded">
+				<audio controls id="myVideo" autoplay hidden>
+					<source :src="'/sounds/game/Release_Energy.mp3'" type="audio/wav" />
+					Your browser does not support the audio element.
+				</audio>
+			</div>
+			<div v-else-if="waitingOpp">
 				<span class="d-flex align-center justify-center" min-height="100%">
 					<h4>Waiting for a opponent</h4>
-					{{ isConnected }}
+					{{ waitingOpp }}
 					<v-progress-circular indeterminate color="deep-purple-accent-2" />
 					<Sound :folder="'/sounds/game/ai'" />
 				</span>
 			</div>
-			<div v-if="!waitingOpp">
+			<div v-else-if="!waitingOpp">
 				<Sound :folder="'/sounds/game/versus'" />
 			</div>
 			<v-card
@@ -101,7 +107,7 @@
 					</div>
 				</div>
 			</v-card>
-			<div id="game-canvas"/>
+			<div id="game-canvas" />
 		</div>
 		<CountdownOverlay v-if="showCountdown" />
 	</v-container>
@@ -151,6 +157,7 @@ export default {
 		return {
 			showCountdown: false,
 			waitingOpp: true,
+			gameEnded: false,
 			userData: {
 				leftPlayer: {
 					name: '',
@@ -375,7 +382,7 @@ export default {
 			gameData.socket = this.socket;
 			gameData.go = false;
 			gameData.waiting = true;
-			gameData.ball?.resetball();
+			this.waitingOpp = false;
 		});
 
 		this.socket.on('cancel-waiting', async () => {
@@ -387,10 +394,11 @@ export default {
 
 		this.socket.on('game-start', async (data: any) => {
 			await p5jsReadyPromise;
-			this.waitingOpp = false;
-			this.setData(gameData.user, gameData);
+			this.setData(data, gameData);
 			countdownStore.setSeconds(5);
 			this.showCountdown = true;
+			console.log(this.waitingOpp);
+			gameData.ball?.resetball();
 		});
 
 		this.socket.on('countdown', (data: number) => {
@@ -473,6 +481,7 @@ export default {
 			} else {
 				gameData.rightUser.setPoint(data.winner.score);
 			}
+			this.gameEnded = true;
 		});
 	},
 	methods: {
@@ -515,7 +524,7 @@ export default {
 				this.userData[user].relaseEnergy = false;
 				this.userData[user].isDead = true;
 				this.userData[user].cadre = '/game/UI/cadres/cadre6.png';
-			}, 9000);
+			}, 8800);
 		},
 	},
 };
