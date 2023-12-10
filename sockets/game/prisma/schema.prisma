@@ -114,4 +114,5 @@ model direct_messages {
 enum RequestStatus {
   PENDING
   ACCEPTED
+  DECLINED
 }

@@ -24,19 +24,16 @@
 
 		<!-- Search bar -->
  		<!-- clearable = y a une croix a droite pour clear l'input mais jsp comment la rendre visible-->
-		<v-col cols="10">
+		<v-col cols="9">
 			<v-text-field
-			 	label="searchTerm"
+			 	v-model="searchTerm"
 				placeholder="Search a user..."
-				solo
-				flat
-				hide-details
 				clearable
 				@click:clear="fetchUsers"
 			></v-text-field>
 		</v-col>
-		<v-col cols="1">
-			<v-btn @click="searchUsers(searchTerm)">search</v-btn>
+		<v-col cols="0">
+			<v-btn @click="searchUsers">search</v-btn>
 		</v-col>
 	</div>
 </template>
@@ -91,7 +88,7 @@ export default {
 					}
 				)
 				.catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
+					snackbarStore.showSnackbar(error, 2999, 'red');
 					return;
 				});
 				const data = await response.json();
@@ -118,7 +115,7 @@ export default {
 					}
 				)
 				.catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
+					snackbarStore.showSnackbar(error, 2999, 'red');
 					return;
 				});
 				this.fetchlistFriendRequests();
@@ -140,7 +137,7 @@ export default {
 					}
 				)
 				.catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
+					snackbarStore.showSnackbar(error, 2999, 'red');
 					return;
 				});
 				const data = await response.json();
@@ -168,19 +165,20 @@ export default {
 				)
 				.catch((error: any) => {
 					console.log(error);
-					snackbarStore.showSnackbar(error, 3000, 'red');
+					snackbarStore.showSnackbar(error, 2999, 'red');
 					return;
 				});
 				console.log('Friend request sent to', username);
+				this.fetchUsers();
 			} catch (error) {
 				console.error(error);
 			}
 		},
-		searchUsers: async function(searchTerm: string) {
-			if (searchTerm.length) {
+		searchUsers: async function() {
+			if (this.searchTerm.length) {
 				try {
 					const response = await
-					fetch(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/search/${searchTerm}`,
+					fetch(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/search/${this.searchTerm}`,
 					{
 						method: 'GET',
 						headers: {
@@ -189,7 +187,7 @@ export default {
 						},
 					}
 					).catch((error: any) => {
-						snackbarStore.showSnackbar(error, 3000, 'red');
+						snackbarStore.showSnackbar(error, 2999, 'red');
 						return;
 					});
 					this.users = await response.json();
