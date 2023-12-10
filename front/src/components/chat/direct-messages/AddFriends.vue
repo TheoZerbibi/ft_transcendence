@@ -101,7 +101,7 @@ export default {
 					return;
 				});
 				this.listFriendRequests = await response.json();
-				console.log('[AddFriends.vue:fetchlistFriendRequests] user_id: ' + this.user.id);
+				console.log('[AddFriends.vue:fetchlistFriendRequests] login: ' + this.user.login);
 			} catch (error) {
 				console.error(error);
 			}
