@@ -18,7 +18,7 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 import { UserService } from './user.service';
-import { EditUserDto, UserDto } from './dto';
+import { EditUserDto, UserDto, UserLoginDto } from './dto';
 import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { FriendRequestDto } from './dto/friend.dto';
@@ -155,20 +155,20 @@ export class UserController {
 	/************************************* Friends *************************************/
 	// Create friends (pending)
 	@UseGuards(JwtGuard)
-	@Post('friends/request/:target')
+	@Post('friends/send-request')
 	@ApiOperation({ summary: 'Send request to a user' })
 	@ApiBearerAuth('JWT-auth')
-	async addFriend(@GetUser() user: User, @Param('target') friendUsername: string): Promise<void> {
-		await this.userService.makeFriendRequest(user, friendUsername);
+	async makeFriendRequest(@GetUser() user: User, @Body() dto: UserLoginDto): Promise<void> {
+		await this.userService.makeFriendRequest(user, dto.login);
 	}
 
 	// Create blocked
 	@UseGuards(JwtGuard)
-	@Post('block/:target')
+	@Post('block')
 	@ApiOperation({ summary: 'Block a user' })
 	@ApiBearerAuth('JWT-auth')
-	async blockUser(@GetUser() user: User, @Param('target') username: string): Promise<void> {
-		await this.userService.blockUser(user, username);
+	async blockUser(@GetUser() user: User, @Body() dto: UserLoginDto): Promise<void> {
+		await this.userService.blockUser(user, dto.login);
 	}
 
 	/***********************************************************************************/
@@ -192,11 +192,11 @@ export class UserController {
 
 	/************************************* Friends *************************************/
 	@UseGuards(JwtGuard)
-	@Patch('friends/requests/:target')
+	@Patch('friends/accept-request')
 	@ApiOperation({ summary: 'Accept a friend request' })
 	@ApiBearerAuth('JWT-auth')
-	async acceptFriendRequest(@GetUser() user: User, @Param('target') username: string): Promise<void> {
-		await this.userService.acceptFriendRequest(user, username);
+	async acceptFriendRequest(@GetUser() user: User, @Body() dto: UserLoginDto): Promise<void> {
+		await this.userService.acceptFriendRequest(user, dto.login);
 	}
 
 	/***********************************************************************************/
@@ -205,7 +205,7 @@ export class UserController {
 
 	/*************************************** Users *************************************/
 	@UseGuards(JwtGuard)
-	@Delete('profile/:id')
+	@Delete('profile')
 	@ApiOperation({ summary: 'Delete a user' })
 	@ApiBearerAuth('JWT-auth')
 	async deleteUser(@Param('id') user_id: string): Promise<void> {
@@ -215,27 +215,27 @@ export class UserController {
 
 	/************************************* Friends *************************************/
 	@UseGuards(JwtGuard)
-	@Delete('friends/:target')
+	@Delete('friends')
 	@ApiOperation({ summary: 'Remove friend' })
 	@ApiBearerAuth('JWT-auth')
-	async removeFriend(@GetUser() user: User, @Param('target') username: string): Promise<void> {
-		await this.userService.removeFriend(user, username);
+	async removeFriend(@GetUser() user: User, @Body() dto: UserLoginDto): Promise<void> {
+		await this.userService.removeFriend(user, dto.login);
 	}
 
 	@UseGuards(JwtGuard)
-	@Delete('friends/requests/:target')
+	@Delete('friends/decline-request')
 	@ApiOperation({ summary: 'Decline a friend request' })
 	@ApiBearerAuth('JWT-auth')
-	async declineFriendRequest(@GetUser() user: User, @Param('target') username: string): Promise<void> {
-		await this.userService.declineFriendRequest(user, username);
+	async declineFriendRequest(@GetUser() user: User, @Body() dto: UserLoginDto): Promise<void> {
+		await this.userService.declineFriendRequest(user, dto.login);
 	}
 
 	/*********************************** Blocked *************************************/
 	@UseGuards(JwtGuard)
-	@Delete('blocked/:target')
+	@Delete('blocked')
 	@ApiOperation({ summary: 'Unblock a user' })
 	@ApiBearerAuth('JWT-auth')
-	async unblockUser(@GetUser() user: User, @Param('target') username: string): Promise<void> {
-		await this.userService.unblockUser(user, username);
+	async unblockUser(@GetUser() user: User, @Body() dto: UserLoginDto): Promise<void> {
+		await this.userService.unblockUser(user, dto.login);
 	}
 }

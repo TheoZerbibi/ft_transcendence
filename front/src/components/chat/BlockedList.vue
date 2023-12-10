@@ -4,8 +4,7 @@
 			<h2>Blocked Users</h2>
 			<ul class="no-bullets" v-if="blockedUsers.length">
 				<li v-for="user in blockedUsers" :key="user.id">
-					{{ user.login }}
-					<!-- L'objet contient aussi l'avatar si tu veux -->
+					{{ user.display_name }} <!-- L'objet contient aussi l'avatar si tu veux -->
 					<button @click="unblockUser(user.login)">Unblock</button>
 				</li>
 			</ul>
@@ -45,14 +44,18 @@ export default {
 		unblockUser: async function (login: string) {
 			try {
 				const response = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/blocked/${login}`,
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/blocked`,
 					{
 						method: 'DELETE',
 						headers: {
+							'Content-Type': 'application/json',
 							Authorization: `Bearer ${this.JWT}`,
 							'Access-Control-Allow-Origin': '*',
 						},
-					},
+						body: JSON.stringify({
+							login: login,
+						}),
+					}
 				).catch((error: any) => {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;

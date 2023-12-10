@@ -4,7 +4,7 @@
 			<input type="text" placeholder="Search for a user..." v-model="searchTerm" @input="searchUsers" />
 			<ul v-if="users.length">
 				<li v-for="user in users" :key="user.id">
-					{{ user.login }}
+					{{ user.display_name }}
 				</li>
 			</ul>
 		</div>
