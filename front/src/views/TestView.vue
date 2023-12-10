@@ -63,7 +63,6 @@ export default {
 				},
 			};
 			try {
-				console.log(this.JWT);
 				const response = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/2fa/generate`,
 					requestOptions,
@@ -80,7 +79,7 @@ export default {
 				);
 				this.qrCode = 'data:image/png;base64,' + qrCodeBase64;
 			} catch (error) {
-				console.error(error);
+				snackbarStore.showSnackbar('Error generating QR Code', 3000, 'red');
 			}
 		},
 		async activateTwoFactorAuthentication() {
@@ -107,7 +106,6 @@ export default {
 				this.set2FA(true);
 			} catch (error) {
 				snackbarStore.showSnackbar('Error activating 2FA', 3000, 'red');
-				console.error(error);
 			}
 		},
 		async disableTwoFactorAuthentication() {
@@ -134,7 +132,6 @@ export default {
 				this.set2FA(false);
 			} catch (error) {
 				snackbarStore.showSnackbar('Error activating 2FA', 3000, 'red');
-				console.error(error);
 			}
 		},
 		// Autres méthodes nécessaires

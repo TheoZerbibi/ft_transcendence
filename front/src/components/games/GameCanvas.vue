@@ -4,6 +4,7 @@
 			<div v-if="waitingOpp">
 				<span class="d-flex align-center justify-center" min-height="100%">
 					<h4>Waiting for a opponent</h4>
+					{{ isConnected }}
 					<v-progress-circular indeterminate color="deep-purple-accent-2" />
 					<Sound :folder="'/sounds/game/ai'" />
 				</span>
@@ -375,7 +376,7 @@ export default {
 			gameData.go = false;
 			gameData.waiting = true;
 			gameData.ball?.resetball();
-			if (!gameData.leftUser || !gameData.rightUser) return this.$router.push({ name: 'GameCreator' });
+			if (!gameData.leftUser || !gameData.rightUser) return this.$router.push({ name: 'GameMenu' });
 			if (gameData.leftUser) gameData.leftUser.score = 0;
 			if (gameData.rightUser) gameData.rightUser.score = 0;
 			if (data.leftUser) {
@@ -415,7 +416,7 @@ export default {
 				if (!gameData.player) {
 					this.socket.disconnect();
 					console.error('Player is null');
-					return this.$router.push({ name: 'GameCreator' });
+					return this.$router.push({ name: 'GameMenu' });
 				}
 				gameData.player.setSide(SIDE.LEFT);
 			} else if (data.side == SIDE.RIGHT) {
@@ -423,14 +424,14 @@ export default {
 				if (!gameData.player) {
 					this.socket.disconnect();
 					console.error('Player is null');
-					return this.$router.push({ name: 'GameCreator' });
+					return this.$router.push({ name: 'GameMenu' });
 				}
 				gameData.player.setSide(SIDE.RIGHT);
 			}
 			if (!gameData.player) {
 				this.socket.disconnect();
 				console.error('Player is null');
-				return this.$router.push({ name: 'GameCreator' });
+				return this.$router.push({ name: 'GameMenu' });
 			}
 			gameData.player.update(data.position);
 		});
