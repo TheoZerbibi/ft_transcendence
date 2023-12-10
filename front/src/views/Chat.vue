@@ -6,10 +6,10 @@
 				<AddFriends/>
 			</v-col>
 			<v-col cols="3">
-				<ListFriends/>
+				<Friends/>
 			</v-col>
 			<v-col cols="3">
-				<ListBlocked/>
+				<Blocked/>
 			</v-col>
 			<!-- Vous pouvez ajouter plus de composants ici avec <v-col> si nécessaire -->
 		</v-row>
@@ -20,7 +20,7 @@
 				<DiscoverChannels/>
 			</v-col>
 			<v-col cols="3">
-				<ListJoinedChannels/>
+				<JoinedChannels/>
 			</v-col>
 		</v-row>
 	</v-container>
@@ -31,21 +31,21 @@
 import { defineComponent } from 'vue';
 
 // Components
-import ListFriends from '../components/chat/ListFriends.vue';
-import AddFriends from '../components/chat/AddFriends.vue';
-import ListBlocked from '../components/chat/ListBlocked.vue';
-import DiscoverChannels from '../components/chat/DiscoverChannels.vue';
-import ListJoinedChannels from '../components/chat/ListJoinedChannels.vue';
+import AddFriends from '../components/chat/direct-messages/AddFriends.vue';
+import Friends from '../components/chat/direct-messages/Friends.vue';
+import Blocked from '../components/chat/profile/BlockedUsers.vue';
+import DiscoverChannels from '../components/chat/channels/Channels.vue';
+import JoinedChannels from '../components/chat/channels/JoinedChannels.vue';
 
 export default defineComponent({
 	name: 'ChatView',
 
 	components: {
 		AddFriends,
-		ListFriends,
-		ListBlocked,
+		Friends,
+		Blocked,
 		DiscoverChannels,
-		ListJoinedChannels
+		JoinedChannels
 	},
 	setup() {
 		const tab = ('users-friends');

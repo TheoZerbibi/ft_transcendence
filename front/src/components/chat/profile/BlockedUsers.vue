@@ -15,8 +15,8 @@
 
 <script lang="ts">
 import { computed } from 'vue';
-import { useUser } from '../../stores/user';
-import { useSnackbarStore } from '../../stores/snackbar';
+import { useUser } from '../../../stores/user';
+import { useSnackbarStore } from '../../../stores/snackbar';
 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();

@@ -1,24 +1,24 @@
 <template>
 	<div class="overlay">
 
+		<h2>Add Friends</h2>
+
+		<!-- Friend Requests list -->
+		<ul class="no-bullets" v-if="listFriendRequests.length">
+			<li v-for="request in listFriendRequests" :key="request.id">
+				{{ request.display_name }}
+				<AcceptDeclineButton :login="request.login" :response="true" @respond="respondRequest"/>
+				<AcceptDeclineButton :login="request.login" :response="false" @respond="respondRequest"/>
+			</li>
+		</ul>
+
 		<!-- Users list -->
-		<div>
-			<h2>Add friends</h2>
-			<ul v-if="listFriendRequests.length">
-				<li v-for="request in listFriendRequests" :key="request.id">
-					{{ request.display_name }} <!-- L'objet contient aussi l'avatar si tu veux -->
-					<button class="button-spacing" @click="respondRequest(request.login, true)">v</button>
-					<button class="button-spacing" @click="respondRequest(request.login, false)">x</button>
-				</li>
-			</ul>
-			<ul v-if="users.length">
-				<li v-for="userElem in users" :key="userElem.id"> <!-- I call it "user elem" so we dont overlap the userStore.getUser that get the author of the request -->
-					{{ userElem.display_name }}
-					<button @click="sendFriendRequest(userElem.login)">+</button>
-				</li>
-			</ul>
-			<p v-else>~ sorry, no users for now ~</p>
-		</div>
+		<ul class="no-bullets" v-if="users.length">
+			<li v-for="user in users" :key="user.id">
+				{{ user.display_name }}
+				<button @click="sendFriendRequest(user.login)">+</button>
+			</li>
+		</ul>
 
 		<!-- Search bar -->
 		<div>
@@ -29,14 +29,19 @@
 </template>
 
 <script lang="ts">
+
 import { computed } from 'vue';
-import { useUser } from '../../stores/user';
-import { useSnackbarStore } from '../../stores/snackbar';
+import { useUser } from '../../../stores/user';
+import { useSnackbarStore } from '../../../stores/snackbar';
+import AcceptDeclineButton from '../utils/AcceptDeclineButton.vue';
 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 
 export default {
+	components: {
+		AcceptDeclineButton,
+	},
 	setup() {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
