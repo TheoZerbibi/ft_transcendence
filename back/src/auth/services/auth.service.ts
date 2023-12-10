@@ -22,7 +22,7 @@ export class AuthService {
 					login: dto.login,
 					display_name: dto.login,
 					email: `${dto.login}@student.42.fr`,
-					avatar: `https://cdn.intra.42.fr/users/${dto.login}.jpg`,
+					avatar: `https://preview.redd.it/sky2ka084ns11.jpg?width=640&crop=smart&auto=webp&s=a7f060f539797578a109af48a5ee75909f7661cb`,
 				},
 			});
 			return this.signToken(user, false);
@@ -32,6 +32,16 @@ export class AuthService {
 			}
 			throw e;
 		}
+	}
+
+	async signin(dto: AuthDto) {
+		const user = await this.prisma.user.findUnique({
+			where: {
+				login: dto.login,
+			},
+		});
+		if (!user) throw new ForbiddenException('Invalid credentials');
+		return this.signToken(user, user.dAuth);
 	}
 
 	validateJwt(token: string): any {

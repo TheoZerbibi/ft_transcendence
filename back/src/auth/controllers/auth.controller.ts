@@ -10,11 +10,19 @@ import { AuthDto } from '../dto';
 export class AuthController {
 	constructor(private authService: AuthService) {}
 
+	//dev only
 	@Post('signup')
 	@HttpCode(HttpStatus.CREATED)
 	@ApiOperation({ summary: 'Create a new user.' })
 	async signup(@Body() dto: AuthDto) {
 		return this.authService.signup(dto);
+	}
+	//dev only
+	@Post('signin')
+	@HttpCode(HttpStatus.OK)
+	@ApiOperation({ summary: 'Log as user.' })
+	async signin(@Body() dto: AuthDto) {
+		return this.authService.signin(dto);
 	}
 
 	@UseGuards(FortyTwoGuard)
