@@ -79,10 +79,14 @@ import ChannelUsers from '../components/chat/channels/ChannelUsers.vue';
 
 import BlockedUsers from '../components/chat/profile/BlockedUsers.vue';
 
-export default defineComponent({
-	name: 'ChatView',
+import { useUser } from '../stores/user';
+import { useSnackbarStore } from '../stores/snackbar';
+import { useSocketStore } from '../stores/websocket';
+import { computed } from 'vue';
 
-	components: {
+export default defineComponent({
+name: 'ChatView',
+components: {
 		AddFriends,
 		Friends,
 		DirectMessages,
@@ -91,12 +95,60 @@ export default defineComponent({
 		ChannelMessages,
 		ChannelUsers,
 		BlockedUsers,
+		ChatWindow,
+		UsersList,
+		FriendsList,
+		FriendRequests,
+		BlockedList
 	},
+
 	setup() {
-		const tab = ref(0); // Start with the first tab active
-		return {
-			tab
-		};
+
+				const webSocketStore = useSocketStore();
+				const userStore = useUser();
+
+				let connectedUsers = [];
+				const tab = ref(0); // Start with the first tab active
+			
+				const isConnected = computed(() => webSocketStore.isConnected);
+				const socket = computed(() => webSocketStore.getSocket);
+				const JWT = computed(() => userStore.getJWT);
+			
+				const connect = async (JWT: string) => {
+					await webSocketStore.connect(JWT, import.meta.env.VITE_CHAT_SOCKET_PORT);
+				};
+			
+				const disconnect = () => {
+					webSocketStore.disconnect();
+				};
+			
+				const socketListen = () => {
+					if (socket.value) {
+						socket.value.on('chat-error', (data: any) => {
+								disconnect();
+								snackbarStore.showSnackbar(data, 3000, 'red');
+								});
+					}
+
+				};
+
+				onMounted(() => {
+						connect(JWT.value);
+						console.log(isConnected.value);
+						console.log('HELLO WORLD !');
+						});
+
+				return {
+					isConnected,
+						socket,
+						connect,
+						disconnect,
+						socketListen,
+						JWT,
+						connectedUsers,
+						tab,
+				};
+
 	},
 	data() {
 		return {
@@ -121,8 +173,7 @@ export default defineComponent({
 			this.selectedChannelName = selectedChannelName;
 		}
 	}
+
 });
 </script>
 
-<style scoped>
-</style>
