@@ -21,7 +21,7 @@ import { UserService } from './user.service';
 import { EditUserDto, UserDto, UserLoginDto } from './dto';
 import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
-import { FriendRequestResponseDto } from './dto/friend.dto';
+import { FriendRequestDto, FriendRequestResponseDto } from './dto/friend.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
@@ -114,7 +114,7 @@ export class UserController {
 	@Get('friends/requests')
 	@ApiOperation({ summary: 'Get friend requests sent to user' })
 	@ApiBearerAuth('JWT-auth')
-	async getFriendRequests(@GetUser() user: User): Promise<UserDto[]> {
+	async getFriendRequests(@GetUser() user: User): Promise<FriendRequestDto[]> {
 		return await this.userService.getFriendRequestsOfUser(user);
 	}
 

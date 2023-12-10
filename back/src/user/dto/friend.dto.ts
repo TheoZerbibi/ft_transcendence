@@ -13,3 +13,25 @@ export class FriendRequestResponseDto {
 	// eslint-disable-next-line
 	response: boolean;
 }
+
+export class FriendRequestDto {
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	user_login: string;
+
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	user_display_name: string;
+
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	target_login: string;
+
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	target_display_name: string;
+}

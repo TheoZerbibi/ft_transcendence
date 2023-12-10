@@ -2,7 +2,7 @@
 /* eslint-disable prettier/prettier */
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { EditUserDto, UserDto } from './dto';
+import { EditUserDto, FriendRequestDto, UserDto } from './dto';
 import { Prisma, User, Friends } from '@prisma/client';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as fs from 'fs';
@@ -185,19 +185,28 @@ export class UserService {
 		}
 	}
 
-	async getFriendRequestsOfUser(user: User): Promise<UserDto[]> {
+	async getFriendRequestsOfUser(user: User): Promise<FriendRequestDto[]> {
 		try {
 			const friendRequests = await this.prisma.friends.findMany({
 				where: {
-					friend_id: user.id,
+					OR: [
+						{ user_id: user.id },
+						{ friend_id: user.id },
+					],
 					status: RequestStatus.PENDING,
 				},
 				include: {
 					user: true,
+					friend: true,
 				},
 			});
-			const friendRequestsDto: UserDto[] = friendRequests.map((friendRequest) => {
-				return this.exclude(friendRequest.user, ['dAuth', 'email', 'updated_at']) as UserDto;
+			const friendRequestsDto: FriendRequestDto[] = friendRequests.map((friendRequest) => {
+				return {
+					user_login: friendRequest.user.login,
+					user_display_name: friendRequest.user.display_name,
+					target_login: friendRequest.friend.login,
+					target_display_name: friendRequest.friend.display_name,
+				};
 			});
 			return friendRequestsDto;
 		} catch (e) {

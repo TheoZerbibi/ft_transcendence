@@ -64,40 +64,26 @@ export default {
 		},
 		show: Boolean,
 	},
-	setup() {
+	setup(props) {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
+		const selectedUser = ref({});
 
-		return {
-			JWT,
-			user,
-		};
-	},
-	data() {
-		return {
-			selectedUser: {},
-		};
-	},
-	beforeMount() {
-		this.fetchSelectedUserInfos();
-	},
-	mounted() {},
-	methods: {
-		fetchSelectedUserInfos: async function() {
+		const fetchSelectedUserInfos = async function() {
 			try {
 				console.log("[UserProfileModal.vue:fetchSelectedUserInfos]" 
-							+ "\nshow_modal: " + this.show 
-							+ "\nselected_user_login: " + this.selectedUserLogin);
-				if (!this.show || !this.selectedUserLogin || this.selectedUserLogin === '') {
+							+ "\nshow_modal: " + props.show 
+							+ "\nselected_user_login: " + props.selectedUserLogin);
+				if (!props.show || !props.selectedUserLogin || props.selectedUserLogin === '') {
 					// TODO : display stg ?
 					return;
 				}
 				const response = await fetch (
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/profile/${this.selectedUserLogin}`, 
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/profile/${props.selectedUserLogin}`, 
 					{
 						method: 'GET',
 						headers: {
-							Authorization: `Bearer ${this.JWT}`,
+							Authorization: `Bearer ${props.JWT}`,
 							'Access-Control-Allow-Origin': '*',
 						},
 					}
@@ -110,7 +96,16 @@ export default {
 			} catch (error) {
 				console.error(error);
 			}
-		},
+		};
+		return {
+			JWT,
+			user,
+			selectedUser,
+			fetchSelectedUserInfos,
+		};
+	},
+	mounted() {},
+	methods: {
 		close() {
 			this.$emit('close');
 		}
