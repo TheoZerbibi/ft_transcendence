@@ -85,6 +85,49 @@ export class UserService {
 		}
 	}
 
+	async getNotFriendsOfUser(user: User): Promise<UserDto[]> {
+		try {
+			const friends = await this.prisma.friends.findMany({
+				where: {
+					OR: [
+						{ user_id: user.id, },
+						{ friend_id: user.id, },
+					],
+					status: RequestStatus.ACCEPTED,
+				},
+			});
+			const friendsIds = friends.map((friend) => friend.user_id === user.id ? friend.friend_id : friend.user_id );
+
+			const blocked = await this.prisma.blocked.findMany({
+				where: {
+					OR: [
+						{ blocked_by_id: user.id, },
+						{ blocked_id: user.id, },
+					],
+				},
+			});
+			const blockedIds = blocked.map((blocked) => blocked.blocked_by_id === user.id ? blocked.blocked_id : blocked.blocked_by_id );
+
+			const users = await this.prisma.user.findMany({
+				where: {
+					NOT: {
+						OR: [
+							{ id: user.id, },
+							{ id: { in: friendsIds }, },
+							{ id: { in: blockedIds }, },
+						],
+					},
+				},
+			});
+			const usersDto: UserDto[] = users.map((user) => {
+				return this.exclude(user, ['dAuth', 'email', 'updated_at']) as UserDto;
+			});
+			return usersDto;
+		} catch (e) {
+			throw e;
+		}
+	}
+
 	async getUsersStartingWith(startingWith: string): Promise<UserDto[]> {
 		try {
 			const users = await this.prisma.user.findMany({
@@ -120,12 +163,8 @@ export class UserService {
 			const friends = await this.prisma.friends.findMany({
 				where: {
 					OR: [
-						{
-							user_id: user.id,
-						},
-						{
-							friend_id: user.id,
-						},
+						{ user_id: user.id, },
+						{ friend_id: user.id, },
 					],
 					status: RequestStatus.ACCEPTED,
 				},
@@ -470,6 +509,32 @@ export class UserService {
 	}
 
 	/************************************* Friends *************************************/
+	async removeFriend(user: User, friendUsername: string): Promise<void> {
+		try {
+			if (!user) throw new ForbiddenException('User not found');
+			const targetUser = await this.findUserByName(friendUsername);
+			if (!targetUser) throw new ForbiddenException('User not found');
+			if (targetUser === user) throw new BadRequestException('You cannot delete yourself');
+
+			await this.prisma.friends.deleteMany({
+				where: {
+					OR: [
+						{
+							user_id: user.id,
+							friend_id: targetUser.id,
+						},
+						{
+							user_id: targetUser.id,
+							friend_id: user.id,
+						},
+					],
+				},
+			});
+		} catch (e) {
+			throw e;
+		}
+	}
+
 	async declineFriendRequest(user: User, friendUsername: string): Promise<void> {
 		try {
 			if (!user) throw new ForbiddenException('User not found');

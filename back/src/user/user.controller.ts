@@ -47,6 +47,15 @@ export class UserController {
 		return await this.userService.getUsers();
 	}
 
+	// Get users not friends and not blocked
+	@UseGuards(JwtGuard)
+	@Get('discover')
+	@ApiOperation({ summary: 'Get users list not friends and not blocked' })
+	@ApiBearerAuth('JWT-auth')
+	async getDiscoverUsers(@GetUser() user: User): Promise<UserDto[]> {
+		return await this.userService.getNotFriendsOfUser(user);
+	}
+
 	// Get users starting with
 	@UseGuards(JwtGuard)
 	@Get('search/:start')
@@ -205,6 +214,14 @@ export class UserController {
 	}
 
 	/************************************* Friends *************************************/
+	@UseGuards(JwtGuard)
+	@Delete('friends/:target')
+	@ApiOperation({ summary: 'Remove friend' })
+	@ApiBearerAuth('JWT-auth')
+	async removeFriend(@GetUser() user: User, @Param('target') username: string): Promise<void> {
+		await this.userService.removeFriend(user, username);
+	}
+
 	@UseGuards(JwtGuard)
 	@Delete('friends/requests/:target')
 	@ApiOperation({ summary: 'Decline a friend request' })

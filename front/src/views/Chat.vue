@@ -2,8 +2,10 @@
 	<div class="chat-view">
 		<ChatWindow />
 		<div class="side-panel">
-			<FriendRequests />
-			<BlockedList />
+			<UsersList/>
+			<FriendsList/>
+			<FriendRequests/>
+			<BlockedList/>
 		</div>
 	</div>
 </template>
@@ -13,13 +15,15 @@ import { defineComponent } from 'vue';
 
 // Components
 import ChatWindow from '../components/chat/ChatWindow.vue';
-import FriendRequests from '../components/chat/FriendRequests.vue';
+import UsersList from '../components/chat/UsersList.vue';
+import FriendsList from '../components/chat/FriendsList.vue';
+import FriendRequests from '../components/chat/FriendRequestsList.vue';
 import BlockedList from '../components/chat/BlockedList.vue';
 
 export default defineComponent({
 	name: 'ChatView',
 
-	components: { ChatWindow, FriendRequests, BlockedList },
+	components: { ChatWindow, UsersList, FriendsList, FriendRequests, BlockedList },
 });
 </script>
 
