@@ -268,6 +268,7 @@ export class ChannelService {
 				created_at: channelEntity.getCreatedAt(),
 				updated_at: channelEntity.getUpdatedAt(),
 			};
+			this.publishOnRedis('channel-joined', JSON.stringify(channelUser));
 			return channelDto;
 		} catch (e) {
 			throw e;
@@ -354,6 +355,7 @@ export class ChannelService {
 			channelEntity.setName(newParamsdto.name);
 			channelEntity.setIsPublic(newParamsdto.is_public);
 			channelEntity.setUpdatedAt(channelPrisma.updated_at);
+			this.publishOnRedis('channel-update', JSON.stringify(channelPrisma));
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				if (e.code === 'P2002') throw new BadRequestException('Channel name taken');
@@ -441,7 +443,7 @@ export class ChannelService {
 
 			targetChanUser.setIsAdmin(true);
 
-			await this.prisma.channelUser.update({
+			const chanUser: channelUser = await this.prisma.channelUser.update({
 				where: {
 					id: targetChanUser.getId(),
 				},
@@ -449,6 +451,7 @@ export class ChannelService {
 					is_admin: targetChanUser.isAdmin(),
 				},
 			});
+			this.publishOnRedis('channel-user-update', JSON.stringify(chanUser));
 			channelEntity.setUpdatedAt(new Date());
 		} catch (e) {
 			throw e;

@@ -6,14 +6,14 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class ChatService {
-	
+
 	constructor(private prismaService: PrismaService) {}
-	
+
 	/********* Getter *********/
 	public getChannels(): Channel[]{
 		return Chat.getChannels();
 	}
-	
+
 	public getUsers(): User[] {
 		return Chat.getUsers();
 	}
@@ -21,7 +21,7 @@ export class ChatService {
 	public getUserById(id: number): User | undefined {
 		return Chat.getUserById(id);
 	}
-	
+
 	public getChannelById(id: number): Channel | undefined {
 		return Chat.getChannelById(id);
 	}
@@ -30,36 +30,37 @@ export class ChatService {
 	{
 		return Chat.getChannelDtos();
 	}
-//	
-//	public async getChannelByChannelUserId(channel_user_id: number): Channel {
-//		const channel_user: channel_users = await this.retrieveChannelUser(channel_user_id);
-//	
-//		const channel: Channel = Chat.getChannelById(channel_user.channel_id);
-//	
-//		return channel;
-//	}
-	
-//	
-//	/******** Setter *********/
+
+	//	
+	//	public async getChannelByChannelUserId(channel_user_id: number): Channel {
+	//		const channel_user: channel_users = await this.retrieveChannelUser(channel_user_id);
+	//	
+	//		const channel: Channel = Chat.getChannelById(channel_user.channel_id);
+	//	
+	//		return channel;
+	//	}
+
+	//	
+	//	/******** Setter *********/
 
 	public addChannel(channelId: number, user: User): Channel
 	{
 		return Chat.addChannel(channelId, user);
 	}
 
-//	Function to remove if test ok
-//	public async registerUser(socket: Socket, id: number): Promise<User>{
-//	
-//		const user: users = await this.retrieveUser(id);
-//		const channels_usr: channel_users[] = await this.retrieveUserChannel(user);
-//	
-//		return Chat.addUser(socket, id, channels_usr);
-//	}
+	//	Function to remove if test ok
+	//	public async registerUser(socket: Socket, id: number): Promise<User>{
+	//	
+	//		const user: users = await this.retrieveUser(id);
+	//		const channels_usr: channel_users[] = await this.retrieveUserChannel(user);
+	//	
+	//		return Chat.addUser(socket, id, channels_usr);
+	//	}
 
 	public async addUser(socket: Socket, user: users)
 	{
 		const channels_usr: channel_users[] = await this.retrieveUserChannel(user);
-		
+
 		return Chat.addUser(socket, user.id, channels_usr);
 	}
 
@@ -92,7 +93,7 @@ export class ChatService {
 			}
 		});
 	}
-	
+
 	private async retrieveUser(id: number): Promise<users> {
 		return await this.prismaService.users.findUnique({
 			where : {
