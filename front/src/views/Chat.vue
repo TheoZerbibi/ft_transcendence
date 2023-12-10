@@ -128,6 +128,13 @@ components: {
 								disconnect();
 								snackbarStore.showSnackbar(data, 3000, 'red');
 								});
+						if (socket.value){ 
+							socket.value.on('new-connexion', (data:any) => {
+						connectedUser = connetectedUser.concat(JSON.parse(data));
+}
+
+
+						}
 					}
 
 				};
@@ -136,10 +143,11 @@ components: {
 						connect(JWT.value);
 						console.log(isConnected.value);
 						console.log('HELLO WORLD !');
-						});
+						socket.emit(
+								});
 
-				return {
-					isConnected,
+						return {
+						isConnected,
 						socket,
 						connect,
 						disconnect,
@@ -174,6 +182,6 @@ components: {
 		}
 	}
 
-});
+						});
 </script>
 
