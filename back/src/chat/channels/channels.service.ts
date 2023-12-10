@@ -18,17 +18,17 @@ import { ChannelUserDto, CreateChannelUserDto, ModChannelUserDto } from './dto/c
 import { ChannelMessageContentDto, ChannelMessageDto } from './dto/channel-message.dto';
 // SERVICES
 import { PrismaService } from 'src/prisma/prisma.service';
+import { RedisService } from 'src/redis/redis.service';
 // PWD HASHING
 import * as argon2 from 'argon2';
-
-import { RedisService } from 'src/redis/redis.service';
 
 @Injectable()
 export class ChannelService {
 	localChannels: ChannelEntity[] = [];
 
-	constructor(private prisma: PrismaService,
-		   private readonly redisService: RedisService) {
+	constructor(
+		private prisma: PrismaService,
+		private readonly redisService: RedisService) {
 		this.initLocalChannels();
 	}
 
@@ -309,7 +309,6 @@ export class ChannelService {
 				created_at: channelEntity.getCreatedAt(),
 				updated_at: channelEntity.getUpdatedAt(),
 			};
-			this.publishOnRedis('channel-joined', JSON.stringify(channelUser));
 			return channelDto;
 		} catch (e) {
 			throw e;
@@ -358,7 +357,6 @@ export class ChannelService {
 				content: channelMessage.content,
 				created_at: formattedDate,
 			};
-			this.publishOnRedis('new-channel-message', JSON.stringify({channel_id: channelUser.getChannelId(), ...channelMessageDto}));
 			return channelMessageDto;
 		} catch (e) {
 			throw e;
@@ -398,7 +396,6 @@ export class ChannelService {
 			channelEntity.setName(newParamsdto.name);
 			channelEntity.setIsPublic(newParamsdto.is_public);
 			channelEntity.setUpdatedAt(channelPrisma.updated_at);
-			this.publishOnRedis('channel-update', JSON.stringify(channelPrisma));
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				if (e.code === 'P2002') throw new BadRequestException('Channel name taken');
@@ -486,7 +483,7 @@ export class ChannelService {
 
 			targetChanUser.setIsAdmin(true);
 
-			const chanUser: channelUser = await this.prisma.channelUser.update({
+			await this.prisma.channelUser.update({
 				where: {
 					id: targetChanUser.getId(),
 				},
@@ -494,7 +491,6 @@ export class ChannelService {
 					is_admin: targetChanUser.isAdmin(),
 				},
 			});
-			this.publishOnRedis('channel-user-update', JSON.stringify(chanUser));
 			channelEntity.setUpdatedAt(new Date());
 		} catch (e) {
 			throw e;
@@ -603,7 +599,6 @@ export class ChannelService {
 			throw e;
 		}
 		this.localChannels = this.localChannels.filter((channel) => channel.getName() !== channel_name);
-		this.publishOnRedis('channel-deleted', JSON.stringify(channelEntity));
 	}
 
 	/************************************ Users *************************************/
@@ -624,7 +619,6 @@ export class ChannelService {
 					user_id: channelUser.getUserId(),
 				},
 			});
-			this.publishOnRedis('channel-quitted', JSON.stringify(channelUser));
 			channelEntity.removeUser(channelUser);
 			channelEntity.setUpdatedAt(new Date());
 		} catch (e) {
@@ -705,7 +699,6 @@ export class ChannelService {
 		});
 		return channelUsers;
 	}
-
 	async publishOnRedis(event: string, msg: string)
 	{
 		console.info(`Publishing ${event} event to redis`);

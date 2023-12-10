@@ -66,7 +66,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 
 import AddFriends from '../components/chat/direct-messages/AddFriends.vue';
 import Friends from '../components/chat/direct-messages/Friends.vue';
@@ -95,11 +95,6 @@ components: {
 		ChannelMessages,
 		ChannelUsers,
 		BlockedUsers,
-		ChatWindow,
-		UsersList,
-		FriendsList,
-		FriendRequests,
-		BlockedList
 	},
 
 	setup() {

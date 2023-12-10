@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsDate, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsDate, IsNumber, IsString, IsOptional } from 'class-validator';
 import { Exclude } from 'class-transformer';
 
 export class UserDto {

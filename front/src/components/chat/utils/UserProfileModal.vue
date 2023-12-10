@@ -9,7 +9,7 @@
 			</div>
 			<div class="modal-body">
 				<div class="user-info">
-					<img src="avatar.jpg" alt="Avatar" class="avatar"/>
+					<img src="https://preview.redd.it/sky2ka084ns11.jpg?width=640&crop=smart&auto=webp&s=a7f060f539797578a109af48a5ee75909f7661cb" alt="Avatar" class="avatar"/>
 					<h3>{{ selectedUser.displayName }}</h3>
 				</div>
 				<div class="user-stats">
