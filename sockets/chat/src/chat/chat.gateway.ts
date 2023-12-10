@@ -17,7 +17,6 @@ import { users, channel_users } from '@prisma/client';
 // import { direct_messages } from '@prisma/client';
 
 
-
 // Gateway emit mostly the data he received in the case of message, new user_channel or channel-update event
 //
 // Else it will return ChannelDto which hold list of users_id connected to the channel
@@ -39,18 +38,23 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	) {}
 
 	@WebSocketServer() server: Server;
-	// Await for a stringified channel_users as body
-	@SubscribeMessage('new-connection')
-	public async connection(client: Socket, data: any) {
-		const user: any = JSON.parse(data);
-		const newUser: User = await this.chatService.registerUser(client, user.id);
-		const channels: Channel[] = newUser.getChannels();
-	
-		this.emitToChannels('new-connection', channels, user);
-	}
+
+//	Should register user using handle connection
+//	Keeping it in failcase implementation of the feature in handleConnection
+//
+//
+//	// Await for a stringified channel_users as body
+//	@SubscribeMessage('new-connection')
+//	public async connection(client: Socket, data: any) {
+//		const user: any = JSON.parse(data);
+//		const newUser: User = await this.chatService.registerUser(client, user.id);
+//		const channels: Channel[] = newUser.getChannels();
+//	
+//		this.emitToChannels('new-connection', channels, user);
+//	}
 
 	// To_test
-	@SubscribeMessage('new-direct-message')
+//	@SubscribeMessage('new-direct-message')
 	public dirmsg(client: Socket, data: any): void
 	{
 		const msg:any = JSON.parse(data);
@@ -59,11 +63,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		if (user !== undefined) {
 			user.getSocket().emit('new-direct-message', data);
 		}
+		else {
+			console.info('Receiver of dir message is not connected');
+		}
 	}
 
 	// To_test
-	@SubscribeMessage('new-channel-message')
-	public msg(client: Socket, data: any): void
+//	@SubscribeMessage('new-channel-message')
+	public msg(data: any): void
 	{
 		const msg: any = JSON.parse(data);
 		const channel: Channel | undefined = this.chatService.getChannelById(msg.channel_id);
@@ -75,9 +82,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	}
 
 	// transmit channelEntity data to everyone in the channel
-	@SubscribeMessage('channel-update')
-	channelUpdate(client: Socket, data: any): void {
-
+//	@SubscribeMessage('channel-update')
+	channelUpdate(data: any): void {
 		const channelData: any = JSON.parse(data);
 		const channelBuf: Channel = this.chatService.getChannelById(channelData.id);
 
@@ -86,7 +92,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 //	@SubscribeMessage('channel-creation')
 	channelCreation(data: any): void {
-	
 		const channelData: any = JSON.parse(data);
 		const user: User | undefined = this.chatService.getUserById(channelData.users[0].user_id);
 		let userSocket;
@@ -105,7 +110,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		}
 	}
 
-	@SubscribeMessage('channel-joined')
+//	@SubscribeMessage('channel-joined')
 	channelJoined(data: any): void
 	{
 		const channel_user: channel_users = JSON.parse(data);
@@ -113,36 +118,47 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 		const channel: Channel = this.chatService.getChannelById(channel_user.channel_id);
 		if (!channel) {
-			console.log('Failure channel not found in memory');
+			console.error('Failure channel not found in memory');
 			return;
 		}
 
 		const user: User = this.chatService.getUserById(channel_user.user_id);
 		if (!user) {
-			console.log('Failure user not found in memory');
+			console.error('Failure user not found in memory');
 			return;
 		}
 
 		channel.addUser(user);
 		this.emitToChannel('channel-joined', channel, channel_user);
-		console.log ('Channel join event resolved');
 	}
 
 	// Send to everyone in the channel of leaver, leaver information 
+	// 'channel-quitted'
 	public channelQuitted(data: any): void {
 		const channel_user: any =  JSON.parse(data);
 		const channel: Channel | undefined = this.chatService.removeUserFromChannelById(channel_user.user_id, channel_user.channel_id);
 
-		if (channel === undefined)
+		if (channel === undefined) {
+			console.info('No one is connected to this channel atm');
 			return;
+		}
 		this.emitToChannel('user-quitted-channel', channel, JSON.stringify(new ChannelDto(channel)));
 	}
-	// list of event association to front 
 
-	// 'channel-quitted' --> 'user-quitted'
-	// 'channel-quitted' --> 'user-quitted'
-	// 'channel-quitted' --> 'user-quitted'
-	
+	// 'channel-deleted'
+	public channelDeleted(data: any): void
+	{
+		const channelEntity: any = JSON.parse(data);
+		const channel: Channel = this.chatService.deleteChannel(channelEntity);
+
+		if (!channel) {
+			console.info('No one is connected to this channel atm');
+			}
+		const { ['password']: excludedPassword, ...tmpChannel } = channelEntity;
+		const { ['users']: excludedUsers, ...channelReturned } = tmpChannel;
+
+		this.emitToEveryone('channel-deleted', JSON.stringify(channelReturned));
+	}
 
 	//----------------------  Deco/Connection handler ---------------------------------------------
 
@@ -151,6 +167,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			if (!client.handshake.headers.authorization) throw new Error('Invalid token');
 			const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
 			this.authService.verifyToken({ access_token: token });
+
 		//	const user = client.handshake.user;
 			return this.logger.debug(`Client connected: ${client.id}`);
 		} catch (e) {

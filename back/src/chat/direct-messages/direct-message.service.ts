@@ -13,12 +13,14 @@ enum RequestStatus {
 	PENDING,
 	ACCEPTED,
 }
+import { RedisService } from 'src/redis/redis.service';
 
 @Injectable()
 export class DirectMessageService {
 	constructor(
 		private prisma: PrismaService,
 		private userService: UserService,
+		private redisService: RedisService,
 	) {}
 
 	/***********************************************************************************/
@@ -167,9 +169,15 @@ export class DirectMessageService {
 				friend_id: directMessage.friend_id,
 				friend_name: targetUser.display_name,
 			};
+			this.publishToRedis('new-direct-message', JSON.stringify(directMessageDto));
 			return directMessageDto;
 		} catch (e) {
 			throw e;
 		}
+	}
+
+	private publishToRedis(event: string, msg: string)
+	{
+		this.redisService.publish(event, msg);
 	}
 }

@@ -600,6 +600,7 @@ export class ChannelService {
 			throw e;
 		}
 		this.localChannels = this.localChannels.filter((channel) => channel.getName() !== channel_name);
+		this.publishOnRedis('channel-deleted', JSON.stringify(channelEntity));
 	}
 
 	/************************************ Users *************************************/
