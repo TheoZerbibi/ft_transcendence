@@ -5,8 +5,6 @@
 		rounded="0"
 		size="large"
 		@click="handleClick" 
-		:width="width" 
-		:height="height"
 		:ripple="false"
 		style="{
 			background-color: #000000;
@@ -16,6 +14,7 @@
 			position: relative;
 			font-size: 20px;
 		}"
+		:style="{ width: width + 'px', height: height + 'px' }"
 	>
 		<slot></slot>
 	</v-btn>
@@ -29,7 +28,7 @@ export default defineComponent({
 	props: {
 		width: {
 			type: String,
-			default: '100px'
+			default: '250px'
 		},
 		height: {
 			type: String,
