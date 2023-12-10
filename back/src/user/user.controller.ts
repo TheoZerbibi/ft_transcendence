@@ -21,7 +21,7 @@ import { UserService } from './user.service';
 import { EditUserDto, UserDto, UserLoginDto } from './dto';
 import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
-import { FriendRequestDto } from './dto/friend.dto';
+import { FriendRequestResponseDto } from './dto/friend.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
@@ -114,7 +114,7 @@ export class UserController {
 	@Get('friends/requests')
 	@ApiOperation({ summary: 'Get friend requests sent to user' })
 	@ApiBearerAuth('JWT-auth')
-	async getFriendRequests(@GetUser() user: User): Promise<FriendRequestDto[]> {
+	async getFriendRequests(@GetUser() user: User): Promise<UserDto[]> {
 		return await this.userService.getFriendRequestsOfUser(user);
 	}
 
@@ -192,11 +192,11 @@ export class UserController {
 
 	/************************************* Friends *************************************/
 	@UseGuards(JwtGuard)
-	@Patch('friends/accept-request')
-	@ApiOperation({ summary: 'Accept a friend request' })
+	@Patch('friends/respond-request')
+	@ApiOperation({ summary: 'Respond to friend request' })
 	@ApiBearerAuth('JWT-auth')
-	async acceptFriendRequest(@GetUser() user: User, @Body() dto: UserLoginDto): Promise<void> {
-		await this.userService.acceptFriendRequest(user, dto.login);
+	async respondFriendRequest(@GetUser() user: User, @Body() dto: FriendRequestResponseDto): Promise<void> {
+		await this.userService.respondRequest(user, dto.login, dto.response);
 	}
 
 	/***********************************************************************************/
@@ -220,14 +220,6 @@ export class UserController {
 	@ApiBearerAuth('JWT-auth')
 	async removeFriend(@GetUser() user: User, @Body() dto: UserLoginDto): Promise<void> {
 		await this.userService.removeFriend(user, dto.login);
-	}
-
-	@UseGuards(JwtGuard)
-	@Delete('friends/decline-request')
-	@ApiOperation({ summary: 'Decline a friend request' })
-	@ApiBearerAuth('JWT-auth')
-	async declineFriendRequest(@GetUser() user: User, @Body() dto: UserLoginDto): Promise<void> {
-		await this.userService.declineFriendRequest(user, dto.login);
 	}
 
 	/*********************************** Blocked *************************************/

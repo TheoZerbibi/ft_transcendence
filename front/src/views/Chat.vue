@@ -16,9 +16,9 @@ import { defineComponent } from 'vue';
 // Components
 import ChatWindow from '../components/chat/ChatWindow.vue';
 import UsersList from '../components/chat/UsersList.vue';
-import FriendsList from '../components/chat/FriendsList.vue';
-import FriendRequests from '../components/chat/FriendRequestsList.vue';
-import BlockedList from '../components/chat/BlockedList.vue';
+import FriendsList from '../components/chat/ListFriends.vue';
+import FriendRequests from '../components/chat/ListFriendRequests.vue';
+import BlockedList from '../components/chat/ListBlocked.vue';
 
 export default defineComponent({
 	name: 'ChatView',

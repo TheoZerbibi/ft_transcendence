@@ -43,7 +43,7 @@ export default {
 	methods: {
 		unblockUser: async function (login: string) {
 			try {
-				const response = await fetch(
+				await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/blocked`,
 					{
 						method: 'DELETE',
@@ -80,9 +80,7 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				const data = await response.json();
-				this.blockedUsers = data;
-				console.log(data);
+				this.blockedUsers = await response.json();
 			} catch (error) {
 				console.error(error);
 			}
