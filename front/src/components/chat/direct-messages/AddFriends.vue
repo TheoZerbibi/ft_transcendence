@@ -5,16 +5,16 @@
 	<div class="scrollable-content">
 
 		<!-- Friend Requests list -->
-		<v-list v-if="listFriendRequests.length">
-			<v-list-item v-for="request in listFriendRequests" :key="request.id">
+		<v-list v-if="friendRequests.length">
+			<v-list-item v-for="request in friendRequests" :key="request.id">
 				<template v-if="request.user_login == user.login">
 					{{ request.target_display_name }}
 					<v-btn @click="cancelRequest(request.target_display_name)">Cancel</v-btn>
 				</template>
 				<template v-else>
-					{{ request.display_name }}
-					<AcceptDeclineButton :login="request.login" :response="true" @respond="respondRequest"/>
-					<AcceptDeclineButton :login="request.login" :response="false" @respond="respondRequest"/>
+					{{ request.user_display_name }}
+					<AcceptDeclineButton :login="request.user_login" :response="true" @respond="respondRequest"/>
+					<AcceptDeclineButton :login="request.user_login" :response="false" @respond="respondRequest"/>
 				</template>
 			</v-list-item>
 		</v-list>
@@ -71,19 +71,18 @@ export default {
 	},
 	data() {
 		return {
-			listFriendRequests: [],
-			listPendingRequests: [],
+			friendRequests: [],
 			users: [],
 			searchTerm: '',
 		};
 	},
 	beforeMount() {
 		this.fetchUsers();
-		this.fetchlistFriendRequests();
+		this.fetchFriendRequests();
 	},
 	mounted() {},
 	methods: {
-		fetchlistFriendRequests: async function() {
+		fetchFriendRequests: async function() {
 			try {
 				const response = await
 				fetch(
@@ -100,8 +99,8 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				this.listFriendRequests = await response.json();
-				console.log('[AddFriends.vue:fetchlistFriendRequests] login: ' + this.user.login);
+				this.friendRequests = await response.json();
+				console.log('[AddFriends.vue:fetchFriendRequests] friendRequests: ' + JSON.stringify(this.friendRequests));
 			} catch (error) {
 				console.error(error);
 			}
@@ -127,7 +126,8 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				this.fetchlistFriendRequests();
+				this.fetchFriendRequests();
+				this.fetchFriends();
 			} catch (error) {
 				console.log(error);
 			}
@@ -151,7 +151,7 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				this.fetchlistFriendRequests();
+				this.fetchFriendRequests();
 				this.fetchUsers();
 			} catch (error) {
 				console.log(error);
@@ -202,7 +202,7 @@ export default {
 					return;
 				});
 				this.fetchUsers();
-				this.fetchlistFriendRequests();
+				this.fetchFriendRequests();
 			} catch (error) {
 				console.error(error);
 			}
