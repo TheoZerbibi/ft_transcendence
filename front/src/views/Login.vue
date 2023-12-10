@@ -8,7 +8,7 @@
 			'bg-white': !hovering && !clicked && step === 0,
 		}"
 		>
-        <v-row 
+        <v-row
 			align="center"
 			no-gutters
 			xs12
@@ -17,7 +17,7 @@
 			style="height: 100vh;"
 		>
 			
-			<div v-if="step === 0" class="door-container">
+			<div v-if="step === 0" class="door-container align-center justify-center" align="center">
 				<audio controls id="myVideo" autoplay loop hidden>
 					<source src="/sounds/002-WHITE SPACE.mp3" type="audio/wav" />
 					Your browser does not support the audio element.
@@ -44,16 +44,16 @@
 						id="something" 
 						src="/ui/Something_White_Space.gif"
 						cover
-						:height="100"
-						:width="100"
+						height="100dvh"
+						width="100dvh"
 						:style="{
-						transform: 'translate(-50%, -50%)',
-						maxWidth: '100%',
-						maxHeight: '100%',
+							// transform: 'translate(-50%, -50%)',
+							maxWidth: '100%',
+							maxHeight: '100%',
 					}" />
 			</div>
 			
-			<div v-if="step > 0">
+			<div v-if="step > 0" class="align-center justify-center">
 				<audio controls id="myVideo" autoplay loop hidden>
 					<source src="/sounds/004-Spaces In-between.mp3" type="audio/wav" />
 					Your browser does not support the audio element.
@@ -69,7 +69,7 @@
 					<Button @click="nextStep" width="250px">that's my name!</Button>
 				</div>
 				
-				<div v-if="step === 2" align="center" class="align-center justify-center">
+				<div v-if="step === 2">
 					<h3 class="omoriFont">Nice to meet you {{ newUser.display_name }}! Is that you on the picture?</h3>
 					<div class="image-container">
 						<UploadFile @imageChanged="updateAvatar" class="upload-file hoverable" >
@@ -115,6 +115,7 @@ import InputBar from '../components/layout/InputBar.vue';
 import { computed } from 'vue';
 import { useUser } from '../stores/user';
 import { useSnackbarStore } from '../stores/snackbar';
+import { set } from 'date-fns';
 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
@@ -355,6 +356,8 @@ export default {
 			}
 		},
 		startZoomEffect() {
+
+			this.doorToSomethingTransition();
 			this.clicked = true;
 			this.isZooming = true;
 			this.zoomIn();
@@ -381,6 +384,38 @@ export default {
 				}, 3000);
 			}
 		},
+		doorToSomethingTransition() {
+			const doorContainer = document.querySelector('.door-container') as HTMLDivElement;
+			const door = document.querySelector('#door') as HTMLImageElement;
+    		const somethingImage = document.querySelector('#something') as HTMLImageElement;
+			if (!door || !somethingImage || !doorContainer) return;
+    		
+			doorContainer.classList.remove('door-container');
+			let doorOpacity = 1;
+    		let imageOpacity = 0;
+
+    		somethingImage.style.position = 'fixed';
+    		somethingImage.style.top = '0';
+    		somethingImage.style.left = '0';
+    		somethingImage.style.width = '100vw';
+    		somethingImage.style.height = '100vh';
+    		somethingImage.style.zIndex = '9999';
+    		somethingImage.style.opacity = '0';
+
+    		const timer = setInterval(() => {
+    		    if (doorOpacity <= 0) {
+    		        if (imageOpacity >= 1) {
+    		            clearInterval(timer);
+    		        } else {
+    		            imageOpacity += 0.01;
+    		            somethingImage.style.opacity = imageOpacity as unknown as string;
+    		        }
+    		    } else {
+    		        doorOpacity -= 0.01;
+    		        door.style.opacity = doorOpacity as unknown as string;
+    		    }
+    		}, 5); 
+		},
 	},
 };
 </script>
@@ -390,7 +425,9 @@ export default {
 	image-rendering: optimizeQuality;
 	pointer-events: auto;
 	position: relative;
-	transition: opacity 0.3s ease;
+	opacity: 1;
+	transition: opacity 0.3s ease-out;
+	aspect-ratio: 1;
 	object-fit: contain; /* Do not scale the image */
 }
 
@@ -398,6 +435,14 @@ export default {
 	image-rendering: optimizeQuality;
 	position: relative;
 	object-fit: contain; /* Do not scale the image */
+	aspect-ratio: 1;
+	position: 0;
+	top: 0;
+	left: 0;
+	width: 0;
+	height: 0;
+	z-index: 0;
+	opacity: 0;
 	transition:
 		width 1s ease-in-out,
 		top 1s ease-in-out,
@@ -452,10 +497,6 @@ export default {
     transition: all 0.2s ease-out;
 }
 
-/* .image-container:hover .upload-file {
-	opacity: 0.8;
-}
- */
 .door-container:hover {
     animation: neon-light 0.5s 0.3s, heartbeat 0.8s infinite 0.8s;
     box-shadow: 0 3px 20px #ff0000, 0 3px 30px #ff0000;
