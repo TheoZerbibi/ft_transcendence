@@ -27,11 +27,11 @@
 			</div>
 		</div>
 		<GameModal
-			v-if="gameEnded"
+			v-if="dialogVisible"
+			:isVisible="dialogVisible"
 			:isWinner="isWinner"
 			:isLoser="isLoser"
 			:apiData="apiData"
-			:dialogValue="dialogVisible"
 		/>
 		<v-btn color="primary" @click="openDialog">Open Dialog</v-btn>
 		<Snackbar />
@@ -196,8 +196,8 @@ export default {
 								this.disconnect();
 								if (!snackbarStore.snackbar) snackbarStore.showSnackbar('Game is ended', 3000);
 								this.dialogVisible = true;
-								this.apiData = data;
 								setTimeout(() => {
+									this.apiData = data;
 									this.gameEnded = true;
 								}, 8800);
 								if (data.winner) console.log(`Winner : ${data.winner.user.login}`);
@@ -238,8 +238,15 @@ export default {
 	},
 	methods: {
 		openDialog() {
+			console.log('openDialog');
 			this.gameEnded = true;
-			this.apiData = {
+			this.isLoser = true;
+			if (!snackbarStore.snackbar) snackbarStore.showSnackbar('Game is ended', 3000);
+			this.dialogVisible = true;
+			setTimeout(() => {
+				console.log('end countdown');
+				this.gameEnded = true;
+				this.apiData = {
 				winner: {
 					user: {
 						id: 2,
@@ -258,8 +265,7 @@ export default {
 				startDate: '2023-11-20T12:00:38.537Z',
 				endingDate: '2023-11-20T12:01:24.445Z',
 			};
-			this.isLoser = true;
-			this.dialogVisible = true;
+			}, 1000);
 		},
 	},
 };
