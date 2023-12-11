@@ -44,7 +44,6 @@ legend : x ended, t testing phase, i implementing phase
 > - [t]   @Patch(':channel_name/settings/admin/general')
 > - [t]   @Patch(':channel_name/settings/admin/mod_user')
 
-
 - deletion
 - [t] channel-quitted: 	@Delete(':channel_name/leave')
 - [t] channel-deleted: 	@Delete(':channel_name')

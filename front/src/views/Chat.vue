@@ -84,6 +84,8 @@ import { useSnackbarStore } from '../stores/snackbar';
 import { useSocketStore } from '../stores/websocket';
 import { computed } from 'vue';
 
+import { useSocketHandler } from '../plugins/socketHandler';
+
 export default defineComponent({
 name: 'ChatView',
 components: {
@@ -99,43 +101,21 @@ components: {
 
 	setup() {
 
-				const webSocketStore = useSocketStore();
-				const userStore = useUser();
-
-				let connectedUsers = [];
 				const tab = ref(0); // Start with the first tab active
-			
-				const isConnected = computed(() => webSocketStore.isConnected);
-				const socket = computed(() => webSocketStore.getSocket);
-				const JWT = computed(() => userStore.getJWT);
-			
-				const connect = async (JWT: string) => {
-					await webSocketStore.connect(JWT, import.meta.env.VITE_CHAT_SOCKET_PORT);
-				};
-			
-				const disconnect = () => {
-					webSocketStore.disconnect();
-				};
+				const {
+				isConnected,
+				socket,
+				connect,
+				disconnect,
+				socketListen,
+				JWT,
+				connectedUsersIds,
+				} = useSocketHandler();
 
-				const socketListen = () => {
-					if (socket.value) {
-						socket.value.on('chat-error', (data: any) => { disconnect(); snackbarStore.showSnackbar(data, 3000, 'red'); });
-					//	socket.value.on('welcome', (data: any) => { connectedUsers = JSON.parse(data) });
-					//	socket.value.on('new-direct-message', (data: any) => { connectedUsers = JSON.parse(data) });
-					//	socket.value.on('channel-updated', (data: any) => { connectedUsers = JSON.parse(data) });
-					//	socket.value.on('channel-user-update', (data: any) => { connectedUsers = JSON.parse(data) });
-					//	socket.value.on('channel-creation', (data: any) => { connectedUsers = JSON.parse(data) });
-					//	socket.value.on('channel-joined', (data: any) => { connectedUsers = JSON.parse(data) });
-					//	socket.value.on('user-quitted-channel', (data: any) => { connectedUsers = JSON.parse(data) });
-					//	socket.value.on('channel-deleted', (data: any) => { connectedUsers = JSON.parse(data) });
-						}
-				};
-
+				
 				onMounted(() => {
-						connect(JWT.value);
-						console.log(isConnected.value);
-						console.log('HELLO WORLD !');
-						});
+				socketListen();
+});
 
 				return {
 					isConnected,
@@ -144,35 +124,37 @@ components: {
 						disconnect,
 						socketListen,
 						JWT,
-						connectedUsers,
+						connectedUsersIds,
 						tab,
 				};
 
 	},
+
 	data() {
 		return {
-			isSelectedFriend: false,
-			selectedFriendLogin: '',
-			isSelectedChannel: false,
-			selectedChannelName: '',
+isSelectedFriend: false,
+		  selectedFriendLogin: '',
+		  isSelectedChannel: false,
+		  selectedChannelName: '',
 		}
 	},
-	beforeMount() {
 
+	beforeMount() {
 	},
+
 	mounted() {
 	},
-	methods: {
-		updateSelectedFriend(selectedFriendLogin: string) {
-			this.isSelectedFriend = true;
-			this.selectedFriendLogin = selectedFriendLogin;
-		},
-		updateSelectedChannel(selectedChannelName: string) {
-			this.isSelectedChannel = true;
-			this.selectedChannelName = selectedChannelName;
-		}
-	}
+
+methods: {
+		 updateSelectedFriend(selectedFriendLogin: string) {
+			 this.isSelectedFriend = true;
+			 this.selectedFriendLogin = selectedFriendLogin;
+		 },
+		 updateSelectedChannel(selectedChannelName: string) {
+			 this.isSelectedChannel = true;
+			 this.selectedChannelName = selectedChannelName;
+		 }
+	 }
 
 });
 </script>
-

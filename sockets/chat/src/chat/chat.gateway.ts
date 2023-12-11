@@ -185,9 +185,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	public handleDisconnect(client: Socket): void {
 		console.log('disconnect');
 		const user: User = this.chatService.removeUser(client);
-
 		const userDTOs: UserDto[] = this.chatService.getUsers().map((user) => new UserDto(user));
-		this.emitToChannels('User-Disconnected', user.getChannels(), userDTOs);
+	//	const Channels: Channel[] | undefined = user.getChannels();
+	//	
+	//	if (channels !== undefined)
+		this.emitToEveryone('User-Disconnected', userDTOs);
 		return this.logger.debug(`Client disconnected: ${client.id}`);
 	}
 
