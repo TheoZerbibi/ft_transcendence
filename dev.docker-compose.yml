@@ -140,7 +140,6 @@ services:
     # command: sh -c "tail -f /dev/null"
     restart: always
 
-
   prisma:
    container_name: prisma
    build:
