@@ -10,6 +10,10 @@
 			</v-img>
 		</div>
 
+		<div class="d-flex justify-center align-center fill-height">
+			<img class="versus" src="/game/UI/VS.png"/>
+		</div>
+
 		<div id="rightUser" class="player-frame bottom-right">
 			<v-img class="cadre-responsive" :src="'/game/UI/cadres/cadre0.png'">
 				<h2>{{ rightPlayer.displayName }}</h2>
@@ -86,7 +90,7 @@ export default {
 		const socket = computed(() => webSocketStore.getSocket);
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
-		const gameUID = computed(() => route.params.uid as string,);
+		const gameUID = computed(() => route.params.uid as string);
 
 		return {
 			isConnected,
@@ -124,16 +128,39 @@ export default {
 <style scoped>
 .player-frame {
 	position: absolute;
+	animation-duration: 0.5s;
+	animation-fill-mode: both;
+	animation-timing-function: ease-out;
 }
 
 .top-left {
 	top: 10vw;
 	left: 10vw;
+	animation-name: slideInFromTop;
 }
 
 .bottom-right {
 	bottom: 10vw;
 	right: 10vw;
+	animation-name: slideInFromBottom;
+}
+
+@keyframes slideInFromTop {
+	from {
+		transform: translateY(-100%);
+	}
+	to {
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideInFromBottom {
+	from {
+		transform: translateY(100%);
+	}
+	to {
+		transform: translateY(0);
+	}
 }
 
 .cadre-responsive {
@@ -166,6 +193,13 @@ h2 {
 		0 0 0.2em goldenrod;
 }
 
+.versus {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 99999;
+}
+
 .fight-button {
 	position: absolute;
 	width: 22vw;
@@ -194,15 +228,38 @@ h2 {
 	height: 100%;
 	background-size: cover;
 	clip-path: polygon(0 0, 100% 0, 0 100%);
+	animation-duration: 0.3s;
+	animation-fill-mode: both;
+	animation-timing-function: ease-out;
 }
 
 .sky-part {
 	background-image: url('/game/battleParallax/sky-parallax.png');
+	animation-name: slideInFromLeft;
 }
 
 .sunset-part {
 	background-image: url('/game/battleParallax/sunset-parallax.png');
 	clip-path: polygon(100% 0, 100% 100%, 0 100%);
+	animation-name: slideInFromRight;
+}
+
+@keyframes slideInFromLeft {
+	from {
+		transform: translateX(-100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+
+@keyframes slideInFromRight {
+	from {
+		transform: translateX(100%);
+	}
+	to {
+		transform: translateX(0);
+	}
 }
 
 .overlay {
