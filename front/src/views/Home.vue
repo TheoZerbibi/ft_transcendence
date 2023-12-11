@@ -1,5 +1,6 @@
 <template>
 	<v-main id="background">
+	<Box height="300px" width="600px">	
 		<table>
 			<tr>
 				<th>class="omoriFont"</th>
@@ -27,19 +28,26 @@
 				<td><p class="omoriArcade">Paragraphe</p></td>
 			</tr>
 		</table>
-	</v-main>
+	</Box>
+		<div class="box-container">
+		<Box width="240px">This is a box component</Box>
+		<ButtonBox>Click here</ButtonBox>
+	</div>
+</v-main>
 </template>
 
 <script lang="ts">
-import Footer from '../components/layout/Footer.vue';
+import Box from '../components/layout/Box.vue';
+import ButtonBox from '../components/layout/ButtonBox.vue';
+import { defineComponent } from 'vue';
 import { useUser } from '../stores/user';
 import { computed } from 'vue';
 
 const userStore = useUser();
 
-export default {
+export default defineComponent ({
 	name: 'HomeView',
-	components: { Footer },
+	components: { Box, ButtonBox },
 	setup() {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
@@ -62,7 +70,7 @@ export default {
 			} else return this.$router.push({ name: `Login` });
 		}
 	},
-};
+});
 </script>
 
 <style>
