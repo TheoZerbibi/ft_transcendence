@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<v-container class="mb-6"> <!-- provides the ability to center and horizontally pad site’s contents. -->
+		<v-container> <!-- provides the ability to center and horizontally pad site’s contents. -->
 			<v-row align="center" no-gutters style="height: 150px;">
 					<Button width="150px" height="50px">Click here 01</Button>
 					<Button width="150px" height="50px">Click here 02</Button>

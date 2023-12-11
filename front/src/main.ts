@@ -16,9 +16,30 @@ import router from './router';
 // Importing the global css file
 import './assets/global.css';
 
+const omoriTheme = {
+	background: '#000000',
+	surface: '#000000',
+	primary: 'ffffff',
+	secondary: '#ffffff',
+	accent: '#000000',
+	error: '#ff0000',
+	info: '#3399ff',
+	success: '#33ff33',
+	warning: '#ff8000',
+}
+
+
 const vuetify = createVuetify({
+	name: 'App',
+	data() {
+		return {};
+	},
 	theme: {
-		defaultTheme: 'dark',
+		disable: true,
+		defaultTheme: 'omoriTheme',
+		themes: {
+			omoriTheme,
+		},
 	},
 	components,
 	directives,

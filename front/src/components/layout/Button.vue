@@ -12,8 +12,6 @@
 			background-color: #000000;
 			border-color: #ffffff;
 			border: 3px solid;
-			margin: 16px;
-			padding: 6px;
 			display: flex;
 			position: relative;
 			font-size: 20px;
