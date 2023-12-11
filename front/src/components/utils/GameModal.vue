@@ -1,56 +1,78 @@
 <template>
 	<v-row v-if="apiData" justify="center">
-		<v-dialog v-model="dialog" persistent width="800">
-			<v-card>
-				<v-card-title>
-					<span class="text-h5">Stats</span>
-				</v-card-title>
-				<v-card-text>bsoir.</v-card-text>
-				{{ apiData }}
-				<br />
-				left {{ leftUser }}
-				<br />
-				right {{ rightUser }}
-				<br />
-				{{ isWinner }}
-				{{ isLoser }}
-				<div v-if="leftUser" id="leftUser">
-					<v-avatar size="100">
-						<img :src="leftUser.user.avatar" />
-					</v-avatar>
-					{{ leftUser.score }}
+		<v-dialog v-model="dialog" persistent max-width="80vw">
+			<div
+				class="overflow-auto d-flex flex-column"
+				:style="{
+					backgroundImage: 'url(/game/UI/Window.png)',
+					backgroundPosition: 'center',
+					backgroundSize: '100% 100%',
+					backgroundRepeat: 'no-repeat',
+					color: 'white',
+					height: '80vh',
+				}"
+			>
+				<div class="d-flex justify-space-between align-center mt-n1">
+					<!-- Utilisez mt-n1 ou pt-n1 pour ajuster l'espace -->
+					<span></span>
+					<!-- Élément vide pour équilibrer le flexbox -->
+					<h1 class="omoriFont" :style="{
+						margin: '0',
+					}">Game Summary</h1>
+					<v-btn icon @click="closeDialog" class="mr-8" color="transparent" />
 				</div>
-				<div v-if="rightUser" id="rightUser">
-					<v-avatar size="100">
-						<img :src="rightUser.user.avatar" />
-					</v-avatar>
-					{{ rightUser.score }}
+
+				<div class="d-flex flex-column align-center justify-center flex-grow-1">
+					<div v-if="rightUser" id="rightUser" class="my-2">
+						<v-avatar size="10vw">
+							<v-img :src="rightUser.user.avatar" />
+						</v-avatar>
+						<h1 class="omoriArcade">{{ rightUser.score }}</h1>
+					</div>
+					<div v-if="leftUser" id="leftUser" class="my-2">
+						<v-avatar size="10vw">
+							<v-img :src="leftUser.user.avatar" />
+						</v-avatar>
+						<h1 class="omoriArcade">{{ leftUser.score }}</h1>
+					</div>
+					<div v-if="apiData.startDate" class="my-2">
+						Start at: <DateViewer :timestamp="apiData.startDate" />
+						<br />
+						Duration: {{ duration }}
+					</div>
 				</div>
-				<div v-if="apiData.startDate">
-					Start at : <Date :timestamp="apiData.startDate" />
-					<br />
-					Durée : {{ duration }}
-				</div>
-			</v-card>
+			</div>
 		</v-dialog>
 	</v-row>
 </template>
 
 <script lang="ts">
 import { SIDE } from '../../plugins/game/enums/Side';
-import Date from './Date.vue';
+import DateViewer from './Date.vue';
 
 export default {
-	components: { Date },
+	components: { DateViewer },
 	props: {
-		isWinner: Boolean,
-		isLoser: Boolean,
-		apiData: Object,
-		dialogValue: Boolean,
+		apiData: {
+			type: Object,
+			default: () => ({}),
+		},
+		isWinner: {
+			type: Boolean,
+			default: false,
+		},
+		isVisible: {
+			type: Boolean,
+			default: false,
+		},
+		isLoser: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	data() {
 		return {
-			dialog: this.dialogValue,
+			dialog: false as boolean,
 			data: null as any,
 			leftUser: null as any,
 			rightUser: null as any,
@@ -59,20 +81,25 @@ export default {
 	},
 	watch: {
 		apiData(newVal) {
+			console.log('watch apiData', newVal);
+			if (this.isVisible) this.dialog = true;
 			this.data = this.processData(newVal);
-		},
-		dialogValue(newVal) {
-			this.dialog = newVal;
 		},
 	},
 	methods: {
+		closeDialog() {
+			this.$router.push({ name: 'GameMenu' });
+		},
 		processData(data: any) {
-			const start = new Date(data.startDate);
+			console.log('processData', data);
+
+			const start: Date = new Date(data.startDate);
 			const end = new Date(data.endingDate);
 			const durationInMilliseconds = end.getTime() - start.getTime();
 			const minutes = Math.floor((durationInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
 			const seconds = Math.floor((durationInMilliseconds % (1000 * 60)) / 1000);
-			this.duration = `${minutes} minutes ${seconds} seconds`;
+			if (minutes > 0) this.duration = `${minutes} minutes ${seconds} seconds`;
+			else this.duration = `${seconds} seconds`;
 
 			if (data.winner.side === SIDE.LEFT) {
 				this.leftUser = data.winner;
