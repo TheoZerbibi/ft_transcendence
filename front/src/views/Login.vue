@@ -59,7 +59,9 @@
 					}" />
 			</div>
 			
-			<div v-if="step > 0" align="center" class="justify-center">
+			<div v-if="step > 0" 
+				align="center"
+				class="justify-center">
 				<audio controls id="myVideo" autoplay loop hidden>
 					<source src="/sounds/004-Spaces In-between.mp3" type="audio/wav" />
 					Your browser does not support the audio element.
@@ -83,9 +85,16 @@
 				<div v-if="step === 2">
 					<h3 class="omoriFont">Nice to meet you {{ newUser.display_name }}! Is that you on the picture?</h3>
 					<div class="image-container">
-						<UploadFile @imageChanged="updateAvatar" class="upload-file hoverable" >
-							<template v-slot:image>
-								<v-img 
+						<UploadFile 
+							@imageChanged="updateAvatar" 
+							class="upload-file hoverable"
+							buttonWidth="250"
+							buttonHeight="50"
+							polaroidWidth="25"
+							polaroidHeight="30"
+						>
+							<template v-slot:polaroidImg>
+								<v-img
 									v-if="newUser.avatar"
 									:src="newUser.avatar"
 									class="hoverable"
@@ -102,7 +111,7 @@
 					<Button @click="nextStep" :disabled="cantSkip" width="250" :height="50">That's me!</Button>
 				</div>
 				
-				<div v-if="step === 4">
+				<div v-if="step === 3">
 					<v-form @submit.prevent="logTwoFactorAuthentication">
 						<InputBar v-model="verificationCode" label="Enter Verification Code"
 							required></InputBar>
@@ -123,6 +132,7 @@ import Snackbar from '../components/layout/Snackbar.vue';
 import UploadFile from '../components/layout/UploadFile.vue';
 import Button from '../components/layout/Button.vue';
 import InputBar from '../components/layout/InputBar.vue';
+import Polaroid from '../components/layout/Polaroid.vue';
 import { computed } from 'vue';
 import { useUser } from '../stores/user';
 import { useSnackbarStore } from '../stores/snackbar';
@@ -133,7 +143,13 @@ const snackbarStore = useSnackbarStore();
 
 export default {
 	name: 'Login',
-	components: { Snackbar, UploadFile, Button, InputBar },
+	components: { 
+		Snackbar,
+		UploadFile,
+		Button,
+		InputBar,
+		Polaroid,
+	},
 	beforeRouteLeave(to: any, from: any, next: any) {
 		snackbarStore.hideSnackbar();
 		next();
@@ -323,12 +339,10 @@ export default {
 
 				if (!this.newUser.display_name) {
 
-					console.log("step" + this.step + " = " + this.newUser.login);
 					snackbarStore.showSnackbar('Please enter a name', 3000, 'red');
 					return;
 				}
 				
-				console.log("step" + this.step + " = " + this.newUser.display_name);
 				const result = await this.checkDisplayName();
 				if (!result.success) return;
 			}
@@ -477,14 +491,13 @@ export default {
 }
 
 .image-container {
-	top: 0;
-	left: 0;
 	position: relative;
 	justify-content: center;
-	display: flex;
 	align-items: center;
-	height: 300px;
-	width: 250px;
+	display: flex;
+	flex-direction: column;
+	height: 33dvh;
+	width: 27.79dvh;
 }
 
 .upload-file {
