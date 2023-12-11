@@ -39,8 +39,8 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get all public channels' })
 	@ApiBearerAuth('JWT-auth')
-	async getAllPublicChannels(): Promise<ChannelListElemDto[]> {
-		return await this.channelService.getAllPublicChannels();
+	async getAllPublicChannels(@GetUser() user: User): Promise<ChannelListElemDto[]> {
+		return await this.channelService.getAllPublicChannels(user);
 	}
 
 	//Get all channels on which user is
@@ -50,6 +50,14 @@ export class ChannelController {
 	@ApiBearerAuth('JWT-auth')
 	async getJoinedChannelNames(@GetUser() user: User): Promise<ChannelListElemDto[] | null> {
 		return await this.channelService.getJoinedChannelNames(user);
+	}
+
+	@Get('list/search/:search')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'Search channels' })
+	@ApiBearerAuth('JWT-auth')
+	async searchChannels(@GetUser() user: User, @Param('search') search: string): Promise<ChannelListElemDto[]> {
+		return await this.channelService.searchChannels(user, search);
 	}
 
 	/********************************** Channel Access *********************************/
@@ -98,7 +106,9 @@ export class ChannelController {
 	@ApiOperation({ summary: 'Create channel' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
 	async createChannel(@GetUser() user: User, @Body() dto: CreateChannelDto): Promise<ChannelEntity> {
-		return await this.channelService.createChannel(dto, user.id);
+		const channel: ChannelEntity = await this.channelService.createChannel(dto, user.id);
+		this.channelService.publishOnRedis('channel-creation', JSON.stringify(channel));
+		return channel;
 	}
 
 	/*************************************** Users ************************************/
@@ -216,6 +226,7 @@ export class ChannelController {
 	async getAllChannelsDebug(): Promise<ChannelEntity[]> {
 		return await this.channelService.getAllChannelsDebug();
 	}
+
 	// DEBUG ONLY
 	@Get('list/allChannelUsersDebug')
 	@UseGuards(JwtGuard)

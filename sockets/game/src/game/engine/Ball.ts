@@ -39,6 +39,8 @@ export class Ball {
 		this.vel = Vector.fromAngle(angle, 1);
 		if (Math.random() > 0.5) this.vel.x *= -1;
 		this.vel.divideBy(3);
+		if (this.rightUser) this.rightUser.setMoveSpeed(5);
+		if (this.leftUser) this.leftUser.setMoveSpeed(5);
 	}
 
 	outOfBounds() {

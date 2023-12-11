@@ -1,39 +1,76 @@
+**DONT FORGET**
+- [ ] snackbar doesnt work in chat
+- [ ] pwd verif problem in front (back receives undefined)
+- [ ] responsive
+- [ ] limit input size in front
 
-- [ ] List of friends (+ status)
-- [ ] Invite friend to play pong game (must be in chat interface)
+**LIST**
+______________________________________________________________________________________
+## DIRECT MESSAGES
+
+- [x] List of users (discover)
+- [x] Search bar
+
+- [x] List of friend requests (will be the first users of user list)
+	- [x] accept
+	- [x] decline 
+- [x] Send a friend request
+
+- [x] List of friends
+  - [ ] (+ status) *Isma*
+
+- [x] Access other users profile through chat interface
+  - stats of user (cf ### Profile)
+  - [ ] block / unblock
+  - [ ] challenge *Theo*
+
+- [ ] List of dms with friend
+	- [ ] update of list with received messages *Isma*
 - [ ] Send dm to friend
 
-- [f] List of friend requests
-	- [ ] accept
-	- [ ] decline 
-- [ ] Send a friend request
+______________________________________________________________________________________
+## CHANNELS
 
-- [ ] Stats of a user :
-	- [ ] wins
-	- [ ] losses
-	- [ ] ladder level 
-	- [ ] achievements
+- [x] List of non joined channels (discover) (info prive/public: cadenas)
+- [x] Search bar
+- [x] Join a new channel 
+	- [x] if private: input pwd **TO DEBUG**
 
-- [ ] Match history :
-	- [ ] lvl games
-	- [ ] ladder
+- [x] List of joined channels
+- [ ] List of messages of a channel
+	- [ ] update of list with received messages *Isma*
+- [ ] Send a message on a joined channel
 
-- [ ] List of blocked users
-- [ ] Block a user
-- [ ] Unblock a blocked user
+### Settings
 
-- [ ] Update login
-- [ ] Update avatar
-- [ ] Enable / disable two-factor identification 
+- **Owner only**
+- [ ] Add / change / remove pwd
+- [ ] Add / remove admin
+- [ ] Delete channel
+
+- **Owner and admin**
+- [ ] Change channel's name (not mandatory)
+- [ ] Ban / unban channel user (except owner)
+- [ ] Kick channel user (except owner)
+- [ ] Mute for a limited time / unmute channel user (except owner)
+
+**Owner, admin and users**
+- [ ] Leave channel
+
+______________________________________________________________________________________
+## PROFILE 
+
+- [ ] Stats of a user : "wins, losses, ladder level, achievements, ..." *Theo*
+
+- [ ] Match history : "lvl games, ladder,..." *Theo*
+
+### Settings
+
+- [ ] Update username (not mandatory)
+- [ ] Update avatar (not mandatory) *Theo*
+- [ ] Enable / disable two-factor identification *Theo*
 - [ ] Delete account
 
-- [ ] List of joined channels
-- [ ] Join a new channel (search channel by name then password (if private channel))
-- [ ] Send a message on a joined channel
-- [ ] Change channel's name (if admin)
-- [ ] Ban / unban channel user (if admin)
-- [ ] Kick channel user (if admin)
-- [ ] Mute for a limited time / unmute channel user
-- [ ] Add / change / remove pwd (if owner)
-- [ ] Delete channel (if owner)
-- [ ] Leave channel
+- [x] List of blocked users
+- [x] Block a user
+- [x] Unblock a blocked user

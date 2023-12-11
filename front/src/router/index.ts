@@ -15,7 +15,7 @@ const router = createRouter({
 		},
 		{
 			path: '/game',
-			name: 'GameCreator',
+			name: 'GameMenu',
 			component: () => import('../views/GameMenu.vue'),
 		},
 		{
@@ -38,12 +38,17 @@ const router = createRouter({
 			name: 'Test',
 			component: () => import('../views/TestView.vue'),
 		},
+		{
+			path: '/FakeAuth',
+			name: 'FakeAuth',
+			component: () => import('../views/FakeAuth.vue'),
+		},
 		// Doit a tout pris être en dernier
 		{
-			path: "/:notFound",
+			path: '/:notFound',
 			name: '404',
 			component: () => import('../views/PageNotFound.vue'),
-		}
+		},
 	],
 });
 

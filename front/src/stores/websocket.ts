@@ -16,6 +16,7 @@ export const useSocketStore = defineStore('webSocket', {
 	actions: {
 		async connect(jwt: string, port: any): Promise<Socket> {
 			const serverURL = `http://${import.meta.env.VITE_HOST}:${port}`;
+			console.log(serverURL);
 			if (!this.isConnected) {
 				this.socket = await new Promise((resolve, reject) => {
 					const socket = io(serverURL, {

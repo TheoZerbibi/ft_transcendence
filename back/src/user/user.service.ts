@@ -2,9 +2,8 @@
 /* eslint-disable prettier/prettier */
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { EditUserDto, UserDto } from './dto';
+import { EditUserDto, FriendRequestDto, UserDto } from './dto';
 import { Prisma, User, Friends } from '@prisma/client';
-import { FriendRequestDto } from './dto/friend.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as fs from 'fs';
 import { ConfigService } from '@nestjs/config';
@@ -85,6 +84,48 @@ export class UserService {
 		}
 	}
 
+	async getNotFriendsOfUser(user: User): Promise<UserDto[]> {
+		try {
+			const friends = await this.prisma.friends.findMany({
+				where: {
+					OR: [
+						{ user_id: user.id, },
+						{ friend_id: user.id, },
+					],
+				},
+			});
+			const friendsIds = friends.map((friend) => friend.user_id === user.id ? friend.friend_id : friend.user_id );
+
+			const blocked = await this.prisma.blocked.findMany({
+				where: {
+					OR: [
+						{ blocked_by_id: user.id, },
+						{ blocked_id: user.id, },
+					],
+				},
+			});
+			const blockedIds = blocked.map((blocked) => blocked.blocked_by_id === user.id ? blocked.blocked_id : blocked.blocked_by_id );
+
+			const users = await this.prisma.user.findMany({
+				where: {
+					NOT: {
+						OR: [
+							{ id: user.id, },
+							{ id: { in: friendsIds }, },
+							{ id: { in: blockedIds }, },
+						],
+					},
+				},
+			});
+			const usersDto: UserDto[] = users.map((user) => {
+				return this.exclude(user, ['dAuth', 'email', 'updated_at']) as UserDto;
+			});
+			return usersDto;
+		} catch (e) {
+			throw e;
+		}
+	}
+
 	async getUsersStartingWith(startingWith: string): Promise<UserDto[]> {
 		try {
 			const users = await this.prisma.user.findMany({
@@ -120,12 +161,8 @@ export class UserService {
 			const friends = await this.prisma.friends.findMany({
 				where: {
 					OR: [
-						{
-							user_id: user.id,
-						},
-						{
-							friend_id: user.id,
-						},
+						{ user_id: user.id, },
+						{ friend_id: user.id, },
 					],
 					status: RequestStatus.ACCEPTED,
 				},
@@ -152,17 +189,25 @@ export class UserService {
 		try {
 			const friendRequests = await this.prisma.friends.findMany({
 				where: {
-					friend_id: user.id,
+					OR: [
+						{ user_id: user.id },
+						{ friend_id: user.id },
+					],
 					status: RequestStatus.PENDING,
 				},
 				include: {
 					user: true,
+					friend: true,
 				},
 			});
-			const friendRequestsDto: FriendRequestDto[] = friendRequests.map((friendRequest) => ({
-				login: friendRequest.user.login,
-				avatar: friendRequest.user.avatar,
-			}));
+			const friendRequestsDto: FriendRequestDto[] = friendRequests.map((friendRequest) => {
+				return {
+					user_login: friendRequest.user.login,
+					user_display_name: friendRequest.user.display_name,
+					target_login: friendRequest.friend.login,
+					target_display_name: friendRequest.friend.display_name,
+				};
+			});
 			return friendRequestsDto;
 		} catch (e) {
 			throw e;
@@ -237,23 +282,11 @@ export class UserService {
 			const friend: Friends | null = await this.util_getFriend(user, targetUser);
 			if (friend) {
 				switch (friend.status) {
-					case RequestStatus.PENDING:
-						if (friend.user_id === user.id) throw new BadRequestException('Friend request already sent');
-						else throw new BadRequestException('You already have a friend request from this user');
-					case RequestStatus.ACCEPTED:
-						throw new BadRequestException('You are already friend with this user');
-					case RequestStatus.DECLINED:
-						await this.prisma.friends.update({
-							where: {
-								user_id_friend_id: {
-									user_id: targetUser.id,
-									friend_id: user.id,
-								},
-							},
-							data: {
-								status: RequestStatus.PENDING,
-							},
-						});
+				case RequestStatus.PENDING:
+					if (friend.user_id === user.id) throw new BadRequestException('Friend request already sent');
+					else throw new BadRequestException('You already have a friend request from this user');
+				case RequestStatus.ACCEPTED:
+					throw new BadRequestException('You are already friend with this user');
 				}
 			} else {
 				await this.prisma.friends.create({
@@ -359,9 +392,9 @@ export class UserService {
 		}
 	}
 
-	async turnOnTwoFactorAuthentication(userId: number) {
+	async turnOnTwoFactorAuthentication(userId: number): Promise<{ access_token: string }> {
 		try {
-			await this.prisma.user.update({
+			const user = await this.prisma.user.update({
 				where: {
 					id: userId,
 				},
@@ -369,14 +402,16 @@ export class UserService {
 					dAuth: true,
 				},
 			});
+			const token = await this.signToken(user, true);
+			return token;
 		} catch (e) {
 			throw e;
 		}
 	}
 
-	async turnOffTwoFactorAuthentication(userId: number) {
+	async turnOffTwoFactorAuthentication(userId: number): Promise<{ access_token: string }> {
 		try {
-			await this.prisma.user.update({
+			const user = await this.prisma.user.update({
 				where: {
 					id: userId,
 				},
@@ -385,19 +420,23 @@ export class UserService {
 					secret: null,
 				},
 			});
+			const token = await this.signToken(user, false);
+			return (token);
 		} catch (e) {
 			throw e;
 		}
 	}
 
 	/************************************* Friends *************************************/
-	async acceptFriendRequest(user: User, friendUsername: string): Promise<void> {
+	async respondRequest(user: User, friendUsername: string, response: boolean): Promise<void> {
 		try {
+			const action: string = response ? 'accept' : 'decline';
+
 			if (!user) throw new ForbiddenException('User not found');
 			const targetUser = await this.findUserByName(friendUsername);
 			if (!targetUser) throw new ForbiddenException('User not found');
+			if (targetUser === user) throw new BadRequestException(`You cannot ${action} yourself`);
 
-			/*
  			const blocked = await this.prisma.blocked.findUnique({
 				where: {
 					blocked_by_id_blocked_id: {
@@ -407,7 +446,7 @@ export class UserService {
 				},
 			});
 			if (blocked) throw new ForbiddenException('You are blocked by this user');
-			*/
+
 			const friend = await this.prisma.friends.findUnique({
 				where: {
 					user_id_friend_id: {
@@ -416,25 +455,40 @@ export class UserService {
 					},
 				},
 			});
+			if (!friend) throw new BadRequestException('You did not receive a friend request from this user');
+
+			switch (action) {
+			case 'accept':
+				await this.acceptFriendRequest(user.id, targetUser.id, friend);
+				break;
+			case 'decline':
+				await this.declineFriendRequest(user.id, targetUser.id, friend);
+				break;
+			}
+		} catch (e) {
+			throw e;
+		}
+	}
+	
+	async acceptFriendRequest(user_id: number, target_id: number, friend: Friends): Promise<void> {
+		try {
 			if (friend) {
 				switch (friend.status) {
-					case RequestStatus.DECLINED:
-						throw new BadRequestException('Friend request already declined');
-					case RequestStatus.ACCEPTED:
-						throw new BadRequestException('You are already friend with this user');
-					case RequestStatus.PENDING:
-						await this.prisma.friends.update({
-							where: {
-								user_id_friend_id: {
-									user_id: targetUser.id,
-									friend_id: user.id,
-								},
+				case RequestStatus.ACCEPTED:
+					throw new BadRequestException('You are already friend with this user');
+				case RequestStatus.PENDING:
+					await this.prisma.friends.update({
+						where: {
+							user_id_friend_id: {
+								user_id: target_id,
+								friend_id: user_id,
 							},
-							data: {
-								status: RequestStatus.ACCEPTED,
-							},
-						});
-						break;
+						},
+						data: {
+							status: RequestStatus.ACCEPTED,
+						},
+					});
+					break;
 				}
 			}
 		} catch (e) {
@@ -466,52 +520,49 @@ export class UserService {
 	}
 
 	/************************************* Friends *************************************/
-	async declineFriendRequest(user: User, friendUsername: string): Promise<void> {
+	async removeFriend(user: User, friendUsername: string): Promise<void> {
 		try {
 			if (!user) throw new ForbiddenException('User not found');
 			const targetUser = await this.findUserByName(friendUsername);
 			if (!targetUser) throw new ForbiddenException('User not found');
-			if (targetUser === user) throw new BadRequestException('You cannot decline yourself');
+			if (targetUser === user) throw new BadRequestException('You cannot delete yourself');
 
-			/*
-			const blocked = await this.prisma.blocked.findUnique({
+			await this.prisma.friends.deleteMany({
 				where: {
-					blocked_by_id_blocked_id: {
-						blocked_by_id: targetUser.id,
-						blocked_id: user.id,
-					},
+					OR: [
+						{
+							user_id: user.id,
+							friend_id: targetUser.id,
+						},
+						{
+							user_id: targetUser.id,
+							friend_id: user.id,
+						},
+					],
 				},
 			});
-			if (blocked) throw new ForbiddenException('You are blocked by this user');
-			*/
+		} catch (e) {
+			throw e;
+		}
+	}
 
-			const friend = await this.prisma.friends.findUnique({
-				where: {
-					user_id_friend_id: {
-						user_id: targetUser.id,
-						friend_id: user.id,
+	async declineFriendRequest(user_id: number, target_id: number, friend: Friends): Promise<void> {
+		try {
+			switch (friend.status) {
+			case RequestStatus.ACCEPTED:
+				throw new BadRequestException(
+					"You already accepted this friend request, and can't decline it anymore",
+				);
+			case RequestStatus.PENDING:
+				await this.prisma.friends.delete({
+					where: {
+						user_id_friend_id: {
+							user_id: target_id,
+							friend_id: user_id,
+						},
 					},
-				},
-			});
-			if (friend) {
-				switch (friend.status) {
-					case RequestStatus.ACCEPTED:
-						throw new BadRequestException(
-							"You already accepted this friend request, and can't decline it anymore",
-						);
-					case RequestStatus.PENDING:
-						await this.prisma.friends.delete({
-							where: {
-								user_id_friend_id: {
-									user_id: targetUser.id,
-									friend_id: user.id,
-								},
-							},
-						});
-						break;
-				}
-			} else {
-				throw new BadRequestException('You did not receive a friend request from this user');
+				});
+				break;
 			}
 		} catch (e) {
 			throw e;
@@ -558,11 +609,11 @@ export class UserService {
 	/***********************************************************************************/
 
 	/*************************************** Users *************************************/
-	async findUserByName(username: string): Promise<User | null> {
+	async findUserByName(user_login: string): Promise<User | null> {
 		try {
 			const user = await this.prisma.user.findUnique({
 				where: {
-					login: username,
+					login: user_login,
 				},
 			});
 			if (!user) return null;

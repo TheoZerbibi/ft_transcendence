@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsDate, IsNumber, IsString, IsOptional } from 'class-validator';
 import { Exclude } from 'class-transformer';
 
 export class UserDto {
@@ -15,7 +15,6 @@ export class UserDto {
 
 	@ApiProperty()
 	@IsString()
-	@IsOptional()
 	// eslint-disable-next-line
 	display_name: string;
 
@@ -58,4 +57,11 @@ export class UserDto {
 	@IsDate()
 	// eslint-disable-next-line
 	last_login: Date;
+}
+
+export class UserLoginDto {
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	login: string;
 }

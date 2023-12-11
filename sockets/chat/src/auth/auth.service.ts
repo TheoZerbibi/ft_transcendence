@@ -22,6 +22,7 @@ export class AuthService {
 			});
 			return user as users;
 		} catch (e) {
+			console.log(e);
 			throw new ForbiddenException('Invalid token');
 		}
 	}
@@ -32,7 +33,7 @@ export class AuthService {
 
 			const decodedToken = this.jwt.decode(token.access_token);
 			if (!decodedToken) throw new ForbiddenException('Invalid token');
-			const userId = decodedToken['sub'];
+			const userId = decodedToken['id'];
 			if (!userId) throw new ForbiddenException('Invalid token');
 
 			return userId;

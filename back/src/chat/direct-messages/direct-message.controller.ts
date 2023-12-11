@@ -39,16 +39,11 @@ export class DirectMessageController {
 	/* 										Creation								   */
 	/***********************************************************************************/
 
-	@Post(':username')
+	@Post('send')
 	@UseGuards(JwtGuard) // Needed to access user attribute
-	@ApiOperation({ summary: 'Create directMessage' })
+	@ApiOperation({ summary: 'Create direct message' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async createDirectMessage(
-		@GetUser() user: User,
-		@Param('username') username: string,
-		@Body() dto: CreateDirectMessageDto,
-	): Promise<DirectMessageDto> {
-		return await this.directMessageService.createDirectMessageWith(user, username, dto);
+	async createDirectMessage(@GetUser() user: User, @Body() dto: CreateDirectMessageDto): Promise<DirectMessageDto> {
+		return await this.directMessageService.createDirectMessageWith(user, dto);
 	}
-
 }

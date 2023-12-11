@@ -4,6 +4,7 @@ import { IUser } from './IUser';
 
 export interface IGame {
 	inProgress: boolean;
+	waitingState: boolean;
 	newPoint: boolean;
 	gameData: IGameData;
 	winner: IUser;
@@ -13,6 +14,9 @@ export interface IGame {
 
 	isInProgress: () => boolean;
 	isEnded: () => boolean;
+
+	isWaitingState: () => boolean;
+	setWaitingState: (state: boolean) => void;
 
 	getGameUID: () => string;
 	getGameID: () => number;

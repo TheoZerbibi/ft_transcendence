@@ -4,8 +4,13 @@
 			<div v-if="waitingOpp">
 				<span class="d-flex align-center justify-center" min-height="100%">
 					<h4>Waiting for a opponent</h4>
+					{{ isConnected }}
 					<v-progress-circular indeterminate color="deep-purple-accent-2" />
+					<Sound :folder="'/sounds/game/ai'" />
 				</span>
+			</div>
+			<div v-if="!waitingOpp">
+				<Sound :folder="'/sounds/game/versus'" />
 			</div>
 			<v-card
 				:style="{
@@ -16,84 +21,88 @@
 				}"
 				class="fill-height versus-container"
 			>
-			<div class="versus-container-inner">
-				<div class="fill-height d-flex align-center no-gutters">
-					<div
-						:style="{
-							backgroundImage: `url(${backgroundLeft})`,
-							backgroundPosition: 'center center',
-							backgroundSize: 'cover',
-							height: '100%',
-							flex: '1',
-						}"
-						class="fill-height d-flex align-center left"
-					>
-						<div class="d-flex justify-end align-center fill-height">
+				<div class="versus-container-inner">
+					<div class="fill-height d-flex align-center no-gutters">
+						<div
+							:style="{
+								backgroundImage: `url(${backgroundLeft})`,
+								backgroundPosition: 'center center',
+								backgroundSize: 'cover',
+								height: '100%',
+								flex: '1',
+							}"
+							class="fill-height d-flex align-center left"
+						>
+							<div class="d-flex justify-end align-center fill-height">
+								<div
+									id="leftUser"
+									:class="{ tremble: shouldTremble('leftUser') }"
+									class="mr-auto fill-height ml-3"
+								>
+									<v-img class="cadre-responsive" :src="userData.leftPlayer.cadre">
+										<h2>{{ userData.leftPlayer.name }}</h2>
+										<v-img
+											v-if="userData.leftPlayer.relaseEnergy"
+											src="/game/UI/releaseEnergy.gif"
+											class="release-energy"
+										/>
+										<v-img
+											v-if="userData.leftPlayer.isDead"
+											src="/game/UI/cadres/toastDead.gif"
+											class="toast-of-death"
+										/>
+										<v-img
+											class="avatar-responsive"
+											:class="{ dead: userData.leftPlayer.isDead }"
+											:src="userData.leftPlayer.avatar"
+										/>
+									</v-img>
+								</div>
+							</div>
+						</div>
+						<div class="d-flex justify-center align-center fill-height">
+							<span class="versus">Versus</span>
+						</div>
+						<div
+							:style="{
+								backgroundImage: `url(${backgroundRight})`,
+								backgroundPosition: 'center center',
+								backgroundSize: 'cover',
+								height: '100%',
+								flex: '1',
+							}"
+							class="fill-height d-flex justify-end align-center right"
+						>
 							<div
-								id="leftUser"
-								:class="{ tremble: shouldTremble('leftUser') }"
-								class="mr-auto fill-height ml-3"
+								id="rightUser"
+								:class="{ tremble: shouldTremble('rightUser') }"
+								class="fill-height mr-3"
 							>
-								<v-img class="cadre-responsive" :src="userData.leftPlayer.cadre">
-									<h2>{{ userData.leftPlayer.name }}</h2>
+								<v-img class="cadre-responsive" :src="userData.rightPlayer.cadre">
+									<h2>{{ userData.rightPlayer.name }}</h2>
 									<v-img
-										v-if="userData.leftPlayer.relaseEnergy"
+										v-if="userData.rightPlayer.relaseEnergy"
 										src="/game/UI/releaseEnergy.gif"
 										class="release-energy"
 									/>
 									<v-img
-										v-if="userData.leftPlayer.isDead"
+										v-if="userData.rightPlayer.isDead"
 										src="/game/UI/cadres/toastDead.gif"
 										class="toast-of-death"
 									/>
 									<v-img
 										class="avatar-responsive"
-										:class="{ dead: userData.leftPlayer.isDead }"
-										:src="userData.leftPlayer.avatar"
+										:class="{ dead: userData.rightPlayer.isDead }"
+										:src="userData.rightPlayer.avatar"
 									/>
 								</v-img>
 							</div>
 						</div>
 					</div>
-					<div class="d-flex justify-center align-center fill-height">
-						<span class="versus">Versus</span>
-					</div>
-					<div
-						:style="{
-							backgroundImage: `url(${backgroundRight})`,
-							backgroundPosition: 'center center',
-							backgroundSize: 'cover',
-							height: '100%',
-							flex: '1',
-						}"
-						class="fill-height d-flex justify-end align-center right"
-					>
-						<div id="rightUser" :class="{ tremble: shouldTremble('rightUser') }" class="fill-height mr-3">
-							<v-img class="cadre-responsive" :src="userData.rightPlayer.cadre">
-								<h2>{{ userData.rightPlayer.name }}</h2>
-								<v-img
-									v-if="userData.rightPlayer.relaseEnergy"
-									src="/game/UI/releaseEnergy.gif"
-									class="release-energy"
-								/>
-								<v-img
-									v-if="userData.rightPlayer.isDead"
-									src="/game/UI/cadres/toastDead.gif"
-									class="toast-of-death"
-								/>
-								<v-img
-										class="avatar-responsive"
-										:class="{ dead: userData.rightPlayer.isDead }"
-										:src="userData.rightPlayer.avatar"
-									/>
-							</v-img>
-						</div>
-					</div>
-				</div>
 				</div>
 			</v-card>
-			<div id="game-canvas" />
-	</div>
+			<div id="game-canvas"/>
+		</div>
 		<CountdownOverlay v-if="showCountdown" />
 	</v-container>
 </template>
@@ -112,6 +121,7 @@ import { useCountdownStore } from '../../stores/countdown';
 import { useUser } from '../../stores/user';
 import { useSocketStore } from '../../stores/websocket';
 import CountdownOverlay from '../utils/Countdown.vue';
+import Sound from '../utils/Sound.vue';
 
 const countdownStore = useCountdownStore();
 
@@ -119,6 +129,7 @@ export default {
 	name: 'GameCanvas',
 	components: {
 		CountdownOverlay,
+		Sound,
 	},
 	setup() {
 		const webSocketStore = useSocketStore();
@@ -358,32 +369,26 @@ export default {
 
 			new P5(script);
 		});
-		this.socket.on('game-start', async (data: any) => {
+
+		this.socket.on('waiting-start', async () => {
 			await p5jsReadyPromise;
-			this.waitingOpp = false;
 			gameData.socket = this.socket;
 			gameData.go = false;
 			gameData.waiting = true;
 			gameData.ball?.resetball();
-			if (!gameData.leftUser || !gameData.rightUser) return this.$router.push({ name: 'GameCreator' });
-			if (gameData.leftUser) gameData.leftUser.score = 0;
-			if (gameData.rightUser) gameData.rightUser.score = 0;
-			if (data.leftUser) {
-				this.userData.leftPlayer = {
-					name: data.leftUser.displayName,
-					avatar: data.leftUser.avatar,
-					cadre: '/game/UI/cadres/cadre0.png',
-				};
-				gameData.leftUser.setUser(data.leftUser.displayName, data.leftUser.avatar);
-			}
-			if (data.rightUser) {
-				this.userData.rightPlayer = {
-					name: data.rightUser.displayName,
-					avatar: data.rightUser.avatar,
-					cadre: '/game/UI/cadres/cadre0.png',
-				};
-				gameData.rightUser.setUser(data.rightUser.displayName, data.rightUser.avatar);
-			}
+		});
+
+		this.socket.on('cancel-waiting', async () => {
+			await p5jsReadyPromise;
+			this.waitingOpp = true;
+			gameData.go = true;
+			gameData.waiting = false;
+		});
+
+		this.socket.on('game-start', async (data: any) => {
+			await p5jsReadyPromise;
+			this.waitingOpp = false;
+			this.setData(gameData.user, gameData);
 			countdownStore.setSeconds(5);
 			this.showCountdown = true;
 		});
@@ -405,7 +410,7 @@ export default {
 				if (!gameData.player) {
 					this.socket.disconnect();
 					console.error('Player is null');
-					return this.$router.push({ name: 'GameCreator' });
+					return this.$router.push({ name: 'GameMenu' });
 				}
 				gameData.player.setSide(SIDE.LEFT);
 			} else if (data.side == SIDE.RIGHT) {
@@ -413,14 +418,14 @@ export default {
 				if (!gameData.player) {
 					this.socket.disconnect();
 					console.error('Player is null');
-					return this.$router.push({ name: 'GameCreator' });
+					return this.$router.push({ name: 'GameMenu' });
 				}
 				gameData.player.setSide(SIDE.RIGHT);
 			}
 			if (!gameData.player) {
 				this.socket.disconnect();
 				console.error('Player is null');
-				return this.$router.push({ name: 'GameCreator' });
+				return this.$router.push({ name: 'GameMenu' });
 			}
 			gameData.player.update(data.position);
 		});
@@ -471,6 +476,27 @@ export default {
 		});
 	},
 	methods: {
+		setData(data: any, gameData: any) {
+			if (!gameData.leftUser || !gameData.rightUser) return this.$router.push({ name: 'GameMenu' });
+			if (gameData.leftUser) gameData.leftUser.score = 0;
+			if (gameData.rightUser) gameData.rightUser.score = 0;
+			if (data.leftUser) {
+				this.userData.leftPlayer = {
+					name: data.leftUser.displayName,
+					avatar: data.leftUser.avatar,
+					cadre: '/game/UI/cadres/cadre0.png',
+				};
+				gameData.leftUser.setUser(data.leftUser.displayName, data.leftUser.avatar);
+			}
+			if (data.rightUser) {
+				this.userData.rightPlayer = {
+					name: data.rightUser.displayName,
+					avatar: data.rightUser.avatar,
+					cadre: '/game/UI/cadres/cadre0.png',
+				};
+				gameData.rightUser.setUser(data.rightUser.displayName, data.rightUser.avatar);
+			}
+		},
 		shouldTremble(user: string) {
 			return this.trembleState[user];
 		},
@@ -681,8 +707,9 @@ canvas {
 	background-color: rgba(0, 0, 0, 0.5);
 }
 
- .versus-container:before, .versus-container:after {
-	content: "•";
+.versus-container:before,
+.versus-container:after {
+	content: '•';
 	position: absolute;
 	width: 14px;
 	height: 14px;
@@ -693,32 +720,33 @@ canvas {
 	top: 5px;
 	text-align: center;
 }
- .versus-container:before {
-	 left: 5px;
+.versus-container:before {
+	left: 5px;
 }
- .versus-container:after {
-	 right: 5px;
+.versus-container:after {
+	right: 5px;
 }
- .versus-container .versus-container-inner {
-	 position: relative;
-	 border: 2px solid #b78846;
+.versus-container .versus-container-inner {
+	position: relative;
+	border: 2px solid #b78846;
 }
- .versus-container .versus-container-inner:before, .versus-container .versus-container-inner:after {
-	 content: "•";
-	 position: absolute;
-	 width: 14px;
-	 height: 14px;
-	 font-size: 14px;
-	 color: #b78846;
-	 border: 2px solid #b78846;
-	 line-height: 12px;
-	 bottom: -2px;
-	 text-align: center;
+.versus-container .versus-container-inner:before,
+.versus-container .versus-container-inner:after {
+	content: '•';
+	position: absolute;
+	width: 14px;
+	height: 14px;
+	font-size: 14px;
+	color: #b78846;
+	border: 2px solid #b78846;
+	line-height: 12px;
+	bottom: -2px;
+	text-align: center;
 }
- .versus-container .versus-container-inner:before {
-	 left: -2px;
+.versus-container .versus-container-inner:before {
+	left: -2px;
 }
- .versus-container .versus-container-inner:after {
-	 right: -2px;
+.versus-container .versus-container-inner:after {
+	right: -2px;
 }
 </style>

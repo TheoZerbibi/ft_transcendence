@@ -18,6 +18,7 @@ import { ChannelUserDto, CreateChannelUserDto, ModChannelUserDto } from './dto/c
 import { ChannelMessageContentDto, ChannelMessageDto } from './dto/channel-message.dto';
 // SERVICES
 import { PrismaService } from 'src/prisma/prisma.service';
+import { RedisService } from 'src/redis/redis.service';
 // PWD HASHING
 import * as argon2 from 'argon2';
 
@@ -25,7 +26,9 @@ import * as argon2 from 'argon2';
 export class ChannelService {
 	localChannels: ChannelEntity[] = [];
 
-	constructor(private prisma: PrismaService) {
+	constructor(
+		private prisma: PrismaService,
+		private readonly redisService: RedisService) {
 		this.initLocalChannels();
 	}
 
@@ -53,12 +56,20 @@ export class ChannelService {
 
 	/*********************************** Channels Lists ********************************/
 
-	async getAllPublicChannels(): Promise<ChannelListElemDto[] | null> {
-		const publicChannels = this.localChannels.filter((channel) => channel.getIsPublic());
+	async getAllPublicChannels(user: User): Promise<ChannelListElemDto[] | null> {
+		const publicChannels = this.localChannels.filter((channel) => {
+			const isNotJoined = channel.getUsers().every((channelUser) => channelUser.getUserId() !== user.id);
+			return isNotJoined;
+		});
 		const sortedChannels = publicChannels
 			.sort((a, b) => b.getUpdatedAt().getTime() - a.getUpdatedAt().getTime())
 			.slice(0, 20);
-		return sortedChannels.map((channel) => ({ name: channel.getName(), updated_at: channel.getUpdatedAt() }));
+		return sortedChannels.map((channel) => ({
+			name: channel.getName(),
+			is_public: channel.getIsPublic(),
+			password: channel.getPassword(),
+			updated_at: channel.getUpdatedAt(),
+		}));
 	}
 
 	async getJoinedChannelNames(user: User): Promise<ChannelListElemDto[] | null> {
@@ -73,7 +84,29 @@ export class ChannelService {
 		const sortedChannels = allowedChannels
 			.sort((a, b) => b.getUpdatedAt().getTime() - a.getUpdatedAt().getTime())
 			.slice(0, 20);
-		return sortedChannels.map((channel) => ({ name: channel.getName(), updated_at: channel.getUpdatedAt() }));
+		return sortedChannels.map((channel) => ({
+			name: channel.getName(),
+			updated_at: channel.getUpdatedAt(),
+			is_public: channel.getIsPublic(),
+			password: channel.getPassword(),
+		}));
+	}
+
+	async searchChannels(user: User, search: string): Promise<ChannelListElemDto[] | null> {
+		const result = this.localChannels.filter((channel) => {
+			const isBanned = channel
+				.getUsers()
+				.every((channelUser) => channelUser.getUserId() === user.id && channelUser.isBanned());
+			return channel.getName().includes(search) && !isBanned;
+		});
+		return result.map((channel) => {
+			return {
+				name: channel.getName(),
+				is_public: channel.getIsPublic(),
+				password: channel.getPassword(),
+				updated_at: channel.getUpdatedAt(),
+			};
+		});
 	}
 
 	/********************************** Channel Access *********************************/
@@ -105,14 +138,15 @@ export class ChannelService {
 		if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
 
 		try {
-			const channelUsers: any[] = await this.prisma.channelUser.findMany({
+			const channelUsers = await this.prisma.channelUser.findMany({
 				where: {
 					channel_id: channel.getId(),
 				},
-				include : {
+				include: {
 					user: {
 						select: {
 							login: true,
+							display_name: true,
 							avatar: true,
 						},
 					},
@@ -120,7 +154,8 @@ export class ChannelService {
 			});
 			const channelUserDtos: ChannelUserDto[] = channelUsers.map((channelUser) => {
 				return {
-					username: channelUser.user.login,
+					login: channelUser.user.login,
+					display_name: channelUser.user.display_name,
 					avatar: channelUser.user.avatar,
 					is_owner: channelUser.is_owner,
 					is_admin: channelUser.is_admin,
@@ -167,6 +202,7 @@ export class ChannelService {
 							user: {
 								select: {
 									login: true,
+									display_name: true,
 									avatar: true,
 								},
 							},
@@ -181,12 +217,13 @@ export class ChannelService {
 						hour12: true,
 					});
 					return {
-						username: channelUser?.user?.login || '?',
+						login: channelUser?.user?.login || '?',
+						username: channelUser?.user?.display_name || '?',
 						avatar: channelUser?.user?.avatar || '',
 						content: message.content,
 						created_at: formattedDate,
 					};
-				})
+				}),
 			);
 			return messageDtos;
 		} catch (e) {
@@ -194,7 +231,6 @@ export class ChannelService {
 			throw e;
 		}
 	}
-
 
 	/***********************************************************************************/
 	/* 										Creation								   */
@@ -243,8 +279,16 @@ export class ChannelService {
 		}
 
 		if (!channelEntity.getIsPublic()) {
-			const passwordMatch = await argon2.verify(channelEntity.getPassword(), dto.chan_password);
-			if (!passwordMatch) throw new BadRequestException('Wrong password');
+			console.log(`channel ${channel_name} password = ${channelEntity.getPassword()}`);
+			try {
+				if (await argon2.verify(channelEntity.getPassword(), dto.chan_password)) console.log('password match');
+				else {
+					console.log('password does not match');
+					throw new BadRequestException('Wrong password');
+				}
+			} catch (e) {
+				throw new BadRequestException('Wrong password');
+			}
 		}
 
 		try {
@@ -284,7 +328,8 @@ export class ChannelService {
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		if (!channelUser) throw new BadRequestException(`You are not on this channel`);
 		if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
-		if (channelUser.isMuted() && channelUser.isMuted() > new Date()) throw new ForbiddenException('You are muted on this channel');
+		if (channelUser.isMuted() && channelUser.isMuted() > new Date())
+			throw new ForbiddenException('You are muted on this channel');
 
 		if (messageDto.content.length === 0) throw new BadRequestException('Message cannot be empty');
 		if (messageDto.content.length > 200) throw new BadRequestException('Message too long (max 200 characters)');
@@ -306,7 +351,8 @@ export class ChannelService {
 				hour12: true,
 			});
 			const channelMessageDto: ChannelMessageDto = {
-				username: user.login || '?',
+				login: user.login ? user.login : '?',
+				username: user.display_name ? user.display_name : '?',
 				avatar: user.avatar || '',
 				content: channelMessage.content,
 				created_at: formattedDate,
@@ -372,7 +418,7 @@ export class ChannelService {
 			throw new ForbiddenException('You are not authorized to set or modify the password on this channel');
 
 		if (!channelEntity.getIsPublic()) {
-			const passwordMatch = await argon2.verify(channelEntity.getPassword(), dto.prev_pwd);
+			const passwordMatch: boolean = await argon2.verify(channelEntity.getPassword(), dto.prev_pwd);
 			if (!passwordMatch) throw new BadRequestException('Wrong previous password');
 		}
 
@@ -381,7 +427,7 @@ export class ChannelService {
 		if (dto.new_pwd !== dto.new_pwd_confirm) throw new BadRequestException('Passwords do not match');
 
 		dto.new_pwd ? channelEntity.setIsPublic(false) : channelEntity.setIsPublic(true);
-		const hashedPwd = await argon2.hash(dto.new_pwd);
+		const hashedPwd: string = await argon2.hash(dto.new_pwd);
 		channelEntity.setPassword(hashedPwd);
 
 		try {
@@ -451,8 +497,14 @@ export class ChannelService {
 		}
 	}
 
-	async modChannelUser(user:User, channel_name: string, dto: ModChannelUserDto): Promise<void> {
-		if (dto.action != 'mute' && dto.action != 'unmute' && dto.action != 'kick' && dto.action != 'ban' && dto.action != 'unban')
+	async modChannelUser(user: User, channel_name: string, dto: ModChannelUserDto): Promise<void> {
+		if (
+			dto.action != 'mute' &&
+			dto.action != 'unmute' &&
+			dto.action != 'kick' &&
+			dto.action != 'ban' &&
+			dto.action != 'unban'
+		)
 			throw new BadRequestException(`Action "${dto.action}" not supported`);
 		const target = await this.prisma.user.findUnique({
 			where: {
@@ -484,7 +536,7 @@ export class ChannelService {
 			case 'ban':
 				targetChanUser.setIsBanned(true);
 				break;
-			case 'kick'|| 'unban':
+			case 'kick' || 'unban':
 				try {
 					await this.prisma.channelUser.delete({
 						where: {
@@ -532,7 +584,7 @@ export class ChannelService {
 		if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
 
 		if (!channelEntity.getIsPublic()) {
-			const passwordMatch = await argon2.verify(channelEntity.getPassword(), dto.password);
+			const passwordMatch: boolean = await argon2.verify(channelEntity.getPassword(), dto.password);
 			if (!passwordMatch) throw new BadRequestException('Wrong password');
 		}
 
@@ -591,7 +643,7 @@ export class ChannelService {
 	/************************************ User Access *********************************/
 
 	// Find a channel user in the channel entity and return null if it doesn't exist
- 	async findChannelUser(user: User, channelEntity: ChannelEntity): Promise<ChannelUserEntity | null> {
+	async findChannelUser(user: User, channelEntity: ChannelEntity): Promise<ChannelUserEntity | null> {
 		const channelUser: ChannelUserEntity | null = channelEntity
 			.getUsers()
 			.find((channelUser) => channelUser.getUserId() === user.id);
@@ -613,7 +665,7 @@ export class ChannelService {
 		if (!channelUser) throw new BadRequestException(`You are not on this channel`);
 		if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
 		if (!channelEntity.getIsPublic()) {
-			const passwordMatch = await argon2.verify(channelEntity.getPassword(), pwd);
+			const passwordMatch: boolean = await argon2.verify(channelEntity.getPassword(), pwd);
 			if (!passwordMatch) throw new BadRequestException('Wrong password');
 		}
 		if (!channelUser.isAdmin())
@@ -646,5 +698,10 @@ export class ChannelService {
 			});
 		});
 		return channelUsers;
+	}
+	async publishOnRedis(event: string, msg: string)
+	{
+		console.info(`Publishing ${event} event to redis`);
+		await this.redisService.publish(event, msg);
 	}
 }

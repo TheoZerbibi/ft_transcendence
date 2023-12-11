@@ -91,6 +91,7 @@ export class GameService {
 			socketID: client.id,
 			isConnected: true,
 			isSpec: isSpec,
+			isReady: false,
 			playerData: playerData,
 		};
 		game.addUser(gameUser);

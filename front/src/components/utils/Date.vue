@@ -8,21 +8,21 @@
 </template>
 
 <script lang="ts">
-	import { format } from "date-fns";
+import { format } from 'date-fns';
 
-	export default {
-		props: {
-			timestamp: String,
+export default {
+	props: {
+		timestamp: String,
+	},
+	computed: {
+		fullDate() {
+			const date = new Date(this.timestamp);
+			return format(date, 'dd/MM/yyyy');
 		},
-		computed: {
-			fullDate() {
-				const date = new Date(this.timestamp);
-				return format(date, "dd/MM/yyyy");
-			},
-			formattedDate() {
-				const date = new Date(this.timestamp);
-				return format(date, "HH:mm");
-			},
+		formattedDate() {
+			const date = new Date(this.timestamp);
+			return format(date, 'HH:mm');
 		},
-	};
+	},
+};
 </script>

@@ -14,6 +14,7 @@ export class Game implements IGame {
 	private height: number = 400;
 
 	public inProgress: boolean = false;
+	public waitingState: boolean = false;
 	public newPoint: boolean = false;
 	public gameData: IGameData = { ball: new Ball(this.width, this.height), startingDate: null, endingDate: null };
 	public pause: boolean = false;
@@ -38,6 +39,14 @@ export class Game implements IGame {
 
 	isInProgress(): boolean {
 		return this.inProgress;
+	}
+
+	isWaitingState(): boolean {
+		return this.waitingState;
+	}
+
+	setWaitingState(state: boolean) {
+		this.waitingState = state;
 	}
 
 	async removeGame(): Promise<void> {
@@ -101,11 +110,12 @@ export class Game implements IGame {
 	getUsersInGame(): Array<IUser> {
 		return this.usersInGame
 			.filter((user) => !user.isSpec)
-			.map(({ user, isSpec, playerData, isConnected }) => ({
+			.map(({ user, isSpec, playerData, isConnected, isReady }) => ({
 				user,
 				isSpec,
 				playerData,
 				isConnected,
+				isReady,
 				socketID: 'null',
 			}));
 	}
@@ -113,21 +123,23 @@ export class Game implements IGame {
 	getSpectatorsInGame(): Array<IUser> {
 		return this.usersInGame
 			.filter((user) => user.isSpec)
-			.map(({ user, isSpec, playerData, isConnected }) => ({
+			.map(({ user, isSpec, playerData, isConnected, isReady }) => ({
 				user,
 				isSpec,
 				playerData,
 				isConnected,
+				isReady,
 				socketID: 'null',
 			}));
 	}
 
 	getAllUsersInGame(): Array<IUser> {
-		return this.usersInGame.map(({ user, isSpec, playerData, isConnected }) => ({
+		return this.usersInGame.map(({ user, isSpec, playerData, isConnected, isReady }) => ({
 			user,
 			isSpec,
 			playerData,
 			isConnected,
+			isReady,
 			socketID: 'null',
 		}));
 	}
@@ -230,6 +242,16 @@ export class Game implements IGame {
 		return this.pause;
 	}
 
+	checkIfPlayerDisconnected() {
+		for (const user of this.usersInGame) {
+			if (user.playerData && !user.isConnected && !user.isSpec) {
+				const winner = this.getPlayerBySide(user.playerData.side === SIDE.LEFT ? SIDE.RIGHT : SIDE.LEFT);
+				this.winGame(winner, user);
+				break;
+			}
+		}
+	}
+
 	private gameLoop() {
 		const loop = setInterval(() => {
 			if (!this.isEnded()) {
@@ -238,5 +260,12 @@ export class Game implements IGame {
 				clearInterval(loop);
 			}
 		}, 1);
+		const checkLoop = setInterval(() => {
+			if (!this.isEnded()) {
+				this.checkIfPlayerDisconnected();
+			} else {
+				clearInterval(checkLoop);
+			}
+		}, 30000);
 	}
 }

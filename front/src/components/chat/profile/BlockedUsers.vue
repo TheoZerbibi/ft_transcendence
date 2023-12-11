@@ -4,24 +4,31 @@
 			<h2>Blocked Users</h2>
 			<ul class="no-bullets" v-if="blockedUsers.length">
 				<li v-for="user in blockedUsers" :key="user.id">
-					{{ user.login }} <!-- L'objet contient aussi l'avatar si tu veux -->
-					<button @click="unblockUser(user.login)">Unblock</button>
+					{{ user.display_name }} <!-- L'objet contient aussi l'avatar si tu veux -->
+					<button @click="unblockUser(user.login)">x</button>
 				</li>
 			</ul>
 			<p v-else>~ u havent blocked anyone for now ~</p>
 		</div>
 	</div>
+
+	<Snackbar></Snackbar>
 </template>
 
 <script lang="ts">
 import { computed } from 'vue';
-import { useUser } from '../../stores/user';
-import { useSnackbarStore } from '../../stores/snackbar';
+import { useUser } from '../../../stores/user';
+import { useSnackbarStore } from '../../../stores/snackbar';
+
+import Snackbar from '../../layout/Snackbar.vue';
 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 
 export default {
+	components: {
+		Snackbar,
+	},
 	setup() {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
@@ -33,7 +40,7 @@ export default {
 	},
 	data() {
 		return {
-			blockedUsers: []
+			blockedUsers: [],
 		};
 	},
 	beforeMount() {
@@ -41,17 +48,20 @@ export default {
 	},
 	mounted() {},
 	methods: {
-
-		unblockUser: async function(login: string) {
+		unblockUser: async function (login: string) {
 			try {
-				const response = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/blocked/${login}`,
+				await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/blocked`,
 					{
 						method: 'DELETE',
 						headers: {
+							'Content-Type': 'application/json',
 							Authorization: `Bearer ${this.JWT}`,
 							'Access-Control-Allow-Origin': '*',
 						},
+						body: JSON.stringify({
+							login: login,
+						}),
 					}
 				).catch((error: any) => {
 					snackbarStore.showSnackbar(error, 3000, 'red');
@@ -62,7 +72,7 @@ export default {
 				console.error(error);
 			}
 		},
-		fetchBlockedUsers: async function() {
+		fetchBlockedUsers: async function () {
 			try {
 				const response = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/blocked`,
@@ -72,59 +82,16 @@ export default {
 							Authorization: `Bearer ${this.JWT}`,
 							'Access-Control-Allow-Origin': '*',
 						},
-					}
+					},
 				).catch((error: any) => {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				const data = await response.json();
-				this.blockedUsers = data;
-				console.log(data);
+				this.blockedUsers = await response.json();
 			} catch (error) {
 				console.error(error);
 			}
 		},
-	}
-}
+	},
+};
 </script>
-
-<style scoped>
-
-@font-face {
-	font-family: 'OMORI_DISTURBED';
-	src: url('/fonts/OMORI_GAME2.ttf') format('truetype-variations');
-}
-
-div {
-	font-family: 'OMORI_DISTURBED';
-}
-
-h2 {
-	font-family: 'OMORI_DISTURBED';
-	font-size: xx-large;
-	text-align: center;
-	color: rgb(65, 37, 37);
-	text-shadow:
-		1px 1px 2px plum,
-		0 0 1em rgb(255, 123, 255),
-		0 0 0.2em rgb(255, 255, 255);
-}
-
-.no-bullets {
-	list-style-type: none;
-	padding-left: 0;
-	margin-left: 0;
-}
-
-.blocked-list-container {
-	position: absolute;
-	top: 10%;
-	left: 35%;
-	margin: auto;
-	background-color: rgb(0, 0, 0, 0.8);
-	padding: 1rem;
-	border-radius: 1rem;
-	overflow: auto;
-}
-
-</style>

@@ -18,10 +18,10 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 import { UserService } from './user.service';
-import { EditUserDto, UserDto } from './dto';
+import { EditUserDto, UserDto, UserLoginDto } from './dto';
 import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
-import { FriendRequestDto } from './dto/friend.dto';
+import { FriendRequestDto, FriendRequestResponseDto } from './dto/friend.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
@@ -45,6 +45,15 @@ export class UserController {
 	@ApiBearerAuth('JWT-auth')
 	async getUsers(): Promise<UserDto[]> {
 		return await this.userService.getUsers();
+	}
+
+	// Get users not friends and not blocked
+	@UseGuards(JwtGuard)
+	@Get('discover')
+	@ApiOperation({ summary: 'Get users list not friends and not blocked' })
+	@ApiBearerAuth('JWT-auth')
+	async getDiscoverUsers(@GetUser() user: User): Promise<UserDto[]> {
+		return await this.userService.getNotFriendsOfUser(user);
 	}
 
 	// Get users starting with
@@ -146,20 +155,20 @@ export class UserController {
 	/************************************* Friends *************************************/
 	// Create friends (pending)
 	@UseGuards(JwtGuard)
-	@Post('friends/request/:target')
+	@Post('friends/send-request')
 	@ApiOperation({ summary: 'Send request to a user' })
 	@ApiBearerAuth('JWT-auth')
-	async addFriend(@GetUser() user: User, @Param('target') friendUsername: string): Promise<void> {
-		await this.userService.makeFriendRequest(user, friendUsername);
+	async makeFriendRequest(@GetUser() user: User, @Body() dto: UserLoginDto): Promise<void> {
+		await this.userService.makeFriendRequest(user, dto.login);
 	}
 
 	// Create blocked
 	@UseGuards(JwtGuard)
-	@Post('block/:target')
+	@Post('block')
 	@ApiOperation({ summary: 'Block a user' })
 	@ApiBearerAuth('JWT-auth')
-	async blockUser(@GetUser() user: User, @Param('target') username: string): Promise<void> {
-		await this.userService.blockUser(user, username);
+	async blockUser(@GetUser() user: User, @Body() dto: UserLoginDto): Promise<void> {
+		await this.userService.blockUser(user, dto.login);
 	}
 
 	/***********************************************************************************/
@@ -183,11 +192,11 @@ export class UserController {
 
 	/************************************* Friends *************************************/
 	@UseGuards(JwtGuard)
-	@Patch('friends/requests/:target')
-	@ApiOperation({ summary: 'Accept a friend request' })
+	@Patch('friends/respond-request')
+	@ApiOperation({ summary: 'Respond to friend request' })
 	@ApiBearerAuth('JWT-auth')
-	async acceptFriendRequest(@GetUser() user: User, @Param('target') username: string): Promise<void> {
-		await this.userService.acceptFriendRequest(user, username);
+	async respondFriendRequest(@GetUser() user: User, @Body() dto: FriendRequestResponseDto): Promise<void> {
+		await this.userService.respondRequest(user, dto.login, dto.response);
 	}
 
 	/***********************************************************************************/
@@ -196,7 +205,7 @@ export class UserController {
 
 	/*************************************** Users *************************************/
 	@UseGuards(JwtGuard)
-	@Delete('profile/:id')
+	@Delete('profile')
 	@ApiOperation({ summary: 'Delete a user' })
 	@ApiBearerAuth('JWT-auth')
 	async deleteUser(@Param('id') user_id: string): Promise<void> {
@@ -206,19 +215,19 @@ export class UserController {
 
 	/************************************* Friends *************************************/
 	@UseGuards(JwtGuard)
-	@Delete('friends/requests/:target')
-	@ApiOperation({ summary: 'Decline a friend request' })
+	@Delete('friends')
+	@ApiOperation({ summary: 'Remove friend' })
 	@ApiBearerAuth('JWT-auth')
-	async declineFriendRequest(@GetUser() user: User, @Param('target') username: string): Promise<void> {
-		await this.userService.declineFriendRequest(user, username);
+	async removeFriend(@GetUser() user: User, @Body() dto: UserLoginDto): Promise<void> {
+		await this.userService.removeFriend(user, dto.login);
 	}
 
 	/*********************************** Blocked *************************************/
 	@UseGuards(JwtGuard)
-	@Delete('blocked/:target')
+	@Delete('blocked')
 	@ApiOperation({ summary: 'Unblock a user' })
 	@ApiBearerAuth('JWT-auth')
-	async unblockUser(@GetUser() user: User, @Param('target') username: string): Promise<void> {
-		await this.userService.unblockUser(user, username);
+	async unblockUser(@GetUser() user: User, @Body() dto: UserLoginDto): Promise<void> {
+		await this.userService.unblockUser(user, dto.login);
 	}
 }

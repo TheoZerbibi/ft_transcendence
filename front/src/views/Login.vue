@@ -259,7 +259,6 @@ export default {
 			
 			catch (error) {
 				snackbarStore.showSnackbar('Error 2FA', 3000, 'red');
-				console.error(error);
 			}
 		},
 
@@ -330,7 +329,7 @@ export default {
 				this.cantSkip = false;
 			} catch (error) {
 				this.cantSkip = false;
-				console.error(error);
+				snackbarStore.showSnackbar('Error uploading avatar', 3000, 'red');
 			}
 		},
 		async nextStep() {

@@ -44,8 +44,9 @@ model channels {
 model friends {
   user_id                        Int
   friend_id                      Int
-  users_friends_friend_idTousers users @relation("friends_friend_idTousers", fields: [friend_id], references: [id])
-  users_friends_user_idTousers   users @relation("friends_user_idTousers", fields: [user_id], references: [id])
+  status                         Int
+  users_friends_friend_idTousers users @relation("friends_friend_idTousers", fields: [friend_id], references: [id], onDelete: Cascade)
+  users_friends_user_idTousers   users @relation("friends_user_idTousers", fields: [user_id], references: [id], onDelete: Cascade)
 
   @@id([user_id, friend_id])
 }
@@ -63,13 +64,14 @@ model games {
 model users {
   id                                   Int               @id @default(autoincrement())
   login                                String            @unique
-  display_name                         String
+  display_name                         String            @unique
   email                                String
   dAuth                                Boolean           @default(false)
   avatar                               String
   created_at                           DateTime          @default(now())
   updated_at                           DateTime
   last_login                           DateTime          @default(now())
+  secret                               String?
   blocked_blocked_blocked_by_idTousers blocked[]         @relation("blocked_blocked_by_idTousers")
   blocked_blocked_blocked_idTousers    blocked[]         @relation("blocked_blocked_idTousers")
   channel_users                        channel_users[]
@@ -84,6 +86,7 @@ model game_players {
   game_id   Int
   is_win    Boolean?
   is_spec   Boolean?
+  score     Int      @default(0)
   games     games    @relation(fields: [game_id], references: [id], onDelete: Cascade)
   users     users    @relation(fields: [player_id], references: [id])
 
@@ -93,8 +96,8 @@ model game_players {
 model blocked {
   blocked_id                         Int
   blocked_by_id                      Int
-  users_blocked_blocked_by_idTousers users @relation("blocked_blocked_by_idTousers", fields: [blocked_by_id], references: [id])
-  users_blocked_blocked_idTousers    users @relation("blocked_blocked_idTousers", fields: [blocked_id], references: [id])
+  users_blocked_blocked_by_idTousers users @relation("blocked_blocked_by_idTousers", fields: [blocked_by_id], references: [id], onDelete: Cascade)
+  users_blocked_blocked_idTousers    users @relation("blocked_blocked_idTousers", fields: [blocked_id], references: [id], onDelete: Cascade)
 
   @@id([blocked_by_id, blocked_id])
 }
@@ -106,4 +109,10 @@ model direct_messages {
   friend_id  Int
   user_id    Int
   users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
 }
