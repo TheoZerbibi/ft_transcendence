@@ -1,13 +1,13 @@
-import { PrismaClient, User, Channel, DirectMessage, Friends, Blocked } from '@prisma/client';
-
-enum RequestStatus {
-	DECLINED,
-	PENDING,
-	ACCEPTED,
-}
+import { PrismaClient, User } from '@prisma/client';
 
 const prisma = new PrismaClient();
 const users = [
+	{
+		login: 'nfauconn',
+		display_name: 'Noemi',
+		email: 'nfauconn@student.42.fr',
+		avatar: 'https://cdn.intra.42.fr/users/96c6292bd2445ca46c9ce03ddb6f8572/nfauconn.jpg',
+	},
 	{
 		login: 'thzeribi',
 		display_name: 'Theo',
@@ -86,171 +86,100 @@ const users = [
 		email: 'garfield@student.42.fr ',
 		avatar: 'https://actualitte.com/uploads/images/image-garfield-3-61e9833328fb2324367938.jpg',
 	},
+];
+
+enum FriendStatus {
+	DECLINED,
+	PENDING,
+	ACCEPTED,
+}
+
+const friends = [
 	{
-		login: 'nfauconn',
-		display_name: 'Noé',
-		email: 'nfauconn@student.42.fr',
-		avatar: 'https://cdn.intra.42.fr/users/96c6292bd2445ca46c9ce03ddb6f8572/nfauconn.jpg',
+		user_id: 1,
+		friend_id: 5,
+		status: FriendStatus.ACCEPTED,
+	},
+	{
+		user_id: 1,
+		friend_id: 7,
+		status: FriendStatus.ACCEPTED,
+	},
+	{
+		user_id: 1,
+		friend_id: 8,
+		status: FriendStatus.ACCEPTED,
+	},
+	{
+		user_id: 1,
+		friend_id: 9,
+		status: FriendStatus.PENDING,
+	},
+	{
+		user_id: 1,
+		friend_id: 10,
+		status: FriendStatus.PENDING,
+	},
+	{
+		user_id: 11,
+		friend_id: 1,
+		status: FriendStatus.PENDING,
+	},
+	{
+		user_id: 12,
+		friend_id: 1,
+		status: FriendStatus.PENDING,
 	},
 ];
 
-// Create users
-async function createUsers() {
-	for (const user of users) {
-		const existingUser = await prisma.user.findUnique({ where: { login: user.login } });
-		if (!existingUser) {
-			await prisma.user.create({ data: user });
-		}
-	}
-}
-
-// Create friend relations
-async function createFriendRelations() {
-	const noe = await prisma.user.findUnique({ where: { login: 'nfauconn' } });
-	const otherUsers = await prisma.user.findMany({
-		where: {
-			login: {
-				not: 'nfauconn',
-			},
-		},
-	});
-
-	for (const otherUser of otherUsers) {
-		const doCreate = Math.random() < 0.5 ? true : false;
-		if (!doCreate) continue;
-
-		let userId: number = noe.id;
-		let friendId: number = otherUser.id;
-
-		const randstatus: number = Math.random() < 0.5 ? RequestStatus.PENDING : RequestStatus.ACCEPTED;
-		if (randstatus === RequestStatus.PENDING) {
-			const userId: number = Math.random() < 0.5 ? noe.id : otherUser.id;
-			const friendId: number = userId === noe.id ? otherUser.id : noe.id;
-		}
-
-		await prisma.friends
-			.create({
-				data: {
-					user_id: userId,
-					friend_id: friendId,
-					status: randstatus,
-				},
-		})
-	}
-}
-
-// Create blocked relations
-async function createBlockedRelations() {
-
-}
-
-// Create direct messages
-async function createDirectMessages() {
-	const noe = await prisma.user.findUnique({ where: { login: 'nfauconn' } });
-	const friends = await prisma.friends.findMany({ where: { OR: [{ user_id: noe.id }, { friend_id: noe.id }] } });
-
-	for (const friend of friends) {
-		const friendId = friend.user_id === noe.id ? friend.friend_id : friend.user_id;
-		const userId = friend.user_id === noe.id ? noe.id : friend.friend_id;
-		await prisma.directMessage.create({
-			data: {
-				content: 'Hello!',
-				user_id: friendId,
-				friend_id: userId,
-			},
-		})
-	}
-}
-
-// Create channels
-async function createChannels() {
-	const channelNames = ['la famille LO PO BIA', 'bored', 'oki', 'SHINRA'];
-	const noe = await prisma.user.findUnique({ where: { login: 'nfauconn' } });
-	for (const name of channelNames) {
-		await prisma.channel.create({
-			data: {
-				name,
-				public: true,
-				channelUser: {
-					create: {
-						user_id: noe.id,
-						is_owner: true,
-						is_admin: true,
-						channelMessage: {
-							create: {
-								content: 'yo',
-							},
-						},
-					},
-				},
-			},
-		})
-	}
-	const channelNames2 = ["khun", "bonbon", "dac", "ouais"];
-	const mune = await prisma.user.findUnique({ where: { login: 'mle-roy' } });
-
-	for (const name of channelNames2) {
-		await prisma.channel.create({
-			data: {
-				name,
-				public: true,
-				channelUser: {
-					create: {
-						user_id: mune.id,
-						is_owner: true,
-						is_admin: true,
-						channelMessage: {
-							create: {
-								content: 'slt',
-							},
-						},
-					},
-				},
-			},
-		})
-	}
-}
-
-/* // Add users to channels
-async function addUsersToChannels() {
-	const channels = await prisma.channel.findMany();
-	const allUsers = await prisma.user.findMany();
-
-	for (const channel of channels) {
-		for (const user of allUsers) {
-			await prisma.channelUser.create({
-				data: {
-					channel_id: channel.id,
-					user_id: user.id,
-					is_owner: user.login === 'nfauconn',
-				},
-			})
-		}
-	}
-} */
-
-/* // Create channel messages
-async function createChannelMessages() {
-	const channelUsers = await prisma.channelUser.findMany();
-
-	for (const channelUser of channelUsers) {
-		await prisma.channelMessage.create({
-			data: {
-				content: `Message from user ${channelUser.user_id}`,
-				channel_user_id: channelUser.id,
-			},
-		})
-	}
-} */
-
 async function main() {
 	try {
-		await createUsers();
-		await createFriendRelations();
-		await createBlockedRelations();
-		await createDirectMessages();
-		await createChannels();
-		//await createChannelMessages();
+		for (const user of users) {
+			const existingUser = await prisma.user.findUnique({ where: { login: user.login } });
+			if (!existingUser) {
+				await prisma.user.create({ data: user });
+			}
+		}
+		await prisma.friends.createMany({ data: friends }).then(console.log).catch(console.error);
+
+		const channelNames = [
+			'LO PO BIA',
+			'HA',
+			'KHUN',
+			'FUG',
+			'JAHAD',
+			'UREK',
+			'name',
+			'bla',
+			'fdsfads',
+			'kkkkkkkk',
+			'fjdsaf',
+			'fdsahg',
+			'dasghkhjdkaslhfjd',
+		];
+
+		for (let i = 0; i < 13; i++) {
+			const channelName = channelNames[i % channelNames.length];
+
+			await prisma.channel.create({
+				data: {
+					name: channelName,
+					public: true,
+					channelUser: {
+						create: {
+							user_id: 1,
+							is_owner: true,
+							is_admin: true,
+							channelMessage: {
+								create: {
+									content: 'hhh',
+								},
+							},
+						},
+					},
+				},
+			});
+		}
 	} catch (e) {
 		console.error(e);
 	}
