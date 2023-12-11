@@ -1,35 +1,35 @@
 <template>
-	<v-row
+		<v-row
 		align="center"
 		justify="center"
 		class="fill-height d-flex"
 		:class="{ background: step === 0, 'black-background': step > 0 }"
-	>
+		>
 		<div v-if="step === 0">
 			<audio controls id="myVideo" autoplay loop hidden>
 				<source src="/sounds/002-WHITE SPACE.mp3" type="audio/wav" />
 				Your browser does not support the audio element.
 			</audio>
 			<img
-				src="/ui/Door.png"
-				class="door"
-				@click="startZoomEffect"
-				:style="{
-					transform: `scale(${zoomLevel})`,
-					transformOrigin: '90% 45%',
-					transition: zooming ? 'transform 1s ease-in-out' : 'none',
-				}"
+			src="/ui/Door.png"
+			class="door"
+			@click="startZoomEffect"
+			:style="{
+				transform: `scale(${zoomLevel})`,
+				transformOrigin: '90% 45%',
+				transition: zooming ? 'transform 1s ease-in-out' : 'none',
+			}"
 			/>
 			<img
-				v-if="something"
-				src="/ui/Something_White_Space.gif"
-				class="something"
-				:style="{
-					width: `95vw`,
-					height: 'auto',
-					top: '0',
-					left: '0',
-				}"
+			v-if="something"
+			src="/ui/Something_White_Space.gif"
+			class="something"
+			:style="{
+				width: `95vw`,
+				height: 'auto',
+				top: '0',
+				left: '0',
+			}"
 			/>
 		</div>
 		<div v-if="step > 0">
@@ -40,11 +40,11 @@
 			<v-card class="card-container" color="tranparent">
 				<div v-if="step === 1" class="card-content">
 					<input
-						type="text"
-						@keyup.enter="nextStep"
-						v-model="newUser.display_name"
-						placeholder=" ENTER YOUR NAME "
-						class="input"
+					type="text"
+					@keyup.enter="nextStep"
+					v-model="newUser.display_name"
+					placeholder=" ENTER YOUR NAME "
+					class="input"
 					/>
 					<button @click="nextStep" class="next-button" />
 				</div>
@@ -58,9 +58,9 @@
 				<div v-if="step === 4" class="card-content">
 					<v-form @submit.prevent="logTwoFactorAuthentication">
 						<v-text-field
-							v-model="verificationCode"
-							label="Enter Verification Code"
-							required
+						v-model="verificationCode"
+						label="Enter Verification Code"
+						required
 						></v-text-field>
 						<v-btn type="submit">Send code</v-btn>
 					</v-form>
@@ -71,7 +71,7 @@
 	</v-row>
 	<Snackbar />
 </template>
-'
+
 
 <script lang="ts">
 import Snackbar from '../components/layout/Snackbar.vue';
@@ -99,7 +99,7 @@ export default {
 			display_name: '' as string,
 			avatar: '' as string,
 		};
-
+		
 		return {
 			JWT,
 			user,
@@ -148,18 +148,18 @@ export default {
 		async logTwoFactorAuthentication() {
 			if (!this.verificationCode) return snackbarStore.showSnackbar('Please enter a code', 3000, 'red');
 			const requestBody = { code: this.verificationCode };
-
+			
 			try {
 				const response = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/2fa/authenticate`,
-					{
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-							Authorization: `Bearer ${this.FAToken}`,
-						},
-						body: JSON.stringify(requestBody),
+				`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/2fa/authenticate`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${this.FAToken}`,
 					},
+					body: JSON.stringify(requestBody),
+				},
 				);
 				if (!response.ok) {
 					const error = await response.json();
@@ -184,26 +184,26 @@ export default {
 			};
 			this.$cookies.remove('userOnboarding');
 			await fetch(`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users`, requestOptions)
-				.then(async (response) => {
-					if (!response.ok) {
-						const error = await response.json();
-						snackbarStore.showSnackbar(error.message, 3000, 'red');
-						return;
-					}
-					const data = await response.json();
-					if (data) {
-						this.$cookies.set('token', data.access_token, '1m');
-						this.$router.push({ name: `Home` });
-					}
-				})
-				.catch((error) => {
-					snackbarStore.showSnackbar('Can\'t create User.', 3000, 'red');
-				});
+			.then(async (response) => {
+				if (!response.ok) {
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					return;
+				}
+				const data = await response.json();
+				if (data) {
+					this.$cookies.set('token', data.access_token, '1m');
+					this.$router.push({ name: `Home` });
+				}
+			})
+			.catch((error) => {
+				console.error(error);
+			});
 		},
 		redirectToOAuth() {
 			const HOST = import.meta.env.VITE_HOST;
 			const PORT = import.meta.env.VITE_API_PORT;
-
+			
 			window.location.href = `http://${HOST}:${PORT}/auth/42/callback`;
 		},
 		async updateAvatar(newAvatar: File) {
@@ -217,13 +217,13 @@ export default {
 			this.cantSkip = true;
 			try {
 				const response = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${
-						import.meta.env.VITE_API_PORT
-					}/users/getCloudinaryLinkOnboarding`,
-					{
-						method: 'POST',
-						body: formData,
-					},
+				`http://${import.meta.env.VITE_HOST}:${
+					import.meta.env.VITE_API_PORT
+				}/users/getCloudinaryLinkOnboarding`,
+				{
+					method: 'POST',
+					body: formData,
+				},
 				);
 				if (!response.ok) {
 					const error = await response.json();
@@ -231,7 +231,7 @@ export default {
 					this.cantSkip = false;
 					return;
 				}
-
+				
 				const data = await response.json();
 				this.newUser.avatar = data.avatar;
 				this.cantSkip = false;
@@ -261,22 +261,22 @@ export default {
 					displayName: this.newUser.display_name,
 				};
 				const response = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/getDisplayName`,
-					{
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-						},
-						body: JSON.stringify(body),
+				`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/getDisplayName`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
 					},
+					body: JSON.stringify(body),
+				},
 				);
-
+				
 				if (!response.ok) {
 					const error = await response.json();
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return { success: false, error };
 				}
-
+				
 				const data = await response.json();
 				return { success: true, data };
 			} catch (error) {
@@ -292,7 +292,7 @@ export default {
 				this.zoomLevel += 8;
 				this.somethingTop = 50 - this.zoomLevel / 2;
 				this.somethingLeft = 60 - this.zoomLevel / 2;
-
+				
 				setTimeout(() => {
 					this.zoomIn();
 				}, 100);
@@ -402,9 +402,9 @@ export default {
 .something {
 	position: absolute;
 	transition:
-		width 1s ease-in-out,
-		top 1s ease-in-out,
-		left 1s ease-in-out;
+	width 1s ease-in-out,
+	top 1s ease-in-out,
+	left 1s ease-in-out;
 }
 
 .uploaded-image {
