@@ -1,6 +1,6 @@
 <template>
-	<v-app>
-		<v-main class="d-flex align-center justify-center">
+	<v-app id="background-global">
+		<v-main class="d-flex" style="min-height: 300px">
 			<router-view />
 		</v-main>
 	</v-app>
@@ -9,6 +9,4 @@
 <script lang="ts">
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

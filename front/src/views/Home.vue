@@ -1,70 +1,36 @@
 <template>
-	<div>
-		<v-container> <!-- provides the ability to center and horizontally pad site’s contents. -->
-			<v-row align="center" no-gutters style="height: 150px;">
-					<Button width="150px" height="50px">Click here 01</Button>
-					<Button width="150px" height="50px">Click here 02</Button>
-					<Button width="150px" height="50px">Click here 03</Button>
-				<div>
-					<table>
-						<tr>
-							<th>class="omoriFont"</th>
-							<th>class="omoriDisturbed"</th>
-							<th>class="omoriArcade"</th>
-						</tr>
-						<tr>
-							<td>
-								<h1 class="omoriFont">Titre h1</h1>
-							</td>
-							<td>
-								<h1 class="omoriDisturbed">Titre h1</h1>
-							</td>
-							<td>
-								<h1 class="omoriArcade">Titre h1</h1>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<h2 class="omoriFont">Titre h2</h2>
-							</td>
-							<td>
-								<h2 class="omoriDisturbed">Titre h2</h2>
-							</td>
-							<td>
-								<h2 class="omoriArcade">Titre h2</h2>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<h3 class="omoriFont">Titre h3</h3>
-							</td>
-							<td>
-								<h3 class="omoriDisturbed">Titre h3</h3>
-							</td>
-							<td>
-								<h3 class="omoriArcade">Titre h3</h3>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<p class="omoriFont">Paragraphe</p>
-							</td>
-							<td>
-								<p class="omoriDisturbed">Paragraphe</p>
-							</td>
-							<td>
-								<p class="omoriArcade">Paragraphe</p>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</v-row>
-		</v-container>
-	</div>
-</template>
+	<v-container 
+		class="
+			d-flex
+			flex-column
+			justify-space-evenly"
+		fill-height
+	>
 
+		<v-row>
+			<v-col v-for="k in 1" :key="k" cols="12" class="d-flex align-center justify-center">
+				<v-sheet 
+					id="omorisPlace"
+					class="order-0 pa-2 ma-2"
+					height="80dvh"
+					width="90dvh" />
+			</v-col>
+		</v-row>
+
+		<v-row justify="end" >
+			<v-col v-for="k in 1" :key="k" cols="2" class="d-flex align-center justify-center">
+				<v-sheet 
+					id="doorLogout"
+					class="order-1 pa-2 ma-2"
+					height="10dvh"
+					width="6dvh" />
+			</v-col>
+		</v-row>
+
+	</v-container>
+</template>
+  
 <script lang="ts">
-import Button from '../components/layout/Button.vue';
 import { defineComponent } from 'vue';
 import { useUser } from '../stores/user';
 import { computed } from 'vue';
@@ -72,8 +38,8 @@ import { computed } from 'vue';
 const userStore = useUser();
 
 export default defineComponent({
-	name: 'HomeView',
-	components: { Button },
+	name: 'Home',
+	components: {},
 	setup() {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
@@ -99,23 +65,28 @@ export default defineComponent({
 });
 </script>
 
-<style>
-table,
-th,
-td {
-	border: 1px solid white;
-	white-space: nowrap;
-	border-collapse: collapse;
-	padding: auto;
+<style scoped>
+
+#omorisPlace {
+	background: url('/public/dashboard/omorisPlace.png');
+	object-fit: cover;
+	object-position: center;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	aspect-ratio: 1;
+	z-index: 2;
 }
 
-table {
-	width: 70%;
+#doorLogout {
+	background: url('/public/dashboard/clickable/doorClosed.png');
+	object-fit: cover;
+	object-position: center;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	aspect-ratio: 1;
+	z-index: 2;
 }
 
-th,
-td {
-	height: auto;
-	align-items: center;
-}
 </style>
