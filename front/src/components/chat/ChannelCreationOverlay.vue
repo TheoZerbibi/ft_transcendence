@@ -18,13 +18,15 @@
 <script>
 import { ref } from 'vue';
 
-export default {
+export default defineComponent ({
+name: 'ChannelCreation',
   props: {
     isOpen: Boolean,
     onClose: Function,
     onSubmit: Function,
   },
-  setup(props) {
+
+  setup(props, { emit }) {
     const channelName = ref('');
     const password = ref('');
 
@@ -41,7 +43,8 @@ export default {
 
     return { channelName, password, submitForm, closeOverlay };
   },
-};
+
+});
 </script>
 
 <style scoped>

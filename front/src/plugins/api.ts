@@ -12,15 +12,25 @@ type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 const userStore = useUser();
 
+const baseUrl = 'https://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/';
+
+
 // Create an axios instance for your API
-const api = axios.create({
+const api = {
+	method: 'GET',
 	baseURL: 'https://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/',
-});
+	headers: {
+		'Content-Type': 'application/json',
+		Authorization: `Bearer ${userStore.getJWTToken()}`,
+		'Access-Control-Allow-Origin': '*',
+	},
+};
 
-// Set the default headers for your requests
-api.defaults.headers.common['Content-Type'] = 'application/json';
-api.defaults.headers.common['Authorization'] = `Bearer ${userStore.getJWTToken()}`;
 
+extern function 
+try {
+	
+}
 // Refresh the token before each request
 api.interceptors.request.use(
 	async (config: AxiosRequestConfig) => {
@@ -80,6 +90,33 @@ export async function fetchData<T>(
 	} catch (error) {
 		return { data: null, error: error.message || 'An error occurred' };
 	}
+}
+
+export async function postData<T>(
+	url: string,
+	method: HttpMethod = 'POST',
+		body?: Record<string, any>
+): Promise<ApiResponse<T>> {
+	try {
+		const response = await api.request({
+			url,
+			method,
+			data: body,
+		});
+
+		return { data: response.data };
+	} catch (error) {
+		return { data: null, error: error.message || 'An error occurred' };
+	}
+}
+
+export async function createChannel(channelData) {
+	const body = {
+		name: channelData.name,
+		password: channelData.password,
+		isPublic: channelData.isPublic,
+	};
+	return postData(url, method, body);
 }
 
 //		USAGE EXEMPLE
