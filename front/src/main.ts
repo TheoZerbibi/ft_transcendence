@@ -35,7 +35,6 @@ const vuetify = createVuetify({
 		return {};
 	},
 	theme: {
-		disable: true,
 		defaultTheme: 'omoriTheme',
 		themes: {
 			omoriTheme,
