@@ -1,21 +1,34 @@
 <template>
-	<v-container>
-		<!-- Utilisez les composants Vuetify pour la mise en page -->
-		<v-row>
-			<v-col v-if="!is2FA">
-				<v-btn @click="generateQRCode" v-if="!qrCode">Generate QR Code</v-btn>
+	<v-container 
+		fill-height
+		fluid
+		class="d-flex flex-column justify-center align-center"
+	>
+
+		<v-row v-show="!is2FA">
+			<v-col cols="12" clas="d-flex justify-center align-center">
+				<v-sheet class="pa-2 ma-2 d-flex flex-column align-center justify-center" height="80dvh" width="40dvh" color="transparent">
+					<v-btn @click="generateQRCode" v-if="!qrCode && !is2FA">Generate QR Code</v-btn>
+					<img :src="`${qrCode}`" v-if="qrCode && !is2FA" />
+					<v-form @submit.prevent="activateTwoFactorAuthentication" v-if="qrCode && !is2FA" class="d-flex flex-column align-center">
+						<v-otp-input variant="solo-filled" v-model="verificationCode" label="Enter Verification Code" required error :loading="loading"/>
+						<v-btn type="submit">Activate 2FA</v-btn>
+					</v-form>
+				</v-sheet>
 			</v-col>
-			<v-form @submit.prevent="disableTwoFactorAuthentication" v-if="is2FA">
-				<v-text-field v-model="verificationCode" label="Enter Verification Code" required></v-text-field>
-				<v-btn type="submit">Disable 2FA</v-btn>
-			</v-form>
-			<v-form @submit.prevent="activateTwoFactorAuthentication" v-if="qrCode && !is2FA">
-				<v-text-field v-model="verificationCode" label="Enter Verification Code" required></v-text-field>
-				<v-btn type="submit">Activate 2FA</v-btn>
-			</v-form>
 		</v-row>
 
-		<img :src="`${qrCode}`" v-if="qrCode && !is2FA" />
+		<v-row v-show="is2FA">
+			<v-col cols="12" class="d-flex justify-center align-center">
+				<v-sheet  class="pa-2 ma-2 d-flex flex-column align-center justify-center" height="80dvh" width="40dvh" color="transparent">
+					<v-form @submit.prevent="disableTwoFactorAuthentication" v-if="is2FA" class="d-flex flex-column align-center">
+						<v-otp-input variant="solo-filled" v-if="is2FA" v-model="verificationCode" label="Enter Verification Code" required error :loading="loading"/>
+						<v-btn v-if="is2FA" type="submit">Disable 2FA</v-btn>
+					</v-form>
+				</v-sheet>
+			</v-col>
+		</v-row>
+
 	</v-container>
 	<Snackbar />
 </template>
@@ -101,6 +114,7 @@ export default {
 					const error = await response.json();
 					console.log(error);
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					this.verificationCode = '';
 					return;
 				}
 
@@ -108,6 +122,7 @@ export default {
 				this.setJWT(result.access_token);
 				snackbarStore.showSnackbar(result.message, 3000, 'green');
 				this.qrCode = null;
+				this.verificationCode = '';
 			} catch (error) {
 				snackbarStore.showSnackbar('Error activating 2FA', 3000, 'red');
 			}
@@ -131,12 +146,14 @@ export default {
 					const error = await response.json();
 					console.log(error);
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					this.verificationCode = '';
 					return;
 				}
 
 				const result = await response.json();
 				this.setJWT(result.access_token);
 				snackbarStore.showSnackbar(result.message, 3000, 'green');
+				this.verificationCode = '';
 			} catch (error) {
 				snackbarStore.showSnackbar('Error activating 2FA', 3000, 'red');
 			}
