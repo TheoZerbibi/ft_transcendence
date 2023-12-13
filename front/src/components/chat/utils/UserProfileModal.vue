@@ -1,45 +1,17 @@
 <template>
-	<div class="overlay" v-if="show">
-		<div class="modal">
-			<div class="modal-header">
-				<h3>@
-				{{ selectedUserLogin }}
-				</h3>
+	<v-row v-if="userData">
+		<v-dialog v-model="dialog">
+			<v-card>
+				<v-card-title>
+					<span class="text-h5">{{userData.login}}</span>
+				</v-card-title>
+				<v-card-text>Modale</v-card-text>
+				{{ userData }}
 				<button @click="close" class="close-button">X</button>
-			</div>
-			<div class="modal-body">
-				<div class="user-info">
-					<img src="https://preview.redd.it/sky2ka084ns11.jpg?width=640&crop=smart&auto=webp&s=a7f060f539797578a109af48a5ee75909f7661cb" alt="Avatar" class="avatar"/>
-					<h3>{{ selectedUser.displayName }}</h3>
-				</div>
-				<div class="user-stats">
-					<h4>Stats</h4>
-					<div class="stats-details">
-						<div class="level">Level 21</div>
-						<div class="wins">6 wins</div>
-						<div class="loses">6 loses</div>
-						<div class="matches">6 matches</div>
-					</div>
-					<div class="actions">
-						<button class="block-user">Block user</button>
-						<button class="challenge">Challenge</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-<!-- 	<div class="overlay">
-		<div class="modal" v-if="show">
-			<div class="modal-content" v-if="selectedUser">
-				<img :src="selectedUser.avatar" alt="avatar" />
-				<h3>{{ selectedUser.display_name }}</h3>
-				<p>...infos on user</p>
-				<p>...infos on user</p>
-				<p>...infos on user</p>
-				<button @click="close">Close</button>
-			</div>
-		</div>
-	</div> -->
+			</v-card>
+		
+		</v-dialog>
+	</v-row>"
 	<Snackbar></Snackbar>
 </template>
 
@@ -58,106 +30,38 @@ export default {
 		Snackbar,
 	},
 	props: {
-		selectedUserLogin: {
-			type: String,
-			default: '',
-		},
+		userData: Object,
 		show: Boolean,
 	},
-	setup(props) {
+	emits: ['close'],
+	setup() {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
-		const selectedUser = ref({});
 
-		const fetchSelectedUserInfos = async function() {
-			try {
-				console.log("[UserProfileModal.vue:fetchSelectedUserInfos]" 
-							+ "\nshow_modal: " + props.show 
-							+ "\nselected_user_login: " + props.selectedUserLogin);
-				if (!props.show || !props.selectedUserLogin || props.selectedUserLogin === '') {
-					// TODO : display stg ?
-					return;
-				}
-				const response = await fetch (
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/profile/${props.selectedUserLogin}`, 
-					{
-						method: 'GET',
-						headers: {
-							Authorization: `Bearer ${props.JWT}`,
-							'Access-Control-Allow-Origin': '*',
-						},
-					}
-				).catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
-					return;
-				});
-				console.log("[UserProfileModal.vue:fetchSelectedUserInfos] response: " + response);
-				this.selectedUser = await response.json();
-			} catch (error) {
-				console.error(error);
-			}
-		};
 		return {
 			JWT,
 			user,
-			selectedUser,
-			fetchSelectedUserInfos,
 		};
 	},
-	mounted() {},
-	methods: {
-		close() {
-			this.$emit('close');
-		}
-	},
-/* 	setup(props) {
-		const JWT = computed(() => userStore.getJWT);
-		const user = computed(() => userStore.getUser);
-		const selectedUser = ref({});
-		const fetchSelectedUserInfos = async function() {
-			try {
-				if (!props.show || !props.selectedUserLogin || props.selectedUserLogin === '') {
-					// TODO : display stg ?
-					return;
-				}
-				const response = await fetch (
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/profile/${props.selectedUserLogin.value}`, 
-					{
-						method: 'GET',
-						headers: {
-							Authorization: `Bearer ${JWT}`,
-							'Access-Control-Allow-Origin': '*',
-						},
-					}
-				).catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
-					return;
-				});
-				selectedUser.value = await response.json();
-			} catch (error) {
-				console.error(error);
-			}
-			console.log("[Friends.vue:setup(props)] selectedUser: " + selectedUser.value);
-			console.log("[Friends.vue:setup(props)] show: " + props.show);
-		};
+	data() {
 		return {
-			JWT,
-			user,
-			selectedUser,
-			fetchSelectedUserInfos,
+			data: null as any,
+			dialog: this.show,
 		};
 	},
-	beforeMount() {
-		console.log("[Friends.vue:beforeMount] selectedUser: " + this.selectedUser);
-		console.log("[Friends.vue:beforeMount] show: " + this.show);
-		this.fetchSelectedUserInfos();
+	watch: {
+		userData(newVal) {
+			this.data = newVal;
+		},
+		show(newVal) {
+			this.dialog = newVal;
+		},
 	},
-	mounted() {},
 	methods: {
 		close() {
 			this.$emit('close');
-		}
-	}, */
+		},
+	},
 };
 </script>
 
