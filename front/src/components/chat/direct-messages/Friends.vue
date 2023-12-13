@@ -98,9 +98,9 @@ export default {
 				"created_at": "2023-12-13T11:08:38.070Z",
 				"last_login": "2023-12-13T11:08:38.070Z"
 			};
-			this.showInfos = true;
 			//this.fetchSelectedUserInfos(login);
-			//this.$emit('friend-selected', this.selectedLogin);
+			//this.$emit('friend-selected', this.selected);
+			this.showInfos = true;
 		},
 		closeModal() {
 			this.showInfos = false;

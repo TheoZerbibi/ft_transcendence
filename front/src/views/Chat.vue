@@ -24,7 +24,7 @@
 
 							<!-- Colonne de droite pour DirectMessages (3/4 de l'écran) -->
 							<v-col cols="12" md="9">
-								<DirectMessages v-if="isSelectedFriend" :selectedFriendLogin="selectedFriendLogin"></DirectMessages>
+								<DirectMessages v-if="isSelectedFriend" :selectedLogin="selectedLogin"></DirectMessages>
 							</v-col>
 						</v-row>
 					</v-window-item>
@@ -101,8 +101,9 @@ components: {
 
 				const webSocketStore = useSocketStore();
 				const userStore = useUser();
+				const snackbarStore = useSnackbarStore();
 
-				let connectedUsers = [];
+				let connectedUsers: any = [];
 				const tab = ref(0); // Start with the first tab active
 			
 				const isConnected = computed(() => webSocketStore.isConnected);
@@ -152,7 +153,7 @@ components: {
 	data() {
 		return {
 			isSelectedFriend: false,
-			selectedFriendLogin: '',
+			selectedLogin: '',
 			isSelectedChannel: false,
 			selectedChannelName: '',
 		}
@@ -163,9 +164,9 @@ components: {
 	mounted() {
 	},
 	methods: {
-		updateSelectedFriend(selectedFriendLogin: string) {
+		updateSelectedFriend(selectedLogin: string) {
 			this.isSelectedFriend = true;
-			this.selectedFriendLogin = selectedFriendLogin;
+			this.selectedLogin = selectedLogin;
 		},
 		updateSelectedChannel(selectedChannelName: string) {
 			this.isSelectedChannel = true;

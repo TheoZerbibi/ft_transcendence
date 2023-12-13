@@ -1,15 +1,17 @@
 <template>
 	<v-row v-if="userData">
-		<v-dialog v-model="dialog">
+		<v-dialog
+			v-model="dialog"
+			@click:outside="close"
+			>
 			<v-card>
 				<v-card-title>
 					<span class="text-h5">{{userData.login}}</span>
 				</v-card-title>
 				<v-card-text>Modale</v-card-text>
 				{{ userData }}
-				<button @click="close" class="close-button">X</button>
+				<v-btn @click="close" class="close-button">X</v-btn>
 			</v-card>
-		
 		</v-dialog>
 	</v-row>"
 	<Snackbar></Snackbar>
@@ -54,7 +56,7 @@ export default {
 			this.data = newVal;
 		},
 		show(newVal) {
-			this.dialog = newVal;
+			this.$emit('update:show', newVal);
 		},
 	},
 	methods: {
