@@ -1,29 +1,29 @@
 <template>
 
-	<h2>Discover Channels</h2>
-
-	<div class="scrollable-content">
-
-		<!-- Users list -->
+	<!-- Non joined channels (discover)-->
+	<v-card>
+		<v-card-title>Discover Channels</v-card-title>
 		<v-list v-if="nonJoinedChannels.length">
 			<v-list-item v-for="channel in nonJoinedChannels" :key="channel.id">
 				{{ channel.name }}
 				<v-btn @click="joinChannel(channel.name)">+</v-btn>
 			</v-list-item>
 		</v-list>
-
-	</div>
+	</v-card>
 
 	<!-- Search bar -->
 	<v-col cols="9">
-		<input
+		<v-text-field
 			v-model="searchTerm"
 			@keyup.enter="searchChannels"
 			placeholder="Search a channel..."
 		/>
 		<button @click="searchChannels">search</button>
 	</v-col>
+
+	<!-- Error handling -->
 	<Snackbar></Snackbar>
+
 </template>
 
 <script lang="ts">
@@ -173,21 +173,3 @@ export default {
 }
 
 </script>
-
-<style scoped>
-
-.modal {
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	padding: 1rem;
-	border-radius: 0.5rem;
-	z-index: 100;
-}
-.scrollable-content {
-	max-height: 40vh;
-	overflow-y: auto;
-}
-
-</style>

@@ -1,19 +1,25 @@
 <template>
-	<div class="channel-channelUsers-container">
-		<h2>Users</h2>
-		<div class="scrollable-content">
-			<v-list v-if="channelUsers.length">
-				<v-list-item
-					v-for="channelUser in channelUsers"
-					:key="channelUser.id"
-					@click="displayProfile(channelUser.login)"
-				>
-				{{ channelUser.display_name }}
-				</v-list-item>
-			</v-list>
-		<p v-else>~ no one in this channel except you ~</p>
-		</div>
-	</div>
+
+	<!-- Channel users list -->
+	<v-card>
+		<v-card-title>
+			Users in {{ selectedChannelName }}
+		</v-card-title>
+		<v-list v-if="channelUsers.length">
+			<v-list-item
+				v-for="channelUser in channelUsers"
+				:key="channelUser.id"
+				@click="displayProfile(channelUser.login)"
+			>
+			{{ channelUser.display_name }}
+			</v-list-item>
+		</v-list>
+	<p v-else>~ no one in this channel except you ~</p>
+	</v-card>
+
+	<!-- Error handling -->
+	<Snackbar></Snackbar>
+
 </template>
 
 <script lang="ts">
