@@ -35,7 +35,11 @@ export class AuthController {
 		if (user.access_token) {
 			if (user.dAuth) {
 				url.pathname = '/login';
-				res.status(200).cookie('2FA', user.access_token, { httpOnly: false });
+				res.status(200).cookie(
+					'2FA',
+					{ ...user.access_token, displayName: user.display_name },
+					{ httpOnly: false },
+				);
 				res.redirect(url.href);
 			} else {
 				res.cookie('token', user.access_token, {
