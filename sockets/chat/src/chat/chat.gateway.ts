@@ -161,6 +161,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 	public async handleConnection(client: Socket): Promise<void> {
 		try {
+
+			console.log(`attempt to connect by client ${client.id}`);
+
 			if (!client.handshake.headers.authorization) throw new Error('Invalid token');
 			const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
 			this.authService.verifyToken({ access_token: token });

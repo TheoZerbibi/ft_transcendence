@@ -55,9 +55,11 @@ export default {
 			searchTerm: '',
 		};
 	},
+
 	beforeMount() {
 		this.fetchNonJoinedChannels();
 	},
+
 	mounted() {},
 	methods: {
 		fetchNonJoinedChannels: async function() {

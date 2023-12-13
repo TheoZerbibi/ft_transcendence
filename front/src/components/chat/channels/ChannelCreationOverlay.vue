@@ -1,22 +1,22 @@
 <template>
-  <div v-if="isOpen" class="overlay">
-    <div class="content">
-      <form @submit.prevent="submitForm">
-        <label for="channelName">Channel Name:</label>
-        <input v-model="channelName" id="channelName" type="text" required />
+<!-- <div v-if="isOpen" class="overlay"> -->
+   <div class="content">
+     <form @submit.prevent="submitForm">
+       <label for="channelName">Channel Name:</label>
+       <input v-model="channelName" id="channelName" type="text" required />
 
-        <label for="password">Password:</label>
-        <input v-model="password" id="password" type="password" />
+       <label for="password">Password:</label>
+       <input v-model="password" id="password" type="password" />
 
-        <button type="submit">Create Channel</button>
-      </form>
-      <button @click="closeOverlay">Close</button>
-    </div>
-  </div>
+       <button type="submit">Create Channel</button>
+     </form>
+     <button @click="closeOverlay">Close</button>
+   </div>
+<!-- </div> -->
 </template>
 
 <script>
-import { ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 
 export default defineComponent ({
 name: 'ChannelCreation',

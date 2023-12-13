@@ -1,5 +1,6 @@
 <template>
-  <ChannelCreation @channel-created="handleChannelCreated" />
+<!--  <button @click="openOverlay"> Open Channel Creation Overlay </button> -->
+ <ChannelCreation ref="channelCreationRef" @channel-created="handleChannelCreated" />
 </template>
 
 <script lang="ts">
@@ -11,72 +12,70 @@ import { useSocketStore } from '../stores/websocket';
 import { computed } from 'vue';
 
 import { useSocketHandler } from '../plugins/socketHandler';
-import { ChannelCreation } from '../components/chat/ChannelCreationOverlay.vue';
-import { createChannel } from '../plugins/api';
+import { api } from '../plugins/api';
+
+import  ChannelCreation  from '../components/chat/channels/CreateChannel.vue';
+//import  ChannelCreation  from '../components/chat/channels/ChannelCreationOverlay.vue';
 
 export default defineComponent({
-name: 'ChatView',
+name: 'ChatTest',
 components: {
+ChannelCreation,
+},
+
+setup() {
+
+	const {
+	isConnected,
+	socket,
+	connect,
+	disconnect,
+	socketListen,
+	JWT,
+	connectedUsersIds
+	} = useSocketHandler();
+
+	connect(JWT.value);
+	
+	const apiInstance = new api('POST');
+	
+	
+	const	openOverlay = () => {
+//		if (channelCreationRef.value)
+			openOverlay.value = true;
+	};
+	
+		onMounted( async () => {
+				socketListen();
+				});
+	
+	const handleChannelCreated = async (channelData) => {
+		try {
+			const response = await apiInstance.createChannel(channelData);
+			
+			console.log('Triggered channel-created event');
+	
+			if (response.error)
+				console.error('Error creating channel:', reponse.error);
+			else
+				console.log('Channel created:', await response.json());
+		} catch (error) {
+			console.error('Error creating channel:', error.message || 'An erroroccurred');
+		}
+	};
+	
+	return {
 		ChannelCreation,
+		handleChannelCreated,
+		isConnected,
+		socket,
+		connect,
+		disconnect,
+		socketListen,
+		JWT,
+		connectedUsersIds,
+	};
 	},
-
-	setup(props) {
-
-				const tab = ref(0); // Start with the first tab active
-
-				const {
-				isConnected,
-				socket,
-				connect,
-				disconnect,
-				socketListen,
-				JWT,
-				connectedUsersIds,
-				} = useSocketHandler();
-
-
-				onMounted( async () => {
-						socketListen();
-						});
-
-				const handleChannelCreated = async (channelData) => {
-					try {
-						const response = await createChannel(channelData);
-
-						if (response.error)
-							console.error('Error creating channel:', reponse.error);
-						else
-							console.log('Channel created:', response.data);
-					} catch (error) {
-						console.error('Error creating channel:', error.message || 'An erroroccurred');
-					}
-				};
-
-				return {
-					handleChannelCreated,
-						isConnected,
-						socket,
-						connect,
-						disconnect,
-						socketListen,
-						JWT,
-						connectedUsersIds,
-						tab,
-				};
-
-	},
-
-	data() {
-	},
-
-	beforeMount() {
-	},
-
-	mounted() {
-	},
-
-methods: {
-	 }
 
 });
 </script>

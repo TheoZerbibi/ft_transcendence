@@ -20,7 +20,6 @@ services:
     command: sh -c "pnpm start:prod"
     restart: always
 
-
   game:
     image: ghcr.io/theozerbibi/game-socket-image:latest
     container_name: game

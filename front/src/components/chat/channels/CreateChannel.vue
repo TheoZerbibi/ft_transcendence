@@ -1,20 +1,21 @@
 <!-- ChannelCreation.vue -->
 <template>
-  <v-overlay :value="overlayVisible" @click="closeOverlay">
+<!-- <v-btn @click="overlay = !overlay"> create channel</v-btn> -->
+<!-- <v-overlay :value="overlayVisible" @input="openOverlay"> -->
     <v-card>
       <v-card-title>Create a Channel</v-card-title>
       <v-card-text>
         <v-form @submit.prevent="createChannel">
           <v-text-field v-model="channelName" label="Channel Name" required></v-text-field>
           <v-text-field v-model="channelPassword" label="Channel Password" type="password"></v-text-field>
-          <v-checkbox v-model="isPublic" label="Public Channel"></v-checkbox>
+          <v-checkbox v-model="isPublic" :label="`Public Channel: ${isPublic.toString()}`"></v-checkbox>
 
           <v-btn type="submit" color="primary">Create Channel</v-btn>
           <v-btn @click="closeOverlay">Cancel</v-btn>
         </v-form>
       </v-card-text>
     </v-card>
-  </v-overlay>
+<!-- </v-overlay> -->
 </template>
 
 <script>
@@ -22,6 +23,7 @@ import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
   name: 'ChannelCreation',
+ emits:['channel-created'],
   props: {
     // You can pass any necessary props here
   },
@@ -45,7 +47,7 @@ export default defineComponent({
 
     const createChannel = () => {
       // Validate and create channel logic here
-      const channelData = {
+       const channelData = {
         name: channelName.value,
         password: channelPassword.value,
         isPublic: isPublic.value,
