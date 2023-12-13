@@ -47,12 +47,18 @@
 			</div>
 		</v-row>
 
+<<<<<<< Updated upstream
 		<v-row v-if="step > 0" no-gutters class="d-flex align-center justify-center" style="height: 100vh">
 			<v-col>
+=======
+		<v-row v-if="step > 0" no-gutters class="d-flex align-center justify-center bg-pink" style="height: 100vh;">
+			<v-col cols="6" class="d-flex flex-column align-center justify-center bg-green">
+>>>>>>> Stashed changes
 				<audio controls id="myVideo" autoplay loop hidden>
 					<source src="/sounds/004-Spaces In-between.mp3" type="audio/wav" />
 					Your browser does not support the audio element./
 				</audio>
+<<<<<<< Updated upstream
 				<div class="align-center justify-center">
 					<div v-if="step === 1" class="d-flex flex-column align-center justify-center">
 						<h3 class="omoriFont">Hello there... what's your name?</h3>
@@ -93,7 +99,51 @@
 					</div>
 
 					<img src="/ui/ALBUM.png" :style="albumStyle" id="album" alt="Album" />
+=======
+			
+				<div v-if="step === 1" class="d-flex flex-column align-center justify-center">
+					<h3 class="omoriFont">Hello there... what's your name?</h3>
+					<InputBar 
+						@newInput="newUser.display_name = $event"
+						placeholder="Enter your name here..."
+						@keyup.enter="nextStep"
+						@click="nextStep"
+						>
+						<template v-slot="buttonText">
+							that's my name!
+						</template>					
+					</InputBar>
+>>>>>>> Stashed changes
 				</div>
+
+				<div v-if="step === 2" class="d-flex flex-column align-center justify-center">
+					<h3 class="omoriFont">Nice to meet you {{ newUser.display_name }}! Is that you on the picture?</h3>
+					<UploadFile @imageChanged="updateAvatar">
+						<template v-slot:polaroidImg>
+							<v-img
+								v-if="newUser.avatar"
+								:src="newUser.avatar"
+								class="hoverable"
+								alt="Uploaded Image">
+								<v-progress-circular 
+									indeterminate
+									color="red-accent-2"
+									v-if="cantSkip"/>
+							</v-img>
+						</template>
+					</UploadFile>
+					<Button @click="nextStep" :disabled="cantSkip">That's me!</Button>
+				</div>
+
+				<div v-if="step === 3" class="d-inline-flex flex-column align-center justify-center">
+					<h3 class="omoriFont">Well well well... If this isn't {{ user.display_name }}! Back already? Do you remember the password?</h3>
+					<form @submit.prevent="logTwoFactorAuthentication" class="d-inline-flex flex-column align-center justify-center bg-orange">
+						<v-otp-input variant="solo-filled" v-model="verificationCode" required/>
+						<Button @click="logTwoFactorAuthentication">Knock Knock...</Button>
+					</form>
+				</div>
+
+				<img src="/ui/ALBUM.png" :style="albumStyle" id="album" alt="Album" />
 			</v-col>
 		</v-row>
 		<Snackbar />
@@ -171,7 +221,7 @@ export default {
 			this.FAToken = this.$cookies.get('2FA');
 			console.log(this.FAToken);
 			snackbarStore.showSnackbar('2FA enabled', 3000, 'green');
-			this.step = 4;
+			this.step = 3;
 			this.$cookies.remove('2FA');
 		} else if (this.$cookies.get('token')) {
 			const token = this.$cookies.get('token');
