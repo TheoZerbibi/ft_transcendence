@@ -124,9 +124,6 @@ export class User {
 
 	public addChannel(channel: Channel)
 	{
-		if (!channel)
-			throw new Error('Channel is undefined');
-		this.channels = this.channels || [];
 		if (!this.channels.find((chan) => chan.getId() === channel.getId())) {
 			this.channels.push(channel);
 		}
@@ -188,8 +185,6 @@ export class Chat {
 			if (!channel_tmp) channel_tmp === new Channel(channels_usr[i].id, user);
 			else channel_tmp.addUser(user);
 
-			if (!channel_tmp)
-				throw new Error('Channel is undefined');
 			user.addChannel(channel_tmp);
 		}
 		return user;
