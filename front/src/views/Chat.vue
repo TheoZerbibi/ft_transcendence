@@ -208,7 +208,7 @@ components: {
 	display: flex;
 	flex-direction: column;
 	flex-grow: 1;
-	flex-shrink: 1;;
+	flex-shrink: 1;
 }
 
 .custom-column > * {
@@ -227,6 +227,7 @@ components: {
 	justify-content: space-between;
 	flex-grow: 1;
 	flex-shrink: 1;;
+	border-radius: 30px;
 }
 
 .v-card-title {

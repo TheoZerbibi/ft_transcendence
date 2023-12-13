@@ -44,16 +44,8 @@
 			<!-- Message Input -->
 			<v-row>
 				<v-col>
-					<v-card>
-						<v-row>
-							<v-col>
-								<v-text-field v-model="input" placeholder="Type you message..."/>
-							</v-col>
-							<v-col>
-								<v-btn @click="sendMessage">Send</v-btn>
-							</v-col>
-						</v-row>
-					</v-card>
+					<v-text-field v-model="input" placeholder="Type you message..."/>
+					<v-btn class="justify-end" @click="sendMessage">Send</v-btn>
 				</v-col>
 			</v-row>
 
