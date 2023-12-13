@@ -13,7 +13,7 @@
 				<GameOpponent :leftPlayer="leftPlayer" :rightPlayer="rightPlayer" />
 			</div>
 			<div>
-				<GameCanvas />
+				<GameCanvas :gameEnded="gameEnded" :gameUID="gameUID" />
 				<span class="d-flex justify-center align-center ga-10">
 					<span class="d-flex justify-center ga-1">
 						<img height="50" width="50" src="/game/keys/W_KEY.gif" />
@@ -93,7 +93,7 @@ export default {
 		return {
 			gameEnded: false as boolean,
 			apiData: null as any,
-			gameUID: null as string | null,
+			gameUID: undefined as string | undefined,
 			players: [] as any[],
 			background: null as any,
 			dialogVisible: false as boolean,
@@ -156,9 +156,12 @@ export default {
 				return response.json();
 			})
 			.then(async (data) => {
-				if (data.end_at) {
+				console.log(data);
+				if (data.is_ended) {
 					this.apiData = data;
 					snackbarStore.showSnackbar('Game is ended', 3000);
+					this.gameEnded = true;
+					return;
 				} else {
 					await this.connect(this.JWT, import.meta.env.VITE_GAME_SOCKET_PORT)
 						.then(() => {

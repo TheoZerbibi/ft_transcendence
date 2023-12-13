@@ -115,7 +115,6 @@
 
 <script lang="ts">
 import { computed, ref } from 'vue';
-import { useRoute } from 'vue-router';
 
 import P5 from 'p5';
 
@@ -153,11 +152,14 @@ export default {
 			JWT,
 		};
 	},
+	props: {
+		gameEnded: Boolean,
+		gameUID: String,
+	},
 	data() {
 		return {
 			showCountdown: false,
 			waitingOpp: true,
-			gameEnded: false,
 			userData: {
 				leftPlayer: {
 					name: '',
@@ -199,7 +201,6 @@ export default {
 		this.backgroundRight = this.backgroundRight.replace('/public', '');
 	},
 	async mounted() {
-		const route = useRoute();
 		const gameData = {
 			start: false as boolean,
 			go: false as boolean,
@@ -210,9 +211,12 @@ export default {
 			ball: null as Ball | null,
 			ratio: (9 / 20) as number,
 			socket: this.socket as any,
-			gameUID: route.params.uid as string,
 			waiting: false as boolean,
 		};
+		if (this.gameEnded) {
+			gameData.start = true;
+			this.waitingOpp = false;
+		}
 		const componentRef = ref(this);
 
 		const p5jsReadyPromise = new Promise((resolve) => {
@@ -338,7 +342,7 @@ export default {
 				 */
 				function movePaddles() {
 					if (!gameData.ball || !gameData.socket) return;
-					if (!gameData.go) return;
+					if (!gameData.go || !gameData.socket) return;
 					if (!gameData.player || !gameData.start) {
 						localMovePaddles();
 						return;
@@ -377,6 +381,7 @@ export default {
 			new P5(script);
 		});
 
+		if (!this.socket) return ;
 		this.socket.on('waiting-start', async () => {
 			await p5jsReadyPromise;
 			gameData.socket = this.socket;
