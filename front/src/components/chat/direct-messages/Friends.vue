@@ -1,7 +1,5 @@
 <template>
 
-	<v-container>
-
 		<!-- Friend list -->
 		<v-card>
 			<v-card-title>Friends</v-card-title>
@@ -25,8 +23,6 @@
 			:show="showInfos"
 			@close="closeModal"/>
 
-		<v-divider></v-divider>
-
 		<!-- Friend Requests list -->
 		<v-card>
 			<v-card-title>Friend Requests</v-card-title>
@@ -44,8 +40,6 @@
 				</v-list-item>
 			</v-list>
 		</v-card>
-
-		<v-divider></v-divider>
 
 		<!-- Users list -->
 		<v-card>
@@ -67,8 +61,6 @@
 			/>
 			<v-btn @click="searchUsers">search</v-btn>
 		</v-col>
-
-	</v-container>
 
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
