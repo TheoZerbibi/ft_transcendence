@@ -5,10 +5,10 @@
 		class="white--text omoriFont font-weight-black input-field uppercase-placeholder"
 		:placeholder="placeholder"
 		v-model="inputValue"
-		:style="{ width: width + 'px', height: height + 'px' }"
+		:style="{ width: width + 'dvh', height: height + 'dvh' }"
 		@click.prevent.stop
 		/>
-		<Button @click="handleInput" :style="{ width: width + 'px', height: height + 'px'}">
+		<Button @click="handleInput" :style="{ width: width + 'dvh', height: height + 'dvh'}">
 			<slot></slot>
 		</Button>
 	</form>
@@ -29,12 +29,12 @@ export default defineComponent({
 			default: 'Input'
 		},
 		width: {
-			type: String,
-			default: '250px'
+			type: Number,
+			default: 25
 		},
 		height: {
-			type: String,
-			default: '50px'
+			type: Number,
+			default: 5
 		},
 	},
 	setup(props, { emit }) {

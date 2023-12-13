@@ -1,49 +1,30 @@
 <template>
-	<div>
-		<form id="polaroid">
-			<div style="
-		  		width: 220px;
-		  		height: 220px;
-				position: relative;"
-			>
-				<label for="file" class="file-upload-label hoverable">
-					<div class="slot-image" 
-						@mouseover="showOverlay = true"
-						@mouseleave="showOverlay = false">
-						<slot name="polaroidImg"></slot>
-					</div>
-					<input id="file" type="file" @change="handleFileChange" />
-				</label>
+	<form id="polaroid" :style="{ width: width + 'dvh', height: height + 'dvh' }">
+		<label for="file" class="uploadLabel hoverable">
+			<div class="uploadImg align-self-center justify-center" 
+				@mouseover="showOverlay = true"
+				@mouseleave="showOverlay = false"
+				>
+				<slot name="polaroidImg" class="polaroidImg "></slot>
 			</div>
-		</form>
-	</div>
+			<input id="file" type="file" @change="handleFileChange" />
+		</label>
+	</form>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import Button from './Button.vue';
 
 export default defineComponent({
 	name: 'UploadFile',
-	components: {
-		Button
-	},
 	props: {
-		buttonWidth: {
-			type: String,
-			default: '250px'
+		width: {
+			type: Number,
+			default: 25,
 		},
-		buttonHeight: {
-			type: String,
-			default: '50px'
-		},
-		polaroidWidth: {
-			type: String,
-			default: '25dvh'
-		},
-		polaroidHeight: {
-			type: String,
-			default: '30dvh'
+		height: {
+			type: Number,
+			default: 30,
 		},
 	},
 	setup(props, { emit }) {
@@ -71,40 +52,38 @@ export default defineComponent({
 	background-position: center;
 	background-repeat: no-repeat;
 	aspect-ratio: 1;
-	height: inherit;
-	width: inherit;
 	padding: 2dvh 2dvh 0dvh 2dvh;
 	z-index: 2;
+	position: relative;
 }
 
-.file-upload-label input {
+.uploadLabel input {
 	display: none;
 }
 
-.slot-image {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	object-fit: cover;
-	top: 0;
-	left: 0;
+.uploadImg {
+	aspect-ratio: 1;
 	z-index: 1;
 }
 
-.slot-image::before {
+.uploadImg::before {
 	content: url('/public/login/upload.svg');
 	position: absolute;
-	top: 25%;
-	left: 0;
 	width: 100%;
 	height: 100%;
-	object-fit: cover;
 	z-index: 2;
 	opacity: 0;
 	transition: opacity 0.3s ease;
 }
 
-.slot-image:hover::before {
+.uploadImg:hover::before {
 	opacity: 0.8;
+}
+
+.uploadImg {
+	aspect-ratio: 1;
+	width: inherit;
+	height: inherit;
+	object-fit: cover;
 }
 </style>

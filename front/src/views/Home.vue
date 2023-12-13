@@ -8,7 +8,7 @@
 	>
 
 		<v-row>
-			<v-col v-for="k in 1" :key="k" cols="12" class="d-flex align-center justify-center">
+			<v-col cols="12" class="d-flex align-center justify-center">
 				<v-sheet 
 					id="omorisPlace"
 					class="order-0 pa-2 ma-2"
@@ -18,13 +18,15 @@
 		</v-row>
 
 		<v-row justify="end" >
-			<v-col v-for="k in 1" :key="k" cols="2" class="d-flex align-center justify-center">
+			<div class="d-flex align-center justify-center hoverable"
+			@click="logout"
+			>
 				<v-sheet 
 					id="doorLogout"
 					class="order-1 pa-2 ma-2"
 					height="10dvh"
 					width="6dvh" />
-			</v-col>
+			</div>
 		</v-row>
 
 	</v-container>
@@ -61,6 +63,13 @@ export default defineComponent({
 				}
 			} else return this.$router.push({ name: `Login` });
 		}
+	},
+	methods: {
+		async logout() {
+			sessionStorage.clear();
+			await userStore.deleteUser();
+			return this.$router.push({ name: `Login` });
+		},
 	},
 });
 </script>

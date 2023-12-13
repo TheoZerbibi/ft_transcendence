@@ -1,21 +1,12 @@
 <template>
 	<v-btn
-		class="white--text omoriFont font-weight-black "
+		class="white--text omoriFont omoriBtn font-weight-black "
 		color="black"
 		rounded="0"
 		size="large"
 		@click="handleClick" 
 		:ripple="false"
-		style="{
-			background-color: #000000;
-			border-color: #ffffff;
-			border: 3px solid;
-			display: flex;
-			position: relative;
-			font-size: 20px;
-		}"
-		:style="{ width: width + 'px', height: height + 'px' }"
-	>
+		:style="{ width: width + 'dvh', height: height + 'dvh' }">
 		<slot></slot>
 	</v-btn>
 </template>
@@ -27,12 +18,12 @@ export default defineComponent({
 	name: "ButtonBox",
 	props: {
 		width: {
-			type: String,
-			default: '250px'
+			type: Number,
+			default: 25
 		},
 		height: {
-			type: String,
-			default: '50px'
+			type: Number,
+			default: 5
 		},
 		onClick: {
 			type: Function,
@@ -46,3 +37,14 @@ export default defineComponent({
 	}
 });
 </script>
+
+<style scoped>
+.omoriBtn {
+	background-color: #000000;
+	border-color: #ffffff;
+	border: 3px solid;
+	display: flex;
+	position: relative;
+	font-size: 20px;
+}
+</style>
