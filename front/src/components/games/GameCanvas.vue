@@ -10,7 +10,6 @@
 			<div v-else-if="waitingOpp">
 				<span class="d-flex align-center justify-center" min-height="100%">
 					<h4>Waiting for a opponent</h4>
-					{{ waitingOpp }}
 					<v-progress-circular indeterminate color="deep-purple-accent-2" />
 					<Sound :folder="'/sounds/game/ai'" />
 				</span>

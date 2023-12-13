@@ -1,25 +1,13 @@
 <template>
-	<v-card class="d-flex align-center justify-center" min-height="100%" :style="{ backgroundColor: color }">
-		<v-btn
-			dark
-			absolute
-			width="22vw"
-			:style="{
-				backgroundImage: `url(/game/UI/fightButton.png)`,
-				backgroundPosition: 'center center',
-				backgroundSize: '100% 100%',
-				backgroundRepeat: 'no-repeat',
-			}"
-			@mouseover="showOverlay = true"
-			@mouseleave="showOverlay = false"
-			@click="checkExistingGame()"
-		>
-			<div v-show="showOverlay" class="overlay" :class="{ 'slide-animation': showOverlay }">
-				<img src="/game/UI/handSelection.png" alt="Hand Image" />
-			</div>
-		</v-btn>
-		<Snackbar />
-	</v-card>
+	<v-container class="d-flex flex-column justify-space-evenly scroll-disable" fill-height>
+		<v-row>
+			<v-col cols="12" class="d-flex align-center justify-center">
+				<v-sheet id="arcade" class="order-0 pa-2 ma-2" height="110dvh" width="120dvh">
+					<h1 class="omoriArcade">{{ step[index] }}</h1>
+				</v-sheet>
+			</v-col>
+		</v-row>
+	</v-container>
 </template>
 
 <script lang="ts">
@@ -50,8 +38,8 @@ export default {
 	},
 	data() {
 		return {
-			color: '#2e2e2e',
-			showOverlay: false,
+			index: 0,
+			step: ['scoreboard', 'history', 'spectate'] as string[],
 		};
 	},
 	beforeMount() {
@@ -59,7 +47,24 @@ export default {
 			return this.$router.push({ name: `Login` });
 		}
 	},
+	mounted() {
+		window.addEventListener('keydown', this.handleKeyPress);
+	},
+	beforeUnmount() {
+		window.removeEventListener('keydown', this.handleKeyPress);
+	},
 	methods: {
+		handleKeyPress(event: any) {
+			if (event.key === 'Escape') this.$router.push({ name: `Home` });
+			else if (event.key === 'ArrowLeft') this.changeStep(++this.index);
+			else if (event.key === 'ArrowRight') this.changeStep(--this.index);
+			// else this.checkExistingGame();
+		},
+		changeStep(_index: number) {
+			if (_index < 0) this.index = this.step.length - 1;
+			else if (_index >= this.step.length) this.index = 0;
+			else this.index = _index;
+		},
 		checkExistingGame: async function () {
 			const requestOptions = {
 				method: 'GET',
@@ -110,45 +115,30 @@ export default {
 				const data = await response.json();
 				this.$router.push({ name: `Game`, params: { uid: data.uid } });
 			} catch (error: any) {
-				snackbarStore.showSnackbar('Can\'t create game.', 3000, 'red');
+				snackbarStore.showSnackbar("Can't create game.", 3000, 'red');
 			}
 		},
 	},
 };
 </script>
 <style scoped>
-.overlay {
-	position: absolute;
-	top: 0;
-	left: 4vw;
-	width: 100%;
-	height: 100%;
-	background: none;
-	z-index: 1;
-	display: flex;
-	align-items: center;
-	justify-content: flex-start; /* Alignez l'image à gauche de l'overlay */
+*,
+html,
+body {
+	overflow: hidden;
+	height: 100vh;
 }
 
-.slide-animation {
-	animation: slideAnimation 1s linear infinite; /* Définir la durée, le type et le nombre d'itérations */
-}
-
-@keyframes slideAnimation {
-	0% {
-		transform: translateX(0);
-	}
-	50% {
-		transform: translateX(10px); /* Ajuster la valeur selon vos besoins */
-	}
-	100% {
-		transform: translateX(0);
-	}
-}
-
-.overlay img {
-	max-width: 100%;
-	max-height: 100%;
-	object-fit: contain; /* Ajuste la taille de l'image tout en préservant les proportions */
+#arcade {
+	background: url('/public/game/menu/arcade.png');
+	object-fit: cover;
+	object-position: center;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	aspect-ratio: 1;
+	z-index: 2;
+	overflow-y: hidden; /* Hide vertical scrollbar */
+	overflow-x: hidden;
 }
 </style>
