@@ -98,6 +98,7 @@ export class GameService {
 		return true;
 	}
 
+
 	public removeUserFromGame(client: Socket | any): IGame | null {
 		const user: users = client.handshake.user;
 		if (!user) return;

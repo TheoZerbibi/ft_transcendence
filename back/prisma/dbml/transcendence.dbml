@@ -66,6 +66,7 @@ Table game_players {
   player_id Int [not null]
   game_id Int [not null]
   score Int [not null, default: 0]
+  side Int [not null, default: 0]
   is_win Boolean
   is_spec Boolean
   player users [not null]

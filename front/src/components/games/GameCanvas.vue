@@ -1,7 +1,7 @@
 <template>
 	<v-container class="d-flex align-center justify-center">
 		<div id="app">
-			<div v-if="gameEnded">
+			<div v-if="isEnded">
 				<audio controls id="myVideo" autoplay hidden>
 					<source :src="'/sounds/game/Release_Energy.mp3'" type="audio/wav" />
 					Your browser does not support the audio element.
@@ -160,6 +160,7 @@ export default {
 		return {
 			showCountdown: false,
 			waitingOpp: true,
+			isEnded: false,
 			userData: {
 				leftPlayer: {
 					name: '',
@@ -212,6 +213,7 @@ export default {
 			ratio: (9 / 20) as number,
 			socket: this.socket as any,
 			waiting: false as boolean,
+			gameUID: this.gameUID as string,
 		};
 		if (this.gameEnded) {
 			gameData.start = true;
@@ -342,7 +344,7 @@ export default {
 				 */
 				function movePaddles() {
 					if (!gameData.ball || !gameData.socket) return;
-					if (!gameData.go || !gameData.socket) return;
+					if (!gameData.go) return;
 					if (!gameData.player || !gameData.start) {
 						localMovePaddles();
 						return;
@@ -402,7 +404,6 @@ export default {
 			this.setData(data, gameData);
 			countdownStore.setSeconds(5);
 			this.showCountdown = true;
-			console.log(this.waitingOpp);
 			gameData.ball?.resetball();
 		});
 
@@ -486,7 +487,7 @@ export default {
 			} else {
 				gameData.rightUser.setPoint(data.winner.score);
 			}
-			this.gameEnded = true;
+			this.isEnded = true;
 		});
 	},
 	methods: {

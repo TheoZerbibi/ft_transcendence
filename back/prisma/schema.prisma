@@ -84,6 +84,7 @@ model GamePlayer {
 	player_id	Int
 	game_id		Int
 	score		Int @default(0)
+	side		Int @default(0)
 	is_win		Boolean?
 	is_spec		Boolean?
 	player		User	@relation(fields: [player_id], references: [id])

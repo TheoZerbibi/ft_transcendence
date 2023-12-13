@@ -2,9 +2,9 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { v4 as uuidv4 } from 'uuid';
 import { Prisma, User } from '@prisma/client';
-import { GameDto } from './dto/game.dto';
-import { GamePlayerDto } from './dto/game-player.dto';
 import { UUID } from 'crypto';
+import { GameDto, GamePlayerDto } from './dto';
+import { PlayerInput, convertGameData } from './utils/ConvertData';
 
 @Injectable()
 export class GameService {
@@ -218,6 +218,27 @@ export class GameService {
 			});
 			if (games.length === 0) return { uid: null };
 			return games[0];
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	async getGameStat(gameUID: string): Promise<any> {
+		try {
+			const game: GameDto = await this.getGame(gameUID as UUID);
+			const playersInGame: Array<GamePlayerDto> = await this.getAllPlayer(game);
+			const players: Array<any> = [];
+			for (const player of playersInGame) {
+				if (player.is_spec) continue;
+				const user: User = await this.prisma.user.findUnique({
+					where: {
+						id: player.player_id,
+					},
+				});
+				players.push({ ...player, user });
+			}
+			const response = convertGameData(players, game);
+			return response;
 		} catch (e) {
 			throw e;
 		}
