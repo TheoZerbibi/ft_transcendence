@@ -63,6 +63,7 @@ export default {
 		const isConnected = computed(() => webSocketStore.isConnected);
 		const socket = computed(() => webSocketStore.getSocket);
 		const JWT = computed(() => userStore.getJWT);
+		const user = computed(() => userStore.getUser);
 
 		const connect = async (JWT: string) => {
 			await webSocketStore.connect(JWT, import.meta.env.VITE_GAME_SOCKET_PORT);
@@ -87,6 +88,7 @@ export default {
 			disconnect,
 			socketListen,
 			JWT,
+			user,
 		};
 	},
 	data() {
@@ -156,11 +158,15 @@ export default {
 				return response.json();
 			})
 			.then(async (data) => {
-				console.log(data);
-				if (data.is_ended) {
-					this.apiData = data;
+				if (data.isEnded) {
 					snackbarStore.showSnackbar('Game is ended', 3000);
 					this.gameEnded = true;
+					this.dialogVisible = true;
+					if (data.winner.login === this.user.login) this.isWinner = true;
+					else this.isLoser = true;
+					setTimeout(() => {
+						this.apiData = data;
+					}, 100);
 					return;
 				} else {
 					await this.connect(this.JWT, import.meta.env.VITE_GAME_SOCKET_PORT)
@@ -203,7 +209,6 @@ export default {
 									this.apiData = data;
 									this.gameEnded = true;
 								}, 8800);
-								if (data.winner) console.log(`Winner : ${data.winner.user.login}`);
 							});
 
 							this.socket.on('game-win', () => {
@@ -216,8 +221,7 @@ export default {
 								snackbarStore.showSnackbar('You lose!', 3000, 'red');
 							});
 							this.socket.on('error', (data: any) => {
-								console.error(data);
-								snackbarStore.showSnackbar('error', 3000, 'red');
+								snackbarStore.showSnackbar(data.message, 3000, 'red');
 							});
 
 							this.socket.emit('session-join', {
@@ -241,34 +245,37 @@ export default {
 	},
 	methods: {
 		openDialog() {
-			console.log('openDialog');
 			this.gameEnded = true;
 			this.isLoser = true;
 			if (!snackbarStore.snackbar) snackbarStore.showSnackbar('Game is ended', 3000);
 			this.dialogVisible = true;
 			setTimeout(() => {
-				console.log('end countdown');
 				this.gameEnded = true;
 				this.apiData = {
-				winner: {
-					user: {
-						id: 2,
-						login: 'norminet',
-						displayName: 'Norminet',
-						avatar: 'https://preview.redd.it/sky2ka084ns11.jpg?width=640&crop=smart&auto=webp&s=a7f060f539797578a109af48a5ee75909f7661cb',
+					winner: {
+						user: {
+							id: 2,
+							login: 'norminet',
+							displayName: 'Norminet',
+							avatar: 'https://preview.redd.it/sky2ka084ns11.jpg?width=640&crop=smart&auto=webp&s=a7f060f539797578a109af48a5ee75909f7661cb',
+						},
+						score: 6,
+						side: 1,
 					},
-					score: 6,
-					side: 1,
-				},
-				loser: {
-					user: { id: 1, login: 'thzeribi', displayName: 'Theo', avatar: 'https://i.imgur.com/XXxzteU.png' },
-					score: 1,
-					side: 0,
-				},
-				startDate: '2023-11-20T12:00:38.537Z',
-				endingDate: '2023-11-20T12:01:24.445Z',
-			};
-			}, 1000);
+					loser: {
+						user: {
+							id: 1,
+							login: 'thzeribi',
+							displayName: 'Theo',
+							avatar: 'https://i.imgur.com/XXxzteU.png',
+						},
+						score: 1,
+						side: 0,
+					},
+					startDate: '2023-11-20T12:00:38.537Z',
+					endingDate: '2023-11-20T12:01:24.445Z',
+				};
+			}, 100);
 		},
 	},
 };

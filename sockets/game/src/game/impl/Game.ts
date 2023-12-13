@@ -94,9 +94,24 @@ export class Game implements IGame {
 		return this.id;
 	}
 
-	addUser(user: IUser): void {
+	async addUser(user: IUser): Promise<void> {
 		this.usersInGame.push(user);
 		if (user.playerData.side !== SIDE.SPECTATOR) this.gameData.ball.setPlayerSide(user.playerData);
+		try {
+			await this.prismaService.game_players.update({
+				where: {
+					player_id_game_id: {
+						game_id: this.getGameID(),
+						player_id: user.user.id,
+					},
+				},
+				data: {
+					side: user.playerData.side,
+				},
+			});
+		} catch (e) {
+			throw new Error('Error while adding user to game');
+		}
 	}
 
 	removeUser(user: IUser): void {

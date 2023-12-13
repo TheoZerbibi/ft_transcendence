@@ -102,7 +102,6 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 					return;
 				}
 				this.server.to(gameUID).emit('session-info', allUsers);
-				console.log(game.getUsersInGame().length);
 				if (!game.getPlayerBySide(SIDE.RIGHT) || !game.getPlayerBySide(SIDE.LEFT)) return;
 				if (!game.isInProgress() && game.getUsersInGame().length === 2) {
 					game.setWaitingState(true);
@@ -160,7 +159,6 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		if (!player) return;
 		if (player.isSpec || player.isReady) return;
 		player.isReady = true;
-		console.log(player.user.login + ' is ready');
 		const opponent: IUser = game.getPlayerBySide(player.playerData.side === SIDE.LEFT ? SIDE.RIGHT : SIDE.LEFT);
 		if (!opponent) return;
 		if (opponent.isReady) this.startGame(game);
@@ -266,7 +264,6 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	public async sendWinner(game: IGame) {
 		const winner: IUser = game.winner;
 		const loser: IUser = game.loser;
-		console.log(winner, loser);
 		if (winner.isConnected) this.server.to(winner.socketID).emit('game-win');
 		if (loser.isConnected) this.server.to(loser.socketID).emit('game-lose');
 		this.server.to(game.getGameUID()).emit('game-end', {

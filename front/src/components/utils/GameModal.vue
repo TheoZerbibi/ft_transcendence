@@ -81,7 +81,6 @@ export default {
 	},
 	watch: {
 		apiData(newVal) {
-			console.log('watch apiData', newVal);
 			if (this.isVisible) this.dialog = true;
 			this.data = this.processData(newVal);
 		},
@@ -91,8 +90,6 @@ export default {
 			this.$router.push({ name: 'GameMenu' });
 		},
 		processData(data: any) {
-			console.log('processData', data);
-
 			const start: Date = new Date(data.startDate);
 			const end = new Date(data.endingDate);
 			const durationInMilliseconds = end.getTime() - start.getTime();

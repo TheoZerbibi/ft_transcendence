@@ -57,6 +57,7 @@ model game_players {
   is_win    Boolean?
   is_spec   Boolean?
   score     Int      @default(0)
+  side      Int      @default(0)
   games     games    @relation(fields: [game_id], references: [id], onDelete: Cascade)
   users     users    @relation(fields: [player_id], references: [id])
 
