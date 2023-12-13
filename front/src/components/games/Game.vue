@@ -158,7 +158,6 @@ export default {
 				return response.json();
 			})
 			.then(async (data) => {
-<<<<<<< HEAD
 				if (data.isEnded) {
 					snackbarStore.showSnackbar('Game is ended', 3000);
 					this.gameEnded = true;
@@ -168,13 +167,6 @@ export default {
 					setTimeout(() => {
 						this.apiData = data;
 					}, 100);
-=======
-				console.log(data);
-				if (data.is_ended) {
-					this.apiData = data;
-					snackbarStore.showSnackbar('Game is ended', 3000);
-					this.gameEnded = true;
->>>>>>> 5b4fe2f (fix(pong): Start modify backf for ended game)
 					return;
 				} else {
 					await this.connect(this.JWT, import.meta.env.VITE_GAME_SOCKET_PORT)
