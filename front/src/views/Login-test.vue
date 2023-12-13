@@ -1,104 +1,108 @@
 <template>
-	<v-container
-		fill-height
-		fluid
-		id="background"
-		:class="{
-			'bg-black': hovering || clicked || step > 0,
-			'bg-white': !hovering && !clicked && step === 0,
-		}"
-	>
-		<v-row no-gutters class="d-flex align-center justify-center" style="height: 100vh" v-if="step === 0">
+	<v-container class="d-flex flex-column" fill-height>
+    
+		<v-row  v-if="step === 0" no-gutters class="bg-surface-variant">
 			<audio controls id="myVideo" autoplay loop hidden>
 				<source src="/sounds/002-WHITE SPACE.mp3" type="audio/wav" />
 				Your browser does not support the audio element.
 			</audio>
-
-			<div class="door-container d-flex align-center justify-center">
+			<v-col xs12 md6 v-for="k in 1" :key="k" cols="12" class="d-flex justify-center align-center">
 				<v-img
 					id="door"
 					src="/ui/Door.png"
 					class="hoverable"
 					@click="startZoomEffect"
-					@mouseover="hovering = true"
-					@mouseleave="hovering = false"
-					:class="{ zooming: isZooming }"
-					cover
+					@mouseover="changeBackground"
+					@mouseleave="resetBackground"
 					height="50dvh"
-					width="16dvh"
+					:aspect-ratio="1"
+					:class="{zooming: isZooming}"
 					:style="{
 						transform: `scale(${zoomLevel})`,
 						transformOrigin: '90% 45%',
 						transition: isZooming ? 'transform 1s ease-in-out' : 'none',
 					}"
 				/>
-				<v-img
+			</v-col>
+			<v-col xs12 md6 v-for="k in 1" :key="k" cols="12" class="justify-center align-center">
+				<v-img 
 					v-show="something"
-					id="something"
+					id="something" 
 					src="/ui/Something_White_Space.gif"
 					cover
 					height="100dvh"
 					width="100dvh"
 					:style="{
+						// transform: 'translate(-50%, -50%)',
 						maxWidth: '100%',
 						maxHeight: '100%',
-					}"
-				/>
-			</div>
-		</v-row>
-
-		<v-row v-if="step > 0" no-gutters class="d-flex align-center justify-center" style="height: 100vh">
-			<v-col>
-				<audio controls id="myVideo" autoplay loop hidden>
-					<source src="/sounds/004-Spaces In-between.mp3" type="audio/wav" />
-					Your browser does not support the audio element./
-				</audio>
-				<div class="align-center justify-center">
-					<div v-if="step === 1" class="d-flex flex-column align-center justify-center">
-						<h3 class="omoriFont">Hello there... what's your name?</h3>
-						<InputBar
-							@newInput="newUser.display_name = $event"
-							placeholder="Enter your name here..."
-							@keyup.enter="nextStep"
-							@click="nextStep"
-						>
-							that's my name!
-						</InputBar>
-					</div>
-
-					<v-div v-if="step === 2" class="d-flex flex-column align-center justify-center">
-						<h3 class="omoriFont">
-							Nice to meet you {{ newUser.display_name }}! Is that you on the picture?
-						</h3>
-						<UploadFile @imageChanged="updateAvatar" class="hoverable">
-							<template v-slot:polaroidImg>
-								<v-img
-									v-if="newUser.avatar"
-									:src="newUser.avatar"
-									class="hoverable"
-									alt="Uploaded Image"
-								>
-									<v-progress-circular indeterminate color="red-accent-2" v-if="cantSkip" />
-								</v-img>
-							</template>
-						</UploadFile>
-						<Button @click="nextStep" :disabled="cantSkip">That's me!</Button>
-					</v-div>
-
-					<div v-if="step === 3">
-						<v-form @submit.prevent="logTwoFactorAuthentication">
-							<InputBar v-model="verificationCode" label="Enter Verification Code" required></InputBar>
-							<Button type="submit">Send code</Button>
-						</v-form>
-					</div>
-
-					<img src="/ui/ALBUM.png" :style="albumStyle" id="album" alt="Album" />
-				</div>
+				}" />
 			</v-col>
 		</v-row>
+
+		<v-row v-if="step > 0">
+			<audio controls id="myVideo" autoplay loop hidden>
+				<source src="/sounds/004-Spaces In-between.mp3" type="audio/wav" />
+				Your browser does not support the audio element.
+			</audio>	
+			<v-col v-if="step === 1" class="d-flex justify-center align-center" >
+				<h3 class="omoriFont">Hello there... what's your name?</h3>
+				<InputBar 
+					@newInput="newUser.display_name = $event"
+					placeholder="Enter your name here..."
+					@keyup.enter="nextStep"
+					@click="nextStep"
+					:width="250"
+					:height="50"
+					>
+					that's my name!
+				</InputBar>
+			</v-col>
+				
+			<v-col v-if="step === 2">
+				<h3 class="omoriFont">Nice to meet you {{ newUser.display_name }}! Is that you on the picture?</h3>
+				<div id="image-container">
+					<UploadFile 
+						@imageChanged="updateAvatar" 
+						class="upload-file hoverable"
+						buttonWidth="250"
+						buttonHeight="50"
+						polaroidWidth="25"
+						polaroidHeight="30"
+					>
+						<template v-slot:polaroidImg>
+							<v-img
+								v-if="newUser.avatar"
+								:src="newUser.avatar"
+								class="hoverable"
+								alt="Uploaded Image">
+								<v-progress-circular 
+									indeterminate
+									color="red-accent-2"
+									v-if="cantSkip"
+								/>
+							</v-img>
+						</template>
+					</UploadFile>
+				</div>
+				<Button @click="nextStep" :disabled="cantSkip" width="250" :height="50">That's me!</Button>
+			</v-col>
+				
+			<v-col v-if="step === 3">
+				<v-form @submit.prevent="logTwoFactorAuthentication">
+					<InputBar v-model="verificationCode" label="Enter Verification Code"
+						required></InputBar>
+					<Button type="submit">Send code</Button>
+				</v-form>
+			</v-col>
+				
+			<img src="/ui/ALBUM.png" :style="albumStyle" id="album" alt="Album" />
+		</v-row>
+
 		<Snackbar />
 	</v-container>
 </template>
+
 
 <script lang="ts">
 import Snackbar from '../components/layout/Snackbar.vue';
@@ -110,13 +114,14 @@ import { computed } from 'vue';
 import { useUser } from '../stores/user';
 import { useSnackbarStore } from '../stores/snackbar';
 import { set } from 'date-fns';
+import { useBackgroundColorStore } from '../stores/background';
 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 
 export default {
 	name: 'Login',
-	components: {
+	components: { 
 		Snackbar,
 		UploadFile,
 		Button,
@@ -153,11 +158,10 @@ export default {
 			isZooming: false,
 			zoomLevel: 1,
 			something: false,
-			hovering: false,
 			clicked: false,
 		};
 	},
-	computed: {
+	computed: { 
 		albumStyle() {
 			const scale = 1 + this.step * 0.1;
 			const translateY = this.step * 25;
@@ -168,12 +172,16 @@ export default {
 	},
 	async beforeMount() {
 		if (this.$cookies.get('2FA')) {
+
 			this.FAToken = this.$cookies.get('2FA');
 			console.log(this.FAToken);
 			snackbarStore.showSnackbar('2FA enabled', 3000, 'green');
 			this.step = 4;
 			this.$cookies.remove('2FA');
-		} else if (this.$cookies.get('token')) {
+		} 
+		
+		else if (this.$cookies.get('token')) {
+
 			const token = this.$cookies.get('token');
 			this.$cookies.remove('token');
 			try {
@@ -182,18 +190,23 @@ export default {
 				snackbarStore.showSnackbar('Invalid credentials', 3000, 'red');
 				return this.$router.push({ name: `Home` });
 			}
-		} else if (this.$cookies.get('userOnboarding')) {
+		}
+		
+		else if (this.$cookies.get('userOnboarding')) {
 			const cookie = this.$cookies.get('userOnboarding');
 			this.step = 1;
 			this.newUser.login = cookie.login;
 			this.newUser.email = cookie.email;
 			this.newUser.avatar = cookie.avatar;
-		} else {
+		}
+		
+		else {
 			this.step = 0;
 		}
 	},
 	methods: {
 		async logTwoFactorAuthentication() {
+
 			if (!this.verificationCode) return snackbarStore.showSnackbar('Please enter a code', 3000, 'red');
 			const requestBody = { code: this.verificationCode };
 
@@ -219,12 +232,15 @@ export default {
 				const data = await response.json();
 				this.$cookies.set('token', data.access_token, '1m');
 				this.$router.push({ name: `Home` });
-			} catch (error) {
+			} 
+			
+			catch (error) {
 				snackbarStore.showSnackbar('Error 2FA', 3000, 'red');
 			}
 		},
 
 		async postToUsers() {
+
 			const requestOptions = {
 				method: 'POST',
 				headers: {
@@ -271,8 +287,7 @@ export default {
 			this.cantSkip = true;
 			try {
 				const response = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${
-						import.meta.env.VITE_API_PORT
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT
 					}/users/getCloudinaryLinkOnboarding`,
 					{
 						method: 'POST',
@@ -295,13 +310,15 @@ export default {
 			}
 		},
 		async nextStep() {
-			console.log('step' + this.step);
+			console.log("step" + this.step);
 			if (this.step === 1) {
+
 				if (!this.newUser.display_name) {
+
 					snackbarStore.showSnackbar('Please enter a name', 3000, 'red');
 					return;
 				}
-
+				
 				const result = await this.checkDisplayName();
 				if (!result.success) return;
 			}
@@ -340,6 +357,7 @@ export default {
 			}
 		},
 		startZoomEffect() {
+
 			this.doorToSomethingTransition();
 			this.clicked = true;
 			this.isZooming = true;
@@ -370,60 +388,75 @@ export default {
 		doorToSomethingTransition() {
 			const doorContainer = document.querySelector('.door-container') as HTMLDivElement;
 			const door = document.querySelector('#door') as HTMLImageElement;
-			const somethingImage = document.querySelector('#something') as HTMLImageElement;
+    		const somethingImage = document.querySelector('#something') as HTMLImageElement;
 			if (!door || !somethingImage || !doorContainer) return;
-
+    		
 			doorContainer.classList.remove('door-container');
 			let doorOpacity = 1;
-			let imageOpacity = 0;
+    		let imageOpacity = 0;
 
-			somethingImage.style.position = 'fixed';
-			somethingImage.style.width = '100vw';
-			somethingImage.style.height = '100vh';
-			somethingImage.style.zIndex = '9999';
-			somethingImage.style.opacity = '0';
+    		somethingImage.style.position = 'fixed';
+    		somethingImage.style.top = '0';
+    		somethingImage.style.left = '0';
+    		somethingImage.style.width = '100vw';
+    		somethingImage.style.height = '100vh';
+    		somethingImage.style.zIndex = '9999';
+    		somethingImage.style.opacity = '0';
 
-			const timer = setInterval(() => {
-				if (doorOpacity <= 0) {
-					if (imageOpacity >= 1) {
-						clearInterval(timer);
-					} else {
-						imageOpacity += 0.01;
-						somethingImage.style.opacity = imageOpacity as unknown as string;
-					}
-				} else {
+    		const timer = setInterval(() => {
+    		    if (doorOpacity <= 0) {
+    		        if (imageOpacity >= 1) {
+    		            clearInterval(timer);
+    		        } else {
+    		            imageOpacity += 0.01;
+    		            somethingImage.style.opacity = imageOpacity as unknown as string;
+    		        }
+    		    } else {
 					doorOpacity -= 0.01;
-					door.style.opacity = doorOpacity as unknown as string;
-				}
-			}, 10);
+    		        door.style.opacity = doorOpacity as unknown as string;
+    		    }
+    		}, 10); 
 		},
+		changeBackground() {
+			const backgroundColorStore = useBackgroundColorStore();
+			backgroundColorStore.setBackgroundColor('white'); // Change to the desired color on hover
+    	},
+    	resetBackground() {
+    	  const backgroundColorStore = useBackgroundColorStore();
+    	  backgroundColorStore.setBackgroundColor('black'); // Reset the color on mouse leave
+    	},
 	},
 };
 </script>
 
 <style>
+#doorGlow {
+	transition: box-shadow 0.5s ease-in-out;
+}
+
 #door {
-	image-rendering: optimizeQuality;
-	pointer-events: auto;
-	position: relative;
 	opacity: 1;
 	transition: opacity 0.3s ease-out;
-	aspect-ratio: 1;
-	object-fit: contain; /* Do not scale the image */
+	object-fit: contain;
 }
 
 #something {
-	image-rendering: optimizeQuality;
 	position: relative;
 	object-fit: contain; /* Do not scale the image */
 	aspect-ratio: 1;
 	position: 0;
+	top: 0;
+	left: 0;
 	width: 0;
 	height: 0;
 	z-index: 0;
 	opacity: 0;
-	transition: width 1s ease-in-out;
+	transition:
+		width 1s ease-in-out,
+		top 1s ease-in-out,
+		left 1s ease-in-out;
 }
+
 #album {
 	position: fixed;
 	bottom: -15%;
@@ -433,60 +466,39 @@ export default {
 	width: 300px;
 }
 
-#background {
-	background-color: black;
+#image-container {
+	position: relative;
+	justify-content: center;
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	height: 33dvh;
+	width: 27.79dvh;
 }
 
-.door-container {
-	transition: box-shadow 0.5s ease-in-out;
+#upload-file {
+	position: absolute;
+	height: 100%;
+	width: 100%;
 }
 
-.zooming,
-#door:hover {
+.zooming, #door:hover {
 	filter: brightness(10);
 	filter: invert(1);
 }
 
-#background.bg-white {
-	background-color: white;
-	transition: all 0.2s ease-out;
-}
-
-#background.bg-black {
-	background-color: black;
-	transition: all 0.2s ease-out;
-}
-
-.door-container:hover {
-	animation:
-		neon-light 0.5s 0.3s,
-		heartbeat 0.8s infinite 0.8s;
-	box-shadow:
-		0 3px 20px #ff0000,
-		0 3px 30px #ff0000;
+#doorGlow:hover {
+    animation: neon-light 0.5s 0.3s, heartbeat 0.8s infinite 0.8s;
+    box-shadow: 0 3px 20px #ff0000, 0 3px 30px #ff0000;
 }
 
 @keyframes neon-light {
-	0%,
-	100% {
-		box-shadow: 0 3px 5px #ff0000;
-	}
-	50% {
-		box-shadow:
-			0 3px 20px #ff0000,
-			0 3px 30px #ff0000;
-	}
+    0%, 100% { box-shadow: 0 3px 5px #ff0000; }
+    50% { box-shadow: 0 3px 20px #ff0000, 0 3px 30px #ff0000; }
 }
 
 @keyframes heartbeat {
-	0%,
-	100% {
-		box-shadow: 0 3px 15px #ff0000;
-	}
-	50% {
-		box-shadow:
-			0 3px 30px #ff0000,
-			0 3px 40px #ff0000;
-	}
+	0%, 100% { box-shadow: 0 3px 15px #ff0000; }
+    50% { box-shadow: 0 3px 30px #ff0000, 0 3px 40px #ff0000; }
 }
 </style>
