@@ -5,10 +5,11 @@
 			flex-column
 			justify-space-evenly"
 		fill-height
+		min-width="100dvw"
 	>
 
 		<v-row>
-			<v-col cols="12" class="d-flex align-center justify-center">
+			<v-col xs12 md6 class="d-flex align-center justify-center">
 				<v-sheet 
 					id="omorisPlace"
 					class="order-0 pa-2 ma-2"
@@ -17,7 +18,7 @@
 			</v-col>
 		</v-row>
 
-		<v-row justify="end" >
+		<v-row justify="end" style="max-height: 10dvh" >
 			<div class="d-flex align-center justify-center hoverable"
 			@click="logout"
 			>
@@ -79,10 +80,9 @@ export default defineComponent({
 	background: url('/public/dashboard/omorisPlace.png');
 	object-fit: cover;
 	object-position: center;
-	background-size: cover;
+	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	aspect-ratio: 1;
 	z-index: 2;
 }
 
@@ -90,11 +90,16 @@ export default defineComponent({
 	background: url('/public/dashboard/clickable/doorClosed.png');
 	object-fit: cover;
 	object-position: center;
-	background-size: cover;
+	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	aspect-ratio: 1;
 	z-index: 2;
+}
+
+@media (max-width: 599px) {
+	#omorisPlace {
+		width: 70dvh;
+	}
 }
 
 </style>
