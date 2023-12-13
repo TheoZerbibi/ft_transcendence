@@ -1,4 +1,4 @@
-<template>
+h<template>
 	<form id="polaroid" :style="{ width: width + 'dvh', height: height + 'dvh' }">
 		<label for="file" class="uploadLabel hoverable">
 			<div class="uploadImg" 
