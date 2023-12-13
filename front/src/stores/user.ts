@@ -66,6 +66,13 @@ export const useUser = defineStore('user', {
 		set2FA(dAuth: boolean): void {
 			this.dAuth = dAuth;
 		},
+		deleteUser(): void {
+			this.JWT = null;
+			this.login = null;
+			this.displayName = null;
+			this.avatar = undefined;
+			this.dAuth = false;
+		},
 	},
 	persist: {
 		enabled: true,
