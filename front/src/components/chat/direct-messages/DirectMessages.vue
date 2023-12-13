@@ -53,7 +53,7 @@ export default {
 		Date,
 	},
 	props: {
-		selectedFriendLogin: String
+		selectedLogin: String
 	},
 	setup(props) {
 		const JWT = computed(() => userStore.getJWT);
@@ -61,12 +61,12 @@ export default {
 		let messages = ref([]);
 		const fetchMessages = async function() {
 			try {
-				if (!props.selectedFriendLogin || props.selectedFriendLogin === '') {
+				if (!props.selectedLogin || props.selectedLogin === '') {
 					/* TODO : display stg ? */
 					return;
 				}
 				const response = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/${props.selectedFriendLogin}/all`,
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/${props.selectedLogin}/all`,
 					{
 						method: 'GET',
 						headers: {
@@ -84,7 +84,7 @@ export default {
 			}
 		};
 		watch(
-			() => props.selectedFriendLogin,
+			() => props.selectedLogin,
 			() => {
 				fetchMessages();
 			}
@@ -108,7 +108,7 @@ export default {
 	methods: {
 		sendMessage: async function() {
 			try {
-				if (!this.selectedFriendLogin || this.selectedFriendLogin === '') {
+				if (!this.selectedLogin || this.selectedLogin === '') {
 					/* TODO : display stg ? */
 					return;
 				}
@@ -125,7 +125,7 @@ export default {
 							'Access-Control-Allow-Origin': '*',
 						},
 						body: JSON.stringify({
-							target_login: this.selectedFriendLogin,
+							target_login: this.selectedLogin,
 							content: this.input,
 						}),
 					}
