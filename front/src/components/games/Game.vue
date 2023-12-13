@@ -245,7 +245,6 @@ export default {
 	},
 	methods: {
 		openDialog() {
-			console.log('openDialog');
 			this.gameEnded = true;
 			this.isLoser = true;
 			if (!snackbarStore.snackbar) snackbarStore.showSnackbar('Game is ended', 3000);
