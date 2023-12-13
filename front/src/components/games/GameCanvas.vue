@@ -344,7 +344,7 @@ export default {
 				 */
 				function movePaddles() {
 					if (!gameData.ball || !gameData.socket) return;
-					if (!gameData.go) return;
+					if (!gameData.go || !gameData.socket) return;
 					if (!gameData.player || !gameData.start) {
 						localMovePaddles();
 						return;
