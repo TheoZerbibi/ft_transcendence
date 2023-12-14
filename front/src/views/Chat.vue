@@ -112,7 +112,7 @@ import FriendProfile from '../components/chat/direct-messages/FriendProfile.vue'
 import DiscoverChannels from '../components/chat/channels/DiscoverChannels.vue';
 import JoinedChannels from '../components/chat/channels/JoinedChannels.vue';
 import ChannelMessages from '../components/chat/channels/ChannelMessages.vue';
-import ChannelUsers from '../components/chat/channels/ChannelUsers.vue';
+import ChannelUsers from '../components/chat/channels/ChannelInfos.vue';
 
 import BlockedUsers from '../components/chat/profile/BlockedUsers.vue';
 

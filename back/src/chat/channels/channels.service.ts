@@ -13,6 +13,8 @@ import {
 	ChannelModPwdDto,
 	PasswordRequiredActionDto,
 	ChannelDto,
+	DeleteChannelDto,
+	ChannelNameDto,
 } from './dto/channel.dto';
 import { ChannelUserDto, CreateChannelUserDto, ModChannelUserDto } from './dto/channel-user.dto';
 import { ChannelMessageContentDto, ChannelMessageDto } from './dto/channel-message.dto';
@@ -152,17 +154,19 @@ export class ChannelService {
 					},
 				},
 			});
-			const channelUserDtos: ChannelUserDto[] = channelUsers.map((channelUser) => {
-				return {
-					login: channelUser.user.login,
-					display_name: channelUser.user.display_name,
-					avatar: channelUser.user.avatar,
-					is_owner: channelUser.is_owner,
-					is_admin: channelUser.is_admin,
-					is_muted: channelUser.is_muted,
-					is_banned: channelUser.is_ban,
-				};
-			});
+			const channelUserDtos: ChannelUserDto[] = channelUsers
+				.filter((channelUser) => channelUser.user.login !== user.login)	
+				.map((channelUser) => {
+					return {
+						login: channelUser.user.login,
+						display_name: channelUser.user.display_name,
+						avatar: channelUser.user.avatar,
+						is_owner: channelUser.is_owner,
+						is_admin: channelUser.is_admin,
+						is_muted: channelUser.is_muted,
+						is_banned: channelUser.is_ban,
+					};
+				});
 			return channelUserDtos;
 		} catch (e) {
 			console.error(e);
@@ -575,9 +579,9 @@ export class ChannelService {
 
 	/*********************************** Channels **************************************/
 
-	async deleteChannel(user: User, channel_name: string, dto: PasswordRequiredActionDto): Promise<void> {
-		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
-		if (!channelEntity) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
+	async deleteChannel(user: User, dto: DeleteChannelDto): Promise<void> {
+		const channelEntity: ChannelEntity | null = await this.findChannelByName(dto.name);
+		if (!channelEntity) throw new BadRequestException(`Channel ${dto.name} doesn't exist`);
 
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		if (!channelUser) throw new BadRequestException(`You are not on this channel`);
@@ -592,20 +596,20 @@ export class ChannelService {
 		try {
 			await this.prisma.channel.delete({
 				where: {
-					name: channel_name,
+					name: dto.name,
 				},
 			});
 		} catch (e) {
 			throw e;
 		}
-		this.localChannels = this.localChannels.filter((channel) => channel.getName() !== channel_name);
+		this.localChannels = this.localChannels.filter((channel) => channel.getName() !== dto.name);
 	}
 
 	/************************************ Users *************************************/
 
-	async deleteChannelUser(user: User, channel_name: string): Promise<void> {
-		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
-		if (!channelEntity) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
+	async deleteChannelUser(user: User, dto: ChannelNameDto): Promise<void> {
+		const channelEntity: ChannelEntity | null = await this.findChannelByName(dto.name);
+		if (!channelEntity) throw new BadRequestException(`Channel ${dto.name} doesn't exist`);
 
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
 		if (!channelUser) throw new BadRequestException(`You are not on this channel`);

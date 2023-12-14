@@ -102,3 +102,23 @@ export class PasswordRequiredActionDto {
 	// eslint-disable-next-line
 	password: string;
 }
+
+export class ChannelNameDto {
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	name: string;
+}
+
+export class DeleteChannelDto {
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	name: string;
+
+	@ApiProperty()
+	@IsString()
+	@IsOptional()
+	// eslint-disable-next-line
+	password: string;
+}

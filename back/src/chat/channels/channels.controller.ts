@@ -17,6 +17,8 @@ import {
 	ChannelSettingsDto,
 	ChannelModPwdDto,
 	PasswordRequiredActionDto,
+	ChannelNameDto,
+	DeleteChannelDto,
 } from './dto/channel.dto';
 import { ChannelUserDto, CreateChannelUserDto, ModChannelUserDto } from './dto/channel-user.dto';
 import { ChannelMessageContentDto, ChannelMessageDto } from './dto/channel-message.dto';
@@ -195,24 +197,25 @@ export class ChannelController {
 	/* 									Deletion									   */
 	/***********************************************************************************/
 
-	@Delete(':channel_name/leave')
+	@Delete('leave')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Leave channel' })
 	@ApiBearerAuth('JWT-auth')
-	async deleteChannelUser(@GetUser() user: User, @Param('channel_name') channel_name: string): Promise<void> {
-		return await this.channelService.deleteChannelUser(user, channel_name);
+	async deleteChannelUser(
+		@GetUser() user: User,
+		@Body() dto: ChannelNameDto): Promise<void> {
+		return await this.channelService.deleteChannelUser(user, dto);
 	}
 
-	@Delete(':channel_name')
+	@Delete('')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Delete channel' })
 	@ApiBearerAuth('JWT-auth')
 	async deleteChannel(
 		@GetUser() user: User,
-		@Param('channel_name') channel_name: string,
-		@Body() dto: PasswordRequiredActionDto,
+		@Body() dto: DeleteChannelDto,
 	): Promise<void> {
-		return await this.channelService.deleteChannel(user, channel_name, dto);
+		return await this.channelService.deleteChannel(user, dto);
 	}
 
 	/***********************************************************************************/

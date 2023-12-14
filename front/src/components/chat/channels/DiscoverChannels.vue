@@ -3,23 +3,19 @@
 	<!-- Non joined channels (discover)-->
 	<v-card>
 		<v-card-title>Discover Channels</v-card-title>
-		<v-list v-if="nonJoinedChannels.length">
-			<v-list-item v-for="channel in nonJoinedChannels" :key="channel.id">
+		<v-list v-if="channels.length">
+			<v-list-item v-for="channel in channels" :key="channel.id">
 				{{ channel.name }}
-				<v-btn @click="joinChannel(channel.name)">+</v-btn>
+				<v-btn @click="joinChannel(channel.name, channel.is_public)">+</v-btn>
 			</v-list-item>
 		</v-list>
 	</v-card>
 
-	<!-- Search bar -->
-	<v-col cols="9">
-		<v-text-field
-			v-model="searchTerm"
-			@keyup.enter="searchChannels"
-			placeholder="Search a channel..."
-		/>
-		<button @click="searchChannels">search</button>
-	</v-col>
+	<PwdModal
+		v-if="showModal"
+		@join-private-channel="joinPrivateChannel"
+		@close-modal="showModal = false"
+	/>
 
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
@@ -27,6 +23,7 @@
 </template>
 
 <script lang="ts">
+
 import { computed } from 'vue';
 import { useUser } from '../../../stores/user';
 import { useSnackbarStore } from '../../../stores/snackbar';
@@ -35,8 +32,13 @@ import Snackbar from '../../layout/Snackbar.vue';
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 
+import PwdModal from './PwdModal.vue';
+
 export default {
-	components: { Snackbar },
+	components: { 
+		Snackbar,
+		PwdModal,
+	},
 	setup() {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
@@ -48,19 +50,15 @@ export default {
 	},
 	data() {
 		return {
-			nonJoinedChannels: [],
-			pwd: '',
-			showModal: false,
-			selectedPrivChannel: '',
-			searchTerm: '',
+			channels: [] as any[],
+			showModal: false as boolean,
 		};
 	},
 	beforeMount() {
-		this.fetchNonJoinedChannels();
+		this.fetchChannels();
 	},
-	mounted() {},
 	methods: {
-		fetchNonJoinedChannels: async function() {
+		fetchChannels: async function() {
 			try {
 				const response: any = await
 				fetch(
@@ -77,7 +75,7 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				this.nonJoinedChannels = await response.json();
+				this.channels = await response.json();
 			} catch (error) {
 				console.error(error);
 			}
@@ -85,6 +83,7 @@ export default {
 		joinChannel: async function(channel_name: string, is_public: boolean) {
 			try {
 				console.log(`${channel_name}: is_public = ${is_public}`);
+
 				if (is_public) {
 					await fetch(
 						`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${channel_name}/join`,
@@ -102,7 +101,7 @@ export default {
 						snackbarStore.showSnackbar(error, 3000, 'red');
 						return;
 					});
-					this.fetchNonJoinedChannels();
+					this.fetchChannels();
 				} else {
 					this.selectedPrivChannel = channel_name;
 					this.showModal = true;
@@ -136,7 +135,7 @@ export default {
 				});
 				this.selectedPrivChannel = '';
 				this.showModal = false;
-				this.fetchNonJoinedChannels();
+				this.fetchChannels();
 			} catch (error) {
 				console.error(error);
 			}
@@ -159,14 +158,14 @@ export default {
 						snackbarStore.showSnackbar(error, 3000, 'red');
 						return;
 					});
-					this.nonJoinedChannels = await response.json();
-					console.log('searchChannels', this.nonJoinedChannels);
+					this.channels = await response.json();
+					console.log('searchChannels', this.channels);
 					this.searchTerm = '';
 				} catch (error) {
 					console.error(error);
 				}
 			} else {
-				this.fetchNonJoinedChannels();
+				this.fetchChannels();
 			}
 		},
 	}
