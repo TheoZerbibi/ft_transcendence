@@ -2,7 +2,7 @@
 
 	<v-card>
 
-		<v-card-title>Messages</v-card-title>
+		<v-card-title>Messages with @{{ selectedFriendLogin }} </v-card-title>
 
 		<v-card-text>
 
