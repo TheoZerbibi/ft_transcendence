@@ -12,7 +12,7 @@
 				{{ friend.display_name }}
 				</v-list-item>
 			</v-list>
-			<v-card-text v-else>~ u dont have friends ~</v-card-text>
+			<v-card-text v-else>~ u didn't make friends for now ~</v-card-text>
 		</v-card>
 		
 	<!-- Error handling -->
@@ -30,13 +30,10 @@ import Snackbar from '../../layout/Snackbar.vue';
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 
-import UserModal from '../utils/UserProfileModal.vue';
-
 export default {
-	components: {
-		Snackbar,
-		UserModal,
-	},
+
+	components: { Snackbar, },
+
 	setup() {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
@@ -46,6 +43,7 @@ export default {
 			user,
 		};
 	},
+
 	data() {
 		return {
 			friends: [] as any,
@@ -53,6 +51,7 @@ export default {
 			showInfos: false as boolean,
 		};
 	},
+
 	emits: ['messages-with'],
 
 	beforeMount() {
