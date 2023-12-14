@@ -26,15 +26,14 @@
 					<!-- Direct messages tab -->
 					<v-window-item :value="1">
 						<v-row>
-							<!-- Left column : friends -->
-							<v-col cols="12" md="3">
-								<!-- <Friends @messages-with="updateMessages"/> -->
-								<AddFriends @messages-with="updateMessages"/>
+							<!-- Friend, requests, users lists -->
+							<v-col class="custom-column" cols="12" md="3">
+								<AddFriends @messages-with="fetchDirectMessages"/>
 							</v-col>
 
-							<!-- Colonne de droite pour DirectMessages (3/4 de l'écran) -->
+							<!-- DMs -->
 							<v-col class="custom-column" cols="12" md="9">
-								<DirectMessages :loginMessages="loginMessages"></DirectMessages>
+								<DirectMessages :messages="directMessages"></DirectMessages>
 							</v-col>
 						</v-row>
 					</v-window-item>
@@ -42,7 +41,7 @@
 					<!-- Channels tab -->
 					<v-window-item :value="2">
 						<v-row>
-							<!-- Colonne de gauche pour JoinedChannels et Discover (1/4 de l'écran) -->
+							<!-- Joined channels, discover channels -->
 							<v-col class="custom-column" cols="12" md="3">
 								<JoinedChannels @channel-selected="updateSelectedChannel"/>
 								<DiscoverChannels/>
@@ -50,11 +49,11 @@
 
 							<!-- Colonne du milieu pour Messages (3/4 de l'écran) -->
 							<v-col class="custom-column" cols="12" md="6">
-								<ChannelMessages v-if="isSelectedChannel" :selectedChannelName="selectedChannelName"></ChannelMessages>
+								<ChannelMessages :selectedChannelName="selectedChannelName"></ChannelMessages>
 							</v-col>
 
 							<v-col class="custom-column" cols="12" md="3">
-								<ChannelUsers v-if="isSelectedChannel" :selectedChannelName="selectedChannelName"></ChannelUsers>
+								<ChannelUsers :selectedChannelName="selectedChannelName"></ChannelUsers>
 							</v-col>
 						</v-row>
 					</v-window-item>
@@ -95,8 +94,10 @@ import { useSocketStore } from '../stores/websocket';
 import { computed } from 'vue';
 
 export default defineComponent({
-name: 'ChatView',
-components: {
+
+	name: 'ChatView',
+
+	components: {
 		AddFriends,
 		Friends,
 		DirectMessages,
@@ -106,7 +107,9 @@ components: {
 		ChannelUsers,
 		BlockedUsers,
 	},
-
+	props: {
+		message: Object,
+	},
 	setup() {
 
 //				const webSocketStore = useSocketStore();
@@ -119,6 +122,7 @@ components: {
 //				const isConnected = computed(() => webSocketStore.isConnected);
 //				const socket = computed(() => webSocketStore.getSocket);
 				const JWT = computed(() => userStore.getJWT);
+				const user = computed(() => userStore.getUser);
 			
 //				const connect = async (JWT: string) => {
 //					await webSocketStore.connect(JWT, import.meta.env.VITE_CHAT_SOCKET_PORT);
@@ -155,6 +159,7 @@ components: {
 //						disconnect,
 //						socketListen,
 						JWT,
+						user,
 //						connectedUsers,
 						tab,
 				};
@@ -162,33 +167,89 @@ components: {
 	},
 	data() {
 		return {
-			loginMessages: '' as string,
-			isSelectedChannel: false as boolean,
+			directMessages: null as any,
 			selectedChannelName: '' as string,
 		}
 	},
-	beforeMount() {
-
-	},
-	mounted() {
+	watch: {
+		tab(newVal) {
+			if (newVal === 1) {
+				//this.fetchDirectMessages(friends[0].login);
+			}
+		},
 	},
 	methods: {
-		updateMessages(loginMessages: string) {
-			this.loginMessages = loginMessages;
+		fetchDirectMessages: async function(login: string) {
+			try {
+				if (!login || login === '') {
+					/* TODO : display stg ? */
+					return;
+				}
+				const response = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/${login}/all`,
+					{
+						method: 'GET',
+						headers: {
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+					}
+				).catch((error: any) => {
+					this.snackbarStore.showSnackbar(error, 3000, 'red');
+					return;
+				});
+				const data = await response.json();
+				this.directMessages = data;
+			} catch (error) {
+				console.error(error);
+			}
 		},
+
+		sendDirectMessage: async function(login: string, input: string) {
+			try {
+				if (this.input.trim() === '') {
+					return;
+				}
+				await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/send`,
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+						body: JSON.stringify({
+							target_login: login,
+							content: input,
+						}),
+					}
+				).catch((error: any) => {
+					this.snackbarStore.showSnackbar(error, 3000, 'red');
+					return;
+				});
+				this.fetchDirectMessages(login);
+			} catch (error) {
+				console.error(error);
+			}
+		},
+
 		updateSelectedChannel(selectedChannelName: string) {
 			this.isSelectedChannel = true;
 			this.selectedChannelName = selectedChannelName;
-		}
-	}
+		},
 
+
+	},
 });
+
 </script>
 
 <style>
 .v-container {
-    background: url('/chat/background/space-parallax.png') no-repeat center center fixed; 
-    -webkit-background-size: cover;
+/*     background: url('/chat/background/space-parallax.png') no-repeat center center fixed;  */
+    background: url('/game/battleParallax/cloud-parallax.png') no-repeat center center fixed; 
+	-webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
@@ -280,6 +341,14 @@ components: {
 		1px 1px 2px plum,
 		0 0 1em purple,
 		0 0 0.2em goldenrod;
+}
+
+.justify-end {
+    justify-content: flex-end;
+}
+
+.justify-start {
+    justify-content: flex-start;
 }
 
 </style>
