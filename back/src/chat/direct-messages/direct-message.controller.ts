@@ -24,15 +24,15 @@ export class DirectMessageController {
 	/******************************* DirectMessages Lists ******************************/
 
  	// Get all conversations
-	@Get(':username/all')
+	@Get(':login/all')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get all DMs' })
 	@ApiBearerAuth('JWT-auth')
 	async getAllDirectMessages(
 		@GetUser() user: User,
-		@Param('username') username: string,
+		@Param('login') login: string,
 	): Promise<DirectMessageDto[]> {
-		return await this.directMessageService.accessDirectMessagesWith(user, username);
+		return await this.directMessageService.accessDirectMessagesWith(user, login);
 	}
 
 	/***********************************************************************************/

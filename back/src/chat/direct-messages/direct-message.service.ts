@@ -29,10 +29,10 @@ export class DirectMessageService {
 
 	/******************************* DirectMessage Access ******************************/
 
-	async accessDirectMessagesWith(user: User, target_name: string): Promise<DirectMessageDto[]> {
+	async accessDirectMessagesWith(user: User, target_login: string): Promise<DirectMessageDto[]> {
 		try {
-			const targetUser = await this.userService.findUserByName(target_name);
-			if (!targetUser) throw new BadRequestException(`User ${target_name} not found`);
+			const targetUser = await this.userService.findUserByName(target_login);
+			if (!targetUser) throw new BadRequestException(`User ${target_login} not found`);
 
 			const friend = await this.prisma.friends.findMany({
 				where: {
@@ -50,7 +50,7 @@ export class DirectMessageService {
 				},
 			});
 			if (!friend) {
-				throw new BadRequestException(`You are not friend with the user ${target_name}`);
+				throw new BadRequestException(`You are not friend with the user ${target_login}`);
 			}
 
 			const blocked = await this.prisma.blocked.findUnique({
@@ -61,7 +61,7 @@ export class DirectMessageService {
 					},
 				},
 			});
-			if (blocked) throw new ForbiddenException(`You are blocked by the user ${target_name}`);
+			if (blocked) throw new ForbiddenException(`You are blocked by the user ${target_login}`);
 
 			const directMessages: DirectMessage[] = await this.prisma.directMessage.findMany({
 				where: {
