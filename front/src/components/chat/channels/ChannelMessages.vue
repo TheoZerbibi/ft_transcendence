@@ -1,41 +1,36 @@
 <template>
-	<v-container>
 
-		<!-- Chat Messages -->
-		<v-row>
-			<v-col cols="11">
-				<v-card>
-				<v-card-title>{{ selectedChannelName }}</v-card-title>
-					<v-list>
-						<v-list-item v-for="message in messages" :key="message.id">
-							<v-list-item-subtitle>
-								{{ message.username }}
-								{{ message.created_at }}
-							</v-list-item-subtitle>
-							{{ message.content }}
-						</v-list-item>
-					</v-list>
-				</v-card>
-			</v-col>
-		</v-row>
+	<v-card>
+
+		<v-card-title>Messages on {{ selectedChannelName }}</v-card-title>
+
+		<v-card-text>
+			<v-list>
+				<v-list-item v-for="message in messages" :key="message.id">
+					<v-list-item-subtitle>
+						{{ message.username }}
+						{{ message.created_at }}
+					</v-list-item-subtitle>
+					{{ message.content }}
+				</v-list-item>
+			</v-list>
+		</v-card-text>
 
 		<!-- Message Input -->
-		<v-row>
-			<v-col cols="11">
-				<v-card class="pa-4">
-					<v-row>
-						<v-col cols="9">
-							<input v-model="input" @keyup.enter="sendMessage" placeholder="Type you message..." />
-						</v-col>
-						<v-col cols="1">
-							<button @click="sendMessage">-></button>
-						</v-col>
-					</v-row>
-				</v-card>
-			</v-col>
-		</v-row>
+		<v-card-actions>
+			<v-text-field
+				v-model="input"
+				placeholder="Type your message..."
+				@keyup.enter="sendMessage"
+			/>
+			<v-btn
+				class="justify-end"
+				@click="sendMessage"
+				>Send
+			</v-btn>
+		</v-card-actions>
 
-	</v-container>
+	</v-card>
 
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
@@ -48,7 +43,6 @@ import { useUser } from '../../../stores/user';
 import { useSnackbarStore } from '../../../stores/snackbar';
 
 import Snackbar from '../../layout/Snackbar.vue';
-import Date from '../../utils/Date.vue';
 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
@@ -56,28 +50,45 @@ const snackbarStore = useSnackbarStore();
 export default {
 	components: {
 		Snackbar,
-		Date,
+	},
+	setup() {
+		const JWT = computed(() => userStore.getJWT);
+		const user = computed(() => userStore.getUser);
+
+		return {
+			JWT,
+			user,
+		};
 	},
 	props: {
 		selectedChannelName: String
 	},
-	setup(props) {
-		const JWT = computed(() => userStore.getJWT);
-		const user = computed(() => userStore.getUser);
-		const messages = ref([]);
-		const fetchMessages = async function() {
+	data() {
+		return {
+			channelName: this.selectedChannelName,
+			messages: [] as any[],
+			input: '' as string,
+		};
+	},
+	watch: {
+		selectedChannelName: function(newVal: string) {
+			this.channelName = newVal;
+			this.fetchMessages();
+		}
+	},
+	methods: {
+		fetchMessages: async function() {
 			try {
-				console.log("[Message.vue:fetchMessages] selectedChannelName: " + props.selectedChannelName);
-				if (!props.selectedChannelName || props.selectedChannelName === '') {
-					/* TODO : display stg ? */
+				if (!this.channelName || this.channelName === '') {
+					console.log('[ChannelMessages]: No channel name');
 					return;
 				}
 				const response: any = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${props.selectedChannelName}/access/messages`,
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.channelName}/access/messages`,
 					{
 						method: 'GET',
 						headers: {
-							Authorization: `Bearer ${JWT.value}`,
+							Authorization: `Bearer ${this.JWT}`,
 							'Access-Control-Allow-Origin': '*',
 						},
 					}
@@ -85,45 +96,19 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				messages.value = await response.json();
+				this.messages = await response.json();
 			} catch (error) {
 				console.error(error);
 			}
-		};
-		watch(
-			() => props.selectedChannelName,
-			() => {
-				fetchMessages();
-			}
-		);
-		return {
-			JWT,
-			user,
-			fetchMessages,
-			messages,
-		};
-	},
-	data: () => ({
-		input: String,
-	}),
-	beforeMount() {
-	},
-	mounted() {
-		this.fetchMessages();
-		this.input = '';
-	},
-	methods: {
+		},
 		sendMessage: async function() {
 			try {
-				if (!this.selectedChannelName || this.selectedChannelName === '') {
-					/* TODO : display stg ? */
-					return;
-				}
-				if (this.input.trim() === '') {
+				if (!this.channelName || this.channelName === '' 
+					|| this.input.trim() === '') {
 					return;
 				}
 				await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannelName}/new_message`,
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.channelName}/new_message`,
 					{
 						method: 'POST',
 						headers: {
@@ -139,8 +124,8 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				this.input = '';
 				this.fetchMessages();
+				this.input = '';
 			} catch (error) {
 				console.error(error);
 			}
