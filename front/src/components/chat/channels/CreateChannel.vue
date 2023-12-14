@@ -1,7 +1,8 @@
 <!-- ChannelCreation.vue -->
 <template>
-<!-- <v-btn @click="overlay = !overlay"> create channel</v-btn> -->
-<!-- <v-overlay :value="overlayVisible" @input="openOverlay"> -->
+ <v-btn @click="openOverlay"> create channel</v-btn>
+<v-overlay v-model="overlay">
+<!-- <v-overlay v-model="overlay" :value="overlayVisible" @input="openOverlay"> -->
     <v-card>
       <v-card-title>Create a Channel</v-card-title>
       <v-card-text>
@@ -15,7 +16,7 @@
         </v-form>
       </v-card-text>
     </v-card>
-<!-- </v-overlay> -->
+</v-overlay>
 </template>
 
 <script>
@@ -32,13 +33,14 @@ export default defineComponent({
     const channelName = ref('');
     const channelPassword = ref('');
     const isPublic = ref(false);
+    const overlay = ref(false);
 
     const openOverlay = () => {
-      overlayVisible.value = true;
+      overlay.value = true;
     };
 
     const closeOverlay = () => {
-      overlayVisible.value = false;
+      overlay.value = false;
       // You can reset form fields here if needed
       channelName.value = '';
       channelPassword.value = '';
@@ -57,10 +59,11 @@ export default defineComponent({
       emit('channel-created', channelData);
 
       // Close the overlay after creating the channel
-      closeOverlay();
+	closeOverlay();
     };
 
     return {
+      overlay,
       overlayVisible,
       channelName,
       channelPassword,

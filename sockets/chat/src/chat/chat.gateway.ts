@@ -30,7 +30,7 @@ import { users, channel_users } from '@prisma/client';
         },
 })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
-	private logger: Logger = new Logger('GameGateway');
+	private logger: Logger = new Logger('ChatGateway');
 
 	constructor(
 		private authService: AuthService,

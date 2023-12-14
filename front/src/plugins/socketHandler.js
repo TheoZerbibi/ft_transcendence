@@ -38,7 +38,9 @@ export function useSocketHandler() {
 					connectedUserIds.value.splice(index, 1);
 				}});
 
-			socket.value.on('welcome', (data) => { console.log(`retrieved ${data.json()}`); connectedUsers = JSON.parse(data) });
+			socket.value.on('welcome', (data) => {
+				console.log(`retrieved ${data.json()}`); connectedUsers = JSON.parse(data)
+			});
 			//	socket.value.on('new-direct-message', (data: any) => { connectedUsers = JSON.parse(data) });
 			//	socket.value.on('channel-updated', (data: any) => { connectedUsers = JSON.parse(data) });
 			//	socket.value.on('channel-user-update', (data: any) => { connectedUsers = JSON.parse(data) });

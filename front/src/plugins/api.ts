@@ -15,13 +15,15 @@ const userStore = useUser();
 export class api {
 	method = 'GET';
 	baseURL = `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}`;
-//	JWT = computed(() => userStore.getJWT);
 	JWT!: string = computed(() => userStore.getJWT());
 	userStore = useUser();
 	headers = {
 		'Content-Type': 'application/json',
 		Authorization: `Bearer ${userStore.getJWT}`,
 		'Access-Control-Allow-Origin': '*',};
+
+	
+	request = { method: this.method, header: this.headers };
 
 	response: any;
 	
@@ -39,12 +41,32 @@ export class api {
 	}
 
 	async fetch(request: string, body: any, method?: string):string  {
+
+		const url: string = this.baseURL+ request;
 		if (method !== undefined)
 			this.method = method;
 
-		const requestBody: any = {method: this.method, header : this.headers, body: JSON.stringify(body.name)};
-		console.log(`fetching for request: ${request} with request: ${JSON.stringify(requestBody)}`);
-		await fetch(this.baseURL + request, { method: this.method, header : this.header, body: JSON.stringify(body)}).then(status).then((stringified) => { this.response = stringified.json() });
+	 	const content: any = {
+				method: this.method,
+				headers: {
+					Authorization: `Bearer ${userStore.getJWT}`,
+					'Access-Control-Allow-Origin': '*',
+					'Content-type': 'application/json',
+				},
+				body: JSON.stringify(body),
+
+			};
+
+
+		console.log(`fetching for request: ${url} with request: ${JSON.stringify(content)}`);
+		const response = await fetch(url, content).then((answer) => { if (answer};
+
+	//	console.log(await response.json());
+			
+		return response;
+		
+
+			//		await fetch(this.baseURL + request, { method: this.method, header : this.header, body: JSON.stringify(body)}).then(status).then((stringified) => { this.response = stringified.json() });
 	}
 
 	async getChannels() {
@@ -62,8 +84,8 @@ export class api {
 	{
 		this.method = 'POST';
 		return await this.fetch(request, body);
-//		.then(this.status)
-//		.then((stringified) => {return stringified });
+		//		.then(this.status)
+		//		.then((stringified) => {return stringified });
 
 	}
 

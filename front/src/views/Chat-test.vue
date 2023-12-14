@@ -46,6 +46,8 @@ setup() {
 	};
 	
 		onMounted( async () => {
+				console.log(`trying to connect with ${JWT.value}`);
+				connect(JWT.value);
 				socketListen();
 				});
 	

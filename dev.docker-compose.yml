@@ -135,8 +135,8 @@ services:
       CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
       CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
       CLOUDINARY_URL: ${CLOUDINARY_URL}
-        #command: sh -c "pnpm db:deploy && pnpm start:dev"
-    command: sh -c "tail -f /dev/null"
+    command: sh -c "pnpm db:deploy && pnpm start:dev"
+      #command: sh -c "tail -f /dev/null"
     restart: always
 
   prisma:
