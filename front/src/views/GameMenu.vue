@@ -12,26 +12,6 @@
 		</v-row>
 	</v-container>
 </template>
-<!-- <template>
-	<v-container class="
-			d-flex
-			flex-column
-			justify-space-evenly" fill-height min-width="100dvw">
-
-		<v-row>
-			<v-col xs12 md6 class="d-flex align-center justify-center">
-				<v-sheet id="arcade" class="order-0 pa-2 ma-2" height="80dvh" width="90dvh" />
-			</v-col>
-		</v-row>
-
-		<v-row justify="end" style="max-height: 10dvh">
-			<div class="d-flex align-center justify-center hoverable">
-				<v-sheet id="doorLogout" class="order-1 pa-2 ma-2" height="10dvh" width="6dvh" @click="logout"/>
-			</div>
-		</v-row>
-
-	</v-container>
-</template> -->
 <script lang="ts">
 import { computed } from 'vue';
 
