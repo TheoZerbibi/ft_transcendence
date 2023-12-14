@@ -78,7 +78,7 @@ export default {
 					return;
 				});
 				this.friends = await response.json();
- 				this.selectedFriendLogin = this.friends[0] ? this.friends[0].login : this.selectedFriendLogin;
+ 				this.selectedFriendLogin = this.friends[0] ? this.friends[0].login : '';
 				this.$emit('messages-with', this.selectedFriendLogin);
 			} catch (error) {
 				console.error(error);

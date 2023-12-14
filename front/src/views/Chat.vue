@@ -216,7 +216,6 @@ export default defineComponent({
 		},
 
 		updateSelectedChannel(selectedChannelName: string) {
-			this.isSelectedChannel = true;
 			this.selectedChannelName = selectedChannelName;
 		},
 

@@ -76,6 +76,8 @@ export default {
 					return;
 				});
 				this.joinedChannels = await response.json();
+				this.selectedChannel = this.joinedChannels[0] ? this.joinedChannels[0].name : '';
+				this.$emit('channel-selected', this.selectedChannel);
 			} catch (error: any) {
 				console.error(error);
 			}
