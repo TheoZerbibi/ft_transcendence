@@ -1,7 +1,9 @@
 <template>
 
 	<v-card>
+
 		<v-card-title>Messages</v-card-title>
+
 		<v-card-text>
 
 			<!-- Chat Messages -->
@@ -15,20 +17,22 @@
 				</v-list-item>
 			</v-list>
 
-
-			<!-- Message Input -->
-			<v-row>
-				<v-col>
-					<v-text-field
-						v-model="message.input"
-						placeholder="Type you message..."
-						@keyup.enter="sendMessage(message.input)"
-					/>
-					<v-btn class="justify-end" @click="sendMessage">Send</v-btn>
-				</v-col>
-			</v-row>
-
 		</v-card-text>
+
+		<!-- Message Input -->
+		<v-card-actions>
+			<v-text-field
+				v-model="input"
+				placeholder="Type your message..."
+				@keyup.enter="sendMessage"
+			/>
+			<v-btn
+				class="justify-end"
+				@click="sendMessage"
+				>Send
+			</v-btn>
+		</v-card-actions>
+
 	</v-card>
 
 	<!-- Error handling -->
@@ -52,9 +56,6 @@ export default {
 		Snackbar,
 		DateConv,
 	},
-	props: {
-		messages: Object,
-	},
 	setup() {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
@@ -64,36 +65,81 @@ export default {
 			user,
 		};
 	},
+	props: {
+		selectedFriendLogin: String,
+	},
 	data() {
 		return {
-			messagesList: null as any,
-			message: {
-				input: '' as string,
-				id: 0 as number,
-			},
+			friendLogin: this.selectedFriendLogin ?
+												this.selectedFriendLogin as string 
+												: '' as string,
+			messages: [] as any,
+			input: '' as string,
 		};
 	},
 	watch: {
-		messages(newVal) {
+		selectedFriendLogin: function(newVal: string) {
+			this.friendLogin = newVal;
+			this.fetchDirectMessages();
+		},
+	},
+	methods: {
+		fetchDirectMessages: async function() {
 			try {
-				this.messagesList = newVal;
-				const obj = this.messagesList[0] ? this.messagesList[0] : null;
-				if (obj) {
-					this.message.id = obj.user_id == this.user.id ? obj.friend_id : obj.user_id;
+				if (!this.friendLogin || this.friendLogin === '') {
+					console.log('[fetchDirectMessages]: friendLogin is empty');
+					return;
 				}
+				const response: any = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/${this.friendLogin}/all`,
+					{
+						method: 'GET',
+						headers: {
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+					}
+				).catch((error: any) => {
+					this.snackbarStore.showSnackbar(error, 3000, 'red');
+					return;
+				});
+				this.messages = await response.json();
 			} catch (error) {
 				console.error(error);
 			}
 		},
-	},
-	methods: {
-		fetchMessages() {
-			this.$emit('messages-with', this.id);
-		},
-		sendMessage(message: string) {
-			if (message) {
-				this.$emit('send-message', message);
-				this.message.input = '';
+
+		sendMessage: async function(input: string) {
+			try {
+				if (!this.friendLogin || this.friendLogin === '') {
+					console.log('[sendMessage]: friendLogin is empty');
+					return;
+				}
+				if (this.input.trim() === '') {
+					return;
+				}
+				await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/send`,
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+						body: JSON.stringify({
+							target_login: this.friendLogin,
+							content: input,
+						}),
+					}
+				).catch((error: any) => {
+					this.snackbarStore.showSnackbar(error, 3000, 'red');
+					return;
+				});
+				this.input = '';
+				this.fetchDirectMessages();
+			} catch (error) {
+				console.error(error);
 			}
 		},
 	},

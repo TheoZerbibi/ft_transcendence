@@ -5,7 +5,7 @@
 
 		<!-- Top bar : tabs -->
 		<v-row>
-			<v-col>
+			<v-col class="custom-column">
 				<v-tabs v-model="tab">
 					<v-spacer></v-spacer>
 					<v-tab :value="1">Direct Messages</v-tab>
@@ -25,15 +25,20 @@
 
 					<!-- Direct messages tab -->
 					<v-window-item :value="1">
-						<v-row>
 							<!-- Friend, requests, users lists -->
+						<v-row>
 							<v-col class="custom-column" cols="12" md="3">
-								<AddFriends @messages-with="fetchDirectMessages"/>
+								<Friends
+									@messages-with="updateMessagesList"
+								/>
+								<Requests/>
+								<Users/>
 							</v-col>
-
 							<!-- DMs -->
 							<v-col class="custom-column" cols="12" md="9">
-								<DirectMessages :messages="directMessages"></DirectMessages>
+								<DirectMessages
+									:selectedFriendLogin="selectedFriendLogin"
+								/>
 							</v-col>
 						</v-row>
 					</v-window-item>
@@ -77,8 +82,9 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
 
-import AddFriends from '../components/chat/direct-messages/Friends.vue';
 import Friends from '../components/chat/direct-messages/Friends.vue';
+import Requests from '../components/chat/direct-messages/Requests.vue';
+import Users from '../components/chat/direct-messages/Users.vue';
 import DirectMessages from '../components/chat/direct-messages/DirectMessages.vue';
 
 import DiscoverChannels from '../components/chat/channels/DiscoverChannels.vue';
@@ -98,17 +104,15 @@ export default defineComponent({
 	name: 'ChatView',
 
 	components: {
-		AddFriends,
 		Friends,
+		Requests,
+		Users,
 		DirectMessages,
 		DiscoverChannels,
 		JoinedChannels,
 		ChannelMessages,
 		ChannelUsers,
 		BlockedUsers,
-	},
-	props: {
-		message: Object,
 	},
 	setup() {
 
@@ -167,7 +171,7 @@ export default defineComponent({
 	},
 	data() {
 		return {
-			directMessages: null as any,
+			selectedFriendLogin: null as any,
 			selectedChannelName: '' as string,
 		}
 	},
@@ -179,59 +183,8 @@ export default defineComponent({
 		},
 	},
 	methods: {
-		fetchDirectMessages: async function(login: string) {
-			try {
-				if (!login || login === '') {
-					/* TODO : display stg ? */
-					return;
-				}
-				const response = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/${login}/all`,
-					{
-						method: 'GET',
-						headers: {
-							Authorization: `Bearer ${this.JWT}`,
-							'Access-Control-Allow-Origin': '*',
-						},
-					}
-				).catch((error: any) => {
-					this.snackbarStore.showSnackbar(error, 3000, 'red');
-					return;
-				});
-				const data = await response.json();
-				this.directMessages = data;
-			} catch (error) {
-				console.error(error);
-			}
-		},
-
-		sendDirectMessage: async function(login: string, input: string) {
-			try {
-				if (this.input.trim() === '') {
-					return;
-				}
-				await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/send`,
-					{
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-							Authorization: `Bearer ${this.JWT}`,
-							'Access-Control-Allow-Origin': '*',
-						},
-						body: JSON.stringify({
-							target_login: login,
-							content: input,
-						}),
-					}
-				).catch((error: any) => {
-					this.snackbarStore.showSnackbar(error, 3000, 'red');
-					return;
-				});
-				this.fetchDirectMessages(login);
-			} catch (error) {
-				console.error(error);
-			}
+		updateMessagesList(login: string) {
+			this.selectedFriendLogin = login;
 		},
 
 		updateSelectedChannel(selectedChannelName: string) {
