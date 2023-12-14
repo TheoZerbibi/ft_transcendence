@@ -10,34 +10,29 @@
 				@click="displayMessagesOfChannel(channel.name)"
 			>
 			{{ channel.name }}
-			<v-btn @click="displaySettings(channel.name)">Settings</v-btn>
 			</v-list-item>
 		</v-list>
-		<p v-else>~ sorry, no joinedChannels for now ~</p>
+		<v-card-text v-else>~ u didn't join any channels for now ~</v-card-text>
 	</v-card>
 	
-	<!-- Modal: channel settings -->
-	<ChannelSettingsModal v-if="showInfos" :selectedChannelName="selectedChannel" :show="showInfos" @close="closeModal"/>
-	
+	<!-- Error handling -->
 	<Snackbar></Snackbar>
+
 </template>
 
 <script lang="ts">
 import { computed } from 'vue';
 import { useUser } from '../../../stores/user';
 import { useSnackbarStore } from '../../../stores/snackbar';
-
 import Snackbar from '../../layout/Snackbar.vue';
-import ChannelSettingsModal from '../utils/ChannelSettingsModal.vue';
 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 
 export default {
-	components: {
-		Snackbar,
-		ChannelSettingsModal,
-	},
+
+	components: { Snackbar, },
+
 	setup() {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
@@ -47,18 +42,21 @@ export default {
 			user,
 		};
 	},
+
 	data() {
 		return {
-			joinedChannels: [],
-			selectedChannel: '',
-			showInfos: false
+			joinedChannels: [] as any[],
+			selectedChannel: '' as string,
+			showInfos: false as boolean,
 		};
 	},
+
 	emits: ['channel-selected'],
+
 	beforeMount() {
 		this.fetchJoinedChannels();
 	},
-	mounted() {},
+
 	methods: {
 		fetchJoinedChannels: async function() {
 			try {
@@ -77,28 +75,13 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				const data = await response.json();
-				if (data.error) {
-					snackbarStore.showSnackbar(data.error, 3000, 'red');
-					return;
-				}
-				this.joinedChannels = data;
-				console.log(this.joinedChannels);
-			} catch (error) {
-				snackbarStore.showSnackbar(error, 3000, 'red');
+				this.joinedChannels = await response.json();
+			} catch (error: any) {
+				console.error(error);
 			}
 		},
-		displaySettings: function(channel_name: string) {
-			console.log('displaySettings');
-			this.selectedChannel = channel_name;
-			this.showInfos = true;
-			this.$emit('channel-selected', channel_name);
-		},
-		closeModal() {
-			this.showInfos = false;
-		},
+
 		displayMessagesOfChannel: function(channel_name: string) {
-			console.log('displayMessagesOfChannel');
 			this.selectedChannel = channel_name;
 			this.$emit('channel-selected', channel_name);
 		},
