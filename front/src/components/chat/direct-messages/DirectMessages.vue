@@ -109,7 +109,7 @@ export default {
 			}
 		},
 
-		sendMessage: async function(input: string) {
+		sendMessage: async function() {
 			try {
 				if (!this.friendLogin || this.friendLogin === '') {
 					console.log('[sendMessage]: friendLogin is empty');
@@ -118,6 +118,8 @@ export default {
 				if (this.input.trim() === '') {
 					return;
 				}
+				console.log('[sendMessage]: friendLogin: ', this.friendLogin
+											, ' input: ', this.input);
 				await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/send`,
 					{
@@ -129,15 +131,15 @@ export default {
 						},
 						body: JSON.stringify({
 							target_login: this.friendLogin,
-							content: input,
+							content: this.input,
 						}),
 					}
 				).catch((error: any) => {
 					this.snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				this.input = '';
 				this.fetchDirectMessages();
+				this.input = '';
 			} catch (error) {
 				console.error(error);
 			}
