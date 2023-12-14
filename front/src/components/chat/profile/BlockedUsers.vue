@@ -9,7 +9,7 @@
 				<v-btn @click="unblockUser(user.login)">x</v-btn>
 			</v-list-item>
 		</v-list>
-		<p v-else>~ u havent blocked anyone for now ~</p>
+		<v-card-text v-else>~ u havent blocked anyone for now ~</v-card-text>
 	</v-card>
 
 	<!-- Error handling -->
