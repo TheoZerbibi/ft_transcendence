@@ -1,44 +1,62 @@
 <template>
-	<main
-		:style="{
-			backgroundImage: 'url(/ui/ProfileBackground.png)',
-			backgroundPosition: 'center center',
-			backgroundSize: '120% 100%', // Déforme l'image pour s'adapter à 100% de la largeur et de la hauteur
-			height: '100vh', // Hauteur de la vue à 100%
-			// margin: 0,															// Supprime les marges par défaut du body
-		}"
+	<v-container 
+		fill-height
+		fluid
+		class="d-flex flex-column justify-center align-center"
 	>
-		<a href="https://bibliotheques.paris.fr/" target="_blank" class="clickable-area link1"></a>
-		<a href="/chat" class="clickable-area link2"></a>
-		<a href="https://meta.intra.42.fr/articles/read-the-french-manual-of-42paris" class="clickable-area link3"></a>
-		<div class="clickable-area link4" onclick="openModal()">
-			<!-- Utilisation de Vue pour gérer l'ouverture du modal -->
-			<div @click="openModal" class="clickable-area link2">
-				<div v-if="isModalOpen" class="modal">
-					<div class="modal-content">
-						<span @click="closeModal" class="close">&times;</span>
-						<p>Contenu du modal ici</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</main>
+
+		<v-row v-show="!is2FA">
+			<v-col cols="12" clas="d-flex justify-center align-center">
+				<v-sheet class="pa-2 ma-2 d-flex flex-column align-center justify-center" height="80dvh" width="40dvh" color="transparent">
+					<v-btn @click="generateQRCode" v-if="!qrCode && !is2FA">Generate QR Code</v-btn>
+					<img :src="`${qrCode}`" v-if="qrCode && !is2FA" />
+					<v-form @submit.prevent="activateTwoFactorAuthentication" v-if="qrCode && !is2FA" class="d-flex flex-column align-center">
+						<v-otp-input variant="solo-filled" v-model="verificationCode" label="Enter Verification Code" required error :loading="loading"/>
+						<v-btn type="submit">Activate 2FA</v-btn>
+					</v-form>
+				</v-sheet>
+			</v-col>
+		</v-row>
+
+		<v-row v-show="is2FA">
+			<v-col cols="12" class="d-flex justify-center align-center">
+				<v-sheet  class="pa-2 ma-2 d-flex flex-column align-center justify-center" height="80dvh" width="40dvh" color="transparent">
+					<v-form @submit.prevent="disableTwoFactorAuthentication" v-if="is2FA" class="d-flex flex-column align-center">
+						<v-otp-input variant="solo-filled" v-if="is2FA" v-model="verificationCode" label="Enter Verification Code" required error :loading="loading"/>
+						<v-btn v-if="is2FA" type="submit">Disable 2FA</v-btn>
+					</v-form>
+				</v-sheet>
+			</v-col>
+		</v-row>
+
+	</v-container>
+	<Snackbar />
 </template>
 
 <script lang="ts">
 import { useUser } from '../stores/user';
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
+import { useSnackbarStore } from '../stores/snackbar';
+import Snackbar from '../components/layout/Snackbar.vue';
+import QrcodeVue from 'qrcode.vue';
+
+const snackbarStore = useSnackbarStore();
 
 export default defineComponent({
 	name: 'HomeView',
+	components: { Snackbar, QrcodeVue },
 	setup() {
 		const userStore = useUser();
 		const JWT = computed(() => userStore.getJWT);
+		const setJWT = (JWT: string) => userStore.setJWT(JWT);
 		const user = computed(() => userStore.getUser);
+		const is2FA = computed(() => userStore.is2FA);
 
 		return {
 			JWT,
+			setJWT,
 			user,
+			is2FA,
 		};
 	},
 	beforeMount() {
@@ -48,6 +66,8 @@ export default defineComponent({
 	},
 	data() {
 		return {
+			qrCode: null,
+			verificationCode: '',
 			isModalOpen: false,
 		};
 	},
@@ -61,112 +81,101 @@ export default defineComponent({
 		closeModal() {
 			this.isModalOpen = false;
 		},
+		async generateQRCode() {
+			const requestOptions = {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${this.JWT}`,
+					'Access-Control-Allow-Origin': '*',
+				},
+			};
+			try {
+				const response = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/2fa/generate`,
+					requestOptions,
+				);
+				if (!response.ok) {
+					const error = await response.json();
+					console.log(error);
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					return;
+				}
+				const qrCodeArrayBuffer = await response.arrayBuffer();
+				const qrCodeBase64 = btoa(
+					new Uint8Array(qrCodeArrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), ''),
+				);
+				this.qrCode = 'data:image/png;base64,' + qrCodeBase64;
+			} catch (error) {
+				snackbarStore.showSnackbar('Error generating QR Code', 3000, 'red');
+			}
+		},
+		async activateTwoFactorAuthentication() {
+			const requestBody = { code: this.verificationCode };
+
+			try {
+				const response = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/2fa/turn-on`,
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${this.JWT}`,
+						},
+						body: JSON.stringify(requestBody),
+					},
+				);
+				if (!response.ok) {
+					const error = await response.json();
+					console.log(error);
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					this.verificationCode = '';
+					return;
+				}
+
+				const result = await response.json();
+				this.setJWT(result.access_token);
+				snackbarStore.showSnackbar(result.message, 3000, 'green');
+				this.qrCode = null;
+				this.verificationCode = '';
+			} catch (error) {
+				snackbarStore.showSnackbar('Error activating 2FA', 3000, 'red');
+			}
+		},
+		async disableTwoFactorAuthentication() {
+			const requestBody = { code: this.verificationCode };
+
+			try {
+				const response = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/2fa/turn-off`,
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${this.JWT}`,
+						},
+						body: JSON.stringify(requestBody),
+					},
+				);
+				if (!response.ok) {
+					const error = await response.json();
+					console.log(error);
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					this.verificationCode = '';
+					return;
+				}
+
+				const result = await response.json();
+				this.setJWT(result.access_token);
+				snackbarStore.showSnackbar(result.message, 3000, 'green');
+				this.verificationCode = '';
+			} catch (error) {
+				snackbarStore.showSnackbar('Error activating 2FA', 3000, 'red');
+			}
+		},
 	},
 });
 </script>
 
 <style scoped>
-.pageBackground {
-	margin: 0;
-	align-items: center;
-	justify-content: center;
-	background-color: black;
-	top: 0;
-	left: 0;
-	width: 100vw;
-	height: 100vw;
-	z-index: -1;
-}
-
-.clickable-area {
-	position: absolute;
-	cursor: pointer;
-}
-.clickable-area:hover {
-	cursor: url(https://www.omori-game.com/img/cursor/cursor.png), auto;
-}
-
-.link1 {
-	top: 13%;
-	left: 5%;
-	width: 10%;
-	height: 20%;
-	/* Background color pour montrer la zone cliquable, vous pouvez le supprimer */
-	background-color: rgba(25, 218, 167, 0.3);
-}
-.link2 {
-	top: 15%;
-	left: 17%;
-	width: 11%;
-	height: 13%;
-	/* Background color pour montrer la zone cliquable, vous pouvez le supprimer */
-	background-color: rgba(25, 218, 167, 0.3);
-}
-
-.link3 {
-	top: 70%;
-	left: 5%;
-	width: 8%;
-	height: 5%;
-	/* Background color pour montrer la zone cliquable, vous pouvez le supprimer */
-	background-color: rgba(25, 218, 167, 0.3);
-}
-.link4 {
-	top: 10%;
-	left: 38%;
-	width: 7%;
-	height: 8%;
-	/* Background color pour montrer la zone cliquable, vous pouvez le supprimer */
-	background-color: rgba(25, 218, 167, 0.3);
-}
-
-/* Style du modal */
-.modal {
-	display: none;
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	padding: 20px;
-	background-color: #fff;
-	z-index: 2;
-}
-
-.modal-content {
-	text-align: center;
-}
-
-.close {
-	position: absolute;
-	top: 10px;
-	right: 10px;
-}
-
-.omoriButton {
-	max-width: 4.5rem;
-	padding: 0.25rem 0.125rem;
-	position: relative;
-	top: 0px;
-	flex: 0 0 calc(25% - 15px);
-	--tw-bg-opacity: 1;
-	background-color: rgb(0 0 0 / var(--tw-bg-opacity));
-	--tw-text-opacity: 1;
-	color: rgb(255 255 255 / var(--tw-text-opacity));
-	box-shadow:
-		inset 0 0 0 1px #000,
-		inset 0 0 0 3px #fff;
-	text-transform: uppercase;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	user-select: none;
-	-moz-tap-highlight-color: transparent;
-	-webkit-tap-highlight-color: transparent;
-	cursor: url(/img/cursor/cursor.png), auto;
-}
-
-@media screen and (max-width: 960px) {
-	.profileHome {
-		flex-direction: column;
-	}
-}
 </style>
