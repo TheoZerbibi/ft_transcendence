@@ -1,5 +1,10 @@
 <template>
 
+	<v-container
+	fluid
+	fill-height
+	>
+
 		<!-- Friend list -->
 		<v-card>
 			<v-card-title>Friends</v-card-title>
@@ -62,6 +67,7 @@
 			<v-btn @click="searchUsers">search</v-btn>
 		</v-col>
 
+	</v-container>
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
 
@@ -101,7 +107,7 @@ export default {
 			users: [],
 			searchTerm: '',
 			friends: [] as any,
-			loginMessages: '' as string,
+			messages: '' as string,
 			selectedFriend: null as any,
 			showInfos: false as boolean,
 		};
@@ -133,9 +139,9 @@ export default {
 				});
 				this.friends = await response.json();
  				this.selectedFriend = this.friends[0] ? this.friends[0] : null;
-				this.loginMessages = this.friends[0] ? this.friends[0].login : '';
+				this.messages = this.friends[0] ? this.friends[0].login : '';
 				/*
-				if (this.loginMessages)
+				if (this.messages)
 					this.$emit('messages-with', this.selectedFriend); */
 			} catch (error) {
 				console.error(error);
@@ -158,8 +164,8 @@ export default {
 			this.showInfos = false;
 		},
 		displayMessagesWithFriend(login: string) {
-			this.loginMessages = login;
-			this.$emit('messages-with', this.loginMessages);
+			this.messages = login;
+			this.$emit('messages-with', this.messages);
 		},
 		fetchSelectedUserInfos: async function(userLogin: string) {
 			try {
