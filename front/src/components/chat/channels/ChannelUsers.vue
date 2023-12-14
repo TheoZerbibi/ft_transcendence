@@ -50,7 +50,7 @@ export default {
 					snackbarStore.showSnackbar('No channel selected', 3000, 'red');
 					return;
 				}
-				const response = await fetch(
+				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${props.selectedChannelName}/access/users`,
 					{
 						method: 'GET',

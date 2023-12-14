@@ -62,7 +62,7 @@ export default {
 	methods: {
 		fetchNonJoinedChannels: async function() {
 			try {
-				const response = await
+				const response: any = await
 				fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/list/discover`,
 					{
@@ -144,7 +144,7 @@ export default {
 		searchChannels: async function(searchTerm: string) {
 			if (searchTerm.length) {
 				try {
-					const response = await
+					const response: any = await
 					fetch(
 						`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/list/search/${searchTerm}`,
 						{

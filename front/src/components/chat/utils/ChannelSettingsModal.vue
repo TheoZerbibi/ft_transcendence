@@ -119,7 +119,7 @@ export default {
 	methods: {
 		fetchChannelInfos: async function() {
 			try {
-				const response = await
+				const response: any = await
 				fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannelName}/access`,
 					{
@@ -145,7 +145,7 @@ export default {
 		},
 		fetchChannelUsersInfos: async function() {
 			try {
-				const response = await
+				const response: any = await
 				fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannelName}/access/users`,
 					{
