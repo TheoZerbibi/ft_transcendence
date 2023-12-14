@@ -27,18 +27,20 @@
 					<v-window-item :value="1">
 							<!-- Friend, requests, users lists -->
 						<v-row>
-							<v-col class="custom-column" cols="12" md="3">
-								<Friends
-									@messages-with="updateMessagesList"
-								/>
+							<v-col
+								class="custom-column"
+								cols="12"
+								md="3">
+								<Friends @messages-with="updateMessagesList" />
 								<Requests/>
 								<Users/>
 							</v-col>
 							<!-- DMs -->
-							<v-col class="custom-column" cols="12" md="9">
-								<DirectMessages
-									:selectedFriendLogin="selectedFriendLogin"
-								/>
+							<v-col
+								class="custom-column"
+								cols="12"
+								md="6">
+								<DirectMessages :selectedFriendLogin="selectedFriendLogin" />
 							</v-col>
 						</v-row>
 					</v-window-item>
@@ -47,17 +49,26 @@
 					<v-window-item :value="2">
 						<v-row>
 							<!-- Joined channels, discover channels -->
-							<v-col class="custom-column" cols="12" md="3">
+							<v-col
+								class="custom-column"
+								cols="12"
+								md="3">
 								<JoinedChannels @channel-selected="updateSelectedChannel"/>
 								<DiscoverChannels/>
 							</v-col>
 
 							<!-- Colonne du milieu pour Messages (3/4 de l'écran) -->
-							<v-col class="custom-column" cols="12" md="6">
+							<v-col
+								class="custom-column"
+								cols="12"
+								md="6">
 								<ChannelMessages :selectedChannelName="selectedChannelName"></ChannelMessages>
 							</v-col>
 
-							<v-col class="custom-column" cols="12" md="3">
+							<v-col
+								class="custom-column"
+								cols="12"
+								md="3">
 								<ChannelUsers :selectedChannelName="selectedChannelName"></ChannelUsers>
 							</v-col>
 						</v-row>
@@ -66,7 +77,10 @@
 					<!-- Profile tab -->
 					<v-window-item :value="3">
 						<v-row>
-							<v-col class="custom-column" cols="12">
+							<v-col
+								class="custom-column"
+								cols="12"
+								md="3">
 								<BlockedUsers/>
 							</v-col>
 						</v-row>

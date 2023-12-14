@@ -98,10 +98,8 @@ export default {
 					return;
 				});
 				this.friends = await response.json();
- 				this.selectedFriend = this.friends[0] ? this.friends[0] : null;
-				/*
-				if (this.messages)
-					this.$emit('messages-with', this.selectedFriend); */
+ 				this.selectedFriendLogin = this.friends[0] ? this.friends[0].login : this.selectedFriendLogin;
+				this.$emit('messages-with', this.selectedFriendLogin);
 			} catch (error) {
 				console.error(error);
 			}
