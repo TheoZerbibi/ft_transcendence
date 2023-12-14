@@ -8,11 +8,11 @@
 			<v-col class="custom-column">
 				<v-tabs v-model="tab">
 					<v-spacer></v-spacer>
-					<v-tab :value="1">Direct Messages</v-tab>
+					<v-tab :value="1">DMs</v-tab>
 					<v-spacer></v-spacer>
 					<v-tab :value="2">Channels</v-tab>
 					<v-spacer></v-spacer>
-					<v-tab :value="3">Profile</v-tab>
+					<v-tab :value="3">Personal</v-tab>
 					<v-spacer></v-spacer>
 				</v-tabs>
 			</v-col>
@@ -41,6 +41,13 @@
 								cols="12"
 								md="6">
 								<DirectMessages :selectedFriendLogin="selectedFriendLogin" />
+							</v-col>
+							<!-- Friend profile -->
+							<v-col
+								class="custom-column"
+								cols="12"
+								md="3">
+								<FriendProfile :selectedFriendLogin="selectedFriendLogin" />
 							</v-col>
 						</v-row>
 					</v-window-item>
@@ -100,6 +107,7 @@ import Friends from '../components/chat/direct-messages/Friends.vue';
 import Requests from '../components/chat/direct-messages/Requests.vue';
 import Users from '../components/chat/direct-messages/Users.vue';
 import DirectMessages from '../components/chat/direct-messages/DirectMessages.vue';
+import FriendProfile from '../components/chat/direct-messages/FriendProfile.vue';
 
 import DiscoverChannels from '../components/chat/channels/DiscoverChannels.vue';
 import JoinedChannels from '../components/chat/channels/JoinedChannels.vue';
@@ -118,14 +126,20 @@ export default defineComponent({
 	name: 'ChatView',
 
 	components: {
+		/* Direct messages */
 		Friends,
 		Requests,
 		Users,
 		DirectMessages,
+		FriendProfile,
+
+		/* Channels */
 		DiscoverChannels,
 		JoinedChannels,
 		ChannelMessages,
 		ChannelUsers,
+
+		/* Profile */
 		BlockedUsers,
 	},
 	setup() {
