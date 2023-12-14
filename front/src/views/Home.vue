@@ -1,32 +1,18 @@
 <template>
-	<v-container 
-		class="
+	<v-container class="
 			d-flex
 			flex-column
-			justify-space-evenly"
-		fill-height
-		min-width="100dvw"
-	>
+			justify-space-evenly" fill-height min-width="100dvw">
 
 		<v-row>
 			<v-col xs12 md6 class="d-flex align-center justify-center">
-				<v-sheet 
-					id="omorisPlace"
-					class="order-0 pa-2 ma-2"
-					height="80dvh"
-					width="90dvh" />
+				<v-sheet id="omorisPlace" class="order-0 pa-2 ma-2" height="80dvh" width="90dvh" />
 			</v-col>
 		</v-row>
 
-		<v-row justify="end" style="max-height: 10dvh" >
-			<div class="d-flex align-center justify-center hoverable"
-			@click="logout"
-			>
-				<v-sheet 
-					id="doorLogout"
-					class="order-1 pa-2 ma-2"
-					height="10dvh"
-					width="6dvh" />
+		<v-row justify="end" style="max-height: 10dvh">
+			<div class="d-flex align-center justify-center hoverable">
+				<v-sheet id="doorLogout" class="order-1 pa-2 ma-2" height="10dvh" width="6dvh" @click="logout"/>
 			</div>
 		</v-row>
 
@@ -72,12 +58,12 @@ export default defineComponent({
 		},
 	},
 });
+
 </script>
 
 <style scoped>
-
 #omorisPlace {
-	background: url('/public/dashboard/omorisPlace.png');
+	background: url('/dashboard/omorisPlace.png');
 	object-fit: cover;
 	object-position: center;
 	background-size: contain;
@@ -87,7 +73,17 @@ export default defineComponent({
 }
 
 #doorLogout {
-	background: url('/public/dashboard/clickable/doorClosed.png');
+	background: url('/dashboard/clickable/doorClosed.png');
+	object-fit: cover;
+	object-position: center;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	z-index: 2;
+}
+
+#doorLogout:hover {
+	background: url('/dashboard/clickable/doorOpen.png');
 	object-fit: cover;
 	object-position: center;
 	background-size: contain;
@@ -101,5 +97,4 @@ export default defineComponent({
 		width: 70dvh;
 	}
 }
-
 </style>
