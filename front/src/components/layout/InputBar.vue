@@ -9,7 +9,7 @@
 		@click.prevent.stop
 		/>
 		<Button @click="handleInput" :style="{ width: width + 'dvh', height: height + 'dvh'}">
-			<slot></slot>
+			<slot name="buttonText"/>
 		</Button>
 	</form>
 </template>

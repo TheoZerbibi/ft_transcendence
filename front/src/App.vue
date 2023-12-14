@@ -25,5 +25,6 @@ export default {
 <style scoped>
 #app {
 	transition: background-color 0.3s ease;
+	overflow: hidden;
 }
 </style>
