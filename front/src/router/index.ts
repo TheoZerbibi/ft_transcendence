@@ -29,6 +29,11 @@ const router = createRouter({
 			component: () => import('../views/Chat.vue'),
 		},
 		{
+			path: '/channels',
+			name: 'Channels',
+			component: () => import('../views/Channels.vue'),
+		},
+		{
 			path: '/profile',
 			name: 'Profile',
 			component: () => import('../views/Profile.vue'),
@@ -48,6 +53,11 @@ const router = createRouter({
 			path: '/:notFound',
 			name: '404',
 			component: () => import('../views/PageNotFound.vue'),
+		},
+		{
+			path: '/teapot',
+			name: '418',
+			component: () => import('../views/Teapot.vue'),
 		},
 	],
 });
