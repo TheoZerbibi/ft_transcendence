@@ -130,8 +130,8 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				const data = await response.json();
-				if (data.is_error == true) {
+				const data: any = response.json();
+				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 					return;
 				}
@@ -166,8 +166,8 @@ export default {
 						snackbarStore.showSnackbar(error.message, 3000, 'red');
 						return;
 					});
-					const data = await response.json();
-					if (data.is_error == true) {
+					const data: any = response.json();
+					if (data.is_error) {
 						snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 						return;
 					}
@@ -203,8 +203,8 @@ export default {
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				});
-				const data = await response.json();
-				if (data.is_error == true) {
+				const data: any = response.json();
+				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 					return;
 				}
@@ -220,6 +220,9 @@ export default {
 			try {
 				if (!this.channelName || this.channelName === '') {
 					console.log('[changePassword]: channelName is empty');
+					return;
+				}
+				if (this.pwd.prev === '' && this.pwd.new === '' && this.pwd.confirm === '') {
 					return;
 				}
 				const response: any = await fetch(
@@ -242,7 +245,7 @@ export default {
 					return;
 				});
 				const data = await response.json();
-				if (data.is_error == true) {
+				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 					return;
 				}
@@ -278,8 +281,8 @@ export default {
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				});
-				const data = await response.json();
-				if (data.is_error == true) {
+				const data: any = response.json();
+				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 					return;
 				}

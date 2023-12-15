@@ -118,11 +118,15 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
+				const data: any = await response.json();
+				if (data.is_error) {
+					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
+					return;
+				}
 				if (!response.ok) {
 					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
 				}
-				const data: any = await response.json();
 				this.friendData = {
 					name: data.display_name,
 					avatar: data.avatar,

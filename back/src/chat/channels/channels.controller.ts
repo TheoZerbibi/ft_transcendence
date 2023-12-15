@@ -47,8 +47,9 @@ export class ChannelController {
 			return await this.channelService.getAllPublicChannels(user);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -62,8 +63,9 @@ export class ChannelController {
 			return await this.channelService.getJoinedChannelNames(user);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -76,8 +78,9 @@ export class ChannelController {
 			return await this.channelService.searchChannels(user, search);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -94,8 +97,9 @@ export class ChannelController {
 			return await this.channelService.accessChannelByName(user, channel_name);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -112,8 +116,9 @@ export class ChannelController {
 			return await this.channelService.getAllChannelUsers(user, channel_name);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -130,8 +135,9 @@ export class ChannelController {
 			return await this.channelService.getLastMessages(user, channel_name);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -151,8 +157,9 @@ export class ChannelController {
 			return channel;
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -170,8 +177,9 @@ export class ChannelController {
 			return await this.channelService.createChannelUser(user, channel_name, dto);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -189,8 +197,9 @@ export class ChannelController {
 			return await this.channelService.createChannelMessage(user, channel_name, ChannelMessageContentDto);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -212,8 +221,9 @@ export class ChannelController {
 			return await this.channelService.modChannel(user, channel_name, newParamsdto);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -230,8 +240,9 @@ export class ChannelController {
 			return await this.channelService.modChannelPwd(user, channel_name, channelModPwdDto);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -249,8 +260,9 @@ export class ChannelController {
 			return await this.channelService.setChannelUserAsAdmin(user, channel_name, dto);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -267,8 +279,9 @@ export class ChannelController {
 			return await this.channelService.modChannelUser(user, channel_name, dto);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -287,8 +300,9 @@ export class ChannelController {
 			return await this.channelService.deleteChannelUser(user, dto);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -304,8 +318,9 @@ export class ChannelController {
 			return await this.channelService.deleteChannel(user, dto);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 

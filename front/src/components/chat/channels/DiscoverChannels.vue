@@ -79,11 +79,16 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
+				const data: any = await response.json();
+				if (data.is_error) {
+					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
+					return;
+				}
 				if (!response.ok) {
 					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
 				}
-				this.channels = await response.json();
+				this.channels = data;
 			} catch (error) {
 				console.error(error);
 			}
@@ -113,7 +118,7 @@ export default {
 						return;
 					});
 					const data: any = await response.json();
-					if (data.is_error == true) {
+					if (data.is_error) {
 						snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 						return;
 					}
@@ -154,7 +159,7 @@ export default {
 					return;
 				});
 				const data: any = await response.json();
-				if (data.is_error == true) {
+				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 					return;
 				}

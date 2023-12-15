@@ -36,8 +36,9 @@ export class DirectMessageController {
 			return await this.directMessageService.accessDirectMessagesWith(user, login);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -57,8 +58,9 @@ export class DirectMessageController {
 			return await this.directMessageService.createDirectMessageWith(user, dto);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 }

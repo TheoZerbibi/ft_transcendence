@@ -136,10 +136,18 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				const channelInfos = await response.json();
-				this.channelName = channelInfos.name;
-				this.channelIsPublic = channelInfos.is_public;
-				this.channelUpdatedAt = channelInfos.updated_at; // to watch
+				const data: any = await response.json();
+				if (data.is_error) {
+					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
+					return;
+				}
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
+				this.channelName = data.name;
+				this.channelIsPublic = data.is_public;
+				this.channelUpdatedAt = data.updated_at; // to watch
 				this.fetchChannelUsersInfos();
 			} catch (error) {
 				console.error(error);
@@ -162,7 +170,12 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				this.users = await response.json();
+				const data: any = await response.json();
+				if (data.is_error) {
+					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
+					return;
+				}
+				this.users = data;
 			} catch (error) {
 				console.error(error);
 			}
@@ -180,7 +193,7 @@ export default {
 */
 		deleteChannel: async function() {
 			try {
-				await
+				const response: any = await
 				fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannelName}`,
 					{
@@ -195,6 +208,15 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
+				const data: any = await response.json();
+				if (data.is_error) {
+					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
+					return;
+				}
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
 				snackbarStore.showSnackbar('Channel deleted', 3000, 'green');
 			} catch (error) {
 				console.error(error);
@@ -203,7 +225,7 @@ export default {
 		leaveChannel: async function() {
 			try {
 				const channelName: string = this.selectedChannelName;
-				await fetch(
+				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${channelName}/leave`,
 					{
 						method: 'DELETE',
@@ -217,6 +239,15 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
+				const data: any = await response.json();
+				if (data.is_error) {
+					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
+					return;
+				}
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
 				snackbarStore.showSnackbar('Channel left', 3000, 'green');
 				//this.$emit('channel-left'); // TODO : emit event to refresh the channel list, messages etc
 			} catch (error) {
