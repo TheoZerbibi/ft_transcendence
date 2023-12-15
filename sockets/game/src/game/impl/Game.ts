@@ -235,6 +235,7 @@ export class Game implements IGame {
 	async addPoint(side: SIDE) {
 		const user: IUser = this.getPlayerBySide(side);
 		if (!user) return;
+		user.playerData.score++;
 		await this.prismaService.game_players.update({
 			where: {
 				player_id_game_id: {
@@ -246,7 +247,6 @@ export class Game implements IGame {
 				score: user.playerData.score,
 			},
 		});
-		user.playerData.score++;
 		this.newPoint = true;
 		this.setPause(true, 3000);
 		const loserSide: SIDE = side === SIDE.LEFT ? SIDE.RIGHT : SIDE.LEFT;

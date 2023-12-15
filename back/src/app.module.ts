@@ -20,8 +20,8 @@ import { RedisModule } from './redis/redis.module';
 		UserModule,
 		DirectMessageModule,
 		ChannelModule,
-		GameModule,
 		UserModule,
+		GameModule,
 	],
 })
 export class AppModule {}
