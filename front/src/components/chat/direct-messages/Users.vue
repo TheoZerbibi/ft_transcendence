@@ -9,6 +9,7 @@
 				<v-btn @click="sendFriendRequest(user.login)">+</v-btn>
 			</v-list-item>
 		</v-list>
+		<v-card-text v-else>~ no users except you ~</v-card-text>
 	</v-card>
 
 	<!-- Error handling -->

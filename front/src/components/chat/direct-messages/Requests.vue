@@ -29,6 +29,7 @@
 
 			</v-list-item>
 		</v-list>
+		<v-card-text v-else>~ no pending friend requests ~</v-card-text>
 	</v-card>
 
 	<!-- Error handling -->

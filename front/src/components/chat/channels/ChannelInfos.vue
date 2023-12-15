@@ -1,6 +1,7 @@
 <template>
+
 	<!-- Channel users list -->
-	<v-card>
+	<v-card v-if="selectedChannelName">
 		<v-card-title>
 			Users in {{ selectedChannelName }}
 		</v-card-title>
@@ -13,10 +14,19 @@
 			<v-btn @click="modUser('kick')" >Kick </v-btn>
 			</v-list-item>
 		</v-list>
-		<v-card-text v-else>~ no one in this channel except you ~</v-card-text>
+		<v-card-text v-else v-if="selectedChannelName">~ no one in this channel except you ~</v-card-text>
 	</v-card>
 
-	<v-card>
+	<v-card v-else>
+		<v-card-title>Users</v-card-title>
+		<v-card-text class="empty-card">
+			~ no channel selected ~
+		</v-card-text>
+	</v-card>
+
+	<!-- Channel Settings -->
+
+	<v-card v-if="selectedChannelName">
 		<v-card-title> Settings </v-card-title>
 
 		<v-card-text>
@@ -42,6 +52,13 @@
 			<v-btn @click="leaveChannel">Leave Channel</v-btn>
 			<v-btn @click="deleteChannel">Delete Channel</v-btn>
 		</v-card-actions>
+	</v-card>
+
+	<v-card v-else>
+		<v-card-title>Settings</v-card-title>
+		<v-card-text class="empty-card">
+			~ no channel selected ~
+		</v-card-text>
 	</v-card>
 
 	<!-- Error handling -->

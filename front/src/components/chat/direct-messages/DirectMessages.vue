@@ -1,6 +1,6 @@
 <template>
 
-	<v-card>
+	<v-card v-if="selectedFriendLogin">
 
 		<v-card-title>Messages with @{{ selectedFriendLogin }} </v-card-title>
 
@@ -33,6 +33,13 @@
 			</v-btn>
 		</v-card-actions>
 
+	</v-card>
+
+	<v-card v-else>
+		<v-card-title>Messages</v-card-title>
+		<v-card-text class="empty-card">
+			~ no friend selected ~
+		</v-card-text>
 	</v-card>
 
 	<!-- Error handling -->
