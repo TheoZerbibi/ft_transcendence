@@ -75,6 +75,10 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
 				this.joinedChannels = await response.json();
 				this.selectedChannel = this.joinedChannels[0] ? this.joinedChannels[0].name : '';
 				this.$emit('channel-selected', this.selectedChannel);

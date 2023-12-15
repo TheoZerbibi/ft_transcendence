@@ -1,7 +1,7 @@
 <template>
-	<button :class="`${buttonType}`" @click="emitResponse">
+	<v-btn :class="`${buttonType}`" @click="emitResponse">
 		{{ buttonText }}
-	</button>
+	</v-btn>
 </template>
 
 <script lang="ts">
@@ -25,13 +25,3 @@ export default {
 	}
 };
 </script>
-
-<style scoped>
-.accept {
-	background-color: green;
-}
-.reject {
-	background-color: red;
-}
-
-</style>

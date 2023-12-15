@@ -118,6 +118,10 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
 				const data: any = await response.json();
 				this.friendData = {
 					name: data.display_name,
@@ -137,7 +141,7 @@ export default {
 		},
 		blockUser: async function() {
 			try {
-				await fetch(
+				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/block`,
 					{
 						method: 'POST',
@@ -154,6 +158,10 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
 				snackbarStore.showSnackbar(
 					`You blocked ${this.friendLogin}`,
 					3000,

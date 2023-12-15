@@ -77,6 +77,10 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
 				this.friends = await response.json();
  				this.selectedFriendLogin = this.friends[0] ? this.friends[0].login : '';
 				this.$emit('messages-with', this.selectedFriendLogin);

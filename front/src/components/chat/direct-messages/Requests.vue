@@ -89,6 +89,10 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
 				this.requests = await response.json();
 			} catch (error) {
 				console.error(error);
@@ -96,7 +100,7 @@ export default {
 		},
 		respondRequest: async function(login: string, response: boolean) {
 			try {
-				await fetch(
+				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/respond-request`,
 					{
 						method: 'PATCH',
@@ -115,13 +119,17 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
 			} catch (error) {
 				console.log(error);
 			}
 		},
 		cancelRequest: async function(target_login: string) {
 			try {
-				await fetch(
+				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends`,
 					{
 						method: 'DELETE',
@@ -138,6 +146,10 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
 			} catch (error) {
 				console.log(error);
 			}

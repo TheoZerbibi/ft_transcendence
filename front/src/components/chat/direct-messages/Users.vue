@@ -64,6 +64,10 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
 				this.users = await response.json();
 			} catch (error) {
 				console.error(error);
@@ -71,7 +75,7 @@ export default {
 		},
 		sendFriendRequest: async function(friendLogin: string) {
 			try {
-				await fetch(
+				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/send-request`,
 					{
 						method: 'POST',
@@ -89,6 +93,10 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
 			} catch (error) {
 				console.error(error);
 			}
