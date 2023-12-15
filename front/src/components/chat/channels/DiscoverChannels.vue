@@ -13,6 +13,16 @@
 			~ no channel available ~
 		</v-card-text>
 
+		<v-card-actions>
+			<v-text-field
+				v-model="newChannelName"
+				label="Channel Name"
+				max-length="20"
+				@keyup.enter="createChannel"
+			></v-text-field>
+			<v-btn @click="createChannel">Create</v-btn>
+		</v-card-actions>
+
 	</v-card>
 
 	<PwdModal
@@ -54,6 +64,7 @@ export default {
 	},
 	data() {
 		return {
+			newChannelName: '' as string,
 			channels: [] as any[],
 			showModal: false as boolean,
 		};
@@ -93,6 +104,41 @@ export default {
 				console.error(error);
 			}
 		},
+		createChannel: async function() {
+			try {
+				const response: any = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/create`,
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+						body: JSON.stringify({
+							name: this.newChannelName as string,
+						}),
+					}
+				).catch((error: any) => {
+					snackbarStore.showSnackbar(error, 3000, 'red');
+					return;
+				});
+				const data: any = await response.json();
+				if (data.is_error) {
+					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
+					return;
+				}
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
+				this.fetchChannels();
+				this.newChannelName = '';
+				snackbarStore.showSnackbar(`Channel ${this.newChannelName} created`, 3000, 'green');
+			} catch (error) {
+				console.error(error);
+			}
+		},
 		joinChannel: async function(channel_name: string, is_public: boolean) {
 			try {
 				console.log(`${channel_name}: is_public = ${is_public}`);
@@ -127,6 +173,7 @@ export default {
 						return;
 					}
 					this.fetchChannels();
+					snackbarStore.showSnackbar(`You joined ${channel_name}`, 3000, 'green');
 				} else {
 					this.selectedPrivChannel = channel_name;
 					this.showModal = true;
