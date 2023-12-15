@@ -4,13 +4,13 @@
 			@click:outside="cancel"
 			>
 				<v-card-title>
-					<span class="headline">This channel is private</span>
+					<span class="headline">What name will you choose ?</span>
 				</v-card-title>
 				<v-card-text>
 					<v-text-field
-						v-model="password"
-						label="Password"
-						type="password"
+						v-model="name"
+						label="Name"
+						type="name"
 						max-length="20"
 						outlined
 						@keyup.enter="submit"
@@ -32,14 +32,14 @@ export default {
 	data() {
 		return {
 			dialog: this.showModal as boolean,
-			password: '' as string,
+			name: '' as string,
 		};
 	},
-	emits: ['join-private-channel', 'close-modal'],
+	emits: ['create-channel', 'close-modal'],
 	methods: {
 		submit() {
 			this.dialog = false;
-			this.$emit('join-private-channel', this.password);
+			this.$emit('create-channel', this.name);
 		},
 		cancel() {
 			this.dialog = false;
