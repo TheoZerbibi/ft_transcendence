@@ -19,22 +19,23 @@
 		</v-card-text>
 
 		<v-card-actions>
-			<v-text-field
-				v-model="newChannelName"
-				label="Channel Name"
-				max-length="20"
-				@keyup.enter="createChannel"
-			></v-text-field>
-			<v-btn @click="createChannel">Create</v-btn>
+			<v-btn @click="showNameModal">Create you own channel !</v-btn>
 		</v-card-actions>
 
 	</v-card>
 
 	<PwdModal class="modal"
-		v-if="showModal"
-		:showModal="showModal"
+		v-if="showPwdModal"
+		:showModal="showPwdModal"
 		@join-private-channel="joinPrivateChannel"
-		@close-modal="showModal = false"
+		@close-modal="showPwdModal = false"
+	/>
+
+	<ChannelNameModal class="modal"
+		v-if="showChannelNameModal"
+		:showModal="showChannelNameModal"
+		@create-channel="createChannel"
+		@close-modal="showChannelNameModal = false"
 	/>
 
 	<!-- Error handling -->
@@ -53,11 +54,13 @@ const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 
 import PwdModal from './PwdModal.vue';
+import ChannelNameModal from './CreateChannelModal.vue';
 
 export default {
 	components: { 
 		Snackbar,
 		PwdModal,
+		ChannelNameModal,
 	},
 	setup() {
 		const JWT = computed(() => userStore.getJWT);
@@ -72,7 +75,8 @@ export default {
 		return {
 			newChannelName: '' as string,
 			channels: [] as any[],
-			showModal: false as boolean,
+			showPwdModal: false as boolean,
+			showChannelNameModal: false as boolean,
 		};
 	},
 	beforeMount() {
@@ -110,7 +114,7 @@ export default {
 				console.error(error);
 			}
 		},
-		createChannel: async function() {
+		createChannel: async function(newName: string) {
 			try {
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/create`,
@@ -122,7 +126,7 @@ export default {
 							'Access-Control-Allow-Origin': '*',
 						},
 						body: JSON.stringify({
-							name: this.newChannelName as string,
+							name: newName,
 						}),
 					}
 				).catch((error: any) => {
@@ -139,11 +143,13 @@ export default {
 					return;
 				}
 				this.fetchChannels();
-				this.newChannelName = '';
 				snackbarStore.showSnackbar(`Channel ${this.newChannelName} created`, 3000, 'green');
 			} catch (error) {
 				console.error(error);
 			}
+		},
+		showNameModal() {
+			this.showChannelNameModal = true;
 		},
 		joinPublicChannel: async function(channel_name: string) {
 			try {
@@ -183,8 +189,7 @@ export default {
 		},
 		openPwdDialog(channel_name: string) {
 			this.selectedPrivChannel = channel_name;
-			this.showModal = true;
-			console.log(`[openPwdDialog]: ${this.selectedPrivChannel}`);
+			this.showPwdModal = true;
 		},
 		joinPrivateChannel: async function(pwd: string) {
 			try {
@@ -208,24 +213,24 @@ export default {
 				).catch((error: any) => {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					this.selectedPrivChannel = '';
-					this.showModal = false;
+					this.showPwdModal = false;
 					return;
 				});
 				const data: any = await response.json();
 				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 					this.selectedPrivChannel = '';
-					this.showModal = false;
+					this.showPwdModal = false;
 					return;
 				}
 				if (!response.ok) {
 					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					this.selectedPrivChannel = '';
-					this.showModal = false;
+					this.showPwdModal = false;
 					return;
 				}
 				this.selectedPrivChannel = '';
-				this.showModal = false;
+				this.showPwdModal = false;
 				this.fetchChannels();
 			} catch (error) {
 				console.error(error);
