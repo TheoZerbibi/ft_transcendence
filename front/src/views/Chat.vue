@@ -7,7 +7,7 @@
 
 		<!-- Top bar : tabs -->
 		<v-row fill-height>
-			<v-col class="custom-column">
+			<v-col fill-height class="custom-column">
 				<v-tabs v-model="tab">
 					<v-spacer></v-spacer>
 					<v-tab :value="1">DMs</v-tab>
@@ -22,14 +22,14 @@
 
 		<!-- Main content -->
 		<v-row fill-height>
-			<v-col class="custom-column">
+			<v-col fill-height class="custom-column">
 				<v-window v-model="tab">
 
 					<!-- Direct messages tab -->
 					<v-window-item :value="1">
 							<!-- Friend, requests, users lists -->
-						<v-row>
-							<v-col
+						<v-row fill-height>
+							<v-col fill-height
 								class="custom-column"
 								cols="12"
 								md="3">
@@ -38,14 +38,14 @@
 								<Users/>
 							</v-col>
 							<!-- DMs -->
-							<v-col
+							<v-col fill-height
 								class="custom-column"
 								cols="12"
 								md="6">
 								<DirectMessages :selectedFriendLogin="selectedFriendLogin" />
 							</v-col>
 							<!-- Friend profile -->
-							<v-col
+							<v-col fill-height
 								class="custom-column"
 								cols="12"
 								md="3">
@@ -56,9 +56,9 @@
 
 					<!-- Channels tab -->
 					<v-window-item :value="2">
-						<v-row>
+						<v-row fill-height>
 							<!-- Joined channels, discover channels -->
-							<v-col
+							<v-col fill-height
 								class="custom-column"
 								cols="12"
 								md="3">
@@ -67,26 +67,27 @@
 							</v-col>
 
 							<!-- Colonne du milieu pour Messages (3/4 de l'écran) -->
-							<v-col
+							<v-col fill-height
 								class="custom-column"
 								cols="12"
 								md="6">
 								<ChannelMessages :selectedChannelName="selectedChannelName"></ChannelMessages>
 							</v-col>
 
-							<v-col
+							<v-col fill-height
 								class="custom-column"
 								cols="12"
 								md="3">
 								<ChannelUsers :selectedChannelName="selectedChannelName"></ChannelUsers>
+								<ChannelSettings :selectedChannelName="selectedChannelName"></ChannelSettings>
 							</v-col>
 						</v-row>
 					</v-window-item>
 
 					<!-- Profile tab -->
 					<v-window-item :value="3">
-						<v-row>
-							<v-col
+						<v-row fill-height>
+							<v-col fill-height
 								class="custom-column"
 								cols="12"
 								md="3">
@@ -115,6 +116,7 @@ import DiscoverChannels from '../components/chat/channels/DiscoverChannels.vue';
 import JoinedChannels from '../components/chat/channels/JoinedChannels.vue';
 import ChannelMessages from '../components/chat/channels/ChannelMessages.vue';
 import ChannelUsers from '../components/chat/channels/ChannelInfos.vue';
+import ChannelSettings from '../components/chat/channels/ChannelSettings.vue';
 
 import BlockedUsers from '../components/chat/profile/BlockedUsers.vue';
 
@@ -140,6 +142,7 @@ export default defineComponent({
 		JoinedChannels,
 		ChannelMessages,
 		ChannelUsers,
+		ChannelSettings,
 
 		/* Profile */
 		BlockedUsers,
@@ -284,6 +287,10 @@ export default defineComponent({
 	flex-grow: 1;
 	flex-shrink: 1;;
 	border-radius: 30px;
+}
+
+.scrollable-card {
+	overflow-y: auto;
 }
 
 .v-card-title {
