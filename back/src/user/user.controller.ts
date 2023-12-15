@@ -10,7 +10,6 @@ import {
 	Param,
 	Patch,
 	Post,
-	Req,
 	UploadedFile,
 	UseGuards,
 	UseInterceptors,
@@ -208,9 +207,9 @@ export class UserController {
 	@Delete('profile')
 	@ApiOperation({ summary: 'Delete a user' })
 	@ApiBearerAuth('JWT-auth')
-	async deleteUser(@Param('id') user_id: string): Promise<void> {
-		const user_id_int = parseInt(user_id);
-		await this.userService.deleteUser(user_id_int);
+	async deleteUser(@GetUser() user: User): Promise<void> {
+
+		await this.userService.deleteUser(user.id);
 	}
 
 	/************************************* Friends *************************************/

@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Prisma, User } from '@prisma/client';
 import { UUID } from 'crypto';
 import { GameDto, GamePlayerDto } from './dto';
-import { PlayerInput, convertGameData } from './utils/ConvertData';
+import { convertGameData } from './utils/ConvertData';
 import { UserService } from 'src/user/user.service';
 
 @Injectable()
