@@ -9,7 +9,7 @@
 			<v-list-item v-for="request in friendRequests" :key="request.id">
 				<template v-if="request.user_login == user.login">
 					{{ request.target_display_name }}
-					<v-btn @click="cancelRequest(request.target_display_name)">Cancel</v-btn>
+					<v-btn @click="cancelRequest(request.target_login)">Cancel</v-btn>
 				</template>
 				<template v-else>
 					{{ request.user_display_name }}
