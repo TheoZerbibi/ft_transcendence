@@ -24,12 +24,44 @@ export class GameController {
 		return this.gameService.getEmptyGame();
 	}
 
+	@Get('getMatchHistory')
+	@ApiOperation({ summary: 'Get all history of match.' })
+	@ApiBearerAuth('JWT-auth')
+	@HttpCode(HttpStatus.OK)
+	getMatchHistory() {
+		return this.gameService.getMatchHistory();
+	}
+
+	@Get('getOngoingGame')
+	@ApiOperation({ summary: 'Get all game ongoing.' })
+	@ApiBearerAuth('JWT-auth')
+	@HttpCode(HttpStatus.OK)
+	getOngoingGame() {
+		return this.gameService.getOngoingGame();
+	}
+
+	@Get('getLeaderboard')
+	@ApiOperation({ summary: 'Get match leaderboard.' })
+	@ApiBearerAuth('JWT-auth')
+	@HttpCode(HttpStatus.OK)
+	getLeaderboard() {
+		return this.gameService.getLeaderboard();
+	}
+
 	@Post('createGame')
 	@ApiOperation({ summary: 'Create a new Game' })
 	@ApiBearerAuth('JWT-auth')
 	@HttpCode(HttpStatus.OK)
 	createNewGame() {
 		return this.gameService.createNewGame();
+	}
+
+	@Get('getMyMatchHistory')
+	@ApiOperation({ summary: 'Get all history of match.' })
+	@ApiBearerAuth('JWT-auth')
+	@HttpCode(HttpStatus.OK)
+	getMyMatchHistory() {
+		return this.gameService.getMatchHistory();
 	}
 
 	@Post(':uuid')

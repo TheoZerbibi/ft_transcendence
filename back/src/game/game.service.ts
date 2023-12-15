@@ -5,10 +5,14 @@ import { Prisma, User } from '@prisma/client';
 import { UUID } from 'crypto';
 import { GameDto, GamePlayerDto } from './dto';
 import { PlayerInput, convertGameData } from './utils/ConvertData';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class GameService {
-	constructor(private prisma: PrismaService) {}
+	constructor(
+		private prisma: PrismaService,
+		private readonly userService: UserService,
+	) {}
 
 	private async createGame(isPrivate: boolean): Promise<GameDto | undefined> {
 		try {
@@ -221,6 +225,126 @@ export class GameService {
 		} catch (e) {
 			throw e;
 		}
+	}
+
+	async getMatchHistory(): Promise<any> {
+		try {
+			const games: Array<any> = await this.prisma.game.findMany({
+				where: {
+					end_at: {
+						not: null,
+					},
+				},
+				orderBy: {
+					end_at: 'desc',
+				},
+			});
+			if (!games) return { games: null };
+			for (const game of games) {
+				const playersInGame: Array<GamePlayerDto> = await this.getAllPlayer(game);
+				const activePlayers = playersInGame.filter((player) => !player.is_spec);
+				game.players = activePlayers;
+			}
+			return games;
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	async getMyMatchHistory(user: User): Promise<any> {
+		try {
+			const games: Array<any> = await this.prisma.game.findMany({
+				where: {
+					gamePlayer: {
+						some: {
+							player_id: user.id,
+						},
+					},
+				},
+				include: {
+					gamePlayer: true,
+				},
+				orderBy: {
+					end_at: 'desc',
+				},
+			});
+			if (!games) return { games: null };
+			for (const game of games) {
+				const playersInGame: Array<GamePlayerDto> = await this.getAllPlayer(game.game);
+				const activePlayers = playersInGame.filter((player) => !player.is_spec);
+				game.game.players = activePlayers;
+			}
+			return games;
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	async getOngoingGame(): Promise<any> {
+		try {
+			const games: Array<any> = await this.prisma.game.findMany({
+				where: {
+					started_at: {
+						not: null,
+					},
+					end_at: null,
+				},
+			});
+			if (!games) return { games: null };
+			for (const game of games) {
+				const playersInGame: Array<GamePlayerDto> = await this.getAllPlayer(game);
+				const activePlayers = playersInGame.filter((player) => !player.is_spec);
+				game.players = activePlayers;
+			}
+			return games;
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	async getLeaderboard(): Promise<any> {
+		try {
+			const games: Array<any> = await this.prisma.game.findMany({
+				where: {
+					end_at: {
+						not: null,
+					},
+				},
+			});
+			if (!games) return { games: null };
+			for (const game of games) {
+				const playersInGame: Array<GamePlayerDto> = await this.getAllPlayer(game);
+				const activePlayers = playersInGame.filter((player) => !player.is_spec);
+				game.players = activePlayers;
+			}
+			const leaderboard = await this.generateLeadeboard(games);
+			return leaderboard;
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	async generateLeadeboard(games: Array<any>): Promise<Array<any>> {
+		const leaderboard = [];
+		for (const game of games) {
+			for (const player of game.players) {
+				if (player.is_win === false) continue;
+				const index = leaderboard.findIndex((user) => user.id === player.player_id);
+				if (index === -1) {
+					const user = await this.userService.getUserById(player.player_id);
+					leaderboard.push({
+						id: player.player_id,
+						score: 1,
+						avatar: user.avatar,
+						login: user.login,
+						displayName: user.display_name,
+					});
+				} else {
+					leaderboard[index].score += 1;
+				}
+			}
+		}
+		return leaderboard;
 	}
 
 	async getGameStat(gameUID: string): Promise<any> {
