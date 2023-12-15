@@ -167,7 +167,7 @@ export default {
 .arcade-container
   overflow: hidden
   position: relative
-  background: url('/public/game/menu/arcade.png')
+  background: url('/game/menu/arcade.png')
   background-size: contain
   background-position: center
   background-repeat: no-repeat
