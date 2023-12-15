@@ -47,8 +47,9 @@ export class UserController {
 			return await this.userService.getUsers();
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -62,8 +63,9 @@ export class UserController {
 			return await this.userService.getNotFriendsOfUser(user);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -77,8 +79,9 @@ export class UserController {
 			return await this.userService.getUsersStartingWith(start);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -92,8 +95,9 @@ export class UserController {
 			return user;
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -110,8 +114,9 @@ export class UserController {
 			return user;
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -129,8 +134,9 @@ export class UserController {
 			return { response: await this.userService.getDisplayName(displayName, login) };
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -145,8 +151,9 @@ export class UserController {
 			return await this.userService.getFriendsOfUser(user);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -160,8 +167,9 @@ export class UserController {
 			return await this.userService.getFriendRequestsOfUser(user);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -175,8 +183,9 @@ export class UserController {
 			return await this.userService.getBlockedUsers(user);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -192,7 +201,7 @@ export class UserController {
 			return this.userService.getCloudinaryLink(login, file);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
 		}
 	}
@@ -208,8 +217,9 @@ export class UserController {
 				return this.userService.getCloudinaryLink(login, file);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -228,8 +238,9 @@ export class UserController {
 			await this.userService.makeFriendRequest(user, dto.login);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -243,8 +254,9 @@ export class UserController {
 			await this.userService.blockUser(user, dto.login);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -260,8 +272,9 @@ export class UserController {
 			return this.userService.createUser(dto);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -274,8 +287,9 @@ export class UserController {
 			return this.userService.editUser(userId, dto);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -289,8 +303,9 @@ export class UserController {
 			await this.userService.respondRequest(user, dto.login, dto.response);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -317,8 +332,9 @@ export class UserController {
 			await this.userService.removeFriend(user, dto.login);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 
@@ -332,8 +348,9 @@ export class UserController {
 			await this.userService.unblockUser(user, dto.login);
 		} catch (e: any) {
 			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return { is_error: true, error_message: e.message };
+				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
 			}
+			throw e;
 		}
 	}
 }
