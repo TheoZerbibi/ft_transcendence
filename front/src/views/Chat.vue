@@ -115,7 +115,7 @@ import FriendProfile from '../components/chat/direct-messages/FriendProfile.vue'
 import DiscoverChannels from '../components/chat/channels/DiscoverChannels.vue';
 import JoinedChannels from '../components/chat/channels/JoinedChannels.vue';
 import ChannelMessages from '../components/chat/channels/ChannelMessages.vue';
-import ChannelUsers from '../components/chat/channels/ChannelInfos.vue';
+import ChannelUsers from '../components/chat/channels/ChannelUsers.vue';
 import ChannelSettings from '../components/chat/channels/ChannelSettings.vue';
 
 import BlockedUsers from '../components/chat/profile/BlockedUsers.vue';
@@ -351,6 +351,17 @@ export default defineComponent({
 
 .justify-start {
     justify-content: flex-start;
+}
+
+.modal {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding: 1rem;
+	border-radius: 0.5rem;
+	background-color: rgba(0, 0, 0, 0.6);
+	z-index: 100;
 }
 
 </style>
