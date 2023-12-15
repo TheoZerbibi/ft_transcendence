@@ -127,6 +127,10 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
 				this.channelUsers = await response.json();
 			} catch (error) {
 				console.error(error);
@@ -138,7 +142,7 @@ export default {
 					console.log('[leaveChannel]: channelName is empty');
 					return;
 				}
-				await fetch(
+				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/leave`,
 					{
 						method: 'DELETE',
@@ -153,8 +157,11 @@ export default {
 					}).catch((error: any) => {
 						snackbarStore.showSnackbar(error.message, 3000, 'red');
 						return;
+					});
+					if (!response.ok) {
+						snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+						return;
 					}
-				);
 				snackbarStore.showSnackbar(`You left ${this.channelName}`, 3000, 'green');
 			} catch (error) {
 				console.error(error);
@@ -166,7 +173,7 @@ export default {
 					console.log('[deleteChannel]: channelName is empty');
 					return;
 				}
-				await fetch(
+				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel`,
 					{
 						method: 'DELETE',
@@ -183,6 +190,10 @@ export default {
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				});
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
 			} catch (error) {
 				console.error(error);
 			}
@@ -193,7 +204,7 @@ export default {
 					console.log('[changePassword]: channelName is empty');
 					return;
 				}
-				await fetch(
+				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.channelName}/settings/owner/pwd`,
 					{
 						method: 'PATCH',
@@ -212,6 +223,10 @@ export default {
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				});
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
 			} catch (error) {
 				console.error(error);
 			}
@@ -222,7 +237,7 @@ export default {
 					console.log('[modUser]: channelName is empty');
 					return;
 				}
-				await fetch(
+				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.channelName}/settings/admin/mod_user`,
 					{
 						method: 'PATCH',
@@ -240,6 +255,10 @@ export default {
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				});
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
 			} catch (error) {
 				console.error(error);
 			}

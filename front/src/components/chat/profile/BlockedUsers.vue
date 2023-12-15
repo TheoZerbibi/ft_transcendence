@@ -49,9 +49,33 @@ export default {
 	},
 	mounted() {},
 	methods: {
+		fetchBlockedUsers: async function () {
+			try {
+				const response: any = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/blocked`,
+					{
+						method: 'GET',
+						headers: {
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+					},
+				).catch((error: any) => {
+					snackbarStore.showSnackbar(error, 3000, 'red');
+					return;
+				});
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
+				this.blockedUsers = await response.json();
+			} catch (error) {
+				console.error(error);
+			}
+		},
 		unblockUser: async function (login: string) {
 			try {
-				await fetch(
+				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/blocked`,
 					{
 						method: 'DELETE',
@@ -68,27 +92,11 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
-				this.fetchBlockedUsers();
-			} catch (error) {
-				console.error(error);
-			}
-		},
-		fetchBlockedUsers: async function () {
-			try {
-				const response: any = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/blocked`,
-					{
-						method: 'GET',
-						headers: {
-							Authorization: `Bearer ${this.JWT}`,
-							'Access-Control-Allow-Origin': '*',
-						},
-					},
-				).catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
-				});
-				this.blockedUsers = await response.json();
+				}
+				this.fetchBlockedUsers();
 			} catch (error) {
 				console.error(error);
 			}

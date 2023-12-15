@@ -105,6 +105,10 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
 				this.messages = await response.json();
 			} catch (error) {
 				console.error(error);
@@ -116,7 +120,7 @@ export default {
 					|| this.input.trim() === '') {
 					return;
 				}
-				await fetch(
+				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.channelName}/new_message`,
 					{
 						method: 'POST',
@@ -133,6 +137,10 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
 				this.fetchMessages();
 				this.input = '';
 			} catch (error) {

@@ -79,6 +79,10 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
 				this.channels = await response.json();
 			} catch (error) {
 				console.error(error);
@@ -92,7 +96,7 @@ export default {
 				}
 
 				if (is_public) {
-					await fetch(
+					const response: any = await fetch(
 						`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${channel_name}/join`,
 						{
 							method: 'POST',
@@ -108,6 +112,10 @@ export default {
 						snackbarStore.showSnackbar(error, 3000, 'red');
 						return;
 					});
+					if (!response.ok) {
+						snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+						return;
+					}
 					this.fetchChannels();
 				} else {
 					this.selectedPrivChannel = channel_name;
@@ -124,7 +132,7 @@ export default {
 					return;
 				}
 				console.log(`${this.selectedPrivChannel}: user input pwd = ${pwd}`);
-				await fetch(
+				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedPrivChannel}/join`,
 					{
 						method: 'POST',
@@ -140,6 +148,10 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
 				this.selectedPrivChannel = '';
 				this.showModal = false;
 				this.fetchChannels();
