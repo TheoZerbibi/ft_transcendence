@@ -10,7 +10,7 @@
 					<v-btn @click="joinPublicChannel(channel.name)">+</v-btn>
 				</template>
 				<template v-else>
-					<v-btn @click="joinPrivateChannel(channel.name)">+</v-btn>
+					<v-btn @click="openPwdDialog(channel.name)">+</v-btn>
 				</template>
 			</v-list-item>
 		</v-list>
@@ -181,12 +181,12 @@ export default {
 				console.error(error);
 			}
 		},
-		joinPrivateChannel(channel_name: string) {
+		openPwdDialog(channel_name: string) {
 			this.selectedPrivChannel = channel_name;
 			this.showModal = true;
-			console.log(`[joinPrivateChannel]: ${this.selectedPrivChannel}`);
+			console.log(`[openPwdDialog]: ${this.selectedPrivChannel}`);
 		},
-/* 		joinPrivateChannel: async function(pwd: string) {
+		joinPrivateChannel: async function(pwd: string) {
 			try {
 				if (!pwd) {
 					snackbarStore.showSnackbar('Please enter a password', 3000, 'red');
@@ -202,20 +202,26 @@ export default {
 							'Access-Control-Allow-Origin': '*',
 						},
 						body: JSON.stringify({
-							chan_password: pwd,
+							chan_password: pwd as string,
 						}),
 					}
 				).catch((error: any) => {
 					snackbarStore.showSnackbar(error, 3000, 'red');
+					this.selectedPrivChannel = '';
+					this.showModal = false;
 					return;
 				});
 				const data: any = await response.json();
 				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
+					this.selectedPrivChannel = '';
+					this.showModal = false;
 					return;
 				}
 				if (!response.ok) {
 					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					this.selectedPrivChannel = '';
+					this.showModal = false;
 					return;
 				}
 				this.selectedPrivChannel = '';
@@ -224,7 +230,7 @@ export default {
 			} catch (error) {
 				console.error(error);
 			}
-		}, */
+		},
 	}
 }
 
