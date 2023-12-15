@@ -122,3 +122,15 @@ export class DeleteChannelDto {
 	// eslint-disable-next-line
 	password: string;
 }
+
+export class ErrorDto {
+	@ApiProperty()
+	@IsBoolean()
+	// eslint-disable-next-line
+	is_error: boolean;
+
+	@ApiProperty()
+	@IsString()
+	// eslint-disable-next-line
+	error_message: string;
+}

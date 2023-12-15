@@ -29,7 +29,7 @@ export class DirectMessageService {
 
 	/******************************* DirectMessage Access ******************************/
 
-	async accessDirectMessagesWith(user: User, target_login: string): Promise<DirectMessageDto[]> {
+	async accessDirectMessagesWith(user: User, target_login: string) {
 		try {
 			const targetUser = await this.userService.findUserByName(target_login);
 			if (!targetUser) throw new BadRequestException(`User ${target_login} not found`);
@@ -111,7 +111,7 @@ export class DirectMessageService {
 	/* 										Creation								   */
 	/***********************************************************************************/
 
-	async createDirectMessageWith(user: User, dto: CreateDirectMessageDto): Promise<DirectMessageDto> {
+	async createDirectMessageWith(user: User, dto: CreateDirectMessageDto) {
 		try {
 			const targetUser: User | null = await this.userService.findUserByName(dto.target_login);
 			if (!targetUser) throw new BadRequestException(`User ${dto.target_login} not found`);

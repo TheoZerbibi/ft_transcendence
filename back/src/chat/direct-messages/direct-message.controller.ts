@@ -1,5 +1,5 @@
 // COMMON
-import { UseGuards, Controller, Body, Param, Get, Patch, Post, Delete } from '@nestjs/common';
+import { UseGuards, Controller, Body, Param, Get, Patch, Post, Delete, BadRequestException, ForbiddenException } from '@nestjs/common';
 // AUTH
 import { JwtGuard } from 'src/auth/guard';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -31,8 +31,14 @@ export class DirectMessageController {
 	async getAllDirectMessages(
 		@GetUser() user: User,
 		@Param('login') login: string,
-	): Promise<DirectMessageDto[]> {
-		return await this.directMessageService.accessDirectMessagesWith(user, login);
+	) {
+		try {
+			return await this.directMessageService.accessDirectMessagesWith(user, login);
+		} catch (e: any) {
+			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
+				return { is_error: true, error_message: e.message };
+			}
+		}
 	}
 
 	/***********************************************************************************/
@@ -43,7 +49,16 @@ export class DirectMessageController {
 	@UseGuards(JwtGuard) // Needed to access user attribute
 	@ApiOperation({ summary: 'Create direct message' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async createDirectMessage(@GetUser() user: User, @Body() dto: CreateDirectMessageDto): Promise<DirectMessageDto> {
-		return await this.directMessageService.createDirectMessageWith(user, dto);
+	async createDirectMessage(
+		@GetUser() user: User, 
+		@Body() dto: CreateDirectMessageDto
+	) {
+		try {
+			return await this.directMessageService.createDirectMessageWith(user, dto);
+		} catch (e: any) {
+			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
+				return { is_error: true, error_message: e.message };
+			}
+		}
 	}
 }

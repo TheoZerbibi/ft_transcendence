@@ -24,6 +24,7 @@
 			<v-text-field
 				v-model="input"
 				placeholder="Type your message..."
+				max-length="200"
 				@keyup.enter="sendMessage"
 			/>
 			<v-btn

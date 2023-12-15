@@ -112,6 +112,11 @@ export default {
 						snackbarStore.showSnackbar(error, 3000, 'red');
 						return;
 					});
+					const data: any = await response.json();
+					if (data.is_error == true) {
+						snackbarStore.showSnackbar(data.error_message, 3000, 'red');
+						return;
+					}
 					if (!response.ok) {
 						snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 						return;
@@ -148,6 +153,11 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
+				const data: any = await response.json();
+				if (data.is_error == true) {
+					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
+					return;
+				}
 				if (!response.ok) {
 					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
