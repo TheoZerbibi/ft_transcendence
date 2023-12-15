@@ -148,58 +148,17 @@ export default defineComponent({
 		BlockedUsers,
 	},
 	setup() {
-
-//				const webSocketStore = useSocketStore();
-				const userStore = useUser();
-				const snackbarStore = useSnackbarStore();
-
-//				let connectedUsers: any = [];
-				const tab = ref(0); // Start with the first tab active
-			
-//				const isConnected = computed(() => webSocketStore.isConnected);
-//				const socket = computed(() => webSocketStore.getSocket);
-				const JWT = computed(() => userStore.getJWT);
-				const user = computed(() => userStore.getUser);
-			
-//				const connect = async (JWT: string) => {
-//					await webSocketStore.connect(JWT, import.meta.env.VITE_CHAT_SOCKET_PORT);
-//				};
-//			
-//				const disconnect = () => {
-//					webSocketStore.disconnect();
-//				};
-//
-//				const socketListen = () => {
-//					if (socket.value) {
-//						socket.value.on('chat-error', (data: any) => { disconnect(); snackbarStore.showSnackbar(data, 3000, 'red'); });
-//					//	socket.value.on('welcome', (data: any) => { connectedUsers = JSON.parse(data) });
-//					//	socket.value.on('new-direct-message', (data: any) => { connectedUsers = JSON.parse(data) });
-//					//	socket.value.on('channel-updated', (data: any) => { connectedUsers = JSON.parse(data) });
-//					//	socket.value.on('channel-user-update', (data: any) => { connectedUsers = JSON.parse(data) });
-//					//	socket.value.on('channel-creation', (data: any) => { connectedUsers = JSON.parse(data) });
-//					//	socket.value.on('channel-joined', (data: any) => { connectedUsers = JSON.parse(data) });
-//					//	socket.value.on('user-quitted-channel', (data: any) => { connectedUsers = JSON.parse(data) });
-//					//	socket.value.on('channel-deleted', (data: any) => { connectedUsers = JSON.parse(data) });
-//						}
-//				};
-//
-//				onMounted(() => {
-//						connect(JWT.value);
-//						console.log(isConnected.value);
-//						console.log('HELLO WORLD !');
-//						});
-//
-				return {
-//					isConnected,
-//						socket,
-//						connect,
-//						disconnect,
-//						socketListen,
-						JWT,
-						user,
-//						connectedUsers,
-						tab,
-				};
+		const userStore = useUser();
+		const tab = ref(0);
+	
+		const JWT = computed(() => userStore.getJWT);
+		const user = computed(() => userStore.getUser);
+	
+		return {
+				JWT,
+				user,
+				tab,
+		};
 
 	},
 	data() {
@@ -207,13 +166,6 @@ export default defineComponent({
 			selectedFriendLogin: null as any,
 			selectedChannelName: '' as string,
 		}
-	},
-	watch: {
-		tab(newVal) {
-			if (newVal === 1) {
-				//this.fetchDirectMessages(friends[0].login);
-			}
-		},
 	},
 	methods: {
 		updateMessagesList(login: string) {
@@ -223,8 +175,6 @@ export default defineComponent({
 		updateSelectedChannel(selectedChannelName: string) {
 			this.selectedChannelName = selectedChannelName;
 		},
-
-
 	},
 });
 
@@ -343,6 +293,10 @@ export default defineComponent({
 		1px 1px 2px plum,
 		0 0 1em purple,
 		0 0 0.2em goldenrod;
+}
+
+.justify-center {
+	justify-content: center;
 }
 
 .justify-end {

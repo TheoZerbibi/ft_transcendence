@@ -1,10 +1,8 @@
 <template>
-	<v-row v-if="showModal">
-		<v-dialog
+		<v-dialog v-if="showModal" class="align-center justify-center"
 			v-model="dialog"
 			@click:outside="cancel"
 			>
-			<v-card>
 				<v-card-title>
 					<span class="headline">This channel is private</span>
 				</v-card-title>
@@ -23,9 +21,7 @@
 					<v-btn color="primary" @click="submit">Valider</v-btn>
 					<v-btn color="error" @click="cancel">Annuler</v-btn>
 				</v-card-actions>
-			</v-card>
 		</v-dialog>
-	</v-row>
 </template>
 
 <script lang="ts">
@@ -35,14 +31,13 @@ export default {
 	},
 	data() {
 		return {
-			dialog: this.showModal,
+			dialog: this.showModal as boolean,
 			password: '' as string,
 		};
 	},
 	emits: ['join-private-channel', 'close-modal'],
 	methods: {
 		submit() {
-			console.log('Mot de passe saisi :', this.password);
 			this.dialog = false;
 			this.$emit('join-private-channel', this.password);
 		},
