@@ -1,22 +1,20 @@
 <template>
 
 	<!-- Joined Channels list -->
-	<div class="joinedChannels-container">
-		<h2>Joined Channels</h2>
-		<div class="scrollable-content">
-			<v-list v-if="joinedChannels.length">
-				<v-list-item
-					v-for="channel in joinedChannels"
-					:key="channel.id"
-					@click="displayMessagesOfChannel(channel.name)"
-				>
-				{{ channel.name }}
-				<v-btn @click="displaySettings(channel.name)">Settings</v-btn>
-				</v-list-item>
-			</v-list>
+	<v-card>
+		<v-card-title>Joined Channels</v-card-title>
+		<v-list v-if="joinedChannels.length">
+			<v-list-item
+				v-for="channel in joinedChannels"
+				:key="channel.id"
+				@click="displayMessagesOfChannel(channel.name)"
+			>
+			{{ channel.name }}
+			<v-btn @click="displaySettings(channel.name)">Settings</v-btn>
+			</v-list-item>
+		</v-list>
 		<p v-else>~ sorry, no joinedChannels for now ~</p>
-		</div>
-	</div>
+	</v-card>
 	
 	<!-- Modal: channel settings -->
 	<ChannelSettingsModal v-if="showInfos" :selectedChannelName="selectedChannel" :show="showInfos" @close="closeModal"/>
@@ -107,7 +105,3 @@ export default {
 	}
 }
 </script>
-
-<style scoped>
-
-</style>

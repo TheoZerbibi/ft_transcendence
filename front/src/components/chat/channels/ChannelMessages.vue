@@ -1,39 +1,45 @@
 <template>
 	<v-container>
-			<v-row>
-				<v-col cols="11">
-					<!-- Chat Messages -->
-					<v-card class="scrollable-content" style="overflow-y: auto;">
-						<v-list>
-							<v-list-item v-for="message in messages" :key="message.id">
-								<v-list-item-subtitle>
-									{{ message.username }}
-									{{ message.created_at }}
-								</v-list-item-subtitle>
-								{{ message.content }}
-							</v-list-item>
-						</v-list>
-					</v-card>
-				</v-col>
-			</v-row>
 
-			<v-row>
-				<v-col cols="11">
-					<!-- Message Input -->
-					<v-card class="pa-4">
-						<v-row>
-							<v-col cols="9">
-								<input v-model="input" @keyup.enter="sendMessage" placeholder="Type you message..." />
-							</v-col>
-							<v-col cols="1">
-								<button @click="sendMessage">-></button>
-							</v-col>
-						</v-row>
-					</v-card>
-				</v-col>
-			</v-row>
+		<!-- Chat Messages -->
+		<v-row>
+			<v-col cols="11">
+				<v-card>
+				<v-card-title>{{ selectedChannelName }}</v-card-title>
+					<v-list>
+						<v-list-item v-for="message in messages" :key="message.id">
+							<v-list-item-subtitle>
+								{{ message.username }}
+								{{ message.created_at }}
+							</v-list-item-subtitle>
+							{{ message.content }}
+						</v-list-item>
+					</v-list>
+				</v-card>
+			</v-col>
+		</v-row>
+
+		<!-- Message Input -->
+		<v-row>
+			<v-col cols="11">
+				<v-card class="pa-4">
+					<v-row>
+						<v-col cols="9">
+							<input v-model="input" @keyup.enter="sendMessage" placeholder="Type you message..." />
+						</v-col>
+						<v-col cols="1">
+							<button @click="sendMessage">-></button>
+						</v-col>
+					</v-row>
+				</v-card>
+			</v-col>
+		</v-row>
+
 	</v-container>
+
+	<!-- Error handling -->
 	<Snackbar></Snackbar>
+
 </template>
 
 <script lang="ts">
@@ -143,13 +149,3 @@ export default {
 };
 
 </script>
-
-<style scoped>
-
-.scrollable-content {
-	height: 70vh;
-	overflow-y: auto;
-}
-
-
-</style>

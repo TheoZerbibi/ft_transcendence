@@ -1,17 +1,18 @@
 <template>
-	<div class="overlay">
-		<div class="blocked-list-container">
-			<h2>Blocked Users</h2>
-			<ul class="no-bullets" v-if="blockedUsers.length">
-				<li v-for="user in blockedUsers" :key="user.id">
-					{{ user.display_name }} <!-- L'objet contient aussi l'avatar si tu veux -->
-					<button @click="unblockUser(user.login)">x</button>
-				</li>
-			</ul>
-			<p v-else>~ u havent blocked anyone for now ~</p>
-		</div>
-	</div>
 
+	<!-- Blocked users list -->
+	<v-card>
+	<v-card-title>Blocked Users</v-card-title>
+		<v-list class="no-bullets" v-if="blockedUsers.length">
+			<v-list-item v-for="user in blockedUsers" :key="user.id">
+				{{ user.display_name }} <!-- L'objet contient aussi l'avatar si tu veux -->
+				<v-btn @click="unblockUser(user.login)">x</v-btn>
+			</v-list-item>
+		</v-list>
+		<p v-else>~ u havent blocked anyone for now ~</p>
+	</v-card>
+
+	<!-- Error handling -->
 	<Snackbar></Snackbar>
 </template>
 
