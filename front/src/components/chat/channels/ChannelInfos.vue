@@ -11,7 +11,7 @@
 				:key="channelUser.id"
 			>
 			{{ channelUser.display_name }}
-			<v-btn @click="modUser('kick')" >Kick </v-btn>
+			<v-btn @click="modUser('kick', channelUser.login)" >Kick </v-btn>
 			</v-list-item>
 		</v-list>
 		<v-card-text v-else v-if="selectedChannelName">~ no one in this channel except you ~</v-card-text>
@@ -98,9 +98,6 @@ export default {
 				prev: '' as string,
 				new: '' as string,
 				confirm: '' as string,
-			},
-			modUser: {
-				action: '' as string,
 			},
 		};
 	},
@@ -219,7 +216,7 @@ export default {
 				console.error(error);
 			}
 		},
-		modUser: async function(actionOnUser: string) {
+		modUser: async function(actionToDo: string, login: string) {
 			try {
 				if (!this.channelName || this.channelName === '') {
 					console.log('[modUser]: channelName is empty');
@@ -235,7 +232,8 @@ export default {
 							'Access-Control-Allow-Origin': '*',
 						},
 						body: JSON.stringify({
-							user: this.channelUser.display_name,
+							target_login: login,
+							action: actionToDo,
 						}),
 					}
 				).catch((error: any) => {
