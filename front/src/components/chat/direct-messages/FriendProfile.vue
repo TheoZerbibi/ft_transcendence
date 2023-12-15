@@ -1,6 +1,6 @@
 <template>
 
-	<v-card>
+	<v-card v-if="selectedFriendLogin">
 
 		<v-card-title>Profile of @{{ selectedFriendLogin }}</v-card-title>
 
@@ -31,6 +31,13 @@
 			</v-btn>
 		</v-card-actions>
 
+	</v-card>
+
+	<v-card v-else>
+		<v-card-title>Messages</v-card-title>
+		<v-card-text class="empty-card">
+			~ no friend selected ~
+		</v-card-text>
 	</v-card>
 
 	<!-- Error handling -->
@@ -93,6 +100,10 @@ export default {
 	methods: {
 		fetchFriendInfos: async function() {
 			try {
+				if (!this.friendLogin || this.friendLogin === '') {
+					console.log('[fetchFriendInfos]: friendLogin is empty');
+					return;
+				}
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/profile/${this.friendLogin}`,
 					{

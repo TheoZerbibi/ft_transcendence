@@ -1,9 +1,10 @@
 <template>
 
-	<v-card>
-
+	<!-- If channel selected -->
+	<v-card v-if="selectedChannelName">
 		<v-card-title>Messages on {{ selectedChannelName }}</v-card-title>
 
+		<!-- Messages -->
 		<v-card-text>
 			<v-list>
 				<v-list-item v-for="message in messages" :key="message.id">
@@ -16,7 +17,7 @@
 			</v-list>
 		</v-card-text>
 
-		<!-- Message Input -->
+		<!-- Input -->
 		<v-card-actions>
 			<v-text-field
 				v-model="input"
@@ -30,6 +31,14 @@
 			</v-btn>
 		</v-card-actions>
 
+	</v-card>
+
+	<!-- Else if no channel selected -->
+	<v-card v-else>
+		<v-card-title>Messages</v-card-title>
+		<v-card-text class="empty-card">
+			~ no channel selected ~
+		</v-card-text>
 	</v-card>
 
 	<!-- Error handling -->

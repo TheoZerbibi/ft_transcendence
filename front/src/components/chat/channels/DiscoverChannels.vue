@@ -9,6 +9,10 @@
 				<v-btn @click="joinChannel(channel.name, channel.is_public)">+</v-btn>
 			</v-list-item>
 		</v-list>
+		<v-card-text v-else>
+			~ no channel available ~
+		</v-card-text>
+
 	</v-card>
 
 	<PwdModal
@@ -83,6 +87,9 @@ export default {
 		joinChannel: async function(channel_name: string, is_public: boolean) {
 			try {
 				console.log(`${channel_name}: is_public = ${is_public}`);
+				if (channel_name === '') {
+					return;
+				}
 
 				if (is_public) {
 					await fetch(
@@ -138,34 +145,6 @@ export default {
 				this.fetchChannels();
 			} catch (error) {
 				console.error(error);
-			}
-		},
-		searchChannels: async function(searchTerm: string) {
-			if (searchTerm.length) {
-				try {
-					const response: any = await
-					fetch(
-						`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/list/search/${searchTerm}`,
-						{
-							method: 'GET',
-							headers: {
-								Authorization: `Bearer ${this.JWT}`,
-								'Access-Control-Allow-Origin': '*',
-							},
-						}
-					)
-					.catch((error: any) => {
-						snackbarStore.showSnackbar(error, 3000, 'red');
-						return;
-					});
-					this.channels = await response.json();
-					console.log('searchChannels', this.channels);
-					this.searchTerm = '';
-				} catch (error) {
-					console.error(error);
-				}
-			} else {
-				this.fetchChannels();
 			}
 		},
 	}

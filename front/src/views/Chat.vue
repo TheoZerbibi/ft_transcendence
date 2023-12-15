@@ -1,10 +1,12 @@
 <template>
 	<v-container
 		fluid
+		fill-height
+        class="d-flex flex-column"
 		>
 
 		<!-- Top bar : tabs -->
-		<v-row>
+		<v-row fill-height>
 			<v-col class="custom-column">
 				<v-tabs v-model="tab">
 					<v-spacer></v-spacer>
@@ -19,7 +21,7 @@
 		</v-row>
 
 		<!-- Main content -->
-		<v-row>
+		<v-row fill-height>
 			<v-col class="custom-column">
 				<v-window v-model="tab">
 
@@ -266,6 +268,18 @@ export default defineComponent({
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	flex-grow: 1;
+	flex-shrink: 1;;
+	border-radius: 30px;
+}
+
+.empty-card {
+	font-family: 'OMORI_MAIN', sans-serif;
+	background-color: rgba(0, 0, 0, 0.6);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 	flex-grow: 1;
 	flex-shrink: 1;;
 	border-radius: 30px;
