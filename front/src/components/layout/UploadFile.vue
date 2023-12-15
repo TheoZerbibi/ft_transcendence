@@ -47,7 +47,7 @@ export default defineComponent({
 
 <style scoped>
 #polaroid {
-	background-image: url('/public/ui/polaroid.png');
+	background-image: url('/ui/polaroid.png');
 	background-color: #110901;
 	background-size: cover;
 	background-position: center;
