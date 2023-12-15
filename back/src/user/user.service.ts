@@ -51,7 +51,7 @@ export class UserService {
 		this.userOnboarding = this.userOnboarding.filter((userLogin) => userLogin !== login);
 	}
 
-	async getDisplayName(displayName: string, login: string): Promise<boolean> {
+	async getDisplayName(displayName: string, login: string) {
 		try {
 			if (!this.verifyDisplayName(displayName)) throw new BadRequestException('Invalid display name');
 			if (!UserService.isOnBoarding(login)) throw new ForbiddenException('User not onboarding');
@@ -72,7 +72,7 @@ export class UserService {
 	/***********************************************************************************/
 
 	/*************************************** Users *************************************/
-	async getUsers(): Promise<UserDto[]> {
+	async getUsers() {
 		try {
 			const users = await this.prisma.user.findMany();
 			const usersDto: UserDto[] = users.map((user) => {
@@ -84,7 +84,7 @@ export class UserService {
 		}
 	}
 
-	async getNotFriendsOfUser(user: User): Promise<UserDto[]> {
+	async getNotFriendsOfUser(user: User) {
 		try {
 			const friends = await this.prisma.friends.findMany({
 				where: {
@@ -126,7 +126,7 @@ export class UserService {
 		}
 	}
 
-	async getUsersStartingWith(startingWith: string): Promise<UserDto[]> {
+	async getUsersStartingWith(startingWith: string) {
 		try {
 			const users = await this.prisma.user.findMany({
 				where: {
@@ -144,7 +144,7 @@ export class UserService {
 		}
 	}
 
-	async getUserByLogin(userLogin: string): Promise<UserDto | undefined> {
+	async getUserByLogin(userLogin: string) {
 		const prismaUser: User = await this.prisma.user.findUnique({
 			where: {
 				login: userLogin,
@@ -155,7 +155,7 @@ export class UserService {
 		return user as UserDto;
 	}
 
-	async getUserById(userId: number): Promise<UserDto | undefined> {
+	async getUserById(userId: number) {
 		const prismaUser: User = await this.prisma.user.findUnique({
 			where: {
 				id: userId,
@@ -167,7 +167,7 @@ export class UserService {
 	}
 
 	/************************************* Friends *************************************/
-	async getFriendsOfUser(user: User): Promise<UserDto[]> {
+	async getFriendsOfUser(user: User) {
 		try {
 			const friends = await this.prisma.friends.findMany({
 				where: {
@@ -226,7 +226,7 @@ export class UserService {
 	}
 
 	/*********************************** Blocked *************************************/
-	async getBlockedUsers(user: User): Promise<UserDto[]> {
+	async getBlockedUsers(user: User) {
 		try {
 			const blockedUsers = await this.prisma.blocked.findMany({
 				where: {
@@ -250,7 +250,7 @@ export class UserService {
 	/***********************************************************************************/
 
 	/*************************************** Users *************************************/
-	async createUser(dto: CreateUserDto): Promise<User> {
+	async createUser(dto: CreateUserDto) {
 		try {
 			if (!UserService.isOnBoarding(dto.login)) throw new ForbiddenException('User not onboarding');
 			const displayName = await this.checkDisplayName(dto.display_name);
@@ -273,7 +273,7 @@ export class UserService {
 	}
 
 	/************************************* Friends *************************************/
-	async makeFriendRequest(user: User, friendUsername: string): Promise<void> {
+	async makeFriendRequest(user: User, friendUsername: string) {
 		try {
 			if (!user) throw new ForbiddenException('User not found');
 			const targetUser = await this.findUserByName(friendUsername);
@@ -314,7 +314,7 @@ export class UserService {
 	}
 
 	/*********************************** Blocked *************************************/
-	async blockUser(user: User, friendUsername: string): Promise<void> {
+	async blockUser(user: User, friendUsername: string) {
 		try {
 			const targetUser = await this.findUserByName(friendUsername);
 			if (!targetUser) throw new ForbiddenException('User not found');
@@ -360,7 +360,7 @@ export class UserService {
 	/***********************************************************************************/
 
 	/*************************************** Users *************************************/
-	async editUser(userId: number, dto: EditUserDto): Promise<UserDto> {
+	async editUser(userId: number, dto: EditUserDto) {
 		const user = await this.prisma.user.update({
 			where: {
 				id: userId,
@@ -372,7 +372,7 @@ export class UserService {
 		return user as UserDto;
 	}
 
-	async setAvatar(userId: number, avatar: string): Promise<void> {
+	async setAvatar(userId: number, avatar: string) {
 		try {
 			await this.prisma.user.update({
 				where: {
@@ -403,7 +403,7 @@ export class UserService {
 		}
 	}
 
-	async turnOnTwoFactorAuthentication(userId: number): Promise<{ access_token: string }> {
+	async turnOnTwoFactorAuthentication(userId: number) {
 		try {
 			const user = await this.prisma.user.update({
 				where: {
@@ -420,7 +420,7 @@ export class UserService {
 		}
 	}
 
-	async turnOffTwoFactorAuthentication(userId: number): Promise<{ access_token: string }> {
+	async turnOffTwoFactorAuthentication(userId: number) {
 		try {
 			const user = await this.prisma.user.update({
 				where: {
@@ -439,7 +439,7 @@ export class UserService {
 	}
 
 	/************************************* Friends *************************************/
-	async respondRequest(user: User, friendUsername: string, response: boolean): Promise<void> {
+	async respondRequest(user: User, friendUsername: string, response: boolean) {
 		try {
 			const action: string = response ? 'accept' : 'decline';
 
@@ -481,7 +481,7 @@ export class UserService {
 		}
 	}
 	
-	async acceptFriendRequest(user_id: number, target_id: number, friend: Friends): Promise<void> {
+	async acceptFriendRequest(user_id: number, target_id: number, friend: Friends) {
 		try {
 			if (friend) {
 				switch (friend.status) {
@@ -512,7 +512,7 @@ export class UserService {
 	/***********************************************************************************/
 
 	/*************************************** Users *************************************/
-	async deleteUser(userId: number): Promise<void> {
+	async deleteUser(userId: number) {
 		try {
 			const user: User = await this.prisma.user.findUnique({
 				where: {
@@ -531,7 +531,7 @@ export class UserService {
 	}
 
 	/************************************* Friends *************************************/
-	async removeFriend(user: User, friendUsername: string): Promise<void> {
+	async removeFriend(user: User, friendUsername: string) {
 		try {
 			if (!user) throw new ForbiddenException('User not found');
 			const targetUser = await this.findUserByName(friendUsername);
@@ -557,7 +557,7 @@ export class UserService {
 		}
 	}
 
-	async declineFriendRequest(user_id: number, target_id: number, friend: Friends): Promise<void> {
+	async declineFriendRequest(user_id: number, target_id: number, friend: Friends) {
 		try {
 			switch (friend.status) {
 			case RequestStatus.ACCEPTED:
@@ -580,7 +580,7 @@ export class UserService {
 		}
 	}
 
-	async checkDisplayName(displayName: string): Promise<boolean> {
+	async checkDisplayName(displayName: string) {
 		try {
 			const user = await this.prisma.user.findUnique({
 				where: {
@@ -593,7 +593,7 @@ export class UserService {
 		}
 	}
 	/*********************************** Blocked *************************************/
-	async unblockUser(user: User, friendUsername: string): Promise<void> {
+	async unblockUser(user: User, friendUsername: string) {
 		try {
 			const targetUser = await this.findUserByName(friendUsername);
 			if (!targetUser) throw new BadRequestException('User not found');
@@ -620,7 +620,7 @@ export class UserService {
 	/***********************************************************************************/
 
 	/*************************************** Users *************************************/
-	async findUserByName(user_login: string): Promise<User | null> {
+	async findUserByName(user_login: string) {
 		try {
 			const user = await this.prisma.user.findUnique({
 				where: {
@@ -634,14 +634,14 @@ export class UserService {
 		}
 	}
 
-	verifyDisplayName(displayName: string): boolean {
+	verifyDisplayName(displayName: string) {
 		const regex = /^[a-zA-Z0-9]+$/;
 		if (displayName.length < 3 || displayName.length > 15) return false;
 		if (!regex.test(displayName)) return false;
 		return true;
 	}
 
-	async signToken(user: Prisma.UserGetPayload<{}>, dAuth: boolean): Promise<{ access_token: string }> {
+	async signToken(user: Prisma.UserGetPayload<{}>, dAuth: boolean) {
 		const payload = { id: user.id, sub: dAuth };
 		const secret = this.config.get<string>('JWT_SECRET');
 		const token = await this.jwt.signAsync(payload, { expiresIn: '1d', secret: secret });
@@ -650,7 +650,7 @@ export class UserService {
 		};
 	}
 
-	async getCloudinaryLink(login: string, file: Express.Multer.File): Promise<any> {
+	async getCloudinaryLink(login: string, file: Express.Multer.File) {
 		cloudinary.config({
 			cloud_name: this.config.get('CLOUDINARY_CLOUD_NAME'),
 			api_key: this.config.get('CLOUDINARY_API_KEY'),
@@ -667,7 +667,7 @@ export class UserService {
 	}
 
 	/************************************* Friends *************************************/
-	async util_getFriend(user: User, target: User): Promise<Friends | null> {
+	async util_getFriend(user: User, target: User) {
 		let friend = await this.prisma.friends.findUnique({
 			where: {
 				user_id_friend_id: {
