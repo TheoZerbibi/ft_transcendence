@@ -18,7 +18,11 @@
 	</div>
 	
 	<!-- Modal: friend profile -->
-	<UserModal v-if="showInfos" :selectedFriendLogin="selectedFriend" :show="showInfos" @close="closeModal"/>
+	<UserModal 
+		v-if="showInfos"
+		:userData="selectedFriend"
+		:show="showInfos"
+		@close="closeModal"/>
 
 	<Snackbar></Snackbar>
 </template>
@@ -51,9 +55,10 @@ export default {
 	},
 	data() {
 		return {
-			friends: [],
-			selectedFriend: String,
-			showInfos: false,
+			friends: [] as any,
+			selectedLogin: '' as string,
+			selectedFriend: null as any,
+			showInfos: false as boolean,
 		};
 	},
 	emits: ['friend-selected'],
@@ -84,16 +89,53 @@ export default {
 				console.error(error);
 			}
 		},
-		displayProfile(infos_login: string) {
-			this.selectedFriend = infos_login;
+		displayProfile(login: string) {
+			this.selectedFriend = {
+				"id": 5,
+				"login": "seozcan",
+				"display_name": "Semiha",
+				"avatar": "https://cdn.intra.42.fr/users/d78eaeaafd38e03543f1c757ad8b070e/seozcan.jpg",
+				"created_at": "2023-12-13T11:08:38.070Z",
+				"last_login": "2023-12-13T11:08:38.070Z"
+			};
 			this.showInfos = true;
+			//this.fetchSelectedUserInfos(login);
+			//this.$emit('friend-selected', this.selectedLogin);
 		},
 		closeModal() {
 			this.showInfos = false;
 		},
 		displayMessagesWithFriend(login: string) {
-			this.selectedFriend = login;
-			this.$emit('friend-selected', this.selectedFriend);
+			this.selectedLogin = login;
+			this.$emit('friend-selected', this.selectedLogin);
+		},
+		fetchSelectedUserInfos: async function(userLogin: string) {
+			try {
+				console.log("[UserProfileModal.vue:fetchSelectedUserInfos]" 
+							+ "\nshow_modal: " + this.show 
+							+ "\nselected_user_login: " + userLogin);
+				if (!this.show || !userLogin || userLogin === '') {
+					// TODO : display stg ?
+					return;
+				}
+				const response: any = await fetch (
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/profile/${userLogin}`, 
+					{
+						method: 'GET',
+						headers: {
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+					}
+				).catch((error: any) => {
+					snackbarStore.showSnackbar(error, 3000, 'red');
+					return;
+				});
+				console.log("Friend.vue:fetchSelectedUserInfos] response: " + response);
+				this.selectedFriend = await response.json();
+			} catch (error) {
+				console.error(error);
+			}
 		},
 	}
 }
