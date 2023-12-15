@@ -251,7 +251,7 @@ export class GameService {
 		}
 	}
 
-	async getMyMatchHistory(user: User): Promise<any> {
+	async getMatchHistoryByUser(user: User): Promise<any> {
 		try {
 			const games: Array<any> = await this.prisma.game.findMany({
 				where: {
@@ -270,11 +270,44 @@ export class GameService {
 			});
 			if (!games) return { games: null };
 			for (const game of games) {
-				const playersInGame: Array<GamePlayerDto> = await this.getAllPlayer(game.game);
+				const playersInGame: Array<GamePlayerDto> = await this.getAllPlayer(game);
 				const activePlayers = playersInGame.filter((player) => !player.is_spec);
-				game.game.players = activePlayers;
+				game.players = activePlayers;
 			}
 			return games;
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	async getGameStatByUser(user: User): Promise<any> {
+		try {
+			let defeat: number = 0;
+			let win: number = 0;
+			let total: number = 0;
+			const games: Array<any> = await this.prisma.game.findMany({
+				where: {
+					gamePlayer: {
+						some: {
+							player_id: user.id,
+						},
+					},
+				},
+				include: {
+					gamePlayer: true,
+				},
+			});
+			if (!games) return { games: null };
+			for (const game of games) {
+				const playersInGame: Array<GamePlayerDto> = await this.getAllPlayer(game);
+				for (const player of playersInGame) {
+					if (player.is_spec || player.player_id !== user.id) continue;
+					if (player.is_win) win++;
+					else defeat++;
+					total++;
+				}
+			}
+			return { win: win, defeat: defeat, totalGame: total };
 		} catch (e) {
 			throw e;
 		}

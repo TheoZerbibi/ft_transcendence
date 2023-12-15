@@ -1,10 +1,12 @@
-import { Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
+import { BadRequestException, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GameService } from './game.service';
 import { JwtGuard } from 'src/auth/guard';
 import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { RedisService } from 'src/redis/redis.service';
+import { UserService } from 'src/user/user.service';
+import { UserDto } from 'src/user/dto';
 
 @UseGuards(JwtGuard)
 @Controller('game')
@@ -14,6 +16,7 @@ export class GameController {
 	constructor(
 		private gameService: GameService,
 		private readonly redisService: RedisService,
+		private readonly userService: UserService,
 	) {}
 
 	@Get('getEmptyGame')
@@ -30,6 +33,43 @@ export class GameController {
 	@HttpCode(HttpStatus.OK)
 	getMatchHistory() {
 		return this.gameService.getMatchHistory();
+	}
+
+	@Get(':login/getMatchHistory')
+	@ApiOperation({ summary: 'Get all game history for a specific user.' })
+	@ApiBearerAuth('JWT-auth')
+	@HttpCode(HttpStatus.OK)
+	async getMatchHistoryByLogin(@Param('login') userLogin: string) {
+		const user: UserDto | undefined = await this.userService.getUserByLogin(userLogin);
+		if (!user) throw new BadRequestException('Invalid user');
+		return this.gameService.getMatchHistoryByUser(user);
+	}
+
+	@Get('getMyMatchHistory')
+	@ApiOperation({ summary: 'Get all history of match.' })
+	@ApiBearerAuth('JWT-auth')
+	@HttpCode(HttpStatus.OK)
+	getMyMatchHistory(@GetUser() user: User) {
+		return this.gameService.getMatchHistoryByUser(user);
+	}
+
+	@Get('getMyGameStat')
+	@ApiOperation({ summary: 'Get game Stats' })
+	@ApiBearerAuth('JWT-auth')
+	@HttpCode(HttpStatus.OK)
+	getMyGameStat(@GetUser() user: User) {
+		console.log(user);
+		return this.gameService.getGameStatByUser(user);
+	}
+
+	@Get(':login/getGameStat')
+	@ApiOperation({ summary: 'Get game Stats' })
+	@ApiBearerAuth('JWT-auth')
+	@HttpCode(HttpStatus.OK)
+	async getGameStatByLogin(@Param('login') userLogin: string) {
+		const user: UserDto | undefined = await this.userService.getUserByLogin(userLogin);
+		if (!user) throw new BadRequestException('Invalid user');
+		return this.gameService.getGameStatByUser(user);
 	}
 
 	@Get('getOngoingGame')
@@ -56,13 +96,6 @@ export class GameController {
 		return this.gameService.createNewGame();
 	}
 
-	@Get('getMyMatchHistory')
-	@ApiOperation({ summary: 'Get all history of match.' })
-	@ApiBearerAuth('JWT-auth')
-	@HttpCode(HttpStatus.OK)
-	getMyMatchHistory() {
-		return this.gameService.getMatchHistory();
-	}
 
 	@Post(':uuid')
 	@ApiOperation({ summary: 'Join a Game' })
