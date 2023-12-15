@@ -9,6 +9,7 @@
 					v-model="password"
 					label="Password"
 					type="password"
+					max-length="20"
 					outlined
 				></v-text-field>
 			</v-card-text>

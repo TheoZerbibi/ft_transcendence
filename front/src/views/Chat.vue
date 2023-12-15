@@ -228,6 +228,7 @@ export default defineComponent({
 </script>
 
 <style>
+
 .v-container {
 /*     background: url('/chat/background/space-parallax.png') no-repeat center center fixed;  */
     background: url('/game/battleParallax/cloud-parallax.png') no-repeat center center fixed; 

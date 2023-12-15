@@ -15,6 +15,7 @@ import {
 	ChannelDto,
 	DeleteChannelDto,
 	ChannelNameDto,
+	ErrorDto,
 } from './dto/channel.dto';
 import { ChannelUserDto, CreateChannelUserDto, ModChannelUserDto } from './dto/channel-user.dto';
 import { ChannelMessageContentDto, ChannelMessageDto } from './dto/channel-message.dto';
@@ -47,7 +48,6 @@ export class ChannelService {
 			});
 			this.localChannels = await Promise.all(channelPromises);
 		} catch (e) {
-			console.error('Failed to initialize local channels ', e);
 			throw e;
 		}
 	}
@@ -58,7 +58,7 @@ export class ChannelService {
 
 	/*********************************** Channels Lists ********************************/
 
-	async getAllPublicChannels(user: User): Promise<ChannelListElemDto[] | null> {
+	async getAllPublicChannels(user: User) {
 		const publicChannels = this.localChannels.filter((channel) => {
 			const isNotJoined = channel.getUsers().every((channelUser) => channelUser.getUserId() !== user.id);
 			return isNotJoined;
@@ -74,7 +74,7 @@ export class ChannelService {
 		}));
 	}
 
-	async getJoinedChannelNames(user: User): Promise<ChannelListElemDto[] | null> {
+	async getJoinedChannelNames(user: User) {
 		const joinedChannels = this.localChannels.filter((channel) => {
 			const channelUsers = channel.getUsers();
 			return channelUsers.some((channelUser) => channelUser.getUserId() === user.id);
@@ -94,7 +94,7 @@ export class ChannelService {
 		}));
 	}
 
-	async searchChannels(user: User, search: string): Promise<ChannelListElemDto[] | null> {
+	async searchChannels(user: User, search: string) {
 		const result = this.localChannels.filter((channel) => {
 			const isBanned = channel
 				.getUsers()
@@ -114,7 +114,7 @@ export class ChannelService {
 	/********************************** Channel Access *********************************/
 
 	// Get a channel by its name if allowed
-	async accessChannelByName(user: User, channel_name: string): Promise<ChannelDto | null> {
+	async accessChannelByName(user: User, channel_name: string) {
 		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
 		if (!channelEntity) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
 		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
@@ -169,7 +169,6 @@ export class ChannelService {
 				});
 			return channelUserDtos;
 		} catch (e) {
-			console.error(e);
 			throw e;
 		}
 	}
@@ -242,7 +241,7 @@ export class ChannelService {
 
 	/*********************************** Channels **************************************/
 
-	async createChannel(dto: CreateChannelDto, userId: number): Promise<ChannelEntity> {
+	async createChannel(dto: CreateChannelDto, userId: number) {
 		try {
 			if (!dto.name) throw new BadRequestException('Channel name is required');
 			if (dto.name.length > 20) throw new BadRequestException('Channel name too long (max 20 characters)');
@@ -272,7 +271,7 @@ export class ChannelService {
 
 	/************************************** Users ***********************************/
 
-	async createChannelUser(user: User, channel_name: string, dto: CreateChannelUserDto): Promise<ChannelDto> {
+	async createChannelUser(user: User, channel_name: string, dto: CreateChannelUserDto) {
 		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
 		if (!channelEntity) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
 
@@ -325,7 +324,7 @@ export class ChannelService {
 		user: User,
 		channel_name: string,
 		messageDto: ChannelMessageContentDto,
-	): Promise<ChannelMessageDto> {
+	) {
 		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
 		if (!channelEntity) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
 
@@ -373,7 +372,7 @@ export class ChannelService {
 
 	/************************************ Channels *************************************/
 
-	async modChannel(user: User, channel_name: string, newParamsdto: ChannelSettingsDto): Promise<void> {
+	async modChannel(user: User, channel_name: string, newParamsdto: ChannelSettingsDto) {
 		try {
 			const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
 			if (!channelEntity) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
@@ -401,16 +400,14 @@ export class ChannelService {
 			channelEntity.setIsPublic(newParamsdto.is_public);
 			channelEntity.setUpdatedAt(channelPrisma.updated_at);
 		} catch (e) {
-			if (e instanceof Prisma.PrismaClientKnownRequestError) {
-				if (e.code === 'P2002') throw new BadRequestException('Channel name taken');
-				console.log(e);
-				throw new BadRequestException(e);
+			if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') {
+				throw new BadRequestException('Channel name taken');
 			}
 			throw e;
 		}
 	}
 
-	async modChannelPwd(user: User, channel_name: string, dto: ChannelModPwdDto): Promise<void> {
+	async modChannelPwd(user: User, channel_name: string, dto: ChannelModPwdDto) {
 		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
 		if (!channelEntity) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
 
@@ -452,7 +449,7 @@ export class ChannelService {
 
 	/************************************** Users ***********************************/
 
-	async setChannelUserAsAdmin(user: User, channel_name: string, dto: ModChannelUserDto): Promise<void> {
+	async setChannelUserAsAdmin(user: User, channel_name: string, dto: ModChannelUserDto) {
 		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
 		if (!channelEntity) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
 
@@ -501,7 +498,7 @@ export class ChannelService {
 		}
 	}
 
-	async modChannelUser(user: User, channel_name: string, dto: ModChannelUserDto): Promise<void> {
+	async modChannelUser(user: User, channel_name: string, dto: ModChannelUserDto) {
 		if (
 			dto.action != 'mute' &&
 			dto.action != 'unmute' &&
@@ -579,7 +576,7 @@ export class ChannelService {
 
 	/*********************************** Channels **************************************/
 
-	async deleteChannel(user: User, dto: DeleteChannelDto): Promise<void> {
+	async deleteChannel(user: User, dto: DeleteChannelDto) {
 		const channelEntity: ChannelEntity | null = await this.findChannelByName(dto.name);
 		if (!channelEntity) throw new BadRequestException(`Channel ${dto.name} doesn't exist`);
 
@@ -607,7 +604,7 @@ export class ChannelService {
 
 	/************************************ Users *************************************/
 
-	async deleteChannelUser(user: User, dto: ChannelNameDto): Promise<void> {
+	async deleteChannelUser(user: User, dto: ChannelNameDto) {
 		const channelEntity: ChannelEntity | null = await this.findChannelByName(dto.name);
 		if (!channelEntity) throw new BadRequestException(`Channel ${dto.name} doesn't exist`);
 

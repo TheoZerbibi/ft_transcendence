@@ -9,6 +9,7 @@
 						<v-text-field
 							label="Change Channel Name"
 							v-model="channelName"
+							max-length="20"
 						></v-text-field>
 
 						<!-- Ban / Unban Channel User -->
@@ -51,6 +52,7 @@
 							label="Channel Password"
 							v-model="channelPassword"
 							type="password"
+							max-length="20"
 						></v-text-field>
 
 						<!-- Delete the Channel -->

@@ -35,16 +35,19 @@
 				v-model="pwd.prev"
 				label="Prev Password"
 				type="password"
+				max-length="20"
 			></v-text-field>
 			<v-text-field
 				v-model="pwd.new"
 				label="New Password"
 				type="password"
+				max-length="20"
 			></v-text-field>
 			<v-text-field
 				v-model="pwd.confirm"
 				label="Confirm Password"
 				type="password"
+				max-length="20"
 			></v-text-field>
 			<v-btn @click="changePassword">Change Password</v-btn>
 		</v-card-text>
@@ -127,11 +130,16 @@ export default {
 					snackbarStore.showSnackbar(error, 3000, 'red');
 					return;
 				});
+				const data = await response.json();
+				if (data.is_error == true) {
+					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
+					return;
+				}
 				if (!response.ok) {
 					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
 				}
-				this.channelUsers = await response.json();
+				this.channelUsers = data;
 			} catch (error) {
 				console.error(error);
 			}
@@ -158,11 +166,16 @@ export default {
 						snackbarStore.showSnackbar(error.message, 3000, 'red');
 						return;
 					});
-					if (!response.ok) {
-						snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					const data = await response.json();
+					if (data.is_error == true) {
+						snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 						return;
 					}
-				snackbarStore.showSnackbar(`You left ${this.channelName}`, 3000, 'green');
+					if (!response.ok) {
+						snackbarStore.showSnackbar(response.message, 3000, 'red');
+						return;
+					}
+					snackbarStore.showSnackbar(`You left ${this.channelName}`, 3000, 'green');
 			} catch (error) {
 				console.error(error);
 			}
@@ -190,6 +203,11 @@ export default {
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				});
+				const data = await response.json();
+				if (data.is_error == true) {
+					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
+					return;
+				}
 				if (!response.ok) {
 					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
@@ -223,6 +241,11 @@ export default {
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				});
+				const data = await response.json();
+				if (data.is_error == true) {
+					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
+					return;
+				}
 				if (!response.ok) {
 					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
@@ -255,6 +278,11 @@ export default {
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				});
+				const data = await response.json();
+				if (data.is_error == true) {
+					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
+					return;
+				}
 				if (!response.ok) {
 					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;

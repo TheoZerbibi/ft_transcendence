@@ -1,5 +1,5 @@
 // COMMON
-import { UseGuards, Controller, Body, Param, Get, Patch, Post, Delete, BadRequestException } from '@nestjs/common';
+import { UseGuards, Controller, Body, Param, Get, Patch, Post, Delete, BadRequestException, ForbiddenException } from '@nestjs/common';
 // AUTH
 import { JwtGuard } from 'src/auth/guard';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -19,6 +19,7 @@ import {
 	PasswordRequiredActionDto,
 	ChannelNameDto,
 	DeleteChannelDto,
+	ErrorDto,
 } from './dto/channel.dto';
 import { ChannelUserDto, CreateChannelUserDto, ModChannelUserDto } from './dto/channel-user.dto';
 import { ChannelMessageContentDto, ChannelMessageDto } from './dto/channel-message.dto';
@@ -41,8 +42,14 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get all public channels' })
 	@ApiBearerAuth('JWT-auth')
-	async getAllPublicChannels(@GetUser() user: User): Promise<ChannelListElemDto[]> {
-		return await this.channelService.getAllPublicChannels(user);
+	async getAllPublicChannels(@GetUser() user: User) {
+		try {
+			return await this.channelService.getAllPublicChannels(user);
+		} catch (e: any) {
+			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
+				return { is_error: true, error_message: e.message };
+			}
+		}
 	}
 
 	//Get all channels on which user is
@@ -50,16 +57,28 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get joined channel names' })
 	@ApiBearerAuth('JWT-auth')
-	async getJoinedChannelNames(@GetUser() user: User): Promise<ChannelListElemDto[] | null> {
-		return await this.channelService.getJoinedChannelNames(user);
+	async getJoinedChannelNames(@GetUser() user: User) {
+		try {
+			return await this.channelService.getJoinedChannelNames(user);
+		} catch (e: any) {
+			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
+				return { is_error: true, error_message: e.message };
+			}
+		}
 	}
 
 	@Get('list/search/:search')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Search channels' })
 	@ApiBearerAuth('JWT-auth')
-	async searchChannels(@GetUser() user: User, @Param('search') search: string): Promise<ChannelListElemDto[]> {
-		return await this.channelService.searchChannels(user, search);
+	async searchChannels(@GetUser() user: User, @Param('search') search: string) {
+		try {
+			return await this.channelService.searchChannels(user, search);
+		} catch (e: any) {
+			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
+				return { is_error: true, error_message: e.message };
+			}
+		}
 	}
 
 	/********************************** Channel Access *********************************/
@@ -70,8 +89,14 @@ export class ChannelController {
 	async accessChannelByName(
 		@GetUser() user: User,
 		@Param('channel_name') channel_name: string,
-	): Promise<ChannelDto | null> {
-		return await this.channelService.accessChannelByName(user, channel_name);
+	) {
+		try {
+			return await this.channelService.accessChannelByName(user, channel_name);
+		} catch (e: any) {
+			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
+				return { is_error: true, error_message: e.message };
+			}
+		}
 	}
 
 	/*************************************** Users ************************************/
@@ -82,8 +107,14 @@ export class ChannelController {
 	async getAllChannelUsers(
 		@GetUser() user: User,
 		@Param('channel_name') channel_name: string,
-	): Promise<ChannelUserDto[] | null> {
-		return await this.channelService.getAllChannelUsers(user, channel_name);
+	) {
+		try {
+			return await this.channelService.getAllChannelUsers(user, channel_name);
+		} catch (e: any) {
+			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
+				return { is_error: true, error_message: e.message };
+			}
+		}
 	}
 
 	/************************************* Messages ************************************/
@@ -94,8 +125,14 @@ export class ChannelController {
 	async getLastMessages(
 		@GetUser() user: User,
 		@Param('channel_name') channel_name: string,
-	): Promise<ChannelMessageDto[]> {
-		return await this.channelService.getLastMessages(user, channel_name);
+	) {
+		try {
+			return await this.channelService.getLastMessages(user, channel_name);
+		} catch (e: any) {
+			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
+				return { is_error: true, error_message: e.message };
+			}
+		}
 	}
 
 	/***********************************************************************************/
@@ -107,10 +144,16 @@ export class ChannelController {
 	@UseGuards(JwtGuard) // Needed to access user attribute
 	@ApiOperation({ summary: 'Create channel' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
-	async createChannel(@GetUser() user: User, @Body() dto: CreateChannelDto): Promise<ChannelEntity> {
-		const channel: ChannelEntity = await this.channelService.createChannel(dto, user.id);
-		this.channelService.publishOnRedis('channel-creation', JSON.stringify(channel));
-		return channel;
+	async createChannel(@GetUser() user: User, @Body() dto: CreateChannelDto) {
+		try {
+			const channel: ChannelEntity = await this.channelService.createChannel(dto, user.id);
+			this.channelService.publishOnRedis('channel-creation', JSON.stringify(channel));
+			return channel;
+		} catch (e: any) {
+			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
+				return { is_error: true, error_message: e.message };
+			}
+		}
 	}
 
 	/*************************************** Users ************************************/
@@ -122,8 +165,14 @@ export class ChannelController {
 		@GetUser() user: User,
 		@Param('channel_name') channel_name: string,
 		@Body() dto: CreateChannelUserDto,
-	): Promise<ChannelDto> {
-		return await this.channelService.createChannelUser(user, channel_name, dto);
+	) {
+		try {
+			return await this.channelService.createChannelUser(user, channel_name, dto);
+		} catch (e: any) {
+			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
+				return { is_error: true, error_message: e.message };
+			}
+		}
 	}
 
 	/************************************* Messages ************************************/
@@ -135,8 +184,14 @@ export class ChannelController {
 		@GetUser() user: User,
 		@Param('channel_name') channel_name: string,
 		@Body() ChannelMessageContentDto: ChannelMessageContentDto,
-	): Promise<ChannelMessageDto> {
-		return await this.channelService.createChannelMessage(user, channel_name, ChannelMessageContentDto);
+	) {
+		try {
+			return await this.channelService.createChannelMessage(user, channel_name, ChannelMessageContentDto);
+		} catch (e: any) {
+			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
+				return { is_error: true, error_message: e.message };
+			}
+		}
 	}
 
 	/***********************************************************************************/
@@ -152,8 +207,14 @@ export class ChannelController {
 		@GetUser() user: User,
 		@Param('channel_name') channel_name: string,
 		@Body() newParamsdto: ChannelSettingsDto,
-	): Promise<void> {
-		return await this.channelService.modChannel(user, channel_name, newParamsdto);
+	) {
+		try {
+			return await this.channelService.modChannel(user, channel_name, newParamsdto);
+		} catch (e: any) {
+			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
+				return { is_error: true, error_message: e.message };
+			}
+		}
 	}
 
 	@Patch(':channel_name/settings/owner/pwd')
@@ -164,8 +225,14 @@ export class ChannelController {
 		@GetUser() user: User,
 		@Param('channel_name') channel_name: string,
 		@Body() channelModPwdDto: ChannelModPwdDto,
-	): Promise<void> {
-		return await this.channelService.modChannelPwd(user, channel_name, channelModPwdDto);
+	) {
+		try {
+			return await this.channelService.modChannelPwd(user, channel_name, channelModPwdDto);
+		} catch (e: any) {
+			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
+				return { is_error: true, error_message: e.message };
+			}
+		}
 	}
 
 	/*************************************** Users ************************************/
@@ -177,8 +244,14 @@ export class ChannelController {
 		@GetUser() user: User,
 		@Param('channel_name') channel_name: string,
 		@Body() dto: ModChannelUserDto,
-	): Promise<void> {
-		return await this.channelService.setChannelUserAsAdmin(user, channel_name, dto);
+	) {
+		try {
+			return await this.channelService.setChannelUserAsAdmin(user, channel_name, dto);
+		} catch (e: any) {
+			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
+				return { is_error: true, error_message: e.message };
+			}
+		}
 	}
 
 	@Patch(':channel_name/settings/admin/mod_user')
@@ -189,8 +262,14 @@ export class ChannelController {
 		@GetUser() user: User,
 		@Param('channel_name') channel_name: string,
 		@Body() dto: ModChannelUserDto,
-	): Promise<void> {
-		return await this.channelService.modChannelUser(user, channel_name, dto);
+	) {
+		try {
+			return await this.channelService.modChannelUser(user, channel_name, dto);
+		} catch (e: any) {
+			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
+				return { is_error: true, error_message: e.message };
+			}
+		}
 	}
 
 	/***********************************************************************************/
@@ -203,8 +282,14 @@ export class ChannelController {
 	@ApiBearerAuth('JWT-auth')
 	async deleteChannelUser(
 		@GetUser() user: User,
-		@Body() dto: ChannelNameDto): Promise<void> {
-		return await this.channelService.deleteChannelUser(user, dto);
+		@Body() dto: ChannelNameDto) {
+		try {
+			return await this.channelService.deleteChannelUser(user, dto);
+		} catch (e: any) {
+			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
+				return { is_error: true, error_message: e.message };
+			}
+		}
 	}
 
 	@Delete('')
@@ -214,8 +299,14 @@ export class ChannelController {
 	async deleteChannel(
 		@GetUser() user: User,
 		@Body() dto: DeleteChannelDto,
-	): Promise<void> {
-		return await this.channelService.deleteChannel(user, dto);
+	) {
+		try {
+			return await this.channelService.deleteChannel(user, dto);
+		} catch (e: any) {
+			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
+				return { is_error: true, error_message: e.message };
+			}
+		}
 	}
 
 	/***********************************************************************************/
