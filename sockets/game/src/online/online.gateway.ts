@@ -3,8 +3,6 @@ import { OnGatewayConnection, OnGatewayDisconnect, WebSocketGateway, WebSocketSe
 import { AuthService } from 'src/auth/auth.service';
 import { OnlineService } from './online.service';
 import { Socket, Server } from 'socket.io';
-import { instrument } from '@socket.io/admin-ui';
-import { users } from '@prisma/client';
 
 @WebSocketGateway({
 	cors: {

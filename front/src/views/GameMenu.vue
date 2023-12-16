@@ -43,7 +43,7 @@
 	<v-container class="d-flex align-center justify-center">
 		<div
 			:style="{
-				backgroundImage: `url(/public/game/menu/arcade.png)`,
+				backgroundImage: `url(/game/menu/arcade.png)`,
 				backgroundPosition: 'center center',
 				backgroundSize: 'contain',
 			}"
