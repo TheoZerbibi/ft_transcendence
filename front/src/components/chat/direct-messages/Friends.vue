@@ -73,24 +73,21 @@ export default {
 						},
 					}
 				)
-				.catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
+				;
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
-				});
+				}
 				const data: any = await response.json();
 				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 					return;
 				}
-				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
-					return;
-				}
 				this.friends = data;
  				this.selectedFriendLogin = this.friends[0] ? this.friends[0].login : '';
 				this.$emit('messages-with', this.selectedFriendLogin);
-			} catch (error) {
-				console.error(error);
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 

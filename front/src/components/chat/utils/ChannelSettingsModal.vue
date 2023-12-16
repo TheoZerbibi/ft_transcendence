@@ -132,25 +132,22 @@ export default {
 						},
 					}
 				)
-				.catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
+				;
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
-				});
+				}
 				const data: any = await response.json();
 				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
-					return;
-				}
-				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
 				}
 				this.channelName = data.name;
 				this.channelIsPublic = data.is_public;
 				this.channelUpdatedAt = data.updated_at; // to watch
 				this.fetchChannelUsersInfos();
-			} catch (error) {
-				console.error(error);
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 		fetchChannelUsersInfos: async function() {
@@ -166,18 +163,15 @@ export default {
 						},
 					}
 				)
-				.catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
-					return;
-				});
+				;
 				const data: any = await response.json();
 				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 					return;
 				}
 				this.users = data;
-			} catch (error) {
-				console.error(error);
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 /*
@@ -204,22 +198,19 @@ export default {
 						},
 					}
 				)
-				.catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
+				;
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
-				});
+				}
 				const data: any = await response.json();
 				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 					return;
 				}
-				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
-					return;
-				}
 				snackbarStore.showSnackbar('Channel deleted', 3000, 'green');
-			} catch (error) {
-				console.error(error);
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 		leaveChannel: async function() {
@@ -235,23 +226,20 @@ export default {
 						},
 					}
 				)
-				.catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
+				;
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
-				});
+				}
 				const data: any = await response.json();
 				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 					return;
 				}
-				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
-					return;
-				}
 				snackbarStore.showSnackbar('Channel left', 3000, 'green');
 				//this.$emit('channel-left'); // TODO : emit event to refresh the channel list, messages etc
-			} catch (error) {
-				console.error(error);
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 	},

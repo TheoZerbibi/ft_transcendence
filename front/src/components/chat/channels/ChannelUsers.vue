@@ -57,7 +57,6 @@ export default {
 		return {
 			channelName: this.selectedChannelName ? this.selectedChannelName : '' as string,
 			channelUsers: [] as any[],
-
 		};
 	},
 	watch: {
@@ -66,6 +65,9 @@ export default {
 			this.fetchUsers();
 		}
 	},
+	beforeMount() {
+		this.fetchUsers();
+	},
 	methods: {
 		fetchUsers: async function() {
 			try {
@@ -73,6 +75,7 @@ export default {
 					console.log('[fetchUsers]: channelName is empty');
 					return;
 				}
+				console.log('[fetchUsers]: channelName: ', this.channelName);
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.channelName}/access/users`,
 					{
@@ -82,22 +85,21 @@ export default {
 							'Access-Control-Allow-Origin': '*',
 						},
 					}
-				).catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
-					return;
-				});
-				const data: any = response.json();
-				if (data.is_error) {
-					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
-					return;
-				}
+				);
 				if (!response.ok) {
 					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
 				}
+				const data: any = response.json();
+				console.log('[fetchUsers]: data: ', JSON.stringify(data));
+				if (data.is_error) {
+					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
+					return;
+				}
 				this.channelUsers = data;
-			} catch (error) {
-				console.error(error);
+				console.log('[fetchUsers]: channelUsers: ', JSON.stringify(this.channelUsers));
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 		modUser: async function(actionToDo: string, login: string) {
@@ -120,21 +122,18 @@ export default {
 							action: actionToDo,
 						}),
 					}
-				).catch((error: any) => {
-					snackbarStore.showSnackbar(error.message, 3000, 'red');
-					return;
-				});
-				const data: any = response.json();
-				if (data.is_error) {
-					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
-					return;
-				}
+				);
 				if (!response.ok) {
 					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
 				}
-			} catch (error) {
-				console.error(error);
+				const data: any = await response.json();
+				if (data.is_error) {
+					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
+					return;
+				}
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 	},

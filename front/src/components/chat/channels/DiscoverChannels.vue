@@ -19,6 +19,7 @@
 		</v-card-text>
 
 		<v-card-actions>
+			<v-spacer></v-spacer>
 			<v-btn @click="showNameModal">Create you own channel !</v-btn>
 		</v-card-actions>
 
@@ -96,22 +97,19 @@ export default {
 						},
 					}
 				)
-				.catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
+				;
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
-				});
+				}
 				const data: any = await response.json();
 				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 					return;
 				}
-				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
-					return;
-				}
 				this.channels = data;
-			} catch (error) {
-				console.error(error);
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 		createChannel: async function(newName: string) {
@@ -129,23 +127,20 @@ export default {
 							name: newName,
 						}),
 					}
-				).catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
+				);
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
-				});
+				}
 				const data: any = await response.json();
 				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 					return;
 				}
-				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
-					return;
-				}
 				this.fetchChannels();
 				snackbarStore.showSnackbar(`Channel ${this.newChannelName} created`, 3000, 'green');
-			} catch (error) {
-				console.error(error);
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 		showNameModal() {
@@ -168,23 +163,20 @@ export default {
 							chan_password: '',
 						}),
 					}
-				).catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
+				);
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
-				});
+				}
 				const data: any = await response.json();
 				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 					return;
 				}
-				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
-					return;
-				}
 				this.fetchChannels();
 				snackbarStore.showSnackbar(`You joined ${channel_name}`, 3000, 'green');
-			} catch (error) {
-				console.error(error);
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 		openPwdDialog(channel_name: string) {
@@ -210,12 +202,13 @@ export default {
 							chan_password: pwd as string,
 						}),
 					}
-				).catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
+				);
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					this.selectedPrivChannel = '';
 					this.showPwdModal = false;
 					return;
-				});
+				}
 				const data: any = await response.json();
 				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
@@ -223,20 +216,16 @@ export default {
 					this.showPwdModal = false;
 					return;
 				}
-				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
-					this.selectedPrivChannel = '';
-					this.showPwdModal = false;
-					return;
-				}
 				this.selectedPrivChannel = '';
 				this.showPwdModal = false;
 				this.fetchChannels();
-			} catch (error) {
-				console.error(error);
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
+				this.selectedPrivChannel = '';
+				this.showPwdModal = false;
 			}
 		},
-	}
+	},
 }
 
 </script>

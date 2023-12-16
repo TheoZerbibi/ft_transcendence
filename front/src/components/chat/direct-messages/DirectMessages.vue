@@ -107,22 +107,19 @@ export default {
 							'Access-Control-Allow-Origin': '*',
 						},
 					}
-				).catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
+				);
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
-				});
+				}
 				const data: any = await response.json();
 				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 					return;
 				}
-				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
-					return;
-				}
 				this.messages = data;
-			} catch (error) {
-				console.error(error);
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 
@@ -146,23 +143,20 @@ export default {
 							content: this.input,
 						}),
 					}
-				).catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
+				);
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
-				});
+				}
 				const data: any = await response.json();
 				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 					return;
 				}
-				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
-					return;
-				}
 				this.fetchDirectMessages();
 				this.input = '';
-			} catch (error) {
-				console.error(error);
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 	},
