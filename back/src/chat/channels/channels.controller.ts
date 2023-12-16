@@ -1,5 +1,16 @@
 // COMMON
-import { UseGuards, Controller, Body, Param, Get, Patch, Post, Delete, BadRequestException, ForbiddenException } from '@nestjs/common';
+import {
+	UseGuards,
+	Controller,
+	Body,
+	Param,
+	Get,
+	Patch,
+	Post,
+	Delete,
+	BadRequestException,
+	ForbiddenException,
+} from '@nestjs/common';
 // AUTH
 import { JwtGuard } from 'src/auth/guard';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -69,7 +80,7 @@ export class ChannelController {
 		}
 	}
 
-/* 	@Get('list/search/:search')
+	/* 	@Get('list/search/:search')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Search channels' })
 	@ApiBearerAuth('JWT-auth')
@@ -89,10 +100,7 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Access to a channel by its name' })
 	@ApiBearerAuth('JWT-auth')
-	async accessChannelByName(
-		@GetUser() user: User,
-		@Param('channel_name') channel_name: string,
-	) {
+	async accessChannelByName(@GetUser() user: User, @Param('channel_name') channel_name: string) {
 		try {
 			return await this.channelService.accessChannelByName(user, channel_name);
 		} catch (e: any) {
@@ -108,10 +116,7 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get all channel users' })
 	@ApiBearerAuth('JWT-auth')
-	async getAllChannelUsers(
-		@GetUser() user: User,
-		@Param('channel_name') channel_name: string,
-	) {
+	async getAllChannelUsers(@GetUser() user: User, @Param('channel_name') channel_name: string) {
 		try {
 			return await this.channelService.getAllChannelUsers(user, channel_name);
 		} catch (e: any) {
@@ -143,10 +148,7 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Get 20 last messages from channel' })
 	@ApiBearerAuth('JWT-auth')
-	async getLastMessages(
-		@GetUser() user: User,
-		@Param('channel_name') channel_name: string,
-	) {
+	async getLastMessages(@GetUser() user: User, @Param('channel_name') channel_name: string) {
 		try {
 			return await this.channelService.getLastMessages(user, channel_name);
 		} catch (e: any) {
@@ -252,14 +254,14 @@ export class ChannelController {
 		@Param('channel_name') channel_name: string,
 		@Body() channelModPwdDto: ChannelModPwdDto,
 	) {
-		try {
-			return await this.channelService.modChannelPwd(user, channel_name, channelModPwdDto);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		// try {
+		return await this.channelService.modChannelPwd(user, channel_name, channelModPwdDto);
+		// } catch (e: any) {
+		// 	if (e instanceof BadRequestException || e instanceof ForbiddenException) {
+		// 		return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
+		// 	}
+		// 	throw e;
+		// }
 	}
 
 	/*************************************** Users ************************************/
@@ -267,11 +269,7 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Set user as admin of channel' })
 	@ApiBearerAuth('JWT-auth')
-	async setAdmin(
-		@GetUser() user: User,
-		@Param('channel_name') channel_name: string,
-		@Body() dto: ModChannelUserDto,
-	) {
+	async setAdmin(@GetUser() user: User, @Param('channel_name') channel_name: string, @Body() dto: ModChannelUserDto) {
 		try {
 			return await this.channelService.setChannelUserAsAdmin(user, channel_name, dto);
 		} catch (e: any) {
@@ -286,11 +284,7 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Mute / unmute / kick / ban / unban (=kick)' })
 	@ApiBearerAuth('JWT-auth')
-	async muteUser(
-		@GetUser() user: User,
-		@Param('channel_name') channel_name: string,
-		@Body() dto: ModChannelUserDto,
-	) {
+	async muteUser(@GetUser() user: User, @Param('channel_name') channel_name: string, @Body() dto: ModChannelUserDto) {
 		try {
 			return await this.channelService.modChannelUser(user, channel_name, dto);
 		} catch (e: any) {
@@ -309,35 +303,16 @@ export class ChannelController {
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Leave channel' })
 	@ApiBearerAuth('JWT-auth')
-	async deleteChannelUser(
-		@GetUser() user: User,
-		@Body() dto: ChannelNameDto) {
-		try {
-			return await this.channelService.deleteChannelUser(user, dto);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+	async deleteChannelUser(@GetUser() user: User, @Body() dto: ChannelNameDto) {
+		return await this.channelService.deleteChannelUser(user, dto);
 	}
 
 	@Delete('')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Delete channel' })
 	@ApiBearerAuth('JWT-auth')
-	async deleteChannel(
-		@GetUser() user: User,
-		@Body() dto: DeleteChannelDto,
-	) {
-		try {
-			return await this.channelService.deleteChannel(user, dto);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+	async deleteChannel(@GetUser() user: User, @Body() dto: DeleteChannelDto) {
+		return await this.channelService.deleteChannel(user, dto);
 	}
 
 	/***********************************************************************************/

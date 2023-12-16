@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 // COMMON
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 // ENTITIES
@@ -31,7 +32,8 @@ export class ChannelService {
 
 	constructor(
 		private prisma: PrismaService,
-		private readonly redisService: RedisService) {
+		private readonly redisService: RedisService,
+	) {
 		this.initLocalChannels();
 	}
 
@@ -155,7 +157,7 @@ export class ChannelService {
 				},
 			});
 			const channelUserDtos: ChannelUserDto[] = channelUsers
-				.filter((channelUser) => channelUser.user.login !== user.login)	
+				.filter((channelUser) => channelUser.user.login !== user.login)
 				.map((channelUser) => {
 					return {
 						login: channelUser.user.login,
@@ -183,13 +185,13 @@ export class ChannelService {
 			});
 			if (!channel) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
 
-			const target: User | null = await this.prisma.user.findUnique({ where: { login: login, }, });
+			const target: User | null = await this.prisma.user.findUnique({ where: { login: login } });
 			const channelUser: ChannelUser = await this.prisma.channelUser.findUnique({
 				where: {
 					channel_id_user_id: {
 						channel_id: channel.id,
 						user_id: target.id,
-					}
+					},
 				},
 				include: {
 					user: {
@@ -365,11 +367,7 @@ export class ChannelService {
 
 	/************************************* Messages ************************************/
 
-	async createChannelMessage(
-		user: User,
-		channel_name: string,
-		messageDto: ChannelMessageContentDto,
-	) {
+	async createChannelMessage(user: User, channel_name: string, messageDto: ChannelMessageContentDto) {
 		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
 		if (!channelEntity) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
 
@@ -453,30 +451,35 @@ export class ChannelService {
 	}
 
 	async modChannelPwd(user: User, channel_name: string, dto: ChannelModPwdDto) {
-		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
-		if (!channelEntity) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
-
-		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
-		if (!channelUser) throw new BadRequestException(`You are not on this channel`);
-		if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
-
-		if (!channelUser.isOwner())
-			throw new ForbiddenException('You are not authorized to set or modify the password on this channel');
-
-		if (!channelEntity.getIsPublic()) {
-			const passwordMatch: boolean = await argon2.verify(channelEntity.getPassword(), dto.prev_pwd);
-			if (!passwordMatch) throw new BadRequestException('Wrong previous password');
-		}
-
-		if (dto.new_pwd.length > 20 || dto.new_pwd_confirm.length > 20)
-			throw new BadRequestException('Password too long (max 20 characters)');
-		if (dto.new_pwd !== dto.new_pwd_confirm) throw new BadRequestException('Passwords do not match');
-
-		dto.new_pwd ? channelEntity.setIsPublic(false) : channelEntity.setIsPublic(true);
-		const hashedPwd: string = await argon2.hash(dto.new_pwd);
-		channelEntity.setPassword(hashedPwd);
-
 		try {
+			const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
+			if (!channelEntity) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
+
+			const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
+			if (!channelUser) throw new BadRequestException(`You are not on this channel`);
+			if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
+
+			if (!channelUser.isOwner())
+				throw new ForbiddenException('You are not authorized to set or modify the password on this channel');
+
+			console.log(channelEntity.getIsPublic());
+			if (!channelEntity.getIsPublic()) {
+				console.log(channelEntity.getPassword());
+				const passwordMatch: boolean = await argon2.verify(channelEntity.getPassword(), dto.prev_pwd);
+				if (!passwordMatch) {
+					console.log(passwordMatch);
+					throw new BadRequestException('Wrong previous password');
+					return;
+				}
+			}
+
+			if (dto.new_pwd.length > 20 || dto.new_pwd_confirm.length > 20)
+				throw new BadRequestException('Password too long (max 20 characters)');
+			if (dto.new_pwd !== dto.new_pwd_confirm) throw new BadRequestException('Passwords do not match');
+
+			dto.new_pwd ? channelEntity.setIsPublic(false) : channelEntity.setIsPublic(true);
+			const hashedPwd: string = await argon2.hash(dto.new_pwd);
+			channelEntity.setPassword(hashedPwd);
 			await this.prisma.channel.update({
 				where: {
 					name: channel_name,
@@ -486,7 +489,7 @@ export class ChannelService {
 					password: channelEntity.getPassword(),
 				},
 			});
-			channelEntity.setUpdatedAt(new Date());
+			return { message: 'Password updated' };
 		} catch (e) {
 			throw e;
 		}
@@ -575,12 +578,12 @@ export class ChannelService {
 			return channelUser.getUserId() === target.id;
 		});
 		if (!targetChanUser) throw new BadRequestException('User is not on this channel');
-		if (targetChanUser.isOwner()) throw new BadRequestException(`You cannot ${dto.action} the owner of this channel`);
+		if (targetChanUser.isOwner())
+			throw new BadRequestException(`You cannot ${dto.action} the owner of this channel`);
 
 		switch (dto.action) {
 			case 'mute':
-				if (!dto.muted_until) 
-					throw new BadRequestException('You must specify a date to mute until');
+				if (!dto.muted_until) throw new BadRequestException('You must specify a date to mute until');
 				targetChanUser.setIsMuted(dto.muted_until);
 				break;
 			case 'unmute':
@@ -629,43 +632,39 @@ export class ChannelService {
 	/*********************************** Channels **************************************/
 
 	async deleteChannel(user: User, dto: DeleteChannelDto) {
-		const channelEntity: ChannelEntity | null = await this.findChannelByName(dto.name);
-		if (!channelEntity) throw new BadRequestException(`Channel ${dto.name} doesn't exist`);
-
-		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
-		if (!channelUser) throw new BadRequestException(`You are not on this channel`);
-		if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
-
-		if (!channelEntity.getIsPublic()) {
-			const passwordMatch: boolean = await argon2.verify(channelEntity.getPassword(), dto.password);
-			if (!passwordMatch) throw new BadRequestException('Wrong password');
-		}
-
-		if (!channelUser.isOwner()) throw new BadRequestException('You cannot delete a channel you do not own');
 		try {
+			const channelEntity: ChannelEntity | null = await this.findChannelByName(dto.name);
+			if (!channelEntity) throw new BadRequestException(`Channel ${dto.name} doesn't exist`);
+
+			const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
+			if (!channelUser) throw new BadRequestException(`You are not on this channel`);
+			if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
+
+			if (!channelUser.isOwner()) throw new BadRequestException('You cannot delete a channel you do not own');
 			await this.prisma.channel.delete({
 				where: {
 					name: dto.name,
 				},
 			});
+			this.localChannels = this.localChannels.filter((channel) => channel.getName() !== dto.name);
+			return { message: 'Channel deleted' };
 		} catch (e) {
 			throw e;
 		}
-		this.localChannels = this.localChannels.filter((channel) => channel.getName() !== dto.name);
 	}
 
 	/************************************ Users *************************************/
 
 	async deleteChannelUser(user: User, dto: ChannelNameDto) {
-		const channelEntity: ChannelEntity | null = await this.findChannelByName(dto.name);
-		if (!channelEntity) throw new BadRequestException(`Channel ${dto.name} doesn't exist`);
-
-		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
-		if (!channelUser) throw new BadRequestException(`You are not on this channel`);
-		if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
-		if (channelUser.isOwner()) throw new BadRequestException('You cannot leave a channel you own');
-
 		try {
+			const channelEntity: ChannelEntity | null = await this.findChannelByName(dto.name);
+			if (!channelEntity) throw new BadRequestException(`Channel ${dto.name} doesn't exist`);
+
+			const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
+			if (!channelUser) throw new BadRequestException(`You are not on this channel`);
+			if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
+			if (channelUser.isOwner()) throw new BadRequestException('You cannot leave a channel you own');
+
 			await this.prisma.channelUser.delete({
 				where: {
 					id: channelUser.getId(),
@@ -674,6 +673,7 @@ export class ChannelService {
 			});
 			channelEntity.removeUser(channelUser);
 			channelEntity.setUpdatedAt(new Date());
+			return { message: 'You left the channel' };
 		} catch (e) {
 			throw e;
 		}
@@ -722,8 +722,7 @@ export class ChannelService {
 		});
 		return channelUsers;
 	}
-	async publishOnRedis(event: string, msg: string)
-	{
+	async publishOnRedis(event: string, msg: string) {
 		console.info(`Publishing ${event} event to redis`);
 		await this.redisService.publish(event, msg);
 	}

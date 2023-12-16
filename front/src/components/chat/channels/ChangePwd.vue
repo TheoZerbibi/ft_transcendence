@@ -94,6 +94,7 @@ export default {
 				if (this.pwd.prev === '' && this.pwd.new === '' && this.pwd.confirm === '') {
 					return;
 				}
+				console.log(this.pwd);
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.channelName}/settings/owner/pwd`,
 					{
@@ -111,15 +112,12 @@ export default {
 					}
 				)
 				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
-				const data = await response.text();
-				if (data.is_error) {
-					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
-					return;
-				}
-				snackbarStore.showSnackbar(data, 3000, 'green');
+				const data = await response.json();
+				snackbarStore.showSnackbar(data.message, 3000, 'green');
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}

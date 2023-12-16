@@ -197,6 +197,7 @@ export default {
 						headers: {
 							Authorization: `Bearer ${this.JWT}`,
 							'Access-Control-Allow-Origin': '*',
+							'Content-Type': 'application/json',
 						},
 						body: JSON.stringify({
 							chan_password: pwd as string,
