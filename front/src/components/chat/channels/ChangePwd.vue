@@ -79,9 +79,9 @@ export default {
 			},
 		};
 	},
-	watch: {
-		selectedChannelName: function(newVal: string) {
-			this.channelName = newVal;
+	computed: {
+		selectedChannelName: function() {
+			return this.channelName;
 		}
 	},
 	methods: {
@@ -114,11 +114,12 @@ export default {
 					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
 				}
-				const data = await response.json();
+				const data = await response.text();
 				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 					return;
 				}
+				snackbarStore.showSnackbar(data, 3000, 'green');
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}

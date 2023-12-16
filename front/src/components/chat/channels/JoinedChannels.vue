@@ -66,6 +66,7 @@ export default {
 					{
 						method: 'GET',
 						headers: {
+							'Content-Type': 'application/json',
 							Authorization: `Bearer ${this.JWT}`,
 							'Access-Control-Allow-Origin': '*',
 						},

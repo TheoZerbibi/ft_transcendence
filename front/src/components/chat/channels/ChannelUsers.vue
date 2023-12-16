@@ -13,6 +13,7 @@
 			{{ channelUser.display_name }}
 			<UserModeration
 				v-if="myChannelUserProfile.is_admin"
+				:selectedChannelName="selectedChannelName"
 				:selectedChannelUser="channelUser"
 				:myUser="myChannelUserProfile">
 			</UserModeration>
@@ -22,6 +23,7 @@
 		<v-card-actions>
 			<v-btn v-if="myChannelUserProfile.is_owner" @click="deleteChannel">Delete channel</v-btn>
 			<v-btn v-if="!myChannelUserProfile.is_owner" @click="leaveChannel">Leave Channel</v-btn>
+		<ChangePwd :selectedChannelName="selectedChannelName"></ChangePwd>
 		</v-card-actions>"
 	</v-card>
 
@@ -46,11 +48,13 @@ const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 
 import UserModeration from './UserModeration.vue';
+import ChangePwd from './ChangePwd.vue';
 
 export default {
 	components: {
 		Snackbar,
 		UserModeration,
+		ChangePwd,
 	},
 	props: {
 		channelName: String
@@ -116,8 +120,6 @@ export default {
 			//this.fetchUsers();
 			this.fetchMyChannelUserProfile();
 		}
-	},
-	beforeMount() {
 	},
 	methods: {
 		fetchUsers: async function() {
@@ -236,7 +238,8 @@ export default {
 					if (!response.ok) {
 						snackbarStore.showSnackbar(response.message, 3000, 'red');
 						return;
-					}					const data: any = response.json();
+					}
+					const data: any = response.json();
 					if (data.is_error) {
 						snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 						return;

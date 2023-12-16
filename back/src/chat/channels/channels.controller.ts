@@ -69,7 +69,7 @@ export class ChannelController {
 		}
 	}
 
-	@Get('list/search/:search')
+/* 	@Get('list/search/:search')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Search channels' })
 	@ApiBearerAuth('JWT-auth')
@@ -82,7 +82,7 @@ export class ChannelController {
 			}
 			throw e;
 		}
-	}
+	} */
 
 	/********************************** Channel Access *********************************/
 	@Get(':channel_name/access')

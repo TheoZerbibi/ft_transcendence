@@ -31,16 +31,43 @@
 			</v-card>
 		</template>
 	</v-dialog>
+
+	<!-- Error handling -->
+	<Snackbar></Snackbar>
 </template>
 
 <script lang="ts">
+import { computed } from 'vue';
+import { useUser } from '../../../stores/user';
+import { useSnackbarStore } from '../../../stores/snackbar';
+import Snackbar from '../../layout/Snackbar.vue';
+
+const userStore = useUser();
+const snackbarStore = useSnackbarStore();
+
 export default {
+	setup() {
+		const JWT = computed(() => userStore.getJWT);
+		const user = computed(() => userStore.getUser);
+
+		return {
+			JWT,
+			user,
+		};
+	},
+	components: {
+		Snackbar,
+	},
 	props: {
+		selectedChannelName: String,
 		selectedChannelUser: Object,
 		myUser: Object,
 	},
 	emits: ['close-modal'],
     computed: {
+		selectedChannel() {
+			return this.selectedChannelName;
+		},
         selectedUser() {
             return this.selectedChannelUser || {
                 // valeurs par défaut si selectedChannelUser est null ou undefined
@@ -56,10 +83,10 @@ export default {
     },
 	methods: {
 		unban: async function (login: string) {
-			console.log('unban: ', login);
+			this.modUser(login, 'unban');
 		},
 		ban: async function (login: string) {
-			console.log('ban: ', login);
+			this.modUser(login, 'ban');
 		},
 		mute: async function (login: string, duration: Date) {
 			console.log('mute: ', login, duration);
@@ -72,8 +99,32 @@ export default {
 		},
 		close() {
 			this.$emit('close-modal');
-		}
-		
+		},
+		modUser: async function(login: string, chosenAction: string) {
+			try {
+				const response: any = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannel}/settings/admin/mod_user`,
+					{
+						method: 'PATCH',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+						body: JSON.stringify({
+							target_login: login,
+							action: chosenAction,
+						}),
+					}
+				);
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		},
 	}
 };
 </script>

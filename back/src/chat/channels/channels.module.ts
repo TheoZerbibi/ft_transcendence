@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ChannelService } from './channels.service';
+import { ChannelService } from './channels.service.js';
 import { UserModule } from '../../user/user.module';
 import { ChannelController } from './channels.controller';
 import { RedisService } from 'src/redis/redis.service';

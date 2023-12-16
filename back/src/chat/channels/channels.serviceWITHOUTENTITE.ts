@@ -59,23 +59,33 @@ export class ChannelService {
 	/*********************************** Channels Lists ********************************/
 
 	async getAllPublicChannels(user: User) {
-		const publicChannels = this.localChannels.filter((channel) => {
-			const isNotJoined = channel.getUsers().every((channelUser) => channelUser.getUserId() !== user.id);
-			return isNotJoined;
-		});
-		const sortedChannels = publicChannels
-			.sort((a, b) => b.getUpdatedAt().getTime() - a.getUpdatedAt().getTime())
-			.slice(0, 20);
-		return sortedChannels.map((channel) => ({
-			name: channel.getName(),
-			is_public: channel.getIsPublic(),
-			password: channel.getPassword(),
-			updated_at: channel.getUpdatedAt(),
-		}));
+		try {
+			const userNotInChannels: Channel[] = await this.prisma.channel.findMany({
+				where: {
+					public: true,
+					channelUser: {
+						none: {
+							user_id: user.id,
+							OR: [
+								{ is_ban: false },
+							]
+						}
+					},
+				},
+			});
+			return userNotInChannels.map((channel) => ({
+				name: channel.name,
+				is_public: channel.public,
+				password: channel.password,
+				updated_at: channel.updated_at,
+			}));
+		} catch (e) {
+			throw e;
+		}
 	}
 
 	async getJoinedChannelNames(user: User) {
-		const joinedChannels = this.localChannels.filter((channel) => {
+/* 		const joinedChannels = this.localChannels.filter((channel) => {
 			const channelUsers = channel.getUsers();
 			return channelUsers.some((channelUser) => channelUser.getUserId() === user.id);
 		});
@@ -91,7 +101,20 @@ export class ChannelService {
 			updated_at: channel.getUpdatedAt(),
 			is_public: channel.getIsPublic(),
 			password: channel.getPassword(),
-		}));
+		})); */
+		try {
+			const joinedChannels = await this.prisma.channel.findMany({
+				where: {
+					channelUser: {
+						some: {
+							user_id: user.id,
+						}
+					},
+				},
+			});
+		} catch (e) {
+			throw e;
+		}
 	}
 
 	async searchChannels(user: User, search: string) {
@@ -556,25 +579,35 @@ export class ChannelService {
 		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
 		if (!channelEntity) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
 
-		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
-		if (!channelUser) throw new BadRequestException(`You are not on this channel`);
-		if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
+		const chanUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
+		if (!chanUser) throw new BadRequestException(`User is not on this channel`);
+		if (chanUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
+		if (!chanUser.isAdmin())
+			throw new ForbiddenException(`You are not authorized to ${dto.action} someone on this channel`);
 
 		const target = await this.prisma.user.findUnique({
 			where: {
 				login: dto.target_login,
 			},
-			select: {
-				id: true,
-			},
 		});
 		if (!target) throw new BadRequestException('User does not exist');
 		if (target.id == user.id) throw new BadRequestException(`You cannot ${dto.action} yourself`);
+
+/* 		const targetChanUser: ChannelUser = await this.prisma.channelUser.findUnique({
+			where: {
+				channel_id_user_id: {
+					channel_id: channelEntity.getId(),
+					user_id: target.id,
+				},
+			},
+		}); */
 
 		const targetChanUser: ChannelUserEntity | null = channelEntity.getUsers().find((channelUser) => {
 			return channelUser.getUserId() === target.id;
 		});
 		if (!targetChanUser) throw new BadRequestException('User is not on this channel');
+
+
 		if (targetChanUser.isOwner()) throw new BadRequestException(`You cannot ${dto.action} the owner of this channel`);
 
 		switch (dto.action) {
@@ -701,6 +734,36 @@ export class ChannelService {
 			.getUsers()
 			.find((channelUser) => channelUser.getUserId() === user.id);
 		return channelUser;
+	}
+
+	/*********************************** Privileges **********************************/
+
+	async targetIfAllowed(
+		user: User,
+		channel_name: string,
+		target_user_id: number,
+		action: string,
+		pwd: string,
+	): Promise<ChannelUserEntity> {
+		const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
+		if (!channelEntity) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
+		const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
+		if (!channelUser) throw new BadRequestException(`You are not on this channel`);
+		if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
+		if (!channelEntity.getIsPublic()) {
+			const passwordMatch: boolean = await argon2.verify(channelEntity.getPassword(), pwd);
+			if (!passwordMatch) throw new BadRequestException('Wrong password');
+		}
+		if (!channelUser.isAdmin())
+			throw new ForbiddenException(`You are not authorized to ${action} someone on this channel`);
+
+		const targetChanUser: ChannelUserEntity | null = channelEntity.getUsers().find((channelUser) => {
+			return channelUser.getUserId() === target_user_id;
+		});
+		if (!targetChanUser) throw new BadRequestException('User is not on this channel');
+		if (targetChanUser.isOwner()) throw new BadRequestException(`You cannot ${action} the owner of this channel`);
+
+		return targetChanUser;
 	}
 
 	/***********************************************************************************/
