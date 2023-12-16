@@ -46,7 +46,7 @@ export default {
 	data() {
 		return {
 			joinedChannels: [] as any[],
-			selectedChannel: '' as string,
+			selectedChannelName: '' as string,
 			showInfos: false as boolean,
 		};
 	},
@@ -82,15 +82,17 @@ export default {
 					return;
 				}
 				this.joinedChannels = data;
-				this.selectedChannel = this.joinedChannels[0] ? this.joinedChannels[0].name : '';
-				this.$emit('channel-selected', this.selectedChannel);
+				if (this.joinedChannels.length > 0) {
+					this.selectedChannelName = this.joinedChannels[0].name;
+					this.$emit('channel-selected', this.selectedChannelName);
+				}
 			} catch (error: any) {
 				console.error(error);
 			}
 		},
 
 		displayMessagesOfChannel: function(channel_name: string) {
-			this.selectedChannel = channel_name;
+			this.selectedChannelName = channel_name;
 			this.$emit('channel-selected', channel_name);
 		},
 	}

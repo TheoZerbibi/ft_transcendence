@@ -11,10 +11,18 @@
 				:key="channelUser.id"
 			>
 			{{ channelUser.display_name }}
-			<v-btn @click="modUser('kick', channelUser.login)" >Kick </v-btn>
+			<v-btn v-if="myChannelUserProfile.is_admin" BLA></v-btn>
+			<UserModeration
+				v-if="myChannelUserProfile.is_admin"
+				:channelUser="channelUser">
+			</UserModeration>
 			</v-list-item>
 		</v-list>
 		<v-card-text v-else v-if="selectedChannelName">~ no one in this channel except you ~</v-card-text>
+		<v-card-actions>
+			<v-btn v-if="myChannelUserProfile.is_owner" @click="deleteChannel">Delete channel</v-btn>
+			<v-btn v-if="!myChannelUserProfile.is_owner" @click="leaveChannel">Leave Channel</v-btn>
+		</v-card-actions>"
 	</v-card>
 
 	<v-card v-else>
@@ -37,9 +45,12 @@ import Snackbar from '../../layout/Snackbar.vue';
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 
+import UserModeration from './UserModeration.vue';
+
 export default {
 	components: {
 		Snackbar,
+		UserModeration,
 	},
 	props: {
 		selectedChannelName: String
@@ -55,29 +66,64 @@ export default {
 	},
 	data() {
 		return {
-			channelName: this.selectedChannelName ? this.selectedChannelName : '' as string,
-			channelUsers: [] as any[],
+			channelUsers: [
+				{
+					"login": "seozcan",
+					"display_name": "Semiha",
+					"avatar": "https://cdn.intra.42.fr/users/d78eaeaafd38e03543f1c757ad8b070e/seozcan.jpg",
+					"is_owner": true,
+					"is_admin": true,
+					"is_muted": null,
+					"is_banned": false
+				},
+				{
+					"login": "thzeribi",
+					"display_name": "Theo",
+					"avatar": "https://cdn.intra.42.fr/users/ef89183628c15b9229bf141ebd455ba9/thzeribi.jpg",
+					"is_owner": false,
+					"is_admin": false,
+					"is_muted": null,
+					"is_banned": false
+				},
+				{
+					"login": "grannou",
+					"display_name": "Gaëlle",
+					"avatar": "https://cdn.intra.42.fr/users/c2b48b00d1529ccb8e7a4296ec23b8ee/grannou.jpg",
+					"is_owner": false,
+					"is_admin": false,
+					"is_muted": null,
+					"is_banned": false
+				}
+			],
+			myChannelUserProfile: {
+				"login": "nfauconn",
+				"display_name": "Noemi",
+				"avatar": "https://cdn.intra.42.fr/users/96c6292bd2445ca46c9ce03ddb6f8572/nfauconn.jpg",
+				"is_owner": true,
+				"is_admin": true,
+				"is_muted": null,
+				"is_banned": false
+			}
 		};
 	},
 	watch: {
 		selectedChannelName: function(newVal: string) {
-			this.channelName = newVal;
-			this.fetchUsers();
+			//this.fetchUsers();
+			this.fetchMyChannelUserProfile();
 		}
 	},
 	beforeMount() {
-		this.fetchUsers();
 	},
 	methods: {
 		fetchUsers: async function() {
 			try {
-				if (!this.channelName || this.channelName === '') {
+				if (!this.selectedChannelName || this.selectedChannelName === '') {
 					console.log('[fetchUsers]: channelName is empty');
 					return;
 				}
-				console.log('[fetchUsers]: channelName: ', this.channelName);
+				console.log('[fetchUsers]: channelName: ', this.selectedChannelName);
 				const response: any = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.channelName}/access/users`,
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannelName}/access/users`,
 					{
 						method: 'GET',
 						headers: {
@@ -97,19 +143,46 @@ export default {
 					return;
 				}
 				this.channelUsers = data;
-				console.log('[fetchUsers]: channelUsers: ', JSON.stringify(this.channelUsers));
+				console.log('[ChannelUsers:fetchUsers]: channelUsers: ', JSON.stringify(this.channelUsers));
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
+			}
+		},
+		fetchMyChannelUserProfile: async function() {
+			try {
+				if (!this.selectedChannelName || this.selectedChannelName === '') {
+					console.log('[fetchMyChannelUserProfile]: this.selectedChannelName is empty');
+					return;
+				}
+				const response: any = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannelName}/access/users/${this.user.login}`,
+					{
+						method: 'GET',
+						headers: {
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+					}
+				)
+				const data = await response.json();
+				if (data.is_error) {
+					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
+					return;
+				}
+				this.myChannelUserProfile = data;
+				console.log('[ChannelUsers:fetchMyChannelUserProfile]: channelUser: ', JSON.stringify(this.myChannelUserProfile));
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 		modUser: async function(actionToDo: string, login: string) {
 			try {
-				if (!this.channelName || this.channelName === '') {
+				if (!this.selectedChannelName || this.selectedChannelName === '') {
 					console.log('[modUser]: channelName is empty');
 					return;
 				}
 				const response: any = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.channelName}/settings/admin/mod_user`,
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannelName}/settings/admin/mod_user`,
 					{
 						method: 'PATCH',
 						headers: {
