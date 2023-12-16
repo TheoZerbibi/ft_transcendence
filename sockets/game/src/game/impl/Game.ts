@@ -207,8 +207,8 @@ export class Game implements IGame {
 		await this.endGame();
 	}
 
-	userIsInGame(userId: number): boolean {
-		return this.usersInGame.some((user) => user.user.id === userId);
+	userIsInGame(userId: number): IUser {
+		return this.usersInGame.find((user) => user.user.id === userId);
 	}
 
 	userIsSpectator(userId: number): boolean {

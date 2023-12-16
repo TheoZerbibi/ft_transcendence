@@ -36,44 +36,9 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	) {}
 	@WebSocketServer() server: Server;
 
-	@SubscribeMessage('session-join-test')
-	handleSessionJoinTest(@MessageBody() game: GameJoinDto) {
-		const gameUID: string = game.gameUID;
-		const randomName = uniqueNamesGenerator({
-			dictionaries: [names],
-			length: 1,
-		});
-		let id = 1;
-
-		const gameS: IGame = this.gameService.getGame(gameUID);
-		for (; gameS.userIsInGame(id); id++);
-
-		const gameUser: IUser = {
-			user: {
-				id: id,
-				login: randomName,
-				displayName: randomName.charAt(0).toUpperCase() + randomName.slice(1),
-				avatar: 'null',
-			},
-			socketID: 'null',
-			isConnected: false,
-			isSpec: false,
-			isReady: false,
-			playerData: new PlayerData(gameS.getWidth(), gameS.getHeight(), 670, 150, 10, 100, SIDE.RIGHT),
-		};
-		if (gameS.isInProgress() && !game.isSpec) {
-			gameUser.playerData.side = SIDE.SPECTATOR;
-			gameUser.isSpec = true;
-		}
-		gameS.addUser(gameUser);
-		this.server.to(gameUID).emit('session-info', gameS.getAllUsersInGame());
-		if (!gameS.isInProgress() && gameS.getUsersInGame().length === 2) this.startGame(gameS);
-	}
-
 	@UseGuards(JwtGuard)
 	@SubscribeMessage('session-join')
 	async handleSessionJoin(@ConnectedSocket() client: Socket | any, @MessageBody() game: GameJoinDto) {
-		this.logger.debug('session-join');
 		const user: users = this.authService.getUserFromRequest(client);
 		const gameUID: string = game.gameUID;
 		if (!user || !gameUID) return;
@@ -84,19 +49,16 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		if (this.gameService.gameExists(gameUID)) {
 			const game: IGame = this.gameService.getGame(gameUID);
 			if (game.isEnded()) {
-				this.logger.debug(`Game End`);
 				client.emit('game-end', 'Game is ended');
 				client.disconnect();
 				return;
 			}
 			if (game.isInProgress() && !waiting.isSpec) waiting.isSpec = true;
-			this.logger.debug(`Ok 1`);
-			if (this.gameService.addUserToGame(game, client, user, waiting.isSpec)) {
-				this.logger.debug(`Ok 2`);
+			const gameUser: IUser = this.gameService.addUserToGame(game, client, user, waiting.isSpec);
+			if (gameUser) {
 				client.join(gameUID);
 				const allUsers = game.getAllUsersInGame();
 				if (!allUsers) {
-					this.logger.debug(`Error during session join`);
 					client.emit('game-error', 'Error during session join');
 					client.disconnect();
 					return;
@@ -111,12 +73,31 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 					});
 				}
 				if (!game.isInProgress()) return;
+				if (gameUser.isSpec) {
+					this.server.to(client.id).emit('player-moved', {
+						leftUser: {
+							position: game.getPlayerBySide(SIDE.LEFT).playerData.pos.toObject(),
+							width: game.getPlayerBySide(SIDE.LEFT).playerData.w,
+							height: game.getPlayerBySide(SIDE.LEFT).playerData.h,
+						},
+						rightUser: {
+							position: game.getPlayerBySide(SIDE.RIGHT).playerData.pos.toObject(),
+							width: game.getPlayerBySide(SIDE.RIGHT).playerData.w,
+							height: game.getPlayerBySide(SIDE.RIGHT).playerData.h,
+						},
+					});
+					this.server.to(client.id).emit('game-already-start', {
+						startDate: game.getGameData().startingDate,
+						leftUser: game.getPlayerBySide(SIDE.LEFT).user,
+						rightUser: game.getPlayerBySide(SIDE.RIGHT).user,
+					});
+					this.logger.debug(`Client WebSocket ${user.login} rejoins la session en tant que spectateur`);
+				}
 				this.server.to(client.id).emit('game-score', {
 					leftUser: game.getPlayerBySide(SIDE.LEFT).playerData.score,
 					rightUser: game.getPlayerBySide(SIDE.RIGHT).playerData.score,
 				});
 			} else {
-				this.logger.debug(`Error during session join 2`);
 				client.disconnect();
 			}
 		} else {
@@ -284,8 +265,8 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 					const rightUser: IUser = game.getPlayerBySide(SIDE.RIGHT);
 					if (!leftUser || !leftUser.isConnected || !rightUser || !rightUser.isConnected) return;
 					this.server.to(game.getGameUID()).emit('game-score', {
-						leftUser: game.getPlayerBySide(SIDE.LEFT).playerData.score,
-						rightUser: game.getPlayerBySide(SIDE.RIGHT).playerData.score,
+						leftUser: leftUser.playerData.score,
+						rightUser: rightUser.playerData.score,
 					});
 					game.newPoint = false;
 				}

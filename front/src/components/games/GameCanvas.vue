@@ -219,7 +219,6 @@ export default {
 			this.waitingOpp = false;
 		}
 		const componentRef = ref(this);
-
 		const p5jsReadyPromise = new Promise((resolve) => {
 			const script = async function (p5: any) {
 				const cDiv = document.getElementById('game-canvas');
@@ -382,7 +381,7 @@ export default {
 			new P5(script);
 		});
 
-		if (!this.socket) return ;
+		if (!this.socket) return;
 		this.socket.on('waiting-start', async () => {
 			await p5jsReadyPromise;
 			gameData.socket = this.socket;
@@ -404,6 +403,26 @@ export default {
 			countdownStore.setSeconds(5);
 			this.showCountdown = true;
 			gameData.ball?.resetball();
+		});
+
+		this.socket.on('game-already-start', async (data: any) => {
+			await p5jsReadyPromise;
+			if (!gameData.leftUser || !gameData.rightUser) return this.$router.push({ name: 'GameMenu' });
+			gameData.start = true;
+			gameData.waiting = false;
+			this.waitingOpp = false;
+			this.userData.leftPlayer = {
+				name: data.leftUser.displayName,
+				avatar: data.leftUser.avatar,
+				cadre: `/game/UI/cadres/cadre${gameData.leftUser.score}.png`,
+			};
+			gameData.leftUser.setUser(data.leftUser.displayName, data.leftUser.avatar);
+			this.userData.rightPlayer = {
+				name: data.rightUser.displayName,
+				avatar: data.rightUser.avatar,
+				cadre: `/game/UI/cadres/cadre${gameData.rightUser.score}.png`,
+			};
+			gameData.rightUser.setUser(data.rightUser.displayName, data.rightUser.avatar);
 		});
 
 		this.socket.on('countdown', (data: number) => {
@@ -458,7 +477,7 @@ export default {
 			if (data.leftUser > gameData.leftUser.getPoint()) this.startTremble('rightUser');
 			if (data.rightUser > gameData.rightUser.getPoint()) this.startTremble('leftUser');
 			gameData.leftUser.setPoint(data.leftUser);
-			gameData.rightUser.setPoint(data.rightUser);
+			gameData.rightUser.setPoint(data.leftUser);
 			if (data.leftUser <= 5 && data.rightUser <= 5) {
 				this.userData.leftPlayer.cadre = `/game/UI/cadres/cadre${gameData.rightUser.score}.png`;
 				this.userData.rightPlayer.cadre = `/game/UI/cadres/cadre${gameData.leftUser.score}.png`;
@@ -491,6 +510,7 @@ export default {
 	},
 	methods: {
 		setData(data: any, gameData: any) {
+			console.log('setData');
 			if (!gameData.leftUser || !gameData.rightUser) return this.$router.push({ name: 'GameMenu' });
 			if (gameData.leftUser) gameData.leftUser.score = 0;
 			if (gameData.rightUser) gameData.rightUser.score = 0;

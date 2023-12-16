@@ -33,7 +33,7 @@ export interface IGame {
 	getSpectatorsInGame: () => Array<IUser>;
 	getPlayerBySide: (side: SIDE) => IUser;
 
-	userIsInGame: (userId: number) => boolean;
+	userIsInGame: (userId: number) => IUser;
 	userIsSpectator: (userId: number) => boolean;
 
 	setPause: (pause: boolean, time: number) => void;

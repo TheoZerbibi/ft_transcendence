@@ -50,10 +50,11 @@ export class GameService {
 		return game;
 	}
 
-	public addUserToGame(game: IGame, client: Socket, user: users, isSpec: boolean): boolean {
-		if (game.userIsInGame(user.id)) {
+	public addUserToGame(game: IGame, client: Socket, user: users, isSpec: boolean): IUser {
+		let gameUser: IUser = game.userIsInGame(user.id);
+		if (gameUser) {
 			client.emit('game-error', 'Already in Game session');
-			return true;
+			return gameUser;
 		}
 
 		let side: SIDE;
@@ -86,7 +87,7 @@ export class GameService {
 			);
 		else playerData = new PlayerData(game.getWidth(), game.getHeight(), 0, 0, 0, 0, SIDE.SPECTATOR);
 
-		const gameUser: IUser = {
+		gameUser = {
 			user: { id: user.id, login: user.login, displayName: user.display_name, avatar: user.avatar },
 			socketID: client.id,
 			isConnected: true,
@@ -95,7 +96,7 @@ export class GameService {
 			playerData: playerData,
 		};
 		game.addUser(gameUser);
-		return true;
+		return gameUser;
 	}
 
 

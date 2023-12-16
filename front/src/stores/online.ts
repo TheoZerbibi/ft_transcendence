@@ -32,13 +32,10 @@ export const useOnlineSocketStore = defineStore('online', {
 					});
 				});
 			}
-			console.log('connecting');
 			return this.socket as Socket;
 		},
 		disconnect() {
-			console.log(this.isConnected);
 			if (this.isConnected) {
-				console.log('disconnecting');
 				this.socket?.disconnect();
 				this.socket = null;
 			}

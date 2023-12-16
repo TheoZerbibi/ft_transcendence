@@ -7,7 +7,7 @@
 		<v-list-item-group>
 			<v-list-item v-for="(item, index) in matchOngoing" :key="index">
 				<v-list-item-content>
-					<v-list-item-title>{{ item.uid }}</v-list-item-title>
+					<v-list-item-title @click="redirectToGame(item.uid)" class="hoverable">{{ item.uid }}</v-list-item-title>
 					<v-list-item-subtitle>{{ item.score }}</v-list-item-subtitle>
 					<v-list-item-subtitle>Start at: <DateViewer :timestamp="item.created_at" /></v-list-item-subtitle>
 				</v-list-item-content>
@@ -70,6 +70,9 @@ export default {
 				.then(async (data) => {
 					this.matchOngoing = data;
 				});
+		},
+		redirectToGame(uid: string) {
+			this.$router.push({ name: `Game`, params: { uid: uid } });
 		},
 	},
 };
