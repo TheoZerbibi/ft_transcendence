@@ -78,7 +78,7 @@
 								class="custom-column"
 								cols="12"
 								md="3">
-								<ChannelUsers :selectedChannelName="selectedChannelName"></ChannelUsers>
+								<ChannelUsers :channelName="selectedChannelName"></ChannelUsers>
 <!-- 								<ChannelSettings :selectedChannelName="selectedChannelName"></ChannelSettings> -->
 
 							</v-col>
