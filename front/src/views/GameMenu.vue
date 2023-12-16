@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
 	<v-container class="arcade-container" fill-height>
 		<v-row justify="center" align="center">
 			<v-col cols="12" class="d-flex justify-center align-center">
@@ -36,6 +36,46 @@
 				<h2 class="omoriFont"> {{ nextStep }}</h2>
 			</v-col>
 		</v-row>
+	</v-container>
+</template> -->
+
+<template>
+	<v-container class="d-flex align-center justify-center">
+		<div
+			:style="{
+				backgroundImage: `url(/public/game/menu/arcade.png)`,
+				backgroundPosition: 'center center',
+				backgroundSize: 'contain',
+			}"
+			class="d-flex align-center justify-center arcade-container"
+		>
+			<div class="title-container">
+				<h1 class="omoriArcade">OMORI Pong</h1>
+			</div>
+			<div class="data-container">
+				<Suspense>
+					<main>
+						<v-col v-if="index === 0" cols="12" class="d-flex justify-center align-center">
+							<MatchScoreboard />
+						</v-col>
+						<v-col v-if="index === 1" cols="12" class="d-flex justify-center align-center">
+							<MatchHistory />
+						</v-col>
+						<v-col v-if="index === 2" cols="12" class="d-flex justify-center align-center">
+							<MatchSpectate />
+						</v-col>
+					</main>
+
+					<template #fallback>
+						<div>Loading...</div>
+					</template>
+				</Suspense>
+			</div>
+			<div class="step-container d-flex justify-center align-center">
+				<h2 class="omoriFont">{{ previousStep }}</h2>
+				<h2 class="omoriFont">{{ nextStep }}</h2>
+			</div>
+		</div>
 	</v-container>
 </template>
 
@@ -94,7 +134,7 @@ export default {
 			if (event.key === 'Escape') this.$router.push({ name: `Home` });
 			else if (event.key === 'ArrowLeft') this.changeStep(--this.index);
 			else if (event.key === 'ArrowRight') this.changeStep(++this.index);
-			else this.checkExistingGame();
+			else if (event.key === 'Enter') this.checkExistingGame();
 		},
 		changeStep(_index: number) {
 			if (_index < 0) this.index = this.steps.length - 1;
@@ -159,79 +199,143 @@ export default {
 	},
 };
 </script>
+<style scoped>
+*,
+html,
+body {
+	overflow: hidden;
+}
 
-<style lang="sass" scoped>
-*, html, body
-  overflow: hidden
+.arcade-container {
+	position: relative;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+	z-index: 2;
+}
 
-.arcade-container
-  overflow: hidden
-  position: relative
-  background: url('/game/menu/arcade.png')
-  background-size: contain
-  background-position: center
-  background-repeat: no-repeat
-  z-index: 2
-  width: 100%
-  height: 100vh
+.title-container {
+	position: absolute;
+	top: 21%;
+	left: 51%;
+	transform: translate(-50%, -50%);
+	width: 100vw;
+	background-color: rgba(4, 0, 255, 0.342);
+}
 
-.title-container
-  position: absolute
-  top: 26%
-  left: 51%
-  transform: translate(-50%, -50%)
-  width: 100vw
-  height: 10vw
+.data-container {
+	position: absolute;
+	top: 38%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 100vw;
+	height: 34vh;
+	background-color: rgba(255, 0, 0, 0.342);
+}
 
-.scoreboard-container
-  position: relative
-  top: 30vh
-  left: 49%
-  transform: translate(-7%)
-  width: 100vw
-  height: 22vw
+.step-container {
+	position: absolute;
+	top: 57%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	height: 5vh;
+	width: 100vw;
+	background-color: rgba(217, 255, 0, 0.342);
+}
 
-.history-container
-  position: relative
-  top: 30vh
-  left: 49%
-  transform: translate(-7%)
-  width: 100vw
-  height: 22vw
+.omoriArcade {
+	color: #2c5529;
+	font-size: 4.4vh;
+	letter-spacing: 0.6em;
+	text-align: center;
+}
 
-.spectate-container
-  position: relative
-  top: 30vh
-  left: 49%
-  transform: translate(-7%)
-  width: 100vw
-  height: 22vw
+.omoriFont {
+	color: #2c5529;
+}
 
-.omoriArcade
-  color: #2c5529
-  font-size: 2vw
-  letter-spacing: 0.6em
-  text-align: center
+@media (max-width: 1280px) {
+	.title-container {
+		top: 30%;
+	}
 
-.omoriFont
-  color: #2c5529
+	.data-container {
+		top: 42%;
+		height: 23vh;
+	}
 
-@media (max-width: 1280px)
-  .title-container
-    top: 32%
+	.step-container {
+		top: 55%;
+		height: 5vh;
+	}
 
-@media (max-width: 1100px)
-  .title-container
-    top: 32%
+	.omoriArcade {
+		font-size: 3.3vh;
+		letter-spacing: 0.6em;
+	}
+}
 
-@media (max-width: 600px)
-  .title-container
-    top: 41%
+@media (max-width: 1120px) {
+	.title-container {
+		top: 30%;
+	}
 
-@media (max-width: 400px)
-  .omoriArcade
-    font-size: 2vw
+	.omoriArcade {
+		font-size: 3vh;
+		letter-spacing: 0.6em;
+	}
+}
 
-  .title-container
-    top: 40%
+@media (max-width: 800px) {
+	.title-container {
+		top: 30%;
+	}
+
+	.omoriArcade {
+		font-size: 3vh;
+		letter-spacing: 0.6em;
+	}
+}
+
+@media (max-width: 600px) {
+	.title-container {
+		top: 35%;
+	}
+
+	.omoriArcade {
+		font-size: 2.5vh;
+		letter-spacing: 0.4em;
+	}
+}
+
+@media (max-width: 500px) {
+	.title-container {
+		top: 38%;
+	}
+
+	.omoriArcade {
+		font-size: 2.1vh;
+		letter-spacing: 0.4em;
+	}
+}
+
+@media (max-width: 450px) {
+	.title-container {
+		top: 41%;
+	}
+
+	.omoriArcade {
+		font-size: 1.8vh;
+		letter-spacing: 0.2em;
+	}
+}
+
+@media (max-width: 400px) {
+	.title-container {
+		top: 34%;
+	}
+	.omoriArcade {
+		font-size: 2vh;
+	}
+}
 </style>
