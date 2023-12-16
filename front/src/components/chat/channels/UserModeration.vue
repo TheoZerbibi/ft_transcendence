@@ -1,5 +1,5 @@
 <template>
-	<v-dialog  width="500">
+	<v-dialog width="500">
 		<template v-slot:activator="{ props }">
 			<v-btn v-bind="props" text="User moderation"> </v-btn>
 		</template>
@@ -7,12 +7,17 @@
 		<template v-slot:default="{ isActive }">
 			<v-card v-if="selectedUser">
 			<v-card-title>
-				{{ selectedUser.display_name }}
+				User moderation of {{ selectedUser.display_name }}
 			</v-card-title>
 			<v-card-text>
 				<!-- Unban / ban -->
 				<v-btn v-if="selectedUser.is_banned" @click="unban(selectedUser.login)" >Unban </v-btn>
 				<v-btn v-else @click="ban(selectedUser.login)">Ban</v-btn>
+				<v-btn v-if="selectedUser.is_muted" @click="unmute(selectedUser.login)">Unmute</v-btn>
+				<v-btn v-else @click="mute(selectedUser.login, new Date())">Mute</v-btn>
+				<v-btn @click="kick(selectedUser.login)">Kick</v-btn>
+				<v-btn v-if="!selectedUser.is_admin" @click="promote(selectedUser.login)">Promote</v-btn>
+				<v-btn v-else @click="demote(selectedUser.login)">Demote</v-btn>
 			</v-card-text>
 
 			<v-card-actions>
@@ -31,21 +36,24 @@
 <script lang="ts">
 export default {
 	props: {
-		show: Boolean,
 		selectedChannelUser: Object,
+		myUser: Object,
 	},
 	emits: ['close-modal'],
-	data() {
-		return {
-			selectedUser: this.selectedChannelUser ? this.selectedChannelUser : {},
-		};
-	},
-	watch: {
-		selectedChannelUser: function (newVal: any) {
-			this.selectedUser = newVal;
-			console.log('selectedChannelUser: ', newVal);
-		}
-	},
+    computed: {
+        selectedUser() {
+            return this.selectedChannelUser || {
+                // valeurs par défaut si selectedChannelUser est null ou undefined
+                login: 'fake',
+                display_name: 'fake',
+                avatar: 'fake',
+                is_owner: false,
+                is_admin: false,
+                is_muted: false,
+                is_banned: false,
+            };
+        }
+    },
 	methods: {
 		unban: async function (login: string) {
 			console.log('unban: ', login);
