@@ -74,7 +74,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	@SubscribeMessage('session-join')
 	async handleSessionJoin(@ConnectedSocket() client: Socket | any, @MessageBody() game: GameJoinDto) {
 		this.logger.debug('session-join');
-		const user: users = this.gameService.getUserFromRequest(client);
+		const user: users = this.authService.getUserFromRequest(client);
 		const gameUID: string = game.gameUID;
 		if (!user || !gameUID) return;
 
@@ -129,7 +129,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	@UseGuards(JwtGuard)
 	@SubscribeMessage('player-move')
 	handlePlayerMove(@ConnectedSocket() client: Socket | any, @MessageBody() data: any) {
-		const user: users = this.gameService.getUserFromRequest(client);
+		const user: users = this.authService.getUserFromRequest(client);
 		const gameUID: string = data.gameUID;
 		if (!user || !gameUID) return;
 
@@ -150,7 +150,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	@UseGuards(JwtGuard)
 	@SubscribeMessage('player-ready')
 	playerIsReady(@ConnectedSocket() client: Socket | any, @MessageBody() data: any) {
-		const user: users = this.gameService.getUserFromRequest(client);
+		const user: users = this.authService.getUserFromRequest(client);
 		const gameUID: string = data.gameUID;
 		if (!user || !gameUID) return;
 

@@ -69,11 +69,13 @@ import { defineComponent } from 'vue';
 import { computed } from 'vue';
 import { useUser } from '../stores/user';
 import { useSnackbarStore } from '../stores/snackbar';
+import { useOnlineSocketStore } from '../stores/online';
 
 import Snackbar from '../components/layout/Snackbar.vue';
 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
+const onlineSocketStore = useOnlineSocketStore();
 
 export default defineComponent({
 	name: 'Home',
@@ -82,9 +84,14 @@ export default defineComponent({
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
 
+		const disconnect = () => {
+			onlineSocketStore.disconnect();
+		};
+
 		return {
 			JWT,
 			user,
+			disconnect,
 		};
 	},
 	data() {
@@ -123,6 +130,7 @@ export default defineComponent({
 		async logout() {
 			sessionStorage.clear();
 			await userStore.deleteUser();
+			this.disconnect();
 			return this.$router.push({ name: `Login` });
 		},
 		redirect(path: string) {
@@ -155,6 +163,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
 #doorLogout {
 	content: url('/dashboard/clickable/doorClosed.png');
 	object-fit: cover;

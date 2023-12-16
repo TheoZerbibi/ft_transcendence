@@ -500,15 +500,7 @@ export class UserService {
 	/***********************************************************************************/
 
 	/*************************************** Users *************************************/
-<<<<<<< HEAD
-<<<<<<< HEAD
 	async deleteUser(userId: number): Promise<any> {
-=======
-	async deleteUser(userId: number) {
->>>>>>> 07fb6e9 (feat(back: user): build of an error body in case of BadRequestException or ForbiddentException)
-=======
-	async deleteUser(userId: number) {
->>>>>>> 439e9a13731387f97224a69059458720607c1c9b
 		try {
 			const user: User = await this.prisma.user.findUnique({
 				where: {
@@ -536,11 +528,12 @@ export class UserService {
 				},
 				data: {
 					login: uuid,
-					display_name: 'DeletedUser-' + displayName,
+					display_name: 'DU' + displayName,
 					avatar: 'https://pbs.twimg.com/media/Evt7zYjVIAAPim0.jpg',
 					email: 'deleteUser',
 					dAuth: false,
 					secret: null,
+					created_at: new Date(),
 				},
 			});
 			return { message: 'User deleted' };

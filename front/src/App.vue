@@ -7,13 +7,36 @@
 </template>
 
 <script lang="ts">
-import { computed } from 'vue';
-import { useBackgroundColorStore } from './stores/background'; // Adjust the path accordingly
+import { computed, watch } from 'vue';
+import { useBackgroundColorStore } from './stores/background';
+import { useUser } from './stores/user';
+import { useOnlineSocketStore } from './stores/online';
+import { onMounted } from 'vue';
+import { onUnmounted } from 'vue';
 
 export default {
 	setup() {
 		const backgroundColorStore = useBackgroundColorStore();
+		const userStore = useUser();
+		const onlineSocketStore = useOnlineSocketStore();
+
 		const backgroundColor = computed(() => backgroundColorStore.backgroundColor);
+
+		watch(
+			() => userStore.getJWT,
+			(newJWT, oldJWT) => {
+				if (newJWT && newJWT !== oldJWT) {
+					onlineSocketStore.connect(newJWT);
+				} else if (!newJWT) {
+					onlineSocketStore.disconnect();
+				}
+			},
+			{ immediate: true },
+		);
+
+		onUnmounted(() => {
+			onlineSocketStore.disconnect();
+		});
 
 		return {
 			backgroundColor,

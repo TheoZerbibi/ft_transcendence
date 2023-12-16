@@ -5,6 +5,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtGuard } from './auth/guard';
+import { OnlineModule } from './online/online.module';
 
 @Module({
 	imports: [
@@ -12,6 +13,7 @@ import { JwtGuard } from './auth/guard';
 			isGlobal: true,
 		}),
 		GameModule,
+		OnlineModule,
 		PrismaModule,
 		AuthModule,
 	],

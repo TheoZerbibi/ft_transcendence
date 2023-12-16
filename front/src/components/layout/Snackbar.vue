@@ -22,7 +22,7 @@ export default defineComponent({
 </script>
 
 <template>
-	<v-snackbar v-model="snackbar" :timeout="timeout" :color="color">
+	<v-snackbar v-model="snackbar" :timeout="timeout" :color="color" class="hoverable">
 		{{ text }}
 	</v-snackbar>
 </template>

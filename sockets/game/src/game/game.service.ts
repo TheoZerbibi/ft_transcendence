@@ -162,14 +162,4 @@ export class GameService {
 		}
 		return player;
 	}
-
-	public getUserFromRequest(client: Socket | any): users | null {
-		const user: users = client.handshake.user;
-		if (!user) {
-			client.emit('error', 'Invalid token');
-			client.disconnect();
-			return null;
-		}
-		return user;
-	}
 }

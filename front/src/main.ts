@@ -46,7 +46,8 @@ const vuetify = createVuetify({
 
 loadFonts();
 
+const app = createApp(App);
 const pinia = createPinia();
 pinia.use(piniaPersist);
 
-createApp(App).use(router).use(vuetify).use(pinia).use(VueCookies).mount('#app');
+app.use(router).use(vuetify).use(VueCookies).use(pinia).mount('#app');

@@ -8,6 +8,7 @@ export const useUser = defineStore('user', {
 		dAuth: false as boolean,
 		email: null as string | null,
 		avatar: undefined as string | undefined,
+		isOnline: false as boolean,
 		created_at: null as Date | null,
 	}),
 	getters: {
@@ -45,6 +46,7 @@ export const useUser = defineStore('user', {
 					this.displayName = null;
 					this.avatar = undefined;
 					this.dAuth = false;
+					this.isOnline = false;
 					return Promise.reject(errorData);
 				}
 
@@ -55,6 +57,7 @@ export const useUser = defineStore('user', {
 				this.created_at = new Date(data.created_at);
 				this.avatar = data.avatar;
 				this.dAuth = data.dAuth;
+				this.isOnline = true;
 				return Promise.resolve(data);
 			} catch (error) {
 				return Promise.reject(error);
@@ -72,6 +75,7 @@ export const useUser = defineStore('user', {
 			this.displayName = null;
 			this.avatar = undefined;
 			this.dAuth = false;
+			this.isOnline = false;
 		},
 	},
 	persist: {

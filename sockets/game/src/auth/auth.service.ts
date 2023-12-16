@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { users } from '@prisma/client';
+import { Socket } from 'socket.io';
 
 @Injectable()
 export class AuthService {
@@ -39,5 +40,15 @@ export class AuthService {
 		} catch (e) {
 			throw new ForbiddenException('Invalid token');
 		}
+	}
+
+	public getUserFromRequest(client: Socket | any): users | null {
+		const user: users = client.handshake.user;
+		if (!user) {
+			client.emit('error', 'Invalid token');
+			client.disconnect();
+			return null;
+		}
+		return user;
 	}
 }

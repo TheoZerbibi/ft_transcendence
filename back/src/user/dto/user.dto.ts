@@ -43,6 +43,11 @@ export class UserDto {
 	secret: string;
 
 	@ApiProperty()
+	@IsBoolean()
+	// eslint-disable-next-line
+	isOnline: boolean;
+
+	@ApiProperty()
 	@IsDate()
 	// eslint-disable-next-line
 	created_at: Date;

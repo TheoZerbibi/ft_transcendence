@@ -48,16 +48,21 @@ const router = createRouter({
 			name: 'FakeAuth',
 			component: () => import('../views/FakeAuth.vue'),
 		},
+		{
+			path: '/teapot',
+			name: '418',
+			component: () => import('../views/Teapot.vue'),
+		},
+		{
+			path: '/exemple',
+			name: 'Exemple',
+			component: () => import('../components/exemples/WebsocketExemple.vue'),
+		},
 		// Doit a tout pris être en dernier
 		{
 			path: '/:notFound',
 			name: '404',
 			component: () => import('../views/PageNotFound.vue'),
-		},
-		{
-			path: '/teapot',
-			name: '418',
-			component: () => import('../views/Teapot.vue'),
 		},
 	],
 });
