@@ -4,7 +4,7 @@ import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/com
 import { ChannelEntity } from './impl/ChannelEntity';
 import { ChannelUserEntity } from './impl/ChannelUserEntity';
 // PRISMA
-import { Prisma, User, Channel, ChannelUser, ChannelMessage } from '@prisma/client';
+import { PrismaClient, Prisma, User, Channel, ChannelUser, ChannelMessage } from '@prisma/client';
 // DTO
 import {
 	ChannelListElemDto,
@@ -168,6 +168,51 @@ export class ChannelService {
 					};
 				});
 			return channelUserDtos;
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	async getChannelUserByLogin(user: User, channel_name: string, login: string): Promise<ChannelUserDto | null> {
+		try {
+			if (!channel_name) throw new BadRequestException('Channel name is required');
+			const channel: Channel | null = await this.prisma.channel.findUnique({
+				where: {
+					name: channel_name,
+				},
+			});
+			if (!channel) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
+
+			const target: User | null = await this.prisma.user.findUnique({ where: { login: login, }, });
+			const channelUser: ChannelUser = await this.prisma.channelUser.findUnique({
+				where: {
+					channel_id_user_id: {
+						channel_id: channel.id,
+						user_id: target.id,
+					}
+				},
+				include: {
+					user: {
+						select: {
+							login: true,
+							display_name: true,
+							avatar: true,
+						},
+					},
+				},
+			});
+			if (!channelUser) throw new BadRequestException(`${login} is not on this channel`);
+
+			const channelUserDto: ChannelUserDto = {
+				login: user.login,
+				display_name: user.display_name,
+				avatar: user.avatar,
+				is_owner: channelUser.is_owner,
+				is_admin: channelUser.is_admin,
+				is_muted: channelUser.is_muted,
+				is_banned: channelUser.is_ban,
+			};
+			return channelUserDto;
 		} catch (e) {
 			throw e;
 		}

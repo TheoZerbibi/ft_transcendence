@@ -49,7 +49,7 @@
 								class="custom-column"
 								cols="12"
 								md="3">
-								<FriendProfile :selectedFriendLogin="selectedFriendLogin" />
+								<UserProfile :selectedFriendLogin="selectedFriendLogin" />
 							</v-col>
 						</v-row>
 					</v-window-item>
@@ -80,6 +80,7 @@
 								md="3">
 								<ChannelUsers :selectedChannelName="selectedChannelName"></ChannelUsers>
 								<ChannelSettings :selectedChannelName="selectedChannelName"></ChannelSettings>
+
 							</v-col>
 						</v-row>
 					</v-window-item>
@@ -110,14 +111,13 @@ import Friends from '../components/chat/direct-messages/Friends.vue';
 import Requests from '../components/chat/direct-messages/Requests.vue';
 import Users from '../components/chat/direct-messages/Users.vue';
 import DirectMessages from '../components/chat/direct-messages/DirectMessages.vue';
-import FriendProfile from '../components/chat/direct-messages/FriendProfile.vue';
+import UserProfile from '../components/chat/direct-messages/UserProfile.vue';
 
 import DiscoverChannels from '../components/chat/channels/DiscoverChannels.vue';
 import JoinedChannels from '../components/chat/channels/JoinedChannels.vue';
 import ChannelMessages from '../components/chat/channels/ChannelMessages.vue';
 import ChannelUsers from '../components/chat/channels/ChannelUsers.vue';
 import ChannelSettings from '../components/chat/channels/ChannelSettings.vue';
-
 import BlockedUsers from '../components/chat/profile/BlockedUsers.vue';
 
 import { useUser } from '../stores/user';
@@ -135,7 +135,7 @@ export default defineComponent({
 		Requests,
 		Users,
 		DirectMessages,
-		FriendProfile,
+		UserProfile,
 
 		/* Channels */
 		DiscoverChannels,
@@ -149,7 +149,7 @@ export default defineComponent({
 	},
 	setup() {
 		const userStore = useUser();
-		const tab = ref(0);
+		const tab = ref(2);
 	
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
@@ -163,7 +163,7 @@ export default defineComponent({
 	},
 	data() {
 		return {
-			selectedFriendLogin: null as any,
+			selectedFriendLogin: '' as string,
 			selectedChannelName: '' as string,
 		}
 	},

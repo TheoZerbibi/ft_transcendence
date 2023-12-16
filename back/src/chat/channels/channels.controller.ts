@@ -122,6 +122,22 @@ export class ChannelController {
 		}
 	}
 
+	@Get(':channel_name/access/users/:login')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'Get channel user by login' })
+	@ApiBearerAuth('JWT-auth')
+	async getChannelUserByLogin(
+		@GetUser() user: User,
+		@Param('channel_name') channel_name: string,
+		@Param('login') login: string,
+	) {
+		try {
+			return await this.channelService.getChannelUserByLogin(user, channel_name, login);
+		} catch (e: any) {
+			throw e;
+		}
+	}
+
 	/************************************* Messages ************************************/
 	@Get(':channel_name/access/messages')
 	@UseGuards(JwtGuard)
