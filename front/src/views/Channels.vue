@@ -1,11 +1,13 @@
 <template>
 	<v-container
 		fluid
+		fill-height
+        class="d-flex flex-column"
 		>
 
 		<!-- Top bar : tabs -->
-		<v-row>
-			<v-col class="custom-column">
+		<v-row fill-height>
+			<v-col fill-height class="custom-column">
 				<v-tabs v-model="tab">
 					<v-spacer></v-spacer>
 					<v-tab :value="1">DMs</v-tab>
@@ -19,15 +21,15 @@
 		</v-row>
 
 		<!-- Main content -->
-		<v-row>
-			<v-col class="custom-column">
+		<v-row fill-height>
+			<v-col fill-height class="custom-column">
 				<v-window v-model="tab">
 
 					<!-- Direct messages tab -->
 					<v-window-item :value="1">
 							<!-- Friend, requests, users lists -->
-						<v-row>
-							<v-col
+						<v-row fill-height>
+							<v-col fill-height
 								class="custom-column"
 								cols="12"
 								md="3">
@@ -36,14 +38,14 @@
 								<Users/>
 							</v-col>
 							<!-- DMs -->
-							<v-col
+							<v-col fill-height
 								class="custom-column"
 								cols="12"
 								md="6">
 								<DirectMessages :selectedFriendLogin="selectedFriendLogin" />
 							</v-col>
 							<!-- Friend profile -->
-							<v-col
+							<v-col fill-height
 								class="custom-column"
 								cols="12"
 								md="3">
@@ -54,9 +56,9 @@
 
 					<!-- Channels tab -->
 					<v-window-item :value="2">
-						<v-row>
+						<v-row fill-height>
 							<!-- Joined channels, discover channels -->
-							<v-col
+							<v-col fill-height
 								class="custom-column"
 								cols="12"
 								md="3">
@@ -65,26 +67,27 @@
 							</v-col>
 
 							<!-- Colonne du milieu pour Messages (3/4 de l'écran) -->
-							<v-col
+							<v-col fill-height
 								class="custom-column"
 								cols="12"
 								md="6">
 								<ChannelMessages :selectedChannelName="selectedChannelName"></ChannelMessages>
 							</v-col>
 
-							<v-col
+							<v-col fill-height
 								class="custom-column"
 								cols="12"
 								md="3">
 								<ChannelUsers :selectedChannelName="selectedChannelName"></ChannelUsers>
+								<ChannelSettings :selectedChannelName="selectedChannelName"></ChannelSettings>
 							</v-col>
 						</v-row>
 					</v-window-item>
 
 					<!-- Profile tab -->
 					<v-window-item :value="3">
-						<v-row>
-							<v-col
+						<v-row fill-height>
+							<v-col fill-height
 								class="custom-column"
 								cols="12"
 								md="3">
@@ -112,7 +115,8 @@ import FriendProfile from '../components/chat/direct-messages/FriendProfile.vue'
 import DiscoverChannels from '../components/chat/channels/DiscoverChannels.vue';
 import JoinedChannels from '../components/chat/channels/JoinedChannels.vue';
 import ChannelMessages from '../components/chat/channels/ChannelMessages.vue';
-import ChannelUsers from '../components/chat/channels/ChannelInfos.vue';
+import ChannelUsers from '../components/chat/channels/ChannelUsers.vue';
+import ChannelSettings from '../components/chat/channels/ChannelSettings.vue';
 
 import BlockedUsers from '../components/chat/profile/BlockedUsers.vue';
 
@@ -138,63 +142,23 @@ export default defineComponent({
 		JoinedChannels,
 		ChannelMessages,
 		ChannelUsers,
+		ChannelSettings,
 
 		/* Profile */
 		BlockedUsers,
 	},
 	setup() {
-
-//				const webSocketStore = useSocketStore();
-				const userStore = useUser();
-				const snackbarStore = useSnackbarStore();
-
-//				let connectedUsers: any = [];
-				const tab = ref(0); // Start with the first tab active
-			
-//				const isConnected = computed(() => webSocketStore.isConnected);
-//				const socket = computed(() => webSocketStore.getSocket);
-				const JWT = computed(() => userStore.getJWT);
-				const user = computed(() => userStore.getUser);
-			
-//				const connect = async (JWT: string) => {
-//					await webSocketStore.connect(JWT, import.meta.env.VITE_CHAT_SOCKET_PORT);
-//				};
-//			
-//				const disconnect = () => {
-//					webSocketStore.disconnect();
-//				};
-//
-//				const socketListen = () => {
-//					if (socket.value) {
-//						socket.value.on('chat-error', (data: any) => { disconnect(); snackbarStore.showSnackbar(data, 3000, 'red'); });
-//					//	socket.value.on('welcome', (data: any) => { connectedUsers = JSON.parse(data) });
-//					//	socket.value.on('new-direct-message', (data: any) => { connectedUsers = JSON.parse(data) });
-//					//	socket.value.on('channel-updated', (data: any) => { connectedUsers = JSON.parse(data) });
-//					//	socket.value.on('channel-user-update', (data: any) => { connectedUsers = JSON.parse(data) });
-//					//	socket.value.on('channel-creation', (data: any) => { connectedUsers = JSON.parse(data) });
-//					//	socket.value.on('channel-joined', (data: any) => { connectedUsers = JSON.parse(data) });
-//					//	socket.value.on('user-quitted-channel', (data: any) => { connectedUsers = JSON.parse(data) });
-//					//	socket.value.on('channel-deleted', (data: any) => { connectedUsers = JSON.parse(data) });
-//						}
-//				};
-//
-//				onMounted(() => {
-//						connect(JWT.value);
-//						console.log(isConnected.value);
-//						console.log('HELLO WORLD !');
-//						});
-//
-				return {
-//					isConnected,
-//						socket,
-//						connect,
-//						disconnect,
-//						socketListen,
-						JWT,
-						user,
-//						connectedUsers,
-						tab,
-				};
+		const userStore = useUser();
+		const tab = ref(1);
+	
+		const JWT = computed(() => userStore.getJWT);
+		const user = computed(() => userStore.getUser);
+	
+		return {
+				JWT,
+				user,
+				tab,
+		};
 
 	},
 	data() {
@@ -202,13 +166,6 @@ export default defineComponent({
 			selectedFriendLogin: null as any,
 			selectedChannelName: '' as string,
 		}
-	},
-	watch: {
-		tab(newVal) {
-			if (newVal === 1) {
-				//this.fetchDirectMessages(friends[0].login);
-			}
-		},
 	},
 	methods: {
 		updateMessagesList(login: string) {
@@ -218,14 +175,13 @@ export default defineComponent({
 		updateSelectedChannel(selectedChannelName: string) {
 			this.selectedChannelName = selectedChannelName;
 		},
-
-
 	},
 });
 
 </script>
 
 <style>
+
 .v-container {
 /*     background: url('/chat/background/space-parallax.png') no-repeat center center fixed;  */
     background: url('/game/battleParallax/cloud-parallax.png') no-repeat center center fixed; 
@@ -269,6 +225,22 @@ export default defineComponent({
 	flex-grow: 1;
 	flex-shrink: 1;;
 	border-radius: 30px;
+}
+
+.empty-card {
+	font-family: 'OMORI_MAIN', sans-serif;
+	background-color: rgba(0, 0, 0, 0.6);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	flex-grow: 1;
+	flex-shrink: 1;;
+	border-radius: 30px;
+}
+
+.scrollable-card {
+	overflow-y: auto;
 }
 
 .v-card-title {
@@ -323,12 +295,27 @@ export default defineComponent({
 		0 0 0.2em goldenrod;
 }
 
+.justify-center {
+	justify-content: center;
+}
+
 .justify-end {
     justify-content: flex-end;
 }
 
 .justify-start {
     justify-content: flex-start;
+}
+
+.modal {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding: 1rem;
+	border-radius: 0.5rem;
+	background-color: rgba(0, 0, 0, 0.6);
+	z-index: 100;
 }
 
 </style>

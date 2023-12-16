@@ -60,22 +60,19 @@ export default {
 							'Access-Control-Allow-Origin': '*',
 						},
 					},
-				).catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
+				);
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
-				});
+				}
 				const data: any = await response.json();
 				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 					return;
 				}
-				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
-					return;
-				}
 				this.blockedUsers = data;
-			} catch (error) {
-				console.error(error);
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 		unblockUser: async function (login: string) {
@@ -93,22 +90,19 @@ export default {
 							login: login,
 						}),
 					}
-				).catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
+				);
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
-				});
+				}
 				const data: any = await response.json();
 				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 					return;
 				}
-				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
-					return;
-				}
 				this.fetchBlockedUsers();
-			} catch (error) {
-				console.error(error);
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 	},

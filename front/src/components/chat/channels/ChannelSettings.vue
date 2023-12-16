@@ -39,8 +39,6 @@
 		</v-card-text>
 	</v-card>
 
-
-
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
 
@@ -107,22 +105,18 @@ export default {
 						body: JSON.stringify({
 							name: this.channelName,
 						}),
-					}).catch((error: any) => {
-						snackbarStore.showSnackbar(error.message, 3000, 'red');
-						return;
 					});
-					const data: any = response.json();
+					if (!response.ok) {
+						snackbarStore.showSnackbar(response.message, 3000, 'red');
+						return;
+					}					const data: any = response.json();
 					if (data.is_error) {
 						snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 						return;
 					}
-					if (!response.ok) {
-						snackbarStore.showSnackbar(response.message, 3000, 'red');
-						return;
-					}
 					snackbarStore.showSnackbar(`You left ${this.channelName}`, 3000, 'green');
-			} catch (error) {
-				console.error(error);
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 		deleteChannel: async function() {
@@ -144,10 +138,7 @@ export default {
 							name: this.channelName,
 						}),
 					}
-				).catch((error: any) => {
-					snackbarStore.showSnackbar(error.message, 3000, 'red');
-					return;
-				});
+				)
 				const data: any = response.json();
 				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
@@ -157,8 +148,8 @@ export default {
 					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
 				}
-			} catch (error) {
-				console.error(error);
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 		changePassword: async function() {
@@ -185,21 +176,18 @@ export default {
 							new_pwd_confirm: this.pwd.confirm,
 						}),
 					}
-				).catch((error: any) => {
-					snackbarStore.showSnackbar(error.message, 3000, 'red');
+				)
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
 					return;
-				});
+				}
 				const data = await response.json();
 				if (data.is_error) {
 					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
 					return;
 				}
-				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
-					return;
-				}
-			} catch (error) {
-				console.error(error);
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 	},
