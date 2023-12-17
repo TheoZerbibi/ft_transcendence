@@ -1,5 +1,7 @@
 <template>
-	<v-card class="d-flex flex-column align-start justify-center rounded-0 box" :style="{ 'min-width': width, 'min-height': height }">
+	<v-card 
+		class="d-flex flex-column align-start justify-center rounded-0 box"
+		:style="{ 'width': width, 'height': height }">
 		<slot></slot>
 	</v-card>
 </template>
@@ -12,11 +14,11 @@ export default {
 	props: {
 		width: {
 			type: String,
-			default: "30dvh",
+			default: "auto",
 		},
 		height: {
 			type: String,
-			default: "10dvh",
+			default: "auto",
 		},
 	}
 };
@@ -26,11 +28,6 @@ export default {
 .box {
 	background-color: #e0e0e0;
 	border: black solid thick;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-evenly;
-	flex-grow: 1;
-	flex-shrink: 1;
 }
 
 </style>

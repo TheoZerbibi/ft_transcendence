@@ -1,20 +1,20 @@
 <template>
 
 	<!-- Channel Settings -->
-	<v-card v-if="selectedChannelName">
+	<div v-if="selectedChannelName">
 		<v-card-title> Settings of @{{ selectedChannelName }} </v-card-title>
 			<v-btn @click="leaveChannel">Leave Channel</v-btn>
 			<v-btn v-if="channelUser.is_owner" @click="deleteChannel">Delete channel</v-btn>
 			<UserModeration></UserModeration>
 			<ChangePwd></ChangePwd>
-	</v-card>
+	</div>
 
-	<v-card v-else>
+	<div v-else>
 		<v-card-title>Settings</v-card-title>
 		<v-card-text class="empty-card">
 			~ no channel selected ~
 		</v-card-text>
-	</v-card>
+	</div>
 
 	<UserModeration
 		v-if="showUserModeration"

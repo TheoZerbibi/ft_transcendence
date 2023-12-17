@@ -1,82 +1,118 @@
 <template>
-	<v-layout class="d-flex flex-column align-center justify-center">
+	<v-layout fluid>
 
-		<v-app-bar class="d-flex flex-column justify-center align-center elevation-0 windowBox" density="compact">
-			<v-toolbar-title class="omoriFont white-text text-start h1 ">OMORI Community</v-toolbar-title>
+		<v-app-bar class="elevation-0 appBarBox bg-black d-flex flow-row justify-center align-center" density="compact">
+			<div style="border: white solid medium; height: 5dvh; width: 95dvw">
+				<v-toolbar-title class="omoriFont text-start h2">OMORI Community</v-toolbar-title>
+			</div>
+			<Button icon :height="5" :width="5" :border="'white solid medium'" @click="redirect('Home')">
+				<v-icon color="white" class="close-svg"></v-icon>
+			</Button>
 		</v-app-bar>
 
-		<v-container fill-height class="d-flex flex-column justify-center align-center windowBox" style="width: 100dvh">
-			<v-tabs v-model="tab" flat hide-slider grow height="60px" style="border: black solid thick"
-				class="bg-grey-darken-1 ">
-				<v-tab v-for="(link, index) in links" :key="link.value" :value="link.value" :text="link.name"
-					class="no-hover h2 omoriFont justify-start align-start" selected-class="active-tab" :ripple="false"
-					:style="{ 'border-right': index !== links.length - 1 ? 'black solid thick' : 'none', width: index !== links.length - 1 ? '20dvw' : 'auto' }" />
-			</v-tabs>
-
-			<v-main>
-				<!-- Main content -->
-				<v-row>
-					<v-col>
-						<v-window v-model="tab">
-
-							<!-- Direct messages tab -->
-							<v-window-item :value="1">
-								<!-- Friend, requests, users lists -->
-
+		<v-main class="d-flex flex-column justify-start align-center bg-image" style="width: 100dvw">
+			<v-container class="d-flex flex-column align-cente justify-center windowBox" style="height: 85dvh">
+				<v-row class="bg-black" style="max-height: 5dvh">
+					<v-tabs v-model="tab" flat hide-slider grow class="bg-grey-darken-1">
+						<v-tab v-for="(link, index) in links" :key="link.value" :value="link.value" :text="link.name"
+							class="no-hover h3 omoriFont justify-start align-center tabs" :ripple="false"
+							:style="{ 'border-left': index === 0 ? 'black solid thick' : 'none' }" />
+					</v-tabs>
+				</v-row>
+				<v-spacer></v-spacer>
+				<v-window v-model="tab">
+					<!-- Direct messages tab -->
+					<v-window-item :value="1">
+						<!-- Friend, requests, users lists -->
+						<v-row>
+							<v-col cols="12" md="3">
 								<Box>
 									<Friends @messages-with="updateMessagesList" />
 									<Requests />
 									<Users />
 								</Box>
-								<!-- DMs -->
+							</v-col>
+							<!-- DMs -->
+							<v-col cols="12" md="6">
 								<Box>
 									<DirectMessages :selectedFriendLogin="selectedFriendLogin" />
 								</Box>
-								<!-- Friend profile -->
+							</v-col>
+							<!-- Friend profile -->
+							<v-col cols="12" md="3">
 								<Box>
 									<UserProfile :selectedFriendLogin="selectedFriendLogin" />
 								</Box>
+							</v-col>
+						</v-row>
+					</v-window-item>
 
-							</v-window-item>
+					<!-- Channels tab -->
+					<v-window-item :value="2">
+						<v-row>
+							<!-- Joined channels, discover channels -->
+							<v-col cols="12" md="3">
+								<Box>
+									<JoinedChannels @channel-selected="updateSelectedChannel" />
+									<DiscoverChannels />
+								</Box>
+							</v-col>
 
-							<!-- Channels tab -->
-							<v-window-item :value="2">
-								<v-row>
-									<!-- Joined channels, discover channels -->
-									<v-col cols="12" md="3">
-										<JoinedChannels @channel-selected="updateSelectedChannel" />
-										<DiscoverChannels />
-									</v-col>
+							<!-- Colonne du milieu pour Messages (3/4 de l'écran) -->
+							<v-col cols="12" md="6">
+								<Box>
+									<ChannelMessages :selectedChannelName="selectedChannelName"></ChannelMessages>
+								</Box>
+							</v-col>
 
-									<!-- Colonne du milieu pour Messages (3/4 de l'écran) -->
-									<v-col cols="12" md="6">
-										<ChannelMessages :selectedChannelName="selectedChannelName"></ChannelMessages>
-									</v-col>
+							<v-col cols="12" md="3">
+								<Box>
+									<ChannelUsers :selectedChannelName="selectedChannelName"></ChannelUsers>
+									<ChannelSettings :selectedChannelName="selectedChannelName"></ChannelSettings>
+								</Box>
+							</v-col>
+						</v-row>
+					</v-window-item>
 
-									<v-col cols="12" md="3">
-										<ChannelUsers :selectedChannelName="selectedChannelName"></ChannelUsers>
-										<ChannelSettings :selectedChannelName="selectedChannelName"></ChannelSettings>
+					<!-- Profile tab -->
+					<v-window-item :value="3">
+						<v-row>
+							<v-col cols="12" md="3">
+								<Box>
+									<v-card-title>Settings</v-card-title>
+								</Box>
+							</v-col>
+							<v-col cols="12" md="9">
+								<Box>
+									<BlockedUsers />
+								</Box>
+							</v-col>
+						</v-row>
+					</v-window-item>
+				</v-window>
+			</v-container>
+			<!-- Main content -->
 
-									</v-col>
-								</v-row>
-							</v-window-item>
+		</v-main>
 
-							<!-- Profile tab -->
-							<v-window-item :value="3">
-								<v-row>
-									<v-col xs-12 sm-6 md-3>
-										<BlockedUsers />
-									</v-col>
-								</v-row>
-							</v-window-item>
-						</v-window>
-					</v-col>
-				</v-row>
-			</v-main>
-		</v-container>
+		<v-footer app color="grey-lighten-1" class="d-flex flex-column align-start" style="border-top: #f0f0f0 ridge thick">
+			<div class="text-center">
+				<v-menu :location="location">
+					<template v-slot:activator="{ props }">
+						<Button :backgroundColor="'#e0e0e0'" :color="'black'" :width="15" :height="6" :margin="''"
+							:border="'0.4rem ridge #e9e9e9'" :font="'OMORI_ARCADE'" :fontSize="35" v-bind="props">
+							Start
+						</Button>
+					</template>
 
-		<v-footer app color="grey-lighten-1" class="d-flex flex-column align-start">
-			<Button>Start</Button>
+					<v-list>
+						<v-list-item v-for="(route, index) in routes" :key="route.value" :value="route.value"
+							:text="route.name">
+							<v-list-item-title @click="redirect(route.path)">{{ route.name }}</v-list-item-title>
+						</v-list-item>
+					</v-list>
+				</v-menu>
+			</div>
 		</v-footer>
 	</v-layout>
 </template>
@@ -149,7 +185,24 @@ export default defineComponent({
 			{
 				name: 'Profile',
 				value: 3,
-			},]
+			},];
+		const routes = [
+			{
+				name: 'OmoriPong',
+				path: 'GameMenu',
+				value: 1,
+			},
+			{
+				name: 'OmoriMusic',
+				path: 'MusicMenu',
+				value: 2,
+			},
+			{
+				name: 'Logout',
+				path: 'Login',
+				value: 3,
+			}
+		]
 
 		return {
 			JWT,
@@ -176,15 +229,23 @@ export default defineComponent({
 					value: 3,
 				},
 			],
-		}
+		};
 	},
 	methods: {
 		updateMessagesList(login: string) {
 			this.selectedFriendLogin = login;
 		},
-
 		updateSelectedChannel(selectedChannelName: string) {
 			this.selectedChannelName = selectedChannelName;
+		},
+		redirect(path: string) {
+			return this.$router.push({ name: path });
+		},
+		async logout() {
+			sessionStorage.clear();
+			await this.userStore.deleteUser();
+			this.disconnect();
+			return this.$router.push({ name: `Login` });
 		},
 	},
 });
@@ -236,5 +297,25 @@ export default defineComponent({
 	border-radius: 0.5rem;
 	background-color: rgba(0, 0, 0, 0.6);
 	z-index: 100;
+}
+
+.close-svg {
+	content: url('https://api.iconify.design/mdi/close.svg?color=white');
+}
+
+.tabs {
+	width: 20dvw;
+	border-right: black solid thick;
+	border-top: black solid thick;
+	border-bottom: black solid thick;
+}
+
+.bg-image {
+	background-image: url('/chat/background/Desktop.png');
+	background-repeat: no-repeat;
+	object-fit: cover;
+	max-height: 100dvh;
+	max-width: 100dvw;
+	aspect-ratio: 1;
 }
 </style>

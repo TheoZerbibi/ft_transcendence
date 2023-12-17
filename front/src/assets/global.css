@@ -25,15 +25,12 @@
 }
 
 .appBarBox {
-	margin: 2%;
-	background-color: black;
 	border-color: white;
-	border-style: double;
+	border-style: simple;
 	border-width: thick;
 }
 
 .blackBox {
-	background-color: black;
 	border-color: white;
 	border-style: double;
 	border-width: thick;

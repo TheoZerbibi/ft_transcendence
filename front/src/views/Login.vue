@@ -35,7 +35,7 @@
 				<div v-if="step === 1" class="d-flex flex-column align-center justify-center">
 					<h3 class="omoriFont text-center">Hello there... what's your name?</h3>
 					<InputBar @newInput="newUser.display_name = $event" placeholder="Enter your name here..."
-						@keyup.enter="nextStep" @click="nextStep">
+						@keyup.enter="nextStep" @click="nextStep" margin="1dvh" >
 						<template v-slot:buttonText>
 							that's my name!
 						</template>
@@ -56,7 +56,7 @@
 				</div>
 
 				<div v-if="step === 3" class="d-flex align-center justify-center">
-					<h3 class="omoriFont text-center">Welcome to OmoriPong {{ newUser.display_name }}!</h3>
+					<h3 class="omoriFont text-center white--text ma-4">Welcome to OmoriPong {{ newUser.display_name }}!</h3>
 					<img src="/ui/handSelection.png" @click="nextStep" class="hoverable hand" alt="Hand Image" />
 				</div>
 
