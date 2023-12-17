@@ -71,7 +71,6 @@ export class ChannelService {
 		return sortedChannels.map((channel) => ({
 			name: channel.getName(),
 			is_public: channel.getIsPublic(),
-			password: channel.getPassword(),
 			updated_at: channel.getUpdatedAt(),
 		}));
 	}
@@ -92,7 +91,6 @@ export class ChannelService {
 			name: channel.getName(),
 			updated_at: channel.getUpdatedAt(),
 			is_public: channel.getIsPublic(),
-			password: channel.getPassword(),
 		}));
 	}
 
@@ -107,7 +105,6 @@ export class ChannelService {
 			return {
 				name: channel.getName(),
 				is_public: channel.getIsPublic(),
-				password: channel.getPassword(),
 				updated_at: channel.getUpdatedAt(),
 			};
 		});
@@ -420,9 +417,6 @@ export class ChannelService {
 			if (!channelUser.isAdmin())
 				throw new ForbiddenException('You are not authorized to operate on this channel');
 
-			if (!channelEntity.getIsPublic() && !argon2.verify(channelEntity.getPassword(), newParamsdto.password))
-				throw new BadRequestException('Wrong password');
-
 			const channelPrisma = await this.prisma.channel.update({
 				where: {
 					name: channel_name,
@@ -499,11 +493,6 @@ export class ChannelService {
 			if (!channelUser) throw new BadRequestException(`You are not on this channel`);
 			if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
 
-			if (!channelEntity.getIsPublic()) {
-				const passwordMatch = await argon2.verify(channelEntity.getPassword(), dto.password);
-				if (!passwordMatch) throw new BadRequestException('Wrong password');
-			}
-
 			if (!channelUser.isOwner()) throw new BadRequestException('You cannot set someone as admin on this channel');
 
 			const target = await this.prisma.user.findUnique({
@@ -536,6 +525,13 @@ export class ChannelService {
 			channelEntity.setUpdatedAt(new Date());
 		} catch (e) {
 			throw e;
+		}
+	}
+
+	async removeAdminPrivileges(user: User, channel_name: string, dto: ModChannelUserDto) {
+		try {
+			
+		} catch (e) {
 		}
 	}
 

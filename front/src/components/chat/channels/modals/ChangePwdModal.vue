@@ -71,7 +71,6 @@ export default {
 	},
 	data() {
 		return {
-			channelName: this.selectedChannelName,
 			pwd: {
 				prev: '' as string,
 				new: '' as string,
@@ -80,8 +79,8 @@ export default {
 		};
 	},
 	computed: {
-		selectedChannelName: function() {
-			return this.channelName;
+		channelName: function() {
+			return this.selectedChannelName;
 		}
 	},
 	methods: {

@@ -55,12 +55,6 @@ export class ModChannelUserDto {
 
 	@ApiProperty()
 	@IsString()
-	@IsOptional()
-	// eslint-disable-next-line
-	password: string;
-
-	@ApiProperty()
-	@IsString()
 	// eslint-disable-next-line
 	action: string;
 

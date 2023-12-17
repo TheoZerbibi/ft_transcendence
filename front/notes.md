@@ -6,3 +6,5 @@
 - [ ] fetchs et emits pour rafraichir apres action
 
 - [ ] create channel max-length
+
+- [ ] USER PROFILE: add remove friend

@@ -140,6 +140,7 @@ export default {
 						},
 						body: JSON.stringify({
 							target_login: login,
+							action: 'promote',
 						}),
 					}
 				);

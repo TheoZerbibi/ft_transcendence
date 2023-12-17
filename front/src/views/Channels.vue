@@ -78,7 +78,7 @@
 								class="custom-column"
 								cols="12"
 								md="3">
-								<ChannelSettings :channelName="selectedChannelName"></ChannelSettings>
+								<ChannelSettings :selectedChannelName="selectedChannelName"></ChannelSettings>
 							</v-col>
 						</v-row>
 					</v-window-item>

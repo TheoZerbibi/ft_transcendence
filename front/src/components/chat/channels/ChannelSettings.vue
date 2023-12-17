@@ -1,9 +1,9 @@
 <template>
 
 	<!-- Channel users list -->
-	<v-card v-if="selectedChannelName">
+	<v-card v-if="channelName">
 		<v-card-title>
-			Users in {{ selectedChannelName }}
+			Users in {{ channelName }}
 		</v-card-title>
 		<v-list v-if="channelUsers.length">
 			<v-list-item
@@ -13,17 +13,17 @@
 			{{ channelUser.display_name }}
 			<UserModeration
 				v-if="myChannelUserProfile.is_admin"
-				:selectedChannelName="selectedChannelName"
+				:selectedChannelName="channelName"
 				:selectedChannelUser="channelUser"
 				:myUser="myChannelUserProfile">
 			</UserModeration>
 			</v-list-item>
 		</v-list>
-		<v-card-text v-else v-if="selectedChannelName">~ no one in this channel except you ~</v-card-text>
+		<v-card-text v-else-if="channelName">~ no one in this channel except you ~</v-card-text>
 		<v-card-actions>
 			<v-btn v-if="myChannelUserProfile.is_owner" @click="deleteChannel">Delete channel</v-btn>
 			<v-btn v-if="!myChannelUserProfile.is_owner" @click="leaveChannel">Leave Channel</v-btn>
-		<ChangePwd :selectedChannelName="selectedChannelName"></ChangePwd>
+		<ChangePwd :selectedChannelName="channelName"></ChangePwd>
 		</v-card-actions>"
 	</v-card>
 
@@ -57,11 +57,11 @@ export default {
 		ChangePwd,
 	},
 	props: {
-		channelName: String
+		selectedChannelName: String
 	},
 	computed: {
-		selectedChannelName: function() {
-			return this.channelName;
+		channelName: function() {
+			return this.selectedChannelName;
 		}
 	},
 	setup() {
@@ -75,35 +75,7 @@ export default {
 	},
 	data() {
 		return {
-			channelUsers: [
-				{
-					"login": "seozcan",
-					"display_name": "Semiha",
-					"avatar": "https://cdn.intra.42.fr/users/d78eaeaafd38e03543f1c757ad8b070e/seozcan.jpg",
-					"is_owner": true,
-					"is_admin": true,
-					"is_muted": null,
-					"is_banned": false
-				},
-				{
-					"login": "thzeribi",
-					"display_name": "Theo",
-					"avatar": "https://cdn.intra.42.fr/users/ef89183628c15b9229bf141ebd455ba9/thzeribi.jpg",
-					"is_owner": false,
-					"is_admin": false,
-					"is_muted": null,
-					"is_banned": false
-				},
-				{
-					"login": "grannou",
-					"display_name": "Gaëlle",
-					"avatar": "https://cdn.intra.42.fr/users/c2b48b00d1529ccb8e7a4296ec23b8ee/grannou.jpg",
-					"is_owner": false,
-					"is_admin": false,
-					"is_muted": null,
-					"is_banned": false
-				}
-			],
+			channelUsers: [],
 			myChannelUserProfile: {
 				"login": "nfauconn",
 				"display_name": "Noemi",
@@ -116,21 +88,21 @@ export default {
 		};
 	},
 	watch: {
-		selectedChannelName: function(newVal: string) {
-			//this.fetchUsers();
+		channelName: function(newVal: string) {
+			this.fetchUsers();
 			this.fetchMyChannelUserProfile();
 		}
 	},
 	methods: {
 		fetchUsers: async function() {
 			try {
-				if (!this.selectedChannelName || this.selectedChannelName === '') {
+				if (!this.channelName || this.channelName === '') {
 					console.log('[fetchUsers]: channelName is empty');
 					return;
 				}
-				console.log('[fetchUsers]: channelName: ', this.selectedChannelName);
+				console.log('[fetchUsers]: channelName: ', this.channelName);
 				const response: any = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannelName}/access/users`,
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.channelName}/access/users`,
 					{
 						method: 'GET',
 						headers: {
@@ -155,12 +127,12 @@ export default {
 		},
 		fetchMyChannelUserProfile: async function() {
 			try {
-				if (!this.selectedChannelName || this.selectedChannelName === '') {
-					console.log('[fetchMyChannelUserProfile]: this.selectedChannelName is empty');
+				if (!this.channelName || this.channelName === '') {
+					console.log('[fetchMyChannelUserProfile]: this.channelName is empty');
 					return;
 				}
 				const response: any = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannelName}/access/users/${this.user.login}`,
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.channelName}/access/users/${this.user.login}`,
 					{
 						method: 'GET',
 						headers: {
