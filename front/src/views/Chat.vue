@@ -1,5 +1,5 @@
 <template>
-	<v-layout fluid>
+	<v-layout class="d-flex flex-column justify-space-between align-content-space-evenly bg-image">
 
 		<v-app-bar class="elevation-0 appBarBox bg-black d-flex flow-row justify-center align-center" density="compact">
 			<div style="border: white solid medium; height: 5dvh; width: 95dvw">
@@ -10,16 +10,16 @@
 			</Button>
 		</v-app-bar>
 
-		<v-main class="d-flex flex-column justify-start align-center bg-image" style="width: 100dvw">
-			<v-container class="d-flex flex-column align-cente justify-center windowBox" style="height: 85dvh">
-				<v-row class="bg-black" style="max-height: 5dvh">
+		<v-main class="d-flex flex-column justify-start align-center" style="width: 100dvw; height: 85dvh">
+			<v-container class="d-flex flex-column justify-center windowBox" style="height: 85dvh">
+				<v-row class="bg-black ga-3" style="max-height: 5dvh">
 					<v-tabs v-model="tab" flat hide-slider grow class="bg-grey-darken-1">
 						<v-tab v-for="(link, index) in links" :key="link.value" :value="link.value" :text="link.name"
 							class="no-hover h3 omoriFont justify-start align-center tabs" :ripple="false"
 							:style="{ 'border-left': index === 0 ? 'black solid thick' : 'none' }" />
 					</v-tabs>
 				</v-row>
-				<v-spacer></v-spacer>
+
 				<v-window v-model="tab">
 					<!-- Direct messages tab -->
 					<v-window-item :value="1">
@@ -90,28 +90,41 @@
 					</v-window-item>
 				</v-window>
 			</v-container>
-			<!-- Main content -->
-
 		</v-main>
 
-		<v-footer app color="grey-lighten-1" class="d-flex flex-column align-start" style="border-top: #f0f0f0 ridge thick">
-			<div class="text-center">
-				<v-menu :location="location">
-					<template v-slot:activator="{ props }">
-						<Button :backgroundColor="'#e0e0e0'" :color="'black'" :width="15" :height="6" :margin="''"
-							:border="'0.4rem ridge #e9e9e9'" :font="'OMORI_ARCADE'" :fontSize="35" v-bind="props">
-							Start
-						</Button>
-					</template>
+		<v-footer app color="grey-lighten-1" style="border-top: #e9e9e9 ridge 0.35rem">
+			<v-container >
+				<v-row class="d-flex flex-row justify-space-between">
+					<v-col cols="9">
+						<v-menu :location="location">
+							<template v-slot:activator="{ props }">
+								<Button :backgroundColor="'#e0e0e0'" :color="'black'" :width="15" :height="5"
+									:margin="'0px'" :border="'0.4rem ridge #e9e9e9'" :font="'OMORI_ARCADE'" :fontSize="35"
+									v-bind="props">
+									Start
+								</Button>
+							</template>
 
-					<v-list>
-						<v-list-item v-for="(route, index) in routes" :key="route.value" :value="route.value"
-							:text="route.name">
-							<v-list-item-title @click="redirect(route.path)">{{ route.name }}</v-list-item-title>
-						</v-list-item>
-					</v-list>
-				</v-menu>
-			</div>
+							<v-list>
+								<v-list-item v-for="(route, index) in routes" :key="route.value" :value="route.value"
+									:text="route.name">
+									<v-list-item-title @click="redirect(route.path)">{{ route.name }}</v-list-item-title>
+								</v-list-item>
+							</v-list>
+						</v-menu>
+					</v-col>
+					<v-spacer></v-spacer>
+					<v-col>
+						<div class="d-flex text-end">
+							<Button disabled :backgroundColor="'#e9e9e9'" :color="'black'" :width="12" :height="5" :margin="'0px'"
+								:border="'0.3rem ridge #e9e9e9'" :font="'OMORI_ARCADE'" :fontSize="30">
+								{{ currentTime }}
+							</Button>
+						</div>
+					</v-col>
+				</v-row>
+			</v-container>
+
 		</v-footer>
 	</v-layout>
 </template>
@@ -230,7 +243,12 @@ export default defineComponent({
 					value: 3,
 				},
 			],
+			currentTime: '' as string,
 		};
+	},
+	mounted() {
+		this.updateTime();
+		setInterval(this.updateTime, 1000);
 	},
 	methods: {
 		updateMessagesList(login: string) {
@@ -250,6 +268,12 @@ export default defineComponent({
 			await this.userStore.deleteUser();
 			this.disconnect();
 			return this.$router.push({ name: `Login` });
+		},
+		async updateTime() {
+			const now = new Date();
+			const hours = now.getHours().toString().padStart(2, '0');
+			const minutes = now.getMinutes().toString().padStart(2, '0');
+			this.currentTime = `${hours}:${minutes}`;
 		},
 	},
 });
@@ -321,5 +345,10 @@ export default defineComponent({
 	max-height: 100dvh;
 	max-width: 100dvw;
 	aspect-ratio: 1;
+}
+
+.time {
+	font-size: 14px;
+	color: #666;
 }
 </style>
