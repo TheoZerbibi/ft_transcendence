@@ -1,7 +1,7 @@
 <template>
 
 	<!-- Blocked users list -->
-	<v-card>
+	<v-card  class="d-flex align-center justify-center rounded-0 box">
 	<v-card-title>Blocked Users</v-card-title>
 		<v-list class="no-bullets" v-if="blockedUsers.length">
 			<v-list-item v-for="user in blockedUsers" :key="user.id">

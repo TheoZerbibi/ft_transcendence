@@ -1,6 +1,6 @@
 <template>
 	<v-btn
-		class="white--text omoriFont omoriBtn font-weight-black "
+		class="white--text omoriFont omoriBtn font-weight-black elevation-0"
 		color="black"
 		rounded="0"
 		size="large"

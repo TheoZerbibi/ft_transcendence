@@ -1,7 +1,7 @@
 <template>
 
 	<!-- Joined Channels list -->
-	<v-card>
+	<v-card  class="d-flex align-center justify-center rounded-0 box">
 		<v-card-title>Joined Channels</v-card-title>
 		<v-list v-if="joinedChannels.length">
 			<v-list-item

@@ -1,6 +1,5 @@
 <template>
-
-	<v-card v-if="selectedFriendLogin">
+	<div v-if="selectedFriendLogin">
 
 		<v-card-title>Messages with @{{ selectedFriendLogin }} </v-card-title>
 
@@ -11,7 +10,7 @@
 				<v-list-item v-for="message in messages" :key="message.id">
 					<v-list-item-subtitle>
 						{{ message.username }}
-						<DateConv :timestamp="message.created_at"/>
+						<DateConv :timestamp="message.created_at" />
 					</v-list-item-subtitle>
 					{{ message.content }}
 				</v-list-item>
@@ -21,31 +20,22 @@
 
 		<!-- Message Input -->
 		<v-card-actions>
-			<v-text-field
-				v-model="input"
-				placeholder="Type your message..."
-				max-length="200"
-				@keyup.enter="sendMessage"
-			/>
-			<v-btn
-				class="justify-end"
-				@click="sendMessage"
-				>Send
+			<v-text-field v-model="input" placeholder="Type your message..." max-length="200" @keyup.enter="sendMessage" />
+			<v-btn class="justify-end" @click="sendMessage">Send
 			</v-btn>
 		</v-card-actions>
 
-	</v-card>
+	</div>
 
-	<v-card v-else>
+	<div v-else>
 		<v-card-title>Messages</v-card-title>
 		<v-card-text class="empty-card">
 			~ no friend selected ~
 		</v-card-text>
-	</v-card>
+	</div>
 
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
-
 </template>
 
 <script lang="ts">
@@ -79,20 +69,20 @@ export default {
 	data() {
 		return {
 			friendLogin: this.selectedFriendLogin ?
-												this.selectedFriendLogin as string 
-												: '' as string,
+				this.selectedFriendLogin as string
+				: '' as string,
 			messages: [] as any,
 			input: '' as string,
 		};
 	},
 	watch: {
-		selectedFriendLogin: function(newVal: string) {
+		selectedFriendLogin: function (newVal: string) {
 			this.friendLogin = newVal;
 			this.fetchDirectMessages();
 		},
 	},
 	methods: {
-		fetchDirectMessages: async function() {
+		fetchDirectMessages: async function () {
 			try {
 				if (!this.friendLogin || this.friendLogin === '') {
 					console.log('[fetchDirectMessages]: friendLogin is empty');
@@ -123,7 +113,7 @@ export default {
 			}
 		},
 
-		sendMessage: async function() {
+		sendMessage: async function () {
 			try {
 				if (!this.friendLogin || this.friendLogin === ''
 					|| this.input.trim() === '') {

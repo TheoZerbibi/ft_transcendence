@@ -1,8 +1,7 @@
 <template>
 
 	<!-- Users list -->
-	<v-card>
-		<v-card-title>Discover Users</v-card-title>
+		<v-card-title >Discover Users</v-card-title>
 		<v-list v-if="users.length">
 			<v-list-item v-for="user in users" :key="user.id">
 				{{ user.display_name }}
@@ -10,8 +9,6 @@
 			</v-list-item>
 		</v-list>
 		<v-card-text v-else>~ no users except you ~</v-card-text>
-	</v-card>
-
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
 
@@ -28,7 +25,7 @@ const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 
 export default {
-	components: { Snackbar },
+	components: { Snackbar, },
 	setup() {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
