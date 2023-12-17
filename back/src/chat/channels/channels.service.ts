@@ -484,7 +484,7 @@ export class ChannelService {
 
 	/************************************** Users ***********************************/
 
-	async setChannelUserAsAdmin(user: User, channel_name: string, dto: ModChannelUserDto) {
+	async promoteUser(user: User, channel_name: string, dto: ModChannelUserDto) {
 		try {
 			const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
 			if (!channelEntity) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
@@ -493,7 +493,7 @@ export class ChannelService {
 			if (!channelUser) throw new BadRequestException(`You are not on this channel`);
 			if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
 
-			if (!channelUser.isOwner()) throw new BadRequestException('You cannot set someone as admin on this channel');
+			if (!channelUser.isOwner()) throw new BadRequestException('You cannot promote someone on this channel');
 
 			const target = await this.prisma.user.findUnique({
 				where: {
@@ -504,7 +504,6 @@ export class ChannelService {
 				},
 			});
 			if (!target) throw new BadRequestException('User does not exist');
-			if (target.id === user.id) throw new BadRequestException('You cannot set yourself as admin');
 
 			const targetChanUser: ChannelUserEntity | null = channelEntity.getUsers().find((channelUser) => {
 				return channelUser.getUserId() === target.id;
@@ -528,10 +527,47 @@ export class ChannelService {
 		}
 	}
 
-	async removeAdminPrivileges(user: User, channel_name: string, dto: ModChannelUserDto) {
+	async demoteUser(user: User, channel_name: string, dto: ModChannelUserDto) {
 		try {
-			
+			const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
+			if (!channelEntity) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
+
+			const channelUser: ChannelUserEntity | null = await this.findChannelUser(user, channelEntity);
+			if (!channelUser) throw new BadRequestException(`You are not on this channel`);
+			if (channelUser.isBanned()) throw new ForbiddenException('You are banned from this channel');
+
+			if (!channelUser.isOwner()) throw new BadRequestException('You cannot demote someone on this channel');
+
+			const target = await this.prisma.user.findUnique({
+				where: {
+					login: dto.target_login,
+				},
+				select: {
+					id: true,
+				},
+			});
+			if (!target) throw new BadRequestException('User does not exist');
+			if (target.id === user.id) throw new BadRequestException('You cannot demote yourself');
+
+			const targetChanUser: ChannelUserEntity | null = channelEntity.getUsers().find((channelUser) => {
+				return channelUser.getUserId() === target.id;
+			});
+			if (!targetChanUser) throw new BadRequestException('User is not on this channel');
+			if (!targetChanUser.isAdmin()) throw new BadRequestException('User is not admin on this channel');
+
+			targetChanUser.setIsAdmin(false);
+
+			await this.prisma.channelUser.update({
+				where: {
+					id: targetChanUser.getId(),
+				},
+				data: {
+					is_admin: targetChanUser.isAdmin(),
+				},
+			});
+			channelEntity.setUpdatedAt(new Date());
 		} catch (e) {
+			throw e;
 		}
 	}
 
@@ -543,10 +579,8 @@ export class ChannelService {
 				dto.action != 'kick' &&
 				dto.action != 'ban' &&
 				dto.action != 'unban'
-			)
-				throw new BadRequestException(`Action "${dto.action}" not supported`);
+			) throw new BadRequestException(`Action "${dto.action}" not supported`);
 
-			console.log(`modChannelUser: ${JSON.stringify(dto)}`);
 			const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
 			if (!channelEntity) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
 
@@ -583,6 +617,8 @@ export class ChannelService {
 				case 'ban':
 					targetChanUser.setIsBanned(true);
 					break;
+				case 'unban':
+					targetChanUser.setIsBanned(false);
 				case 'kick' || 'unban':
 					try {
 						await this.prisma.channelUser.delete({
