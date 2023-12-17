@@ -6,9 +6,7 @@
 	</v-card>
 </template>
 
-<script>
-import { defineComponent } from 'vue';
-
+<script lang="ts">
 export default {
 	name: "Box",
 	props: {

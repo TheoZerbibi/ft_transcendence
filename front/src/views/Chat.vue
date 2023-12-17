@@ -1,6 +1,5 @@
 <template>
 	<v-layout fluid>
-
 		<v-app-bar class="elevation-0 appBarBox bg-black d-flex flow-row justify-center align-center" density="compact">
 			<div style="border: white solid medium; height: 5dvh; width: 95dvw">
 				<v-toolbar-title class="omoriFont text-start h2">OMORI Community</v-toolbar-title>
@@ -14,9 +13,16 @@
 			<v-container class="d-flex flex-column align-cente justify-center windowBox" style="height: 85dvh">
 				<v-row class="bg-black" style="max-height: 5dvh">
 					<v-tabs v-model="tab" flat hide-slider grow class="bg-grey-darken-1">
-						<v-tab v-for="(link, index) in links" :key="link.value" :value="link.value" :text="link.name"
-							class="no-hover h3 omoriFont justify-start align-center tabs" :ripple="false"
-							:style="{ 'border-left': index === 0 ? 'black solid thick' : 'none' }" />
+						<v-tab
+							v-for="(link, index) in links"
+							:key="link.value"
+							:value="link.value"
+							:text="link.name"
+							class="no-hover h3 omoriFont justify-start align-center tabs"
+							:class="{ 'tab-active': tab === link.value }"
+							:ripple="false"
+							:style="{ 'border-left': index === 0 ? 'black solid thick' : 'none' }"
+						/>
 					</v-tabs>
 				</v-row>
 				<v-spacer></v-spacer>
@@ -76,14 +82,29 @@
 					<!-- Profile tab -->
 					<v-window-item :value="3">
 						<v-row>
+							<v-col cols="12" md="12">
+							<Box>
+								<Profile />
+							</Box>
+							</v-col>
+						</v-row>
+						<!-- </div> -->
+						<v-row>
 							<v-col cols="12" md="3">
 								<Box>
-									<v-card-title>Settings</v-card-title>
+									<ProfileSettings />
 								</Box>
 							</v-col>
 							<v-col cols="12" md="9">
 								<Box>
-									<BlockedUsers />
+									<v-row>
+										<v-col cols="12" md="6">
+											<MatchHistory />
+										</v-col>
+										<v-col cols="12" md="6">
+											<BlockedUsers />
+										</v-col>
+									</v-row>
 								</Box>
 							</v-col>
 						</v-row>
@@ -91,22 +112,39 @@
 				</v-window>
 			</v-container>
 			<!-- Main content -->
-
 		</v-main>
 
-		<v-footer app color="grey-lighten-1" class="d-flex flex-column align-start" style="border-top: #f0f0f0 ridge thick">
+		<v-footer
+			app
+			color="grey-lighten-1"
+			class="d-flex flex-column align-start"
+			style="border-top: #f0f0f0 ridge thick"
+		>
 			<div class="text-center">
 				<v-menu :location="location">
 					<template v-slot:activator="{ props }">
-						<Button :backgroundColor="'#e0e0e0'" :color="'black'" :width="15" :height="6" :margin="''"
-							:border="'0.4rem ridge #e9e9e9'" :font="'OMORI_ARCADE'" :fontSize="35" v-bind="props">
+						<Button
+							:backgroundColor="'#e0e0e0'"
+							:color="'black'"
+							:width="15"
+							:height="6"
+							:margin="''"
+							:border="'0.4rem ridge #e9e9e9'"
+							:font="'OMORI_ARCADE'"
+							:fontSize="35"
+							v-bind="props"
+						>
 							Start
 						</Button>
 					</template>
 
 					<v-list>
-						<v-list-item v-for="(route, index) in routes" :key="route.value" :value="route.value"
-							:text="route.name">
+						<v-list-item
+							v-for="(route, index) in routes"
+							:key="route.value"
+							:value="route.value"
+							:text="route.name"
+						>
 							<v-list-item-title @click="redirect(route.path)">{{ route.name }}</v-list-item-title>
 						</v-list-item>
 					</v-list>
@@ -118,6 +156,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 // Direct messages
 import Friends from '../components/chat/direct-messages/Friends.vue';
@@ -133,7 +172,10 @@ import ChannelMessages from '../components/chat/channels/ChannelMessages.vue';
 import ChannelSettings from '../components/chat/channels/ChannelSettings.vue';
 
 // Profile
+import Profile from '../components/chat/profile/Profile.vue';
+import ProfileSettings from '../components/chat/profile/ProfileSettings.vue';
 import BlockedUsers from '../components/chat/profile/BlockedUsers.vue';
+import MatchHistory from '../components/chat/profile/MatchHistory.vue';
 
 import Box from '../components/layout/Box.vue';
 import Button from '../components/layout/Button.vue';
@@ -144,7 +186,6 @@ import { useSocketStore } from '../stores/websocket';
 import { computed } from 'vue';
 
 export default defineComponent({
-
 	name: 'ChatView',
 
 	components: {
@@ -162,7 +203,10 @@ export default defineComponent({
 		ChannelSettings,
 
 		/* Profile */
+		Profile,
+		ProfileSettings,
 		BlockedUsers,
+		MatchHistory,
 
 		/* Layout */
 		Box,
@@ -170,7 +214,8 @@ export default defineComponent({
 	},
 	setup() {
 		const userStore = useUser();
-		const tab = ref(0);
+		const route = useRoute();
+		const tab = ref(route.query.tab ? parseInt(route.query.tab as string) : 1);
 
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
@@ -186,7 +231,8 @@ export default defineComponent({
 			{
 				name: 'Profile',
 				value: 3,
-			},];
+			},
+		];
 		const routes = [
 			{
 				name: 'OmoriPong',
@@ -202,15 +248,14 @@ export default defineComponent({
 				name: 'Logout',
 				path: 'Login',
 				value: 3,
-			}
-		]
+			},
+		];
 
 		return {
 			JWT,
 			user,
 			tab,
 		};
-
 	},
 	data() {
 		return {
@@ -253,7 +298,6 @@ export default defineComponent({
 		},
 	},
 });
-
 </script>
 
 <style>
@@ -286,7 +330,6 @@ export default defineComponent({
 	overflow-y: auto;
 }
 
-
 .v-list {
 	max-height: 100%;
 	overflow-y: auto;
@@ -314,6 +357,16 @@ export default defineComponent({
 	border-bottom: black solid thick;
 }
 
+.tabs:hover {
+	background-color: #e0e0e0 !important;
+	color: black !important;
+}
+
+.tab-active {
+	background-color: #e0e0e0 !important;
+	color: black !important;
+}
+
 .bg-image {
 	background-image: url('/chat/background/Desktop.png');
 	background-repeat: no-repeat;
@@ -321,5 +374,9 @@ export default defineComponent({
 	max-height: 100dvh;
 	max-width: 100dvw;
 	aspect-ratio: 1;
+}
+
+.custom-row-width {
+	width: 100%;
 }
 </style>

@@ -11,7 +11,7 @@
 		<v-card-text v-else>~ u havent blocked anyone for now ~</v-card-text>
 
 	<!-- Error handling -->
-	<Snackbar></Snackbar>
+	<Snackbar />
 </template>
 
 <script lang="ts">
