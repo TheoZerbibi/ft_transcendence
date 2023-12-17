@@ -116,9 +116,13 @@ export default {
 					}
 				);
 				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
+				const data = await response.json();
+				snackbarStore.showSnackbar(data.message, 3000, 'green');
+				
 			} catch (error) {
 				console.log(error);
 			}
@@ -139,6 +143,15 @@ export default {
 						}),
 					}
 				);
+
+				if (!response.ok) {
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					return;
+				}
+				const data = await response.json();
+				snackbarStore.showSnackbar(data.message, 3000, 'green');
+
 			} catch (error) {
 				console.log(error);
 			}

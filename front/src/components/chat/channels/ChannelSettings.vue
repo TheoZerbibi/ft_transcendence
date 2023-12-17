@@ -149,8 +149,6 @@ export default {
 
 				this.channelUsers = data;
 
-				console.log('[ChannelUsers:fetchUsers]: channelUsers: ', JSON.stringify(this.channelUsers));
-
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
@@ -179,8 +177,6 @@ export default {
 				const data = await response.json();
 
 				this.myChannelUserProfile = data;
-
-				console.log('[ChannelUsers:fetchMyChannelUserProfile]: channelUser: ', JSON.stringify(this.myChannelUserProfile));
 
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');

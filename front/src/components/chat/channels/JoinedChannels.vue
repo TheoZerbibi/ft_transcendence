@@ -71,22 +71,20 @@ export default {
 							'Access-Control-Allow-Origin': '*',
 						},
 					}
-				)
-				;
+				);
 				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
-				const data: any = await response.json();
-				if (data.is_error) {
-					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
-					return;
-				}
+				const data = await response.json();
+
 				this.joinedChannels = data;
 				if (this.joinedChannels.length > 0) {
 					this.selectedChannelName = this.joinedChannels[0].name;
 					this.$emit('channel-selected', this.selectedChannelName);
 				}
+
 			} catch (error: any) {
 				console.error(error);
 			}
