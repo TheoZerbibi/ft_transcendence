@@ -78,9 +78,7 @@
 								class="custom-column"
 								cols="12"
 								md="3">
-								<ChannelUsers :channelName="selectedChannelName"></ChannelUsers>
-<!-- 								<ChannelSettings :selectedChannelName="selectedChannelName"></ChannelSettings> -->
-
+								<ChannelSettings :channelName="selectedChannelName"></ChannelSettings>
 							</v-col>
 						</v-row>
 					</v-window-item>
@@ -107,17 +105,20 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
 
+// Direct messages
 import Friends from '../components/chat/direct-messages/Friends.vue';
 import Requests from '../components/chat/direct-messages/Requests.vue';
 import Users from '../components/chat/direct-messages/Users.vue';
 import DirectMessages from '../components/chat/direct-messages/DirectMessages.vue';
 import UserProfile from '../components/chat/direct-messages/UserProfile.vue';
 
+// Channels
 import DiscoverChannels from '../components/chat/channels/DiscoverChannels.vue';
 import JoinedChannels from '../components/chat/channels/JoinedChannels.vue';
 import ChannelMessages from '../components/chat/channels/ChannelMessages.vue';
-import ChannelUsers from '../components/chat/channels/ChannelUsers.vue';
 import ChannelSettings from '../components/chat/channels/ChannelSettings.vue';
+
+// Profile
 import BlockedUsers from '../components/chat/profile/BlockedUsers.vue';
 
 import { useUser } from '../stores/user';
@@ -141,7 +142,6 @@ export default defineComponent({
 		DiscoverChannels,
 		JoinedChannels,
 		ChannelMessages,
-		ChannelUsers,
 		ChannelSettings,
 
 		/* Profile */

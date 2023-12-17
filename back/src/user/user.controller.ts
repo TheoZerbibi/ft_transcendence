@@ -43,14 +43,7 @@ export class UserController {
 	@ApiOperation({ summary: 'Get users list' })
 	@ApiBearerAuth('JWT-auth')
 	async getUsers() {
-		try {
-			return await this.userService.getUsers();
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		return await this.userService.getUsers();
 	}
 
 	// Get users not friends and not blocked
@@ -59,14 +52,7 @@ export class UserController {
 	@ApiOperation({ summary: 'Get users list not friends and not blocked' })
 	@ApiBearerAuth('JWT-auth')
 	async getDiscoverUsers(@GetUser() user: User) {
-		try {
-			return await this.userService.getNotFriendsOfUser(user);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		return await this.userService.getNotFriendsOfUser(user);
 	}
 
 	// Get users starting with
@@ -75,14 +61,7 @@ export class UserController {
 	@ApiOperation({ summary: 'Get users list starting with' })
 	@ApiBearerAuth('JWT-auth')
 	async getUsersStartingWith(@Param('start') start: string) {
-		try {
-			return await this.userService.getUsersStartingWith(start);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		return await this.userService.getUsersStartingWith(start);
 	}
 
 	// Get personal informations
@@ -91,14 +70,7 @@ export class UserController {
 	@ApiOperation({ summary: 'Get personal profile' })
 	@ApiBearerAuth('JWT-auth')
 	getMe(@GetUser() user: User) {
-		try {
-			return user;
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		return user;
 	}
 
 	// Get other user informations
@@ -108,22 +80,15 @@ export class UserController {
 	@ApiBearerAuth('JWT-auth')
 	@UseInterceptors(ClassSerializerInterceptor)
 	async getUserByLogin(@Param('login') userLogin: string) {
-		try {
-			const user: UserDto | undefined = await this.userService.getUserByLogin(userLogin);
-			if (!user) throw new BadRequestException('Invalid user');
-			return user;
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		const user: UserDto | undefined = await this.userService.getUserByLogin(userLogin);
+		if (!user) throw new BadRequestException('Invalid user');
+		return user;
 	}
 
 	@Post('getDisplayName')
 	@ApiOperation({ summary: 'Check if displayName is available' })
 	async getDisplayName(@Body() body: Record<string, any>) {
-		try {
+
 			const login = body.login;
 			const displayName = body.displayName;
 
@@ -131,13 +96,8 @@ export class UserController {
 				throw new BadRequestException('Invalid request');
 			}
 
-			return { response: await this.userService.getDisplayName(displayName, login) };
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		return { message: await this.userService.getDisplayName(displayName, login) };
+
 	}
 
 	/************************************* Friends *************************************/
@@ -147,14 +107,7 @@ export class UserController {
 	@ApiOperation({ summary: 'Get friends list' })
 	@ApiBearerAuth('JWT-auth')
 	async getFriends(@GetUser() user: User) {
-		try {
-			return await this.userService.getFriendsOfUser(user);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		return await this.userService.getFriendsOfUser(user);
 	}
 
 	// get friend requests list
@@ -163,14 +116,7 @@ export class UserController {
 	@ApiOperation({ summary: 'Get friend requests sent to user' })
 	@ApiBearerAuth('JWT-auth')
 	async getFriendRequests(@GetUser() user: User) {
-		try {
-			return await this.userService.getFriendRequestsOfUser(user);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		return await this.userService.getFriendRequestsOfUser(user);
 	}
 
 	// Get blocked list
@@ -179,14 +125,7 @@ export class UserController {
 	@ApiOperation({ summary: 'Get blocked users list' })
 	@ApiBearerAuth('JWT-auth')
 	async getBlockedUsers(@GetUser() user: User) {
-		try {
-			return await this.userService.getBlockedUsers(user);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		return await this.userService.getBlockedUsers(user);
 	}
 
 	/************************************ Cloudinary **********************************/
@@ -194,16 +133,10 @@ export class UserController {
 	@ApiOperation({ summary: 'Get Avatar Link from Cloudinary API' })
 	@UseInterceptors(FileInterceptor('file', multerOptions))
 	async getLinkOnboard(@UploadedFile() file: Express.Multer.File, @Body('login') login: string) {
-		try {
-			if (!file) throw new BadRequestException('No file provided');
-			if (!login) throw new BadRequestException('No login provided');
-			if (!UserService.isOnBoarding(login)) throw new ForbiddenException('User not unauthorized');
-			return this.userService.getCloudinaryLink(login, file);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-		}
+		if (!file) throw new BadRequestException('No file provided');
+		if (!login) throw new BadRequestException('No login provided');
+		if (!UserService.isOnBoarding(login)) throw new ForbiddenException('User not unauthorized');
+		return this.userService.getCloudinaryLink(login, file);
 	}
 
 	@UseGuards(JwtGuard)
@@ -212,20 +145,20 @@ export class UserController {
 	@ApiBearerAuth('JWT-auth')
 	@UseInterceptors(FileInterceptor('file', multerOptions))
 	async getLink(@UploadedFile() file: Express.Multer.File, @GetUser('login') login: string) {
-		try {
-			if (!file) throw new BadRequestException('No file provided');
-				return this.userService.getCloudinaryLink(login, file);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		if (!file) throw new BadRequestException('No file provided');
+		return this.userService.getCloudinaryLink(login, file);
 	}
 
 	/***********************************************************************************/
 	/* 										Creation								   */
 	/***********************************************************************************/
+
+	/*************************************** Users *************************************/
+	@Post()
+	@ApiOperation({ summary: 'Create a user' })
+	create(@Body() dto: CreateUserDto) {
+		return this.userService.createUser(dto);
+	}
 
 	/************************************* Friends *************************************/
 	// Create friends (pending)
@@ -234,30 +167,19 @@ export class UserController {
 	@ApiOperation({ summary: 'Send request to a user' })
 	@ApiBearerAuth('JWT-auth')
 	async makeFriendRequest(@GetUser() user: User, @Body() dto: UserLoginDto) {
-		try {
-			await this.userService.makeFriendRequest(user, dto.login);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		await this.userService.makeFriendRequest(user, dto.login);
+		return { message: `Friend request sent to ${dto.login}` };
 	}
 
+	/*********************************** Blocked *************************************/
 	// Create blocked
 	@UseGuards(JwtGuard)
 	@Post('block')
 	@ApiOperation({ summary: 'Block a user' })
 	@ApiBearerAuth('JWT-auth')
 	async blockUser(@GetUser() user: User, @Body() dto: UserLoginDto) {
-		try {
-			await this.userService.blockUser(user, dto.login);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		await this.userService.blockUser(user, dto.login);
+		return { message: `User ${dto.login} blocked` };
 	}
 
 	/***********************************************************************************/
@@ -265,32 +187,14 @@ export class UserController {
 	/***********************************************************************************/
 
 	/*************************************** Users *************************************/
-	@Post()
-	@ApiOperation({ summary: 'Create a user' })
-	create(@Body() dto: CreateUserDto) {
-		try {
-			return this.userService.createUser(dto);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
-	}
 
 	@UseGuards(JwtGuard)
 	@Patch()
 	@ApiOperation({ summary: 'Change display_name or Avatar for the user' })
 	@ApiBearerAuth('JWT-auth')
 	editUser(@GetUser('id') userId: number, @Body() dto: EditUserDto) {
-		try {
-			return this.userService.editUser(userId, dto);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		this.userService.editUser(userId, dto);
+		return { message: 'User updated' };
 	}
 
 	/************************************* Friends *************************************/
@@ -299,14 +203,8 @@ export class UserController {
 	@ApiOperation({ summary: 'Respond to friend request' })
 	@ApiBearerAuth('JWT-auth')
 	async respondFriendRequest(@GetUser() user: User, @Body() dto: FriendRequestResponseDto) {
-		try {
-			await this.userService.respondRequest(user, dto.login, dto.response);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		await this.userService.respondRequest(user, dto.login, dto.response);
+		return { message: 'Request ' + dto.response ? 'accepted' : 'declined' };
 	}
 
 	/***********************************************************************************/
@@ -318,8 +216,9 @@ export class UserController {
 	@Delete('profile')
 	@ApiOperation({ summary: 'Delete a user' })
 	@ApiBearerAuth('JWT-auth')
-	async deleteUser(@GetUser() user: User): Promise<void> {
+	async deleteUser(@GetUser() user: User) {
 		await this.userService.deleteUser(user.id);
+		return { message: 'User deleted' };
 	}
 
 	/************************************* Friends *************************************/
@@ -328,14 +227,8 @@ export class UserController {
 	@ApiOperation({ summary: 'Remove friend' })
 	@ApiBearerAuth('JWT-auth')
 	async removeFriend(@GetUser() user: User, @Body() dto: UserLoginDto) {
-		try {
-			await this.userService.removeFriend(user, dto.login);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		await this.userService.removeFriend(user, dto.login);
+		return { message: 'Bye bye!' };
 	}
 
 	/*********************************** Blocked *************************************/
@@ -344,13 +237,7 @@ export class UserController {
 	@ApiOperation({ summary: 'Unblock a user' })
 	@ApiBearerAuth('JWT-auth')
 	async unblockUser(@GetUser() user: User, @Body() dto: UserLoginDto) {
-		try {
-			await this.userService.unblockUser(user, dto.login);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		await this.userService.unblockUser(user, dto.login);
+		return { message: `User ${dto.login} unblocked` };
 	}
 }

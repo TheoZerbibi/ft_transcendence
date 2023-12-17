@@ -87,20 +87,19 @@ export default {
 				)
 				;
 				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
-				const data: any = await response.json();
-				if (data.is_error) {
-					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
-					return;
-				}
+				const data = await response.json();
+
 				this.requests = data;
+
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
-		respondRequest: async function(login: string, response: boolean) {
+		respondRequest: async function(login: string, choice: boolean) {
 			try {
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/respond-request`,
@@ -113,20 +112,19 @@ export default {
 						},
 						body: JSON.stringify({
 							login: login,
-							response: response,
+							response: choice,
 						}),
 					}
-				)
-				;
+				);
+
 				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
-				const data: any = await response.json();
-				if (data.is_error) {
-					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
-					return;
-				}
+				const data = await response.json();
+				snackbarStore.showSnackbar(data.message, 3000, 'green');
+
 			} catch (error) {
 				console.log(error);
 			}
@@ -148,14 +146,13 @@ export default {
 					}
 				);
 				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
-				const data: any = await response.json();
-				if (data.is_error) {
-					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
-					return;
-				}
+				const data = await response.json();
+				snackbarStore.showSnackbar(data.message, 3000, 'green');
+
 			} catch (error) {
 				console.log(error);
 			}

@@ -54,14 +54,7 @@ export class ChannelController {
 	@ApiOperation({ summary: 'Get all public channels' })
 	@ApiBearerAuth('JWT-auth')
 	async getAllPublicChannels(@GetUser() user: User) {
-		try {
-			return await this.channelService.getAllPublicChannels(user);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		return await this.channelService.getAllPublicChannels(user);
 	}
 
 	//Get all channels on which user is
@@ -70,14 +63,7 @@ export class ChannelController {
 	@ApiOperation({ summary: 'Get joined channel names' })
 	@ApiBearerAuth('JWT-auth')
 	async getJoinedChannelNames(@GetUser() user: User) {
-		try {
-			return await this.channelService.getJoinedChannelNames(user);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		return await this.channelService.getJoinedChannelNames(user);
 	}
 
 	/* 	@Get('list/search/:search')
@@ -85,14 +71,9 @@ export class ChannelController {
 	@ApiOperation({ summary: 'Search channels' })
 	@ApiBearerAuth('JWT-auth')
 	async searchChannels(@GetUser() user: User, @Param('search') search: string) {
-		try {
-			return await this.channelService.searchChannels(user, search);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+
+		return await this.channelService.searchChannels(user, search);
+
 	} */
 
 	/********************************** Channel Access *********************************/
@@ -101,14 +82,7 @@ export class ChannelController {
 	@ApiOperation({ summary: 'Access to a channel by its name' })
 	@ApiBearerAuth('JWT-auth')
 	async accessChannelByName(@GetUser() user: User, @Param('channel_name') channel_name: string) {
-		try {
-			return await this.channelService.accessChannelByName(user, channel_name);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		return await this.channelService.accessChannelByName(user, channel_name);
 	}
 
 	/*************************************** Users ************************************/
@@ -117,14 +91,7 @@ export class ChannelController {
 	@ApiOperation({ summary: 'Get all channel users' })
 	@ApiBearerAuth('JWT-auth')
 	async getAllChannelUsers(@GetUser() user: User, @Param('channel_name') channel_name: string) {
-		try {
-			return await this.channelService.getAllChannelUsers(user, channel_name);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		return await this.channelService.getAllChannelUsers(user, channel_name);
 	}
 
 	@Get(':channel_name/access/users/:login')
@@ -134,13 +101,8 @@ export class ChannelController {
 	async getChannelUserByLogin(
 		@GetUser() user: User,
 		@Param('channel_name') channel_name: string,
-		@Param('login') login: string,
-	) {
-		try {
-			return await this.channelService.getChannelUserByLogin(user, channel_name, login);
-		} catch (e: any) {
-			throw e;
-		}
+		@Param('login') login: string,) {
+		return await this.channelService.getChannelUserByLogin(user, channel_name, login);
 	}
 
 	/************************************* Messages ************************************/
@@ -149,14 +111,7 @@ export class ChannelController {
 	@ApiOperation({ summary: 'Get 20 last messages from channel' })
 	@ApiBearerAuth('JWT-auth')
 	async getLastMessages(@GetUser() user: User, @Param('channel_name') channel_name: string) {
-		try {
-			return await this.channelService.getLastMessages(user, channel_name);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		return await this.channelService.getLastMessages(user, channel_name);
 	}
 
 	/***********************************************************************************/
@@ -169,16 +124,9 @@ export class ChannelController {
 	@ApiOperation({ summary: 'Create channel' })
 	@ApiBearerAuth('JWT-auth') // Needed to Authentify in service
 	async createChannel(@GetUser() user: User, @Body() dto: CreateChannelDto) {
-		try {
-			const channel: ChannelEntity = await this.channelService.createChannel(dto, user.id);
-			this.channelService.publishOnRedis('channel-creation', JSON.stringify(channel));
-			return channel;
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		const channel: ChannelEntity = await this.channelService.createChannel(dto, user.id);
+		this.channelService.publishOnRedis('channel-creation', JSON.stringify(channel));
+		return { message: 'Channel created' };
 	}
 
 	/*************************************** Users ************************************/
@@ -189,16 +137,9 @@ export class ChannelController {
 	async createChannelUser(
 		@GetUser() user: User,
 		@Param('channel_name') channel_name: string,
-		@Body() dto: CreateChannelUserDto,
-	) {
-		try {
-			return await this.channelService.createChannelUser(user, channel_name, dto);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		@Body() dto: CreateChannelUserDto,) {
+		await this.channelService.createChannelUser(user, channel_name, dto);
+		return { message: `You joined ${channel_name}` };
 	}
 
 	/************************************* Messages ************************************/
@@ -209,16 +150,9 @@ export class ChannelController {
 	async createChannelMessage(
 		@GetUser() user: User,
 		@Param('channel_name') channel_name: string,
-		@Body() ChannelMessageContentDto: ChannelMessageContentDto,
-	) {
-		try {
-			return await this.channelService.createChannelMessage(user, channel_name, ChannelMessageContentDto);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		@Body() ChannelMessageContentDto: ChannelMessageContentDto,) {
+		await this.channelService.createChannelMessage(user, channel_name, ChannelMessageContentDto);
+		return { message: 'Message sent' };
 	}
 
 	/***********************************************************************************/
@@ -233,16 +167,9 @@ export class ChannelController {
 	async modChannel(
 		@GetUser() user: User,
 		@Param('channel_name') channel_name: string,
-		@Body() newParamsdto: ChannelSettingsDto,
-	) {
-		try {
-			return await this.channelService.modChannel(user, channel_name, newParamsdto);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		@Body() newParamsdto: ChannelSettingsDto,) {
+		await this.channelService.modChannel(user, channel_name, newParamsdto);
+		return { message: 'Channel updated' };
 	}
 
 	@Patch(':channel_name/settings/owner/pwd')
@@ -252,16 +179,9 @@ export class ChannelController {
 	async modChannelPwd(
 		@GetUser() user: User,
 		@Param('channel_name') channel_name: string,
-		@Body() channelModPwdDto: ChannelModPwdDto,
-	) {
-		// try {
-		return await this.channelService.modChannelPwd(user, channel_name, channelModPwdDto);
-		// } catch (e: any) {
-		// 	if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-		// 		return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-		// 	}
-		// 	throw e;
-		// }
+		@Body() channelModPwdDto: ChannelModPwdDto,) {
+		await this.channelService.modChannelPwd(user, channel_name, channelModPwdDto);
+		return { message: 'Password updated' };
 	}
 
 	/*************************************** Users ************************************/
@@ -270,14 +190,8 @@ export class ChannelController {
 	@ApiOperation({ summary: 'Set user as admin of channel' })
 	@ApiBearerAuth('JWT-auth')
 	async setAdmin(@GetUser() user: User, @Param('channel_name') channel_name: string, @Body() dto: ModChannelUserDto) {
-		try {
-			return await this.channelService.setChannelUserAsAdmin(user, channel_name, dto);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		await this.channelService.setChannelUserAsAdmin(user, channel_name, dto);
+		return { message: `${dto.target_login} set as admin` };
 	}
 
 	@Patch(':channel_name/settings/admin/mod_user')
@@ -285,14 +199,8 @@ export class ChannelController {
 	@ApiOperation({ summary: 'Mute / unmute / kick / ban / unban (=kick)' })
 	@ApiBearerAuth('JWT-auth')
 	async muteUser(@GetUser() user: User, @Param('channel_name') channel_name: string, @Body() dto: ModChannelUserDto) {
-		try {
-			return await this.channelService.modChannelUser(user, channel_name, dto);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		await this.channelService.modChannelUser(user, channel_name, dto);
+		return { message: `Done !` };
 	}
 
 	/***********************************************************************************/
@@ -304,7 +212,8 @@ export class ChannelController {
 	@ApiOperation({ summary: 'Leave channel' })
 	@ApiBearerAuth('JWT-auth')
 	async deleteChannelUser(@GetUser() user: User, @Body() dto: ChannelNameDto) {
-		return await this.channelService.deleteChannelUser(user, dto);
+		await this.channelService.deleteChannelUser(user, dto);
+		return { message: 'You left the channel' };
 	}
 
 	@Delete('')
@@ -312,7 +221,8 @@ export class ChannelController {
 	@ApiOperation({ summary: 'Delete channel' })
 	@ApiBearerAuth('JWT-auth')
 	async deleteChannel(@GetUser() user: User, @Body() dto: DeleteChannelDto) {
-		return await this.channelService.deleteChannel(user, dto);
+		await this.channelService.deleteChannel(user, dto);
+		return { message: 'Channel deleted' };
 	}
 
 	/***********************************************************************************/

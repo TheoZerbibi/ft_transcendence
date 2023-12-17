@@ -32,14 +32,7 @@ export class DirectMessageController {
 		@GetUser() user: User,
 		@Param('login') login: string,
 	) {
-		try {
-			return await this.directMessageService.accessDirectMessagesWith(user, login);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		return await this.directMessageService.accessDirectMessagesWith(user, login);
 	}
 
 	/***********************************************************************************/
@@ -54,13 +47,7 @@ export class DirectMessageController {
 		@GetUser() user: User, 
 		@Body() dto: CreateDirectMessageDto
 	) {
-		try {
-			return await this.directMessageService.createDirectMessageWith(user, dto);
-		} catch (e: any) {
-			if (e instanceof BadRequestException || e instanceof ForbiddenException) {
-				return JSON.stringify({ is_error: true as boolean, error_message: e.message as string });
-			}
-			throw e;
-		}
+		await this.directMessageService.createDirectMessageWith(user, dto);
+		return { message: 'Direct message sent' };
 	}
 }

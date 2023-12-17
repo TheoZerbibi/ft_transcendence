@@ -123,11 +123,7 @@ export class UserService {
 	async getUsersStartingWith(startingWith: string) {
 		try {
 			const users = await this.prisma.user.findMany({
-				where: {
-					login: {
-						startsWith: startingWith,
-					},
-				},
+				where: { login: { startsWith: startingWith, }, },
 			});
 			const usersDto: UserDto[] = users.map((user) => {
 				return this.exclude(user, ['dAuth', 'email', 'updated_at']) as UserDto;
@@ -139,26 +135,51 @@ export class UserService {
 	}
 
 	async getUserByLogin(userLogin: string) {
-		const prismaUser: User = await this.prisma.user.findUnique({
-			where: {
-				login: userLogin,
-			},
-		});
-		if (!prismaUser) return undefined;
-		const user = this.exclude(prismaUser, ['dAuth', 'secret', 'email', 'updated_at']);
-		return user as UserDto;
+		try {
+			const prismaUser: User = await this.prisma.user.findUnique({
+				where: {
+					login: userLogin,
+				},
+			});
+			if (!prismaUser) return undefined;
+			const user = this.exclude(prismaUser, ['dAuth', 'secret', 'email', 'updated_at']);
+			return user as UserDto;
+		} catch (e) {
+			throw e;
+		}
 	}
 
 	async getUserById(userId: number) {
-		const prismaUser: User = await this.prisma.user.findUnique({
-			where: {
-				id: userId,
-			},
-		});
-		if (!prismaUser) return undefined;
-		const user = this.exclude(prismaUser, ['dAuth', 'secret', 'email', 'updated_at']);
-		return user as UserDto;
+		try {
+			const prismaUser: User = await this.prisma.user.findUnique({
+				where: {
+					id: userId,
+				},
+			});
+			if (!prismaUser) return undefined;
+			const user = this.exclude(prismaUser, ['dAuth', 'secret', 'email', 'updated_at']);
+			return user as UserDto;
+		} catch (e) {
+			throw e;
+		}
 	}
+
+	async getCloudinaryLink(login: string, file: Express.Multer.File) {
+		cloudinary.config({
+			cloud_name: this.config.get('CLOUDINARY_CLOUD_NAME'),
+			api_key: this.config.get('CLOUDINARY_API_KEY'),
+			api_secret: this.config.get('CLOUDINARY_API_SECRET'),
+		});
+		try {
+			const cloudinaryResponse = await cloudinary.uploader.upload(file.path);
+			fs.unlinkSync(file.path);
+			return { avatar: cloudinaryResponse.secure_url };
+		} catch (e) {
+			fs.unlinkSync(file.path);
+			throw e;
+		}
+	}
+
 
 	/************************************* Friends *************************************/
 	async getFriendsOfUser(user: User) {
@@ -349,15 +370,19 @@ export class UserService {
 
 	/*************************************** Users *************************************/
 	async editUser(userId: number, dto: EditUserDto) {
-		const user = await this.prisma.user.update({
-			where: {
-				id: userId,
-			},
-			data: {
-				...dto,
-			},
-		});
-		return user as UserDto;
+		try {
+			const user = await this.prisma.user.update({
+				where: {
+					id: userId,
+				},
+				data: {
+					...dto,
+				},
+			});
+			return user as UserDto;
+		} catch (e) {
+			throw e;
+		}
 	}
 
 	async setAvatar(userId: number, avatar: string) {
@@ -536,7 +561,6 @@ export class UserService {
 					created_at: new Date(),
 				},
 			});
-			return { message: 'User deleted' };
 		} catch (e) {
 			throw e;
 		}
@@ -660,22 +684,6 @@ export class UserService {
 		return {
 			access_token: token,
 		};
-	}
-
-	async getCloudinaryLink(login: string, file: Express.Multer.File) {
-		cloudinary.config({
-			cloud_name: this.config.get('CLOUDINARY_CLOUD_NAME'),
-			api_key: this.config.get('CLOUDINARY_API_KEY'),
-			api_secret: this.config.get('CLOUDINARY_API_SECRET'),
-		});
-		try {
-			const cloudinaryResponse = await cloudinary.uploader.upload(file.path);
-			fs.unlinkSync(file.path);
-			return { avatar: cloudinaryResponse.secure_url };
-		} catch (e) {
-			fs.unlinkSync(file.path);
-			throw e;
-		}
 	}
 
 	/************************************* Friends *************************************/

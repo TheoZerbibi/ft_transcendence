@@ -35,6 +35,11 @@ export default {
 			name: '' as string,
 		};
 	},
+	watch: {
+		showModal: function(val: boolean) {
+			this.dialog = val;
+		},
+	},
 	emits: ['create-channel', 'close-modal'],
 	methods: {
 		submit() {

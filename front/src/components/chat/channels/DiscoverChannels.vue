@@ -54,8 +54,8 @@ import Snackbar from '../../layout/Snackbar.vue';
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 
-import PwdModal from './PwdModal.vue';
-import ChannelNameModal from './CreateChannelModal.vue';
+import PwdModal from './modals/EnterPwdModal.vue';
+import ChannelNameModal from './modals/ChannelNameModal.vue';
 
 export default {
 	components: { 
@@ -99,15 +99,15 @@ export default {
 				)
 				;
 				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
-				const data: any = await response.json();
-				if (data.is_error) {
-					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
-					return;
-				}
+				const data = await response.json();
+				snackbarStore.showSnackbar(data.message, 3000, 'green');
+
 				this.channels = data;
+
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
@@ -128,17 +128,18 @@ export default {
 						}),
 					}
 				);
+
 				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
-				const data: any = await response.json();
-				if (data.is_error) {
-					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
-					return;
-				}
+				const data = await response.text();
+				snackbarStore.showSnackbar(data.message, 3000, 'green');
+
+				this.showChannelNameModal = false;
 				this.fetchChannels();
-				snackbarStore.showSnackbar(`Channel ${this.newChannelName} created`, 3000, 'green');
+
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
@@ -165,16 +166,15 @@ export default {
 					}
 				);
 				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
-				const data: any = await response.json();
-				if (data.is_error) {
-					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
-					return;
-				}
+				const data = await response.json();
+				snackbarStore.showSnackbar(data.message, 3000, 'green');
+
 				this.fetchChannels();
-				snackbarStore.showSnackbar(`You joined ${channel_name}`, 3000, 'green');
+
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
@@ -205,21 +205,19 @@ export default {
 					}
 				);
 				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					this.selectedPrivChannel = '';
 					this.showPwdModal = false;
 					return;
 				}
-				const data: any = await response.json();
-				if (data.is_error) {
-					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
-					this.selectedPrivChannel = '';
-					this.showPwdModal = false;
-					return;
-				}
+				const data = await response.json();
+				snackbarStore.showSnackbar(data.message, 3000, 'green');
 				this.selectedPrivChannel = '';
 				this.showPwdModal = false;
+
 				this.fetchChannels();
+
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 				this.selectedPrivChannel = '';

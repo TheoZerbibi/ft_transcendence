@@ -44,9 +44,9 @@
 
 <script lang="ts">
 import { computed, ref } from 'vue';
-import { useUser } from '../../../stores/user';
-import { useSnackbarStore } from '../../../stores/snackbar';
-import Snackbar from '../../layout/Snackbar.vue';
+import { useUser } from '../../../../stores/user';
+import { useSnackbarStore } from '../../../../stores/snackbar';
+import Snackbar from '../../../layout/Snackbar.vue';
 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();

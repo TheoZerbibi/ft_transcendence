@@ -38,9 +38,9 @@
 
 <script lang="ts">
 import { computed } from 'vue';
-import { useUser } from '../../../stores/user';
-import { useSnackbarStore } from '../../../stores/snackbar';
-import Snackbar from '../../layout/Snackbar.vue';
+import { useUser } from '../../../../stores/user';
+import { useSnackbarStore } from '../../../../stores/snackbar';
+import Snackbar from '../../../layout/Snackbar.vue';
 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
@@ -92,18 +92,16 @@ export default {
 			console.log('mute: ', login, duration);
 		},
 		unmute: async function (login: string) {
-			console.log('unmute: ', login);
+			this.modUser(login, 'unmute');
 		},
 		kick: async function (login: string) {
-			console.log('kick: ', login);
-		},
-		close() {
-			this.$emit('close-modal');
+			this.modUser(login, 'kick');
 		},
 		modUser: async function(login: string, chosenAction: string) {
 			try {
+				console.log('[UserModeration] modUser: ', login, chosenAction);
 				const response: any = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannel}/settings/admin/mod_user`,
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannelName}/settings/admin/mod_user`,
 					{
 						method: 'PATCH',
 						headers: {
@@ -124,6 +122,29 @@ export default {
 			} catch (error) {
 				console.log(error);
 			}
+		},
+		promote: async function(login: string) {
+			try {
+				const response: any = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannel}/settings/owner/set_user_as_admin`,
+					{
+						method: 'PATCH',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+						body: JSON.stringify({
+							target_login: login,
+						}),
+					}
+				);
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		close() {
+			this.$emit('close-modal');
 		},
 	}
 };

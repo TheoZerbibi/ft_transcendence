@@ -116,14 +116,13 @@ export default {
 					}
 				);
 				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
-				const data: any = await response.json();
-				if (data.is_error) {
-					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
-					return;
-				}
+				const data = await response.json();
+				snackbarStore.showSnackbar(data.message, 3000, 'green');
+
 				this.friendData = {
 					name: data.display_name,
 					avatar: data.avatar,
@@ -136,6 +135,7 @@ export default {
 					cadre: this.cadre,
 				};
 				console.log(this.friendData);
+
 			} catch (error) {
 				console.log(error);
 			}
@@ -156,20 +156,15 @@ export default {
 						}),
 					}
 				);
+
 				if (!response.ok) {
-					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
-				const data: any = await response.json();
-				if (data.is_error) {
-					snackbarStore.showSnackbar(data.error_message, 3000, 'red');
-					return;
-				}
-				snackbarStore.showSnackbar(
-					`You blocked ${this.friendLogin}`,
-					3000,
-					'green'
-				);
+				const data = await response.json();
+				snackbarStore.showSnackbar(data.message, 3000, 'green');
+
 			} catch (error) {
 				console.log(error);
 			}
