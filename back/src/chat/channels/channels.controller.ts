@@ -185,13 +185,22 @@ export class ChannelController {
 	}
 
 	/*************************************** Users ************************************/
-	@Patch(':channel_name/settings/owner/set_user_as_admin')
+	@Patch(':channel_name/settings/owner/promote')
 	@UseGuards(JwtGuard)
 	@ApiOperation({ summary: 'Set user as admin of channel' })
 	@ApiBearerAuth('JWT-auth')
 	async setAdmin(@GetUser() user: User, @Param('channel_name') channel_name: string, @Body() dto: ModChannelUserDto) {
-		await this.channelService.setChannelUserAsAdmin(user, channel_name, dto);
+		await this.channelService.promoteUser(user, channel_name, dto);
 		return { message: `${dto.target_login} set as admin` };
+	}
+
+	@Patch(':channel_name/settings/owner/demote')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'Remove user from admin of channel' })
+	@ApiBearerAuth('JWT-auth')
+	async unsetAdmin(@GetUser() user: User, @Param('channel_name') channel_name: string, @Body() dto: ModChannelUserDto) {
+		await this.channelService.demoteUser(user, channel_name, dto);
+		return { message: `${dto.target_login} removed from admin` };
 	}
 
 	@Patch(':channel_name/settings/admin/mod_user')

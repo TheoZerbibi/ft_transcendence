@@ -1,5 +1,7 @@
 <template>
-	<v-dialog width="500">
+	<v-dialog
+	 	v-model="dialogOpen"
+		width="500">
 		<template v-slot:activator="{ props }">
 			<v-btn v-bind="props" text="User moderation"> </v-btn>
 		</template>
@@ -37,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useUser } from '../../../../stores/user';
 import { useSnackbarStore } from '../../../../stores/snackbar';
 import Snackbar from '../../../layout/Snackbar.vue';
@@ -50,9 +52,12 @@ export default {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
 
+		const dialogOpen = ref(false);
+
 		return {
 			JWT,
 			user,
+			dialogOpen,
 		};
 	},
 	components: {
@@ -122,6 +127,7 @@ export default {
 				}
 				const data = await response.json();
 				snackbarStore.showSnackbar(data.message, 3000, 'green');
+				this.dialogOpen = false;
 				
 			} catch (error) {
 				console.log(error);
@@ -130,7 +136,7 @@ export default {
 		promote: async function(login: string) {
 			try {
 				const response: any = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannel}/settings/owner/set_user_as_admin`,
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannel}/settings/owner/promote`,
 					{
 						method: 'PATCH',
 						headers: {
@@ -152,13 +158,42 @@ export default {
 				}
 				const data = await response.json();
 				snackbarStore.showSnackbar(data.message, 3000, 'green');
+				this.dialogOpen = false;
 
 			} catch (error) {
 				console.log(error);
 			}
 		},
-		close() {
-			this.$emit('close-modal');
+		demote: async function(login: string) {
+			try {
+				const response: any = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannel}/settings/owner/demote`,
+					{
+						method: 'PATCH',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+						body: JSON.stringify({
+							target_login: login,
+							action: 'demote',
+						}),
+					}
+				);
+
+				if (!response.ok) {
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					return;
+				}
+				const data = await response.json();
+				snackbarStore.showSnackbar(data.message, 3000, 'green');
+				this.dialogOpen = false;
+
+			} catch (error) {
+				console.log(error);
+			}
 		},
 	}
 };
