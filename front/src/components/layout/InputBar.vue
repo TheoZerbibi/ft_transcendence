@@ -5,10 +5,10 @@
 		class="white--text omoriFont font-weight-black input-field uppercase-placeholder"
 		:placeholder="placeholder"
 		v-model="inputValue"
-		:style="{ width: width + 'dvh', height: height + 'dvh' }"
+		:style="{ width: width + 'dvh', height: height + 'dvh', color: color, margin: margin }"
 		@click.prevent.stop
 		/>
-		<Button @click="handleInput" :style="{ width: width + 'dvh', height: height + 'dvh'}">
+		<Button @click="handleInput" :style="{ width: width + 'dvh', height: height + 'dvh', color: color, margin: margin}">
 			<slot name="buttonText"/>
 		</Button>
 	</form>
@@ -36,6 +36,14 @@ export default defineComponent({
 			type: Number,
 			default: 5
 		},
+		color: {
+			type: String,
+			default: '#ffffff'
+		},
+		margin: {
+			type: String,
+			default: '1dvh'
+		}
 	},
 	setup(props, { emit }) {
 		const inputValue = ref(''); // Use Vue 3's ref to create a reactive variable

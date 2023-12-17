@@ -6,16 +6,16 @@ import '@fontsource-variable/dancing-script';
 import '@fontsource-variable/pixelify-sans';
 
 import { createVuetify } from 'vuetify';
-import { fa } from 'vuetify/iconsets/fa';
-import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
+import { aliases, mdi } from 'vuetify/iconsets/mdi';
 
 export default createVuetify({
 	icons: {
 		defaultSet: 'mdi',
-		aliases,
+		aliases: {
+			close: 'mdi-close',
+		},
 		sets: {
 			mdi,
-			fa,
 		},
 	},
 });

@@ -1,6 +1,6 @@
 <template>
 
-	<v-card v-if="selectedFriendLogin">
+	<div v-if="selectedFriendLogin">
 
 		<v-card-title>Profile of @{{ selectedFriendLogin }}</v-card-title>
 
@@ -31,14 +31,14 @@
 			</v-btn>
 		</v-card-actions>
 
-	</v-card>
+	</div>
 
-	<v-card v-else>
+	<div v-else>
 		<v-card-title>Messages</v-card-title>
 		<v-card-text class="empty-card">
 			~ no friend selected ~
 		</v-card-text>
-	</v-card>
+	</div>
 
 	<!-- Error handling -->
 	<Snackbar></Snackbar>

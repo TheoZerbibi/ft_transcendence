@@ -1,23 +1,15 @@
 <template>
-
 	<!-- Joined Channels list -->
-	<v-card>
-		<v-card-title>Joined Channels</v-card-title>
-		<v-list v-if="joinedChannels.length">
-			<v-list-item
-				v-for="channel in joinedChannels"
-				:key="channel.id"
-				@click="displayMessagesOfChannel(channel.name)"
-			>
+	<v-card-title>Joined Channels</v-card-title>
+	<v-list v-if="joinedChannels.length">
+		<v-list-item v-for="channel in joinedChannels" :key="channel.id" @click="displayMessagesOfChannel(channel.name)">
 			{{ channel.name }}
-			</v-list-item>
-		</v-list>
-		<v-card-text v-else>~ u didn't join any channels for now ~</v-card-text>
-	</v-card>
-	
+		</v-list-item>
+	</v-list>
+	<v-card-text v-else>~ u didn't join any channels for now ~</v-card-text>
+
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
-
 </template>
 
 <script lang="ts">
@@ -58,7 +50,7 @@ export default {
 	},
 
 	methods: {
-		fetchJoinedChannels: async function() {
+		fetchJoinedChannels: async function () {
 			try {
 				const response: any = await
 				fetch(
@@ -90,7 +82,7 @@ export default {
 			}
 		},
 
-		displayMessagesOfChannel: function(channel_name: string) {
+		displayMessagesOfChannel: function (channel_name: string) {
 			this.selectedChannelName = channel_name;
 			this.$emit('channel-selected', channel_name);
 		},

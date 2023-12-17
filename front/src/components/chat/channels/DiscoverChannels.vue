@@ -1,47 +1,35 @@
 <template>
-
 	<!-- Non joined channels (discover)-->
-	<v-card>
-		<v-card-title>Discover Channels</v-card-title>
-		<v-list v-if="channels.length">
-			<v-list-item v-for="channel in channels" :key="channel.id">
-				{{ channel.name }}
-				<template v-if="channel.is_public">
-					<v-btn @click="joinPublicChannel(channel.name)">+</v-btn>
-				</template>
-				<template v-else>
-					<v-btn @click="openPwdDialog(channel.name)">+</v-btn>
-				</template>
-			</v-list-item>
-		</v-list>
-		<v-card-text v-else>
-			~ no channel available ~
-		</v-card-text>
+	<v-card-title>Discover Channels</v-card-title>
+	<v-list v-if="channels.length">
+		<v-list-item v-for="channel in channels" :key="channel.id">
+			{{ channel.name }}
+			<template v-if="channel.is_public">
+				<v-btn @click="joinPublicChannel(channel.name)">+</v-btn>
+			</template>
+			<template v-else>
+				<v-btn @click="openPwdDialog(channel.name)">+</v-btn>
+			</template>
+		</v-list-item>
+	</v-list>
+	<v-card-text v-else>
+		~ no channel available ~
+	</v-card-text>
 
-		<v-card-actions>
-			<v-spacer></v-spacer>
-			<v-btn @click="showNameModal">Create you own channel !</v-btn>
-		</v-card-actions>
+	<v-card-actions>
+		<v-spacer></v-spacer>
+		<v-btn @click="showNameModal">Create you own channel !</v-btn>
+	</v-card-actions>
 
-	</v-card>
 
-	<PwdModal class="modal"
-		v-if="showPwdModal"
-		:showModal="showPwdModal"
-		@join-private-channel="joinPrivateChannel"
-		@close-modal="showPwdModal = false"
-	/>
+	<PwdModal class="modal" v-if="showPwdModal" :showModal="showPwdModal" @join-private-channel="joinPrivateChannel"
+		@close-modal="showPwdModal = false" />
 
-	<ChannelNameModal class="modal"
-		v-if="showChannelNameModal"
-		:showModal="showChannelNameModal"
-		@create-channel="createChannel"
-		@close-modal="showChannelNameModal = false"
-	/>
+	<ChannelNameModal class="modal" v-if="showChannelNameModal" :showModal="showChannelNameModal"
+		@create-channel="createChannel" @close-modal="showChannelNameModal = false" />
 
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
-
 </template>
 
 <script lang="ts">
@@ -58,7 +46,7 @@ import PwdModal from './modals/EnterPwdModal.vue';
 import ChannelNameModal from './modals/ChannelNameModal.vue';
 
 export default {
-	components: { 
+	components: {
 		Snackbar,
 		PwdModal,
 		ChannelNameModal,
@@ -84,20 +72,20 @@ export default {
 		this.fetchChannels();
 	},
 	methods: {
-		fetchChannels: async function() {
+		fetchChannels: async function () {
 			try {
 				const response: any = await
-				fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/list/discover`,
-					{
-						method: 'GET',
-						headers: {
-							Authorization: `Bearer ${this.JWT}`,
-							'Access-Control-Allow-Origin': '*',
-						},
-					}
-				)
-				;
+					fetch(
+						`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/list/discover`,
+						{
+							method: 'GET',
+							headers: {
+								Authorization: `Bearer ${this.JWT}`,
+								'Access-Control-Allow-Origin': '*',
+							},
+						}
+					)
+					;
 				if (!response.ok) {
 					const error = await response.json();
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
@@ -112,7 +100,7 @@ export default {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
-		createChannel: async function(newName: string) {
+		createChannel: async function (newName: string) {
 			try {
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/create`,
@@ -147,7 +135,7 @@ export default {
 		showNameModal() {
 			this.showChannelNameModal = true;
 		},
-		joinPublicChannel: async function(channel_name: string) {
+		joinPublicChannel: async function (channel_name: string) {
 			try {
 				if (channel_name === '') {
 					return;
@@ -183,7 +171,7 @@ export default {
 			this.selectedPrivChannel = channel_name;
 			this.showPwdModal = true;
 		},
-		joinPrivateChannel: async function(pwd: string) {
+		joinPrivateChannel: async function (pwd: string) {
 			try {
 				if (!pwd) {
 					snackbarStore.showSnackbar('Please enter a password', 3000, 'red');

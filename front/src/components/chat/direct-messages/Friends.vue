@@ -1,23 +1,15 @@
 <template>
+	<!-- Friend list -->
+	<v-card-title>Friends</v-card-title>
+	<v-list v-if="friends.length">
+		<v-list-item v-for="friend in friends" :key="friend.id" @click="displayMessagesWithFriend(friend.login)">
+			{{ friend.display_name }}
+		</v-list-item>
+	</v-list>
+	<v-card-text v-else>~ you didn't make friends for now ~</v-card-text>
 
-		<!-- Friend list -->
-		<v-card>
-			<v-card-title>Friends</v-card-title>
-			<v-list v-if="friends.length">
-				<v-list-item
-					v-for="friend in friends"
-					:key="friend.id"
-					@click="displayMessagesWithFriend(friend.login)"
-				>
-				{{ friend.display_name }}
-				</v-list-item>
-			</v-list>
-			<v-card-text v-else>~ u didn't make friends for now ~</v-card-text>
-		</v-card>
-		
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
-
 </template>
 
 <script lang="ts">
@@ -60,7 +52,7 @@ export default {
 
 	methods: {
 
-		fetchFriends: async function() {
+		fetchFriends: async function () {
 			try {
 				const response: any = await
 				fetch(

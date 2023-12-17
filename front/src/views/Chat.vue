@@ -1,105 +1,119 @@
 <template>
-	<v-container
-		fluid
-		fill-height
-        class="d-flex flex-column"
-		>
+	<v-layout fluid>
 
-		<!-- Top bar : tabs -->
-		<v-row fill-height>
-			<v-col fill-height class="custom-column">
-				<v-tabs v-model="tab">
-					<v-spacer></v-spacer>
-					<v-tab :value="1">DMs</v-tab>
-					<v-spacer></v-spacer>
-					<v-tab :value="2">Channels</v-tab>
-					<v-spacer></v-spacer>
-					<v-tab :value="3">Personal</v-tab>
-					<v-spacer></v-spacer>
-				</v-tabs>
-			</v-col>
-		</v-row>
+		<v-app-bar class="elevation-0 appBarBox bg-black d-flex flow-row justify-center align-center" density="compact">
+			<div style="border: white solid medium; height: 5dvh; width: 95dvw">
+				<v-toolbar-title class="omoriFont text-start h2">OMORI Community</v-toolbar-title>
+			</div>
+			<Button icon :height="5" :width="5" :border="'white solid medium'" @click="redirect('Home')">
+				<v-icon color="white" class="close-svg"></v-icon>
+			</Button>
+		</v-app-bar>
 
-		<!-- Main content -->
-		<v-row fill-height>
-			<v-col fill-height class="custom-column">
+		<v-main class="d-flex flex-column justify-start align-center bg-image" style="width: 100dvw">
+			<v-container class="d-flex flex-column align-cente justify-center windowBox" style="height: 85dvh">
+				<v-row class="bg-black" style="max-height: 5dvh">
+					<v-tabs v-model="tab" flat hide-slider grow class="bg-grey-darken-1">
+						<v-tab v-for="(link, index) in links" :key="link.value" :value="link.value" :text="link.name"
+							class="no-hover h3 omoriFont justify-start align-center tabs" :ripple="false"
+							:style="{ 'border-left': index === 0 ? 'black solid thick' : 'none' }" />
+					</v-tabs>
+				</v-row>
+				<v-spacer></v-spacer>
 				<v-window v-model="tab">
-
 					<!-- Direct messages tab -->
 					<v-window-item :value="1">
-							<!-- Friend, requests, users lists -->
-						<v-row fill-height>
-							<v-col fill-height
-								class="custom-column"
-								cols="12"
-								md="3">
-								<Friends @messages-with="updateMessagesList" />
-								<Requests/>
-								<Users/>
+						<!-- Friend, requests, users lists -->
+						<v-row>
+							<v-col cols="12" md="3">
+								<Box>
+									<Friends @messages-with="updateMessagesList" />
+									<Requests />
+									<Users />
+								</Box>
 							</v-col>
 							<!-- DMs -->
-							<v-col fill-height
-								class="custom-column"
-								cols="12"
-								md="6">
-								<DirectMessages :selectedFriendLogin="selectedFriendLogin" />
+							<v-col cols="12" md="6">
+								<Box>
+									<DirectMessages :selectedFriendLogin="selectedFriendLogin" />
+								</Box>
 							</v-col>
 							<!-- Friend profile -->
-							<v-col fill-height
-								class="custom-column"
-								cols="12"
-								md="3">
-								<UserProfile :selectedFriendLogin="selectedFriendLogin" />
+							<v-col cols="12" md="3">
+								<Box>
+									<UserProfile :selectedFriendLogin="selectedFriendLogin" />
+								</Box>
 							</v-col>
 						</v-row>
 					</v-window-item>
 
 					<!-- Channels tab -->
 					<v-window-item :value="2">
-						<v-row fill-height>
+						<v-row>
 							<!-- Joined channels, discover channels -->
-							<v-col fill-height
-								class="custom-column"
-								cols="12"
-								md="3">
-								<JoinedChannels @channel-selected="updateSelectedChannel"/>
-								<DiscoverChannels/>
+							<v-col cols="12" md="3">
+								<Box>
+									<JoinedChannels @channel-selected="updateSelectedChannel" />
+									<DiscoverChannels />
+								</Box>
 							</v-col>
 
 							<!-- Colonne du milieu pour Messages (3/4 de l'écran) -->
-							<v-col fill-height
-								class="custom-column"
-								cols="12"
-								md="6">
-								<ChannelMessages :selectedChannelName="selectedChannelName"></ChannelMessages>
+							<v-col cols="12" md="6">
+								<Box>
+									<ChannelMessages :selectedChannelName="selectedChannelName"></ChannelMessages>
+								</Box>
 							</v-col>
 
-							<v-col fill-height
-								class="custom-column"
-								cols="12"
-								md="3">
-								<ChannelSettings :channelName="selectedChannelName"></ChannelSettings>
+							<v-col cols="12" md="3">
+								<Box>
+									<ChannelSettings :selectedChannelName="selectedChannelName"></ChannelSettings>
+								</Box>
 							</v-col>
 						</v-row>
 					</v-window-item>
 
 					<!-- Profile tab -->
 					<v-window-item :value="3">
-						<v-row fill-height>
-							<v-col fill-height
-								class="custom-column"
-								cols="12"
-								md="3">
-								<BlockedUsers/>
+						<v-row>
+							<v-col cols="12" md="3">
+								<Box>
+									<v-card-title>Settings</v-card-title>
+								</Box>
+							</v-col>
+							<v-col cols="12" md="9">
+								<Box>
+									<BlockedUsers />
+								</Box>
 							</v-col>
 						</v-row>
 					</v-window-item>
-
 				</v-window>
+			</v-container>
+			<!-- Main content -->
 
-			</v-col>
-		</v-row>
-	</v-container>
+		</v-main>
+
+		<v-footer app color="grey-lighten-1" class="d-flex flex-column align-start" style="border-top: #f0f0f0 ridge thick">
+			<div class="text-center">
+				<v-menu :location="location">
+					<template v-slot:activator="{ props }">
+						<Button :backgroundColor="'#e0e0e0'" :color="'black'" :width="15" :height="6" :margin="''"
+							:border="'0.4rem ridge #e9e9e9'" :font="'OMORI_ARCADE'" :fontSize="35" v-bind="props">
+							Start
+						</Button>
+					</template>
+
+					<v-list>
+						<v-list-item v-for="(route, index) in routes" :key="route.value" :value="route.value"
+							:text="route.name">
+							<v-list-item-title @click="redirect(route.path)">{{ route.name }}</v-list-item-title>
+						</v-list-item>
+					</v-list>
+				</v-menu>
+			</div>
+		</v-footer>
+	</v-layout>
 </template>
 
 <script lang="ts">
@@ -120,6 +134,9 @@ import ChannelSettings from '../components/chat/channels/ChannelSettings.vue';
 
 // Profile
 import BlockedUsers from '../components/chat/profile/BlockedUsers.vue';
+
+import Box from '../components/layout/Box.vue';
+import Button from '../components/layout/Button.vue';
 
 import { useUser } from '../stores/user';
 import { useSnackbarStore } from '../stores/snackbar';
@@ -146,18 +163,52 @@ export default defineComponent({
 
 		/* Profile */
 		BlockedUsers,
+
+		/* Layout */
+		Box,
+		Button,
 	},
 	setup() {
 		const userStore = useUser();
-		const tab = ref(2);
-	
+		const tab = ref(0);
+
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
-	
+		const links = [
+			{
+				name: 'Direct Messages',
+				value: 1,
+			},
+			{
+				name: 'Channels',
+				value: 2,
+			},
+			{
+				name: 'Profile',
+				value: 3,
+			},];
+		const routes = [
+			{
+				name: 'OmoriPong',
+				path: 'GameMenu',
+				value: 1,
+			},
+			{
+				name: 'OmoriMusic',
+				path: 'MusicMenu',
+				value: 2,
+			},
+			{
+				name: 'Logout',
+				path: 'Login',
+				value: 3,
+			}
+		]
+
 		return {
-				JWT,
-				user,
-				tab,
+			JWT,
+			user,
+			tab,
 		};
 
 	},
@@ -165,7 +216,21 @@ export default defineComponent({
 		return {
 			selectedFriendLogin: '' as string,
 			selectedChannelName: '' as string,
-		}
+			links: [
+				{
+					name: 'Direct Messages',
+					value: 1,
+				},
+				{
+					name: 'Channels',
+					value: 2,
+				},
+				{
+					name: 'Profile',
+					value: 3,
+				},
+			],
+		};
 	},
 	methods: {
 		updateMessagesList(login: string) {
@@ -177,136 +242,54 @@ export default defineComponent({
 			this.selectedChannelName = name;
 			console.log('[CHANNELS.vue] NEW SELECTED CHANNEL NAME: ', this.selectedChannelName);
 		},
+		redirect(path: string) {
+			return this.$router.push({ name: path });
+		},
+		async logout() {
+			sessionStorage.clear();
+			await this.userStore.deleteUser();
+			this.disconnect();
+			return this.$router.push({ name: `Login` });
+		},
 	},
 });
 
 </script>
 
 <style>
-
-.v-container {
-/*     background: url('/chat/background/space-parallax.png') no-repeat center center fixed;  */
-    background: url('/game/battleParallax/cloud-parallax.png') no-repeat center center fixed; 
-	-webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+.active-tab {
+	background-color: #e0e0e0 !important;
+	color: black !important;
 }
 
-.v-tab {
-	font-family: 'OMORI_MAIN', sans-serif;
-	font-size: xx-large;
-	text-align: center;
-	color: rgb(65, 37, 37);
-	text-shadow:
-		1px 1px 2px plum,
-		0 0 1em rgb(255, 123, 255),
-		0 0 0.2em rgb(255, 255, 255);
-}
-.custom-column {
-	display: flex;
-	flex-direction: column;
-	flex-grow: 1;
-	flex-shrink: 1;
+.inactive-tab {
+	background-color: #757575 !important;
+	color: white !important;
 }
 
-.custom-column > * {
-	flex: 1;
-	margin-bottom: 10px;
-}
-
-.v-row, .v-col {
-	display: flex;
-}
-
-.v-card {
-	background-color: rgba(0, 0, 0, 0.6);
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	flex-grow: 1;
-	flex-shrink: 1;;
-	border-radius: 30px;
+.no-hover {
+	background-color: transparent !important;
+	color: inherit !important;
 }
 
 .empty-card {
-	font-family: 'OMORI_MAIN', sans-serif;
-	background-color: rgba(0, 0, 0, 0.6);
+	background-color: #e0e0e0;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	flex-grow: 1;
-	flex-shrink: 1;;
-	border-radius: 30px;
+	flex-shrink: 1;
 }
 
 .scrollable-card {
 	overflow-y: auto;
 }
 
-.v-card-title {
-	font-family: 'OMORI_MAIN', sans-serif;
-	background-color: rgba(0, 0, 0, 0);
-	color: white;
-	text-shadow:
-		1px 1px 2px plum,
-		0 0 1em purple,
-		0 0 0.2em goldenrod;
-}
-
-.v-card-text {
-	font-family: 'OMORI_MAIN', sans-serif;
-	background-color: rgba(0, 0, 0, 0);
-	color: white;
-	text-shadow:
-		1px 1px 2px plum,
-		0 0 1em purple,
-		0 0 0.2em goldenrod;
-}
 
 .v-list {
-	font-family: 'OMORI_MAIN', sans-serif;
-	background-color: rgba(0, 0, 0, 0);
-	color: #dddfe2;
-	text-shadow:
-		1px 1px 2px plum,
-		0 0 1em purple,
-		0 0 0.2em goldenrod;
 	max-height: 100%;
 	overflow-y: auto;
-}
-
-.v-text-field {
-	font-family: 'OMORI_MAIN', sans-serif;
-	background-color: rgba(0, 0, 0, 0);
-	color: #dddfe2;
-	text-shadow:
-		1px 1px 2px plum,
-		0 0 1em purple,
-		0 0 0.2em goldenrod;
-}
-
-.v-btn {
-	font-family: 'OMORI_MAIN', sans-serif;
-	background-color: rgba(0, 0, 0, 0);
-	color: #dddfe2;
-	text-shadow:
-		1px 1px 2px plum,
-		0 0 1em purple,
-		0 0 0.2em goldenrod;
-}
-
-.justify-center {
-	justify-content: center;
-}
-
-.justify-end {
-    justify-content: flex-end;
-}
-
-.justify-start {
-    justify-content: flex-start;
 }
 
 .modal {
@@ -320,4 +303,23 @@ export default defineComponent({
 	z-index: 100;
 }
 
+.close-svg {
+	content: url('https://api.iconify.design/mdi/close.svg?color=white');
+}
+
+.tabs {
+	width: 20dvw;
+	border-right: black solid thick;
+	border-top: black solid thick;
+	border-bottom: black solid thick;
+}
+
+.bg-image {
+	background-image: url('/chat/background/Desktop.png');
+	background-repeat: no-repeat;
+	object-fit: cover;
+	max-height: 100dvh;
+	max-width: 100dvw;
+	aspect-ratio: 1;
+}
 </style>

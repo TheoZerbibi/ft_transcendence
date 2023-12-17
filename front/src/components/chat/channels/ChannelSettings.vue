@@ -1,7 +1,7 @@
 <template>
 
 	<!-- Channel users list -->
-	<v-card v-if="channelName">
+	<div v-if="channelName">
 		<v-card-title>
 			Users in {{ channelName }}
 		</v-card-title>
@@ -25,14 +25,14 @@
 			<v-btn v-if="!myChannelUserProfile.is_owner" @click="leaveChannel">Leave Channel</v-btn>
 		<ChangePwd :selectedChannelName="channelName"></ChangePwd>
 		</v-card-actions>"
-	</v-card>
+	</div>
 
-	<v-card v-else>
+	<div v-else>
 		<v-card-title>Users</v-card-title>
 		<v-card-text class="empty-card">
 			~ no channel selected ~
 		</v-card-text>
-	</v-card>
+	</div>
 
 	<!-- Error handling -->
 	<Snackbar></Snackbar>

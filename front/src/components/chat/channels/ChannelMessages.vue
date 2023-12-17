@@ -1,7 +1,7 @@
 <template>
 
 	<!-- If channel selected -->
-	<v-card v-if="selectedChannelName">
+	<div v-if="selectedChannelName">
 		<v-card-title>Messages on {{ selectedChannelName }}</v-card-title>
 
 		<!-- Messages -->
@@ -31,16 +31,15 @@
 				>Send
 			</v-btn>
 		</v-card-actions>
-
-	</v-card>
+	</div>
 
 	<!-- Else if no channel selected -->
-	<v-card v-else>
+	<div v-else>
 		<v-card-title>Messages</v-card-title>
 		<v-card-text class="empty-card">
 			~ no channel selected ~
 		</v-card-text>
-	</v-card>
+	</div>
 
 	<!-- Error handling -->
 	<Snackbar></Snackbar>

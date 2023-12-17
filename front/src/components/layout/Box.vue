@@ -1,9 +1,9 @@
 <template>
-	<div class="box" :style="{ width: width, height: height }">
-		<div class="rectangle">
-			<slot></slot>
-		</div>
-	</div>
+	<v-card 
+		class="d-flex flex-column align-start justify-center rounded-0 box"
+		:style="{ 'width': width, 'height': height }">
+		<slot></slot>
+	</v-card>
 </template>
 
 <script>
@@ -14,30 +14,20 @@ export default {
 	props: {
 		width: {
 			type: String,
-			default: "100px",
+			default: "auto",
 		},
 		height: {
 			type: String,
-			default: "50px",
+			default: "auto",
 		},
 	}
 };
 </script>
 
 <style>
-.box .rectangle {
-	background-color: #000000;
-	border-color: #ffffff;
-	border: 3px solid;
-	margin: 16px;
-	padding: 6px;
- 	display: flex;
-	position: relative;
+.box {
+	background-color: #e0e0e0;
+	border: black solid thick;
 }
 
-.box-container {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-evenly;
-}
 </style>

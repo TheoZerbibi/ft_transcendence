@@ -1,8 +1,6 @@
 <template>
 
 	<!-- Friend Requests list -->
-	<v-card>
-
 		<v-card-title>Friend Requests</v-card-title>
 
 		<v-list v-if="requests.length">
@@ -30,7 +28,6 @@
 			</v-list-item>
 		</v-list>
 		<v-card-text v-else>~ no pending friend requests ~</v-card-text>
-	</v-card>
 
 	<!-- Error handling -->
 	<Snackbar></Snackbar>

@@ -1,7 +1,6 @@
 <template>
 
 	<!-- Blocked users list -->
-	<v-card>
 	<v-card-title>Blocked Users</v-card-title>
 		<v-list class="no-bullets" v-if="blockedUsers.length">
 			<v-list-item v-for="user in blockedUsers" :key="user.id">
@@ -10,7 +9,6 @@
 			</v-list-item>
 		</v-list>
 		<v-card-text v-else>~ u havent blocked anyone for now ~</v-card-text>
-	</v-card>
 
 	<!-- Error handling -->
 	<Snackbar></Snackbar>

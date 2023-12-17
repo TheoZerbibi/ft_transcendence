@@ -3,7 +3,7 @@
 		<v-row>
 			<v-col xs12 md6 class="d-flex align-center justify-center">
 				<v-card
-					class="order-0 pa-2 ma-2 d-flex align-center justify-center rounded-0 bg-white"
+					class="order-0 pa-2 ma-2 d-flex align-center justify-center rounded-0"
 					height="80dvh"
 					width="100dvw"
 					variant="flat"
@@ -64,6 +64,7 @@
 		<Snackbar @click="openNewTab('https://open.spotify.com/artist/0OQtoDQ7RUNHhReM03ypxe?si=OqF4hl-wR5KxIyIF2REt0Q')"/>
 	</v-container>
 </template>
+
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { computed } from 'vue';
