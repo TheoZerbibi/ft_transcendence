@@ -1,8 +1,6 @@
 <template>
 	<v-app id="app" :style="{ backgroundColor: backgroundColor }">
-		<v-main class="d-flex" style="min-height: 300px">
-			<router-view />
-		</v-main>
+		<router-view />
 	</v-app>
 </template>
 
@@ -42,6 +40,11 @@ export default {
 			backgroundColor,
 		};
 	},
+	computed: {
+		isAppVisible() {
+			return this.$route.name === 'Chat';
+		},
+	}
 };
 </script>
 
