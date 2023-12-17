@@ -36,6 +36,7 @@ export default {
 		for (const path in sounds) {
 			soundList.push(path);
 		}
+		console.log(soundList);
 		this.sound = soundList[Math.floor(Math.random() * soundList.length)];
 		this.sound = this.sound.replace('/public', '');
 	},
