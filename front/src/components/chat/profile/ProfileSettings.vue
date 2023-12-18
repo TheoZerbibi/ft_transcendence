@@ -1,6 +1,15 @@
 <template>
 	<v-card-title>Settings</v-card-title>
 
+	Your display name is: {{ user.displayName }}
+	<v-text-field
+		v-model="newDisplayName"
+		label="Display name"
+		max-length="20"
+		@keyup.enter="changeDisplayName"
+	></v-text-field>
+	<v-btn @click="changeDisplayName">Change display name</v-btn>
+
 	<!-- Error handling -->
 	<Snackbar />
 </template>
@@ -33,6 +42,7 @@ export default {
 	data() {
 		return {
 			matchHistory: [],
+			newDisplayName: '',
 		};
 	},
 	beforeMount() {
@@ -63,6 +73,38 @@ export default {
 		},
 		redirectToGame(uid: string) {
 			this.$router.push({ name: `Game`, params: { uid: uid } });
+		},
+		changeDisplayName: async function() {
+			try {
+				if (this.newDisplayName === '') {
+					return;
+				}
+				console.log('NEW DISPLAY NAME:', this.newDisplayName);
+				const response: any = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users`,
+					{
+						method: 'PATCH',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+						body: JSON.stringify({
+							display_name: this.newDisplayName,
+						}),
+					},
+				);
+				if (!response.ok) {
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					return;
+				}
+				const data = await response.json();
+				snackbarStore.showSnackbar(data.message, 3000, 'green');
+				this.newDisplayName = '';
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
+			}
 		},
 	},
 };
