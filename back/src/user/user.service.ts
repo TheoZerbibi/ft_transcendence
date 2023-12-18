@@ -385,6 +385,13 @@ export class UserService {
 	/*************************************** Users *************************************/
 	async editUser(userId: number, dto: EditUserDto) {
 		try {
+			if (dto.display_name) {
+				const displayName = await this.checkDisplayName(dto.display_name);
+				if (displayName) throw new ForbiddenException('Display name already taken');
+				if (!this.verifyDisplayName(dto.display_name)) throw new ForbiddenException('Invalid display name');
+			}
+			if (dto.avatar)
+				if (!dto.avatar.startsWith('https://res.cloudinary.com/')) throw new BadRequestException('Invalid avatar');
 			const user = await this.prisma.user.update({
 				where: {
 					id: userId,
@@ -416,7 +423,6 @@ export class UserService {
 
 	async setTwoFactorAuthenticationSecret(secret: string, userId: number) {
 		try {
-			// const hashedSecret = await argon2.hash(secret);
 			await this.prisma.user.update({
 				where: {
 					id: userId,
