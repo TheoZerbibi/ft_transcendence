@@ -1,5 +1,6 @@
 <template>
-	<div v-if="selectedUserLogin">
+	
+	<div v-if="selectedUserLogin && is_friend">
 
 		<v-card-title>Messages with @{{ selectedUserLogin }} </v-card-title>
 
@@ -24,7 +25,12 @@
 			<v-btn class="justify-end" @click="sendMessage">Send
 			</v-btn>
 		</v-card-actions>
+	</div>
 
+	<div v-else-if="selectedUserLogin">
+		<v-card-text class="empty-card">
+			~ you are not friend with this user so u cant chat ~>
+		</v-card-text>
 	</div>
 
 	<div v-else>
@@ -33,6 +39,7 @@
 			~ no friend selected ~
 		</v-card-text>
 	</div>
+
 
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
@@ -73,6 +80,7 @@ export default {
 				: '' as string,
 			messages: [] as any,
 			input: '' as string,
+			is_friend: false as boolean,
 		};
 	},
 	watch: {
@@ -107,9 +115,10 @@ export default {
 				}
 				const isFriendData: any = await isFriend.json();
 				if (!isFriendData.isFriend) {
-					snackbarStore.showSnackbar('You are not friends with this user', 3000, 'red');
+					this.is_friend = false;
 					return;
 				}
+				this.is_friend = true;
 
 				// Fetch messages
 				const response: any = await fetch(

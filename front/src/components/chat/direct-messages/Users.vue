@@ -104,7 +104,6 @@ export default {
 		},
 		userSelected(login: string) {
 			this.selectedUserLogin = login;
-			console.log('[FRIENDS.vue] NEW SELECTED FRIEND LOGIN: ', this.selectedUserLogin);
 			this.$emit('user-selected', this.selectedUserLogin);
 		},
 	},
