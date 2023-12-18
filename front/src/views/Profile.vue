@@ -97,7 +97,6 @@ export default defineComponent({
 				);
 				if (!response.ok) {
 					const error = await response.json();
-					console.log(error);
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
@@ -127,7 +126,6 @@ export default defineComponent({
 				);
 				if (!response.ok) {
 					const error = await response.json();
-					console.log(error);
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					this.verificationCode = '';
 					return;
@@ -159,7 +157,6 @@ export default defineComponent({
 				);
 				if (!response.ok) {
 					const error = await response.json();
-					console.log(error);
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					this.verificationCode = '';
 					return;

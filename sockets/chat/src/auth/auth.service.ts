@@ -22,7 +22,6 @@ export class AuthService {
 			});
 			return user as users;
 		} catch (e) {
-			console.log(e);
 			throw new ForbiddenException('Invalid token');
 		}
 	}

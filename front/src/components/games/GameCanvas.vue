@@ -510,7 +510,6 @@ export default {
 	},
 	methods: {
 		setData(data: any, gameData: any) {
-			console.log('setData');
 			if (!gameData.leftUser || !gameData.rightUser) return this.$router.push({ name: 'GameMenu' });
 			if (gameData.leftUser) gameData.leftUser.score = 0;
 			if (gameData.rightUser) gameData.rightUser.score = 0;

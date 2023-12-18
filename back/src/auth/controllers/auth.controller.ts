@@ -37,8 +37,8 @@ export class AuthController {
 				url.pathname = '/login';
 				res.status(200).cookie(
 					'2FA',
-					{ ...user.access_token, displayName: user.display_name },
-					{ httpOnly: false },
+					JSON.stringify({ access_token: user.access_token, displayName: user.display_name }),
+					{ httpOnly: false, encode: String },
 				);
 				res.redirect(url.href);
 			} else {

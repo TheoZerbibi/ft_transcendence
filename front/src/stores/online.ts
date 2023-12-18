@@ -16,7 +16,6 @@ export const useOnlineSocketStore = defineStore('online', {
 	actions: {
 		async connect(jwt: string): Promise<Socket> {
 			const serverURL = `http://${import.meta.env.VITE_HOST}:4000/online`;
-			console.log(serverURL);
 			if (!this.isConnected) {
 				this.socket = await new Promise((resolve, reject) => {
 					const socket = io(serverURL, {

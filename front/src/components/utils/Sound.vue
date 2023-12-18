@@ -19,7 +19,6 @@ export default {
 	beforeMount() {
 		const soundList: string[] = [];
 		let sounds = undefined;
-		console.log(this.folder);
 		switch (this.folder) {
 			case '/sounds/404':
 				sounds = import.meta.glob('/public/sounds/404/*.mp3');
@@ -37,7 +36,6 @@ export default {
 		for (const path in sounds) {
 			soundList.push(path);
 		}
-		console.log(soundList);
 		if (soundList.length === 0) return;
 		this.sound = soundList[Math.floor(Math.random() * soundList.length)];
 		this.sound = this.sound.replace('/public', '');

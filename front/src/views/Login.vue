@@ -159,8 +159,8 @@ export default {
 	},
 	async beforeMount() {
 		if (this.$cookies.get('2FA')) {
-			this.FAToken = this.$cookies.get('2FA');
-			console.log(this.FAToken);
+			const FA = this.$cookies.get('2FA');
+			this.FAToken = FA.access_token;
 			snackbarStore.showSnackbar('2FA enabled', 3000, 'green');
 			this.step = 5;
 			this.$cookies.remove('2FA');
@@ -285,7 +285,6 @@ export default {
 			}
 		},
 		async nextStep() {
-			console.log('step' + this.step);
 			if (this.step === 1) {
 				if (!this.newUser.display_name) {
 					snackbarStore.showSnackbar('Please enter a name', 3000, 'red');

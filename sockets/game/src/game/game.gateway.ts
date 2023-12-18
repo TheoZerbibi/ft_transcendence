@@ -43,7 +43,6 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		const gameUID: string = game.gameUID;
 		if (!user || !gameUID) return;
 
-		this.logger.debug(`Client WebSocket ${user.login} demande à rejoindre la session : ${gameUID}`);
 		const waiting: GameJoinDto = this.gameService.isUserWaiting(client, gameUID, user.id);
 		if (!waiting) return;
 		if (this.gameService.gameExists(gameUID)) {
@@ -91,7 +90,6 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 						leftUser: game.getPlayerBySide(SIDE.LEFT).user,
 						rightUser: game.getPlayerBySide(SIDE.RIGHT).user,
 					});
-					this.logger.debug(`Client WebSocket ${user.login} rejoins la session en tant que spectateur`);
 				}
 				this.server.to(client.id).emit('game-score', {
 					leftUser: game.getPlayerBySide(SIDE.LEFT).playerData.score,
@@ -163,16 +161,13 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				game.removeGame();
 			}
 		}
-		return this.logger.debug(`Client disconnected: ${client.id}`);
 	}
 
 	async handleConnection(client: Socket): Promise<void> {
-		this.logger.debug(`Client want to connect: ${client.id}`);
 		try {
 			if (!client.handshake.headers.authorization) throw new Error('Invalid token');
 			const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
 			this.authService.verifyToken({ access_token: token });
-			return this.logger.debug(`Client connected: ${client.id}`);
 		} catch (e) {
 			this.logger.error(e);
 			client.disconnect();

@@ -70,7 +70,6 @@ export default {
 				}
 				const data: any = await response.json();
 				this.gameStats = data;
-				console.log(data);
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}

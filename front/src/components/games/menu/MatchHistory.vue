@@ -61,7 +61,6 @@ export default {
 					return response.json();
 				})
 				.then(async (data) => {
-					console.log(data);
 					this.matchHistory = data;
 				});
 		},
