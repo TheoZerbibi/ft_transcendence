@@ -128,6 +128,7 @@ export default {
 				if (!response.ok) {
 					const error = await response.json();
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					this.showChannelNameModal = false;
 					return;
 				}
 				this.showChannelNameModal = false;
