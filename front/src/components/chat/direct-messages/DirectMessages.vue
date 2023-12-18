@@ -1,53 +1,45 @@
 <template>
+	<v-card>
+		<div v-if="selectedUserLogin && is_friend">
+
+			<v-card-title>Messages with @{{ selectedUserLogin }} </v-card-title>
+
+			<v-card-text>
+
+				<!-- Chat Messages -->
+				<v-list>
+					<v-list-item v-for="message in messages" :key="message.id">
+						<v-list-item-subtitle>
+							{{ message.username }}
+							<DateConv :timestamp="message.created_at" />
+						</v-list-item-subtitle>
+						{{ message.content }}
+					</v-list-item>
+				</v-list>
+
+			</v-card-text>
+		</div>
+
+		<div v-else-if="selectedUserLogin">
+			<v-card-text class="empty-card">
+				~ you are not friend with this user so u cant chat ~>
+			</v-card-text>
+		</div>
+
+		<div v-else>
+			<v-card-title>Messages</v-card-title>
+			<v-card-text class="empty-card">
+				~ no friend selected ~
+			</v-card-text>
+		</div>
+		<!-- Message Input -->		
+	</v-card>
+	<v-footer>
+		<v-text-field v-model="input" placeholder="Type your message..." max-length="200" variant="solo"
+			class="elevation-0" append-inner-icon="fas fa-paper-plane" @keyup.enter="sendMessage"
+			@click:append-inner="sendMessage" density="compact" clearable rounded="0" />
+	</v-footer>
 	
-	<div v-if="selectedUserLogin && is_friend">
-
-		<v-card-title>Messages with @{{ selectedUserLogin }} </v-card-title>
-
-		<v-card-text>
-
-			<!-- Chat Messages -->
-			<v-list>
-				<v-list-item v-for="message in messages" :key="message.id">
-					<v-list-item-subtitle>
-						{{ message.username }}
-						<DateConv :timestamp="message.created_at" />
-					</v-list-item-subtitle>
-					{{ message.content }}
-				</v-list-item>
-			</v-list>
-
-		</v-card-text>
-
-		<!-- Message Input -->
-		<v-card-actions class="d-flex-inline align-center justify-center">
-			<v-text-field 
-				v-model="input"
-				placeholder="Type your message..."
-				max-length="200"
-				variant="solo"
-				class="elevation-0"
-				append-inner-icon="fas fa-paper-plane"
-				@keyup.enter="sendMessage"
-				@click:append-inner="sendMessage"
-				density="compact"/>
-		</v-card-actions>
-	</div>
-
-	<div v-else-if="selectedUserLogin">
-		<v-card-text class="empty-card">
-			~ you are not friend with this user so u cant chat ~>
-		</v-card-text>
-	</div>
-
-	<div v-else>
-		<v-card-title>Messages</v-card-title>
-		<v-card-text class="empty-card">
-			~ no friend selected ~
-		</v-card-text>
-	</div>
-
-
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
 </template>
@@ -83,25 +75,25 @@ export default {
 
 		return {
 			JWT,
-				user,
-				//			socket,
-				//			isConnected,
+			user,
+			//			socket,
+			//			isConnected,
 		};
 	},
-props: {
-selectedUserLogin: String,
-       },
-       mounted () {
-	       //		console.log(`[DirMsg-Socket] state: ${isConnected.value}`);
-	       //	       this.socket.on('new-direct-message', (data) => {
-	       //			       const msg: any = JSON.parse(data);
-	       //			       if (msg !== undefined)
-	       //			       console.log (`new-direct-msg - msg: ${msg.content}`);
-	       //			       else
-	       //				console.log('Error direct msg failed');
-	       //	
-	       //			       });
-       },
+	props: {
+		selectedUserLogin: String,
+	},
+	mounted() {
+		//		console.log(`[DirMsg-Socket] state: ${isConnected.value}`);
+		//	       this.socket.on('new-direct-message', (data) => {
+		//			       const msg: any = JSON.parse(data);
+		//			       if (msg !== undefined)
+		//			       console.log (`new-direct-msg - msg: ${msg.content}`);
+		//			       else
+		//				console.log('Error direct msg failed');
+		//	
+		//			       });
+	},
 	data() {
 		return {
 			userLogin: this.selectedUserLogin ?
@@ -217,7 +209,6 @@ selectedUserLogin: String,
 </script>
 
 <style scoped>
-
 .scrollable-content {
 	height: 70vh;
 	overflow-y: auto;
@@ -226,8 +217,10 @@ selectedUserLogin: String,
 .v-card {
 	border: black solid thin;
 	border-radius: 0;
-	max-height: 89dvh;
-	height: 90dvh;
+	max-height: 87dvh;
+	scroll-behavior: auto;
+	overflow-y: scroll;
+	overflow-x: hidden;
 }
 
 </style>

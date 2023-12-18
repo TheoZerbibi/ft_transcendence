@@ -1,48 +1,41 @@
 <template>
+	<v-card>
+		<!-- If channel selected -->
+		<div v-if="selectedChannelName">
+			<v-card-title>Messages on {{ selectedChannelName }}</v-card-title>
 
-	<!-- If channel selected -->
-	<div v-if="selectedChannelName">
-		<v-card-title>Messages on {{ selectedChannelName }}</v-card-title>
+			<!-- Messages -->
+			<v-card-text>
+				<v-list>
+					<v-list-item v-for="message in messages" :key="message.id">
+						<v-list-item-subtitle>
+							{{ message.username }}
+							{{ message.created_at }}
+						</v-list-item-subtitle>
+						{{ message.content }}
+					</v-list-item>
+				</v-list>
+			</v-card-text>
 
-		<!-- Messages -->
-		<v-card-text>
-			<v-list>
-				<v-list-item v-for="message in messages" :key="message.id">
-					<v-list-item-subtitle>
-						{{ message.username }}
-						{{ message.created_at }}
-					</v-list-item-subtitle>
-					{{ message.content }}
-				</v-list-item>
-			</v-list>
-		</v-card-text>
+			<!-- Input -->
 
-		<!-- Input -->
-		<v-card-actions class="d-flex-inline align-center justify-center">
-			<v-text-field 
-				v-model="input"
-				placeholder="Type your message..."
-				max-length="200"
-				variant="solo"
-				class="elevation-0"
-				append-inner-icon="fas fa-paper-plane"
-				@keyup.enter="sendMessage"
-				@click:append-inner="sendMessage"
-				density="compact"/>
-		</v-card-actions>
-	</div>
+		</div>
 
-	<!-- Else if no channel selected -->
-	<div v-else>
-		<v-card-title>Messages</v-card-title>
-		<v-card-text class="empty-card">
-			~ no channel selected ~
-		</v-card-text>
-	</div>
-
+		<!-- Else if no channel selected -->
+		<div v-else>
+			<v-card-title>Messages</v-card-title>
+			<v-card-text class="empty-card">
+				~ no channel selected ~
+			</v-card-text>
+		</div>
+	</v-card>
+	<v-footer>
+		<v-text-field v-model="input" placeholder="Type your message..." max-length="200" variant="solo"
+			class="elevation-0 rounded-0" append-inner-icon="fas fa-paper-plane" @keyup.enter="sendMessage"
+			@click:append-inner="sendMessage" density="compact" clearable rounded="0" />
+	</v-footer>
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
-
 </template>
 
 <script lang="ts">
@@ -79,13 +72,13 @@ export default {
 		};
 	},
 	watch: {
-		selectedChannelName: function(newVal: string) {
+		selectedChannelName: function (newVal: string) {
 			this.channelName = newVal;
 			this.fetchMessages();
 		}
 	},
 	methods: {
-		fetchMessages: async function() {
+		fetchMessages: async function () {
 			try {
 				if (!this.channelName || this.channelName === '') {
 					console.log('[ChannelMessages]: No channel name');
@@ -114,9 +107,9 @@ export default {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
-		sendMessage: async function() {
+		sendMessage: async function () {
 			try {
-				if (!this.channelName || this.channelName === '' 
+				if (!this.channelName || this.channelName === ''
 					|| this.input.trim() === '') {
 					return;
 				}
