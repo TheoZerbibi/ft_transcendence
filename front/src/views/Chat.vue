@@ -1,17 +1,19 @@
 <template>
 	<v-layout class="bg-white">
-
 		<v-app-bar class="elevation-0 bg-white" density="compact" style="border: black solid thin">
-			<v-toolbar-title class="text-end md-2 pa-2 h2">OMORI Community</v-toolbar-title>
+			<v-toolbar-title class="text-end md-2 pa-2 h2">OMORI Community {{ isConnected }}</v-toolbar-title>
 		</v-app-bar>
 
 		<v-navigation-drawer rail class="elevation-0 bg-white" style="border: black solid thin">
-			<v-list>
-
-			</v-list>
+			<v-list> </v-list>
 			<v-tabs nav v-model="tab" direction="vertical" grow>
-				<v-tab v-for="(link, index) in links" :ripple="false" :prepend-icon="link.icon" :value="link.value"
-					:key="link.value">
+				<v-tab
+					v-for="(link, index) in links"
+					:ripple="false"
+					:prepend-icon="link.icon"
+					:value="link.value"
+					:key="link.value"
+				>
 				</v-tab>
 			</v-tabs>
 		</v-navigation-drawer>
@@ -19,9 +21,16 @@
 		<v-navigation-drawer nav>
 			<!-- Friend, requests, users lists -->
 			<div v-show="tab === 1">
-				<Friends @user-selected="updateSelectedUser" />
-				<Requests @user-selected="updateSelectedUser" />
-				<Users @user-selected="updateSelectedUser" />
+				<Suspense>
+					<main>
+						<Friends @user-selected="updateSelectedUser" />
+						<Requests @user-selected="updateSelectedUser" />
+						<Users @user-selected="updateSelectedUser" />
+					</main>
+					<template #fallback>
+						<div>Loading...</div>
+					</template>
+				</Suspense>
 			</div>
 			<!-- Joined channels, discover channels -->
 			<div v-show="tab === 2">
@@ -46,17 +55,24 @@
 		<v-main>
 			<v-window v-model="tab" class="bg-white">
 				<!-- Direct messages tab -->
-				<div v-show="tab===1">
-					<DirectMessages :selectedUserLogin="selectedUserLogin" />
+				<div v-show="tab === 1">
+					<Suspense>
+					<main>
+						<DirectMessages :selectedUserLogin="selectedUserLogin" />
+					</main>
+					<template #fallback>
+						<div>Loading...</div>
+					</template>
+				</Suspense>
 				</div>
 
 				<!-- Channels tab -->
-				<div v-show="tab===2">
+				<div v-show="tab === 2">
 					<ChannelMessages :selectedChannelName="selectedChannelName"></ChannelMessages>
 				</div>
 
 				<!-- Profile tab -->
-				<div v-show="tab===3">
+				<div v-show="tab === 3">
 					<v-card>
 						<Profile />
 						<MatchHistory />
@@ -143,6 +159,10 @@ export default defineComponent({
 			await webSocketStore.connect(JWT, import.meta.env.VITE_CHAT_SOCKET_PORT);
 		};
 
+		const disconnect = async () => {
+			await webSocketStore.disconnect();
+		};
+
 		provide('chat-socket', socket);
 
 		const JWT = computed(() => userStore.getJWT);
@@ -163,13 +183,13 @@ export default defineComponent({
 				name: 'Profile',
 				value: 3,
 				icon: 'fas fa-user',
-
 			},
 		];
 
 		return {
 			isConnected,
 			connect,
+			disconnect,
 			socket,
 			JWT,
 			user,
@@ -216,9 +236,14 @@ export default defineComponent({
 		async logout() {
 			sessionStorage.clear();
 			await this.userStore.deleteUser();
-			this.disconnect();
+			if (this.isConnected) this.disconnect();
 			return this.$router.push({ name: `Login` });
 		},
+	},
+	beforeMount() {
+		if (this.JWT) {
+			this.connect(this.JWT);
+		}
 	},
 });
 </script>
