@@ -178,7 +178,6 @@ export default defineComponent({
 		const socket = computed(() => webSocketStore.getSocket);
 
 		const msg = null;
-		const tab = ref(0);
 		const connect = async (JWT: string) => {
 			await webSocketStore.connect(JWT, import.meta.env.VITE_CHAT_SOCKET_PORT);
 		};
