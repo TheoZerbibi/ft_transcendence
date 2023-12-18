@@ -53,7 +53,6 @@ import { useSnackbarStore } from '../../../stores/snackbar';
 import Snackbar from '../../layout/Snackbar.vue';
 import DateConv from '../../utils/DateConv.vue';
 
-import { inject } from 'vue';
 import { useSocketStore } from '../../../stores/websocket';
 
 const userStore = useUser();
@@ -68,32 +67,37 @@ export default {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
 
-		//	const webSocketStore = useSocketStore();
-		//
-		//	const socket = computed(() => webSocketStore.getSocket);
-		//	const isConnected = computed(() => webSocketStore.isConnected);
+			const webSocketStore = useSocketStore();
+		
+			const socket = computed(() => webSocketStore.getSocket);
+			const isConnected = computed(() => webSocketStore.isConnected);
+		const connect = async (JWT: string) => {
+			await webSocketStore.connect(JWT, import.meta.env.VITE_CHAT_SOCKET_PORT);
+		};
 
 
 		return {
 			JWT,
-				user,
-				//			socket,
-				//			isConnected,
+			user,
+			socket,
+			connect,
+			isConnected,
 		};
 	},
 props: {
 selectedUserLogin: String,
        },
-       mounted () {
-	       //		console.log(`[DirMsg-Socket] state: ${isConnected.value}`);
-	       //	       this.socket.on('new-direct-message', (data) => {
-	       //			       const msg: any = JSON.parse(data);
-	       //			       if (msg !== undefined)
-	       //			       console.log (`new-direct-msg - msg: ${msg.content}`);
-	       //			       else
-	       //				console.log('Error direct msg failed');
-	       //	
-	       //			       });
+       async mounted () {
+		await this.connect(this.JWT, import.meta.env.VITE_CHAT_SOCKET_PORT);
+	       console.log(`[DirMsg-Socket] state: ${this.isConnected}`);
+	       	       this.socket.on('new-direct-message', (data) => {
+	       			       const msg: any = JSON.parse(data);
+	       			       if (msg !== undefined)
+	       			       console.log (`new-direct-msg - msg: ${msg}`);
+	       			       else
+	       				console.log('Error direct msg failed');
+	       	
+	       			       });
        },
 	data() {
 		return {
