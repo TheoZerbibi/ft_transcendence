@@ -14,6 +14,8 @@ export const useUser = defineStore('user', {
 	getters: {
 		getJWT: (state) => {
 			return state.JWT;
+				
+//		return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInN1YiI6ZmFsc2UsImlhdCI6MTcwMjg5ODA1NiwiZXhwIjoxNzAyOTg0NDU2fQ.JZFdj_hTYA5yJmPTc_Jqbs-hD8fV2nrA0sMeqWOCR4Y';
 		},
 		getUser: (state) => {
 			return { login: state.login, displayName: state.displayName, avatar: state.avatar };

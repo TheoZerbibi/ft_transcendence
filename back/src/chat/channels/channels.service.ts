@@ -66,8 +66,8 @@ export class ChannelService {
 			return isNotJoined;
 		});
 		const sortedChannels = publicChannels
-			.sort((a, b) => b.getUpdatedAt().getTime() - a.getUpdatedAt().getTime())
-			.slice(0, 20);
+		.sort((a, b) => b.getUpdatedAt().getTime() - a.getUpdatedAt().getTime())
+		.slice(0, 20);
 		return sortedChannels.map((channel) => ({
 			name: channel.getName(),
 			is_public: channel.getIsPublic(),
@@ -85,8 +85,8 @@ export class ChannelService {
 			return !channelUser.isBanned();
 		});
 		const sortedChannels = allowedChannels
-			.sort((a, b) => b.getUpdatedAt().getTime() - a.getUpdatedAt().getTime())
-			.slice(0, 20);
+		.sort((a, b) => b.getUpdatedAt().getTime() - a.getUpdatedAt().getTime())
+		.slice(0, 20);
 		return sortedChannels.map((channel) => ({
 			name: channel.getName(),
 			updated_at: channel.getUpdatedAt(),
@@ -97,8 +97,8 @@ export class ChannelService {
 	async searchChannels(user: User, search: string) {
 		const result = this.localChannels.filter((channel) => {
 			const isBanned = channel
-				.getUsers()
-				.every((channelUser) => channelUser.getUserId() === user.id && channelUser.isBanned());
+			.getUsers()
+			.every((channelUser) => channelUser.getUserId() === user.id && channelUser.isBanned());
 			return channel.getName().includes(search) && !isBanned;
 		});
 		return result.map((channel) => {
@@ -154,18 +154,18 @@ export class ChannelService {
 				},
 			});
 			const channelUserDtos: ChannelUserDto[] = channelUsers
-				.filter((channelUser) => channelUser.user.login !== user.login)
-				.map((channelUser) => {
-					return {
-						login: channelUser.user.login,
-						display_name: channelUser.user.display_name,
-						avatar: channelUser.user.avatar,
-						is_owner: channelUser.is_owner,
-						is_admin: channelUser.is_admin,
-						is_muted: channelUser.is_muted,
-						is_banned: channelUser.is_ban,
-					};
-				});
+			.filter((channelUser) => channelUser.user.login !== user.login)
+			.map((channelUser) => {
+				return {
+					login: channelUser.user.login,
+					display_name: channelUser.user.display_name,
+					avatar: channelUser.user.avatar,
+					is_owner: channelUser.is_owner,
+					is_admin: channelUser.is_admin,
+					is_muted: channelUser.is_muted,
+					is_banned: channelUser.is_ban,
+				};
+			});
 			return channelUserDtos;
 		} catch (e) {
 			throw e;
@@ -345,8 +345,8 @@ export class ChannelService {
 			});
 
 			this.localChannels
-				.find((channelEntity) => channelEntity.getName() === channel_name)
-				.addUser(new ChannelUserEntity(channelUser));
+			.find((channelEntity) => channelEntity.getName() === channel_name)
+			.addUser(new ChannelUserEntity(channelUser));
 
 		} catch (e) {
 			throw e;
@@ -571,9 +571,9 @@ export class ChannelService {
 			if (
 				dto.action != 'mute' &&
 				dto.action != 'unmute' &&
-				dto.action != 'kick' &&
-				dto.action != 'ban' &&
-				dto.action != 'unban'
+			dto.action != 'kick' &&
+		dto.action != 'ban' &&
+	dto.action != 'unban'
 			) throw new BadRequestException(`Action "${dto.action}" not supported`);
 
 			const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
@@ -604,30 +604,30 @@ export class ChannelService {
 			switch (dto.action) {
 				case 'mute':
 					if (!dto.muted_until) throw new BadRequestException('You must specify a date to mute until');
-					targetChanUser.setIsMuted(dto.muted_until);
-					break;
+				targetChanUser.setIsMuted(dto.muted_until);
+				break;
 				case 'unmute':
 					targetChanUser.setIsMuted(null);
-					break;
+				break;
 				case 'ban':
 					targetChanUser.setIsBanned(true);
-					break;
+				break;
 				case 'unban':
 					targetChanUser.setIsBanned(false);
 				case 'kick' || 'unban':
 					try {
-						await this.prisma.channelUser.delete({
-							where: {
-								id: targetChanUser.getId(),
-								user_id: target.id,
-							},
-						});
-						const channel = this.localChannels.find((c) => c.getName() === channel_name);
-						channel.removeUser(targetChanUser);
-						return;
-					} catch (e) {
-						throw e;
-					}
+					await this.prisma.channelUser.delete({
+						where: {
+							id: targetChanUser.getId(),
+							user_id: target.id,
+						},
+					});
+					const channel = this.localChannels.find((c) => c.getName() === channel_name);
+					channel.removeUser(targetChanUser);
+					return;
+				} catch (e) {
+					throw e;
+				}
 				default:
 					throw new BadRequestException(`Action ${dto.action} not supported`);
 			}
@@ -709,7 +709,7 @@ export class ChannelService {
 		const channel: ChannelEntity | null = this.localChannels.find(
 			(channel: ChannelEntity) => channel.getName() === channel_name,
 		);
-		return channel;
+			return channel;
 	}
 
 	/************************************ User Access *********************************/
@@ -717,8 +717,8 @@ export class ChannelService {
 	// Find a channel user in the channel entity and return null if it doesn't exist
 	async findChannelUser(user: User, channelEntity: ChannelEntity): Promise<ChannelUserEntity | null> {
 		const channelUser: ChannelUserEntity | null = channelEntity
-			.getUsers()
-			.find((channelUser) => channelUser.getUserId() === user.id);
+		.getUsers()
+		.find((channelUser) => channelUser.getUserId() === user.id);
 		return channelUser;
 	}
 

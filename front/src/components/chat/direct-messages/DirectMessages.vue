@@ -53,6 +53,9 @@ import { useSnackbarStore } from '../../../stores/snackbar';
 import Snackbar from '../../layout/Snackbar.vue';
 import DateConv from '../../utils/DateConv.vue';
 
+import { inject } from 'vue';
+import { useSocketStore } from '../../../stores/websocket';
+
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 
@@ -65,13 +68,116 @@ export default {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
 
+		//	const webSocketStore = useSocketStore();
+		//
+		//	const socket = computed(() => webSocketStore.getSocket);
+		//	const isConnected = computed(() => webSocketStore.isConnected);
+
+
 		return {
 			JWT,
-			user,
+				user,
+				//			socket,
+				//			isConnected,
 		};
 	},
-	props: {
-		selectedUserLogin: String,
+props: {
+selectedUserLogin: String,
+       },
+       mounted () {
+	       //		console.log(`[DirMsg-Socket] state: ${isConnected.value}`);
+	       //	       this.socket.on('new-direct-message', (data) => {
+	       //			       const msg: any = JSON.parse(data);
+	       //			       if (msg !== undefined)
+	       //			       console.log (`new-direct-msg - msg: ${msg.content}`);
+	       //			       else
+	       //				console.log('Error direct msg failed');
+	       //	
+	       //			       });
+       },
+       data() {
+	       return {
+friendLogin: this.selectedFriendLogin ?
+		     this.selectedFriendLogin as string
+		     : '' as string,
+	     messages: [] as any,
+	     input: '' as string,
+	       };
+       },
+watch: {
+selectedFriendLogin: function (newVal: string) {
+			     this.friendLogin = newVal;
+			     this.fetchDirectMessages();
+		     },
+       },
+methods: {
+fetchDirectMessages: async function () {
+			     try {
+				     if (!this.friendLogin || this.friendLogin === '') {
+					     console.log('[fetchDirectMessages]: friendLogin is empty');
+					     return;
+				     }
+				     const response: any = await fetch(
+						     `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/${this.friendLogin}/all`,
+						     {
+method: 'GET',
+headers: {
+Authorization: `Bearer ${this.JWT}`,
+'Access-Control-Allow-Origin': '*',
+},
+}
+);
+				     if (!response.ok) {
+					     const error = await response.json();
+					     snackbarStore.showSnackbar(error.message, 3000, 'red');
+					     return;
+				     }
+const data = await response.json();
+
+this.messages = data;
+
+} catch (error: any) {
+	snackbarStore.showSnackbar(error, 3000, 'red');
+}
+},
+
+sendMessage: async function () {
+		     try {
+			     if (!this.friendLogin || this.friendLogin === ''
+					     || this.input.trim() === '') {
+				     return;
+			     }
+			     const response: any = await fetch(
+					     `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/send`,
+					     {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json',
+Authorization: `Bearer ${this.JWT}`,
+'Access-Control-Allow-Origin': '*',
+},
+body: JSON.stringify({
+target_login: this.friendLogin,
+content: this.input,
+}),
+}
+);
+
+			     if (!response.ok) {
+				     const error = await response.json();
+				     snackbarStore.showSnackbar(error.message, 3000, 'red');
+				     return;
+			     }
+
+const data = await response.json();
+
+this.fetchDirectMessages();
+this.input = '';
+
+} catch (error: any) {
+	snackbarStore.showSnackbar(error, 3000, 'red');
+}
+},
 	},
 	data() {
 		return {

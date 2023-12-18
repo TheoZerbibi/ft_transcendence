@@ -144,6 +144,8 @@ export default {
 		const user = computed(() => userStore.getUser);
 		const JWT = computed(() => userStore.getJWT);
 
+		provide('chat-socket', socket);
+
 		return {
 			isConnected,
 			socket,

@@ -177,16 +177,16 @@ export class Chat {
 
 		const user = new User(socket, userid);
 	
-		Chat.user_lst.push(user);
+	//	Chat.user_lst.push(user);
 
-		for (let i = 0; i < channels_usr.length; i++)
-		{
-			channel_tmp = Chat.channel_lst.find((channel) => { return (channel.getId() === channels_usr[i].id)});
-			if (!channel_tmp) channel_tmp === new Channel(channels_usr[i].id, user);
-			else channel_tmp.addUser(user);
-
-			user.addChannel(channel_tmp);
-		}
+	//	for (let i = 0; i < channels_usr.length; i++)
+	//	{
+	//		channel_tmp = Chat.channel_lst.find((channel) => { return (channel.getId() === channels_usr[i].id)});
+	//		if (!channel_tmp) channel_tmp === new Channel(channels_usr[i].id, user);
+	//		else channel_tmp.addUser(user);
+	//	
+	//		user.addChannel(channel_tmp);
+	//	}
 		return user;
 	}
 	
