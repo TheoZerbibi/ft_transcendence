@@ -1,30 +1,22 @@
 <template>
 	<v-layout class="bg-white">
 
-		<v-app-bar
-			class="elevation-0 bg-white"
-			density="compact" 
-			style="border: black solid thin">
+		<v-app-bar class="elevation-0 bg-white" density="compact" style="border: black solid thin">
 			<v-toolbar-title class="text-end md-2 pa-2 h2">OMORI Community</v-toolbar-title>
 		</v-app-bar>
 
-		<v-bottom-navigation
-			class="elevation-0 bg-white"
-			style="border: black solid thin">
-			<v-tabs nav v-model="tab">
-				<v-tab 
-					v-for="(link, index) in links"
-					:ripple="false" 
-					:prepend-icon="link.icon"
-					:value="link.value"
-					:key="link.value"
-					stacked>
+		<v-navigation-drawer rail class="elevation-0 bg-white" style="border: black solid thin">
+			<v-list>
+
+			</v-list>
+			<v-tabs nav v-model="tab" direction="vertical" grow>
+				<v-tab v-for="(link, index) in links" :ripple="false" :prepend-icon="link.icon" :value="link.value"
+					:key="link.value">
 				</v-tab>
 			</v-tabs>
-		</v-bottom-navigation>
+		</v-navigation-drawer>
 
-		<v-navigation-drawer
-			nav>
+		<v-navigation-drawer nav>
 			<!-- Friend, requests, users lists -->
 			<div v-show="tab === 1">
 				<Friends @user-selected="updateSelectedUser" />
@@ -37,58 +29,40 @@
 				<DiscoverChannels />
 			</div>
 			<!-- Profile Settings -->
-			<div v-show=" tab === 3">
+			<div v-show="tab === 3">
 				<ProfileSettings />
 			</div>
 		</v-navigation-drawer>
-		
+
+		<v-navigation-drawer location="right">
+			<div v-show="tab === 1">
+				<UserProfile :selectedUserLogin="selectedUserLogin" />
+			</div>
+			<div v-show="tab === 2">
+				<ChannelSettings :selectedChannelName="selectedChannelName" />
+			</div>
+		</v-navigation-drawer>
+
 		<v-main>
 			<v-window v-model="tab" class="bg-white">
 				<!-- Direct messages tab -->
-				<v-window-item :value="1">
-					<v-row no-gutters>
-						<!-- DMs -->
-						<v-col cols="12" md="9">
-							<DirectMessages :selectedUserLogin="selectedUserLogin" />
-						</v-col>
-						<v-col cols="12" md="3" class="hidden-sm-and-down">
-							<v-card>
-								<UserProfile :selectedUserLogin="selectedUserLogin" />
-							</v-card>							
-						</v-col>
-					</v-row>
-				</v-window-item>
+				<div v-show="tab===1">
+					<DirectMessages :selectedUserLogin="selectedUserLogin" />
+				</div>
 
 				<!-- Channels tab -->
-				<v-window-item :value="2">
-					<v-row no-gutters>
-						<!-- Colonne du milieu pour Messages (3/4 de l'écran) -->
-						<v-col cols="12" md="9">
-							<v-card>
-								<ChannelMessages :selectedChannelName="selectedChannelName"></ChannelMessages>
-							</v-card>
-						</v-col>
-
-						<v-col cols="12" md="3" class="hidden-sm-and-down">
-							<v-card>
-								<ChannelSettings :selectedChannelName="selectedChannelName"></ChannelSettings>
-							</v-card>
-						</v-col>
-					</v-row>
-				</v-window-item>
+				<div v-show="tab===2">
+					<ChannelMessages :selectedChannelName="selectedChannelName"></ChannelMessages>
+				</div>
 
 				<!-- Profile tab -->
-				<v-window-item :value="3">
-					<v-row no-gutters>
-						<v-col cols="12" md="9">
-							<v-card>
-								<Profile />
-								<MatchHistory />
-								<BlockedUsers />
-							</v-card>
-						</v-col>
-					</v-row>
-				</v-window-item>
+				<div v-show="tab===3">
+					<v-card>
+						<Profile />
+						<MatchHistory />
+						<BlockedUsers />
+					</v-card>
+				</div>
 			</v-window>
 		</v-main>
 	</v-layout>
@@ -250,7 +224,6 @@ export default defineComponent({
 </script>
 
 <style>
-
 .v-card {
 	border: black solid thin;
 	border-radius: 0;
