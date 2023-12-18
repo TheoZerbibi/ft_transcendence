@@ -80,8 +80,8 @@ export default {
 		return {
 			JWT,
 			user,
-			socket,
 			isConnected,
+			socket,
 		};
 	},
 	props: {
@@ -89,15 +89,6 @@ export default {
 		refresh: Number,
 	},
 	mounted() {
-		//		console.log(`[DirMsg-Socket] state: ${isConnected.value}`);
-		//	       this.socket.on('new-direct-message', (data) => {
-		//			       const msg: any = JSON.parse(data);
-		//			       if (msg !== undefined)
-		//			       console.log (`new-direct-msg - msg: ${msg.content}`);
-		//			       else
-		//				console.log('Error direct msg failed');
-		//
-		//			       });
 	},
 	data() {
 		return {
@@ -116,7 +107,17 @@ export default {
 			this.fetchDirectMessages();
 		},
 		isConnected: function (newVal: boolean) {
-			console.log(`[DirMsg-Socket] state: ${newVal}`);
+			if (newVal === true && this.socket) {
+			       console.log(`[DirMsg-WebSocket] on`);
+			       this.socket.on('new-direct-message', (data) => {
+					       const msg: any = JSON.parse(data);
+					       if (msg !== undefined)
+					       console.log (`new-direct-msg - msg: ${msg.content}`);
+					       else
+						console.log('Error direct msg failed');
+		
+					       });
+		}
 		},
 	},
 	methods: {

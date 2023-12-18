@@ -199,7 +199,7 @@ export default defineComponent({
 			await webSocketStore.disconnect();
 		};
 
-		provide('chat-socket', socket);
+	//	provide('chat-socket', socket);
 
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
@@ -260,6 +260,13 @@ export default defineComponent({
 			],
 		};
 	},
+	async mounted() {
+			await this.connect(this.JWT);
+			console.log(`[Chat-Websocket] attempt to connect. isConnectecd = ${this.isConnected}`);
+			this.socket.on('welcome', (data) => {
+				console.log(`retrieved ${data}`); 
+			});
+},
 	methods: {
 		updateSelectedUser(login: string) {
 			console.log('[CHAT.vue] NEW SELECTED FRIEND LOGIN: ', this.selectedUserLogin);
