@@ -140,8 +140,11 @@ import Button from '../components/layout/Button.vue';
 
 import { useUser } from '../stores/user';
 import { useSnackbarStore } from '../stores/snackbar';
-import { useSocketStore } from '../stores/websocket';
 import { computed } from 'vue';
+
+//socket import
+import { useSocketStore } from '../stores/websocket';
+import { provide } from 'vue';
 
 export default defineComponent({
 
@@ -168,12 +171,25 @@ export default defineComponent({
 		Box,
 		Button,
 	},
+
 	setup() {
 		const userStore = useUser();
+		const webSocketStore = useSocketStore();
+
+		const isConnected = computed(() => webSocketStore.isConnected);
+		const socket = computed(() => webSocketStore.getSocket);
+
+		const msg = null;
 		const tab = ref(0);
+		const connect = async (JWT: string) => {
+			await webSocketStore.connect(JWT, import.meta.env.VITE_CHAT_SOCKET_PORT);
+		};
+
+		provide('chat-socket', socket);
 
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
+
 		const links = [
 			{
 				name: 'Direct Messages',
@@ -206,6 +222,9 @@ export default defineComponent({
 		]
 
 		return {
+			isConnected,
+			connect,
+			socket,
 			JWT,
 			user,
 			tab,
@@ -232,6 +251,21 @@ export default defineComponent({
 			],
 		};
 	},
+	async mounted(){
+		await this.connect(this.JWT, import.meta.env.VITE_CHAT_SOCKET_PORT);
+		console.debug(`Connection to socket is actually ${this.isConnected}`);
+		this.socket.on('new-direct-message', (data) => {
+				console.log('event detected: ' + 'new-direct-message');
+				const msg = JSON.parse(data);
+				console.log(msg);
+				});
+
+		this.socket.on('welcome', (data: any) => {
+			console.log('Welcome message received');
+			console.log(`retrieved ${data}`);
+		});
+	},
+			 
 	methods: {
 		updateMessagesList(login: string) {
 			this.selectedFriendLogin = login;
