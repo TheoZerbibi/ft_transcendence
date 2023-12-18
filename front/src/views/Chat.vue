@@ -1,7 +1,7 @@
 <template>
 	<v-layout class="bg-white">
 		<v-app-bar class="elevation-0 bg-white" density="compact" style="border: black solid thin">
-			<v-toolbar-title class="text-end md-2 pa-2 h2">OMORI Community {{ isConnected }}</v-toolbar-title>
+			<v-toolbar-title class="text-end md-2 pa-2 h2">OMORI Community <span style="color: blue">{{ isConnected }}</span></v-toolbar-title>
 		</v-app-bar>
 
 		<v-navigation-drawer rail class="elevation-0 bg-white" style="border: black solid thin">

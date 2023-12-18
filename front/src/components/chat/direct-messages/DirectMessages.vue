@@ -1,7 +1,7 @@
 <template>
 	<v-card>
 		<div v-if="selectedUserLogin && is_friend">
-			<v-card-title>Messages with @{{ selectedUserLogin }} {{ isConnected }} </v-card-title>
+			<v-card-title>Messages with @{{ selectedUserLogin }} <span style="color: green">{{ isConnected }}</span> </v-card-title>
 
 			<v-card-text>
 				<!-- Chat Messages -->
