@@ -26,12 +26,19 @@
 				<!-- Mute & Unmute -->
 				<v-btn v-if="selectedUser.is_muted"
 					@click="unmute(selectedUser.login)">Unmute</v-btn>
-				<v-select v-else
-					v-model="selectedMuteDuration"
+				<template v-else>
+					<v-btn @click="mute(selectedUser.login, 1)">Mute for 1 hour</v-btn>	
+					<v-btn @click="mute(selectedUser.login, 2)">Mute for 2 hours</v-btn>
+					<v-btn @click="mute(selectedUser.login, 6)">Mute for 6 hours</v-btn>
+					<v-btn @click="mute(selectedUser.login, 12)">Mute for 12 hours</v-btn>
+					<v-btn @click="mute(selectedUser.login, 24)">Mute for 24 hours</v-btn>
+				</template>
+
+<!-- 			<v-select v-else
 					:items="muteOptions"
 					label="Mute"
-					@change="mute(selectedUser.login, selectedMuteDuration)">
-				</v-select>
+					@change="mute(selectedUser.login, 2)">
+				</v-select> -->
 				
 
 				<!-- @click="mute(selectedUser.login, new Date())">Mute</v-select> -->
@@ -75,21 +82,11 @@ export default {
 		const user = computed(() => userStore.getUser);
 
 		const dialogOpen = ref(false);
-		const selectedMuteDuration = null;
-		const muteOptions = [
-				{ text: '1 hour', value: 1 },
-				{ text: '2 hours', value: 2 },
-				{ text: '6 hours', value: 6 },
-				{ text: '12 hours', value: 12 },
-				{ text: '24 hours', value: 24 },
-			];
 
 		return {
 			JWT,
 			user,
 			dialogOpen,
-			selectedMuteDuration,
-			muteOptions,
 		};
 	},
 	components: {
@@ -118,6 +115,18 @@ export default {
 			};
 		}
 	},
+	data() {
+		return {
+			selectedMuteDuration: null,
+			muteOptions: [
+				{ text: '1 hour', value: 1 },
+				{ text: '2 hours', value: 2 },
+				{ text: '6 hours', value: 6 },
+				{ text: '12 hours', value: 12 },
+				{ text: '24 hours', value: 24 },
+			],
+		};
+	},
 	methods: {
 		unban: async function (login: string) {
 			this.modUser(login, 'unban');
@@ -125,14 +134,15 @@ export default {
 		ban: async function (login: string) {
 			this.modUser(login, 'ban');
 		},
-		mute: async function (login: string, duration: number, unit: 'minutes' | 'hours') {
-			console.log('mute: ', login, duration, unit);
+		mute: async function (login: string, duration: number) {
+			console.log('mute: ', login, duration);
 			const dateUntil = new Date();
 			const millisecondsToAdd = duration * 3600000; // 1 heure = 3600000 millisecondes
 
 			dateUntil.setTime(dateUntil.getTime() + millisecondsToAdd);
 
 			console.log('mute: ', login, dateUntil);
+			this.modUser(login, 'mute', dateUntil);
 		},
 		unmute: async function (login: string) {
 			this.modUser(login, 'unmute');
