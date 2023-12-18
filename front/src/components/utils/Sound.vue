@@ -21,13 +21,13 @@ export default {
 		let sounds = undefined;
 		switch (this.folder) {
 			case '/sounds/404':
-				sounds = import.meta.glob('/sounds/404/*.mp3');
+				sounds = import.meta.glob('/public/sounds/404/*.mp3');
 				break;
 			case '/sounds/game/ai':
-				sounds = import.meta.glob('/sounds/game/ai/*.mp3');
+				sounds = import.meta.glob('/public/sounds/game/ai/*.mp3');
 				break;
 			case '/sounds/game/versus':
-				sounds = import.meta.glob('/sounds/game/versus/*.mp3');
+				sounds = import.meta.glob('/public/sounds/game/versus/*.mp3');
 				break;
 			default:
 				break;
@@ -36,6 +36,7 @@ export default {
 		for (const path in sounds) {
 			soundList.push(path);
 		}
+		if (soundList.length === 0) return;
 		this.sound = soundList[Math.floor(Math.random() * soundList.length)];
 		this.sound = this.sound.replace('/public', '');
 	},

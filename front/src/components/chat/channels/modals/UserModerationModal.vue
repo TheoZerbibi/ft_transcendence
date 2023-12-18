@@ -12,14 +12,43 @@
 				User moderation of {{ selectedUser.display_name }}
 			</v-card-title>
 			<v-card-text>
-				<!-- Unban / ban -->
-				<v-btn v-if="selectedUser.is_banned" @click="unban(selectedUser.login)" >Unban </v-btn>
-				<v-btn v-else @click="ban(selectedUser.login)">Ban</v-btn>
-				<v-btn v-if="selectedUser.is_muted" @click="unmute(selectedUser.login)">Unmute</v-btn>
-				<v-btn v-else @click="mute(selectedUser.login, new Date())">Mute</v-btn>
-				<v-btn @click="kick(selectedUser.login)">Kick</v-btn>
-				<v-btn v-if="!selectedUser.is_admin" @click="promote(selectedUser.login)">Promote</v-btn>
-				<v-btn v-else @click="demote(selectedUser.login)">Demote</v-btn>
+
+				<!-- Kick -->
+				<v-btn
+					@click="kick(selectedUser.login)">Kick</v-btn>
+
+				<!-- Ban & Unban -->
+				<v-btn v-if="selectedUser.is_banned"
+					@click="unban(selectedUser.login)" >Unban </v-btn>
+				<v-btn v-else
+					@click="ban(selectedUser.login)">Ban</v-btn>
+
+				<!-- Mute & Unmute -->
+				<v-btn v-if="selectedUser.is_muted"
+					@click="unmute(selectedUser.login)">Unmute</v-btn>
+				<template v-else>
+					<v-btn @click="mute(selectedUser.login, 1)">Mute for 1 hour</v-btn>	
+					<v-btn @click="mute(selectedUser.login, 2)">Mute for 2 hours</v-btn>
+					<v-btn @click="mute(selectedUser.login, 6)">Mute for 6 hours</v-btn>
+					<v-btn @click="mute(selectedUser.login, 12)">Mute for 12 hours</v-btn>
+					<v-btn @click="mute(selectedUser.login, 24)">Mute for 24 hours</v-btn>
+				</template>
+
+<!-- 			<v-select v-else
+					:items="muteOptions"
+					label="Mute"
+					@change="mute(selectedUser.login, 2)">
+				</v-select> -->
+				
+
+				<!-- @click="mute(selectedUser.login, new Date())">Mute</v-select> -->
+
+				<!-- Promote & Demote -->
+				<v-btn v-if="!selectedUser.is_admin"
+					@click="promote(selectedUser.login)">Promote</v-btn>
+				<v-btn v-else
+					@click="demote(selectedUser.login)">Demote</v-btn>
+
 			</v-card-text>
 
 			<v-card-actions>
@@ -69,23 +98,35 @@ export default {
 		myUser: Object,
 	},
 	emits: ['close-modal'],
-    computed: {
+	computed: {
 		selectedChannel() {
 			return this.selectedChannelName;
 		},
-        selectedUser() {
-            return this.selectedChannelUser || {
-                // valeurs par défaut si selectedChannelUser est null ou undefined
-                login: 'fake',
-                display_name: 'fake',
-                avatar: 'fake',
-                is_owner: false,
-                is_admin: false,
-                is_muted: false,
-                is_banned: false,
-            };
-        }
-    },
+		selectedUser() {
+			return this.selectedChannelUser || {
+				// valeurs par défaut si selectedChannelUser est null ou undefined
+				login: 'fake',
+				display_name: 'fake',
+				avatar: 'fake',
+				is_owner: false,
+				is_admin: false,
+				is_muted: false,
+				is_banned: false,
+			};
+		}
+	},
+	data() {
+		return {
+			selectedMuteDuration: null,
+			muteOptions: [
+				{ text: '1 hour', value: 1 },
+				{ text: '2 hours', value: 2 },
+				{ text: '6 hours', value: 6 },
+				{ text: '12 hours', value: 12 },
+				{ text: '24 hours', value: 24 },
+			],
+		};
+	},
 	methods: {
 		unban: async function (login: string) {
 			this.modUser(login, 'unban');
@@ -93,8 +134,15 @@ export default {
 		ban: async function (login: string) {
 			this.modUser(login, 'ban');
 		},
-		mute: async function (login: string, duration: Date) {
+		mute: async function (login: string, duration: number) {
 			console.log('mute: ', login, duration);
+			const dateUntil = new Date();
+			const millisecondsToAdd = duration * 3600000; // 1 heure = 3600000 millisecondes
+
+			dateUntil.setTime(dateUntil.getTime() + millisecondsToAdd);
+
+			console.log('mute: ', login, dateUntil);
+			this.modUser(login, 'mute', dateUntil);
 		},
 		unmute: async function (login: string) {
 			this.modUser(login, 'unmute');
@@ -102,7 +150,7 @@ export default {
 		kick: async function (login: string) {
 			this.modUser(login, 'kick');
 		},
-		modUser: async function(login: string, chosenAction: string) {
+		modUser: async function(login: string, chosenAction: string, duration?: Date) {
 			try {
 				console.log('[UserModeration] modUser: ', login, chosenAction);
 				const response: any = await fetch(
@@ -117,6 +165,7 @@ export default {
 						body: JSON.stringify({
 							target_login: login,
 							action: chosenAction,
+							muted_until: duration ? duration : null,
 						}),
 					}
 				);
@@ -164,7 +213,7 @@ export default {
 				console.log(error);
 			}
 		},
-		demote: async function(login: string) {
+		demote: async function (login: string) {
 			try {
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannel}/settings/owner/demote`,

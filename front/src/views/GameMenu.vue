@@ -1,46 +1,5 @@
-<!-- <template>
-	<v-container class="arcade-container" fill-height>
-		<v-row justify="center" align="center">
-			<v-col cols="12" class="d-flex justify-center align-center">
-				<div class="title-container">
-					<h1 class="omoriArcade">OMORI Pong</h1>
-				</div>
-			</v-col>
-			<div>
-				<Suspense>
-					<main>
-						<v-col v-if="index === 0" cols="12" class="d-flex justify-center align-center">
-							<div class="scoreboard-container">
-								<MatchScoreboard />
-							</div>
-						</v-col>
-						<v-col v-if="index === 1" cols="12" class="d-flex justify-center align-center">
-							<div class="history-container">
-								<MatchHistory />
-							</div>
-						</v-col>
-						<v-col v-if="index === 2" cols="12" class="d-flex justify-center align-center">
-							<div class="spectate-container">
-								<MatchSpectate />
-							</div>
-						</v-col>
-					</main>
-
-					<template #fallback>
-						<div>Loading...</div>
-					</template>
-				</Suspense>
-			</div>
-			<v-col cols="12" class="d-flex justify-center align-center">
-				<h2 class="omoriFont">{{ previousStep }} </h2>
-				<h2 class="omoriFont"> {{ nextStep }}</h2>
-			</v-col>
-		</v-row>
-	</v-container>
-</template> -->
-
 <template>
-	<v-container class="d-flex align-center justify-center">
+	<v-main class="d-flex align-center justify-center" height="100vh">
 		<div
 			:style="{
 				backgroundImage: `url(/game/menu/arcade.png)`,
@@ -76,7 +35,7 @@
 				<h2 class="omoriFont">{{ nextStep }}</h2>
 			</div>
 		</div>
-	</v-container>
+	</v-main>
 </template>
 
 <script lang="ts">

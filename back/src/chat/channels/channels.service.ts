@@ -327,11 +327,9 @@ export class ChannelService {
 			}
 
 			if (!channelEntity.getIsPublic()) {
-				console.log(`channel ${channel_name} password = ${channelEntity.getPassword()}`);
 				try {
 					if (await argon2.verify(channelEntity.getPassword(), dto.chan_password)) console.log('password match');
 					else {
-						console.log('password does not match');
 						throw new BadRequestException('Wrong password');
 					}
 				} catch (e) {
@@ -449,12 +447,9 @@ export class ChannelService {
 			if (!channelUser.isOwner())
 				throw new ForbiddenException('You are not authorized to set or modify the password on this channel');
 
-			console.log(channelEntity.getIsPublic());
 			if (!channelEntity.getIsPublic()) {
-				console.log(channelEntity.getPassword());
 				const passwordMatch: boolean = await argon2.verify(channelEntity.getPassword(), dto.prev_pwd);
 				if (!passwordMatch) {
-					console.log(passwordMatch);
 					throw new BadRequestException('Wrong previous password');
 					return;
 				}

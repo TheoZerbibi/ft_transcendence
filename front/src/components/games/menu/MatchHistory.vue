@@ -1,15 +1,11 @@
 <template>
 	<h1 class="omoriFont">Match History</h1>
 	<v-list class="scrollable-list">
-		<v-list-item-group>
-			<v-list-item v-for="(item, index) in matchHistory" :key="index">
-				<v-list-item-content>
-					<v-list-item-title @click="redirectToGame(item.uid)" class="hoverable">{{ item.uid }}</v-list-item-title>
-					<v-list-item-subtitle>{{ item.score }}</v-list-item-subtitle>
-					<v-list-item-subtitle>Start at: <DateViewer :timestamp="item.started_at" /></v-list-item-subtitle>
-				</v-list-item-content>
-			</v-list-item>
-		</v-list-item-group>
+		<v-list-item v-for="(item, index) in matchHistory" :key="index">
+			<v-list-item-title @click="redirectToGame(item.uid)" class="hoverable">{{ item.uid }}</v-list-item-title>
+			<v-list-item-subtitle>{{ item.score }}</v-list-item-subtitle>
+			<v-list-item-subtitle>Start at: <DateViewer :timestamp="item.started_at" /></v-list-item-subtitle>
+		</v-list-item>
 	</v-list>
 </template>
 <script lang="ts">
@@ -65,7 +61,6 @@ export default {
 					return response.json();
 				})
 				.then(async (data) => {
-					console.log(data);
 					this.matchHistory = data;
 				});
 		},

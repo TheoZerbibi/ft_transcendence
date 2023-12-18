@@ -1,48 +1,60 @@
 <template>
-	<v-layout fluid>
+	<v-layout fluid class="d-flex flex-column justify-center align-center bg-white" >
 
-		<v-app-bar class="elevation-0 appBarBox bg-black d-flex flow-row justify-center align-center" density="compact">
-			<div style="border: white solid medium; height: 5dvh; width: 95dvw">
-				<v-toolbar-title class="omoriFont text-start h2">OMORI Community</v-toolbar-title>
-			</div>
-			<Button icon :height="5" :width="5" :border="'white solid medium'" @click="redirect('Home')">
-				<v-icon color="white" class="close-svg"></v-icon>
-			</Button>
+		<v-app-bar 
+			app
+			fluid
+			class="elevation-0 bg-white d-flex flow-row justify-center align-center flex-grow-0 flex-shrink-0"
+			density="compact"
+			style="border: black solid thin">
+			<v-toolbar-title class="text-end md-2 pa-2 h2">OMORI Community</v-toolbar-title>
 		</v-app-bar>
+		
+		<v-bottom-navigation 
+			fluid 
+			expand-on-hover 
+			rail 
+			app 
+			style="border: black solid thin"
+			class="d-flex flex-column flex-grow-1 flex-shrink-1 align-center justify-center">
+			<v-tabs nav v-model="tab">
+				<v-tab
+					v-for="(link, index) in links"
+					:ripple="false"
+					:prepend-icon="link.icon"
+					:value="link.value"
+					:key="link.value"
+					stacked
+					>
+				</v-tab>
+			</v-tabs>
+		</v-bottom-navigation>
 
-		<v-main class="d-flex flex-column justify-start align-center bg-image" style="width: 100dvw">
-			<v-container class="d-flex flex-column align-cente justify-center windowBox" style="height: 85dvh">
-				<v-row class="bg-black" style="max-height: 5dvh">
-					<v-tabs v-model="tab" flat hide-slider grow class="bg-grey-darken-1">
-						<v-tab v-for="(link, index) in links" :key="link.value" :value="link.value" :text="link.name"
-							class="no-hover h3 omoriFont justify-start align-center tabs" :ripple="false"
-							:style="{ 'border-left': index === 0 ? 'black solid thick' : 'none' }" />
-					</v-tabs>
-				</v-row>
-				<v-spacer></v-spacer>
-				<v-window v-model="tab">
+		<v-main fill-height class="d-flex flex-column justify-start align-center" style="width: 100dvw;">
+			<v-container fill-height class="d-flex flex-column justify-center bg-yellow" >
+				<v-window v-model="tab" fill-heigh class="d-flex flex-row align-start justify-center flex-shrink-1 bg-black">
 					<!-- Direct messages tab -->
 					<v-window-item :value="1">
 						<!-- Friend, requests, users lists -->
 						<v-row>
 							<v-col cols="12" md="3">
-								<Box>
+								<v-card>
 									<Friends @messages-with="updateMessagesList" />
 									<Requests />
 									<Users />
-								</Box>
+								</v-card>
 							</v-col>
 							<!-- DMs -->
 							<v-col cols="12" md="6">
-								<Box>
+								<v-card>
 									<DirectMessages :selectedFriendLogin="selectedFriendLogin" />
-								</Box>
+								</v-card>
 							</v-col>
 							<!-- Friend profile -->
 							<v-col cols="12" md="3">
-								<Box>
+								<v-card>
 									<UserProfile :selectedFriendLogin="selectedFriendLogin" />
-								</Box>
+								</v-card>
 							</v-col>
 						</v-row>
 					</v-window-item>
@@ -52,23 +64,23 @@
 						<v-row>
 							<!-- Joined channels, discover channels -->
 							<v-col cols="12" md="3">
-								<Box>
+								<v-card>
 									<JoinedChannels @channel-selected="updateSelectedChannel" />
 									<DiscoverChannels />
-								</Box>
+								</v-card>
 							</v-col>
 
 							<!-- Colonne du milieu pour Messages (3/4 de l'écran) -->
 							<v-col cols="12" md="6">
-								<Box>
+								<v-card>
 									<ChannelMessages :selectedChannelName="selectedChannelName"></ChannelMessages>
-								</Box>
+								</v-card>
 							</v-col>
 
 							<v-col cols="12" md="3">
-								<Box>
+								<v-card>
 									<ChannelSettings :selectedChannelName="selectedChannelName"></ChannelSettings>
-								</Box>
+								</v-card>
 							</v-col>
 						</v-row>
 					</v-window-item>
@@ -77,47 +89,28 @@
 					<v-window-item :value="3">
 						<v-row>
 							<v-col cols="12" md="3">
-								<Box>
-									<v-card-title>Settings</v-card-title>
-								</Box>
+								<v-card>
+									<ProfileSettings />
+								</v-card>
 							</v-col>
 							<v-col cols="12" md="9">
-								<Box>
+								<v-card>
+									<Profile />
+									<MatchHistory />
 									<BlockedUsers />
-								</Box>
+								</v-card>
 							</v-col>
 						</v-row>
 					</v-window-item>
 				</v-window>
 			</v-container>
-			<!-- Main content -->
-
 		</v-main>
-
-		<v-footer app color="grey-lighten-1" class="d-flex flex-column align-start" style="border-top: #f0f0f0 ridge thick">
-			<div class="text-center">
-				<v-menu :location="location">
-					<template v-slot:activator="{ props }">
-						<Button :backgroundColor="'#e0e0e0'" :color="'black'" :width="15" :height="6" :margin="''"
-							:border="'0.4rem ridge #e9e9e9'" :font="'OMORI_ARCADE'" :fontSize="35" v-bind="props">
-							Start
-						</Button>
-					</template>
-
-					<v-list>
-						<v-list-item v-for="(route, index) in routes" :key="route.value" :value="route.value"
-							:text="route.name">
-							<v-list-item-title @click="redirect(route.path)">{{ route.name }}</v-list-item-title>
-						</v-list-item>
-					</v-list>
-				</v-menu>
-			</div>
-		</v-footer>
 	</v-layout>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 // Direct messages
 import Friends from '../components/chat/direct-messages/Friends.vue';
@@ -133,7 +126,10 @@ import ChannelMessages from '../components/chat/channels/ChannelMessages.vue';
 import ChannelSettings from '../components/chat/channels/ChannelSettings.vue';
 
 // Profile
+import Profile from '../components/chat/profile/Profile.vue';
+import ProfileSettings from '../components/chat/profile/ProfileSettings.vue';
 import BlockedUsers from '../components/chat/profile/BlockedUsers.vue';
+import MatchHistory from '../components/chat/profile/MatchHistory.vue';
 
 import Box from '../components/layout/Box.vue';
 import Button from '../components/layout/Button.vue';
@@ -147,7 +143,6 @@ import { useSocketStore } from '../stores/websocket';
 import { provide } from 'vue';
 
 export default defineComponent({
-
 	name: 'ChatView',
 
 	components: {
@@ -165,7 +160,10 @@ export default defineComponent({
 		ChannelSettings,
 
 		/* Profile */
+		Profile,
+		ProfileSettings,
 		BlockedUsers,
+		MatchHistory,
 
 		/* Layout */
 		Box,
@@ -185,7 +183,9 @@ export default defineComponent({
 			await webSocketStore.connect(JWT, import.meta.env.VITE_CHAT_SOCKET_PORT);
 		};
 
-		provide('chat-socket', socket);
+
+		const route = useRoute();
+		const tab = ref(route.query.tab ? parseInt(route.query.tab as string) : 1);
 
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
@@ -194,15 +194,20 @@ export default defineComponent({
 			{
 				name: 'Direct Messages',
 				value: 1,
+				icon: 'fas fa-user-friends',
 			},
 			{
 				name: 'Channels',
 				value: 2,
+				icon: 'fas fa-comments',
 			},
 			{
 				name: 'Profile',
 				value: 3,
-			},];
+				icon: 'fas fa-user',
+
+			},
+		];
 		const routes = [
 			{
 				name: 'OmoriPong',
@@ -218,8 +223,8 @@ export default defineComponent({
 				name: 'Logout',
 				path: 'Login',
 				value: 3,
-			}
-		]
+			},
+		];
 
 		return {
 			isConnected,
@@ -228,8 +233,9 @@ export default defineComponent({
 			JWT,
 			user,
 			tab,
+			links,
+			routes,
 		};
-
 	},
 	data() {
 		return {
@@ -249,9 +255,10 @@ export default defineComponent({
 					value: 3,
 				},
 			],
+			currentTime: '' as string,
 		};
 	},
-	async mounted(){
+	async mounted() {
 		await this.connect(this.JWT, import.meta.env.VITE_CHAT_SOCKET_PORT);
 		console.debug(`Connection to socket is actually ${this.isConnected}`);
 		this.socket.on('new-direct-message', (data) => {
@@ -264,8 +271,10 @@ export default defineComponent({
 			console.log('Welcome message received');
 			console.log(`retrieved ${data}`);
 		});
+
+		this.updateTime();
+		setInterval(this.updateTime, 1000);
 	},
-			 
 	methods: {
 		updateMessagesList(login: string) {
 			this.selectedFriendLogin = login;
@@ -285,9 +294,14 @@ export default defineComponent({
 			this.disconnect();
 			return this.$router.push({ name: `Login` });
 		},
+		async updateTime() {
+			const now = new Date();
+			const hours = now.getHours().toString().padStart(2, '0');
+			const minutes = now.getMinutes().toString().padStart(2, '0');
+			this.currentTime = `${hours}:${minutes}`;
+		},
 	},
 });
-
 </script>
 
 <style>
@@ -320,7 +334,6 @@ export default defineComponent({
 	overflow-y: auto;
 }
 
-
 .v-list {
 	max-height: 100%;
 	overflow-y: auto;
@@ -348,6 +361,16 @@ export default defineComponent({
 	border-bottom: black solid thick;
 }
 
+.tabs:hover {
+	background-color: #e0e0e0 !important;
+	color: black !important;
+}
+
+.tab-active {
+	background-color: #e0e0e0 !important;
+	color: black !important;
+}
+
 .bg-image {
 	background-image: url('/chat/background/Desktop.png');
 	background-repeat: no-repeat;
@@ -355,5 +378,10 @@ export default defineComponent({
 	max-height: 100dvh;
 	max-width: 100dvw;
 	aspect-ratio: 1;
+}
+
+.time {
+	font-size: 14px;
+	color: #666;
 }
 </style>

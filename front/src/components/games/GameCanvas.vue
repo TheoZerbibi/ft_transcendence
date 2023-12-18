@@ -234,7 +234,7 @@ export default {
 					ball: P5.Image;
 
 				p5.preload = () => {
-					retroFont = p5.loadFont('/fonts/ARCADECLASSIC.TTF');
+					retroFont = p5.loadFont('/fonts/OMORI_BOOK.ttf');
 					ball = p5.loadImage('/game/UI/balls/ball.png');
 					ballLeft = p5.loadImage('/game/UI/balls/ball-left.png');
 					ballRight = p5.loadImage('/game/UI/balls/ball-right.png');
@@ -512,7 +512,6 @@ export default {
 	},
 	methods: {
 		setData(data: any, gameData: any) {
-			console.log('setData');
 			if (!gameData.leftUser || !gameData.rightUser) return this.$router.push({ name: 'GameMenu' });
 			if (gameData.leftUser) gameData.leftUser.score = 0;
 			if (gameData.rightUser) gameData.rightUser.score = 0;
@@ -558,20 +557,6 @@ export default {
 </script>
 
 <style scoped>
-@font-face {
-	font-family: 'Arcade_Classic';
-	src: url('/fonts/ARCADECLASSIC.TTF');
-}
-
-@font-face {
-	font-family: 'OMORI_MAIN';
-	src: url('/fonts/OMORI_GAME.ttf') format('truetype-variations');
-}
-
-@font-face {
-	font-family: 'OMORI_DISTURBED';
-	src: url('/fonts/OMORI_GAME2.ttf') format('truetype-variations');
-}
 
 body,
 html {

@@ -57,7 +57,10 @@ export class TwoFactorAuthenticationController {
 				throw new UnauthorizedException('2FA already enabled');
 			}
 		} catch (e) {}
-		const isCodeValid = this.twoFactorAuthenticationService.isTwoFactorAuthenticationCodeValid(body.code, user);
+		const isCodeValid = await this.twoFactorAuthenticationService.isTwoFactorAuthenticationCodeValid(
+			body.code,
+			user,
+		);
 		if (!isCodeValid) {
 			throw new UnauthorizedException('Wrong authentication code');
 		}
@@ -71,7 +74,10 @@ export class TwoFactorAuthenticationController {
 	@ApiOperation({ summary: 'Turn off 2FA' })
 	@ApiBearerAuth('JWT-auth')
 	async turnOffTwoFactorAuthentication(@GetUser() user, @Body() body: TwoFactorAuthenticationCodeDto) {
-		const isCodeValid = this.twoFactorAuthenticationService.isTwoFactorAuthenticationCodeValid(body.code, user);
+		const isCodeValid = await this.twoFactorAuthenticationService.isTwoFactorAuthenticationCodeValid(
+			body.code,
+			user,
+		);
 		if (!isCodeValid) {
 			throw new UnauthorizedException('Wrong authentication code');
 		}
@@ -85,7 +91,10 @@ export class TwoFactorAuthenticationController {
 	@ApiOperation({ summary: 'Authentificate with 2FA' })
 	@ApiBearerAuth('JWT-auth')
 	async authenticate(@GetUser() user, @Body() body: TwoFactorAuthenticationCodeDto) {
-		const isCodeValid = this.twoFactorAuthenticationService.isTwoFactorAuthenticationCodeValid(body.code, user);
+		const isCodeValid = await this.twoFactorAuthenticationService.isTwoFactorAuthenticationCodeValid(
+			body.code,
+			user,
+		);
 		if (!isCodeValid) {
 			throw new UnauthorizedException('Wrong authentication code');
 		}

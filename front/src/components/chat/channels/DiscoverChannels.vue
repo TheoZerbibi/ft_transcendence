@@ -92,7 +92,6 @@ export default {
 					return;
 				}
 				const data = await response.json();
-				snackbarStore.showSnackbar(data.message, 3000, 'green');
 
 				this.channels = data;
 

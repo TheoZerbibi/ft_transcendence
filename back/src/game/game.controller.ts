@@ -58,7 +58,6 @@ export class GameController {
 	@ApiBearerAuth('JWT-auth')
 	@HttpCode(HttpStatus.OK)
 	getMyGameStat(@GetUser() user: User) {
-		console.log(user);
 		return this.gameService.getGameStatByUser(user);
 	}
 

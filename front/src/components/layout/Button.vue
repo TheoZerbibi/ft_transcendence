@@ -77,19 +77,4 @@ export default defineComponent({
 	font-size: 20px;
 }
 
-@font-face {
-	font-family: 'OMORI_MAIN';
-	src: url('./fonts/OMORI_GAME.ttf') format('truetype-variations');
-}
-
-@font-face {
-	font-family: 'OMORI_DISTURBED';
-	src: url('./fonts/OMORI_GAME2.ttf') format('truetype-variations');
-}
-
-@font-face {
-	font-family: 'OMORI_ARCADE';
-	src: url('./fonts/ARCADECLASSIC.TTF') format('truetype-variations');
-}
-
 </style>

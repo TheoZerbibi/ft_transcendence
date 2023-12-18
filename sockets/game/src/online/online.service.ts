@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -19,7 +20,7 @@ export class OnlineService {
 				},
 			});
 		} catch (e) {
-			throw new Error('Error during get all online users');
+			return new BadRequestException('Error during get all online users');
 		}
 	}
 
@@ -34,7 +35,7 @@ export class OnlineService {
 				},
 			});
 		} catch (e) {
-			throw new Error('Error during set user online');
+			return new BadRequestException('Error during set user online');
 		}
 	}
 
@@ -50,7 +51,7 @@ export class OnlineService {
 				},
 			});
 		} catch (e) {
-			throw new Error('Error during set user offline');
+			return new BadRequestException('Error during set user offline');
 		}
 	}
 }

@@ -1,6 +1,27 @@
 /* use with html elements such as: 
 - <h1 class="omoriFont">
 - <p class ="omoriDisturbed"> */
+
+@font-face {
+	font-family: 'OMORI_MAIN';
+	src: url('./fonts/OMORI_GAME.ttf') format('truetype-variations');
+}
+
+@font-face {
+	font-family: 'OMORI_DISTURBED';
+	src: url('./fonts/OMORI_GAME2.ttf') format('truetype-variations');
+}
+
+@font-face {
+	font-family: 'OMORI_BOOK';
+	src: url('./fonts/OMORI_BOOK.ttf') format('truetype-variations');
+}
+
+@font-face {
+	font-family: 'ARCADE_CLASSIC';
+	src: url('./fonts/PublicPixel.ttf') format('truetype-variations');
+}
+
 .omoriFont {
 	font-family: 'OMORI_MAIN';
 }
@@ -10,11 +31,11 @@
 }
 
 .omoriArcade {
-	font-family: 'OMORI_ARCADE';
+	font-family: 'ARCADE_CLASSIC';
 }
 
-.hoverable {
-
+.omoriBook {
+	font-family: 'OMORI_BOOK';
 }
 
 .windowBox {
@@ -73,17 +94,3 @@ button:hover, .hoverable:hover, .bulb:hover {
 	cursor: url(https://www.omori-game.com/img/cursor/cursor.png), auto;
 }
 
-@font-face {
-	font-family: 'OMORI_MAIN';
-	src: url('./fonts/OMORI_GAME.ttf') format('truetype-variations');
-}
-
-@font-face {
-	font-family: 'OMORI_DISTURBED';
-	src: url('./fonts/OMORI_GAME2.ttf') format('truetype-variations');
-}
-
-@font-face {
-	font-family: 'OMORI_ARCADE';
-	src: url('./fonts/ARCADECLASSIC.TTF') format('truetype-variations');
-}
