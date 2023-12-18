@@ -27,9 +27,9 @@
 			nav>
 			<!-- Friend, requests, users lists -->
 			<div v-show="tab === 1">
-				<Friends @messages-with="updateSelectedUser" />
-				<Requests />
-				<Users />
+				<Friends @user-selected="updateSelectedUser" />
+				<Requests @user-selected="updateSelectedUser" />
+				<Users @user-selected="updateSelectedUser" />
 			</div>
 			<!-- Joined channels, discover channels -->
 			<div v-show="tab === 2">
@@ -228,13 +228,13 @@ export default defineComponent({
 	},
 	methods: {
 		updateSelectedUser(login: string) {
-			this.selectedUserLogin = login;
 			console.log('[CHAT.vue] NEW SELECTED FRIEND LOGIN: ', this.selectedUserLogin);
+			this.selectedUserLogin = login;
 		},
 
 		updateSelectedChannel(name: string) {
-			this.selectedChannelName = name;
 			console.log('[CHAT.vue] NEW SELECTED CHANNEL NAME: ', this.selectedChannelName);
+			this.selectedChannelName = name;
 		},
 		redirect(path: string) {
 			return this.$router.push({ name: path });
