@@ -57,13 +57,13 @@
 				<!-- Direct messages tab -->
 				<div v-show="tab === 1">
 					<Suspense>
-					<main>
-						<DirectMessages :selectedUserLogin="selectedUserLogin" />
-					</main>
-					<template #fallback>
-						<div>Loading...</div>
-					</template>
-				</Suspense>
+						<main>
+							<DirectMessages :selectedUserLogin="selectedUserLogin" />
+						</main>
+						<template #fallback>
+							<div>Loading...</div>
+						</template>
+					</Suspense>
 				</div>
 
 				<!-- Channels tab -->
@@ -74,9 +74,16 @@
 				<!-- Profile tab -->
 				<div v-show="tab === 3">
 					<v-card>
-						<Profile />
-						<MatchHistory />
-						<BlockedUsers />
+						<Suspense>
+						<main>
+							<Profile />
+							<MatchHistory />
+							<BlockedUsers />
+						</main>
+						<template #fallback>
+							<div>Loading...</div>
+						</template>
+					</Suspense>
 					</v-card>
 				</div>
 			</v-window>

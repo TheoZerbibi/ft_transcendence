@@ -55,7 +55,6 @@ import { useSnackbarStore } from '../../../stores/snackbar';
 import Snackbar from '../../layout/Snackbar.vue';
 import DateConv from '../../utils/DateConv.vue';
 
-import { inject } from 'vue';
 import { useSocketStore } from '../../../stores/websocket';
 
 const userStore = useUser();

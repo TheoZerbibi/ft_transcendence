@@ -176,7 +176,7 @@ export class DirectMessageService {
 		}
 	}
 
-	private publishToRedis(event: string, msg: string)
+	private publishToRedis(event: string, msg: any)
 	{
 		console.log(`Publising to redis: ${msg}`);
 		this.redisService.publish(event, msg);

@@ -43,15 +43,18 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 //	@SubscribeMessage('new-direct-message')
 	public dirmsg(client: Socket, data: any): void
 	{
-		const msg: any = JSON.parse(data);
-		const user: User | undefined = this.chatService.getUserById(msg.friend_id);
+		this.logger.debug(`Received data: ${data}`);
 
+		const msg = JSON.parse(data);
+		console.log(msg);
+		const user: User | undefined = this.chatService.getUserById(msg.friend_id);
+	
 		if (user !== undefined) {
 			user.getSocket().emit('new-direct-message', data);
 		}
-		else {
-			console.info('Receiver of dir message is not connected');
-		}
+//		else {
+//			console.info('Receiver of dir message is not connected');
+//		}
 	}
 
 	// To_test
@@ -167,8 +170,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			this.authService.verifyToken({ access_token: token });
 			const user: users = await this.authService.getUser(token);
 
-			console.log(`user id = ${user.id}`);
-			console.log(`User connect = ${user}`);
 			this.chatService.addUser(client, user);
 
 			const channelDtos: ChannelDto[] = this.chatService.getChannelDtos();
@@ -176,7 +177,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	//		client.emit('welcome', JSON.stringify(channelDtos));
 			client.emit('welcome', JSON.stringify(user));
 			this.emitToEveryoneExceptOne('new-connection', user.id, client);
-			this.logger.debug(`Client connected: ${client.id}`);
+			this.logger.debug(`Client connected: socket:${client.id}, usr_.id:${user.id}`);
 			console.log(channelDtos);
 
 		} catch (e) {
@@ -194,7 +195,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
 		const  user: users = await this.authService.getUser(token);
 		this.emitToEveryone('user-disconnected', user);
-		this.logger.debug(`Client disconnected: ${client.id}`);
+		this.logger.debug(`Client disconnected: user.id:${user.id}`);
 	}
 
 	//----------------------  Emitting Function ------------------------------------
