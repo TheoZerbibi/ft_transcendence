@@ -293,7 +293,9 @@ export default defineComponent({
 		},
 	},
 	beforeMount() {
-		if (this.JWT) {
+		if (!this.JWT) {
+			return this.$router.push({ name: `Login` });
+		} else {
 			this.connect(this.JWT);
 		}
 	},
