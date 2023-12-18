@@ -171,18 +171,6 @@ export default defineComponent({
 	},
 
 	setup() {
-		const userStore = useUser();
-		const webSocketStore = useSocketStore();
-
-		const isConnected = computed(() => webSocketStore.isConnected);
-		const socket = computed(() => webSocketStore.getSocket);
-
-		const msg = null;
-		const connect = async (JWT: string) => {
-			await webSocketStore.connect(JWT, import.meta.env.VITE_CHAT_SOCKET_PORT);
-		};
-
-
 		const route = useRoute();
 		const tab = ref(route.query.tab ? parseInt(route.query.tab as string) : 1);
 		const webSocketStore = useSocketStore();
