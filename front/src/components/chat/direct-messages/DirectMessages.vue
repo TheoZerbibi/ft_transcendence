@@ -1,5 +1,6 @@
 <template>
-	<div v-if="selectedUserLogin">
+	
+	<div v-if="selectedUserLogin && is_friend">
 
 		<v-card-title>Messages with @{{ selectedUserLogin }} </v-card-title>
 
@@ -24,7 +25,12 @@
 			<v-btn class="justify-end" @click="sendMessage">Send
 			</v-btn>
 		</v-card-actions>
+	</div>
 
+	<div v-else-if="selectedUserLogin">
+		<v-card-text class="empty-card">
+			~ you are not friend with this user so u cant chat ~>
+		</v-card-text>
 	</div>
 
 	<div v-else>
@@ -33,6 +39,7 @@
 			~ no friend selected ~
 		</v-card-text>
 	</div>
+
 
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
@@ -88,198 +95,116 @@ selectedUserLogin: String,
 	       //	
 	       //			       });
        },
-       data() {
-	       return {
-friendLogin: this.selectedFriendLogin ?
-		     this.selectedFriendLogin as string
-		     : '' as string,
-	     messages: [] as any,
-	     input: '' as string,
-	       };
-       },
-watch: {
-selectedFriendLogin: function (newVal: string) {
-			     this.friendLogin = newVal;
-			     this.fetchDirectMessages();
-		     },
-       },
-methods: {
-fetchDirectMessages: async function () {
-			     try {
-				     if (!this.friendLogin || this.friendLogin === '') {
-					     console.log('[fetchDirectMessages]: friendLogin is empty');
-					     return;
-				     }
-				     const response: any = await fetch(
-						     `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/${this.friendLogin}/all`,
-						     {
-method: 'GET',
-headers: {
-Authorization: `Bearer ${this.JWT}`,
-'Access-Control-Allow-Origin': '*',
-},
-}
-);
-				     if (!response.ok) {
-					     const error = await response.json();
-					     snackbarStore.showSnackbar(error.message, 3000, 'red');
-					     return;
-				     }
-const data = await response.json();
-
-this.messages = data;
-
-} catch (error: any) {
-	snackbarStore.showSnackbar(error, 3000, 'red');
-}
-},
-
-sendMessage: async function () {
-		     try {
-			     if (!this.friendLogin || this.friendLogin === ''
-					     || this.input.trim() === '') {
-				     return;
-			     }
-			     const response: any = await fetch(
-					     `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/send`,
-					     {
-method: 'POST',
-headers: {
-'Content-Type': 'application/json',
-Authorization: `Bearer ${this.JWT}`,
-'Access-Control-Allow-Origin': '*',
-},
-body: JSON.stringify({
-target_login: this.friendLogin,
-content: this.input,
-}),
-}
-);
-
-			     if (!response.ok) {
-				     const error = await response.json();
-				     snackbarStore.showSnackbar(error.message, 3000, 'red');
-				     return;
-			     }
-
-const data = await response.json();
-
-this.fetchDirectMessages();
-this.input = '';
-
-} catch (error: any) {
-	snackbarStore.showSnackbar(error, 3000, 'red');
-}
-},
+	data() {
+		return {
+			userLogin: this.selectedUserLogin ?
+				this.selectedUserLogin as string
+				: '' as string,
+			messages: [] as any,
+			input: '' as string,
+			is_friend: false as boolean,
+		};
 	},
-data() {
-	return {
-userLogin: this.selectedUserLogin ?
-		   this.selectedUserLogin as string
-		   : '' as string,
-		   messages: [] as any,
-		   input: '' as string,
-	};
-},
-watch: {
-selectedUserLogin: function (newVal: string) {
-			   this.userLogin = newVal;
-			   this.fetchDirectMessages();
-		   },
-       },
-methods: {
-fetchDirectMessages: async function () {
-			     try {
-				     if (!this.userLogin || this.userLogin === '') {
-					     console.log('[fetchDirectMessages]: userLogin is empty');
-					     return;
-				     }
-
-				     // Check if selected user is a friend
-				     const isFriend: any = await fetch(
-						     `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/isfriend/${this.userLogin}`,
-						     {
-method: 'GET',
-headers: {
-Authorization: `Bearer ${this.JWT}`,
-'Access-Control-Allow-Origin': '*',
-},
-}
-);
-				     if (!isFriend.ok) {
-					     const error = await isFriend.json();
-					     snackbarStore.showSnackbar(error.message, 3000, 'red');
-					     return;
-				     }
-const isFriendData: any = await isFriend.json();
-if (!isFriendData.isFriend) {
-	snackbarStore.showSnackbar('You are not friends with this user', 3000, 'red');
-	return;
-}
-
-// Fetch messages
-const response: any = await fetch(
-		`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/${this.userLogin}/all`,
-		{
-method: 'GET',
-headers: {
-Authorization: `Bearer ${this.JWT}`,
-'Access-Control-Allow-Origin': '*',
-},
-}
-);
-if (!response.ok) {
-	const error = await response.json();
-	snackbarStore.showSnackbar(error.message, 3000, 'red');
-	return;
-}
-const data = await response.json();
-
-this.messages = data;
-
-} catch (error: any) {
-	snackbarStore.showSnackbar(error, 3000, 'red');
-}
-},
-
-sendMessage: async function () {
-		     try {
-			     if (!this.userLogin || this.userLogin === ''
-					     || this.input.trim() === '') {
-				     return;
-			     }
-			     const response: any = await fetch(
-					     `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/send`,
-					     {
-method: 'POST',
-headers: {
-'Content-Type': 'application/json',
-Authorization: `Bearer ${this.JWT}`,
-'Access-Control-Allow-Origin': '*',
-},
-body: JSON.stringify({
-target_login: this.userLogin,
-content: this.input,
-}),
-}
-);
-
-			     if (!response.ok) {
-				     const error = await response.json();
-				     snackbarStore.showSnackbar(error.message, 3000, 'red');
-				     return;
-			     }
-
-const data = await response.json();
-
-this.fetchDirectMessages();
-this.input = '';
-
-} catch (error: any) {
-	snackbarStore.showSnackbar(error, 3000, 'red');
-}
-},
+	watch: {
+		selectedUserLogin: function (newVal: string) {
+			this.userLogin = newVal;
+			this.fetchDirectMessages();
+		},
 	},
-	};
+	methods: {
+		fetchDirectMessages: async function () {
+			try {
+				if (!this.userLogin || this.userLogin === '') {
+					console.log('[fetchDirectMessages]: userLogin is empty');
+					return;
+				}
+
+				// Check if selected user is a friend
+				const isFriend: any = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/isfriend/${this.userLogin}`,
+					{
+						method: 'GET',
+						headers: {
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+					}
+				);
+				if (!isFriend.ok) {
+					const error = await isFriend.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					return;
+				}
+				const isFriendData: any = await isFriend.json();
+				if (!isFriendData.isFriend) {
+					this.is_friend = false;
+					return;
+				}
+				this.is_friend = true;
+
+				// Fetch messages
+				const response: any = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/${this.userLogin}/all`,
+					{
+						method: 'GET',
+						headers: {
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+					}
+				);
+				if (!response.ok) {
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					return;
+				}
+				const data = await response.json();
+
+				this.messages = data;
+
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
+			}
+		},
+
+		sendMessage: async function () {
+			try {
+				if (!this.userLogin || this.userLogin === ''
+					|| this.input.trim() === '') {
+					return;
+				}
+				const response: any = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/send`,
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+						body: JSON.stringify({
+							target_login: this.userLogin,
+							content: this.input,
+						}),
+					}
+				);
+
+				if (!response.ok) {
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					return;
+				}
+
+				const data = await response.json();
+
+				this.fetchDirectMessages();
+				this.input = '';
+
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
+			}
+		},
+	},
+};
 
 </script>
