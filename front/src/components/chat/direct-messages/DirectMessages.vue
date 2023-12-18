@@ -21,23 +21,23 @@
 		</div>
 
 		<div v-else-if="selectedUserLogin">
-			<v-card-text class="empty-card">
+			<v-card-text >
 				~ you are not friend with this user so u cant chat ~>
 			</v-card-text>
 		</div>
 
 		<div v-else>
 			<v-card-title>Messages</v-card-title>
-			<v-card-text class="empty-card">
+			<v-card-text>
 				~ no friend selected ~
 			</v-card-text>
 		</div>
 		<!-- Message Input -->		
 	</v-card>
-	<v-footer>
+	<v-footer rounded="0" elevation="0" style="border-right: black solid thin; border-left: black solid thin">
 		<v-text-field v-model="input" placeholder="Type your message..." max-length="200" variant="solo"
-			class="elevation-0" append-inner-icon="fas fa-paper-plane" @keyup.enter="sendMessage"
-			@click:append-inner="sendMessage" density="compact" clearable rounded="0" />
+			rounded="0" flat append-inner-icon="fas fa-paper-plane" @keyup.enter="sendMessage"
+			@click:append-inner="sendMessage" density="compact" clearable />
 	</v-footer>
 	
 	<!-- Error handling -->
@@ -213,11 +213,6 @@ export default {
 </script>
 
 <style scoped>
-.scrollable-content {
-	height: 70vh;
-	overflow-y: auto;
-}
-
 .v-card {
 	border: black solid thin;
 	border-radius: 0;

@@ -1,27 +1,20 @@
 <template>
-		<v-dialog v-if="showModal" class="align-center justify-center"
-			v-model="dialog"
-			@click:outside="cancel"
-			>
-				<v-card-title>
-					<span class="headline">This channel is private</span>
-				</v-card-title>
-				<v-card-text>
-					<v-text-field
-						v-model="password"
-						label="Password"
-						type="password"
-						max-length="20"
-						outlined
-						@keyup.enter="submit"
-					></v-text-field>
-				</v-card-text>
-				<v-card-actions>
-					<v-spacer></v-spacer>
-					<v-btn color="primary" @click="submit">OK</v-btn>
-					<v-btn color="error" @click="cancel">Cancel</v-btn>
-				</v-card-actions>
-		</v-dialog>
+	<v-dialog v-if="showModal" class="align-center justify-center" v-model="dialog" @click:outside="cancel">
+		<v-card color="white">
+			<v-card-title>
+				<span class="headline">This channel is private</span>
+			</v-card-title>
+			<v-card-text>
+				<v-text-field v-model="password" label="Password" type="password" max-length="20" outlined
+					@keyup.enter="submit"></v-text-field>
+			</v-card-text>
+			<v-card-actions>
+				<v-spacer></v-spacer>
+				<v-btn color="primary" @click="submit">OK</v-btn>
+				<v-btn color="error" @click="cancel">Cancel</v-btn>
+			</v-card-actions>
+		</v-card>
+	</v-dialog>
 </template>
 
 <script lang="ts">
@@ -48,3 +41,15 @@ export default {
 	},
 };
 </script>
+
+<style scoped>
+.v-card {
+	border: black solid thin;
+	border-radius: 0;
+	scroll-behavior: auto;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	height: 20dvh;
+	width: 20dvw;
+}
+</style>
