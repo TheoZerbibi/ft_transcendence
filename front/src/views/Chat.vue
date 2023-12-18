@@ -171,6 +171,7 @@ export default defineComponent({
 	},
 
 	setup() {
+		const userStore = useUser();
 		const route = useRoute();
 		const tab = ref(route.query.tab ? parseInt(route.query.tab as string) : 1);
 		const webSocketStore = useSocketStore();

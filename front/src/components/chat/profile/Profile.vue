@@ -9,7 +9,7 @@
 		<v-card-subtitle>{{ user.displayName }}</v-card-subtitle>
 	</v-img>
 	<div v-if="Object.keys(gameStats).length ">
-<!--		{{ gameStats }} -->
+		{{ gameStats }}
 	</div>
 	<div v-else>
 		~ no game found ~	
