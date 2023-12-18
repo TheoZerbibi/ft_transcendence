@@ -11,6 +11,7 @@ import * as directives from 'vuetify/directives';
 
 import App from './App.vue';
 import { loadFonts } from './plugins/webfontloader';
+import './plugins/vuetify';
 import router from './router';
 
 // Importing the global css file
@@ -42,6 +43,9 @@ const vuetify = createVuetify({
 	},
 	components,
 	directives,
+	icons: {
+		defaultSet: 'mdi',
+	},
 });
 
 loadFonts();
