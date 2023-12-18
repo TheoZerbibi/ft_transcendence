@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@fortawesome/fontawesome-free':
-        specifier: ^6.5.1
-        version: 6.5.1
       '@mdi/font':
         specifier: 7.3.67
         version: 7.3.67
@@ -90,6 +87,9 @@ importers:
         specifier: ^1.6.28
         version: 1.6.28
     devDependencies:
+      '@fortawesome/fontawesome-free':
+        specifier: ^6.5.1
+        version: 6.5.1
       '@mdi/js':
         specifier: ^7.3.67
         version: 7.3.67
@@ -767,7 +767,7 @@ packages:
     resolution: {integrity: sha512-CNy5vSwN3fsUStPRLX7fUYojyuzoEMSXPl7zSLJ8TgtRfjv24LOnOWKT2zYwaHZCJGkdyRnTmstR0P+Ah503Gw==}
     engines: {node: '>=6'}
     requiresBuild: true
-    dev: false
+    dev: true
 
   /@hapi/hoek@9.3.0:
     resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}
