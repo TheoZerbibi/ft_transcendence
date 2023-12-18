@@ -1,9 +1,11 @@
 <template>
+	<div class="div d-flex flex-row align-center">
+		<v-card-title>@{{ selectedUserLogin }}</v-card-title>
+		<v-spacer></v-spacer>
+		<v-icon class="mr-2 hoverable" icon="fas fa-info-circle" color="black" @click=""></v-icon>
+	</div>
 	<v-card>
 		<div v-if="selectedUserLogin && is_friend">
-
-			<v-card-title>Messages with @{{ selectedUserLogin }} </v-card-title>
-
 			<v-card-text>
 
 				<!-- Chat Messages -->
@@ -34,10 +36,10 @@
 		</div>
 		<!-- Message Input -->		
 	</v-card>
-	<v-footer rounded="0" elevation="0" style="border-right: black solid thin; border-left: black solid thin">
-		<v-text-field v-model="input" placeholder="Type your message..." max-length="200" variant="solo"
-			rounded="0" flat append-inner-icon="fas fa-paper-plane" @keyup.enter="sendMessage"
-			@click:append-inner="sendMessage" density="compact" clearable />
+	<v-footer rounded="0" elevation="0">
+		<v-text-field v-model="input" placeholder="Type your message..." max-length="200" variant="solo" rounded="0" flat
+			append-inner-icon="fas fa-paper-plane" @keyup.enter="sendMessage" @click:append-inner="sendMessage"
+			density="compact" clearable />
 	</v-footer>
 	
 	<!-- Error handling -->
@@ -216,10 +218,21 @@ export default {
 .v-card {
 	border: black solid thin;
 	border-radius: 0;
-	max-height: 87dvh;
+	max-height: 82dvh;
+	height: 82dvh;
 	scroll-behavior: auto;
 	overflow-y: scroll;
 	overflow-x: hidden;
 }
 
+.v-footer {
+	border-right: black solid thin;
+	border-left: black solid thin;
+	border-bottom: black solid thin;
+}
+
+.div {
+	border-right: black solid thin;
+	border-left: black solid thin;
+}
 </style>

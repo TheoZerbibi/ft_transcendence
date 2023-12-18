@@ -1,42 +1,39 @@
 <template>
 
-	<div v-if="selectedUserLogin">
+	<div class="ma-2" v-if="selectedUserLogin">
 
-		<v-card-title>Profile of @{{ selectedUserLogin }}</v-card-title>
+		<h3>About @{{ selectedUserLogin }}</h3>
+
+		<v-avatar size="100" class="ma-2"
+			rounded="0"
+			variant="flat">
+			<v-img cover :src="friendData.avatar"></v-img>
+		</v-avatar>
 
 		<v-card-text>
-			<v-row>
-				<v-col cols="12" md="6">
-
-						<v-img
-							:src="friendData.avatar">
-						</v-img>
-				</v-col>
-				<v-col cols="12" md="6">
-					<v-card-title>Name: {{ friendData.name }}</v-card-title>
-					<v-card-title>Wins: {{ friendData.stats.wins }}</v-card-title>
-					<v-card-title>Loses: {{ friendData.stats.loses }}</v-card-title>
-					<v-card-title>Matches: {{ friendData.stats.matches }}</v-card-title>
-				</v-col>
-			</v-row>
+			<v-card-subtitle>Name: {{ friendData.name }}</v-card-subtitle>
+			<v-card-subtitle>Wins: {{ friendData.stats.wins }}</v-card-subtitle>
+			<v-card-subtitle>Loses: {{ friendData.stats.loses }}</v-card-subtitle>
+			<v-card-subtitle>Matches: {{ friendData.stats.matches }}</v-card-subtitle>
 		</v-card-text>
 
-		<v-card-actions>
+		<v-card-actions class="d-flex flex-column justify-center align-center">
 			<v-btn
-				class="justify-end"
+				flat
+				rounded="0"
+				:ripple="false" 
 				@click="blockUser"	
-				>Block
-			</v-btn>
+				text="Block"></v-btn>
 		</v-card-actions>
 
 	</div>
 
-	<div v-else>
+	<!-- <div v-else>
 		<v-card-title>Profile</v-card-title>
 		<v-card-text class="empty-card">
 			~ click on a user to see their profile ! ~
 		</v-card-text>
-	</div>
+	</div> -->
 
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
@@ -69,6 +66,7 @@ export default {
 	},
 	props: {
 		selectedUserLogin: String,
+		selectedUserDisplayName: String,
 	},
 	data() {
 		return {
@@ -94,8 +92,57 @@ export default {
 				console.log(error);
 			}
 		},
+		selectedUserDisplayName: function(newVal: string) {
+			try {
+				this.friendData.name = newVal;
+				this.fetchFriendData();
+			} catch (error) {
+				console.log(error);
+			}
+		},
 	},
 	methods: {
+		fetchFriendData: async function () {
+			try {
+				if (!this.friendLogin || this.friendLogin === '') {
+					console.log('[fetchFriendData]: friendLogin is empty');
+					return;
+				}
+				const response: any = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/profile/${this.friendLogin}`,
+					{
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+					}
+				);
+				if (!response.ok) {
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					return;
+				}
+				const data = await response.json();
+
+				this.friendData = {
+					name: data.display_name,
+					avatar: data.avatar,
+					member_since: data.created_at,
+					stats: {
+						wins: data.stats.wins,
+						loses: data.stats.loses,
+						matches: data.stats.matches,
+					},
+					cadre: this.cadre,
+				};
+				console.log(this.friendData);
+
+			} catch (error) {
+				console.log(error);
+			}
+		},
 		fetchFriendInfos: async function() {
 			try {
 				if (!this.friendLogin || this.friendLogin === '') {
@@ -170,3 +217,12 @@ export default {
 };
 
 </script>
+
+<style scoped>
+.v-btn {
+	border: black solid thin;
+	width: 75%;
+	margin-top: 1dvh;
+	margin-bottom: 1dvh;
+}
+</style>
