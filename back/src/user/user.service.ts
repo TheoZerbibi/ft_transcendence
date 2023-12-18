@@ -120,6 +120,19 @@ export class UserService {
 		}
 	}
 
+	async getIsFriendOfUser(user: User, target_login: string) {
+		try {
+			const targetUser = await this.findUserByName(target_login);
+			if (!targetUser) throw new BadRequestException('User not found');
+
+			const friend = await this.util_getFriend(user, targetUser);
+			if (friend.status === RequestStatus.ACCEPTED) return true;
+			return false;
+		} catch (e) {
+			throw e;
+		}
+	}
+
 	async getUsersStartingWith(startingWith: string) {
 		try {
 			const users = await this.prisma.user.findMany({

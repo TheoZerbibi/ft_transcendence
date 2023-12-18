@@ -71,6 +71,7 @@ export default {
 	methods: {
 		fetchRequests: async function() {
 			try {
+				console.log(`[REQUESTS]: fetching requests of ${this.user.login}`);
 				const response: any = await
 				fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/requests`,

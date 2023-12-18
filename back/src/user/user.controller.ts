@@ -85,6 +85,7 @@ export class UserController {
 		return user;
 	}
 
+	// Check if displayName is available
 	@Post('getDisplayName')
 	@ApiOperation({ summary: 'Check if displayName is available' })
 	async getDisplayName(@Body() body: Record<string, any>) {
@@ -108,6 +109,16 @@ export class UserController {
 	@ApiBearerAuth('JWT-auth')
 	async getFriends(@GetUser() user: User) {
 		return await this.userService.getFriendsOfUser(user);
+	}
+
+	// Know if a user is friend
+	@UseGuards(JwtGuard)
+	@Get('friends/isfriend/:login')
+	@ApiOperation({ summary: 'Know if a user is friend' })
+	@ApiBearerAuth('JWT-auth')
+	async isFriend(@GetUser() user: User, @Param('login') login: string) {
+		if (await this.userService.getIsFriendOfUser(user, login)) return { isFriend: true as boolean };
+		else return { isFriend: false as boolean };
 	}
 
 	// get friend requests list

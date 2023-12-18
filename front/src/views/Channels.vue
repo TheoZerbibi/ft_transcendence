@@ -33,7 +33,7 @@
 								class="custom-column"
 								cols="12"
 								md="3">
-								<Friends @messages-with="updateMessagesList" />
+								<Friends @user-selected="updateSelectedUser" />
 								<Requests/>
 								<Users/>
 							</v-col>
@@ -42,14 +42,14 @@
 								class="custom-column"
 								cols="12"
 								md="6">
-								<DirectMessages :selectedFriendLogin="selectedFriendLogin" />
+								<DirectMessages :selectedUserLogin="selectedUserLogin" />
 							</v-col>
 							<!-- Friend profile -->
 							<v-col fill-height
 								class="custom-column"
 								cols="12"
 								md="3">
-								<UserProfile :selectedFriendLogin="selectedFriendLogin" />
+								<UserProfile :selectedUserLogin="selectedUserLogin" />
 							</v-col>
 						</v-row>
 					</v-window-item>
@@ -163,14 +163,14 @@ export default defineComponent({
 	},
 	data() {
 		return {
-			selectedFriendLogin: '' as string,
+			selectedUserLogin: '' as string,
 			selectedChannelName: '' as string,
 		}
 	},
 	methods: {
-		updateMessagesList(login: string) {
-			this.selectedFriendLogin = login;
-			console.log('[CHANNELS.vue] NEW SELECTED FRIEND LOGIN: ', this.selectedFriendLogin);
+		updateSelectedUser(login: string) {
+			this.selectedUserLogin = login;
+			console.log('[CHANNELS.vue] NEW SELECTED USER LOGIN: ', this.selectedUserLogin);
 		},
 
 		updateSelectedChannel(name: string) {

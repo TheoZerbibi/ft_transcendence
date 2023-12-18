@@ -1,8 +1,8 @@
 <template>
 
-	<div v-if="selectedFriendLogin">
+	<div v-if="selectedUserLogin">
 
-		<v-card-title>Profile of @{{ selectedFriendLogin }}</v-card-title>
+		<v-card-title>Profile of @{{ selectedUserLogin }}</v-card-title>
 
 		<v-card-text>
 			<v-row>
@@ -34,9 +34,9 @@
 	</div>
 
 	<div v-else>
-		<v-card-title>Messages</v-card-title>
+		<v-card-title>Profile</v-card-title>
 		<v-card-text class="empty-card">
-			~ no friend selected ~
+			~ click on a user to see their profile ! ~
 		</v-card-text>
 	</div>
 
@@ -70,7 +70,7 @@ export default {
 		};
 	},
 	props: {
-		selectedFriendLogin: String,
+		selectedUserLogin: String,
 	},
 	data() {
 		return {
@@ -88,7 +88,7 @@ export default {
 		};
 	},
 	watch: {
-		selectedFriendLogin: function(newVal: string) {
+		selectedUserLogin: function(newVal: string) {
 			try {
 				this.friendLogin = newVal;
 				this.fetchFriendInfos();
