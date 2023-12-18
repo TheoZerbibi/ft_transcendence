@@ -51,6 +51,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		if (user !== undefined) {
 			user.getSocket().emit('new-direct-message', data);
 		}
+		this.emitToEveryone('new-direct-message' data);
 //		else {
 //			console.info('Receiver of dir message is not connected');
 //		}
