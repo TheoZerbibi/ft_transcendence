@@ -22,13 +22,13 @@ export default {
 		console.log(this.folder);
 		switch (this.folder) {
 			case '/sounds/404':
-				sounds = import.meta.glob('/sounds/404/*.mp3');
+				sounds = import.meta.glob('/public/sounds/404/*.mp3');
 				break;
 			case '/sounds/game/ai':
-				sounds = import.meta.glob('/sounds/game/ai/*.mp3');
+				sounds = import.meta.glob('/public/sounds/game/ai/*.mp3');
 				break;
 			case '/sounds/game/versus':
-				sounds = import.meta.glob('/sounds/game/versus/*.mp3');
+				sounds = import.meta.glob('/public/sounds/game/versus/*.mp3');
 				break;
 			default:
 				break;

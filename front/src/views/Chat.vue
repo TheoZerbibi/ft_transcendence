@@ -118,7 +118,7 @@
 			<v-container >
 				<v-row class="d-flex flex-row justify-space-between">
 					<v-col cols="9">
-						<v-menu :location="location">
+						<v-menu>
 							<template v-slot:activator="{ props }">
 								<Button :backgroundColor="'#e0e0e0'" :color="'black'" :width="15" :height="5"
 									:margin="'0px'" :border="'0.4rem ridge #e9e9e9'" :font="'ARCADE_CLASSIC'" :fontSize="35"

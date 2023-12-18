@@ -13,8 +13,13 @@
 }
 
 @font-face {
+	font-family: 'OMORI_BOOK';
+	src: url('./fonts/OMORI_BOOK.ttf') format('truetype-variations');
+}
+
+@font-face {
 	font-family: 'ARCADE_CLASSIC';
-	src: url('./fonts/ARCADE_CLASSIC.ttf') format('truetype-variations');
+	src: url('./fonts/PublicPixel.ttf') format('truetype-variations');
 }
 
 .omoriFont {
@@ -27,6 +32,10 @@
 
 .omoriArcade {
 	font-family: 'ARCADE_CLASSIC';
+}
+
+.omoriBook {
+	font-family: 'OMORI_BOOK';
 }
 
 .windowBox {
