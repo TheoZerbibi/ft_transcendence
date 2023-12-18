@@ -1,16 +1,18 @@
 <template>
 
 	<!-- Channel users list -->
-	<div v-if="channelName">
-		<v-card-title>
-			Users in {{ channelName }}
-		</v-card-title>
+	<div class="ma-2" v-if="channelName">
+		<h3>{{ channelName }} settings</h3>
+		<subheading>Users:</subheading>
 		<v-list v-if="channelUsers.length">
 			<v-list-item
 				v-for="channelUser in channelUsers"
+				color="black"
+				density="compact"
 				:key="channelUser.id"
+				:title="channelUser.display_name"
+				:ripple="false"
 			>
-			{{ channelUser.display_name }}
 			<UserModeration
 				v-if="myChannelUserProfile.is_admin"
 				:selectedChannelName="channelName"
@@ -19,20 +21,36 @@
 			</UserModeration>
 			</v-list-item>
 		</v-list>
+		
 		<v-card-text v-else-if="channelName">~ no one in this channel except you ~</v-card-text>
-		<v-card-actions>
-			<v-btn v-if="myChannelUserProfile.is_owner" @click="deleteChannel">Delete channel</v-btn>
-			<v-btn v-if="!myChannelUserProfile.is_owner" @click="leaveChannel">Leave Channel</v-btn>
-		<ChangePwd :selectedChannelName="channelName"></ChangePwd>
-		</v-card-actions>"
+		
+		<v-card-actions class="d-flex flex-column align-start justify-center">
+			<v-btn flat
+			rounded="0"
+			style="border: black solid thin;"
+			:ripple="false" 
+			v-if="myChannelUserProfile.is_owner"
+			@click="deleteChannel">Delete channel</v-btn>
+			
+			<v-btn 
+			flat
+			rounded="0"
+			style="border: black solid thin;"
+			:ripple="false"
+			v-if="!myChannelUserProfile.is_owner"
+			@click="leaveChannel">Leave Channel</v-btn>
+
+			<ChangePwd :selectedChannelName="channelName"></ChangePwd>
+		</v-card-actions>
 	</div>
 
-	<div v-else>
+	<!-- pas besoin si le drawer s'ouvre via l'interface de chat avec le bouton information -->
+	<!-- <div v-else>
 		<v-card-title>Users</v-card-title>
 		<v-card-text class="empty-card">
 			~ no channel selected ~
 		</v-card-text>
-	</div>
+	</div> -->
 
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
@@ -76,7 +94,7 @@ export default {
 	},
 	data() {
 		return {
-			channelUsers: [],
+			channelUsers: [] as any[],
 			myChannelUserProfile: {
 				"login": "nfauconn",
 				"display_name": "Noemi",
@@ -229,3 +247,12 @@ export default {
 };
 
 </script>
+
+<style scoped>
+.v-btn {
+	border: black solid thin;
+	width: 75%;
+	margin-top: 1dvh;
+	margin-bottom: 1dvh;
+}
+</style>

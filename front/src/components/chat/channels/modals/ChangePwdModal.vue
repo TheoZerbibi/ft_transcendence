@@ -1,45 +1,34 @@
 <template>
-	<v-dialog width="500">
-	<template v-slot:activator="{ props }">
-		<v-btn v-bind="props" text="Change password"> </v-btn>
-	</template>
+	<v-dialog>
+		<template v-slot:activator="{ props }">
+			<v-btn flat
+			rounded="0"
+			style="border: black solid thin;"
+			:ripple="false" 
+			v-bind="props" text="Change password"> </v-btn>
+		</template>
 
-	<template v-slot:default="{ isActive }">
-		<v-card title="Change password">
-		<v-card-text>
-				<!-- Password modification -->
-				<v-text-field
-					v-model="pwd.prev"
-					label="Prev Password"
-					type="password"
-					max-length="20"
-				></v-text-field>
-				<v-text-field
-					v-model="pwd.new"
-					label="New Password"
-					type="password"
-					max-length="20"
-				></v-text-field>
-				<v-text-field
-					v-model="pwd.confirm"
-					label="Confirm Password"
-					type="password"
-					max-length="20"
+		<template v-slot:default="{ isActive }">
+			<v-card title="Change password" class="rounded-0">
+				<v-card-text>
+					<!-- Password modification -->
+					<v-text-field v-model="pwd.prev" label="Current Password" type="password" variant="solo" rounded="0"
+						flat density="compact" clearable></v-text-field>
+					<v-text-field v-model="pwd.new" label="New Password" type="password" variant="solo" rounded="0"
+						flat density="compact" clearable></v-text-field>
+					<v-text-field v-model="pwd.confirm" label="Confirm Password" type="password" variant="solo" rounded="0"
 					@keyup.enter="changePassword"
-				></v-text-field>
-				<v-btn @click="changePassword">Change Password</v-btn>
-			</v-card-text>
+						flat density="compact" clearable></v-text-field>
+				</v-card-text>
 
-		<v-card-actions>
-			<v-spacer></v-spacer>
+				<v-spacer></v-spacer>
+				<v-card-actions class="d-flex flex-column align-center justify-center">
+					<v-btn flat rounded="0" :ripple="false" @click="changePassword" text='Change Password'></v-btn>
+					<v-btn flat rounded="0" :ripple="false" text="Cancel" @click="isActive.value = false"></v-btn>
+				</v-card-actions>
 
-			<v-btn
-			text="Cancel"
-			@click="isActive.value = false"
-			></v-btn>
-		</v-card-actions>
-		</v-card>
-	</template>
+			</v-card>
+		</template>
 	</v-dialog>
 </template>
 
@@ -80,12 +69,12 @@ export default {
 		};
 	},
 	computed: {
-		channelName: function() {
+		channelName: function () {
 			return this.selectedChannelName;
 		}
 	},
 	methods: {
-		changePassword: async function() {
+		changePassword: async function () {
 			try {
 				if (!this.channelName || this.channelName === '') {
 					console.log('[changePassword]: channelName is empty');
@@ -129,3 +118,18 @@ export default {
 	},
 }
 </script>
+
+<style scoped>
+.v-text-field {
+	border: black solid thin;
+	margin-top: 1dvh;
+	margin-bottom: 1dvh;
+}
+
+.v-btn {
+	border: black solid thin;
+	width: 75%;
+	margin-top: 1dvh;
+	margin-bottom: 1dvh;
+}
+</style>

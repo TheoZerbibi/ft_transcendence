@@ -2,7 +2,7 @@
 	<v-layout class="bg-white">
 
 		<v-app-bar class="elevation-0 bg-white" density="compact" style="border: black solid thin">
-			<v-toolbar-title class="text-end md-2 pa-2 h2">OMORI Community</v-toolbar-title>
+			<v-toolbar-title class="text-end md-2 pa-2 h2">Whitespace Community</v-toolbar-title>
 		</v-app-bar>
 
 		<v-navigation-drawer rail class="elevation-0 bg-white" style="border: black solid thin">
@@ -78,7 +78,7 @@
 				<!-- Channels tab -->
 				<div v-show="tab===2">
 					<ChannelMessages
-						:selectedChannelName="selectedChannelName"
+						@open-profile="openDrawer" :selectedChannelName="selectedChannelName"
 						:refresh="refreshKeyChannels"
 						/>
 				</div>
@@ -156,8 +156,16 @@ export default defineComponent({
 		Box,
 		Button,
 	},
-
+	// props: {
+	// 	open: Boolean,
+	// },
+	watch: {
+		open: function (newVal: boolean) {
+			this.open = newVal;
+		},
+	},
 	setup() {
+		let open = false as Boolean;
 		const userStore = useUser();
 		const route = useRoute();
 		const tab = ref(route.query.tab ? parseInt(route.query.tab as string) : 1);
@@ -203,6 +211,7 @@ export default defineComponent({
 			user,
 			tab,
 			links,
+			open,
 		};
 	},
 	data() {
@@ -256,15 +265,20 @@ export default defineComponent({
 		refreshChannelsPage() {
 			this.refreshKeyChannels++;
 		},
+		openDrawer() {
+			if (this.open === true)
+				this.open = false;
+			else if (this.open === false)
+				this.open = true;
+		},
 	},
 });
 </script>
 
 <style>
-.v-card {
-	border: black solid thin;
-	border-radius: 0;
-	max-height: 89dvh;
-	height: 90dvh;
+.v-dialog {
+	width: 30%;
+	height: 50%;
 }
+
 </style>
