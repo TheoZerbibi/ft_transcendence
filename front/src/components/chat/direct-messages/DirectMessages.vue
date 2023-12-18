@@ -20,10 +20,17 @@
 		</v-card-text>
 
 		<!-- Message Input -->
-		<v-card-actions>
-			<v-text-field v-model="input" placeholder="Type your message..." max-length="200" @keyup.enter="sendMessage" />
-			<v-btn class="justify-end" @click="sendMessage">Send
-			</v-btn>
+		<v-card-actions class="d-flex-inline align-center justify-center">
+			<v-text-field 
+				v-model="input"
+				placeholder="Type your message..."
+				max-length="200"
+				variant="solo"
+				class="elevation-0"
+				append-inner-icon="fas fa-paper-plane"
+				@keyup.enter="sendMessage"
+				@click:append-inner="sendMessage"
+				density="compact"/>
 		</v-card-actions>
 	</div>
 
@@ -208,3 +215,19 @@ selectedUserLogin: String,
 };
 
 </script>
+
+<style scoped>
+
+.scrollable-content {
+	height: 70vh;
+	overflow-y: auto;
+}
+
+.v-card {
+	border: black solid thin;
+	border-radius: 0;
+	max-height: 89dvh;
+	height: 90dvh;
+}
+
+</style>

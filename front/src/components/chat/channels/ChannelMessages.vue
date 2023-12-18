@@ -18,18 +18,17 @@
 		</v-card-text>
 
 		<!-- Input -->
-		<v-card-actions>
-			<v-text-field
+		<v-card-actions class="d-flex-inline align-center justify-center">
+			<v-text-field 
 				v-model="input"
 				placeholder="Type your message..."
 				max-length="200"
+				variant="solo"
+				class="elevation-0"
+				append-inner-icon="fas fa-paper-plane"
 				@keyup.enter="sendMessage"
-			/>
-			<v-btn
-				class="justify-end"
-				@click="sendMessage"
-				>Send
-			</v-btn>
+				@click:append-inner="sendMessage"
+				density="compact"/>
 		</v-card-actions>
 	</div>
 
