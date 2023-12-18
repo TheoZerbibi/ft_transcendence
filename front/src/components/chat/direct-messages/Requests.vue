@@ -66,7 +66,15 @@ export default {
 			selectedUserLogin: '' as string,
 		};
 	},
-	emits: ['user-selected'],
+	props: {
+		refresh: Number,
+	},
+	watch: {
+		refresh: function() {
+			this.fetchRequests();
+		}
+	},
+	emits: ['user-selected', 'ask-refresh'],
 
 	beforeMount() { this.fetchRequests(); },
 
@@ -122,8 +130,7 @@ export default {
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
-				const data = await response.json();
-				snackbarStore.showSnackbar(data.message, 3000, 'green');
+				this.$emit('ask-refresh');
 
 			} catch (error) {
 				console.log(error);
@@ -150,8 +157,7 @@ export default {
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
-				const data = await response.json();
-				snackbarStore.showSnackbar(data.message, 3000, 'green');
+				this.$emit('ask-refresh');
 
 			} catch (error) {
 				console.log(error);

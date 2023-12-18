@@ -19,9 +19,21 @@
 		<v-navigation-drawer nav>
 			<!-- Friend, requests, users lists -->
 			<div v-show="tab === 1">
-				<Friends @user-selected="updateSelectedUser" />
-				<Requests @user-selected="updateSelectedUser" />
-				<Users @user-selected="updateSelectedUser" />
+				<Friends
+					@user-selected="updateSelectedUser"
+					@ask-refresh="refreshDMsPage"
+					:refresh="refreshKeyDMs"
+					/>
+				<Requests
+					@user-selected="updateSelectedUser"
+					@ask-refresh="refreshDMsPage"
+					:refresh="refreshKeyDMs"
+					/>
+				<Users
+					@user-selected="updateSelectedUser"
+					@ask-refresh="refreshDMsPage"
+					:refresh="refreshKeyDMs"
+					/>
 			</div>
 			<!-- Joined channels, discover channels -->
 			<div v-show="tab === 2">
@@ -179,6 +191,9 @@ export default defineComponent({
 	},
 	data() {
 		return {
+			refreshKeyDMs: 0,
+			refreshKeyChannels: 0,
+			refreshKeyProfile: 0,
 			selectedUserLogin: '' as string,
 			selectedChannelName: '' as string,
 			links: [
@@ -218,6 +233,9 @@ export default defineComponent({
 			await this.userStore.deleteUser();
 			this.disconnect();
 			return this.$router.push({ name: `Login` });
+		},
+		refreshDMsPage() {
+			this.refreshKeyDMs++;
 		},
 	},
 });

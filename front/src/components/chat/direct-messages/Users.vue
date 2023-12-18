@@ -42,10 +42,18 @@ export default {
 		};
 	},
 
-	emits: ['user-selected'],
+	props: {
+		refresh: Number,
+	},
+	watch: {
+		refresh: function() {
+			this.fetchUsers();
+		}
+	},
+	emits: ['user-selected', 'ask-refresh'],
+
 
 	beforeMount() { this.fetchUsers(); },
-
 	methods: {
  		fetchUsers: async function() {
 			try {
@@ -95,8 +103,9 @@ export default {
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
-				const data = await response.json();
-				snackbarStore.showSnackbar(data.message, 3000, 'green');
+
+				this.$emit('ask-refresh');
+				this.fetchUsers();
 
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');

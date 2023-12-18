@@ -4,6 +4,7 @@
 	<v-list v-if="friends.length">
 		<v-list-item v-for="friend in friends" :key="friend.id" @click="userSelected(friend.login)">
 			{{ friend.display_name }}
+			<v-btn @click="deleteFriend(friend.login)">X</v-btn>
 		</v-list-item>
 	</v-list>
 	<v-card-text v-else>~ you didn't make friends for now ~</v-card-text>
@@ -44,7 +45,16 @@ export default {
 		};
 	},
 
-	emits: ['user-selected'],
+	props: {
+		refresh: Number,
+	},
+	watch: {
+		refresh: function() {
+			this.fetchFriends();
+		}
+	},
+
+	emits: ['user-selected', 'ask-refresh'],
 
 	beforeMount() { this.fetchFriends(); },
 
@@ -75,6 +85,36 @@ export default {
 
  				this.selectedUserLogin = this.friends[0] ? this.friends[0].login : '';
 				this.$emit('user-selected', this.selectedUserLogin);
+
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
+			}
+		},
+		deleteFriend: async function(userlogin: string) {
+			try {
+				const response: any = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends`,
+					{
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+						body: JSON.stringify({
+							login: userlogin,
+						}),
+					}
+				);
+
+				if (!response.ok) {
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					return;
+				}
+
+				this.$emit('ask-refresh');
+				this.fetchFriends();
 
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
