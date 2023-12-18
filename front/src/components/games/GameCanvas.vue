@@ -232,7 +232,7 @@ export default {
 					ball: P5.Image;
 
 				p5.preload = () => {
-					retroFont = p5.loadFont('/fonts/ARCADECLASSIC.TTF');
+					retroFont = p5.loadFont('/fonts/ARCADE_CLASSIC.TTF');
 					ball = p5.loadImage('/game/UI/balls/ball.png');
 					ballLeft = p5.loadImage('/game/UI/balls/ball-left.png');
 					ballRight = p5.loadImage('/game/UI/balls/ball-right.png');
@@ -556,20 +556,6 @@ export default {
 </script>
 
 <style scoped>
-@font-face {
-	font-family: 'Arcade_Classic';
-	src: url('/fonts/ARCADECLASSIC.TTF');
-}
-
-@font-face {
-	font-family: 'OMORI_MAIN';
-	src: url('/fonts/OMORI_GAME.ttf') format('truetype-variations');
-}
-
-@font-face {
-	font-family: 'OMORI_DISTURBED';
-	src: url('/fonts/OMORI_GAME2.ttf') format('truetype-variations');
-}
 
 body,
 html {
@@ -644,7 +630,7 @@ html {
 }
 
 .versus {
-	font-family: 'OMORI_DISTURBED', sans-serif;
+	font-family: 'ARCADE_CLASSIC', sans-serif;
 	font-size: 4.5vw;
 	text-align: center;
 	color: white;

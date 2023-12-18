@@ -59,7 +59,7 @@ export default {
 
 .countdown-icon {
 	font-size: 5rem;
-	font-family: "OMORI_ARCADE";
+	font-family: "ARCADE_CLASSIC";
 	color: #ffffff;
 	z-index: 9999;
 	width: auto;

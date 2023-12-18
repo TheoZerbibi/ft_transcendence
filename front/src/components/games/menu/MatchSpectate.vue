@@ -4,15 +4,11 @@
 		<h2 class="omoriFont">No match ongoing</h2>
 	</div>
 	<v-list v-if="matchOngoing.length > 0" class="scrollable-list">
-		<v-list-item-group>
-			<v-list-item v-for="(item, index) in matchOngoing" :key="index">
-				<v-list-item-content>
-					<v-list-item-title @click="redirectToGame(item.uid)" class="hoverable">{{ item.uid }}</v-list-item-title>
-					<v-list-item-subtitle>{{ item.score }}</v-list-item-subtitle>
-					<v-list-item-subtitle>Start at: <DateViewer :timestamp="item.created_at" /></v-list-item-subtitle>
-				</v-list-item-content>
-			</v-list-item>
-		</v-list-item-group>
+		<v-list-item v-for="(item, index) in matchOngoing" :key="index">
+			<v-list-item-title @click="redirectToGame(item.uid)" class="hoverable">{{ item.uid }}</v-list-item-title>
+			<v-list-item-subtitle>{{ item.score }}</v-list-item-subtitle>
+			<v-list-item-subtitle>Start at: <DateViewer :timestamp="item.created_at" /></v-list-item-subtitle>
+		</v-list-item>
 	</v-list>
 </template>
 <script lang="ts">
@@ -84,4 +80,3 @@ export default {
 	overflow: scroll;
 }
 </style>
-

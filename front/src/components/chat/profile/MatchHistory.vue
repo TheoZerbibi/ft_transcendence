@@ -3,12 +3,10 @@
 	<v-card-title>Match history</v-card-title>
 	<v-list class="crollable-list" v-if="matchHistory.length" max-height="10vw">
 		<v-list-item v-for="match in matchHistory" :key="match.uid">
-			<v-list-item-content>
-				<v-list-item-title @click="redirectToGame(match.uid)" class="hoverable">
-					{{ match.uid }}
-				</v-list-item-title>
-				<v-list-item-subtitle>Start at: <DateViewer :timestamp="match.started_at" /></v-list-item-subtitle>
-			</v-list-item-content>
+			<v-list-item-title @click="redirectToGame(match.uid)" class="hoverable">
+				{{ match.uid }}
+			</v-list-item-title>
+			<v-list-item-subtitle>Start at: <DateViewer :timestamp="match.started_at" /></v-list-item-subtitle>
 		</v-list-item>
 	</v-list>
 	<v-card-text v-else>~ no match found ~</v-card-text>

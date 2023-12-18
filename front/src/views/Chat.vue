@@ -121,7 +121,7 @@
 						<v-menu :location="location">
 							<template v-slot:activator="{ props }">
 								<Button :backgroundColor="'#e0e0e0'" :color="'black'" :width="15" :height="5"
-									:margin="'0px'" :border="'0.4rem ridge #e9e9e9'" :font="'OMORI_ARCADE'" :fontSize="35"
+									:margin="'0px'" :border="'0.4rem ridge #e9e9e9'" :font="'ARCADE_CLASSIC'" :fontSize="35"
 									v-bind="props">
 									Start
 								</Button>
@@ -139,7 +139,7 @@
 					<v-col>
 						<div class="d-flex text-end">
 							<Button disabled :backgroundColor="'#e9e9e9'" :color="'black'" :width="12" :height="5" :margin="'0px'"
-								:border="'0.3rem ridge #e9e9e9'" :font="'OMORI_ARCADE'" :fontSize="30">
+								:border="'0.3rem ridge #e9e9e9'" :font="'ARCADE_CLASSIC'" :fontSize="30">
 								{{ currentTime }}
 							</Button>
 						</div>
