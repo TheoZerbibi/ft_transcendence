@@ -126,8 +126,9 @@ export class UserService {
 			if (!targetUser) throw new BadRequestException('User not found');
 
 			const friend = await this.util_getFriend(user, targetUser);
-			if (friend.status === RequestStatus.ACCEPTED) return true;
-			return false;
+			if (!friend) return false;
+			if (friend.status !== RequestStatus.ACCEPTED) return false;
+			return true;
 		} catch (e) {
 			throw e;
 		}
