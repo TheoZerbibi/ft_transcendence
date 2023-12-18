@@ -1,38 +1,47 @@
 <template>
-	<v-container>
-			<v-row>
-				<v-col cols="11">
-					<!-- Chat Messages -->
-					<v-card class="scrollable-content" style="overflow-y: auto;">
-						<v-list>
-							<v-list-item v-for="message in messages" :key="message.id">
-								<v-list-item-subtitle>
-									{{ message.username }}
-									{{ message.created_at }}
-								</v-list-item-subtitle>
-								{{ message.content }}
-							</v-list-item>
-						</v-list>
-					</v-card>
-				</v-col>
-			</v-row>
+	
+	<div v-if="selectedUserLogin && is_friend">
 
-			<v-row>
-				<v-col cols="11">
-					<!-- Message Input -->
-					<v-card class="pa-4">
-						<v-row>
-							<v-col cols="9">
-								<input v-model="input" @keyup.enter="sendMessage" placeholder="Type you message..." />
-							</v-col>
-							<v-col cols="1">
-								<button @click="sendMessage">-></button>
-							</v-col>
-						</v-row>
-					</v-card>
-				</v-col>
-			</v-row>
-	</v-container>
+		<v-card-title>Messages with @{{ selectedUserLogin }} </v-card-title>
+
+		<v-card-text>
+
+			<!-- Chat Messages -->
+			<v-list>
+				<v-list-item v-for="message in messages" :key="message.id">
+					<v-list-item-subtitle>
+						{{ message.username }}
+						<DateConv :timestamp="message.created_at" />
+					</v-list-item-subtitle>
+					{{ message.content }}
+				</v-list-item>
+			</v-list>
+
+		</v-card-text>
+
+		<!-- Message Input -->
+		<v-card-actions>
+			<v-text-field v-model="input" placeholder="Type your message..." max-length="200" @keyup.enter="sendMessage" />
+			<v-btn class="justify-end" @click="sendMessage">Send
+			</v-btn>
+		</v-card-actions>
+	</div>
+
+	<div v-else-if="selectedUserLogin">
+		<v-card-text class="empty-card">
+			~ you are not friend with this user so u cant chat ~>
+		</v-card-text>
+	</div>
+
+	<div v-else>
+		<v-card-title>Messages</v-card-title>
+		<v-card-text class="empty-card">
+			~ no friend selected ~
+		</v-card-text>
+	</div>
+
+
+	<!-- Error handling -->
 	<Snackbar></Snackbar>
 </template>
 
@@ -42,7 +51,10 @@ import { useUser } from '../../../stores/user';
 import { useSnackbarStore } from '../../../stores/snackbar';
 
 import Snackbar from '../../layout/Snackbar.vue';
-import Date from '../../utils/Date.vue';
+import DateConv from '../../utils/DateConv.vue';
+
+import { inject } from 'vue';
+import { useSocketStore } from '../../../stores/websocket';
 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
@@ -50,72 +62,118 @@ const snackbarStore = useSnackbarStore();
 export default {
 	components: {
 		Snackbar,
-		Date,
+		DateConv,
 	},
-	props: {
-		selectedFriendLogin: String
-	},
-	setup(props) {
+	setup() {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
-		let messages = ref([]);
-		const fetchMessages = async function() {
+
+		//	const webSocketStore = useSocketStore();
+		//
+		//	const socket = computed(() => webSocketStore.getSocket);
+		//	const isConnected = computed(() => webSocketStore.isConnected);
+
+
+		return {
+			JWT,
+				user,
+				//			socket,
+				//			isConnected,
+		};
+	},
+props: {
+selectedUserLogin: String,
+       },
+       mounted () {
+	       //		console.log(`[DirMsg-Socket] state: ${isConnected.value}`);
+	       //	       this.socket.on('new-direct-message', (data) => {
+	       //			       const msg: any = JSON.parse(data);
+	       //			       if (msg !== undefined)
+	       //			       console.log (`new-direct-msg - msg: ${msg.content}`);
+	       //			       else
+	       //				console.log('Error direct msg failed');
+	       //	
+	       //			       });
+       },
+	data() {
+		return {
+			userLogin: this.selectedUserLogin ?
+				this.selectedUserLogin as string
+				: '' as string,
+			messages: [] as any,
+			input: '' as string,
+			is_friend: false as boolean,
+		};
+	},
+	watch: {
+		selectedUserLogin: function (newVal: string) {
+			this.userLogin = newVal;
+			this.fetchDirectMessages();
+		},
+	},
+	methods: {
+		fetchDirectMessages: async function () {
 			try {
-				if (!props.selectedFriendLogin || props.selectedFriendLogin === '') {
-					/* TODO : display stg ? */
+				if (!this.userLogin || this.userLogin === '') {
+					console.log('[fetchDirectMessages]: userLogin is empty');
 					return;
 				}
-				const response = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/${props.selectedFriendLogin}/all`,
+
+				// Check if selected user is a friend
+				const isFriend: any = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/isfriend/${this.userLogin}`,
 					{
 						method: 'GET',
 						headers: {
-							Authorization: `Bearer ${JWT.value}`,
+							Authorization: `Bearer ${this.JWT}`,
 							'Access-Control-Allow-Origin': '*',
 						},
 					}
-				).catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
+				);
+				if (!isFriend.ok) {
+					const error = await isFriend.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
-				});
-				messages.value = await response.json();
-			} catch (error) {
-				console.error(error);
+				}
+				const isFriendData: any = await isFriend.json();
+				if (!isFriendData.isFriend) {
+					this.is_friend = false;
+					return;
+				}
+				this.is_friend = true;
+
+				// Fetch messages
+				const response: any = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/${this.userLogin}/all`,
+					{
+						method: 'GET',
+						headers: {
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+					}
+				);
+				if (!response.ok) {
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					return;
+				}
+				const data = await response.json();
+
+				this.messages = data;
+
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
-		};
-		watch(
-			() => props.selectedFriendLogin,
-			() => {
-				fetchMessages();
-			}
-		);
-		return {
-			JWT,
-			user,
-			fetchMessages,
-			messages,
-		};
-	},
-	data: () => ({
-		input: String,
-	}),
-	beforeMount() {
-	},
-	mounted() {
-		this.fetchMessages();
-		this.input = '';
-	},
-	methods: {
-		sendMessage: async function() {
+		},
+
+		sendMessage: async function () {
 			try {
-				if (!this.selectedFriendLogin || this.selectedFriendLogin === '') {
-					/* TODO : display stg ? */
+				if (!this.userLogin || this.userLogin === ''
+					|| this.input.trim() === '') {
 					return;
 				}
-				if (this.input.trim() === '') {
-					return;
-				}
-				await fetch(
+				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/send`,
 					{
 						method: 'POST',
@@ -125,32 +183,28 @@ export default {
 							'Access-Control-Allow-Origin': '*',
 						},
 						body: JSON.stringify({
-							target_login: this.selectedFriendLogin,
+							target_login: this.userLogin,
 							content: this.input,
 						}),
 					}
-				).catch((error: any) => {
-					snackbarStore.showSnackbar(error, 3000, 'red');
+				);
+
+				if (!response.ok) {
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
-				});
+				}
+
+				const data = await response.json();
+
+				this.fetchDirectMessages();
 				this.input = '';
-				this.fetchMessages();
-			} catch (error) {
-				console.error(error);
-				console.log(error.message);
+
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 	},
 };
 
 </script>
-
-<style scoped>
-
-.scrollable-content {
-	height: 70vh;
-	overflow-y: auto;
-}
-
-
-</style>
