@@ -1,7 +1,7 @@
 <template>
-	<div v-if="selectedFriendLogin">
+	<div v-if="selectedUserLogin">
 
-		<v-card-title>Messages with @{{ selectedFriendLogin }} </v-card-title>
+		<v-card-title>Messages with @{{ selectedUserLogin }} </v-card-title>
 
 		<v-card-text>
 
@@ -64,32 +64,56 @@ export default {
 		};
 	},
 	props: {
-		selectedFriendLogin: String,
+		selectedUserLogin: String,
 	},
 	data() {
 		return {
-			friendLogin: this.selectedFriendLogin ?
-				this.selectedFriendLogin as string
+			userLogin: this.selectedUserLogin ?
+				this.selectedUserLogin as string
 				: '' as string,
 			messages: [] as any,
 			input: '' as string,
 		};
 	},
 	watch: {
-		selectedFriendLogin: function (newVal: string) {
-			this.friendLogin = newVal;
+		selectedUserLogin: function (newVal: string) {
+			this.userLogin = newVal;
 			this.fetchDirectMessages();
 		},
 	},
 	methods: {
 		fetchDirectMessages: async function () {
 			try {
-				if (!this.friendLogin || this.friendLogin === '') {
-					console.log('[fetchDirectMessages]: friendLogin is empty');
+				if (!this.userLogin || this.userLogin === '') {
+					console.log('[fetchDirectMessages]: userLogin is empty');
 					return;
 				}
+
+				// Check if selected user is a friend
+				const isFriend: any = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/isfriend/${this.userLogin}`,
+					{
+						method: 'GET',
+						headers: {
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+					}
+				);
+				if (!isFriend.ok) {
+					const error = await isFriend.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					return;
+				}
+				const isFriendData: any = await isFriend.json();
+				if (!isFriendData.isFriend) {
+					snackbarStore.showSnackbar('You are not friends with this user', 3000, 'red');
+					return;
+				}
+
+				// Fetch messages
 				const response: any = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/${this.friendLogin}/all`,
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/${this.userLogin}/all`,
 					{
 						method: 'GET',
 						headers: {
@@ -114,7 +138,7 @@ export default {
 
 		sendMessage: async function () {
 			try {
-				if (!this.friendLogin || this.friendLogin === ''
+				if (!this.userLogin || this.userLogin === ''
 					|| this.input.trim() === '') {
 					return;
 				}
@@ -128,7 +152,7 @@ export default {
 							'Access-Control-Allow-Origin': '*',
 						},
 						body: JSON.stringify({
-							target_login: this.friendLogin,
+							target_login: this.userLogin,
 							content: this.input,
 						}),
 					}
