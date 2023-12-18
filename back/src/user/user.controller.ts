@@ -89,16 +89,13 @@ export class UserController {
 	@Post('getDisplayName')
 	@ApiOperation({ summary: 'Check if displayName is available' })
 	async getDisplayName(@Body() body: Record<string, any>) {
+		const login = body.login;
+		const displayName = body.displayName;
 
-			const login = body.login;
-			const displayName = body.displayName;
-
-			if (!displayName || !login) {
-				throw new BadRequestException('Invalid request');
-			}
-
+		if (!displayName || !login) {
+			throw new BadRequestException('Invalid request');
+		}
 		return { message: await this.userService.getDisplayName(displayName, login) };
-
 	}
 
 	/************************************* Friends *************************************/

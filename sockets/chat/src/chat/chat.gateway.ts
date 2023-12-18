@@ -45,7 +45,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	{
 		this.logger.debug(`Received data: ${data}`);
 
-		msg = JSON.parse(data);
+		const msg = JSON.parse(data);
+		console.log(msg);
 		const user: User | undefined = this.chatService.getUserById(msg.friend_id);
 	
 		if (user !== undefined) {
