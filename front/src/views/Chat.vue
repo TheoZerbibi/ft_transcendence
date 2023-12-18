@@ -1,55 +1,60 @@
 <template>
-	<v-layout class="d-flex flex-column justify-space-between align-content-space-evenly bg-image">
+	<v-layout fluid class="d-flex flex-column justify-center align-center bg-white" >
 
-		<v-app-bar class="elevation-0 appBarBox bg-black d-flex flow-row justify-center align-center" density="compact">
-			<div style="border: white solid medium; height: 5dvh; width: 95dvw">
-				<v-toolbar-title class="omoriFont text-start h2">OMORI Community</v-toolbar-title>
-			</div>
-			<Button icon :height="5" :width="5" :border="'white solid medium'" @click="redirect('Home')">
-				<v-icon color="white" class="close-svg"></v-icon>
-			</Button>
+		<v-app-bar 
+			app
+			fluid
+			class="elevation-0 bg-white d-flex flow-row justify-center align-center flex-grow-0 flex-shrink-0"
+			density="compact"
+			style="border: black solid thin">
+			<v-toolbar-title class="text-end md-2 pa-2 h2">OMORI Community</v-toolbar-title>
 		</v-app-bar>
+		
+		<v-bottom-navigation 
+			fluid 
+			expand-on-hover 
+			rail 
+			app 
+			style="border: black solid thin"
+			class="d-flex flex-column flex-grow-1 flex-shrink-1 align-center justify-center">
+			<v-tabs nav v-model="tab">
+				<v-tab
+					v-for="(link, index) in links"
+					:ripple="false"
+					:prepend-icon="link.icon"
+					:value="link.value"
+					:key="link.value"
+					stacked
+					>
+				</v-tab>
+			</v-tabs>
+		</v-bottom-navigation>
 
-		<v-main class="d-flex flex-column justify-start align-center" style="width: 100dvw; height: 85dvh">
-			<v-container class="d-flex flex-column justify-center windowBox" style="height: 85dvh">
-				<v-row class="bg-black ga-3" style="max-height: 5dvh">
-					<v-tabs v-model="tab" flat hide-slider grow class="bg-grey-darken-1">
-						<v-tab
-							v-for="(link, index) in links"
-							:key="link.value"
-							:value="link.value"
-							:text="link.name"
-							class="no-hover h3 omoriFont justify-start align-center tabs"
-							:class="{ 'tab-active': tab === link.value }"
-							:ripple="false"
-							:style="{ 'border-left': index === 0 ? 'black solid thick' : 'none' }"
-						/>
-					</v-tabs>
-				</v-row>
-
-				<v-window v-model="tab">
+		<v-main fill-height class="d-flex flex-column justify-start align-center" style="width: 100dvw;">
+			<v-container fill-height class="d-flex flex-column justify-center bg-yellow" >
+				<v-window v-model="tab" fill-heigh class="d-flex flex-row align-start justify-center flex-shrink-1 bg-black">
 					<!-- Direct messages tab -->
 					<v-window-item :value="1">
 						<!-- Friend, requests, users lists -->
 						<v-row>
 							<v-col cols="12" md="3">
-								<Box>
+								<v-card>
 									<Friends @messages-with="updateMessagesList" />
 									<Requests />
 									<Users />
-								</Box>
+								</v-card>
 							</v-col>
 							<!-- DMs -->
 							<v-col cols="12" md="6">
-								<Box>
+								<v-card>
 									<DirectMessages :selectedFriendLogin="selectedFriendLogin" />
-								</Box>
+								</v-card>
 							</v-col>
 							<!-- Friend profile -->
 							<v-col cols="12" md="3">
-								<Box>
+								<v-card>
 									<UserProfile :selectedFriendLogin="selectedFriendLogin" />
-								</Box>
+								</v-card>
 							</v-col>
 						</v-row>
 					</v-window-item>
@@ -59,23 +64,23 @@
 						<v-row>
 							<!-- Joined channels, discover channels -->
 							<v-col cols="12" md="3">
-								<Box>
+								<v-card>
 									<JoinedChannels @channel-selected="updateSelectedChannel" />
 									<DiscoverChannels />
-								</Box>
+								</v-card>
 							</v-col>
 
 							<!-- Colonne du milieu pour Messages (3/4 de l'écran) -->
 							<v-col cols="12" md="6">
-								<Box>
+								<v-card>
 									<ChannelMessages :selectedChannelName="selectedChannelName"></ChannelMessages>
-								</Box>
+								</v-card>
 							</v-col>
 
 							<v-col cols="12" md="3">
-								<Box>
+								<v-card>
 									<ChannelSettings :selectedChannelName="selectedChannelName"></ChannelSettings>
-								</Box>
+								</v-card>
 							</v-col>
 						</v-row>
 					</v-window-item>
@@ -83,71 +88,23 @@
 					<!-- Profile tab -->
 					<v-window-item :value="3">
 						<v-row>
-							<v-col cols="12" md="12">
-							<Box>
-								<Profile />
-							</Box>
-							</v-col>
-						</v-row>
-						<!-- </div> -->
-						<v-row>
 							<v-col cols="12" md="3">
-								<Box>
+								<v-card>
 									<ProfileSettings />
-								</Box>
+								</v-card>
 							</v-col>
 							<v-col cols="12" md="9">
-								<Box>
-									<v-row>
-										<v-col cols="12" md="6">
-											<MatchHistory />
-										</v-col>
-										<v-col cols="12" md="6">
-											<BlockedUsers />
-										</v-col>
-									</v-row>
-								</Box>
+								<v-card>
+									<Profile />
+									<MatchHistory />
+									<BlockedUsers />
+								</v-card>
 							</v-col>
 						</v-row>
 					</v-window-item>
 				</v-window>
 			</v-container>
 		</v-main>
-
-		<v-footer app color="grey-lighten-1" style="border-top: #e9e9e9 ridge 0.35rem">
-			<v-container >
-				<v-row class="d-flex flex-row justify-space-between">
-					<v-col cols="9">
-						<v-menu>
-							<template v-slot:activator="{ props }">
-								<Button :backgroundColor="'#e0e0e0'" :color="'black'" :width="15" :height="5"
-									:margin="'0px'" :border="'0.4rem ridge #e9e9e9'" :font="'ARCADE_CLASSIC'" :fontSize="35"
-									v-bind="props">
-									Start
-								</Button>
-							</template>
-
-							<v-list>
-								<v-list-item v-for="(route, index) in routes" :key="route.value" :value="route.value"
-									:text="route.name">
-									<v-list-item-title @click="redirect(route.path)">{{ route.name }}</v-list-item-title>
-								</v-list-item>
-							</v-list>
-						</v-menu>
-					</v-col>
-					<v-spacer></v-spacer>
-					<v-col>
-						<div class="d-flex text-end">
-							<Button disabled :backgroundColor="'#e9e9e9'" :color="'black'" :width="12" :height="5" :margin="'0px'"
-								:border="'0.3rem ridge #e9e9e9'" :font="'ARCADE_CLASSIC'" :fontSize="30">
-								{{ currentTime }}
-							</Button>
-						</div>
-					</v-col>
-				</v-row>
-			</v-container>
-
-		</v-footer>
 	</v-layout>
 </template>
 
@@ -220,14 +177,18 @@ export default defineComponent({
 			{
 				name: 'Direct Messages',
 				value: 1,
+				icon: 'fas fa-user-friends',
 			},
 			{
 				name: 'Channels',
 				value: 2,
+				icon: 'fas fa-comments',
 			},
 			{
 				name: 'Profile',
 				value: 3,
+				icon: 'fas fa-user',
+
 			},
 		];
 		const routes = [
@@ -252,6 +213,8 @@ export default defineComponent({
 			JWT,
 			user,
 			tab,
+			links,
+			routes,
 		};
 	},
 	data() {
