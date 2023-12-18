@@ -82,6 +82,7 @@ export default {
 	},
 	props: {
 		selectedUserLogin: String,
+		refresh: Number,
 	},
 	mounted() {
 		//		console.log(`[DirMsg-Socket] state: ${isConnected.value}`);
@@ -107,6 +108,9 @@ export default {
 	watch: {
 		selectedUserLogin: function (newVal: string) {
 			this.userLogin = newVal;
+			this.fetchDirectMessages();
+		},
+		refresh: function () {
 			this.fetchDirectMessages();
 		},
 	},

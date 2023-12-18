@@ -43,7 +43,16 @@ export default {
 		};
 	},
 
-	emits: ['channel-selected'],
+	props: {
+		refresh: Number,
+	},
+	watch: {
+		refresh: function() {
+			this.fetchJoinedChannels();
+		}
+	},
+
+	emits: ['channel-selected', 'ask-refresh'],
 
 	beforeMount() {
 		this.fetchJoinedChannels();

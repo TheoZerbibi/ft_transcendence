@@ -62,8 +62,10 @@ export default {
 		};
 	},
 	props: {
-		selectedChannelName: String
+		selectedChannelName: String,
+		refresh: Number,
 	},
+	emits: ['ask-refresh'],
 	data() {
 		return {
 			channelName: this.selectedChannelName,
@@ -74,6 +76,9 @@ export default {
 	watch: {
 		selectedChannelName: function (newVal: string) {
 			this.channelName = newVal;
+			this.fetchMessages();
+		},
+		refresh: function() {
 			this.fetchMessages();
 		}
 	},
