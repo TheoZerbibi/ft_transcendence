@@ -40,7 +40,7 @@
 							<v-col cols="12" md="3">
 								<v-card>
 									<Friends @user-selected="updateSelectedUser" />
-									<Requests />
+									<Requests @user-selected="updateSelectedUser"/>
 									<Users @user-selected="updateSelectedUser"/>
 								</v-card>
 							</v-col>

@@ -4,7 +4,7 @@
 		<v-card-title>Friend Requests</v-card-title>
 
 		<v-list v-if="requests.length">
-			<v-list-item v-for="request in requests" :key="request.id">
+			<v-list-item v-for="request in requests" :key="request.id" @click="userSelected(user.login)">
 
 				<template v-if="request.user_login == user.login">
 					{{ request.target_display_name }}
@@ -63,11 +63,13 @@ export default {
 	data() {
 		return {
 			requests: [] as any,
+			selectedUserLogin: '' as string,
 		};
 	},
-	beforeMount() {
-		this.fetchRequests();
-	},
+	emits: ['user-selected'],
+
+	beforeMount() { this.fetchRequests(); },
+
 	methods: {
 		fetchRequests: async function() {
 			try {
@@ -154,6 +156,10 @@ export default {
 			} catch (error) {
 				console.log(error);
 			}
+		},
+		userSelected(login: string) {
+			this.selectedUserLogin = login;
+			this.$emit('user-selected', this.selectedUserLogin);
 		},
 	},
 };
