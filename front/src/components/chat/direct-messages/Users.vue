@@ -3,7 +3,7 @@
 	<!-- Users list -->
 		<v-card-title >Discover Users</v-card-title>
 		<v-list v-if="users.length">
-			<v-list-item v-for="user in users" :key="user.id">
+			<v-list-item v-for="user in users" :key="user.id" @click="userSelected(user.login)">
 				{{ user.display_name }}
 				<v-btn @click="sendFriendRequest(user.login)">+</v-btn>
 			</v-list-item>
@@ -38,11 +38,14 @@ export default {
 	data() {
 		return {
 			users: [] as any[],
+			selectedUserLogin: '' as string,
 		};
 	},
-	beforeMount() {
-		this.fetchUsers();
-	},
+
+	emits: ['user-selected'],
+
+	beforeMount() { this.fetchUsers(); },
+
 	methods: {
  		fetchUsers: async function() {
 			try {
@@ -98,6 +101,11 @@ export default {
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
+		},
+		userSelected(login: string) {
+			this.selectedUserLogin = login;
+			console.log('[FRIENDS.vue] NEW SELECTED FRIEND LOGIN: ', this.selectedUserLogin);
+			this.$emit('user-selected', this.selectedUserLogin);
 		},
 	},
 };

@@ -39,21 +39,21 @@
 						<v-row>
 							<v-col cols="12" md="3">
 								<v-card>
-									<Friends @messages-with="updateMessagesList" />
+									<Friends @user-selected="updateSelectedUser" />
 									<Requests />
-									<Users />
+									<Users @user-selected="updateSelectedUser"/>
 								</v-card>
 							</v-col>
 							<!-- DMs -->
 							<v-col cols="12" md="6">
 								<v-card>
-									<DirectMessages :selectedFriendLogin="selectedFriendLogin" />
+									<DirectMessages :selectedUserLogin="selectedUserLogin" />
 								</v-card>
 							</v-col>
 							<!-- Friend profile -->
 							<v-col cols="12" md="3">
 								<v-card>
-									<UserProfile :selectedFriendLogin="selectedFriendLogin" />
+									<UserProfile :selectedUserLogin="selectedUserLogin" />
 								</v-card>
 							</v-col>
 						</v-row>
@@ -238,7 +238,7 @@ export default defineComponent({
 	},
 	data() {
 		return {
-			selectedFriendLogin: '' as string,
+			selectedUserLogin: '' as string,
 			selectedChannelName: '' as string,
 			links: [
 				{
@@ -275,14 +275,14 @@ export default defineComponent({
 		setInterval(this.updateTime, 1000);
 	},
 	methods: {
-		updateMessagesList(login: string) {
-			this.selectedFriendLogin = login;
-			console.log('[CHANNELS.vue] NEW SELECTED FRIEND LOGIN: ', this.selectedFriendLogin);
+		updateSelectedUser(login: string) {
+			this.selectedUserLogin = login;
+			console.log('[CHAT.vue] NEW SELECTED FRIEND LOGIN: ', this.selectedUserLogin);
 		},
 
 		updateSelectedChannel(name: string) {
 			this.selectedChannelName = name;
-			console.log('[CHANNELS.vue] NEW SELECTED CHANNEL NAME: ', this.selectedChannelName);
+			console.log('[CHAT.vue] NEW SELECTED CHANNEL NAME: ', this.selectedChannelName);
 		},
 		redirect(path: string) {
 			return this.$router.push({ name: path });

@@ -2,7 +2,7 @@
 	<!-- Friend list -->
 	<v-card-title>Friends</v-card-title>
 	<v-list v-if="friends.length">
-		<v-list-item v-for="friend in friends" :key="friend.id" @click="displayMessagesWithFriend(friend.login)">
+		<v-list-item v-for="friend in friends" :key="friend.id" @click="userSelected(friend.login)">
 			{{ friend.display_name }}
 		</v-list-item>
 	</v-list>
@@ -39,16 +39,14 @@ export default {
 	data() {
 		return {
 			friends: [] as any,
-			selectedFriendLogin: '' as string,
+			selectedUserLogin: '' as string,
 			showInfos: false as boolean,
 		};
 	},
 
-	emits: ['messages-with'],
+	emits: ['user-selected'],
 
-	beforeMount() {
-		this.fetchFriends();
-	},
+	beforeMount() { this.fetchFriends(); },
 
 	methods: {
 
@@ -75,17 +73,17 @@ export default {
 
 				this.friends = data;
 
- 				this.selectedFriendLogin = this.friends[0] ? this.friends[0].login : '';
-				this.$emit('messages-with', this.selectedFriendLogin);
+ 				this.selectedUserLogin = this.friends[0] ? this.friends[0].login : '';
+				this.$emit('user-selected', this.selectedUserLogin);
 
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 
-		displayMessagesWithFriend(login: string) {
-			this.selectedFriendLogin = login;
-			this.$emit('messages-with', this.selectedFriendLogin);
+		userSelected(login: string) {
+			this.selectedUserLogin = login;
+			this.$emit('user-selected', this.selectedUserLogin);
 		},
 	}
 }

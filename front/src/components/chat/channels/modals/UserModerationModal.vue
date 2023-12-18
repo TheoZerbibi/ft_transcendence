@@ -152,7 +152,6 @@ export default {
 		},
 		modUser: async function(login: string, chosenAction: string, duration?: Date) {
 			try {
-				console.log('[UserModeration] modUser: ', login, chosenAction);
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannelName}/settings/admin/mod_user`,
 					{
