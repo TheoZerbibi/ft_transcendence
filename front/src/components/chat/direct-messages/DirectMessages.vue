@@ -172,7 +172,6 @@ this.input = '';
 }
 },
 	},
-	};
 data() {
 	return {
 userLogin: this.selectedUserLogin ?
@@ -282,6 +281,5 @@ this.input = '';
 },
 	},
 	};
->>>>>>> 8e30be68bb82ad501695c5b5d2c6291826159e3e
 
 </script>
