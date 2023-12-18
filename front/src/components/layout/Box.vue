@@ -24,8 +24,8 @@ export default {
 
 <style>
 .box {
-	background-color: #e0e0e0;
-	border: black solid thick;
+	background-color: #ffffff;
+	border: black solid thin;
 }
 
 </style>
