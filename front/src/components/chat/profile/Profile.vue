@@ -1,15 +1,15 @@
 <template>
 	<v-card-title>Profile</v-card-title>
-	@{{ user.login }}
+	<v-card-subtitle>@{{ user.login }}</v-card-subtitle>
 	<v-img class="cadre-responsive" src="/ui/polaroid.png">
 		<v-img
 		class="avatar-responsive"
 		:src="user.avatar"
 		/>
-		<h2>{{ user.displayName }}</h2>
+		<v-card-subtitle>{{ user.displayName }}</v-card-subtitle>
 	</v-img>
 	<div v-if="Object.keys(gameStats).length ">
-		{{ gameStats }}
+<!--		{{ gameStats }} -->
 	</div>
 	<div v-else>
 		~ no game found ~	
