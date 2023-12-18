@@ -37,8 +37,15 @@
 			</div>
 			<!-- Joined channels, discover channels -->
 			<div v-show="tab === 2">
-				<JoinedChannels @channel-selected="updateSelectedChannel" />
-				<DiscoverChannels />
+				<JoinedChannels
+					@channel-selected="updateSelectedChannel"
+					@ask-refresh="refreshChannelsPage"
+					:refresh="refreshKeyChannels"
+					/>
+				<DiscoverChannels 
+					@ask-refresh="refreshChannelsPage"
+					:refresh="refreshKeyChannels"
+					/>
 			</div>
 			<!-- Profile Settings -->
 			<div v-show="tab === 3">
@@ -51,7 +58,11 @@
 				<UserProfile :selectedUserLogin="selectedUserLogin" />
 			</div>
 			<div v-show="tab === 2">
-				<ChannelSettings :selectedChannelName="selectedChannelName" />
+				<ChannelSettings
+					:selectedChannelName="selectedChannelName"
+					@ask-refresh="refreshChannelsPage"
+					:refresh="refreshKeyChannels"
+					/>
 			</div>
 		</v-navigation-drawer>
 
@@ -59,12 +70,17 @@
 			<v-window v-model="tab" class="bg-white">
 				<!-- Direct messages tab -->
 				<div v-show="tab===1">
-					<DirectMessages :selectedUserLogin="selectedUserLogin" />
+					<DirectMessages :selectedUserLogin="selectedUserLogin"
+					:refresh="refreshKeyDMs"
+					/>
 				</div>
 
 				<!-- Channels tab -->
 				<div v-show="tab===2">
-					<ChannelMessages :selectedChannelName="selectedChannelName"></ChannelMessages>
+					<ChannelMessages
+						:selectedChannelName="selectedChannelName"
+						:refresh="refreshKeyChannels"
+						/>
 				</div>
 
 				<!-- Profile tab -->
@@ -236,6 +252,9 @@ export default defineComponent({
 		},
 		refreshDMsPage() {
 			this.refreshKeyDMs++;
+		},
+		refreshChannelsPage() {
+			this.refreshKeyChannels++;
 		},
 	},
 });

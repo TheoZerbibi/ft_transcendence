@@ -57,7 +57,8 @@ export default {
 		ChangePwd,
 	},
 	props: {
-		selectedChannelName: String
+		selectedChannelName: String,
+		refresh: Number,
 	},
 	computed: {
 		channelName: function() {
@@ -88,7 +89,11 @@ export default {
 		};
 	},
 	watch: {
-		channelName: function(newVal: string) {
+		channelName: function() {
+			this.fetchUsers();
+			this.fetchMyChannelUserProfile();
+		},
+		refresh: function() {
 			this.fetchUsers();
 			this.fetchMyChannelUserProfile();
 		}
@@ -213,7 +218,7 @@ export default {
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
-				const data: any = await response.json();
+				const data = await response.json();
 				snackbarStore.showSnackbar(data.message, 3000, 'green');
 
 			} catch (error: any) {

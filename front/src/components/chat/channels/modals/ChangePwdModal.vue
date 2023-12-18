@@ -25,6 +25,7 @@
 					label="Confirm Password"
 					type="password"
 					max-length="20"
+					@keyup.enter="changePassword"
 				></v-text-field>
 				<v-btn @click="changePassword">Change Password</v-btn>
 			</v-card-text>

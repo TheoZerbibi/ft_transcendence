@@ -34,15 +34,6 @@
 					<v-btn @click="mute(selectedUser.login, 24)">Mute for 24 hours</v-btn>
 				</template>
 
-<!-- 			<v-select v-else
-					:items="muteOptions"
-					label="Mute"
-					@change="mute(selectedUser.login, 2)">
-				</v-select> -->
-				
-
-				<!-- @click="mute(selectedUser.login, new Date())">Mute</v-select> -->
-
 				<!-- Promote & Demote -->
 				<v-btn v-if="!selectedUser.is_admin"
 					@click="promote(selectedUser.login)">Promote</v-btn>
@@ -176,6 +167,7 @@ export default {
 				const data = await response.json();
 				snackbarStore.showSnackbar(data.message, 3000, 'green');
 				this.dialogOpen = false;
+				this.$emit('close-modal');
 				
 			} catch (error) {
 				console.log(error);

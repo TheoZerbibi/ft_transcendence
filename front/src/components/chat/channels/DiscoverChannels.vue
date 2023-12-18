@@ -60,6 +60,15 @@ export default {
 			user,
 		};
 	},
+	props: {
+		refresh: Number,
+	},
+	watch: {
+		refresh: function() {
+			this.fetchChannels();
+		}
+	},
+	emits: ['ask-refresh'],
 	data() {
 		return {
 			newChannelName: '' as string,
@@ -121,10 +130,8 @@ export default {
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
-				const data = await response.text();
-				snackbarStore.showSnackbar(data.message, 3000, 'green');
-
 				this.showChannelNameModal = false;
+				this.$emit('ask-refresh');
 				this.fetchChannels();
 
 			} catch (error: any) {
@@ -157,9 +164,8 @@ export default {
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
-				const data = await response.json();
-				snackbarStore.showSnackbar(data.message, 3000, 'green');
 
+				this.$emit('ask-refresh');
 				this.fetchChannels();
 
 			} catch (error: any) {
@@ -198,8 +204,7 @@ export default {
 					this.showPwdModal = false;
 					return;
 				}
-				const data = await response.json();
-				snackbarStore.showSnackbar(data.message, 3000, 'green');
+				this.$emit('ask-refresh');
 				this.selectedPrivChannel = '';
 				this.showPwdModal = false;
 
