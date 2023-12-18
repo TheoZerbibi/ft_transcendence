@@ -24,7 +24,7 @@ import { users, channel_users } from '@prisma/client';
 // Since Front never make direct call to socket function don't return data
 
 @WebSocketGateway({
-	        cors: {
+	cors: {
                 origin: '*',
                 credentials: true,
         },
@@ -161,6 +161,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 	public async handleConnection(client: Socket): Promise<void> {
 		try {
+			console.log(`New connection by ${client.id}`);
 			if (!client.handshake.headers.authorization) throw new Error('Invalid token');
 			const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
 			this.authService.verifyToken({ access_token: token });
@@ -171,7 +172,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			this.chatService.addUser(client, user);
 
 			const channelDtos: ChannelDto[] = this.chatService.getChannelDtos();
-			client.emit('welcome', JSON.stringify(channelDtos));
+			this.logger.debug(`>Emitting to user ${user.id}`);
+	//		client.emit('welcome', JSON.stringify(channelDtos));
+			client.emit('welcome', JSON.stringify(user));
 			this.emitToEveryoneExceptOne('new-connection', user.id, client);
 			this.logger.debug(`Client connected: ${client.id}`);
 			console.log(channelDtos);
@@ -182,13 +185,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		}
 	}
 
-	public handleDisconnect(client: Socket): void {
+	public async handleDisconnect(client: Socket): Promise<void> {
 		console.log('disconnect');
-		const user: User = this.chatService.removeUser(client);
+		this.chatService.removeUser(client);
 
-		const userDTOs: UserDto[] = this.chatService.getUsers().map((user) => new UserDto(user));
-		this.emitToChannels('User-Disconnected', user.getChannels(), userDTOs);
-		return this.logger.debug(`Client disconnected: ${client.id}`);
+//		const userDTOs: UserDto[] = this.chatService.getUsers().map((user) => new UserDto(user));
+	//	this.emitToChannels('User-Disconnected', user.getChannels(), userDTOs);
+		const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
+		const  user: users = await this.authService.getUser(token);
+		this.emitToEveryone('user-disconnected', user);
+		this.logger.debug(`Client disconnected: ${client.id}`);
 	}
 
 	//----------------------  Emitting Function ------------------------------------
@@ -212,13 +218,28 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		}
 	}
 
+	private	emitWrap(client: Socket, event: string, data : any)
+	{
+		const jsoned = JSON.stringify(data);
+
+		this.logger.debug(`>Emitting to client id ${client.id} data: ${jsoned}`);
+		this.server.emit(event, jsoned);
+	}
+
 	private emitToEveryoneExceptOne(event: string, data: any, excludedClient: Socket)
 	{
+		const jsoned = JSON.stringify(data);
+
+		this.logger.debug(`>Emitting to everyconnected client data: ${jsoned}`);
 		this.server.emit(event, JSON.stringify(data), {except: excludedClient.id});
 	}
 
 	private emitToEveryone(event: string, data: any)
 	{
+		const jsoned = JSON.stringify(data);
+
+		this.logger.debug(`>Emitting to everyconnected client data: ${jsoned}`);
+		this.server.emit(event, JSON.stringify(data));
 		this.server.emit(event, JSON.stringify(data));
 	}
 }
