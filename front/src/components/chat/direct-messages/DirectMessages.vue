@@ -6,6 +6,11 @@
 	</div>
 	<v-card>
 		<div v-if="selectedUserLogin && is_friend">
+<<<<<<< HEAD
+=======
+			<v-card-title>Messages with @{{ selectedUserLogin }} {{ isConnected }} </v-card-title>
+
+>>>>>>> a02664a (fix(Chat): Socket connection)
 			<v-card-text>
 				<!-- Chat Messages -->
 				<v-list>
@@ -21,28 +26,48 @@
 		</div>
 
 		<div v-else-if="selectedUserLogin">
+<<<<<<< HEAD
 			<v-card-text> ~ you are not friend with this user so u cant chat ~> </v-card-text>
+=======
+			<v-card-text class="empty-card"> ~ you are not friend with this user so u cant chat ~> </v-card-text>
+>>>>>>> a02664a (fix(Chat): Socket connection)
 		</div>
 
 		<div v-else>
 			<v-card-title>Messages</v-card-title>
+<<<<<<< HEAD
 			<v-card-text> ~ no friend selected ~ </v-card-text>
 		</div>
 		<!-- Message Input -->
 	</v-card>
 	<v-footer rounded="0" elevation="0">
+=======
+			<v-card-text class="empty-card"> ~ no friend selected ~ </v-card-text>
+		</div>
+		<!-- Message Input -->
+	</v-card>
+	<v-footer>
+>>>>>>> a02664a (fix(Chat): Socket connection)
 		<v-text-field
 			v-model="input"
 			placeholder="Type your message..."
 			max-length="200"
 			variant="solo"
+<<<<<<< HEAD
 			rounded="0"
 			flat
+=======
+			class="elevation-0"
+>>>>>>> a02664a (fix(Chat): Socket connection)
 			append-inner-icon="fas fa-paper-plane"
 			@keyup.enter="sendMessage"
 			@click:append-inner="sendMessage"
 			density="compact"
 			clearable
+<<<<<<< HEAD
+=======
+			rounded="0"
+>>>>>>> a02664a (fix(Chat): Socket connection)
 		/>
 	</v-footer>
 
@@ -73,18 +98,13 @@ export default {
 		const user = computed(() => userStore.getUser);
 
 		const webSocketStore = useSocketStore();
-
 		const socket = computed(() => webSocketStore.getSocket);
 		const isConnected = computed(() => webSocketStore.isConnected);
-		const connect = async (JWT: string) => {
-			await webSocketStore.connect(JWT, import.meta.env.VITE_CHAT_SOCKET_PORT);
-		};
 
 		return {
 			JWT,
 			user,
 			socket,
-			connect,
 			isConnected,
 		};
 	},
@@ -92,14 +112,16 @@ export default {
 		selectedUserLogin: String,
 		refresh: Number,
 	},
-	async mounted() {
-		await this.connect(this.JWT, import.meta.env.VITE_CHAT_SOCKET_PORT);
-		console.log(`[DirMsg-Socket] state: ${this.isConnected}`);
-		this.socket.on('new-direct-message', (data) => {
-			const msg: any = JSON.parse(data);
-			if (msg !== undefined) console.log(`new-direct-msg - msg: ${msg}`);
-			else console.log('Error direct msg failed');
-		});
+	mounted() {
+		//		console.log(`[DirMsg-Socket] state: ${isConnected.value}`);
+		//	       this.socket.on('new-direct-message', (data) => {
+		//			       const msg: any = JSON.parse(data);
+		//			       if (msg !== undefined)
+		//			       console.log (`new-direct-msg - msg: ${msg.content}`);
+		//			       else
+		//				console.log('Error direct msg failed');
+		//
+		//			       });
 	},
 	data() {
 		return {
@@ -116,6 +138,9 @@ export default {
 		},
 		refresh: function () {
 			this.fetchDirectMessages();
+		},
+		isConnected: function (newVal: boolean) {
+			console.log(`[DirMsg-Socket] state: ${newVal}`);
 		},
 	},
 	methods: {
@@ -226,6 +251,7 @@ export default {
 	overflow-y: scroll;
 	overflow-x: hidden;
 }
+<<<<<<< HEAD
 
 .v-footer {
 	border-right: black solid thin;
@@ -237,4 +263,6 @@ export default {
 	border-right: black solid thin;
 	border-left: black solid thin;
 }
+=======
+>>>>>>> a02664a (fix(Chat): Socket connection)
 </style>
