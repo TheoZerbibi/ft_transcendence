@@ -4,12 +4,18 @@
 	<v-divider :thickness="1" class="border-opacity-100"></v-divider>
 	<v-list class="crollable-list" v-if="matchHistory.length" max-height="10vw">
 		<v-list-item v-for="match in matchHistory" :key="match.uid">
-			<v-list-item-title 
-				@click="redirectToGame(match.uid)"
-				class="hoverable">
-				{{ match.uid }}
+			<v-list-item-title @click="redirectToGame(match.uid)" class="hoverable">
+				{{ match.gamePlayer[0].login }} vs {{ match.gamePlayer[1].login }}
 			</v-list-item-title>
-			<v-list-item-subtitle>Start at: <DateViewer :timestamp="match.started_at" /></v-list-item-subtitle>
+			<v-list-item-subtitle>
+				Winner:
+				<span v-if="match.gamePlayer[0].is_win"> {{ match.gamePlayer[0].login }}</span>
+				<span v-else>{{ match.gamePlayer[1].login }}</span> 
+			</v-list-item-subtitle>
+			<v-list-item-subtitle>Date:
+				<DateViewer :timestamp="match.started_at" />
+			</v-list-item-subtitle>
+			<v-divider :thickness="0.5" class="border-opacity-25"></v-divider>
 		</v-list-item>
 	</v-list>
 	<v-card-text v-else>~ no match found ~</v-card-text>
@@ -24,7 +30,7 @@ import { useUser } from '../../../stores/user';
 import { useSnackbarStore } from '../../../stores/snackbar';
 
 import Snackbar from '../../layout/Snackbar.vue';
-import DateViewer from '../../utils/Date.vue';
+import DateViewer from '../../utils/DateConv.vue';
 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
@@ -46,6 +52,7 @@ export default {
 	data() {
 		return {
 			matchHistory: [] as any[],
+			winnerName: '' as string,
 		};
 	},
 	beforeMount() {
@@ -77,6 +84,20 @@ export default {
 		},
 		redirectToGame(uid: string) {
 			this.$router.push({ name: `Game`, params: { uid: uid } });
+		},
+		determineWinner() {
+			// Loop through matchHistory to find the winner
+			this.matchHistory.forEach(match => {
+				match.gamePlayers.forEach(players => {
+					players.forEach(player => {
+						// Check if the player is a winner
+						if (player.is_win) {
+							// Set the winner's name to be displayed
+							this.winnerName = player.name; // Assuming 'name' is the property containing the player's name
+						}
+					});
+				});
+			});
 		},
 	},
 };
