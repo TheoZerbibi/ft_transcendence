@@ -2,7 +2,7 @@
 	<!-- Match history list -->
 	<v-card-title>Match history</v-card-title>
 	<v-divider :thickness="1" class="border-opacity-100"></v-divider>
-	<v-list class="crollable-list" v-if="matchHistory.length" max-height="10vw">
+	<v-list v-if="matchHistory.length" >
 		<v-list-item v-for="match in matchHistory" :key="match.uid">
 			<v-list-item-title @click="redirectToGame(match.uid)" class="hoverable">
 				{{ match.gamePlayer[0].login }} vs {{ match.gamePlayer[1].login }}
@@ -104,8 +104,8 @@ export default {
 </script>
 
 <style scoped>
-.scrollable-list {
+/* .scrollable-list {
 	max-height: 100%;
 	overflow: scroll;
-}
+} */
 </style>
