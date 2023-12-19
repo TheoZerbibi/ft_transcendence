@@ -55,7 +55,7 @@
 			</div>
 			<!-- Profile Settings -->
 			<div v-show="tab === 3">
-				<ProfileSettings />
+				<ProfileSettings  @account-deleted="redirectToLogin"/>
 			</div>
 		</v-navigation-drawer>
 
@@ -66,7 +66,6 @@
 			<div v-show="tab === 2">
 				<ChannelSettings
 					:selectedChannelName="selectedChannelName"
-					@ask-refresh="refreshChannelsPage"
 					:refresh="refreshKeyChannels"
 				/>
 			</div>
@@ -98,7 +97,7 @@
 					<v-card>
 						<Suspense>
 							<v-card>
-								<Profile />
+								<Profile/>
 								<MatchHistory />
 								<BlockedUsers />
 							</v-card>
@@ -285,6 +284,9 @@ export default defineComponent({
 			sessionStorage.clear();
 			await this.userStore.deleteUser();
 			if (this.isConnected) this.disconnect();
+			return this.$router.push({ name: `Login` });
+		},
+		async redirectToLogin() {
 			return this.$router.push({ name: `Login` });
 		},
 		refreshDMsPage() {
