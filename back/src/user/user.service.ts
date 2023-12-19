@@ -10,6 +10,7 @@ import { ConfigService } from '@nestjs/config';
 import { v2 as cloudinary } from 'cloudinary';
 import { JwtService } from '@nestjs/jwt';
 import { v4 as uuidv4 } from 'uuid';
+import { GameDto, GamePlayerDto } from 'src/game/dto';
 
 enum RequestStatus {
 	DECLINED,
@@ -137,7 +138,7 @@ export class UserService {
 	async getUsersStartingWith(startingWith: string) {
 		try {
 			const users = await this.prisma.user.findMany({
-				where: { login: { startsWith: startingWith, }, },
+				where: { login: { startsWith: startingWith } },
 			});
 			const usersDto: UserDto[] = users.map((user) => {
 				return this.exclude(user, ['dAuth', 'email', 'updated_at']) as UserDto;
@@ -157,7 +158,57 @@ export class UserService {
 			});
 			if (!prismaUser) return undefined;
 			const user = this.exclude(prismaUser, ['dAuth', 'secret', 'email', 'updated_at']);
-			return user as UserDto;
+			const userStat = await this.getGameStatByUser(prismaUser);
+			return { stats: userStat, ...user };
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	private async getAllPlayer(game: GameDto): Promise<Array<GamePlayerDto> | undefined> {
+		try {
+			const gamePlayer: Array<GamePlayerDto> = await this.prisma.gamePlayer.findMany({
+				where: {
+					game_id: game.id,
+				},
+			});
+			return gamePlayer;
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				if (e.code === 'P2002') throw new ForbiddenException('No Player Found');
+			}
+			throw e;
+		}
+	}
+
+	async getGameStatByUser(user: User): Promise<any> {
+		try {
+			let defeat: number = 0;
+			let win: number = 0;
+			let total: number = 0;
+			const games: Array<any> = await this.prisma.game.findMany({
+				where: {
+					gamePlayer: {
+						some: {
+							player_id: user.id,
+						},
+					},
+				},
+				include: {
+					gamePlayer: true,
+				},
+			});
+			if (!games) return { games: null };
+			for (const game of games) {
+				const playersInGame: Array<GamePlayerDto> = await this.getAllPlayer(game);
+				for (const player of playersInGame) {
+					if (player.is_spec || player.player_id !== user.id) continue;
+					if (player.is_win) win++;
+					else defeat++;
+					total++;
+				}
+			}
+			return { win: win, defeat: defeat, totalGame: total };
 		} catch (e) {
 			throw e;
 		}
@@ -193,7 +244,6 @@ export class UserService {
 			throw e;
 		}
 	}
-
 
 	/************************************* Friends *************************************/
 	async getFriendsOfUser(user: User) {
@@ -391,7 +441,8 @@ export class UserService {
 				if (!this.verifyDisplayName(dto.display_name)) throw new ForbiddenException('Invalid display name');
 			}
 			if (dto.avatar)
-				if (!dto.avatar.startsWith('https://res.cloudinary.com/')) throw new BadRequestException('Invalid avatar');
+				if (!dto.avatar.startsWith('https://res.cloudinary.com/'))
+					throw new BadRequestException('Invalid avatar');
 			const user = await this.prisma.user.update({
 				where: {
 					id: userId,
@@ -725,7 +776,7 @@ export class UserService {
 							friend_id: target.id,
 						},
 					},
-			  });
+				});
 		if (!friend) return null;
 		return friend;
 	}

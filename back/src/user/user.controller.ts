@@ -80,7 +80,7 @@ export class UserController {
 	@ApiBearerAuth('JWT-auth')
 	@UseInterceptors(ClassSerializerInterceptor)
 	async getUserByLogin(@Param('login') userLogin: string) {
-		const user: UserDto | undefined = await this.userService.getUserByLogin(userLogin);
+		const user: UserDto | any = await this.userService.getUserByLogin(userLogin);
 		if (!user) throw new BadRequestException('Invalid user');
 		return user;
 	}
@@ -154,7 +154,7 @@ export class UserController {
 	@UseInterceptors(FileInterceptor('file', multerOptions))
 	async getLink(@UploadedFile() file: Express.Multer.File, @GetUser('login') login: string) {
 		if (!file) throw new BadRequestException('No file provided');
-		return this.userService.getCloudinaryLink(login, file);
+		return await this.userService.getCloudinaryLink(login, file);
 	}
 
 	/***********************************************************************************/
@@ -200,8 +200,8 @@ export class UserController {
 	@Patch()
 	@ApiOperation({ summary: 'Change display_name or Avatar for the user' })
 	@ApiBearerAuth('JWT-auth')
-	editUser(@GetUser('id') userId: number, @Body() dto: EditUserDto) {
-		this.userService.editUser(userId, dto);
+	async editUser(@GetUser('id') userId: number, @Body() dto: EditUserDto) {
+		await this.userService.editUser(userId, dto);
 		return { message: 'User updated' };
 	}
 

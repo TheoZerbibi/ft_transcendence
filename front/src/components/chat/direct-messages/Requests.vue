@@ -1,46 +1,47 @@
 <template>
-
 	<!-- Friend Requests list -->
 	<div class="ma-2">
 		<h3>Friend Requests</h3>
-		
+
 		<v-list v-if="requests.length">
 			<v-list-item 
 				v-for="request in requests"
 				color="black"
 				density="compact"
-				:key="request.id" 
+				:ripple="false"
+				:key="request.id"
 				@click="userSelected(user.login)">
-	
-				<template v-if="request.user_login == user.login">
+				
+				<v-list-item-title>
 					{{ request.target_display_name }}
-					<v-btn
-						@click="cancelRequest(request.target_login)"
-					>Cancel</v-btn>
+				</v-list-item-title>
+
+				<template v-slot:append >
+					<div v-if="request.user_login == user.login">
+						<v-btn 
+							flat 
+							rounded="0"
+							icon="fas fa-close"
+							density="compact"
+							@click="cancelRequest(request.target_login)"
+							:ripple="false">
+						</v-btn>
+					</div>
+					<div v-else>
+						<AcceptDeclineButton :login="request.user_login" :response="true" @respond="respondRequest" />
+						<AcceptDeclineButton :login="request.user_login" :response="false" @respond="respondRequest" />
+					</div>
 				</template>
-	
-				<template v-else>
-					{{ request.user_display_name }}
-					<AcceptDeclineButton
-						:login="request.user_login"
-						:response="true"
-						@respond="respondRequest"/>
-					<AcceptDeclineButton
-						:login="request.user_login"
-						:response="false"
-						@respond="respondRequest"/>
-				</template>
-	
+
 			</v-list-item>
 		</v-list>
-		
+
 		<v-card-text v-else>~ no pending friend requests ~</v-card-text>
 	</div>
 
 
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
-
 </template>
 
 <script lang="ts">
@@ -79,7 +80,7 @@ export default {
 		refresh: Number,
 	},
 	watch: {
-		refresh: function() {
+		refresh: function () {
 			this.fetchRequests();
 		}
 	},
@@ -88,21 +89,21 @@ export default {
 	beforeMount() { this.fetchRequests(); },
 
 	methods: {
-		fetchRequests: async function() {
+		fetchRequests: async function () {
 			try {
 				console.log(`[REQUESTS]: fetching requests of ${this.user.login}`);
 				const response: any = await
-				fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/requests`,
-					{
-						method: 'GET',
-						headers: {
-							Authorization: `Bearer ${this.JWT}`,
-							'Access-Control-Allow-Origin': '*',
-						},
-					}
-				)
-				;
+					fetch(
+						`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/requests`,
+						{
+							method: 'GET',
+							headers: {
+								Authorization: `Bearer ${this.JWT}`,
+								'Access-Control-Allow-Origin': '*',
+							},
+						}
+					)
+					;
 				if (!response.ok) {
 					const error = await response.json();
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
@@ -116,7 +117,7 @@ export default {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
-		respondRequest: async function(login: string, choice: boolean) {
+		respondRequest: async function (login: string, choice: boolean) {
 			try {
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/respond-request`,
@@ -145,7 +146,7 @@ export default {
 				console.log(error);
 			}
 		},
-		cancelRequest: async function(target_login: string) {
+		cancelRequest: async function (target_login: string) {
 			try {
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends`,

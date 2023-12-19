@@ -9,6 +9,7 @@
 				append-icon="fas fa-plus"
 				color="black"
 				density="compact"
+				:ripple="false"
 				:key="user.id"
 				:title="user.display_name"
 				@click="sendFriendRequest(user.login)">

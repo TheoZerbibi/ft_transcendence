@@ -5,6 +5,7 @@
 			rounded="0"
 			style="border: black solid thin;"
 			:ripple="false" 
+			class="align-self-end"
 			v-bind="props" text="Change password"> </v-btn>
 		</template>
 
@@ -120,15 +121,9 @@ export default {
 </script>
 
 <style scoped>
-.v-text-field {
-	border: black solid thin;
-	margin-top: 1dvh;
-	margin-bottom: 1dvh;
-}
-
 .v-btn {
 	border: black solid thin;
-	width: 75%;
+	width: 100%;
 	margin-top: 1dvh;
 	margin-bottom: 1dvh;
 }

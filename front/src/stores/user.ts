@@ -67,6 +67,9 @@ export const useUser = defineStore('user', {
 		setAvatar(avatar: string): void {
 			this.avatar = avatar;
 		},
+		setDisplayName(displayName: string): void {
+			this.displayName = displayName;
+		},
 		set2FA(dAuth: boolean): void {
 			this.dAuth = dAuth;
 		},
