@@ -166,15 +166,16 @@ export default {
 					return;
 				}
 				const data = await response.json();
+				console.log(data);
 
 				this.friendData = {
 					name: data.display_name,
 					avatar: data.avatar,
 					member_since: data.created_at,
 					stats: {
-						wins: data.stats.wins,
-						loses: data.stats.loses,
-						matches: data.stats.matches,
+						wins: data.stats.win,
+						loses: data.stats.defeat,
+						matches: data.stats.totalGame,
 					},
 					cadre: this.cadre,
 				};

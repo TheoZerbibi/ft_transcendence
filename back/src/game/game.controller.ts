@@ -40,7 +40,7 @@ export class GameController {
 	@ApiBearerAuth('JWT-auth')
 	@HttpCode(HttpStatus.OK)
 	async getMatchHistoryByLogin(@Param('login') userLogin: string) {
-		const user: UserDto | undefined = await this.userService.getUserByLogin(userLogin);
+		const user: UserDto | any = await this.userService.getUserByLogin(userLogin);
 		if (!user) throw new BadRequestException('Invalid user');
 		return this.gameService.getMatchHistoryByUser(user);
 	}
@@ -66,7 +66,7 @@ export class GameController {
 	@ApiBearerAuth('JWT-auth')
 	@HttpCode(HttpStatus.OK)
 	async getGameStatByLogin(@Param('login') userLogin: string) {
-		const user: UserDto | undefined = await this.userService.getUserByLogin(userLogin);
+		const user: UserDto | any = await this.userService.getUserByLogin(userLogin);
 		if (!user) throw new BadRequestException('Invalid user');
 		return this.gameService.getGameStatByUser(user);
 	}
