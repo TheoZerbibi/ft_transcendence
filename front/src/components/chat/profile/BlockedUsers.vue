@@ -2,7 +2,7 @@
 
 	<!-- Blocked users list -->
 	<v-card-title>Blocked Users</v-card-title>
-	<v-divider :thickness="7" class="border-opacity-100"></v-divider>
+	<v-divider :thickness="1" class="border-opacity-100"></v-divider>
 
 	<v-list class="no-bullets" v-if="blockedUsers.length">
 		<v-list-item 

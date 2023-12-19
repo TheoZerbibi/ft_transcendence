@@ -16,12 +16,20 @@ export default {
 	},
 	computed: {
 		fullDate() {
-			const date = new Date(this.timestamp);
-			return format(date, 'dd/MM/yyyy');
+			try {
+				const date = new Date(this.timestamp);
+				return format(date, 'dd/MM/yyyy HH:mm');
+			} catch (error) {
+				return 'Invalid date';
+			}
 		},
 		formattedDate() {
-			const date = new Date(this.timestamp);
-			return format(date, 'HH:mm');
+			try {
+				const date = new Date(this.timestamp);
+				return format(date, 'HH:mm');
+			} catch (error) {
+				return 'Invalid date';
+			}
 		},
 	},
 };
