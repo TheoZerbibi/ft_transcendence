@@ -18,6 +18,11 @@ export class ChatService {
 		return Chat.getUsers();
 	}
 
+	public getUserDtos(): UserDto[]
+	{
+		return Chat.getUserDtos();
+	}
+
 	public getUserById(id: number): User | undefined {
 		return Chat.getUserById(id);
 	}
@@ -60,13 +65,17 @@ export class ChatService {
 	public async addUser(socket: Socket, user: users)
 	{
 		const channels_usr: channel_users[] = await this.retrieveUserChannel(user);
+		console.log('Getting channel_users');
+		console.log(channels_usr);
 
-		return Chat.addUser(socket, user.id, channels_usr);
+		return Chat.addUser(socket, user, channels_usr);
 	}
 
-	public removeUser(client: Socket): User | undefined
+	public removeUser(user: users): void
 	{
-		return Chat.removeUserBySocket(client);
+		console.log(`[ChatService] removing ${user.login} from socket buffer`);
+		Chat.removeUserById(user.id);
+	//	return Chat.removeUserBySocket(client);
 	}
 
 	// return removed user socket

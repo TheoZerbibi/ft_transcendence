@@ -43,6 +43,7 @@ import { computed, ref, watch } from 'vue';
 import { useUser } from '../../../stores/user';
 import { useSnackbarStore } from '../../../stores/snackbar';
 
+import { useSocketStore } from '../../../stores/websocket';
 import Snackbar from '../../layout/Snackbar.vue';
 
 const userStore = useUser();
@@ -56,9 +57,15 @@ export default {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
 
+		const webSocketStore = useSocketStore();
+		const socket = computed(() => webSocketStore.getSocket);
+		const isConnected = computed(() => webSocketStore.isConnected);
+
 		return {
 			JWT,
 			user,
+			isConnected,
+			socket,
 		};
 	},
 	props: {
@@ -75,7 +82,21 @@ export default {
 		selectedChannelName: function (newVal: string) {
 			this.channelName = newVal;
 			this.fetchMessages();
+		},
+		isConnected: function (newVal: boolean) {
+			if (newVal === true && this.socket) {
+			       console.log(`[ChanMsg-WebSocket] on`);
+			       this.socket.on('new-channel-message', (data) => {
+						console.log(`[ChanMSg-WebSocket] 'new-chan-message' -> '${data}`);
+					       const msg: any = JSON.parse(data);
+					       if (msg !== undefined)
+					       console.log (`new-direct-msg - msg: ${msg}`);
+					       else
+						console.log('Error direct msg failed');
+		
+					       });
 		}
+		},
 	},
 	methods: {
 		fetchMessages: async function () {

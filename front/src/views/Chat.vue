@@ -231,7 +231,7 @@ export default defineComponent({
 			await this.connect(this.JWT);
 			console.log(`[Chat-Websocket] attempt to connect. isConnectecd = ${this.isConnected}`);
 			this.socket.on('welcome', (data) => {
-				console.log(`retrieved ${data}`); 
+				console.log(`[Chat-Websocket] List of connected user: ${data}`); 
 			});
 },
 	methods: {
@@ -254,13 +254,19 @@ export default defineComponent({
 			return this.$router.push({ name: `Login` });
 		},
 	},
-	beforeMount() {
-		if (!this.JWT) {
-			return this.$router.push({ name: `Login` });
-		} else {
-			this.connect(this.JWT);
+//	async beforeMount() {
+//		if (!this.JWT) {
+//			return this.$router.push({ name: `Login` });
+//		} else {
+//			await this.connect(this.JWT);
+//		}
+//	},
+	async beforeUnmount() {
+		if (this.isConnected) {
+			this.disconnect();
 		}
-	},
+		if (snackbarStore.snackbar) snackbarStore.hideSnackbar();
+}
 });
 </script>
 

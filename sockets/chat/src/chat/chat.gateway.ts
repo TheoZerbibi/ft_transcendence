@@ -39,27 +39,71 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 	@WebSocketServer() server: Server;
 
-//	To_test
-//	@SubscribeMessage('new-direct-message')
+	//----------------------  Deco/Connection handler ---------------------------------------------
+
+	public async handleConnection(client: Socket): Promise<void> {
+		try {
+			this.logger.debug(`New Connection attempt by client.id: ${client.id}`);
+			if (!client.handshake.headers.authorization) throw new Error('Invalid token');
+			const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
+			this.authService.verifyToken({ access_token: token });
+			const user: users = await this.authService.getUser(token);
+
+			this.chatService.addUser(client, user);
+			this.logger.debug(`Client connected: socket:${client.id}, usr_.id:${user.id}`);
+
+			const users_lst: UserDto[] = this.chatService.getUserDtos();
+
+//			const channelDtos: ChannelDto[] = this.chatService.getChannelDtos();
+//			this.logger.debug(`>Emitting to user ${user.id}`);
+			this.logger.debug(`Sending list of connected Users to new User`);
+			console.log(JSON.stringify(users_lst));
+			client.emit('welcome', JSON.stringify(users_lst));
+			this.emitToEveryoneExceptOne('new-connection', user.login, client);
+
+		} catch (e) {
+			client.emit('error', 'Invalid token');
+			client.disconnect();
+		}
+	}
+
+	public async handleDisconnect(client: Socket): Promise<void> {
+		this.logger.debug(`[Disconnection] client id: ${client.id}`);
+
+		//		const userDTOs: UserDto[] = this.chatService.getUsers().map((user) => new UserDto(user));
+		//	this.emitToChannels('User-Disconnected', user.getChannels(), userDTOs);
+		const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
+		const  user: users = await this.authService.getUser(token);
+		const userDtos: UserDto[] = this.chatService.getUserDtos();
+		this.chatService.removeUser(user);
+		this.emitToEveryone('user-disconnected', JSON.stringify(userDtos));
+		this.logger.debug(`Client disconnected: user.id:${user.id}`);
+	}
+
+	//-----------------Api to front routes--------------------
+
+	//	To_test
+	//	@SubscribeMessage('new-direct-message')
 	public dirmsg(data: any): void
 	{
-		this.logger.debug(`Received data: ${(data)}`);
+		this.logger.debug(`'new-direct-message': ${(data)}`);
 
-		const msg = data;
+		const msg = JSON.parse(data);
 		console.log(JSON.parse(data));
 		const user: User | undefined = this.chatService.getUserById(msg.friend_id);
-	
+
 		if (user !== undefined) {
-			user.getSocket().emit('new-direct-message', data);
+			this.logger.debug(`Found correspondant login: ${user.getLogin()}, socket: ${user.getSocket().id}`);
+			this.server.to(user.getSocket().id).emit('new-direct-message', JSON.stringify(data));
 		}
-		this.emitToEveryone('new-direct-message', data);
-//		else {
-//			console.info('Receiver of dir message is not connected');
-//		}
+//		this.emitToEveryone('new-direct-message', msg);
+		//		else {
+		//			console.info('Receiver of dir message is not connected');
+		//		}
 	}
 
 	// To_test
-//	@SubscribeMessage('new-channel-message')
+	//	@SubscribeMessage('new-channel-message')
 	public msg(data: any): void
 	{
 		const msg: any = JSON.parse(data);
@@ -71,8 +115,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			this.emitToChannel('new-channel-message', channel, msg)
 	}
 
-//	transmit channelEntity data to everyone in the channel
-//	@SubscribeMessage('channel-update')
+	//	transmit channelEntity data to everyone in the channel
+	//	@SubscribeMessage('channel-update')
 	channelUpdate(data: any): void {
 		const channelData: any = JSON.parse(data);
 		const channelBuf: Channel | undefined = this.chatService.getChannelById(channelData.id);
@@ -159,44 +203,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		const { ['password']: excludedPassword, ...tmpChannel } = channelEntity;
 		const { ['users']: excludedUsers, ...channelReturned } = tmpChannel;
 		this.emitToEveryone('channel-deleted', JSON.stringify(channelReturned));
-	}
-
-	//----------------------  Deco/Connection handler ---------------------------------------------
-
-	public async handleConnection(client: Socket): Promise<void> {
-		try {
-			console.log(`New connection by ${client.id}`);
-			if (!client.handshake.headers.authorization) throw new Error('Invalid token');
-			const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
-			this.authService.verifyToken({ access_token: token });
-			const user: users = await this.authService.getUser(token);
-
-			this.chatService.addUser(client, user);
-
-			const channelDtos: ChannelDto[] = this.chatService.getChannelDtos();
-			this.logger.debug(`>Emitting to user ${user.id}`);
-	//		client.emit('welcome', JSON.stringify(channelDtos));
-			client.emit('welcome', JSON.stringify(user));
-			this.emitToEveryoneExceptOne('new-connection', user.login, client);
-			this.logger.debug(`Client connected: socket:${client.id}, usr_.id:${user.id}`);
-			console.log(channelDtos);
-
-		} catch (e) {
-			client.emit('error', 'Invalid token');
-			client.disconnect();
-		}
-	}
-
-	public async handleDisconnect(client: Socket): Promise<void> {
-		console.log('disconnect');
-		this.chatService.removeUser(client);
-
-//		const userDTOs: UserDto[] = this.chatService.getUsers().map((user) => new UserDto(user));
-	//	this.emitToChannels('User-Disconnected', user.getChannels(), userDTOs);
-		const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
-		const  user: users = await this.authService.getUser(token);
-		this.emitToEveryone('user-disconnected', user);
-		this.logger.debug(`Client disconnected: user.id:${user.id}`);
 	}
 
 	//----------------------  Emitting Function ------------------------------------

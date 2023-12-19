@@ -62,6 +62,7 @@ export class Channel {
 	public removeUser(user: User)
 	{
 		this.users = this.users.filter((userBuf) => userBuf === user);
+		return this.users;
 	}
 
 	public removeUserById(id: number)
@@ -81,10 +82,14 @@ export class Channel {
 
 export class UserDto {
 	id: number;
+	login: string;
+	channels: number[];
 
 	constructor(user: User)
 	{
 		this.id = user.getId();
+		this.login = user.getLogin();
+		this.channels = user.getChannels().map((chan) => chan.getId());
 	}
 }
 
@@ -95,19 +100,24 @@ export class ChannelDto {
 	constructor(channel: Channel)
 	{
 		this.id = channel.getId();
-		channel.getUsers().map((user) => new UserDto(user));
+		this.users = channel.getUsers().map((user) => new UserDto(user));
 	}
 }
 
 export class User {
 	private  socket: Socket;
 	private  id: number;
+	private	 login: string;
 	private  channels: Channel[] = [];
 
-	constructor(socket: Socket, id: number, channels: Channel[] = []) {
+	constructor(socket: Socket, user: users, channels: Channel[] = []) {
 		this.socket = socket;
-		this.id = id;
+		this.id = user.id;
+		this.login = user.login;
 		this.channels = channels;
+	}
+	public getLogin(): string{
+		return this.login;
 	}
 
 	public getSocket(): Socket {
@@ -169,18 +179,27 @@ export class Chat {
 		const channelDtos: ChannelDto []= Chat.channel_lst.map((channel) => new ChannelDto(channel));
 		return channelDtos;
 	}
+	public static getUserDtos(): UserDto[]
+	{
+		const UserDtos: UserDto[] = Chat.user_lst.map((user) => new UserDto(user));
+		return UserDtos;
+	}
 
 
 	//	//************* Setter *******************
 	//	
-	public static addUser(socket: Socket, userid: number, channels_usr: channel_users[]): User {
+	public static addUser(socket: Socket, user_db: users, channels_usr: channel_users[]): User {
 
 		let channel_tmp: Channel = null;
 
-		const user = new User(socket, userid);
+		const user = new User(socket, user_db);
 
+		Chat.user_lst = Chat.user_lst.filter((user) => user.getId() !== user_db.id);
 		Chat.user_lst.push(user);
 
+		
+
+		if (channels_usr !== undefined) {
 		for (let i = 0; i < channels_usr.length; i++)
 		{
 			channel_tmp = Chat.channel_lst.find((channel) => { return (channel.getId() === channels_usr[i].id)});
@@ -189,7 +208,9 @@ export class Chat {
 
 			user.addChannel(channel_tmp);
 		}
+		
 		return user;
+	}
 	}
 
 	public static addChannel(channelId: number, user: User): Channel {
@@ -275,9 +296,10 @@ export class Chat {
 
 	public static removeUserBySocket(client: Socket): User | undefined
 	{
-		const user: User | undefined = Chat.user_lst.find((user) => user.getSocket() === client);
-		if (user === undefined)
+		const user: User | undefined = Chat.user_lst.find((user) => user.getSocket().id === client.id);
+		if (user === undefined) {
 			return (undefined);
+		}
 		this.removeUser(user);
 		return user;
 	}

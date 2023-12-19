@@ -103,7 +103,7 @@ export default {
 			       console.log(`[DirMsg-WebSocket] on`);
 			       this.socket.on('new-direct-message', (data) => {
 						console.log(`[DirMSg-WebSocket] 'new-dir-message' -> '${data}`);
-					       const msg: any = data.json();
+					       const msg: any = JSON.parse(data);
 					       if (msg !== undefined)
 					       console.log (`new-direct-msg - msg: ${msg.content}`);
 					       else
