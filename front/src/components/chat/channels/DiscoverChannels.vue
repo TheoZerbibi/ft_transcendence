@@ -5,13 +5,22 @@
 		<v-list v-if="channels.length">
 			<v-list-item 
 				v-for="channel in channels" 
-				append-icon="fas fa-plus"
-				color="black"
 				density="compact"
 				:key="channel.id" 
-				:title="channel.name" 
 				:ripple="false"
-				@click="channel.is_public ? joinPublicChannel(channel.name) : openPwdDialog(channel.name)">
+				@click="channelSelected(channel.name)">
+
+				<v-list-item-title>{{ channel.name }}</v-list-item-title>
+				<template v-slot:append>
+					<v-btn 
+						flat 
+						rounded="0"
+						icon="fas fa-plus"
+						density="compact"
+						@click="channel.is_public ? joinPublicChannel(channel.name) : openPwdDialog(channel.name)"
+						:ripple="false">
+					</v-btn>
+				</template>
 			</v-list-item>
 		</v-list>
 		<v-card-text v-else>
@@ -84,6 +93,7 @@ export default {
 	emits: ['ask-refresh'],
 	data() {
 		return {
+			selectedChannel: '' as string,
 			newChannelName: '' as string,
 			channels: [] as any[],
 			showPwdModal: false as boolean,
@@ -229,6 +239,10 @@ export default {
 				this.selectedPrivChannel = '';
 				this.showPwdModal = false;
 			}
+		},
+		channelSelected(channel_name: string) {
+			this.selectedChannel = channel_name;
+			this.$emit('channel-selected', this.selectedChannel);
 		},
 	},
 }
