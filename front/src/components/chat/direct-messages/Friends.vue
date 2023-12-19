@@ -13,6 +13,17 @@
 				<v-list-item-title>
 					@{{ friend.display_name }}
 				</v-list-item-title>
+
+				<template v-slot:append>
+					<v-btn 
+						flat 
+						rounded="0"
+						icon="fas fa-gamepad"
+						density="compact"
+						:ripple="false"
+						@click="deleteFriend(friend.login)">
+					</v-btn>
+				</template>
 			</v-list-item>
 		</v-list>
 
