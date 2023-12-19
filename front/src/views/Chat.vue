@@ -186,9 +186,12 @@ export default defineComponent({
 	setup() {
 		let open = false as Boolean;
 		const userStore = useUser();
+		const webSocketStore = useSocketStore();
 		const route = useRoute();
 		const tab = ref(route.query.tab ? parseInt(route.query.tab as string) : 1);
-		const webSocketStore = useSocketStore();
+
+		const user = computed(() => userStore.getUser);
+		const JWT = computed(() => userStore.getJWT);
 
 		const isConnected = computed(() => webSocketStore.isConnected);
 		const socket = computed(() => webSocketStore.getSocket);
@@ -203,9 +206,6 @@ export default defineComponent({
 		};
 
 		//	provide('chat-socket', socket);
-
-		const JWT = computed(() => userStore.getJWT);
-		const user = computed(() => userStore.getUser);
 
 		const links = [
 			{
@@ -269,7 +269,7 @@ export default defineComponent({
 			this.socket.on('welcome', (data) => {
 				console.log(`[Chat-Websocket] List of connected user: ${data}`); 
 			});
-},
+	},
 	methods: {
 		updateSelectedUser(login: string) {
 			console.log('[CHAT.vue] NEW SELECTED FRIEND LOGIN: ', this.selectedUserLogin);

@@ -94,7 +94,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 		if (user !== undefined) {
 			this.logger.debug(`Found correspondant login: ${user.getLogin()}, socket: ${user.getSocket().id}`);
-			this.server.to(user.getSocket().id).emit('new-direct-message', JSON.stringify(data));
+			this.server.to(user.getSocket().id).emit('new-direct-message', data);
 		}
 //		this.emitToEveryone('new-direct-message', msg);
 		//		else {
