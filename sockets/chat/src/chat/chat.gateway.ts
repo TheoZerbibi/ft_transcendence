@@ -60,7 +60,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			const channelDtos: ChannelDto[] = this.chatService.getChannelDtos();
 			this.logger.debug(`>Emitting to user ${user.id}`);
 			this.logger.debug(`Sending list of connected Users to new User`);
-		//	console.log(JSON.stringify(users_lst));
 			client.emit('welcome', JSON.stringify(users_lst));
 			this.emitToEveryoneExceptOne('new-connection', user.login, client);
 
@@ -141,12 +140,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 	@SubscribeMessage('channel-selected')
 	channelSelected(client: Socket, data: any): void {
-		//	const channelName = JSON.parse(data);
+			const channel = data;
+			
+			
+			this.chatService.selectChannel(client, data);
 	}
 
 	@SubscribeMessage('channel-deselected')
 	channelDeselected(client: Socket, data: any): void {
-
 	}
 
 
@@ -159,8 +160,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		this.chatService.addChannel(channelData.id, user);
 		console.log(`New channel registered in socket with ${user}`);
 		const { ['password']: excludedPassword, ...newChannel } = channelData;
-		//		console.log('Sending these information to everyone connected to chat :');
-		//		console.log(newChannel);
 		if (user === undefined) {
 			console.log('User who created channel is not connected');
 			this.emitToEveryone('channel-creation', newChannel);
