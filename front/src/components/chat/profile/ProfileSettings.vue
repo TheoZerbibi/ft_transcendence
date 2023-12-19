@@ -132,6 +132,22 @@ export default {
 		},
 		deleteAccount: async function () {
 			try {
+				const deletedChannels = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/allOwned`,
+					{
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+					},
+				);
+				if (!deletedChannels.ok) {
+					const error = await deletedChannels.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					return;
+				}
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/profile`,
 					{

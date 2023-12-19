@@ -234,6 +234,15 @@ export class ChannelController {
 		return { message: 'Channel deleted' };
 	}
 
+	@Delete('allOwned')
+	@UseGuards(JwtGuard)
+	@ApiOperation({ summary: 'Delete all owned channels' })
+	@ApiBearerAuth('JWT-auth')
+	async deleteAllOwnedChannels(@GetUser() user: User) {
+		await this.channelService.deleteChannelsOfFutureDeletedUser(user.id);
+		return { message: 'All owned channels deleted' };
+	}
+
 	/***********************************************************************************/
 	/* 										DEBUG									   */
 	/***********************************************************************************/

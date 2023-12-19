@@ -680,6 +680,36 @@ export class ChannelService {
 		}
 	}
 
+	async deleteChannelsOfFutureDeletedUser(userId: number) {
+		try {
+			const channelsOfUser: Channel[] = await this.prisma.channel.findMany({
+				where: {
+					channelUser: {
+						some: {
+							user_id: userId,
+							is_owner: true,
+						},
+					},
+				},
+			});
+			this.localChannels = this.localChannels.filter((channel) => {
+				return !channelsOfUser.some((c) => c.id === channel.getId());
+			});
+			await this.prisma.channel.deleteMany({
+				where: {
+					channelUser: {
+						some: {
+							user_id: userId,
+							is_owner: true,
+						},
+					},
+				},
+			});
+		} catch (e) {
+			throw e;
+		}
+	}
+
 	/************************************ Users *************************************/
 
 	async deleteChannelUser(user: User, dto: ChannelNameDto) {
