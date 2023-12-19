@@ -108,6 +108,7 @@ export class User {
 	private  socket: Socket;
 	private  id: number;
 	private	 login: string;
+	private	 channelOn: string;
 	private  channels: Channel[] = [];
 
 	constructor(socket: Socket, user: users, channels: Channel[] = []) {
@@ -115,9 +116,14 @@ export class User {
 		this.id = user.id;
 		this.login = user.login;
 		this.channels = channels;
+		this.channelOn = '';
 	}
 	public getLogin(): string{
 		return this.login;
+	}
+
+	public selectChannelOn(channelName: string){
+		this.channelOn = channelName;
 	}
 
 	public getSocket(): Socket {
@@ -164,14 +170,20 @@ export class Chat {
 		return Chat.user_lst;
 	}
 
-	public static getChannelById(id: number): Channel | undefined
-	{
-		return Chat.channel_lst.find((channel) => channel.getId() === id);
-	}
 
 	public static getUserById(id: number): User | undefined
 	{
 		return Chat.user_lst.find((user) => { return user.getId() === id});
+	}
+
+	public static getUserBySocket(client: Socket): User | undefined
+	{
+		return Chat.user_lst.find((user) => { return user.getSocket() === client});
+	}
+
+	public static getChannelById(id: number): Channel | undefined
+	{
+		return Chat.channel_lst.find((channel) => channel.getId() === id);
 	}
 
 	public static getChannelDtos(): ChannelDto[]
@@ -197,22 +209,22 @@ export class Chat {
 		Chat.user_lst = Chat.user_lst.filter((user) => user.getId() !== user_db.id);
 		Chat.user_lst.push(user);
 
-		
+
 
 		if (channels_usr !== undefined) {
-		for (let i = 0; i < channels_usr.length; i++)
-		{
-			channel_tmp = Chat.channel_lst.find((channel) => { return (channel.getId() === channels_usr[i].id)});
-			if (channel_tmp === undefined) {
-				channel_tmp = new Channel(channels_usr[i].id, user);
+			for (let i = 0; i < channels_usr.length; i++)
+			{
+				channel_tmp = Chat.channel_lst.find((channel) => { return (channel.getId() === channels_usr[i].id)});
+				if (channel_tmp === undefined) {
+					channel_tmp = new Channel(channels_usr[i].id, user);
+				}
+				channel_tmp.addUser(user);
+				user.addChannel(channel_tmp);
 			}
-			channel_tmp.addUser(user);
-			user.addChannel(channel_tmp);
+			console.log(user);
+
+			return user;
 		}
-		console.log(user);
-		
-		return user;
-	}
 	}
 
 	public static addChannel(channelId: number, user: User): Channel {
@@ -225,8 +237,6 @@ export class Chat {
 	//	
 	//	
 	//	
-	//	//** Remove funcion return removed element so we can send this information
-	//	//** to frontend 
 	//	
 	//	public static removeUser(socket: Socket): User
 	//	{

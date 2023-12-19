@@ -14,6 +14,7 @@ import { ChatService } from './chat.service';
 import { Chat, Channel, User, ChannelDto, UserDto } from './impl/Chat'
 import { JwtGuard } from 'src/auth/guard';
 import { users, channel_users } from '@prisma/client';
+import { ForbiddenException } from '@nestjs/common';
 // import { direct_messages } from '@prisma/client';
 
 
@@ -49,15 +50,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			this.authService.verifyToken({ access_token: token });
 			const user: users = await this.authService.getUser(token);
 
+			if (user === undefined) throw new ForbiddenException('Invalid token');
+
 			this.chatService.addUser(client, user);
 			this.logger.debug(`Client connected: socket:${client.id}, usr_.id:${user.id}`);
 
 			const users_lst: UserDto[] = this.chatService.getUserDtos();
 
-//			const channelDtos: ChannelDto[] = this.chatService.getChannelDtos();
-//			this.logger.debug(`>Emitting to user ${user.id}`);
+			const channelDtos: ChannelDto[] = this.chatService.getChannelDtos();
+			this.logger.debug(`>Emitting to user ${user.id}`);
 			this.logger.debug(`Sending list of connected Users to new User`);
-			console.log(JSON.stringify(users_lst));
 			client.emit('welcome', JSON.stringify(users_lst));
 			this.emitToEveryoneExceptOne('new-connection', user.login, client);
 
@@ -86,20 +88,18 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	//	@SubscribeMessage('new-direct-message')
 	public dirmsg(data: any): void
 	{
-		this.logger.debug(`'new-direct-message': ${(data)}`);
 
 		const msg = JSON.parse(data);
 		console.log(JSON.parse(data));
 		const user: User | undefined = this.chatService.getUserById(msg.friend_id);
+		const me: User | undefined = this.chatService.getUserById(msg.user_id);
 
-		if (user !== undefined) {
-			this.logger.debug(`Found correspondant login: ${user.getLogin()}, socket: ${user.getSocket().id}`);
+		this.logger.debug(`'new-direct-message': ${(data)}`);
+
+		if (user !== undefined)
 			this.server.to(user.getSocket().id).emit('new-direct-message', data);
-		}
-//		this.emitToEveryone('new-direct-message', msg);
-		//		else {
-		//			console.info('Receiver of dir message is not connected');
-		//		}
+		if (me !== undefined) 
+			this.server.to(me.getSocket().id).emit('new-direct-message', data);
 	}
 
 	// To_test
@@ -140,12 +140,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 	@SubscribeMessage('channel-selected')
 	channelSelected(client: Socket, data: any): void {
-	//	const channelName = JSON.parse(data);
+			const channel = data;
+			
+			
+			this.chatService.selectChannel(client, data);
 	}
 
-	@SubscribeMessage('channel-deselected');
+	@SubscribeMessage('channel-deselected')
 	channelDeselected(client: Socket, data: any): void {
-		
 	}
 
 
@@ -158,8 +160,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		this.chatService.addChannel(channelData.id, user);
 		console.log(`New channel registered in socket with ${user}`);
 		const { ['password']: excludedPassword, ...newChannel } = channelData;
-		//		console.log('Sending these information to everyone connected to chat :');
-		//		console.log(newChannel);
 		if (user === undefined) {
 			console.log('User who created channel is not connected');
 			this.emitToEveryone('channel-creation', newChannel);
