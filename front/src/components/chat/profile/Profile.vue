@@ -1,29 +1,49 @@
 <template>
-	<v-card-title>Profile</v-card-title>
-	<v-card-subtitle>Login: @{{ user.login }}</v-card-subtitle>
-	<v-card-subtitle>Display name: {{ user.displayName }}</v-card-subtitle>
+	<v-card>
+		<v-row>
+			<v-col>
+				<v-card-title>Profile</v-card-title>
+				<v-card-item class="align-center justify-center">
+					<UploadFile @imageChanged="updateAvatar">
+						<template v-slot:polaroidImg>
+							<v-img style="position:relative; top: 1.7dvh;" v-if="user.avatar" :src="user.avatar" class="hoverable"
+								alt="Uploaded Image">
+							</v-img>
+						</template>
+					</UploadFile>
+					<v-card-text>
+						<h4>@{{ user.login }}</h4>
+						<h4>{{ user.displayName }}</h4>
+					</v-card-text>
+				</v-card-item>
 
-<!-- 	<v-avatar size="100" class="ma-2"
-		rounded="0"
-		variant="flat">
-		<v-img cover :src="user.avatar"></v-img>
+			</v-col>
+
+			<v-col>
+				<v-card-title>Game Stats</v-card-title>
+				<v-divider :thickness="7" class="border-opacity-100"></v-divider>
+				<v-card-text v-if="Object.keys(gameStats).length">
+					<p>Wins: {{ gameStats.wins }}</p>
+					<p>Loses: {{ gameStats.loses }}</p>
+					<p>Matches: {{ gameStats.matches }}</p>
+				</v-card-text>
+			
+				<div v-else>
+					~ no game found ~
+				</div>
+			
+				<MatchHistory />
+				<BlockedUsers />
+			</v-col>
+		</v-row>
+
+		<!-- 	<v-avatar size="100" class="ma-2"
+			rounded="0"
+			variant="flat">
+			<v-img cover :src="user.avatar"></v-img>
 	</v-avatar> -->
-	<UploadFile @imageChanged="updateAvatar">
-		<template v-slot:polaroidImg>
-			<v-img v-if="user.avatar" :src="user.avatar" class="hoverable" alt="Uploaded Image"> </v-img>
-		</template>
-	</UploadFile>
 
-	<v-card-text v-if="Object.keys(gameStats).length">
-		<v-card-subtitle>Name: {{ user.displayName }}</v-card-subtitle>
-		<v-card-subtitle>Wins: {{ gameStats.wins }}</v-card-subtitle>
-		<v-card-subtitle>Loses: {{ gameStats.loses }}</v-card-subtitle>
-		<v-card-subtitle>Matches: {{ gameStats.matches }}</v-card-subtitle>
-	</v-card-text>
-
-	<div v-else>
-		~ no game found ~	
-	</div>
+	</v-card>
 
 	<!-- Error handling -->
 	<Snackbar />
@@ -38,6 +58,9 @@ import Snackbar from '../../layout/Snackbar.vue';
 import DateViewer from '../../utils/Date.vue';
 import UploadFile from '../../layout/UploadFile.vue';
 
+import MatchHistory from './MatchHistory.vue';
+import BlockedUsers from './BlockedUsers.vue';
+
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 
@@ -46,6 +69,8 @@ export default {
 		Snackbar,
 		DateViewer,
 		UploadFile,
+		MatchHistory,
+		BlockedUsers,
 	},
 	setup() {
 		const JWT = computed(() => userStore.getJWT);
@@ -153,5 +178,16 @@ export default {
 	width: 6vw;
 	height: 7vw;
 	z-index: -999;
+}
+
+
+.v-card {
+	border: black solid thin;
+	border-radius: 0;
+	max-height: 93dvh;
+	height: 93dvh;
+	scroll-behavior: auto;
+	overflow-y: scroll;
+	overflow-x: hidden;
 }
 </style>

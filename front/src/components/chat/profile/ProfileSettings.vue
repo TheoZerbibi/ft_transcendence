@@ -1,47 +1,29 @@
 <template>
-	<div class="ma-2 d-flex flex-column">
-		<v-card-title>Settings</v-card-title>	
-		
-		<v-btn flat
-			rounded="0"
-			style="border: black solid thin;"
-			:ripple="false"
-			@click="showNameChangeModal">
-			Change display name
-		</v-btn>
 
-		<ProfileNameModal 
-			class="modal" 
-			v-if="dNameChangeModal" 
-			:showModal="dNameChangeModal"
-			@change-dname="changeDisplayName"
-			@close-modal="dNameChangeName = false">
-		</ProfileNameModal>
-		
-		<v-btn flat
-			rounded="0"
-			style="border: black solid thin;"
-			:ripple="false"
-			@click="enable2FA"
-			v-if="!user.twoFactorAuth">
-			Enable 2FA
-		</v-btn>
-		<v-btn flat
-			rounded="0"
-			style="border: black solid thin;"
-			:ripple="false"
-			@click="enable2FA"
-			v-if="user.twoFactorAuth">
-			Disable 2FA
-		</v-btn>
+		<div class="ma-2 d-flex flex-column">
+			<v-card-title>Settings</v-card-title>
 
-		<v-btn flat
-			rounded="0"
-			style="border: black solid thin;"
-			:ripple="false" color="red" @click="deleteAccount">
-			Delete Account
-		</v-btn>
-	</div>
+			<v-btn flat rounded="0" style="border: black solid thin;" :ripple="false" @click="showNameChangeModal">
+				Change display name
+			</v-btn>
+
+			<ProfileNameModal class="modal" v-if="dNameChangeModal" :showModal="dNameChangeModal"
+				@change-dname="changeDisplayName" @close-modal="dNameChangeName = false">
+			</ProfileNameModal>
+
+			<v-btn flat rounded="0" style="border: black solid thin;" :ripple="false" @click="enable2FA"
+				v-if="!user.twoFactorAuth">
+				Enable 2FA
+			</v-btn>
+			<v-btn flat rounded="0" style="border: black solid thin;" :ripple="false" @click="enable2FA"
+				v-if="user.twoFactorAuth">
+				Disable 2FA
+			</v-btn>
+
+			<v-btn flat rounded="0" style="border: black solid thin;" :ripple="false" color="red" @click="deleteAccount">
+				Delete Account
+			</v-btn>
+		</div>
 
 	<!-- Error handling -->
 	<Snackbar />
@@ -116,7 +98,7 @@ export default {
 		redirectToGame(uid: string) {
 			this.$router.push({ name: `Game`, params: { uid: uid } });
 		},
-		changeDisplayName: async function(newDisplayName: string) {
+		changeDisplayName: async function (newDisplayName: string) {
 			try {
 				if (newDisplayName === '') {
 					return;
@@ -149,7 +131,7 @@ export default {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
-		deleteAccount: async function() {
+		deleteAccount: async function () {
 			try {
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/profile`,
@@ -174,14 +156,14 @@ export default {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
-		showNameChangeModal: function() {
+		showNameChangeModal: function () {
 			if (this.dNameChangeModal) {
 				this.dNameChangeModal = false;
 			} else {
 				this.dNameChangeModal = true;
 			}
 		},
-		show2FAModal: function() {
+		show2FAModal: function () {
 			if (this.qrCodeModal) {
 				this.qrCodeModal = false;
 			} else {
@@ -199,5 +181,4 @@ export default {
 	margin-top: 1dvh;
 	margin-bottom: 1dvh;
 }
-
 </style>

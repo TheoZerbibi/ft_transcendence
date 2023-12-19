@@ -1,6 +1,7 @@
 <template>
 	<!-- Match history list -->
 	<v-card-title>Match history</v-card-title>
+	<v-divider :thickness="7" class="border-opacity-100"></v-divider>
 	<v-list class="crollable-list" v-if="matchHistory.length" max-height="10vw">
 		<v-list-item v-for="match in matchHistory" :key="match.uid">
 			<v-list-item-title @click="redirectToGame(match.uid)" class="hoverable">

@@ -98,8 +98,6 @@
 						<Suspense>
 							<v-card>
 								<Profile/>
-								<MatchHistory />
-								<BlockedUsers />
 							</v-card>
 							<template #fallback>
 								<div>Loading...</div>
