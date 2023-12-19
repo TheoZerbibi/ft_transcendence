@@ -88,6 +88,9 @@ export default {
 			this.channelName = newVal;
 			this.fetchMessages();
 		},
+		refresh: function() {
+			this.fetchMessages();
+		},
 		isConnected: function (newVal: boolean) {
 			if (newVal === true && this.socket) {
 			       console.log(`[ChanMsg-WebSocket] on`);
@@ -101,9 +104,6 @@ export default {
 		
 					       });
 		}
-		},
-		refresh: function() {
-			this.fetchMessages();
 		},
 	},
 	emits: ['open-profile'],

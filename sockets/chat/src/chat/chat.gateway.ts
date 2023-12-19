@@ -138,6 +138,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		}
 	}
 
+	@SubscribeMessage('channel-selected')
+	channelSelected(client: Socket, data: any): void {
+	//	const channelName = JSON.parse(data);
+	}
+
+	@SubscribeMessage('channel-deselected');
+	channelDeselected(client: Socket, data: any): void {
+		
+	}
+
 
 	//		@SubscribeMessage('channel-creation')
 	channelCreation(data: any): void {
