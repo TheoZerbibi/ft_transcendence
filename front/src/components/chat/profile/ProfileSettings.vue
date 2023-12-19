@@ -101,6 +101,7 @@ export default {
 				}
 				const data = await response.json();
 				snackbarStore.showSnackbar(data.message, 3000, 'green');
+				userStore.displayName = this.newDisplayName;
 				this.newDisplayName = '';
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
