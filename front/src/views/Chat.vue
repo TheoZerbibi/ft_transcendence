@@ -59,7 +59,7 @@
 			</div>
 		</v-navigation-drawer>
 
-		<v-navigation-drawer location="right">
+		<v-navigation-drawer location="right" v-if="tab === 1 || tab === 2">
 			<div v-show="tab === 1">
 				<UserProfile :selectedUserLogin="selectedUserLogin" />
 			</div>
@@ -77,9 +77,7 @@
 				<!-- Direct messages tab -->
 				<div v-show="tab === 1">
 					<Suspense>
-						<main>
 							<DirectMessages :selectedUserLogin="selectedUserLogin" :refresh="refreshKeyDMs" />
-						</main>
 						<template #fallback>
 							<div>Loading...</div>
 						</template>
@@ -99,11 +97,11 @@
 				<div v-show="tab === 3">
 					<v-card>
 						<Suspense>
-							<main>
+							<v-card>
 								<Profile />
 								<MatchHistory />
 								<BlockedUsers />
-							</main>
+							</v-card>
 							<template #fallback>
 								<div>Loading...</div>
 							</template>
@@ -312,7 +310,7 @@ export default defineComponent({
 
 <style>
 .v-dialog {
-	width: 30%;
-	height: 50%;
+	width: 30dvw;
+	height: 70dvh;
 }
 </style>

@@ -4,7 +4,7 @@
 		<h3>Friends</h3>
 		<v-list v-if="friends.length">
 			<v-list-item v-for="friend in friends" color="black" density="compact" append-icon="fas fa-close"
-				:key="friend.id" :title="friend.display_name" @click="userSelected(friend.login)">
+				:key="friend.id" :title="friend.display_name" @click="userSelected(friend.login)" @click:append-icon="deleteFriend(friend.login)">
 			</v-list-item>
 		</v-list>
 

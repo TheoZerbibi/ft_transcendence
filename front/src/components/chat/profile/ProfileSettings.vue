@@ -1,17 +1,47 @@
 <template>
-	<v-card-title>Settings</v-card-title>
+	<div class="ma-2 d-flex flex-column">
+		<v-card-title>Settings</v-card-title>	
+		
+		<v-btn flat
+			rounded="0"
+			style="border: black solid thin;"
+			:ripple="false"
+			@click="showNameChangeModal">
+			Change display name
+		</v-btn>
 
-	<v-text-field
-		v-model="newDisplayName"
-		label="Display name"
-		max-length="20"
-		@keyup.enter="changeDisplayName"
-	></v-text-field>
-	<v-btn @click="changeDisplayName">Change display name</v-btn>
+		<ProfileNameModal 
+			class="modal" 
+			v-if="dNameChangeModal" 
+			:showModal="dNameChangeModal"
+			@change-dname="ChangeDisplayName"
+			@close-modal="dNameChangeName = false">
+		</ProfileNameModal>
+		
+		<v-btn flat
+			rounded="0"
+			style="border: black solid thin;"
+			:ripple="false"
+			@click="enable2FA"
+			v-if="!user.twoFactorAuth">
+			Enable 2FA
+		</v-btn>
+		<v-btn flat
+			rounded="0"
+			style="border: black solid thin;"
+			:ripple="false"
+			@click="enable2FA"
+			v-if="user.twoFactorAuth">
+			Disable 2FA
+		</v-btn>
 
-	<v-btn @click="enable2FA" v-if="!user.twoFactorAuth">Enable 2FA</v-btn>
-
-	<v-btn @click="changeAvatar">Change avatar</v-btn>
+		<v-btn flat
+			rounded="0"
+			style="border: black solid thin;"
+			:ripple="false" color="red" @click="deleteAccount">
+			Delete Account
+		</v-btn>
+	</div>
 
 	<!-- Error handling -->
 	<Snackbar />
@@ -24,6 +54,7 @@ import { useSnackbarStore } from '../../../stores/snackbar';
 
 import Snackbar from '../../layout/Snackbar.vue';
 import DateViewer from '../../utils/Date.vue';
+import ProfileNameModal from '../channels/modals/ProfileNameModal.vue';
 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
@@ -32,6 +63,7 @@ export default {
 	components: {
 		Snackbar,
 		DateViewer,
+		ProfileNameModal,
 	},
 	setup() {
 		const JWT = computed(() => userStore.getJWT);
@@ -46,6 +78,7 @@ export default {
 		return {
 			matchHistory: [],
 			newDisplayName: '',
+			dNameChangeModal: false as boolean,
 		};
 	},
 	beforeMount() {
@@ -100,12 +133,14 @@ export default {
 				if (!response.ok) {
 					const error = await response.json();
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					this.dNameChangeModal = false;
 					return;
 				}
 				const data = await response.json();
 				snackbarStore.showSnackbar(data.message, 3000, 'green');
 				userStore.displayName = this.newDisplayName;
 				this.newDisplayName = '';
+				this.dNameChangeModal = false;
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
@@ -124,13 +159,31 @@ export default {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
+		deleteAccount: async function() {
+			try {
+				console.log('[PROFILE SETTINGS: DELETE ACCOUNT TODO');
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
+			}
+		},
+		showNameChangeModal: function() {
+			if (this.dNameChangeModal) {
+				this.dNameChangeModal = false;
+			} else {
+				this.dNameChangeModal = true;
+			}
+		},
+
 	},
 };
 </script>
 
 <style scoped>
-.scrollable-list {
-	max-height: 100%;
-	overflow: scroll;
+.v-btn {
+	border: black solid thin;
+	width: 100%;
+	margin-top: 1dvh;
+	margin-bottom: 1dvh;
 }
+
 </style>
