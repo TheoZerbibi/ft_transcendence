@@ -13,7 +13,7 @@
 				@click="userSelected(user.login)">
 				
 				<v-list-item-title>
-					{{ request.target_display_name }}
+					@{{ request.target_display_name }}
 				</v-list-item-title>
 
 				<template v-slot:append >

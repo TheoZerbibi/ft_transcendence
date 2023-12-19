@@ -1,59 +1,62 @@
 <template>
-	<v-dialog
-	 	v-model="dialogOpen"
-		width="500">
-		<template v-slot:activator="{ props }">
-			<v-btn v-bind="props" text="User moderation"> </v-btn>
-		</template>
+	<v-dialog v-model="dialogOpen">
+		<v-card>
+			<template v-slot:activator="{ props }">
+				<v-btn flat rounded="0" style="border: black solid thin;" :ripple="false" v-bind="props"
+					text="User moderation"> </v-btn>
+			</template>
 
-		<template v-slot:default="{ isActive }">
-			<v-card v-if="selectedUser">
-			<v-card-title>
-				User moderation of {{ selectedUser.display_name }}
-			</v-card-title>
-			<v-card-text>
+			<template v-slot:default="{ isActive }">
+				<v-card v-if="selectedUser">
+					<v-card-title>
+						User moderation of {{ selectedUser.display_name }}
+					</v-card-title>
+					<v-card-text>
 
-				<!-- Kick -->
-				<v-btn
-					@click="kick(selectedUser.login)">Kick</v-btn>
+						<!-- Kick -->
+						<v-btn flat rounded="0" style="border: black solid thin;" :ripple="false"
+							@click="kick(selectedUser.login)">Kick</v-btn>
 
-				<!-- Ban & Unban -->
-				<v-btn v-if="selectedUser.is_banned"
-					@click="unban(selectedUser.login)" >Unban </v-btn>
-				<v-btn v-else
-					@click="ban(selectedUser.login)">Ban</v-btn>
+						<!-- Ban & Unban -->
+						<v-btn flat rounded="0" style="border: black solid thin;" :ripple="false"
+							v-if="selectedUser.is_banned" @click="unban(selectedUser.login)">Unban </v-btn>
+						<v-btn flat rounded="0" style="border: black solid thin;" :ripple="false" v-else
+							@click="ban(selectedUser.login)">Ban</v-btn>
 
-				<!-- Mute & Unmute -->
-				<v-btn v-if="selectedUser.is_muted"
-					@click="unmute(selectedUser.login)">Unmute</v-btn>
-				<template v-else>
-					<v-btn @click="mute(selectedUser.login, 1)">Mute for 1 hour</v-btn>	
-					<v-btn @click="mute(selectedUser.login, 2)">Mute for 2 hours</v-btn>
-					<v-btn @click="mute(selectedUser.login, 6)">Mute for 6 hours</v-btn>
-					<v-btn @click="mute(selectedUser.login, 12)">Mute for 12 hours</v-btn>
-					<v-btn @click="mute(selectedUser.login, 24)">Mute for 24 hours</v-btn>
-				</template>
+						<!-- Mute & Unmute -->
+						<v-btn flat rounded="0" style="border: black solid thin;" :ripple="false"
+							v-if="selectedUser.is_muted" @click="unmute(selectedUser.login)">Unmute</v-btn>
+						<template v-else>
+							<v-btn flat rounded="0" style="border: black solid thin;" :ripple="false"
+								@click="mute(selectedUser.login, 1)">Mute for 1 hour</v-btn>
+							<v-btn flat rounded="0" style="border: black solid thin;" :ripple="false"
+								@click="mute(selectedUser.login, 2)">Mute for 2 hours</v-btn>
+							<v-btn flat rounded="0" style="border: black solid thin;" :ripple="false"
+								@click="mute(selectedUser.login, 6)">Mute for 6 hours</v-btn>
+							<v-btn flat rounded="0" style="border: black solid thin;" :ripple="false"
+								@click="mute(selectedUser.login, 12)">Mute for 12 hours</v-btn>
+							<v-btn flat rounded="0" style="border: black solid thin;" :ripple="false"
+								@click="mute(selectedUser.login, 24)">Mute for 24 hours</v-btn>
+						</template>
 
-				<!-- Promote & Demote -->
-				<v-btn v-if="!selectedUser.is_admin"
-					@click="promote(selectedUser.login)">Promote</v-btn>
-				<v-btn v-else
-					@click="demote(selectedUser.login)">Demote</v-btn>
+						<!-- Promote & Demote -->
+						<v-btn flat rounded="0" style="border: black solid thin;" :ripple="false"
+							v-if="!selectedUser.is_admin" @click="promote(selectedUser.login)">Promote</v-btn>
+						<v-btn flat rounded="0" style="border: black solid thin;" :ripple="false" v-else
+							@click="demote(selectedUser.login)">Demote</v-btn>
 
-			</v-card-text>
+					</v-card-text>
 
-			<v-card-actions>
-				<v-spacer></v-spacer>
+					<v-card-actions>
+						<v-spacer></v-spacer>
 
-				<v-btn
-				text="Cancel"
-				@click="isActive.value = false"
-				></v-btn>
-			</v-card-actions>
-			</v-card>
-		</template>
+						<v-btn flat rounded="0" style="border: black solid thin;" :ripple="false" text="Cancel"
+							@click="isActive.value = false"></v-btn>
+					</v-card-actions>
+				</v-card>
+			</template>
+		</v-card>
 	</v-dialog>
-
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
 </template>
@@ -141,7 +144,7 @@ export default {
 		kick: async function (login: string) {
 			this.modUser(login, 'kick');
 		},
-		modUser: async function(login: string, chosenAction: string, duration?: Date) {
+		modUser: async function (login: string, chosenAction: string, duration?: Date) {
 			try {
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannelName}/settings/admin/mod_user`,
@@ -168,12 +171,12 @@ export default {
 				snackbarStore.showSnackbar(data.message, 3000, 'green');
 				this.dialogOpen = false;
 				this.$emit('close-modal');
-				
+
 			} catch (error) {
 				console.log(error);
 			}
 		},
-		promote: async function(login: string) {
+		promote: async function (login: string) {
 			try {
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedChannel}/settings/owner/promote`,
@@ -238,3 +241,14 @@ export default {
 	}
 };
 </script>
+
+<style scoped>
+.v-btn {
+	border: black solid thin;
+	width: 100%;
+	margin-top: 1dvh;
+	margin-bottom: 1dvh;
+	display: flex;
+	position: relative;
+}
+</style>

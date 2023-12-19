@@ -1,12 +1,14 @@
 <template>
 	<v-dialog>
 		<template v-slot:activator="{ props }">
-			<v-btn flat
+			<v-btn 
+			flat
 			rounded="0"
-			style="border: black solid thin;"
 			:ripple="false" 
 			width="100%"
-			v-bind="props" text="Change password"> </v-btn>
+			class="align-self-end"
+			v-bind="props" 
+			text="Change password"> </v-btn>
 		</template>
 
 		<template v-slot:default="{ isActive }">
@@ -37,6 +39,7 @@ import { computed, ref } from 'vue';
 import { useUser } from '../../../../stores/user';
 import { useSnackbarStore } from '../../../../stores/snackbar';
 import Snackbar from '../../../layout/Snackbar.vue';
+import QrcodeVue from 'qrcode.vue';
 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
@@ -44,6 +47,7 @@ const snackbarStore = useSnackbarStore();
 export default {
 	components: {
 		Snackbar,
+		QrcodeVue,
 	},
 	props: {
 		show: Boolean,
@@ -53,19 +57,17 @@ export default {
 	setup() {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
+		const is2FA = computed(() => userStore.is2FA);
 
 		return {
 			JWT,
 			user,
+			is2FA,
 		};
 	},
 	data() {
 		return {
-			pwd: {
-				prev: '' as string,
-				new: '' as string,
-				confirm: '' as string,
-			},
+			qrCode: null,
 		};
 	},
 	computed: {
@@ -74,40 +76,9 @@ export default {
 		}
 	},
 	methods: {
-		changePassword: async function () {
+		enable2FA: async function() {
 			try {
-				if (!this.channelName || this.channelName === '') {
-					console.log('[changePassword]: channelName is empty');
-					return;
-				}
-				if (this.pwd.prev === '' && this.pwd.new === '' && this.pwd.confirm === '') {
-					return;
-				}
-				console.log(this.pwd);
-				const response: any = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.channelName}/settings/owner/pwd`,
-					{
-						method: 'PATCH',
-						headers: {
-							'Content-Type': 'application/json',
-							Authorization: `Bearer ${this.JWT}`,
-							'Access-Control-Allow-Origin': '*',
-						},
-						body: JSON.stringify({
-							prev_pwd: this.pwd.prev,
-							new_pwd: this.pwd.new,
-							new_pwd_confirm: this.pwd.confirm,
-						}),
-					}
-				)
-				if (!response.ok) {
-					const error = await response.json();
-					snackbarStore.showSnackbar(error.message, 3000, 'red');
-					return;
-				}
-				const data = await response.json();
-				snackbarStore.showSnackbar(data.message, 3000, 'green');
-
+				console.log('[PROFILE SETTINGS: ENABLE 2FA TODO');
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
@@ -122,8 +93,10 @@ export default {
 <style scoped>
 .v-btn {
 	border: black solid thin;
-	width: 45%;
+	width: 100%;
 	margin-top: 1dvh;
 	margin-bottom: 1dvh;
+	display: flex;
+	position: relative;
 }
 </style>

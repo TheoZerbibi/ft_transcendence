@@ -2,7 +2,7 @@
 	<div class="div d-flex flex-row align-center">
 		<v-card-title>#{{ selectedChannelName }}</v-card-title>
 		<v-spacer></v-spacer>
-		<v-icon class="mr-2 hoverable" icon="fas fa-info-circle" color="black" @click=""></v-icon>
+		<!-- <v-icon class="mr-2 hoverable hidden-lg-and-up" icon="fas fa-info-circle" color="black" @click=""></v-icon> -->
 	</div>
 	<v-card>
 		<!-- If channel selected -->
@@ -33,9 +33,18 @@
 		</div>
 	</v-card>
 	<v-footer rounded="0" elevation="0">
-		<v-text-field v-model="input" placeholder="Type your message..." max-length="200" variant="solo" rounded="0" flat
-			append-inner-icon="fas fa-paper-plane" @keyup.enter="sendMessage" @click:append-inner="sendMessage"
-			density="compact" clearable />
+		<v-text-field 
+			v-model="input"
+			placeholder="Type your message..."
+			max-length="200"
+			variant="solo"
+			rounded="0"
+			flat
+			append-inner-icon="fas fa-paper-plane"
+			@keyup.enter="sendMessage"
+			@click:append-inner="sendMessage"
+			density="compact" 
+			clearable />
 	</v-footer>
 	<!-- Error handling -->
 	<Snackbar></Snackbar>

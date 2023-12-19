@@ -9,9 +9,11 @@
 				color="black"
 				density="compact"
 				:key="channel.id"
-				:title="channel.name"
 				:ripple="false"
 				@click="displayMessagesOfChannel(channel.name)">
+				<v-list-item-title>
+					#{{ channel.name }}
+				</v-list-item-title>
 			</v-list-item>
 		</v-list>
 		<v-card-text v-else>~ u didn't join any channels for now ~</v-card-text>

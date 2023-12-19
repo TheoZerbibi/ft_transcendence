@@ -4,7 +4,7 @@
 
 		<h3>About @{{ selectedUserLogin }}</h3>
 
-		<v-avatar size="100" class="ma-2"
+		<v-avatar size="100%" class="ma-2"
 			rounded="0"
 			variant="flat">
 			<v-img cover :src="friendData.avatar"></v-img>
@@ -216,4 +216,5 @@ export default {
 	display: flex;
 	position: relative;
 }
+
 </style>
