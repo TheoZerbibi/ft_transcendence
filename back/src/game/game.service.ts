@@ -335,6 +335,10 @@ export class GameService {
 			for (const game of games) {
 				const playersInGame: Array<GamePlayerDto> = await this.getAllPlayer(game);
 				const activePlayers = playersInGame.filter((player) => !player.is_spec);
+				for (let i = 0; i < activePlayers.length; i++) {
+					const prismaUser = await this.userService.getUserById(activePlayers[i].player_id);
+					activePlayers[i] = { ...activePlayers[i], ...prismaUser };
+				}
 				game.players = activePlayers;
 			}
 			return games;

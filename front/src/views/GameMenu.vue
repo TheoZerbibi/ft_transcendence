@@ -165,6 +165,10 @@ body {
 	overflow: hidden;
 }
 
+.omoriFont {
+	margin: 0 9vw; /* Ajustez la valeur pour obtenir l'espacement désiré */
+}
+
 .arcade-container {
 	position: relative;
 	overflow: hidden;
@@ -179,7 +183,6 @@ body {
 	left: 51%;
 	transform: translate(-50%, -50%);
 	width: 100vw;
-	background-color: rgba(4, 0, 255, 0.342);
 }
 
 .data-container {
@@ -189,7 +192,6 @@ body {
 	transform: translate(-50%, -50%);
 	width: 100vw;
 	height: 34vh;
-	background-color: rgba(255, 0, 0, 0.342);
 }
 
 .step-container {
@@ -199,12 +201,11 @@ body {
 	transform: translate(-50%, -50%);
 	height: 5vh;
 	width: 100vw;
-	background-color: rgba(217, 255, 0, 0.342);
 }
 
 .omoriArcade {
 	color: #2c5529;
-	font-size: 4.4vh;
+	font-size: 3.3vh;
 	letter-spacing: 0.6em;
 	text-align: center;
 }
