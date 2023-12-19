@@ -87,15 +87,6 @@ export class ChatService {
 		}
 	}
 
-	private async retrieveChannelUser(id: number)
-	{
-		const channel_user: channel_users = await this.prismaService.channel_users.findUnique({
-			where : {
-				id: id,
-			}
-		});
-	}
-
 	public	deleteChannel(channelEntity: any): Channel
 	{
 		const channel: Channel = Chat.getChannelById(channelEntity.getId());

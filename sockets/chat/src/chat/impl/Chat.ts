@@ -9,6 +9,7 @@ import { channel_users, users } from '@prisma/client'
 
 export class Channel {
 	private users: Array<User> = [];
+	private name: string;
 	private id: number;
 
 	constructor(id, user) {
@@ -83,6 +84,7 @@ export class Channel {
 export class UserDto {
 	id: number;
 	login: string;
+	channelOn: string;
 	channels: number[];
 
 	constructor(user: User)
@@ -90,6 +92,7 @@ export class UserDto {
 		this.id = user.getId();
 		this.login = user.getLogin();
 		this.channels = user.getChannels().map((chan) => chan.getId());
+		this.channelOn = user.getChannelOn();
 	}
 }
 
@@ -128,6 +131,10 @@ export class User {
 
 	public getSocket(): Socket {
 		return this.socket;
+	}
+	
+	public getChannelOn(): string {
+		return this.channelOn;
 	}
 
 	public getId(): number {
@@ -221,7 +228,6 @@ export class Chat {
 				channel_tmp.addUser(user);
 				user.addChannel(channel_tmp);
 			}
-			console.log(user);
 
 			return user;
 		}

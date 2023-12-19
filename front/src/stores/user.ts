@@ -13,7 +13,8 @@ export const useUser = defineStore('user', {
 	}),
 	getters: {
 		getJWT: (state) => {
-			return state.JWT;
+		//	return state.JWT;
+			return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwic3ViIjpmYWxzZSwiaWF0IjoxNzAzMDI2MDgwLCJleHAiOjE3MDMxMTI0ODB9.5CT7-_PMu9TMsCG4hVlYm41Rf4x3Dhqrd4g6rv-N7u0';
 		},
 		getUser: (state) => {
 			return { login: state.login, displayName: state.displayName, avatar: state.avatar };
