@@ -14,7 +14,7 @@
 			class="modal" 
 			v-if="dNameChangeModal" 
 			:showModal="dNameChangeModal"
-			@change-dname="ChangeDisplayName"
+			@change-dname="changeDisplayName"
 			@close-modal="dNameChangeName = false">
 		</ProfileNameModal>
 		
@@ -55,6 +55,7 @@ import { useSnackbarStore } from '../../../stores/snackbar';
 import Snackbar from '../../layout/Snackbar.vue';
 import DateViewer from '../../utils/Date.vue';
 import ProfileNameModal from '../channels/modals/ProfileNameModal.vue';
+import QrcodeVue from 'qrcode.vue';
 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
@@ -64,18 +65,22 @@ export default {
 		Snackbar,
 		DateViewer,
 		ProfileNameModal,
+		QrcodeVue,
 	},
 	setup() {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
+		const is2FA = computed(() => userStore.is2FA);
 
 		return {
 			JWT,
 			user,
+			is2FA,
 		};
 	},
 	data() {
 		return {
+			qrCode: null,
 			matchHistory: [],
 			newDisplayName: '',
 			dNameChangeModal: false as boolean,
@@ -110,12 +115,12 @@ export default {
 		redirectToGame(uid: string) {
 			this.$router.push({ name: `Game`, params: { uid: uid } });
 		},
-		changeDisplayName: async function() {
+		changeDisplayName: async function(newDisplayName: string) {
 			try {
-				if (this.newDisplayName === '') {
+				if (newDisplayName === '') {
 					return;
 				}
-				console.log('NEW DISPLAY NAME:', this.newDisplayName);
+				console.log('NEW DISPLAY NAME:', newDisplayName);
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users`,
 					{
@@ -126,7 +131,7 @@ export default {
 							'Access-Control-Allow-Origin': '*',
 						},
 						body: JSON.stringify({
-							display_name: this.newDisplayName,
+							display_name: newDisplayName,
 						}),
 					},
 				);
@@ -138,8 +143,7 @@ export default {
 				}
 				const data = await response.json();
 				snackbarStore.showSnackbar(data.message, 3000, 'green');
-				userStore.displayName = this.newDisplayName;
-				this.newDisplayName = '';
+				userStore.displayName = newDisplayName;
 				this.dNameChangeModal = false;
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
