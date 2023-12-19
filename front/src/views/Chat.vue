@@ -23,23 +23,23 @@
 			<div v-show="tab === 1">
 				<Suspense>
 					<main>
-				<Friends
-					@user-selected="updateSelectedUser"
-					@ask-refresh="refreshDMsPage"
-					:refresh="refreshKeyDMs"
-					/>
-				<Requests
-					@user-selected="updateSelectedUser"
-					@ask-refresh="refreshDMsPage"
-					:refresh="refreshKeyDMs"
-					/>
-				<Users
-					@user-selected="updateSelectedUser"
-					@ask-refresh="refreshDMsPage"
-					:refresh="refreshKeyDMs"
-					/>
-				</main>
-				<template #fallback>
+						<Friends
+							@user-selected="updateSelectedUser"
+							@ask-refresh="refreshDMsPage"
+							:refresh="refreshKeyDMs"
+						/>
+						<Requests
+							@user-selected="updateSelectedUser"
+							@ask-refresh="refreshDMsPage"
+							:refresh="refreshKeyDMs"
+						/>
+						<Users
+							@user-selected="updateSelectedUser"
+							@ask-refresh="refreshDMsPage"
+							:refresh="refreshKeyDMs"
+						/>
+					</main>
+					<template #fallback>
 						<div>Loading...</div>
 					</template>
 				</Suspense>
@@ -50,11 +50,8 @@
 					@channel-selected="updateSelectedChannel"
 					@ask-refresh="refreshChannelsPage"
 					:refresh="refreshKeyChannels"
-					/>
-				<DiscoverChannels 
-					@ask-refresh="refreshChannelsPage"
-					:refresh="refreshKeyChannels"
-					/>
+				/>
+				<DiscoverChannels @ask-refresh="refreshChannelsPage" :refresh="refreshKeyChannels" />
 			</div>
 			<!-- Profile Settings -->
 			<div v-show="tab === 3">
@@ -71,7 +68,7 @@
 					:selectedChannelName="selectedChannelName"
 					@ask-refresh="refreshChannelsPage"
 					:refresh="refreshKeyChannels"
-					/>
+				/>
 			</div>
 		</v-navigation-drawer>
 
@@ -80,31 +77,37 @@
 				<!-- Direct messages tab -->
 				<div v-show="tab === 1">
 					<Suspense>
-					<main>
-						<DirectMessages :selectedUserLogin="selectedUserLogin"
-					:refresh="refreshKeyDMs"
-					/>
-					</main>
-					<template #fallback>
-						<div>Loading...</div>
-					</template>
-				</Suspense>
+						<main>
+							<DirectMessages :selectedUserLogin="selectedUserLogin" :refresh="refreshKeyDMs" />
+						</main>
+						<template #fallback>
+							<div>Loading...</div>
+						</template>
+					</Suspense>
 				</div>
 
 				<!-- Channels tab -->
 				<div v-show="tab === 2">
 					<ChannelMessages
-						@open-profile="openDrawer" :selectedChannelName="selectedChannelName"
+						@open-profile="openDrawer"
+						:selectedChannelName="selectedChannelName"
 						:refresh="refreshKeyChannels"
-						/>
+					/>
 				</div>
 
 				<!-- Profile tab -->
 				<div v-show="tab === 3">
 					<v-card>
-						<Profile />
-						<MatchHistory />
-						<BlockedUsers />
+						<Suspense>
+							<main>
+								<Profile />
+								<MatchHistory />
+								<BlockedUsers />
+							</main>
+							<template #fallback>
+								<div>Loading...</div>
+							</template>
+						</Suspense>
 					</v-card>
 				</div>
 			</v-window>
@@ -199,7 +202,7 @@ export default defineComponent({
 			await webSocketStore.disconnect();
 		};
 
-	//	provide('chat-socket', socket);
+		//	provide('chat-socket', socket);
 
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
@@ -261,12 +264,12 @@ export default defineComponent({
 		};
 	},
 	async mounted() {
-			await this.connect(this.JWT);
-			console.log(`[Chat-Websocket] attempt to connect. isConnectecd = ${this.isConnected}`);
-			this.socket.on('welcome', (data) => {
-				console.log(`retrieved ${data}`); 
-			});
-},
+		await this.connect(this.JWT);
+		console.log(`[Chat-Websocket] attempt to connect. isConnectecd = ${this.isConnected}`);
+		this.socket.on('welcome', (data) => {
+			console.log(`retrieved ${data}`);
+		});
+	},
 	methods: {
 		updateSelectedUser(login: string) {
 			console.log('[CHAT.vue] NEW SELECTED FRIEND LOGIN: ', this.selectedUserLogin);
@@ -293,10 +296,8 @@ export default defineComponent({
 			this.refreshKeyChannels++;
 		},
 		openDrawer() {
-			if (this.open === true)
-				this.open = false;
-			else if (this.open === false)
-				this.open = true;
+			if (this.open === true) this.open = false;
+			else if (this.open === false) this.open = true;
 		},
 	},
 	beforeMount() {
@@ -314,5 +315,4 @@ export default defineComponent({
 	width: 30%;
 	height: 50%;
 }
-
 </style>
