@@ -1,5 +1,11 @@
 <template>
-	<v-btn :class="`${buttonType}`" @click="emitResponse">
+	<v-btn
+		flat
+		rounded="0"
+		density="compact"
+		:ripple="false"
+		:class="`${buttonType}`"
+		@click="emitResponse">
 		{{ buttonText }}
 	</v-btn>
 </template>
