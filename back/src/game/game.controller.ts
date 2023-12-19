@@ -92,7 +92,15 @@ export class GameController {
 	@ApiBearerAuth('JWT-auth')
 	@HttpCode(HttpStatus.OK)
 	createNewGame() {
-		return this.gameService.createNewGame();
+		return this.gameService.createNewGame(false);
+	}
+
+	@Post('createPrivateGame')
+	@ApiOperation({ summary: 'Create a new Game' })
+	@ApiBearerAuth('JWT-auth')
+	@HttpCode(HttpStatus.OK)
+	createNewPrivateGame() {
+		return this.gameService.createNewGame(true);
 	}
 
 

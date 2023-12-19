@@ -68,11 +68,11 @@ model users {
   email                                String
   dAuth                                Boolean           @default(false)
   avatar                               String
-  secret                               String?
-  isOnline                             Boolean           @default(false)
   created_at                           DateTime          @default(now())
   updated_at                           DateTime
   last_login                           DateTime          @default(now())
+  secret                               String?
+  isOnline                             Boolean           @default(false)
   blocked_blocked_blocked_by_idTousers blocked[]         @relation("blocked_blocked_by_idTousers")
   blocked_blocked_blocked_idTousers    blocked[]         @relation("blocked_blocked_idTousers")
   channel_users                        channel_users[]
@@ -85,10 +85,10 @@ model users {
 model game_players {
   player_id Int
   game_id   Int
-  score     Int      @default(0)
-  side      Int      @default(0)
   is_win    Boolean?
   is_spec   Boolean?
+  score     Int      @default(0)
+  side      Int      @default(0)
   games     games    @relation(fields: [game_id], references: [id], onDelete: Cascade)
   users     users    @relation(fields: [player_id], references: [id])
 
@@ -96,8 +96,8 @@ model game_players {
 }
 
 model blocked {
-  blocked_by_id                      Int
   blocked_id                         Int
+  blocked_by_id                      Int
   users_blocked_blocked_by_idTousers users @relation("blocked_blocked_by_idTousers", fields: [blocked_by_id], references: [id], onDelete: Cascade)
   users_blocked_blocked_idTousers    users @relation("blocked_blocked_idTousers", fields: [blocked_id], references: [id], onDelete: Cascade)
 
@@ -108,13 +108,13 @@ model direct_messages {
   id         Int      @id @default(autoincrement())
   content    String
   created_at DateTime @default(now())
-  user_id    Int
   friend_id  Int
+  user_id    Int
   users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 enum RequestStatus {
-  DECLINED
   PENDING
   ACCEPTED
+  DECLINED
 }
