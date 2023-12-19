@@ -23,14 +23,14 @@
 				<v-card-title>Game Stats</v-card-title>
 				<v-divider :thickness="7" class="border-opacity-100"></v-divider>
 				<v-card-text v-if="Object.keys(gameStats).length">
-					<p>Wins: {{ gameStats.wins }}</p>
-					<p>Loses: {{ gameStats.loses }}</p>
-					<p>Matches: {{ gameStats.matches }}</p>
+					<p>Wins: {{ gameStats.win }}</p>
+					<p>Loses: {{ gameStats.defeat }}</p>
+					<p>Matches: {{ gameStats.totalGame }}</p>
 				</v-card-text>
 			
-				<div v-else>
+<!-- 				<div v-else>
 					~ no game found ~
-				</div>
+				</div> -->
 			
 				<MatchHistory />
 				<BlockedUsers />

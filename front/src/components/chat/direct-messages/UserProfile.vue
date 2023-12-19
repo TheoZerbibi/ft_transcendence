@@ -132,9 +132,9 @@ export default {
 					avatar: data.avatar,
 					member_since: data.created_at,
 					stats: {
-						wins: data.stats.wins,
-						loses: data.stats.loses,
-						matches: data.stats.matches,
+						wins: data.stats.win,
+						loses: data.stats.defeat,
+						matches: data.stats.totalGame,
 					},
 				};
 				console.log(this.friendData);
