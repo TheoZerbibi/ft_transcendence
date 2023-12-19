@@ -2,7 +2,7 @@
 
 	<!-- Channel users list -->
 	<div class="ma-2" v-if="channelName">
-		<h3>{{ channelName }} settings</h3>
+		<h3>#{{ channelName }} settings</h3>
 		Users:
 		<v-list v-if="channelUsers.length">
 			<v-list-item
@@ -10,37 +10,55 @@
 				color="black"
 				density="compact"
 				:key="channelUser.id"
-				:title="channelUser.display_name"
 				:ripple="false"
 			>
-			<UserModeration
-				v-if="myChannelUserProfile.is_admin"
-				:selectedChannelName="channelName"
-				:selectedChannelUser="channelUser"
-				:myUser="myChannelUserProfile">
-			</UserModeration>
+
+			<v-list-item-title>{{ channelUser.display_name }}</v-list-item-title>
+
+			<template v-slot:append>
+				<UserModeration
+					v-if="myChannelUserProfile.is_admin"
+					:selectedChannelName="channelName"
+					:selectedChannelUser="channelUser"
+					:myUser="myChannelUserProfile">
+				</UserModeration>
+			</template>
+
+			<template v-slot:prepend>
+				<v-icon icon="fas fa-circle" size="xs"></v-icon>
+			</template>
+
+			
+
 			</v-list-item>
 		</v-list>
 		
 		<v-card-text v-else-if="channelName">~ no one in this channel except you ~</v-card-text>
 		
-		<v-card-actions class="d-flex flex-column align-start justify-center">
+		<v-card-actions class="flex-column align-center justify-center">
+			<ChangePwd 
+				:selectedChannelName="channelName">
+			</ChangePwd>
+			
 			<v-btn flat
 			rounded="0"
 			style="border: black solid thin;"
 			:ripple="false" 
+			class="align-self-end"
+			color="red"
 			v-if="myChannelUserProfile.is_owner"
 			@click="deleteChannel">Delete channel</v-btn>
 			
 			<v-btn 
+			class="align-self-end"
 			flat
+			color="red"
 			rounded="0"
 			style="border: black solid thin;"
 			:ripple="false"
 			v-if="!myChannelUserProfile.is_owner"
 			@click="leaveChannel">Leave Channel</v-btn>
 
-			<ChangePwd :selectedChannelName="channelName"></ChangePwd>
 		</v-card-actions>
 	</div>
 
@@ -251,7 +269,7 @@ export default {
 <style scoped>
 .v-btn {
 	border: black solid thin;
-	width: 75%;
+	width: 100%;
 	margin-top: 1dvh;
 	margin-bottom: 1dvh;
 }

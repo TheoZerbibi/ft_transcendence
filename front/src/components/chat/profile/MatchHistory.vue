@@ -1,9 +1,12 @@
 <template>
 	<!-- Match history list -->
 	<v-card-title>Match history</v-card-title>
+	<v-divider :thickness="7" class="border-opacity-100"></v-divider>
 	<v-list class="crollable-list" v-if="matchHistory.length" max-height="10vw">
 		<v-list-item v-for="match in matchHistory" :key="match.uid">
-			<v-list-item-title @click="redirectToGame(match.uid)" class="hoverable">
+			<v-list-item-title 
+				@click="redirectToGame(match.uid)"
+				class="hoverable">
 				{{ match.uid }}
 			</v-list-item-title>
 			<v-list-item-subtitle>Start at: <DateViewer :timestamp="match.started_at" /></v-list-item-subtitle>
@@ -66,6 +69,7 @@ export default {
 					return;
 				}
 				const data: any = await response.json();
+				console.log(data);
 				this.matchHistory = data;
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');

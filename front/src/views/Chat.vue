@@ -1,10 +1,17 @@
 <template>
-	<v-layout class="bg-white">
+	<v-layout class="bg-white" fluid>
 		<v-app-bar class="elevation-0 bg-white" density="compact" style="border: black solid thin">
+			<v-app-bar-nav-icon flat :ripple="false" rounded="0" icon="fa fa-ellipsis-h" @click.stop="drawer = !drawer" />
 			<v-toolbar-title class="text-end md-2 pa-2 h2">Whitespace Community</v-toolbar-title>
 		</v-app-bar>
 
-		<v-navigation-drawer rail class="elevation-0 bg-white" style="border: black solid thin">
+		<v-navigation-drawer 
+			rail
+			class="elevation-0 bg-white" 
+			style="border: black solid thin"
+			v-model="drawer"
+			clipped
+			app>
 			<v-list> </v-list>
 			<v-tabs nav v-model="tab" direction="vertical" grow>
 				<v-tab
@@ -18,7 +25,9 @@
 			</v-tabs>
 		</v-navigation-drawer>
 
-		<v-navigation-drawer nav>
+		<v-navigation-drawer nav
+		class="hidden-sm-and-down elevation-0 bg-white"
+		>
 			<!-- Friend, requests, users lists -->
 			<div v-show="tab === 1">
 				<Suspense>
@@ -55,18 +64,17 @@
 			</div>
 			<!-- Profile Settings -->
 			<div v-show="tab === 3">
-				<ProfileSettings />
+				<ProfileSettings  @account-deleted="redirectToLogin"/>
 			</div>
 		</v-navigation-drawer>
 
-		<v-navigation-drawer location="right">
+		<v-navigation-drawer location="right" v-if="tab === 1 || tab === 2">
 			<div v-show="tab === 1">
 				<UserProfile :selectedUserLogin="selectedUserLogin" />
 			</div>
 			<div v-show="tab === 2">
 				<ChannelSettings
 					:selectedChannelName="selectedChannelName"
-					@ask-refresh="refreshChannelsPage"
 					:refresh="refreshKeyChannels"
 				/>
 			</div>
@@ -77,9 +85,7 @@
 				<!-- Direct messages tab -->
 				<div v-show="tab === 1">
 					<Suspense>
-						<main>
 							<DirectMessages :selectedUserLogin="selectedUserLogin" :refresh="refreshKeyDMs" />
-						</main>
 						<template #fallback>
 							<div>Loading...</div>
 						</template>
@@ -99,11 +105,9 @@
 				<div v-show="tab === 3">
 					<v-card>
 						<Suspense>
-							<main>
-								<Profile />
-								<MatchHistory />
-								<BlockedUsers />
-							</main>
+							<v-card>
+								<Profile/>
+							</v-card>
 							<template #fallback>
 								<div>Loading...</div>
 							</template>
@@ -186,9 +190,12 @@ export default defineComponent({
 	setup() {
 		let open = false as Boolean;
 		const userStore = useUser();
+		const webSocketStore = useSocketStore();
 		const route = useRoute();
 		const tab = ref(route.query.tab ? parseInt(route.query.tab as string) : 1);
-		const webSocketStore = useSocketStore();
+
+		const user = computed(() => userStore.getUser);
+		const JWT = computed(() => userStore.getJWT);
 
 		const isConnected = computed(() => webSocketStore.isConnected);
 		const socket = computed(() => webSocketStore.getSocket);
@@ -203,9 +210,6 @@ export default defineComponent({
 		};
 
 		//	provide('chat-socket', socket);
-
-		const JWT = computed(() => userStore.getJWT);
-		const user = computed(() => userStore.getUser);
 
 		const links = [
 			{
@@ -225,6 +229,7 @@ export default defineComponent({
 			},
 		];
 
+
 		return {
 			isConnected,
 			connect,
@@ -239,6 +244,7 @@ export default defineComponent({
 	},
 	data() {
 		return {
+			drawer: null as any,
 			refreshKeyDMs: 0,
 			refreshKeyChannels: 0,
 			refreshKeyProfile: 0,
@@ -264,11 +270,11 @@ export default defineComponent({
 		};
 	},
 	async mounted() {
-		await this.connect(this.JWT);
-		console.log(`[Chat-Websocket] attempt to connect. isConnectecd = ${this.isConnected}`);
-		this.socket.on('welcome', (data) => {
-			console.log(`retrieved ${data}`);
-		});
+			await this.connect(this.JWT);
+			console.log(`[Chat-Websocket] attempt to connect. isConnectecd = ${this.isConnected}`);
+			this.socket.on('welcome', (data) => {
+				console.log(`[Chat-Websocket] List of connected user: ${data}`); 
+			});
 	},
 	methods: {
 		updateSelectedUser(login: string) {
@@ -289,6 +295,9 @@ export default defineComponent({
 			if (this.isConnected) this.disconnect();
 			return this.$router.push({ name: `Login` });
 		},
+		async redirectToLogin() {
+			return this.$router.push({ name: `Login` });
+		},
 		refreshDMsPage() {
 			this.refreshKeyDMs++;
 		},
@@ -300,19 +309,25 @@ export default defineComponent({
 			else if (this.open === false) this.open = true;
 		},
 	},
-	beforeMount() {
-		if (!this.JWT) {
-			return this.$router.push({ name: `Login` });
-		} else {
-			this.connect(this.JWT);
+//	async beforeMount() {
+//		if (!this.JWT) {
+//			return this.$router.push({ name: `Login` });
+//		} else {
+//			await this.connect(this.JWT);
+//		}
+//	},
+	async beforeUnmount() {
+		if (this.isConnected) {
+			this.disconnect();
 		}
-	},
+		if (snackbarStore.snackbar) snackbarStore.hideSnackbar();
+}
 });
 </script>
 
 <style>
 .v-dialog {
-	width: 30%;
-	height: 50%;
+	width: 30dvw;
+	height: 70dvh;
 }
 </style>

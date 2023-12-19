@@ -5,6 +5,7 @@
 			rounded="0"
 			style="border: black solid thin;"
 			:ripple="false" 
+			width="100%"
 			v-bind="props" text="Change password"> </v-btn>
 		</template>
 
@@ -12,17 +13,16 @@
 			<v-card title="Change password" class="rounded-0">
 				<v-card-text>
 					<!-- Password modification -->
-					<v-text-field v-model="pwd.prev" label="Current Password" type="password" variant="solo" rounded="0"
+					<v-text-field v-model="pwd.prev" label="Current Password" type="password" variant="outlined" rounded="0"
 						flat density="compact" clearable></v-text-field>
-					<v-text-field v-model="pwd.new" label="New Password" type="password" variant="solo" rounded="0"
+					<v-text-field v-model="pwd.new" label="New Password" type="password" variant="outlined" rounded="0"
 						flat density="compact" clearable></v-text-field>
-					<v-text-field v-model="pwd.confirm" label="Confirm Password" type="password" variant="solo" rounded="0"
+					<v-text-field v-model="pwd.confirm" label="Confirm Password" type="password" variant="outlined" rounded="0"
 					@keyup.enter="changePassword"
 						flat density="compact" clearable></v-text-field>
 				</v-card-text>
 
-				<v-spacer></v-spacer>
-				<v-card-actions class="d-flex flex-column align-center justify-center">
+				<v-card-actions class="align-center justify-center">
 					<v-btn flat rounded="0" :ripple="false" @click="changePassword" text='Change Password'></v-btn>
 					<v-btn flat rounded="0" :ripple="false" text="Cancel" @click="isActive.value = false"></v-btn>
 				</v-card-actions>
@@ -120,15 +120,9 @@ export default {
 </script>
 
 <style scoped>
-.v-text-field {
-	border: black solid thin;
-	margin-top: 1dvh;
-	margin-bottom: 1dvh;
-}
-
 .v-btn {
 	border: black solid thin;
-	width: 75%;
+	width: 45%;
 	margin-top: 1dvh;
 	margin-bottom: 1dvh;
 }

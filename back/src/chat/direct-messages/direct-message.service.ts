@@ -15,6 +15,8 @@ enum RequestStatus {
 }
 import { RedisService } from 'src/redis/redis.service';
 
+const deletedUserLoginLength = 36;
+
 @Injectable()
 export class DirectMessageService {
 	constructor(
@@ -31,6 +33,9 @@ export class DirectMessageService {
 
 	async accessDirectMessagesWith(user: User, target_login: string) {
 		try {
+			if (target_login.length === deletedUserLoginLength) {
+				throw new BadRequestException(`User not found`);
+			}
 			const targetUser = await this.userService.findUserByName(target_login);
 			if (!targetUser) throw new BadRequestException(`User ${target_login} not found`);
 
@@ -76,10 +81,6 @@ export class DirectMessageService {
 						},
 					],
 				},
-				orderBy: {
-					created_at: 'asc',
-				},
-				take: 50,
 			});
 			const directMessageDtos: DirectMessageDto[] = await Promise.all(
 				directMessages.map(async (directMessage) => {
@@ -113,6 +114,9 @@ export class DirectMessageService {
 
 	async createDirectMessageWith(user: User, dto: CreateDirectMessageDto) {
 		try {
+			if (dto.target_login.length === deletedUserLoginLength) {
+				throw new BadRequestException(`User not found`);
+			}
 			const targetUser: User | null = await this.userService.findUserByName(dto.target_login);
 			if (!targetUser) throw new BadRequestException(`User ${dto.target_login} not found`);
 
@@ -169,7 +173,7 @@ export class DirectMessageService {
 				friend_id: directMessage.friend_id,
 				friend_name: targetUser.display_name,
 			};
-			this.publishToRedis('new-direct-message', JSON.stringify(directMessage));
+			this.publishToRedis('new-direct-message', JSON.stringify(directMessageDto));
 			return directMessageDto;
 		} catch (e) {
 			throw e;

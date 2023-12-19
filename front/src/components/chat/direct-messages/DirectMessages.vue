@@ -1,12 +1,12 @@
 <template>
 	<div class="div d-flex flex-row align-center">
-		<v-card-title>@{{ selectedUserLogin }}</v-card-title>
+		<v-card-title>@{{ userLogin }}</v-card-title>
 		<v-spacer></v-spacer>
-		<v-icon class="mr-2 hoverable" icon="fas fa-info-circle" color="black" @click=""></v-icon>
+		<!-- <v-icon class="mr-2 hoverable hidden-lg-and-up" icon="fas fa-info-circle" color="black" @click=""></v-icon> -->
 	</div>
 	<v-card>
-		<div v-if="selectedUserLogin && is_friend">
-			<v-card-title>Messages with @{{ selectedUserLogin }} </v-card-title>
+		<div v-if="userLogin && is_friend">
+			<v-card-title>Messages with @{{ userLogin }} </v-card-title>
 			<v-card-text>
 				<!-- Chat Messages -->
 				<v-list>
@@ -21,7 +21,7 @@
 			</v-card-text>
 		</div>
 
-		<div v-else-if="selectedUserLogin">
+		<div v-else-if="userLogin">
 			<v-card-text> ~ you are not friend with this user so u cant chat ~> </v-card-text>
 		</div>
 
@@ -108,11 +108,14 @@ export default {
 		isConnected: function (newVal: boolean) {
 			if (newVal === true && this.socket) {
 				console.log(`[DirMsg-WebSocket] on`);
-				this.socket.on('new-direct-message', (data) => {
-					console.log(`[DirMSg-WebSocket] 'new-dir-message' -> '${data}`);
-					const msg: any = data.json();
-					if (msg !== undefined) console.log(`new-direct-msg - msg: ${msg.content}`);
-					else console.log('Error direct msg failed');
+				this.socket.on('new-direct-message', (data: any) => {
+					const msg: any = JSON.parse(data);
+					console.log(`[DirMSg-WebSocket] 'new-dir-message' -> ${msg}`);
+					if (msg !== undefined) {
+						console.log(msg['content']);
+						this.messages.push(msg);
+						console.log(`new-direct-msg - msg: ${msg.content}`);
+					} else console.log('Error direct msg failed');
 				});
 			}
 		},

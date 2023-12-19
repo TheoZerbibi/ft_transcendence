@@ -3,8 +3,16 @@
 	<div class="ma-2">
 		<h3>Friends</h3>
 		<v-list v-if="friends.length">
-			<v-list-item v-for="friend in friends" color="black" density="compact" append-icon="fas fa-close"
-				:key="friend.id" :title="friend.display_name" @click="userSelected(friend.login)">
+			<v-list-item 
+				v-for="friend in friends" 
+				color="black" 
+				density="compact"
+				:ripple="false"
+				:key="friend.id"
+				@click="userSelected(friend.login)">
+				<v-list-item-title>
+					@{{ friend.display_name }}
+				</v-list-item-title>
 			</v-list-item>
 		</v-list>
 

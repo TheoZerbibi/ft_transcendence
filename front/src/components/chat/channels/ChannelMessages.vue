@@ -1,8 +1,8 @@
 <template>
 	<div class="div d-flex flex-row align-center">
-		<v-card-title>{{ selectedChannelName }}</v-card-title>
+		<v-card-title>#{{ selectedChannelName }}</v-card-title>
 		<v-spacer></v-spacer>
-		<v-icon class="mr-2 hoverable" icon="fas fa-info-circle" color="black" @click=""></v-icon>
+		<!-- <v-icon class="mr-2 hoverable hidden-lg-and-up" icon="fas fa-info-circle" color="black" @click=""></v-icon> -->
 	</div>
 	<v-card>
 		<!-- If channel selected -->
@@ -33,9 +33,18 @@
 		</div>
 	</v-card>
 	<v-footer rounded="0" elevation="0">
-		<v-text-field v-model="input" placeholder="Type your message..." max-length="200" variant="solo" rounded="0" flat
-			append-inner-icon="fas fa-paper-plane" @keyup.enter="sendMessage" @click:append-inner="sendMessage"
-			density="compact" clearable />
+		<v-text-field 
+			v-model="input"
+			placeholder="Type your message..."
+			max-length="200"
+			variant="solo"
+			rounded="0"
+			flat
+			append-inner-icon="fas fa-paper-plane"
+			@keyup.enter="sendMessage"
+			@click:append-inner="sendMessage"
+			density="compact" 
+			clearable />
 	</v-footer>
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
@@ -46,6 +55,7 @@ import { computed, ref, watch } from 'vue';
 import { useUser } from '../../../stores/user';
 import { useSnackbarStore } from '../../../stores/snackbar';
 
+import { useSocketStore } from '../../../stores/websocket';
 import Snackbar from '../../layout/Snackbar.vue';
 
 const userStore = useUser();
@@ -59,9 +69,15 @@ export default {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
 
+		const webSocketStore = useSocketStore();
+		const socket = computed(() => webSocketStore.getSocket);
+		const isConnected = computed(() => webSocketStore.isConnected);
+
 		return {
 			JWT,
 			user,
+			isConnected,
+			socket,
 		};
 	},
 	props: {
@@ -83,8 +99,21 @@ export default {
 		},
 		refresh: function() {
 			this.fetchMessages();
+		},
+		isConnected: function (newVal: boolean) {
+			if (newVal === true && this.socket) {
+			       console.log(`[ChanMsg-WebSocket] on`);
+			       this.socket.on('new-channel-message', (data) => {
+						console.log(`[ChanMSg-WebSocket] 'new-chan-message' -> '${data}`);
+					       const msg: any = JSON.parse(data);
+					       if (msg !== undefined)
+					       console.log (`new-direct-msg - msg: ${msg}`);
+					       else
+						console.log('Error direct msg failed');
+		
+					       });
 		}
-
+		},
 	},
 	emits: ['open-profile'],
 	methods: {

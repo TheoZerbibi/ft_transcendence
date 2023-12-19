@@ -1,6 +1,12 @@
 <template>
-	<v-btn :class="`${buttonType}`" @click="emitResponse">
-		{{ buttonText }}
+	<v-btn
+		flat
+		rounded="0"
+		density="compact"
+		:ripple="false"
+		:icon="buttonIcon"
+		:class="`${buttonType}`"
+		@click="emitResponse">
 	</v-btn>
 </template>
 
@@ -11,6 +17,9 @@ export default {
 		response: Boolean,
 	},
 	computed: {
+		buttonIcon() {
+			return this.response ? 'fas fa-check' : 'fas fa-close';
+		},
 		buttonText() {
 			return this.response ? 'v' : 'x';
 		},

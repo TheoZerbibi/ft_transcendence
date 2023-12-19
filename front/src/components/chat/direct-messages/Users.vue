@@ -6,13 +6,24 @@
 		<v-list v-if="users.length">
 			<v-list-item 
 				v-for="user in users" 
-				append-icon="fas fa-plus"
-				color="black"
 				density="compact"
+				:ripple="false"
 				:key="user.id"
-				:title="user.display_name"
-				@click="sendFriendRequest(user.login)">
-			</v-list-item>
+				@click="userSelected(user.login)">
+				
+				<v-list-item-title>@{{ user.display_name }}</v-list-item-title>
+				
+				<template v-slot:append>
+					<v-btn 
+					flat 
+					rounded="0"
+					icon="fas fa-plus"
+					density="compact"
+					@click="sendFriendRequest(user.login)"
+					:ripple="false">
+				</v-btn>
+			</template>
+		</v-list-item>
 		</v-list>
 		<v-card-text v-else>~ no users except you ~</v-card-text>
 	</div>
