@@ -197,22 +197,22 @@ export class Chat {
 		Chat.user_lst = Chat.user_lst.filter((user) => user.getId() !== user_db.id);
 		Chat.user_lst.push(user);
 
-		
+
 
 		if (channels_usr !== undefined) {
-		for (let i = 0; i < channels_usr.length; i++)
-		{
-			channel_tmp = Chat.channel_lst.find((channel) => { return (channel.getId() === channels_usr[i].id)});
-			if (channel_tmp === undefined) {
-				channel_tmp = new Channel(channels_usr[i].id, user);
+			for (let i = 0; i < channels_usr.length; i++)
+			{
+				channel_tmp = Chat.channel_lst.find((channel) => { return (channel.getId() === channels_usr[i].id)});
+				if (channel_tmp === undefined) {
+					channel_tmp = new Channel(channels_usr[i].id, user);
+				}
+				channel_tmp.addUser(user);
+				user.addChannel(channel_tmp);
 			}
-			channel_tmp.addUser(user);
-			user.addChannel(channel_tmp);
+			console.log(user);
+
+			return user;
 		}
-		console.log(user);
-		
-		return user;
-	}
 	}
 
 	public static addChannel(channelId: number, user: User): Channel {
