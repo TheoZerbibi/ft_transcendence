@@ -7,8 +7,7 @@
 				v-for="channel in channels" 
 				density="compact"
 				:key="channel.id" 
-				:ripple="false"
-				@click="channelSelected(channel.name)">
+				:ripple="false" >
 
 				<v-list-item-title>{{ channel.name }}</v-list-item-title>
 				<template v-slot:append>
