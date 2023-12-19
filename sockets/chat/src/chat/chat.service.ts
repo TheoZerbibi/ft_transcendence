@@ -78,11 +78,15 @@ export class ChatService {
 	//******** Operation on Bdd can be replaced by better API-socket interface *********
 
 	private async retrieveUserChannel(user: users): Promise<channel_users[]> {
-		return await this.prismaService.channel_users.findMany({
-			where : {
-				user_id: user.id,
-			},
-		});
+		try {
+			return await this.prismaService.channel_users.findMany({
+				where : {
+					user_id: user.id,
+				},
+			});
+		} catch (e) {
+			console.log(e);
+		}
 	}
 
 	private async retrieveChannelUser(id: number)

@@ -3,11 +3,16 @@
 	<v-card-subtitle>Login: @{{ user.login }}</v-card-subtitle>
 	<v-card-subtitle>Display name: {{ user.displayName }}</v-card-subtitle>
 
-	<v-avatar size="100" class="ma-2"
+<!-- 	<v-avatar size="100" class="ma-2"
 		rounded="0"
 		variant="flat">
 		<v-img cover :src="user.avatar"></v-img>
-	</v-avatar>
+	</v-avatar> -->
+	<UploadFile @imageChanged="updateAvatar">
+		<template v-slot:polaroidImg>
+			<v-img v-if="user.avatar" :src="user.avatar" class="hoverable" alt="Uploaded Image"> </v-img>
+		</template>
+	</UploadFile>
 
 	<v-card-text v-if="Object.keys(gameStats).length">
 		<v-card-subtitle>Name: {{ user.displayName }}</v-card-subtitle>
@@ -31,6 +36,7 @@ import { useSnackbarStore } from '../../../stores/snackbar';
 
 import Snackbar from '../../layout/Snackbar.vue';
 import DateViewer from '../../utils/Date.vue';
+import UploadFile from '../../layout/UploadFile.vue';
 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
@@ -39,14 +45,21 @@ export default {
 	components: {
 		Snackbar,
 		DateViewer,
+		UploadFile,
 	},
 	setup() {
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
 
+		const setAvatar = (avatar: string) => {
+			userStore.setAvatar(avatar);
+		};
+
+
 		return {
 			JWT,
 			user,
+			setAvatar,
 		};
 	},
 	data() {
@@ -78,6 +91,52 @@ export default {
 				this.gameStats = data;
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
+			}
+		},
+		async updateAvatar(newAvatar: File) {
+			const formData = new FormData();
+			if (newAvatar) {
+				formData.append('file', newAvatar);
+				formData.append('login', this.user.login);
+			} else {
+				return console.error('newAvatar is not a File object');
+			}
+			try {
+				const response = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT
+					}/users/getCloudinaryLink`,
+					{
+						method: 'POST',
+						headers: {
+							Authorization: `Bearer ${this.JWT}`,
+						},
+						body: formData,
+					},
+				);
+				if (!response.ok) {
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					return;
+				}
+
+				const data = await response.json();
+				this.setAvatar(data.avatar);
+				const response2 = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users`,
+					{
+						method: 'PATCH',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+						body: JSON.stringify({
+							avatar: data.avatar,
+						}),
+					},
+				);
+			} catch (error) {
+				snackbarStore.showSnackbar('Error uploading avatar', 3000, 'red');
 			}
 		},
 	},

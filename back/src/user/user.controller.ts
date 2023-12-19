@@ -154,7 +154,7 @@ export class UserController {
 	@UseInterceptors(FileInterceptor('file', multerOptions))
 	async getLink(@UploadedFile() file: Express.Multer.File, @GetUser('login') login: string) {
 		if (!file) throw new BadRequestException('No file provided');
-		return this.userService.getCloudinaryLink(login, file);
+		return await this.userService.getCloudinaryLink(login, file);
 	}
 
 	/***********************************************************************************/

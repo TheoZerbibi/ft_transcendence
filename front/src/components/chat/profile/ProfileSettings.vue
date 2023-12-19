@@ -11,8 +11,6 @@
 
 	<v-btn @click="enable2FA" v-if="!user.twoFactorAuth">Enable 2FA</v-btn>
 
-	<v-btn @click="changeAvatar">Change avatar</v-btn>
-
 	<!-- Error handling -->
 	<Snackbar />
 </template>
