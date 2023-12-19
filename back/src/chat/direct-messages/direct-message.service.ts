@@ -169,14 +169,14 @@ export class DirectMessageService {
 				friend_id: directMessage.friend_id,
 				friend_name: targetUser.display_name,
 			};
-			this.publishToRedis('new-direct-message', JSON.stringify(directMessageDto));
+			this.publishToRedis('new-direct-message', JSON.stringify(directMessage));
 			return directMessageDto;
 		} catch (e) {
 			throw e;
 		}
 	}
 
-	private publishToRedis(event: string, msg: any)
+	private publishToRedis(event: string, msg: string)
 	{
 		console.log(`Publising to redis: ${msg}`);
 		this.redisService.publish(event, msg);

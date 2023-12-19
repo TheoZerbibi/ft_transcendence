@@ -41,18 +41,18 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 //	To_test
 //	@SubscribeMessage('new-direct-message')
-	public dirmsg(client: Socket, data: any): void
+	public dirmsg(data: any): void
 	{
-		this.logger.debug(`Received data: ${data}`);
+		this.logger.debug(`Received data: ${(data)}`);
 
-		const msg = JSON.parse(data);
-		console.log(msg);
+		const msg = data;
+		console.log(JSON.parse(data));
 		const user: User | undefined = this.chatService.getUserById(msg.friend_id);
 	
 		if (user !== undefined) {
 			user.getSocket().emit('new-direct-message', data);
 		}
-		this.emitToEveryone('new-direct-message' data);
+		this.emitToEveryone('new-direct-message', data);
 //		else {
 //			console.info('Receiver of dir message is not connected');
 //		}
@@ -177,7 +177,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			this.logger.debug(`>Emitting to user ${user.id}`);
 	//		client.emit('welcome', JSON.stringify(channelDtos));
 			client.emit('welcome', JSON.stringify(user));
-			this.emitToEveryoneExceptOne('new-connection', user.id, client);
+			this.emitToEveryoneExceptOne('new-connection', user.login, client);
 			this.logger.debug(`Client connected: socket:${client.id}, usr_.id:${user.id}`);
 			console.log(channelDtos);
 
@@ -241,7 +241,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		const jsoned = JSON.stringify(data);
 
 		this.logger.debug(`>Emitting to everyconnected client data: ${jsoned}`);
-		this.server.emit(event, JSON.stringify(data));
 		this.server.emit(event, JSON.stringify(data));
 	}
 }
