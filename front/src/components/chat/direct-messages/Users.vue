@@ -11,7 +11,7 @@
 				:key="user.id"
 				@click="userSelected(user.login)">
 				
-				<v-list-item-title>{{ user.display_name }}</v-list-item-title>
+				<v-list-item-title>@{{ user.display_name }}</v-list-item-title>
 				
 				<template v-slot:append>
 					<v-btn 

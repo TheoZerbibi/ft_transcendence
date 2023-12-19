@@ -10,7 +10,7 @@
 				:ripple="false"
 				@click="channelSelected(channel.name)">
 
-				<v-list-item-title>{{ channel.name }}</v-list-item-title>
+				<v-list-item-title>#{{ channel.name }}</v-list-item-title>
 				<template v-slot:append>
 					<v-btn 
 						flat 
