@@ -107,12 +107,27 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	public msg(data: any): void
 	{
 		const msg: any = JSON.parse(data);
-		const channel: Channel | undefined = this.chatService.getChannelById(msg.channel_id);
+		console.log(`[NEW_MESSAGE_RECEIVED]: ${data}`);
+	//	const channel: Channel | undefined = this.chatService.getChannelById(msg.channel_id);
+		const users: User[] = this.chatService.getUsers();
 
-		if (channel === undefined)
-			console.log('No one is connected to this channel atm');
-		else
-			this.emitToChannel('new-channel-message', channel, msg)
+		console.log(`[Channel-name] msg = ${msg.channelName}`);
+		const target: User[] = users.filter((user) => user.getChannelOn() === msg.channelName);
+		console.log(target);
+		const { ['channelName']: channelName, ...newMsg } = msg;
+		const { ['channel_id']: channel_id, ...newMsg2 } = newMsg;
+
+		if (target !== undefined) {
+			this.logger.debug(`[Channel-Message] Sending channel message: ${msg}`);
+			target.map((user) => {
+				user.getSocket().emit('new-channel-message', newMsg2);
+			});
+		}
+
+//		if (channel === undefined)
+//			console.log('No one is connected to this channel atm');
+//		else
+//			this.emitToChannel('new-channel-message', channel, msg)
 	}
 
 	//	transmit channelEntity data to everyone in the channel
@@ -142,7 +157,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	channelSelected(client: Socket, data: any): void {
 			const channel = data;
 			
-			
 			this.chatService.selectChannel(client, data);
 	}
 
@@ -158,7 +172,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		let userSocket;
 
 		this.chatService.addChannel(channelData.id, user);
-		console.log(`New channel registered in socket with ${user}`);
 		const { ['password']: excludedPassword, ...newChannel } = channelData;
 		if (user === undefined) {
 			console.log('User who created channel is not connected');
