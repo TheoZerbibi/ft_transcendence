@@ -152,9 +152,9 @@ export class GameService {
 		}
 	}
 
-	async createNewGame(): Promise<GameDto> {
+	async createNewGame(isPrivate: boolean): Promise<GameDto> {
 		try {
-			const game: GameDto = await this.createGame(false);
+			const game: GameDto = await this.createGame(isPrivate);
 			return game;
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
