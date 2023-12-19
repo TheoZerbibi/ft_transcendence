@@ -1,19 +1,27 @@
 <template>
-	<h1 class="omoriFont">Match History</h1>
-	<v-list class="scrollable-list">
-		<v-list-item v-for="(match, index) in matchHistory" :key="index">
-			<v-list-item-title @click="redirectToGame(match.uid)" class="hoverable">
-				{{ match.gamePlayer[0].login }} vs {{ match.gamePlayer[1].login }}
-			</v-list-item-title>
-			<v-list-item-subtitle>
-				Winner:
-				<span v-if="match.gamePlayer[0].is_win"> {{ match.gamePlayer[0].login }}</span>
-				<span v-else>{{ match.gamePlayer[1].login }}</span> 
-			</v-list-item-subtitle>
-			<v-list-item-subtitle>Date: <DateViewer :timestamp="match.started_at" /></v-list-item-subtitle>
-			<v-divider :thickness="0.5" class="border-opacity-25"></v-divider>
-		</v-list-item>
-	</v-list>
+	<div class="scoreboard-container">
+		<h1 class="omoriFont">Match History</h1>
+		<div class="scrollable-list d-flex flex-column justify-center align-center">
+			<div class="scoreboard-item" v-for="(match, index) in matchHistory" :key="index">
+				<div click="redirectToGame(match.uid)" class="hoverable omoriFont">
+					<h2>{{ match.gamePlayer[0].login }}</h2>
+					<h3>vs</h3>
+					<h2>{{ match.gamePlayer[1].login }}</h2>
+				</div>
+				<v-divider :thickness="10" class="border-opacity-0"></v-divider>
+				<div class="user-info">
+					<div class="user-name">
+						Winner:
+						<span v-if="match.gamePlayer[0].is_win"> {{ match.gamePlayer[0].login }}</span>
+						<span v-else>{{ match.gamePlayer[1].login }}</span>
+					</div>
+					<div class="user-score omoriFont">Date:
+						<DateViewer :timestamp="match.started_at" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
@@ -82,6 +90,55 @@ export default {
 <style scoped>
 .scrollable-list {
 	max-height: 100%;
-	overflow: scroll;
+
+}
+
+.scoreboard-container {
+	text-align: center;
+}
+
+.scoreboard-item {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	border-bottom: 1px solid #2b532a;
+	padding: 10px;
+}
+
+.scrollable-list {
+	max-height: 100%;
+}
+
+.score-position {
+	margin-right: 20px;
+}
+
+.first-place {
+	color: gold
+}
+
+.user-avatar {
+	margin-right: 20px;
+}
+
+.user-info {
+	text-align: left;
+}
+
+.omoriFont {
+	color: #2b532a;
+}
+
+.user-name {
+	margin: 0;
+	font-size: 1.5em;
+	color: #2b532a;
+	font-family: 'OMORI_MAIN';
+}
+
+.user-score {
+	margin: 0;
+	font-size: 0.9em;
+	color: #2c5529;
 }
 </style>
