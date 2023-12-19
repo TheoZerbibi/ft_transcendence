@@ -49,9 +49,9 @@ const router = createRouter({
 			component: () => import('../views/FakeAuth.vue'),
 		},
 		{
-			path: '/teapot',
-			name: '418',
-			component: () => import('../views/Teapot.vue'),
+			path: '/credit',
+			name: 'Credit',
+			component: () => import('../views/Credit.vue'),
 		},
 		{
 			path: '/exemple',

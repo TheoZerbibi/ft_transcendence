@@ -1,8 +1,12 @@
 <template>
+	<div class="div d-flex flex-row align-center">
+		<v-card-title>@{{ selectedUserLogin }}</v-card-title>
+		<v-spacer></v-spacer>
+		<v-icon class="mr-2 hoverable" icon="fas fa-info-circle" color="black" @click=""></v-icon>
+	</div>
 	<v-card>
 		<div v-if="selectedUserLogin && is_friend">
-			<v-card-title>Messages with @{{ selectedUserLogin }} <span style="color: green">{{ isConnected }}</span> </v-card-title>
-
+			<v-card-title>Messages with @{{ selectedUserLogin }} </v-card-title>
 			<v-card-text>
 				<!-- Chat Messages -->
 				<v-list>
@@ -18,28 +22,28 @@
 		</div>
 
 		<div v-else-if="selectedUserLogin">
-			<v-card-text class="empty-card"> ~ you are not friend with this user so u cant chat ~> </v-card-text>
+			<v-card-text> ~ you are not friend with this user so u cant chat ~> </v-card-text>
 		</div>
 
 		<div v-else>
 			<v-card-title>Messages</v-card-title>
-			<v-card-text class="empty-card"> ~ no friend selected ~ </v-card-text>
+			<v-card-text> ~ no friend selected ~ </v-card-text>
 		</div>
 		<!-- Message Input -->
 	</v-card>
-	<v-footer>
+	<v-footer rounded="0" elevation="0">
 		<v-text-field
 			v-model="input"
 			placeholder="Type your message..."
 			max-length="200"
 			variant="solo"
-			class="elevation-0"
+			rounded="0"
+			flat
 			append-inner-icon="fas fa-paper-plane"
 			@keyup.enter="sendMessage"
 			@click:append-inner="sendMessage"
 			density="compact"
 			clearable
-			rounded="0"
 		/>
 	</v-footer>
 
@@ -82,9 +86,9 @@ export default {
 	},
 	props: {
 		selectedUserLogin: String,
+		refresh: Number,
 	},
-	mounted() {
-	},
+	mounted() {},
 	data() {
 		return {
 			userLogin: this.selectedUserLogin ? (this.selectedUserLogin as string) : ('' as string),
@@ -96,6 +100,9 @@ export default {
 	watch: {
 		selectedUserLogin: function (newVal: string) {
 			this.userLogin = newVal;
+			this.fetchDirectMessages();
+		},
+		refresh: function () {
 			this.fetchDirectMessages();
 		},
 		isConnected: function (newVal: boolean) {
@@ -212,17 +219,24 @@ export default {
 </script>
 
 <style scoped>
-.scrollable-content {
-	height: 70vh;
-	overflow-y: auto;
-}
-
 .v-card {
 	border: black solid thin;
 	border-radius: 0;
-	max-height: 87dvh;
+	max-height: 82dvh;
+	height: 82dvh;
 	scroll-behavior: auto;
 	overflow-y: scroll;
 	overflow-x: hidden;
+}
+
+.v-footer {
+	border-right: black solid thin;
+	border-left: black solid thin;
+	border-bottom: black solid thin;
+}
+
+.div {
+	border-right: black solid thin;
+	border-left: black solid thin;
 }
 </style>

@@ -1,8 +1,12 @@
 <template>
+	<div class="div d-flex flex-row align-center">
+		<v-card-title>{{ selectedChannelName }}</v-card-title>
+		<v-spacer></v-spacer>
+		<v-icon class="mr-2 hoverable" icon="fas fa-info-circle" color="black" @click=""></v-icon>
+	</div>
 	<v-card>
 		<!-- If channel selected -->
 		<div v-if="selectedChannelName">
-			<v-card-title>Messages on {{ selectedChannelName }}</v-card-title>
 
 			<!-- Messages -->
 			<v-card-text>
@@ -23,16 +27,15 @@
 
 		<!-- Else if no channel selected -->
 		<div v-else>
-			<v-card-title>Messages</v-card-title>
-			<v-card-text class="empty-card">
+			<v-card-text>
 				~ no channel selected ~
 			</v-card-text>
 		</div>
 	</v-card>
-	<v-footer>
-		<v-text-field v-model="input" placeholder="Type your message..." max-length="200" variant="solo"
-			class="elevation-0 rounded-0" append-inner-icon="fas fa-paper-plane" @keyup.enter="sendMessage"
-			@click:append-inner="sendMessage" density="compact" clearable rounded="0" />
+	<v-footer rounded="0" elevation="0">
+		<v-text-field v-model="input" placeholder="Type your message..." max-length="200" variant="solo" rounded="0" flat
+			append-inner-icon="fas fa-paper-plane" @keyup.enter="sendMessage" @click:append-inner="sendMessage"
+			density="compact" clearable />
 	</v-footer>
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
@@ -69,8 +72,10 @@ export default {
 		};
 	},
 	props: {
-		selectedChannelName: String
+		selectedChannelName: String,
+		refresh: Number,
 	},
+	emits: ['ask-refresh'],
 	data() {
 		return {
 			channelName: this.selectedChannelName,
@@ -97,7 +102,11 @@ export default {
 					       });
 		}
 		},
+		refresh: function() {
+			this.fetchMessages();
+		},
 	},
+	emits: ['open-profile'],
 	methods: {
 		fetchMessages: async function () {
 			try {
@@ -161,7 +170,33 @@ export default {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
+		openProfile: function () {
+			this.$emit('open-profile', this.selectedUserLogin)
+		},
 	},
 };
 
 </script>
+
+<style scoped>
+.v-card {
+	border: black solid thin;
+	border-radius: 0;
+	max-height: 82dvh;
+	height: 82dvh;
+	scroll-behavior: auto;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.v-footer {
+	border-right: black solid thin;
+	border-left: black solid thin;
+	border-bottom: black solid thin;
+}
+
+.div {
+	border-right: black solid thin;
+	border-left: black solid thin;
+}
+</style>

@@ -1,25 +1,30 @@
 <template>
 	<!-- Non joined channels (discover)-->
-	<v-card-title>Discover Channels</v-card-title>
-	<v-list v-if="channels.length">
-		<v-list-item v-for="channel in channels" :key="channel.id">
-			{{ channel.name }}
-			<template v-if="channel.is_public">
-				<v-btn @click="joinPublicChannel(channel.name)">+</v-btn>
-			</template>
-			<template v-else>
-				<v-btn @click="openPwdDialog(channel.name)">+</v-btn>
-			</template>
-		</v-list-item>
-	</v-list>
-	<v-card-text v-else>
-		~ no channel available ~
-	</v-card-text>
-
-	<v-card-actions>
-		<v-spacer></v-spacer>
-		<v-btn @click="showNameModal">Create you own channel !</v-btn>
-	</v-card-actions>
+	<div class="ma-2">
+		<h3>Discover Channels</h3>
+		<v-list v-if="channels.length">
+			<v-list-item 
+				v-for="channel in channels" 
+				append-icon="fas fa-plus"
+				color="black"
+				density="compact"
+				:key="channel.id" 
+				:title="channel.name" 
+				:ripple="false"
+				@click="channel.is_public ? joinPublicChannel(channel.name) : openPwdDialog(channel.name)">
+			</v-list-item>
+		</v-list>
+		<v-card-text v-else>
+			~ no channel available ~
+		</v-card-text>
+		
+		<v-btn 
+			flat
+			rounded="0"
+			style="border: black solid thin;"
+			:ripple="false"
+			@click="showNameModal">Create you own channel!</v-btn>
+	</div>
 
 
 	<PwdModal class="modal" v-if="showPwdModal" :showModal="showPwdModal" @join-private-channel="joinPrivateChannel"
@@ -60,6 +65,15 @@ export default {
 			user,
 		};
 	},
+	props: {
+		refresh: Number,
+	},
+	watch: {
+		refresh: function() {
+			this.fetchChannels();
+		}
+	},
+	emits: ['ask-refresh'],
 	data() {
 		return {
 			newChannelName: '' as string,
@@ -119,12 +133,11 @@ export default {
 				if (!response.ok) {
 					const error = await response.json();
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					this.showChannelNameModal = false;
 					return;
 				}
-				const data = await response.text();
-				snackbarStore.showSnackbar(data.message, 3000, 'green');
-
 				this.showChannelNameModal = false;
+				this.$emit('ask-refresh');
 				this.fetchChannels();
 
 			} catch (error: any) {
@@ -157,9 +170,8 @@ export default {
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
-				const data = await response.json();
-				snackbarStore.showSnackbar(data.message, 3000, 'green');
 
+				this.$emit('ask-refresh');
 				this.fetchChannels();
 
 			} catch (error: any) {
@@ -198,8 +210,7 @@ export default {
 					this.showPwdModal = false;
 					return;
 				}
-				const data = await response.json();
-				snackbarStore.showSnackbar(data.message, 3000, 'green');
+				this.$emit('ask-refresh');
 				this.selectedPrivChannel = '';
 				this.showPwdModal = false;
 

@@ -1,7 +1,7 @@
 <template>
 	<v-layout class="bg-white">
 		<v-app-bar class="elevation-0 bg-white" density="compact" style="border: black solid thin">
-			<v-toolbar-title class="text-end md-2 pa-2 h2">OMORI Community <span style="color: blue">{{ isConnected }}</span></v-toolbar-title>
+			<v-toolbar-title class="text-end md-2 pa-2 h2">Whitespace Community</v-toolbar-title>
 		</v-app-bar>
 
 		<v-navigation-drawer rail class="elevation-0 bg-white" style="border: black solid thin">
@@ -23,9 +23,21 @@
 			<div v-show="tab === 1">
 				<Suspense>
 					<main>
-						<Friends @user-selected="updateSelectedUser" />
-						<Requests @user-selected="updateSelectedUser" />
-						<Users @user-selected="updateSelectedUser" />
+						<Friends
+							@user-selected="updateSelectedUser"
+							@ask-refresh="refreshDMsPage"
+							:refresh="refreshKeyDMs"
+						/>
+						<Requests
+							@user-selected="updateSelectedUser"
+							@ask-refresh="refreshDMsPage"
+							:refresh="refreshKeyDMs"
+						/>
+						<Users
+							@user-selected="updateSelectedUser"
+							@ask-refresh="refreshDMsPage"
+							:refresh="refreshKeyDMs"
+						/>
 					</main>
 					<template #fallback>
 						<div>Loading...</div>
@@ -34,8 +46,12 @@
 			</div>
 			<!-- Joined channels, discover channels -->
 			<div v-show="tab === 2">
-				<JoinedChannels @channel-selected="updateSelectedChannel" />
-				<DiscoverChannels />
+				<JoinedChannels
+					@channel-selected="updateSelectedChannel"
+					@ask-refresh="refreshChannelsPage"
+					:refresh="refreshKeyChannels"
+				/>
+				<DiscoverChannels @ask-refresh="refreshChannelsPage" :refresh="refreshKeyChannels" />
 			</div>
 			<!-- Profile Settings -->
 			<div v-show="tab === 3">
@@ -48,7 +64,11 @@
 				<UserProfile :selectedUserLogin="selectedUserLogin" />
 			</div>
 			<div v-show="tab === 2">
-				<ChannelSettings :selectedChannelName="selectedChannelName" />
+				<ChannelSettings
+					:selectedChannelName="selectedChannelName"
+					@ask-refresh="refreshChannelsPage"
+					:refresh="refreshKeyChannels"
+				/>
 			</div>
 		</v-navigation-drawer>
 
@@ -58,7 +78,7 @@
 				<div v-show="tab === 1">
 					<Suspense>
 						<main>
-							<DirectMessages :selectedUserLogin="selectedUserLogin" />
+							<DirectMessages :selectedUserLogin="selectedUserLogin" :refresh="refreshKeyDMs" />
 						</main>
 						<template #fallback>
 							<div>Loading...</div>
@@ -68,22 +88,26 @@
 
 				<!-- Channels tab -->
 				<div v-show="tab === 2">
-					<ChannelMessages :selectedChannelName="selectedChannelName"></ChannelMessages>
+					<ChannelMessages
+						@open-profile="openDrawer"
+						:selectedChannelName="selectedChannelName"
+						:refresh="refreshKeyChannels"
+					/>
 				</div>
 
 				<!-- Profile tab -->
 				<div v-show="tab === 3">
 					<v-card>
 						<Suspense>
-						<main>
-							<Profile />
-							<MatchHistory />
-							<BlockedUsers />
-						</main>
-						<template #fallback>
-							<div>Loading...</div>
-						</template>
-					</Suspense>
+							<main>
+								<Profile />
+								<MatchHistory />
+								<BlockedUsers />
+							</main>
+							<template #fallback>
+								<div>Loading...</div>
+							</template>
+						</Suspense>
 					</v-card>
 				</div>
 			</v-window>
@@ -151,8 +175,16 @@ export default defineComponent({
 		Box,
 		Button,
 	},
-
+	// props: {
+	// 	open: Boolean,
+	// },
+	watch: {
+		open: function (newVal: boolean) {
+			this.open = newVal;
+		},
+	},
 	setup() {
+		let open = false as Boolean;
 		const userStore = useUser();
 		const route = useRoute();
 		const tab = ref(route.query.tab ? parseInt(route.query.tab as string) : 1);
@@ -170,7 +202,7 @@ export default defineComponent({
 			await webSocketStore.disconnect();
 		};
 
-	//	provide('chat-socket', socket);
+		//	provide('chat-socket', socket);
 
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
@@ -202,10 +234,14 @@ export default defineComponent({
 			user,
 			tab,
 			links,
+			open,
 		};
 	},
 	data() {
 		return {
+			refreshKeyDMs: 0,
+			refreshKeyChannels: 0,
+			refreshKeyProfile: 0,
 			selectedUserLogin: '' as string,
 			selectedChannelName: '' as string,
 			links: [
@@ -253,6 +289,16 @@ export default defineComponent({
 			if (this.isConnected) this.disconnect();
 			return this.$router.push({ name: `Login` });
 		},
+		refreshDMsPage() {
+			this.refreshKeyDMs++;
+		},
+		refreshChannelsPage() {
+			this.refreshKeyChannels++;
+		},
+		openDrawer() {
+			if (this.open === true) this.open = false;
+			else if (this.open === false) this.open = true;
+		},
 	},
 //	async beforeMount() {
 //		if (!this.JWT) {
@@ -271,10 +317,8 @@ export default defineComponent({
 </script>
 
 <style>
-.v-card {
-	border: black solid thin;
-	border-radius: 0;
-	max-height: 89dvh;
-	height: 90dvh;
+.v-dialog {
+	width: 30%;
+	height: 50%;
 }
 </style>

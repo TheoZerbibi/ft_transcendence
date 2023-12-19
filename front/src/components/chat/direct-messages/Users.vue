@@ -1,14 +1,21 @@
 <template>
 
 	<!-- Users list -->
-		<v-card-title >Discover Users</v-card-title>
+	<div class="ma-2">
+		<h3>Discover Users</h3>
 		<v-list v-if="users.length">
-			<v-list-item v-for="user in users" :key="user.id" @click="userSelected(user.login)">
-				{{ user.display_name }}
-				<v-btn @click="sendFriendRequest(user.login)">+</v-btn>
+			<v-list-item 
+				v-for="user in users" 
+				append-icon="fas fa-plus"
+				color="black"
+				density="compact"
+				:key="user.id"
+				:title="user.display_name"
+				@click="sendFriendRequest(user.login)">
 			</v-list-item>
 		</v-list>
 		<v-card-text v-else>~ no users except you ~</v-card-text>
+	</div>
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
 
@@ -42,10 +49,18 @@ export default {
 		};
 	},
 
-	emits: ['user-selected'],
+	props: {
+		refresh: Number,
+	},
+	watch: {
+		refresh: function() {
+			this.fetchUsers();
+		}
+	},
+	emits: ['user-selected', 'ask-refresh'],
+
 
 	beforeMount() { this.fetchUsers(); },
-
 	methods: {
  		fetchUsers: async function() {
 			try {
@@ -95,8 +110,9 @@ export default {
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
-				const data = await response.json();
-				snackbarStore.showSnackbar(data.message, 3000, 'green');
+
+				this.$emit('ask-refresh');
+				this.fetchUsers();
 
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');

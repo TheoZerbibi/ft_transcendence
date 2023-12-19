@@ -1,13 +1,15 @@
 <template>
 	<!-- Joined Channels list -->
-	<v-card-title>Joined Channels</v-card-title>
-	<v-list v-if="joinedChannels.length">
-		<v-list-item v-for="channel in joinedChannels" :key="channel.id" @click="displayMessagesOfChannel(channel.name)">
-			{{ channel.name }}
-		</v-list-item>
-	</v-list>
-	<v-card-text v-else>~ u didn't join any channels for now ~</v-card-text>
+	<div class="ma-2">
 
+		<h3>Joined Channels</h3>
+		<v-list v-if="joinedChannels.length">
+			<v-list-item v-for="channel in joinedChannels" color="black" density="compact" :key="channel.id"
+				:title="channel.name" :ripple="false" @click="displayMessagesOfChannel(channel.name)">
+			</v-list-item>
+		</v-list>
+		<v-card-text v-else>~ u didn't join any channels for now ~</v-card-text>
+	</div>
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
 </template>
@@ -43,7 +45,16 @@ export default {
 		};
 	},
 
-	emits: ['channel-selected'],
+	props: {
+		refresh: Number,
+	},
+	watch: {
+		refresh: function() {
+			this.fetchJoinedChannels();
+		}
+	},
+
+	emits: ['channel-selected', 'ask-refresh'],
 
 	beforeMount() {
 		this.fetchJoinedChannels();
@@ -53,17 +64,17 @@ export default {
 		fetchJoinedChannels: async function () {
 			try {
 				const response: any = await
-				fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/list/joined`,
-					{
-						method: 'GET',
-						headers: {
-							'Content-Type': 'application/json',
-							Authorization: `Bearer ${this.JWT}`,
-							'Access-Control-Allow-Origin': '*',
-						},
-					}
-				);
+					fetch(
+						`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/list/joined`,
+						{
+							method: 'GET',
+							headers: {
+								'Content-Type': 'application/json',
+								Authorization: `Bearer ${this.JWT}`,
+								'Access-Control-Allow-Origin': '*',
+							},
+						}
+					);
 				if (!response.ok) {
 					const error = await response.json();
 					snackbarStore.showSnackbar(error.message, 3000, 'red');

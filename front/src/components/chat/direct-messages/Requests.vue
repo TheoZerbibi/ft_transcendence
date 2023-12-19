@@ -1,18 +1,24 @@
 <template>
 
 	<!-- Friend Requests list -->
-		<v-card-title>Friend Requests</v-card-title>
-
+	<div class="ma-2">
+		<h3>Friend Requests</h3>
+		
 		<v-list v-if="requests.length">
-			<v-list-item v-for="request in requests" :key="request.id" @click="userSelected(user.login)">
-
+			<v-list-item 
+				v-for="request in requests"
+				color="black"
+				density="compact"
+				:key="request.id" 
+				@click="userSelected(user.login)">
+	
 				<template v-if="request.user_login == user.login">
 					{{ request.target_display_name }}
 					<v-btn
 						@click="cancelRequest(request.target_login)"
 					>Cancel</v-btn>
 				</template>
-
+	
 				<template v-else>
 					{{ request.user_display_name }}
 					<AcceptDeclineButton
@@ -24,10 +30,13 @@
 						:response="false"
 						@respond="respondRequest"/>
 				</template>
-
+	
 			</v-list-item>
 		</v-list>
+		
 		<v-card-text v-else>~ no pending friend requests ~</v-card-text>
+	</div>
+
 
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
@@ -66,7 +75,15 @@ export default {
 			selectedUserLogin: '' as string,
 		};
 	},
-	emits: ['user-selected'],
+	props: {
+		refresh: Number,
+	},
+	watch: {
+		refresh: function() {
+			this.fetchRequests();
+		}
+	},
+	emits: ['user-selected', 'ask-refresh'],
 
 	beforeMount() { this.fetchRequests(); },
 
@@ -122,8 +139,7 @@ export default {
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
-				const data = await response.json();
-				snackbarStore.showSnackbar(data.message, 3000, 'green');
+				this.$emit('ask-refresh');
 
 			} catch (error) {
 				console.log(error);
@@ -150,8 +166,7 @@ export default {
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
-				const data = await response.json();
-				snackbarStore.showSnackbar(data.message, 3000, 'green');
+				this.$emit('ask-refresh');
 
 			} catch (error) {
 				console.log(error);
