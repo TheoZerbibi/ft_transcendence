@@ -11,18 +11,20 @@
 			<h2>- Theo - DevOps, Backend, Game, Auth</h2>
 			<h2>- Semiha - Design, Front, Chat</h2>
 			<h2>- Noemi - Chat, Backend</h2>
-			<h2>- Gaelle - Front</h2>
+			<h2>- Gaelle - Front, Review</h2>
 		</div>
 		<div v-if="backend" class="backend-mate">
 			<h1>Backend Helpers</h1>
 			<h2>- Riblanc</h2>
 			<h2>- Anclarma</h2>
 			<h2>- Mlabouri</h2>
+			<h2>- Jgiron</h2>
 		</div>
 		<div v-if="bugHunter" class="bug-hunter-mate">
 			<h1>Extern Bug Hunters</h1>
 			<h2>- Anclarma</h2>
 			<h2>- Emaugale</h2>
+			<h2>- Nsainton</h2>
 		</div>
 		<div v-if="advisors" class="advisor-mate">
 			<h1>Advisor</h1>
@@ -30,6 +32,8 @@
 			<h2>- Emaugale</h2>
 			<h2>- Tmatis</h2>
 			<h2>- Nsainton</h2>
+			<h2>- Fcatinau</h2>
+			<h2>- Mlormois</h2>
 		</div>
 	</v-container>
 </template>
