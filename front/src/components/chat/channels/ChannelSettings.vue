@@ -36,7 +36,9 @@
 		<v-card-text v-else-if="channelName">~ no one in this channel except you ~</v-card-text>
 		
 		<v-card-actions class="flex-column align-center justify-center">
-			<ChangePwd :selectedChannelName="channelName"></ChangePwd>
+			<ChangePwd 
+				:selectedChannelName="channelName">
+			</ChangePwd>
 			
 			<v-btn flat
 			rounded="0"
