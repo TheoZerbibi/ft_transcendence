@@ -33,9 +33,18 @@
 		</div>
 	</v-card>
 	<v-footer rounded="0" elevation="0">
-		<v-text-field v-model="input" placeholder="Type your message..." max-length="200" variant="solo" rounded="0" flat
-			append-inner-icon="fas fa-paper-plane" @keyup.enter="sendMessage" @click:append-inner="sendMessage"
-			density="compact" clearable />
+		<v-text-field 
+			v-model="input"
+			placeholder="Type your message..."
+			max-length="200"
+			variant="solo"
+			rounded="0"
+			flat
+			append-inner-icon="fas fa-paper-plane"
+			@keyup.enter="sendMessage"
+			@click:append-inner="sendMessage"
+			density="compact" 
+			clearable />
 	</v-footer>
 	<!-- Error handling -->
 	<Snackbar></Snackbar>

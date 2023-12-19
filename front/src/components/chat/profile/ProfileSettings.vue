@@ -55,7 +55,7 @@ import { useSnackbarStore } from '../../../stores/snackbar';
 import Snackbar from '../../layout/Snackbar.vue';
 import DateViewer from '../../utils/Date.vue';
 import ProfileNameModal from '../channels/modals/ProfileNameModal.vue';
-import QrcodeVue from 'qrcode.vue';
+import modal2FA from '../channels/modals/twoEiffel.vue';
 
 const snackbarStore = useSnackbarStore();
 
@@ -64,27 +64,26 @@ export default {
 		Snackbar,
 		DateViewer,
 		ProfileNameModal,
-		QrcodeVue,
+		modal2FA,
 	},
 	setup() {
 		const userStore = useUser();
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
-		const is2FA = computed(() => userStore.is2FA);
+
 
 		return {
 			JWT,
 			user,
 			userStore,
-			is2FA,
 		};
 	},
 	data() {
 		return {
-			qrCode: null,
 			matchHistory: [],
 			newDisplayName: '',
 			dNameChangeModal: false as boolean,
+			qrCodeModal: false as boolean,
 		};
 	},
 	beforeMount() {
@@ -150,13 +149,6 @@ export default {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
-		enable2FA: async function() {
-			try {
-				console.log('[PROFILE SETTINGS: ENABLE 2FA TODO');
-			} catch (error: any) {
-				snackbarStore.showSnackbar(error, 3000, 'red');
-			}
-		},
 		deleteAccount: async function() {
 			try {
 				const response: any = await fetch(
@@ -189,7 +181,13 @@ export default {
 				this.dNameChangeModal = true;
 			}
 		},
-
+		show2FAModal: function() {
+			if (this.qrCodeModal) {
+				this.qrCodeModal = false;
+			} else {
+				this.qrCodeModal = true;
+			}
+		},
 	},
 };
 </script>
