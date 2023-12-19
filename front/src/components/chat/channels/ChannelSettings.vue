@@ -24,7 +24,7 @@
 		
 		<v-card-text v-else-if="channelName">~ no one in this channel except you ~</v-card-text>
 		
-		<v-card-actions class="d-flex flex-column align-start justify-center">
+		<v-card-actions class="flex-column align-center justify-center">
 			<v-btn flat
 			rounded="0"
 			style="border: black solid thin;"
@@ -251,7 +251,7 @@ export default {
 <style scoped>
 .v-btn {
 	border: black solid thin;
-	width: 75%;
+	width: 100%;
 	margin-top: 1dvh;
 	margin-bottom: 1dvh;
 }

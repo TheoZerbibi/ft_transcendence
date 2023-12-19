@@ -27,11 +27,19 @@
 	</div>
 
 
-	<PwdModal class="modal" v-if="showPwdModal" :showModal="showPwdModal" @join-private-channel="joinPrivateChannel"
+	<PwdModal 
+		class="modal"
+		v-if="showPwdModal"
+		:showModal="showPwdModal"
+		@join-private-channel="joinPrivateChannel"
 		@close-modal="showPwdModal = false" />
 
-	<ChannelNameModal class="modal" v-if="showChannelNameModal" :showModal="showChannelNameModal"
-		@create-channel="createChannel" @close-modal="showChannelNameModal = false" />
+	<ChannelNameModal 
+		class="modal"
+		v-if="showChannelNameModal"
+		:showModal="showChannelNameModal"
+		@create-channel="createChannel"
+		@close-modal="showChannelNameModal = false" />
 
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
