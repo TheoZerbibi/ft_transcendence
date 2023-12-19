@@ -1,6 +1,6 @@
 <template>
 
-	<div class="ma-2" v-if="selectedUserLogin">
+	<v-card flat class="ma-2" v-if="selectedUserLogin">
 
 		<h3>About @{{ selectedUserLogin }}</h3>
 
@@ -17,16 +17,27 @@
 			<v-card-subtitle>Matches: {{ friendData.stats.matches }}</v-card-subtitle>
 		</v-card-text>
 
-		<v-card-actions class="d-flex flex-column justify-center align-center">
-			<v-btn
-				flat
-				rounded="0"
-				:ripple="false" 
-				@click="blockUser"	
-				text="Block"></v-btn>
-		</v-card-actions>
+		<v-card-actions class="flex-column justify-center align-end">
+		<v-btn
+			flat
+			rounded="0"
+			:ripple="false"
+			color="black"
+			@click="deleteFriend"	
+			text="Remove Friend">
+		</v-btn>
+		<v-btn
+			flat
+			rounded="0"
+			:ripple="false" 
+			color="red"
+			@click="blockUser"	
+			text="Block">
+		</v-btn>
+			
+	</v-card-actions>
 
-	</div>
+</v-card>
 
 	<!-- <div v-else>
 		<v-card-title>Profile</v-card-title>
@@ -214,6 +225,36 @@ export default {
 				console.log(error);
 			}
 		},
+		deleteFriend: async function () {
+			try {
+				const response: any = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends`,
+					{
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+						body: JSON.stringify({
+							login: this.friendLogin,
+						}),
+					}
+				);
+
+				if (!response.ok) {
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					return;
+				}
+
+				this.$emit('ask-refresh');
+				this.fetchFriends();
+
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
+			}
+		},
 	},
 };
 
@@ -222,8 +263,10 @@ export default {
 <style scoped>
 .v-btn {
 	border: black solid thin;
-	width: 75%;
+	width: 100%;
 	margin-top: 1dvh;
 	margin-bottom: 1dvh;
+	display: flex;
+	position: relative;
 }
 </style>
