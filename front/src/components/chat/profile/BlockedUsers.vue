@@ -2,13 +2,15 @@
 
 	<!-- Blocked users list -->
 	<v-card-title>Blocked Users</v-card-title>
-		<v-list class="no-bullets" v-if="blockedUsers.length">
-			<v-list-item v-for="user in blockedUsers" :key="user.id">
-				{{ user.display_name }} <!-- L'objet contient aussi l'avatar si tu veux -->
-				<v-btn @click="unblockUser(user.login)">x</v-btn>
-			</v-list-item>
-		</v-list>
-		<v-card-text v-else>~ u havent blocked anyone for now ~</v-card-text>
+	<v-divider :thickness="7" class="border-opacity-100"></v-divider>
+
+	<v-list class="no-bullets" v-if="blockedUsers.length">
+		<v-list-item v-for="user in blockedUsers" :key="user.id">
+			{{ user.display_name }} <!-- L'objet contient aussi l'avatar si tu veux -->
+			<v-btn @click="unblockUser(user.login)">x</v-btn>
+		</v-list-item>
+	</v-list>
+	<v-card-text v-else>~ u havent blocked anyone for now ~</v-card-text>
 
 	<!-- Error handling -->
 	<Snackbar />
