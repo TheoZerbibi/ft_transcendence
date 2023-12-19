@@ -1,6 +1,6 @@
 <template>
 	<v-layout class="bg-white" fluid>
-		<v-app-bar class="elevation-0 bg-white" density="compact" style="border: black solid thin">
+		<v-app-bar app class="elevation-0 bg-white" density="compact" style="border: black solid thin">
 			<v-app-bar-nav-icon flat :ripple="false" rounded="0" icon="fa fa-ellipsis-h" @click.stop="drawer = !drawer" />
 			<v-toolbar-title class="text-end md-2 pa-2 h2">Whitespace Community</v-toolbar-title>
 		</v-app-bar>
@@ -12,7 +12,8 @@
 			v-model="drawer"
 			clipped
 			app>
-			<v-list> </v-list>
+			<div fill-height class="d-flex flex-column justify-space-between"
+			style="height: 100%;">
 			<v-tabs nav v-model="tab" direction="vertical" grow>
 				<v-tab
 					v-for="(link, index) in links"
@@ -23,6 +24,15 @@
 				>
 				</v-tab>
 			</v-tabs>
+			<v-btn 
+				flat 
+				rounded="0" 
+				:ripple="false"
+				@click="redirect('Home')"
+				icon="fas fa-home"
+				size="small"
+				></v-btn>
+			</div>
 		</v-navigation-drawer>
 
 		<v-navigation-drawer nav
@@ -178,14 +188,6 @@ export default defineComponent({
 		/* Layout */
 		Box,
 		Button,
-	},
-	// props: {
-	// 	open: Boolean,
-	// },
-	watch: {
-		open: function (newVal: boolean) {
-			this.open = newVal;
-		},
 	},
 	setup() {
 		let open = false as Boolean;
