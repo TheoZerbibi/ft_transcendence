@@ -21,7 +21,7 @@
 
 			<v-col cols="12">
 				<v-card-title>Game Stats</v-card-title>
-				<v-divider :thickness="7" class="border-opacity-100"></v-divider>
+				<v-divider :thickness="1" class="border-opacity-100"></v-divider>
 				<v-card-text v-if="Object.keys(gameStats).length">
 					<p>Wins: {{ gameStats.wins }}</p>
 					<p>Loses: {{ gameStats.loses }}</p>
