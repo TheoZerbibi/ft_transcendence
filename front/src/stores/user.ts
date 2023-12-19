@@ -13,8 +13,8 @@ export const useUser = defineStore('user', {
 	}),
 	getters: {
 		getJWT: (state) => {
-		//	return state.JWT;
-			return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInN1YiI6ZmFsc2UsImlhdCI6MTcwMjkzNzM0MywiZXhwIjoxNzAzMDIzNzQzfQ.OfbjJwrM1zsfuSCoASXPFVLw753f9-_E9NaSyyWDaVM';
+			return state.JWT;
+	//		return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwic3ViIjpmYWxzZSwiaWF0IjoxNzAzMDE4NzAwLCJleHAiOjE3MDMxMDUxMDB9.tLmVsvHWadak2c1HpglF7b3XF6xmCgiRIW7NAuPwdL8';
 		},
 		getUser: (state) => {
 			return { login: state.login, displayName: state.displayName, avatar: state.avatar };

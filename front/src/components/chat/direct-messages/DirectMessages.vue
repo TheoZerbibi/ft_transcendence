@@ -112,121 +112,120 @@ export default {
 					            const msg: any = JSON.parse(data);
 						console.log(`[DirMSg-WebSocket] 'new-dir-message' -> '${data}'`);
 						if (msg !== undefined) {
-						this.messages.push(data);
-					       console.log (`new-direct-msg - msg: ${msg}`);
+						this.messages.push(msg);
+						}
+
+						else
+						console.log('Error direct msg failed');
+
+						});
+			}
+			     },
+	       },
+methods: {
+fetchDirectMessages: async function () {
+			     try {
+				     if (!this.userLogin || this.userLogin === '') {
+					     console.log('[fetchDirectMessages]: userLogin is empty');
+					     return;
+				     }
+
+				     // Check if selected user is a friend
+				     const isFriend: any = await fetch(
+						     `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/isfriend/${
+						     this.userLogin
+						     }`,
+						     {
+method: 'GET',
+headers: {
+Authorization: `Bearer ${this.JWT}`,
+'Access-Control-Allow-Origin': '*',
+},
+},
+);
+if (!isFriend.ok) {
+	const error = await isFriend.json();
+	snackbarStore.showSnackbar(error.message, 3000, 'red');
+	return;
+}
+const isFriendData: any = await isFriend.json();
+if (!isFriendData.isFriend) {
+	this.is_friend = false;
+	return;
+}
+this.is_friend = true;
+
+// Fetch messages
+const response: any = await fetch(
+		`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/${
+		this.userLogin
+		}/all`,
+		{
+method: 'GET',
+headers: {
+Authorization: `Bearer ${this.JWT}`,
+'Access-Control-Allow-Origin': '*',
+},
+},
+);
+if (!response.ok) {
+	const error = await response.json();
+	snackbarStore.showSnackbar(error.message, 3000, 'red');
+	return;
+}
+const data = await response.json();
+
+this.messages = data;
+} catch (error: any) {
+	snackbarStore.showSnackbar(error, 3000, 'red');
+}
+},
+
+sendMessage: async function () {
+		     try {
+			     if (!this.userLogin || this.userLogin === '' || this.input.trim() === '') {
+				     return;
+			     }
+			     const response: any = await fetch(
+					     `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/send`,
+					     {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json',
+Authorization: `Bearer ${this.JWT}`,
+'Access-Control-Allow-Origin': '*',
+},
+body: JSON.stringify({
+target_login: this.userLogin,
+content: this.input,
+}),
+},
+);
+
+if (!response.ok) {
+	const error = await response.json();
+	snackbarStore.showSnackbar(error.message, 3000, 'red');
+	return;
 }
 
-					       else
-						console.log('Error direct msg failed');
-		
-					       });
-		}
-		},
+const data = await response.json();
+
+//	this.fetchDirectMessages();
+this.input = '';
+} catch (error: any) {
+	snackbarStore.showSnackbar(error, 3000, 'red');
+}
+},
 	},
-	methods: {
-		fetchDirectMessages: async function () {
-			try {
-				if (!this.userLogin || this.userLogin === '') {
-					console.log('[fetchDirectMessages]: userLogin is empty');
-					return;
-				}
-
-				// Check if selected user is a friend
-				const isFriend: any = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/isfriend/${
-						this.userLogin
-					}`,
-					{
-						method: 'GET',
-						headers: {
-							Authorization: `Bearer ${this.JWT}`,
-							'Access-Control-Allow-Origin': '*',
-						},
-					},
-				);
-				if (!isFriend.ok) {
-					const error = await isFriend.json();
-					snackbarStore.showSnackbar(error.message, 3000, 'red');
-					return;
-				}
-				const isFriendData: any = await isFriend.json();
-				if (!isFriendData.isFriend) {
-					this.is_friend = false;
-					return;
-				}
-				this.is_friend = true;
-
-				// Fetch messages
-				const response: any = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/${
-						this.userLogin
-					}/all`,
-					{
-						method: 'GET',
-						headers: {
-							Authorization: `Bearer ${this.JWT}`,
-							'Access-Control-Allow-Origin': '*',
-						},
-					},
-				);
-				if (!response.ok) {
-					const error = await response.json();
-					snackbarStore.showSnackbar(error.message, 3000, 'red');
-					return;
-				}
-				const data = await response.json();
-
-				this.messages = data;
-			} catch (error: any) {
-				snackbarStore.showSnackbar(error, 3000, 'red');
-			}
-		},
-
-		sendMessage: async function () {
-			try {
-				if (!this.userLogin || this.userLogin === '' || this.input.trim() === '') {
-					return;
-				}
-				const response: any = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/send`,
-					{
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-							Authorization: `Bearer ${this.JWT}`,
-							'Access-Control-Allow-Origin': '*',
-						},
-						body: JSON.stringify({
-							target_login: this.userLogin,
-							content: this.input,
-						}),
-					},
-				);
-
-				if (!response.ok) {
-					const error = await response.json();
-					snackbarStore.showSnackbar(error.message, 3000, 'red');
-					return;
-				}
-
-				const data = await response.json();
-
-			//	this.fetchDirectMessages();
-				this.input = '';
-			} catch (error: any) {
-				snackbarStore.showSnackbar(error, 3000, 'red');
-			}
-		},
-	},
-};
+	};
 </script>
 
 <style scoped>
 .v-card {
-	border: black solid thin;
+border: black solid thin;
 	border-radius: 0;
 	max-height: 82dvh;
-	height: 82dvh;
+height: 82dvh;
 	scroll-behavior: auto;
 	overflow-y: scroll;
 	overflow-x: hidden;

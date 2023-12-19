@@ -75,7 +75,7 @@ export class ChatService {
 	{
 		console.log(`[ChatService] removing ${user.login} from socket buffer`);
 		Chat.removeUserById(user.id);
-	//	return Chat.removeUserBySocket(client);
+		//	return Chat.removeUserBySocket(client);
 	}
 
 	// return removed user socket
