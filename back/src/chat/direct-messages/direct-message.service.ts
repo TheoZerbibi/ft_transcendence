@@ -15,6 +15,8 @@ enum RequestStatus {
 }
 import { RedisService } from 'src/redis/redis.service';
 
+const deletedUserLoginLength = 36;
+
 @Injectable()
 export class DirectMessageService {
 	constructor(
@@ -31,6 +33,9 @@ export class DirectMessageService {
 
 	async accessDirectMessagesWith(user: User, target_login: string) {
 		try {
+			if (target_login.length === deletedUserLoginLength) {
+				throw new BadRequestException(`User not found`);
+			}
 			const targetUser = await this.userService.findUserByName(target_login);
 			if (!targetUser) throw new BadRequestException(`User ${target_login} not found`);
 
@@ -109,6 +114,9 @@ export class DirectMessageService {
 
 	async createDirectMessageWith(user: User, dto: CreateDirectMessageDto) {
 		try {
+			if (dto.target_login.length === deletedUserLoginLength) {
+				throw new BadRequestException(`User not found`);
+			}
 			const targetUser: User | null = await this.userService.findUserByName(dto.target_login);
 			if (!targetUser) throw new BadRequestException(`User ${dto.target_login} not found`);
 
