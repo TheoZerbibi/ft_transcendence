@@ -57,7 +57,6 @@ import DateViewer from '../../utils/Date.vue';
 import ProfileNameModal from '../channels/modals/ProfileNameModal.vue';
 import QrcodeVue from 'qrcode.vue';
 
-const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 
 export default {
@@ -68,6 +67,7 @@ export default {
 		QrcodeVue,
 	},
 	setup() {
+		const userStore = useUser();
 		const JWT = computed(() => userStore.getJWT);
 		const user = computed(() => userStore.getUser);
 		const is2FA = computed(() => userStore.is2FA);
@@ -75,6 +75,7 @@ export default {
 		return {
 			JWT,
 			user,
+			userStore,
 			is2FA,
 		};
 	},
@@ -89,6 +90,7 @@ export default {
 	beforeMount() {
 		this.fetchMatchHistory();
 	},
+	emits: ['account-deleted'],
 	methods: {
 		fetchMatchHistory: async function () {
 			try {
@@ -120,7 +122,6 @@ export default {
 				if (newDisplayName === '') {
 					return;
 				}
-				console.log('NEW DISPLAY NAME:', newDisplayName);
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users`,
 					{
@@ -143,7 +144,7 @@ export default {
 				}
 				const data = await response.json();
 				snackbarStore.showSnackbar(data.message, 3000, 'green');
-				userStore.displayName = newDisplayName;
+				this.userStore.displayName = newDisplayName;
 				this.dNameChangeModal = false;
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
@@ -156,16 +157,27 @@ export default {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
-		changeAvatar: async function() {
-			try {
-				console.log('[PROFILE SETTINGS: CHANGE AVATAR TODO');
-			} catch (error: any) {
-				snackbarStore.showSnackbar(error, 3000, 'red');
-			}
-		},
 		deleteAccount: async function() {
 			try {
-				console.log('[PROFILE SETTINGS: DELETE ACCOUNT TODO');
+				const response: any = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/profile`,
+					{
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+					},
+				);
+				if (!response.ok) {
+					const error = await response.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					return;
+				}
+				sessionStorage.clear();
+				await this.userStore.deleteUser();
+				this.$emit('account-deleted');
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
