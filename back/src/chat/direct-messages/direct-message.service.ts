@@ -76,10 +76,6 @@ export class DirectMessageService {
 						},
 					],
 				},
-				orderBy: {
-					created_at: 'asc',
-				},
-				take: 50,
 			});
 			const directMessageDtos: DirectMessageDto[] = await Promise.all(
 				directMessages.map(async (directMessage) => {

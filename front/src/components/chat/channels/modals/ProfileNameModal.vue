@@ -1,21 +1,21 @@
 <template>
 	<v-dialog v-if="showModal" v-model="dialog" @click:outside="cancel">
 		<v-card class="rounded-0">
-
+			
 			<v-card-title>
 				<span class="headline">What name will you choose ?</span>
 			</v-card-title>
 			
-			<v-card-text >
+			<v-card-text>
 				<v-text-field 
-					variant="outlined" 
-					rounded="0" 
-					flat 
+					rounded="0"
+					flat
 					density="compact"
-					clearable 
-					v-model="name" 
+					clearable
+					v-model="name"
 					label="Name"
 					type="name"
+					variant="outlined"
 					@keyup.enter="submit">
 				</v-text-field>
 			</v-card-text>
@@ -24,6 +24,7 @@
 				<v-btn flat rounded="0" :ripple="false" @click="cancel">Cancel</v-btn>
 				<v-btn flat rounded="0" :ripple="false" @click="submit">OK</v-btn>
 			</v-card-actions>
+		
 		</v-card>
 	</v-dialog>
 </template>
@@ -44,11 +45,11 @@ export default {
 			this.dialog = val;
 		},
 	},
-	emits: ['create-channel', 'close-modal'],
+	emits: ['change-dname', 'close-modal'],
 	methods: {
 		submit() {
 			this.dialog = false;
-			this.$emit('create-channel', this.name);
+			this.$emit('change-dname', this.name);
 		},
 		cancel() {
 			this.dialog = false;
@@ -59,6 +60,7 @@ export default {
 </script>
 
 <style scoped>
+
 .v-btn {
 	border: black solid thin;
 	width: 45%;
@@ -67,4 +69,5 @@ export default {
 	display: flex;
 	position: relative;
 }
+
 </style>
