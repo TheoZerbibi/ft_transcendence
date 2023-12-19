@@ -2,7 +2,7 @@
 
 	<!-- Channel users list -->
 	<div class="ma-2" v-if="channelName">
-		<h3>{{ channelName }} settings</h3>
+		<h3>#{{ channelName }} settings</h3>
 		Users:
 		<v-list v-if="channelUsers.length">
 			<v-list-item
