@@ -116,11 +116,9 @@ export default {
 				console.log(`[DirMsg-WebSocket] on`);
 				this.socket.on('new-direct-message', (data: any) => {
 					const msg: any = JSON.parse(data);
-					console.log(`[DirMSg-WebSocket] 'new-dir-message' -> ${msg}`);
+					console.log(`[DirMSg-WebSocket] 'new-dir-message' -> '${data}'`);
 					if (msg !== undefined) {
-						console.log(msg['content']);
 						this.messages.push(msg);
-						console.log(`new-direct-msg - msg: ${msg.content}`);
 					} else console.log('Error direct msg failed');
 				});
 			}
@@ -214,7 +212,7 @@ export default {
 
 				const data = await response.json();
 
-				this.fetchDirectMessages();
+				//	this.fetchDirectMessages();
 				this.input = '';
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
