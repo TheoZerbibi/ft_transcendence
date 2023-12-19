@@ -1,7 +1,6 @@
 <template>
 	<v-card-title>Settings</v-card-title>
 
-	Your display name is: {{ user.displayName }}
 	<v-text-field
 		v-model="newDisplayName"
 		label="Display name"
@@ -9,6 +8,10 @@
 		@keyup.enter="changeDisplayName"
 	></v-text-field>
 	<v-btn @click="changeDisplayName">Change display name</v-btn>
+
+	<v-btn @click="enable2FA" v-if="!user.twoFactorAuth">Enable 2FA</v-btn>
+
+	<v-btn @click="changeAvatar">Change avatar</v-btn>
 
 	<!-- Error handling -->
 	<Snackbar />
@@ -103,6 +106,20 @@ export default {
 				snackbarStore.showSnackbar(data.message, 3000, 'green');
 				userStore.displayName = this.newDisplayName;
 				this.newDisplayName = '';
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
+			}
+		},
+		enable2FA: async function() {
+			try {
+				console.log('[PROFILE SETTINGS: ENABLE 2FA TODO');
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
+			}
+		},
+		changeAvatar: async function() {
+			try {
+				console.log('[PROFILE SETTINGS: CHANGE AVATAR TODO');
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}

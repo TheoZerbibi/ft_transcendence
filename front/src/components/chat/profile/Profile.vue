@@ -1,19 +1,25 @@
 <template>
 	<v-card-title>Profile</v-card-title>
-	<v-card-subtitle>@{{ user.login }}</v-card-subtitle>
-	<v-img class="cadre-responsive" src="/ui/polaroid.png">
-		<v-img
-		class="avatar-responsive"
-		:src="user.avatar"
-		/>
-		<v-card-subtitle>{{ user.displayName }}</v-card-subtitle>
-	</v-img>
-	<div v-if="Object.keys(gameStats).length ">
-		{{ gameStats }}
-	</div>
+	<v-card-subtitle>Login: @{{ user.login }}</v-card-subtitle>
+	<v-card-subtitle>Display name: {{ user.displayName }}</v-card-subtitle>
+
+	<v-avatar size="100" class="ma-2"
+		rounded="0"
+		variant="flat">
+		<v-img cover :src="user.avatar"></v-img>
+	</v-avatar>
+
+	<v-card-text v-if="Object.keys(gameStats).length">
+		<v-card-subtitle>Name: {{ user.displayName }}</v-card-subtitle>
+		<v-card-subtitle>Wins: {{ gameStats.wins }}</v-card-subtitle>
+		<v-card-subtitle>Loses: {{ gameStats.loses }}</v-card-subtitle>
+		<v-card-subtitle>Matches: {{ gameStats.matches }}</v-card-subtitle>
+	</v-card-text>
+
 	<div v-else>
 		~ no game found ~	
 	</div>
+
 	<!-- Error handling -->
 	<Snackbar />
 </template>
@@ -45,7 +51,7 @@ export default {
 	},
 	data() {
 		return {
-			gameStats: {},
+			gameStats: {} as any,
 		};
 	},
 	beforeMount() {
