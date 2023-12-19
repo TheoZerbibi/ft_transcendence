@@ -18,7 +18,7 @@ export default {
 		const userStore = useUser();
 		const onlineSocketStore = useOnlineSocketStore();
 
-		const backgroundColor = computed(() => backgroundColorStore.backgroundColor);
+		const backgroundColor = computed(() => backgroundColorStore.getBackgroundColor);
 
 		watch(
 			() => userStore.getJWT,

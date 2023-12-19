@@ -3,18 +3,20 @@
 		class="omoriBtn font-weight-black elevation-0"
 		rounded="0"
 		size="large"
-		@click="handleClick" 
+		@click="handleClick"
 		:ripple="false"
-		:style="{ 
+		:style="{
 			width: width + 'dvh',
 			height: height + 'dvh',
 			color: color,
 			margin: margin,
 			border: border,
+			outline: '1px solid black',
 			'background-color': backgroundColor,
 			'font-family': font,
-			'font-size': fontSize + 'px'
-		}">
+			'font-size': fontSize + 'px',
+		}"
+	>
 		<slot></slot>
 	</v-btn>
 </template>
@@ -23,50 +25,50 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-	name: "ButtonBox",
+	name: 'ButtonBox',
 	props: {
 		width: {
 			type: Number,
-			default: 25
+			default: 25,
 		},
 		height: {
 			type: Number,
-			default: 5
+			default: 5,
 		},
 		onClick: {
 			type: Function,
-			default: () => {}
+			default: () => {},
 		},
 		color: {
 			type: String,
-			default: 'white'
+			default: 'white',
 		},
 		margin: {
 			type: String,
-			default: '1dvh'
+			default: '1dvh',
 		},
 		border: {
 			type: String,
-			default: 'white 3px solid'
+			default: 'white 3px solid',
 		},
 		backgroundColor: {
 			type: String,
-			default: 'black'
+			default: 'black',
 		},
 		font: {
 			type: String,
-			default: 'OMORI_MAIN'
+			default: 'OMORI_MAIN',
 		},
 		fontSize: {
 			type: Number,
-			default: 20
-		}
+			default: 20,
+		},
 	},
 	methods: {
 		handleClick() {
 			this.onClick();
-		}
-	}
+		},
+	},
 });
 </script>
 
@@ -76,5 +78,4 @@ export default defineComponent({
 	position: relative;
 	font-size: 20px;
 }
-
 </style>

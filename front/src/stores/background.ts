@@ -5,6 +5,9 @@ export const useBackgroundColorStore = defineStore({
 	state: () => ({
 		backgroundColor: 'black',
 	}),
+	getters: {
+		getBackgroundColor: (state) => state.backgroundColor,
+	},
 	actions: {
 		setBackgroundColor(color: string) {
 			this.backgroundColor = color;

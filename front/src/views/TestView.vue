@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
 	<v-container 
 		fill-height
 		fluid
@@ -31,6 +31,11 @@
 
 	</v-container>
 	<Snackbar />
+</template> -->
+<template>
+	<video playsinline autoplay loop>
+		<source src="/videos/Omori_Final_Duet.mp4" type="video/mp4" />
+	</video>
 </template>
 
 <script lang="ts">
@@ -174,5 +179,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
