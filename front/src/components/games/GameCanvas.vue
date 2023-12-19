@@ -477,7 +477,7 @@ export default {
 			if (data.leftUser > gameData.leftUser.getPoint()) this.startTremble('rightUser');
 			if (data.rightUser > gameData.rightUser.getPoint()) this.startTremble('leftUser');
 			gameData.leftUser.setPoint(data.leftUser);
-			gameData.rightUser.setPoint(data.leftUser);
+			gameData.rightUser.setPoint(data.rightUser);
 			if (data.leftUser <= 5 && data.rightUser <= 5) {
 				this.userData.leftPlayer.cadre = `/game/UI/cadres/cadre${gameData.rightUser.score}.png`;
 				this.userData.rightPlayer.cadre = `/game/UI/cadres/cadre${gameData.leftUser.score}.png`;
