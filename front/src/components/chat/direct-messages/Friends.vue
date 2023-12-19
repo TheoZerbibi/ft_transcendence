@@ -9,8 +9,10 @@
 				density="compact"
 				:ripple="false"
 				:key="friend.id"
-				:title="friend.display_name"
 				@click="userSelected(friend.login)">
+				<v-list-item-title>
+					@{{ friend.display_name }}
+				</v-list-item-title>
 			</v-list-item>
 		</v-list>
 

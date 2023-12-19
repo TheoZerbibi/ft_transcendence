@@ -1,10 +1,17 @@
 <template>
-	<v-layout class="bg-white">
+	<v-layout class="bg-white" fluid>
 		<v-app-bar class="elevation-0 bg-white" density="compact" style="border: black solid thin">
+			<v-app-bar-nav-icon flat :ripple="false" rounded="0" icon="fa fa-ellipsis-h" @click.stop="drawer = !drawer" />
 			<v-toolbar-title class="text-end md-2 pa-2 h2">Whitespace Community</v-toolbar-title>
 		</v-app-bar>
 
-		<v-navigation-drawer rail class="elevation-0 bg-white" style="border: black solid thin">
+		<v-navigation-drawer 
+			rail
+			class="elevation-0 bg-white" 
+			style="border: black solid thin"
+			v-model="drawer"
+			clipped
+			app>
 			<v-list> </v-list>
 			<v-tabs nav v-model="tab" direction="vertical" grow>
 				<v-tab
@@ -18,7 +25,9 @@
 			</v-tabs>
 		</v-navigation-drawer>
 
-		<v-navigation-drawer nav>
+		<v-navigation-drawer nav
+		class="hidden-sm-and-down elevation-0 bg-white"
+		>
 			<!-- Friend, requests, users lists -->
 			<div v-show="tab === 1">
 				<Suspense>
@@ -220,6 +229,7 @@ export default defineComponent({
 			},
 		];
 
+
 		return {
 			isConnected,
 			connect,
@@ -234,6 +244,7 @@ export default defineComponent({
 	},
 	data() {
 		return {
+			drawer: null as any,
 			refreshKeyDMs: 0,
 			refreshKeyChannels: 0,
 			refreshKeyProfile: 0,

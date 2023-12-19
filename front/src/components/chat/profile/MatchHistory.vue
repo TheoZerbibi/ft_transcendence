@@ -4,7 +4,9 @@
 	<v-divider :thickness="7" class="border-opacity-100"></v-divider>
 	<v-list class="crollable-list" v-if="matchHistory.length" max-height="10vw">
 		<v-list-item v-for="match in matchHistory" :key="match.uid">
-			<v-list-item-title @click="redirectToGame(match.uid)" class="hoverable">
+			<v-list-item-title 
+				@click="redirectToGame(match.uid)"
+				class="hoverable">
 				{{ match.uid }}
 			</v-list-item-title>
 			<v-list-item-subtitle>Start at: <DateViewer :timestamp="match.started_at" /></v-list-item-subtitle>

@@ -1,7 +1,7 @@
 <template>
 	<v-card>
 		<v-row>
-			<v-col>
+			<v-col cols="12">
 				<v-card-title>Profile</v-card-title>
 				<v-card-item class="align-center justify-center">
 					<UploadFile @imageChanged="updateAvatar">
@@ -19,7 +19,7 @@
 
 			</v-col>
 
-			<v-col>
+			<v-col cols="12">
 				<v-card-title>Game Stats</v-card-title>
 				<v-divider :thickness="7" class="border-opacity-100"></v-divider>
 				<v-card-text v-if="Object.keys(gameStats).length">
@@ -184,8 +184,8 @@ export default {
 .v-card {
 	border: black solid thin;
 	border-radius: 0;
-	max-height: 93dvh;
-	height: 93dvh;
+	max-height: 95dvh;
+	height: 100dvh;
 	scroll-behavior: auto;
 	overflow-y: scroll;
 	overflow-x: hidden;

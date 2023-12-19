@@ -2,7 +2,7 @@
 	<div class="div d-flex flex-row align-center">
 		<v-card-title>@{{ selectedUserLogin }}</v-card-title>
 		<v-spacer></v-spacer>
-		<v-icon class="mr-2 hoverable" icon="fas fa-info-circle" color="black" @click=""></v-icon>
+		<!-- <v-icon class="mr-2 hoverable hidden-lg-and-up" icon="fas fa-info-circle" color="black" @click=""></v-icon> -->
 	</div>
 	<v-card>
 		<div v-if="selectedUserLogin && is_friend">

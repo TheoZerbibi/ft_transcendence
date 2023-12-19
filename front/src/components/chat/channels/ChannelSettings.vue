@@ -15,12 +15,21 @@
 
 			<v-list-item-title>{{ channelUser.display_name }}</v-list-item-title>
 
-			<UserModeration
-				v-if="myChannelUserProfile.is_admin"
-				:selectedChannelName="channelName"
-				:selectedChannelUser="channelUser"
-				:myUser="myChannelUserProfile">
-			</UserModeration>
+			<template v-slot:append>
+				<UserModeration
+					v-if="myChannelUserProfile.is_admin"
+					:selectedChannelName="channelName"
+					:selectedChannelUser="channelUser"
+					:myUser="myChannelUserProfile">
+				</UserModeration>
+			</template>
+
+			<template v-slot:prepend>
+				<v-icon icon="fas fa-circle" size="xs"></v-icon>
+			</template>
+
+			
+
 			</v-list-item>
 		</v-list>
 		
