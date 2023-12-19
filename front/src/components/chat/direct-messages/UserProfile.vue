@@ -77,12 +77,10 @@ export default {
 	},
 	props: {
 		selectedUserLogin: String,
-		selectedUserDisplayName: String,
 	},
 	data() {
 		return {
 			friendLogin: '' as string,
-			cadre: '/game/UI/cadres/cadre0.png' as string,
 			friendData: {
 				name: '' as string,
 				avatar: '' as string,
@@ -98,14 +96,6 @@ export default {
 		selectedUserLogin: function(newVal: string) {
 			try {
 				this.friendLogin = newVal;
-				this.fetchFriendInfos();
-			} catch (error) {
-				console.log(error);
-			}
-		},
-		selectedUserDisplayName: function(newVal: string) {
-			try {
-				this.friendData.name = newVal;
 				this.fetchFriendData();
 			} catch (error) {
 				console.log(error);
@@ -146,49 +136,6 @@ export default {
 						loses: data.stats.loses,
 						matches: data.stats.matches,
 					},
-					cadre: this.cadre,
-				};
-				console.log(this.friendData);
-
-			} catch (error) {
-				console.log(error);
-			}
-		},
-		fetchFriendInfos: async function() {
-			try {
-				if (!this.friendLogin || this.friendLogin === '') {
-					console.log('[fetchFriendInfos]: friendLogin is empty');
-					return;
-				}
-				const response: any = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/profile/${this.friendLogin}`,
-					{
-						method: 'GET',
-						headers: {
-							'Content-Type': 'application/json',
-							Authorization: `Bearer ${this.JWT}`,
-							'Access-Control-Allow-Origin': '*',
-						},
-					}
-				);
-				if (!response.ok) {
-					const error = await response.json();
-					snackbarStore.showSnackbar(error.message, 3000, 'red');
-					return;
-				}
-				const data = await response.json();
-				console.log(data);
-
-				this.friendData = {
-					name: data.display_name,
-					avatar: data.avatar,
-					member_since: data.created_at,
-					stats: {
-						wins: data.stats.win,
-						loses: data.stats.defeat,
-						matches: data.stats.totalGame,
-					},
-					cadre: this.cadre,
 				};
 				console.log(this.friendData);
 
