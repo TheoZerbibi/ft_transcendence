@@ -1,29 +1,28 @@
 <template>
+	<div class="ma-2 d-flex flex-column">
+		<v-card-title>Settings</v-card-title>
 
-		<div class="ma-2 d-flex flex-column">
-			<v-card-title>Settings</v-card-title>
-
+		<v-card-actions  class="flex-column align-end justify-center">
 			<v-btn flat rounded="0" style="border: black solid thin;" :ripple="false" @click="showNameChangeModal">
 				Change display name
 			</v-btn>
 
-			<ProfileNameModal class="modal" v-if="dNameChangeModal" :showModal="dNameChangeModal"
-				@change-dname="changeDisplayName" @close-modal="dNameChangeName = false">
+			<ProfileNameModal
+				class="modal" 
+				v-if="dNameChangeModal" 
+				:showModal="dNameChangeModal"
+				@change-dname="changeDisplayName"
+				@close-modal="dNameChangeName = false">
 			</ProfileNameModal>
 
-			<v-btn flat rounded="0" style="border: black solid thin;" :ripple="false" @click="enable2FA"
-				v-if="!user.twoFactorAuth">
-				Enable 2FA
-			</v-btn>
-			<v-btn flat rounded="0" style="border: black solid thin;" :ripple="false" @click="enable2FA"
-				v-if="user.twoFactorAuth">
-				Disable 2FA
-			</v-btn>
+			<modal2FA >
+			</modal2FA>
 
 			<v-btn flat rounded="0" style="border: black solid thin;" :ripple="false" color="red" @click="deleteAccount">
 				Delete Account
 			</v-btn>
-		</div>
+		</v-card-actions>
+	</div>
 
 	<!-- Error handling -->
 	<Snackbar />

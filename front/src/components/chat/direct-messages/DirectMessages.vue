@@ -107,14 +107,20 @@ export default {
 		},
 		isConnected: function (newVal: boolean) {
 			if (newVal === true && this.socket) {
-				console.log(`[DirMsg-WebSocket] on`);
-				this.socket.on('new-direct-message', (data) => {
-					console.log(`[DirMSg-WebSocket] 'new-dir-message' -> '${data}`);
-					const msg: any = data.json();
-					if (msg !== undefined) console.log(`new-direct-msg - msg: ${msg.content}`);
-					else console.log('Error direct msg failed');
-				});
-			}
+			       console.log(`[DirMsg-WebSocket] on`);
+			       this.socket.on('new-direct-message', (data) => {
+					            const msg: any = JSON.parse(data);
+						console.log(`[DirMSg-WebSocket] 'new-dir-message' -> '${data}'`);
+						if (msg !== undefined) {
+						this.messages.push(msg);
+					       console.log (`new-direct-msg - msg: ${msg.content}`);
+}
+
+					       else
+						console.log('Error direct msg failed');
+		
+					       });
+		}
 		},
 	},
 	methods: {
