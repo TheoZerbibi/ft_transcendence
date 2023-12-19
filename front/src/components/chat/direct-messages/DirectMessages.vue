@@ -6,11 +6,7 @@
 	</div>
 	<v-card>
 		<div v-if="selectedUserLogin && is_friend">
-<<<<<<< HEAD
-=======
-			<v-card-title>Messages with @{{ selectedUserLogin }} {{ isConnected }} </v-card-title>
-
->>>>>>> a02664a (fix(Chat): Socket connection)
+			<v-card-title>Messages with @{{ selectedUserLogin }} </v-card-title>
 			<v-card-text>
 				<!-- Chat Messages -->
 				<v-list>
@@ -26,48 +22,28 @@
 		</div>
 
 		<div v-else-if="selectedUserLogin">
-<<<<<<< HEAD
 			<v-card-text> ~ you are not friend with this user so u cant chat ~> </v-card-text>
-=======
-			<v-card-text class="empty-card"> ~ you are not friend with this user so u cant chat ~> </v-card-text>
->>>>>>> a02664a (fix(Chat): Socket connection)
 		</div>
 
 		<div v-else>
 			<v-card-title>Messages</v-card-title>
-<<<<<<< HEAD
 			<v-card-text> ~ no friend selected ~ </v-card-text>
 		</div>
 		<!-- Message Input -->
 	</v-card>
 	<v-footer rounded="0" elevation="0">
-=======
-			<v-card-text class="empty-card"> ~ no friend selected ~ </v-card-text>
-		</div>
-		<!-- Message Input -->
-	</v-card>
-	<v-footer>
->>>>>>> a02664a (fix(Chat): Socket connection)
 		<v-text-field
 			v-model="input"
 			placeholder="Type your message..."
 			max-length="200"
 			variant="solo"
-<<<<<<< HEAD
 			rounded="0"
 			flat
-=======
-			class="elevation-0"
->>>>>>> a02664a (fix(Chat): Socket connection)
 			append-inner-icon="fas fa-paper-plane"
 			@keyup.enter="sendMessage"
 			@click:append-inner="sendMessage"
 			density="compact"
 			clearable
-<<<<<<< HEAD
-=======
-			rounded="0"
->>>>>>> a02664a (fix(Chat): Socket connection)
 		/>
 	</v-footer>
 
@@ -251,7 +227,6 @@ export default {
 	overflow-y: scroll;
 	overflow-x: hidden;
 }
-<<<<<<< HEAD
 
 .v-footer {
 	border-right: black solid thin;
@@ -263,6 +238,4 @@ export default {
 	border-right: black solid thin;
 	border-left: black solid thin;
 }
-=======
->>>>>>> a02664a (fix(Chat): Socket connection)
 </style>
