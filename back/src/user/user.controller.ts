@@ -200,8 +200,8 @@ export class UserController {
 	@Patch()
 	@ApiOperation({ summary: 'Change display_name or Avatar for the user' })
 	@ApiBearerAuth('JWT-auth')
-	editUser(@GetUser('id') userId: number, @Body() dto: EditUserDto) {
-		this.userService.editUser(userId, dto);
+	async editUser(@GetUser('id') userId: number, @Body() dto: EditUserDto) {
+		await this.userService.editUser(userId, dto);
 		return { message: 'User updated' };
 	}
 
