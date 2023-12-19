@@ -18,6 +18,8 @@ enum RequestStatus {
 	ACCEPTED,
 }
 
+const deletedUserLoginLength = 36;
+
 @Injectable()
 export class UserService {
 	constructor(
@@ -79,7 +81,7 @@ export class UserService {
 			const usersDto: UserDto[] = users.map((user) => {
 				return this.exclude(user, ['dAuth', 'email', 'updated_at']) as UserDto;
 			});
-			return usersDto;
+			return usersDto.filter((user) => user.login.length !== deletedUserLoginLength);
 		} catch (e) {
 			throw e;
 		}
@@ -115,7 +117,7 @@ export class UserService {
 			const usersDto: UserDto[] = users.map((user) => {
 				return this.exclude(user, ['dAuth', 'email', 'updated_at']) as UserDto;
 			});
-			return usersDto;
+			return usersDto.filter((user) => user.login.length !== deletedUserLoginLength);
 		} catch (e) {
 			throw e;
 		}
@@ -143,7 +145,7 @@ export class UserService {
 			const usersDto: UserDto[] = users.map((user) => {
 				return this.exclude(user, ['dAuth', 'email', 'updated_at']) as UserDto;
 			});
-			return usersDto;
+			return usersDto.filter((user) => user.login.length !== deletedUserLoginLength);
 		} catch (e) {
 			throw e;
 		}
@@ -266,7 +268,7 @@ export class UserService {
 					return this.exclude(f.user, ['dAuth', 'secret', 'email', 'updated_at']) as UserDto;
 				}
 			});
-			return friendsDto;
+			return friendsDto.filter((user) => user.login.length !== deletedUserLoginLength);
 		} catch (e) {
 			throw e;
 		}
@@ -292,7 +294,7 @@ export class UserService {
 					target_display_name: friendRequest.friend.display_name,
 				};
 			});
-			return friendRequestsDto;
+			return friendRequestsDto.filter((user) => user.user_login.length !== deletedUserLoginLength);
 		} catch (e) {
 			throw e;
 		}
@@ -312,7 +314,7 @@ export class UserService {
 			const blockedUsersDto: UserDto[] = blockedUsers.map((blockedUser) => {
 				return this.exclude(blockedUser.blocked, ['dAuth', 'secret', 'email', 'updated_at']) as UserDto;
 			});
-			return blockedUsersDto;
+			return blockedUsersDto.filter((user) => user.login.length !== deletedUserLoginLength);
 		} catch (e) {
 			throw e;
 		}
@@ -346,10 +348,13 @@ export class UserService {
 	}
 
 	/************************************* Friends *************************************/
-	async makeFriendRequest(user: User, friendUsername: string) {
+	async makeFriendRequest(user: User, target_login: string) {
 		try {
+			if (target_login.length === deletedUserLoginLength) {
+				throw new BadRequestException('User not found');
+			}
 			if (!user) throw new ForbiddenException('User not found');
-			const targetUser = await this.findUserByName(friendUsername);
+			const targetUser = await this.findUserByName(target_login);
 			if (!targetUser) throw new ForbiddenException('User not found');
 			if (targetUser === user) throw new BadRequestException('You cannot add yourself as a friend');
 
@@ -387,9 +392,10 @@ export class UserService {
 	}
 
 	/*********************************** Blocked *************************************/
-	async blockUser(user: User, friendUsername: string) {
+	async blockUser(user: User, target_login: string) {
 		try {
-			const targetUser = await this.findUserByName(friendUsername);
+			if (target_login.length === deletedUserLoginLength) throw new BadRequestException('User not found');
+			const targetUser = await this.findUserByName(target_login);
 			if (!targetUser) throw new ForbiddenException('User not found');
 			if (targetUser === user) throw new BadRequestException('You cannot block yourself');
 
@@ -523,12 +529,14 @@ export class UserService {
 	}
 
 	/************************************* Friends *************************************/
-	async respondRequest(user: User, friendUsername: string, response: boolean) {
+	async respondRequest(user: User, target_login: string, response: boolean) {
 		try {
+			if (target_login.length === deletedUserLoginLength) throw new BadRequestException('User not found');
+
 			const action: string = response ? 'accept' : 'decline';
 
 			if (!user) throw new ForbiddenException('User not found');
-			const targetUser = await this.findUserByName(friendUsername);
+			const targetUser = await this.findUserByName(target_login);
 			if (!targetUser) throw new ForbiddenException('User not found');
 			if (targetUser === user) throw new BadRequestException(`You cannot ${action} yourself`);
 
@@ -605,7 +613,7 @@ export class UserService {
 			});
 			if (!user) throw new BadRequestException('User not found');
 			const uuid = uuidv4();
-			const displayName = (Math.random() + 1).toString(36).substring(7);
+			const displayName = (Math.random() + 1).toString(deletedUserLoginLength).substring(7);
 			await this.prisma.friends.deleteMany({
 				where: {
 					OR: [
@@ -638,10 +646,11 @@ export class UserService {
 	}
 
 	/************************************* Friends *************************************/
-	async removeFriend(user: User, friendUsername: string) {
+	async removeFriend(user: User, target_login: string) {
 		try {
+			if (target_login.length === deletedUserLoginLength) throw new BadRequestException('User not found');
 			if (!user) throw new ForbiddenException('User not found');
-			const targetUser = await this.findUserByName(friendUsername);
+			const targetUser = await this.findUserByName(target_login);
 			if (!targetUser) throw new ForbiddenException('User not found');
 			if (targetUser === user) throw new BadRequestException('You cannot delete yourself');
 
@@ -700,9 +709,10 @@ export class UserService {
 		}
 	}
 	/*********************************** Blocked *************************************/
-	async unblockUser(user: User, friendUsername: string) {
+	async unblockUser(user: User, target_login: string) {
 		try {
-			const targetUser = await this.findUserByName(friendUsername);
+			if (target_login.length === deletedUserLoginLength) throw new BadRequestException('User not found');
+			const targetUser = await this.findUserByName(target_login);
 			if (!targetUser) throw new BadRequestException('User not found');
 			if (targetUser === user) throw new BadRequestException('You cannot unblock yourself');
 

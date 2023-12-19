@@ -1,12 +1,12 @@
 <template>
 	<div class="div d-flex flex-row align-center">
-		<v-card-title>@{{ selectedUserLogin }}</v-card-title>
+		<v-card-title>@{{ userLogin }}</v-card-title>
 		<v-spacer></v-spacer>
 		<!-- <v-icon class="mr-2 hoverable hidden-lg-and-up" icon="fas fa-info-circle" color="black" @click=""></v-icon> -->
 	</div>
 	<v-card>
-		<div v-if="selectedUserLogin && is_friend">
-			<v-card-title>Messages with @{{ selectedUserLogin }} </v-card-title>
+		<div v-if="userLogin && is_friend">
+			<v-card-title>Messages with @{{ userLogin }} </v-card-title>
 			<v-card-text>
 				<!-- Chat Messages -->
 				<v-list>
@@ -21,7 +21,7 @@
 			</v-card-text>
 		</div>
 
-		<div v-else-if="selectedUserLogin">
+		<div v-else-if="userLogin">
 			<v-card-text> ~ you are not friend with this user so u cant chat ~> </v-card-text>
 		</div>
 

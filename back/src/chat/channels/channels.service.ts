@@ -26,6 +26,8 @@ import { RedisService } from 'src/redis/redis.service';
 // PWD HASHING
 import * as argon2 from 'argon2';
 
+const deletedUserLoginLength = 36;
+
 @Injectable()
 export class ChannelService {
 	localChannels: ChannelEntity[] = [];
@@ -166,7 +168,7 @@ export class ChannelService {
 					is_banned: channelUser.is_ban,
 				};
 			});
-			return channelUserDtos;
+			return channelUserDtos.filter((u) => u.login.length !== deletedUserLoginLength);
 		} catch (e) {
 			throw e;
 		}
@@ -174,6 +176,7 @@ export class ChannelService {
 
 	async getChannelUserByLogin(user: User, channel_name: string, login: string): Promise<ChannelUserDto | null> {
 		try {
+			if (login.length === deletedUserLoginLength) throw new BadRequestException('User not found');
 			if (!channel_name) throw new BadRequestException('Channel name is required');
 			const channel: Channel | null = await this.prisma.channel.findUnique({
 				where: {
@@ -482,6 +485,7 @@ export class ChannelService {
 
 	async promoteUser(user: User, channel_name: string, dto: ModChannelUserDto) {
 		try {
+			if (dto.target_login.length === deletedUserLoginLength) throw new BadRequestException('User not found');
 			const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
 			if (!channelEntity) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
 
@@ -525,6 +529,7 @@ export class ChannelService {
 
 	async demoteUser(user: User, channel_name: string, dto: ModChannelUserDto) {
 		try {
+			if (dto.target_login.length === deletedUserLoginLength) throw new BadRequestException('User not found');
 			const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
 			if (!channelEntity) throw new BadRequestException(`Channel ${channel_name} doesn't exist`);
 
@@ -569,12 +574,13 @@ export class ChannelService {
 
 	async modChannelUser(user: User, channel_name: string, dto: ModChannelUserDto) {
 		try {
+			if (dto.target_login.length === deletedUserLoginLength) throw new BadRequestException('User not found');
 			if (
 				dto.action != 'mute' &&
 				dto.action != 'unmute' &&
-			dto.action != 'kick' &&
-		dto.action != 'ban' &&
-	dto.action != 'unban'
+				dto.action != 'kick' &&
+				dto.action != 'ban' &&
+				dto.action != 'unban'
 			) throw new BadRequestException(`Action "${dto.action}" not supported`);
 
 			const channelEntity: ChannelEntity | null = await this.findChannelByName(channel_name);
