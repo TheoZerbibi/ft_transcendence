@@ -186,9 +186,12 @@ export default defineComponent({
 	setup() {
 		let open = false as Boolean;
 		const userStore = useUser();
+		const webSocketStore = useSocketStore();
 		const route = useRoute();
 		const tab = ref(route.query.tab ? parseInt(route.query.tab as string) : 1);
-		const webSocketStore = useSocketStore();
+
+		const user = computed(() => userStore.getUser);
+		const JWT = computed(() => userStore.getJWT);
 
 		const isConnected = computed(() => webSocketStore.isConnected);
 		const socket = computed(() => webSocketStore.getSocket);
@@ -203,9 +206,6 @@ export default defineComponent({
 		};
 
 		//	provide('chat-socket', socket);
-
-		const JWT = computed(() => userStore.getJWT);
-		const user = computed(() => userStore.getUser);
 
 		const links = [
 			{
@@ -264,11 +264,11 @@ export default defineComponent({
 		};
 	},
 	async mounted() {
-		await this.connect(this.JWT);
-		console.log(`[Chat-Websocket] attempt to connect. isConnectecd = ${this.isConnected}`);
-		this.socket.on('welcome', (data) => {
-			console.log(`retrieved ${data}`);
-		});
+			await this.connect(this.JWT);
+			console.log(`[Chat-Websocket] attempt to connect. isConnectecd = ${this.isConnected}`);
+			this.socket.on('welcome', (data) => {
+				console.log(`[Chat-Websocket] List of connected user: ${data}`); 
+			});
 	},
 	methods: {
 		updateSelectedUser(login: string) {
@@ -300,13 +300,19 @@ export default defineComponent({
 			else if (this.open === false) this.open = true;
 		},
 	},
-	beforeMount() {
-		if (!this.JWT) {
-			return this.$router.push({ name: `Login` });
-		} else {
-			this.connect(this.JWT);
+//	async beforeMount() {
+//		if (!this.JWT) {
+//			return this.$router.push({ name: `Login` });
+//		} else {
+//			await this.connect(this.JWT);
+//		}
+//	},
+	async beforeUnmount() {
+		if (this.isConnected) {
+			this.disconnect();
 		}
-	},
+		if (snackbarStore.snackbar) snackbarStore.hideSnackbar();
+}
 });
 </script>
 

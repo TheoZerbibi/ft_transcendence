@@ -391,6 +391,7 @@ export class ChannelService {
 				content: channelMessage.content,
 				created_at: formattedDate,
 			};
+	//		this.publishOnRedis('new-channel-message', JSON.stringify({channel_id: channelUser.channel_id, ...channelMessageDto}));
 			return channelMessageDto;
 		} catch (e) {
 			throw e;
