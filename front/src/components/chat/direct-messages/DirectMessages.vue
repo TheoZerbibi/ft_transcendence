@@ -111,8 +111,10 @@ export default {
 			       this.socket.on('new-direct-message', (data) => {
 					            const msg: any = JSON.parse(data);
 						console.log(`[DirMSg-WebSocket] 'new-dir-message' -> '${data}'`);
-					       if (msg !== undefined)
+						if (msg !== undefined) {
 					       console.log (`new-direct-msg - msg: ${msg.content}`);
+}
+
 					       else
 						console.log('Error direct msg failed');
 		

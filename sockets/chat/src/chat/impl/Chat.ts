@@ -203,11 +203,13 @@ export class Chat {
 		for (let i = 0; i < channels_usr.length; i++)
 		{
 			channel_tmp = Chat.channel_lst.find((channel) => { return (channel.getId() === channels_usr[i].id)});
-			if (!channel_tmp) channel_tmp === new Channel(channels_usr[i].id, user);
-			else channel_tmp.addUser(user);
-
+			if (channel_tmp === undefined) {
+				channel_tmp = new Channel(channels_usr[i].id, user);
+			}
+			channel_tmp.addUser(user);
 			user.addChannel(channel_tmp);
 		}
+		console.log(user);
 		
 		return user;
 	}
