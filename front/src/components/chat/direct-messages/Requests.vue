@@ -9,11 +9,14 @@
 				color="black"
 				density="compact"
 				:ripple="false"
-				:key="request.id"
-				@click="userSelected(user.login)">
+				:key="request.id">
 				
-				<v-list-item-title>
+				<v-list-item-title v-if="request.user_login == user.login" @click="userSelected(request.target_login)">
 					@{{ request.target_display_name }}
+				</v-list-item-title>
+
+				<v-list-item-title v-else @click="userSelected(request.user_login)">
+					@{{ request.user_display_name }}
 				</v-list-item-title>
 
 				<template v-slot:append >

@@ -107,7 +107,6 @@ export class User {
 	private  socket: Socket;
 	private  id: number;
 	private	 login: string;
-	private	 userOn: string;
 	private	 channelOn: string;
 	private  channels: Channel[] = [];
 
@@ -117,22 +116,13 @@ export class User {
 		this.login = user.login;
 		this.channels = channels;
 		this.channelOn = '';
-		this.userOn = '';
 	}
 	public getLogin(): string{
 		return this.login;
 	}
 
-	public getUserOn(): string {
-		return this.userOn;
-	}
-
 	public selectChannelOn(channelName: string){
 		this.channelOn = channelName;
-	}
-
-	public selectUserOn(userName: string){
-		this.userOn = userName;
 	}
 
 	public getSocket(): Socket {

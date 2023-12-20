@@ -95,6 +95,7 @@ export default {
 	watch: {
 		selectedChannelName: function (newVal: string) {
 			this.channelName = newVal;
+			this.sendSocket(newVal);
 			this.fetchMessages();
 		},
 		refresh: function() {
@@ -103,11 +104,13 @@ export default {
 		isConnected: function (newVal: boolean) {
 			if (newVal === true && this.socket) {
 			       console.log(`[ChanMsg-WebSocket] on`);
+				if (this.channelName)	this.sendSocket(this.channelName);
 			       this.socket.on('new-channel-message', (data) => {
-						console.log(`[ChanMSg-WebSocket] 'new-chan-message' -> '${data}`);
-					       const msg: any = JSON.parse(data);
-					       if (msg !== undefined)
-					       console.log (`new-direct-msg - msg: ${msg}`);
+					       if (data !== undefined) {
+						
+						console.log(`[ChanMSg-WebSocket] 'new-chan-message' -> ${JSON.stringify(data)}`);
+						this.messages.push(data);
+}
 					       else
 						console.log('Error direct msg failed');
 		
@@ -117,6 +120,15 @@ export default {
 	},
 	emits: ['open-profile'],
 	methods: {
+		sendSocket: async function (data) {
+				    if (this.socket && this.isConnected === true) {
+					    this.socket.emit('channel-selected', data);
+						console.log(`[ChanMsg-WSckt] 'channel-selected': ${data}`);
+				    }
+				
+			
+			    },
+
 		fetchMessages: async function () {
 			try {
 				if (!this.channelName || this.channelName === '') {
@@ -172,7 +184,7 @@ export default {
 					return;
 				}
 
-				this.fetchMessages();
+	//			this.fetchMessages();
 				this.input = '';
 
 			} catch (error: any) {

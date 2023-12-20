@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@fortawesome/fontawesome-free':
+        specifier: ^6.5.1
+        version: 6.5.1
       '@mdi/font':
         specifier: 7.3.67
         version: 7.3.67
@@ -56,6 +59,9 @@ importers:
       roboto-fontface:
         specifier: '*'
         version: 0.10.0
+      sass:
+        specifier: ^1.69.5
+        version: 1.69.5
       socket.io-client:
         specifier: ^4.7.2
         version: 4.7.2
@@ -87,9 +93,6 @@ importers:
         specifier: ^1.6.28
         version: 1.6.28
     devDependencies:
-      '@fortawesome/fontawesome-free':
-        specifier: ^6.5.1
-        version: 6.5.1
       '@mdi/js':
         specifier: ^7.3.67
         version: 7.3.67
@@ -150,9 +153,6 @@ importers:
       prettier:
         specifier: ^3.1.1
         version: 3.1.1
-      sass:
-        specifier: ^1.69.5
-        version: 1.69.5
       start-server-and-test:
         specifier: ^2.0.3
         version: 2.0.3
@@ -767,7 +767,7 @@ packages:
     resolution: {integrity: sha512-CNy5vSwN3fsUStPRLX7fUYojyuzoEMSXPl7zSLJ8TgtRfjv24LOnOWKT2zYwaHZCJGkdyRnTmstR0P+Ah503Gw==}
     engines: {node: '>=6'}
     requiresBuild: true
-    dev: true
+    dev: false
 
   /@hapi/hoek@9.3.0:
     resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}

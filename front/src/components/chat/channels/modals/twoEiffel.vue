@@ -90,6 +90,8 @@ export default defineComponent({
 		const user = computed(() => userStore.getUser);
 		const is2FA = computed(() => userStore.is2FA);
 
+		const set2FA = (is2FA: boolean) => userStore.set2FA(is2FA);
+
         const buttonText = computed(() => {
             return is2FA.value ? 'Disable 2FA' : 'Enable 2FA';
         });
@@ -99,6 +101,7 @@ export default defineComponent({
 			setJWT,
 			user,
 			is2FA,
+			set2FA,
 		};
 	},
 	beforeMount() {
@@ -180,6 +183,7 @@ export default defineComponent({
 				this.qrCode = null;
 				this.verificationCode = '';
 				this.buttonText = 'Disable 2FA';
+				this.set2FA(true);
 			} catch (error) {
 				snackbarStore.showSnackbar('Error activating 2FA', 3000, 'red');
 			}
@@ -211,6 +215,7 @@ export default defineComponent({
 				snackbarStore.showSnackbar(result.message, 3000, 'green');
 				this.verificationCode = '';
 				this.buttonText = 'Enable 2FA';
+				this.set2FA(false);
 			} catch (error) {
 				snackbarStore.showSnackbar('Error activating 2FA', 3000, 'red');
 			}

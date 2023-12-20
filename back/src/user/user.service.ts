@@ -607,9 +607,7 @@ export class UserService {
 	async deleteUser(userId: number): Promise<any> {
 		try {
 			const user: User = await this.prisma.user.findUnique({
-				where: {
-					id: userId,
-				},
+				where: { id: userId, },
 			});
 			if (!user) throw new BadRequestException('User not found');
 			const uuid = uuidv4();
@@ -617,12 +615,16 @@ export class UserService {
 			await this.prisma.friends.deleteMany({
 				where: {
 					OR: [
-						{
-							user_id: user.id,
-						},
-						{
-							friend_id: user.id,
-						},
+						{ user_id: user.id, },
+						{ friend_id: user.id, },
+					],
+				},
+			});
+			await this.prisma.blocked.deleteMany({
+				where: {
+					OR: [
+						{ blocked_by_id: user.id, },
+						{ blocked_id: user.id, },
 					],
 				},
 			});
