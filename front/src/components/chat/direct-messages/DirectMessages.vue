@@ -107,6 +107,7 @@ export default {
 		selectedUserLogin: function (newVal: string) {
 			this.userLogin = newVal;
 			this.fetchDirectMessages();
+			this.sendSocket(newVal);
 		},
 		refresh: function () {
 			this.fetchDirectMessages();
@@ -114,6 +115,7 @@ export default {
 		isConnected: function (newVal: boolean) {
 			if (newVal === true && this.socket) {
 				console.log(`[DirMsg-WebSocket] on`);
+				if (this.userLogin)	this.sendSocket(this.userLogin);
 				this.socket.on('new-direct-message', (data: any) => {
 					const msg: any = JSON.parse(data);
 					console.log(`[DirMSg-WebSocket] 'new-dir-message' -> '${data}'`);
@@ -125,6 +127,14 @@ export default {
 		},
 	},
 	methods: {
+		sendSocket: async function (data) {
+				    if (this.socket && this.isConnected === true) {
+					    this.socket.emit('user-selected', data);
+						console.log(`[DirMsg-WSckt] 'user-selected': ${data}`);
+				    }
+				
+			
+			    },
 		fetchDirectMessages: async function () {
 			try {
 				if (!this.userLogin || this.userLogin === '') {
