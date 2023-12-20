@@ -95,7 +95,9 @@
 				<!-- Direct messages tab -->
 				<div v-show="tab === 1">
 					<Suspense>
-							<DirectMessages :selectedUserLogin="selectedUserLogin" :refresh="refreshKeyDMs" />
+							<DirectMessages 
+							:selectedUserLogin="selectedUserLogin"
+							:refresh="refreshKeyDMs"/>
 						<template #fallback>
 							<div>Loading...</div>
 						</template>
@@ -105,7 +107,6 @@
 				<!-- Channels tab -->
 				<div v-show="tab === 2">
 					<ChannelMessages
-						@open-profile="openDrawer"
 						:selectedChannelName="selectedChannelName"
 						:refresh="refreshKeyChannels"
 					/>

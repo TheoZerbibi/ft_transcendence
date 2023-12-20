@@ -8,7 +8,6 @@
 		-->
 		<v-icon icon="fas fa-circle" color="green" size="xs"></v-icon>
 		<v-spacer></v-spacer>
-		<!-- <v-icon class="mr-2 hoverable hidden-lg-and-up" icon="fas fa-info-circle" color="black" @click=""></v-icon> -->
 	</div>
 	<v-card>
 		<div v-if="userLogin && is_friend">
