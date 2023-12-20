@@ -251,7 +251,7 @@ export default {
 				}
 				const data = await response.json();
 
-				this.challengeLink = `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/game/${data.uid}`;
+				this.challengeLink = `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}/game/${data.uid}`;
 				this.challenge = this.challengeIntro + this.challengeLink;
 				console.log('challenge: ', this.challenge);
 			} catch (error: any) {
