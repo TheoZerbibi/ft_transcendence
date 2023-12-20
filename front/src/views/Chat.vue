@@ -45,6 +45,7 @@
 						<Friends
 							@user-selected="updateSelectedUser"
 							@ask-refresh="refreshDMsPage"
+							@challenge="challengeSelectedUser"
 							:refresh="refreshKeyDMs"
 						/>
 						<Requests
@@ -95,7 +96,7 @@
 				<!-- Direct messages tab -->
 				<div v-show="tab === 1">
 					<Suspense>
-							<DirectMessages :selectedUserLogin="selectedUserLogin" :refresh="refreshKeyDMs" />
+							<DirectMessages :challengedUserLogin="this.selectedChallengedLogin" :selectedUserLogin="selectedUserLogin" :refresh="refreshKeyDMs" />
 						<template #fallback>
 							<div>Loading...</div>
 						</template>
@@ -252,6 +253,7 @@ export default defineComponent({
 			refreshKeyProfile: 0,
 			selectedUserLogin: '' as string,
 			selectedChannelName: '' as string,
+			selectedChallengedLogin: '' as string,
 			links: [
 				{
 					name: 'Direct Messages',
@@ -280,13 +282,17 @@ export default defineComponent({
 	},
 	methods: {
 		updateSelectedUser(login: string) {
-			console.log('[CHAT.vue] NEW SELECTED FRIEND LOGIN: ', this.selectedUserLogin);
 			this.selectedUserLogin = login;
+			console.log('[CHAT.vue] NEW SELECTED FRIEND LOGIN: ', this.selectedUserLogin);
 		},
 
 		updateSelectedChannel(name: string) {
-			console.log('[CHAT.vue] NEW SELECTED CHANNEL NAME: ', this.selectedChannelName);
 			this.selectedChannelName = name;
+			console.log('[CHAT.vue] NEW SELECTED CHANNEL NAME: ', this.selectedChannelName);
+		},
+		challengeSelectedUser(login: string) {
+			this.selectedChallengedLogin = login;
+			console.log(`[CHAT.vue] CHALLENGE SELECTED USER: ${login}`);
 		},
 		redirect(path: string) {
 			return this.$router.push({ name: path });

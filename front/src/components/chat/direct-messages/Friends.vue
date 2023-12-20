@@ -21,7 +21,7 @@
 						icon="fas fa-gamepad"
 						density="compact"
 						:ripple="false"
-						@click="deleteFriend(friend.login)">
+						@click="challenge(friend.login)">
 					</v-btn>
 				</template>
 			</v-list-item>
@@ -74,7 +74,7 @@ export default {
 		}
 	},
 
-	emits: ['user-selected', 'ask-refresh'],
+	emits: ['user-selected', 'ask-refresh', 'challenge'],
 
 	beforeMount() { this.fetchFriends(); },
 
@@ -144,6 +144,9 @@ export default {
 		userSelected(login: string) {
 			this.selectedUserLogin = login;
 			this.$emit('user-selected', this.selectedUserLogin);
+		},
+		challenge(login: string) {
+			this.$emit('challenge', login);
 		},
 	}
 }
