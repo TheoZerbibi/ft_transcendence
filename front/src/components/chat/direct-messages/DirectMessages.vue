@@ -202,7 +202,6 @@ export default {
 					snackbarStore.showSnackbar('You are not friend with this user.', 3000, 'red');
 					return;
 				}
-				console.log('challengeLink: ', challengeLink);
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/send`,
 					{
@@ -257,13 +256,42 @@ export default {
 				const data = await response.json();
 
 				this.challengeLink = `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/game/${data.uid}`;
-				const challenge = this.challengeIntro + this.challengeLink;
-				console.log('challenge: ', challenge);
-				this.sendMessage(challenge);
-				this.challengeLink = '';
-				//this.$router.push({ name: `Game`, params: { uid: data.uid } });
+				this.challenge = this.challengeIntro + this.challengeLink;
+				console.log('challenge: ', this.challenge);
 			} catch (error: any) {
 				snackbarStore.showSnackbar("Can't create game.", 3000, 'red');
+			}
+			try {
+			const response2: any = await fetch(
+				`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/send`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${this.JWT}`,
+						'Access-Control-Allow-Origin': '*',
+					},
+					body: JSON.stringify({
+						target_login: this.userLogin,
+						content: this.challenge,
+					}),
+				},
+			);
+
+			if (!response2.ok) {
+				const error = await response2.json();
+				snackbarStore.showSnackbar(error.message, 3000, 'red');
+				return;
+			}
+
+			const data2 = await response2.json();
+			console.log ('data2: ', data2);
+
+			this.fetchDirectMessages();
+			this.challengeLink = '';
+			//this.$router.push({ name: `Game`, params: { uid: data.uid } });
+			} catch (error: any) {
+				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 	},
