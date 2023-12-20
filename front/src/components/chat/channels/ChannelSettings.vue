@@ -31,6 +31,7 @@
 		
 		<v-card-actions class="flex-column align-center justify-center">
 			<ChangePwd 
+				v-if="myChannelUserProfile.is_owner"
 				:selectedChannelName="channelName">
 			</ChangePwd>
 			
