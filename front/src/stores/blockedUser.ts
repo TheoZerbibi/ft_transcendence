@@ -6,7 +6,7 @@ export const useBlockedUser = defineStore('blockedUser', {
 	}),
 	getters: {
 		getBlockedList: (state) => {
-			return state.JWT;
+			return state.blockedUser;
 		},
 	},
 	actions: {
@@ -32,7 +32,10 @@ export const useBlockedUser = defineStore('blockedUser', {
 				}
 
 				const data = await response.json();
-				console.log(data);
+				for (const user of data) {
+					this.blockedUser.push(user.login);
+				}
+				console.log(this.blockedUser);
 				return Promise.resolve(data);
 			} catch (error) {
 				return Promise.reject(error);

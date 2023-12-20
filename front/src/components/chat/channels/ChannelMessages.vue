@@ -7,16 +7,20 @@
 	<v-card>
 		<!-- If channel selected -->
 		<div v-if="selectedChannelName">
-
 			<!-- Messages -->
 			<v-card-text>
 				<v-list>
 					<v-list-item v-for="message in messages" :key="message.id">
+						<span v-if="!blockedUsersList.includes(message.login)">
 						<v-list-item-subtitle>
 							{{ message.username }}
 							{{ message.created_at }}
 						</v-list-item-subtitle>
 						{{ message.content }}
+					</span>
+					<span v-else>
+						--- Blocked user ---
+					</span>
 					</v-list-item>
 				</v-list>
 			</v-card-text>
@@ -57,7 +61,10 @@ import { useSnackbarStore } from '../../../stores/snackbar';
 
 import { useSocketStore } from '../../../stores/websocket';
 import Snackbar from '../../layout/Snackbar.vue';
+import { useBlockedUser } from '../../../stores/blockedUser';
 
+
+const blockedUserStore = useBlockedUser(); 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 
@@ -72,12 +79,14 @@ export default {
 		const webSocketStore = useSocketStore();
 		const socket = computed(() => webSocketStore.getSocket);
 		const isConnected = computed(() => webSocketStore.isConnected);
+		const blockedUsersList = computed(() => blockedUserStore.getBlockedList);
 
 		return {
 			JWT,
 			user,
 			isConnected,
 			socket,
+			blockedUsersList,
 		};
 	},
 	props: {
@@ -103,19 +112,15 @@ export default {
 		},
 		isConnected: function (newVal: boolean) {
 			if (newVal === true && this.socket) {
-			       console.log(`[ChanMsg-WebSocket] on`);
+				console.log(`[ChanMsg-WebSocket] on`);
 				if (this.channelName)	this.sendSocket(this.channelName);
-			       this.socket.on('new-channel-message', (data) => {
-					       if (data !== undefined) {
-						
-			//			console.log(`[ChanMSg-WebSocket] 'new-chan-message' -> ${JSON.stringify(data)}`);
+				this.socket.on('new-channel-message', (data: any) => {
+					if (data !== undefined) {
 						this.messages.push(data);
-}
-					       else
+					} else
 						console.log('Error direct msg failed');
-		
-					       });
-		}
+				});
+			}
 		},
 	},
 	emits: ['open-profile'],

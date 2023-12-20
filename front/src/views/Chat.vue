@@ -161,6 +161,10 @@ import { computed } from 'vue';
 
 //socket import
 import { useSocketStore } from '../stores/websocket';
+import { useBlockedUser } from '../stores/blockedUser';
+
+
+const blockedUserStore = useBlockedUser();
 
 const snackbarStore = useSnackbarStore();
 
@@ -273,6 +277,14 @@ export default defineComponent({
 			],
 		};
 	},
+	async beforeMount() {
+		if (!this.JWT) {
+			return this.$router.push({ name: `Login` });
+		} else {
+			await this.connect(this.JWT);
+		}
+		await blockedUserStore.fetchBlockedUsers(this.JWT);
+	},
 	async mounted() {
 			await this.connect(this.JWT);
 			console.log(`[Chat-Websocket] attempt to connect. isConnectecd = ${this.isConnected}`);
@@ -317,13 +329,6 @@ export default defineComponent({
 			else if (this.open === false) this.open = true;
 		},
 	},
-//	async beforeMount() {
-//		if (!this.JWT) {
-//			return this.$router.push({ name: `Login` });
-//		} else {
-//			await this.connect(this.JWT);
-//		}
-//	},
 	async beforeUnmount() {
 		if (this.isConnected) {
 			this.disconnect();

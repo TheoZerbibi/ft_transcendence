@@ -65,6 +65,7 @@ import { useBlockedUser } from '../../../stores/blockedUser';
 import Snackbar from '../../layout/Snackbar.vue';
 
 
+const blockedUserStore = useBlockedUser(); 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 
@@ -194,9 +195,14 @@ export default {
 					snackbarStore.showSnackbar(error.message, 3000, 'red');
 					return;
 				}
+				try {
+					await blockedUserStore.fetchBlockedUsers(this.JWT);
+				} catch (error) {
+					snackbarStore.showSnackbar('Error updating blocked user list', 3000, 'red');
+					return ;
+				}
 				const data = await response.json();
 				snackbarStore.showSnackbar(data.message, 3000, 'green');
-
 			} catch (error) {
 				console.log(error);
 			}
