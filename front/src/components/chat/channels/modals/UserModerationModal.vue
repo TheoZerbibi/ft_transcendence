@@ -1,12 +1,15 @@
 <template>
 	<v-dialog v-model="dialogOpen">
-		<v-card>
-			<template v-slot:activator="{ props }">
-				<v-btn flat rounded="0" style="border: black solid thin;" :ripple="false" v-bind="props"
-					text="User moderation"> </v-btn>
-			</template>
-
-			<template v-slot:default="{ isActive }">
+		<template v-slot:activator="{ props }">
+			<v-btn 
+			flat
+			rounded="0"
+			:ripple="false"
+			v-bind="props"
+			icon="fas fa-info-circle"></v-btn>
+		</template>
+		
+		<template v-slot:default="{ isActive }">
 				<v-card v-if="selectedUser">
 					<v-card-title>
 						User moderation of {{ selectedUser.display_name }}
@@ -55,7 +58,6 @@
 					</v-card-actions>
 				</v-card>
 			</template>
-		</v-card>
 	</v-dialog>
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
@@ -243,12 +245,4 @@ export default {
 </script>
 
 <style scoped>
-.v-btn {
-	border: black solid thin;
-	width: 100%;
-	margin-top: 1dvh;
-	margin-bottom: 1dvh;
-	display: flex;
-	position: relative;
-}
 </style>

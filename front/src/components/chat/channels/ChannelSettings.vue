@@ -62,13 +62,12 @@
 		</v-card-actions>
 	</div>
 
-	<!-- pas besoin si le drawer s'ouvre via l'interface de chat avec le bouton information -->
-	<!-- <div v-else>
+	<div v-else>
 		<v-card-title>Users</v-card-title>
 		<v-card-text class="empty-card">
 			~ no channel selected ~
 		</v-card-text>
-	</div> -->
+	</div>
 
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
