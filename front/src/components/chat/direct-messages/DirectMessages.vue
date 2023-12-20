@@ -118,7 +118,7 @@ export default {
 				if (this.userLogin)	this.sendSocket(this.userLogin);
 				this.socket.on('new-direct-message', (data: any) => {
 					const msg: any = JSON.parse(data);
-					console.log(`[DirMSg-WebSocket] 'new-dir-message' -> '${data}'`);
+			//		console.log(`[DirMSg-WebSocket] 'new-dir-message' -> '${data}'`);
 					if (msg !== undefined) {
 						this.messages.push(msg);
 					} else console.log('Error direct msg failed');
@@ -130,7 +130,7 @@ export default {
 		sendSocket: async function (data) {
 				    if (this.socket && this.isConnected === true) {
 					    this.socket.emit('user-selected', data);
-						console.log(`[DirMsg-WSckt] 'user-selected': ${data}`);
+			//		    console.log(`[DirMsg-WSckt] 'user-selected': ${data}`);
 				    }
 				
 			

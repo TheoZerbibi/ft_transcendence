@@ -46,7 +46,6 @@ export class ChatService {
 
 		if (user === undefined)
 			return ;
-		console.debug(`New channel selected by ${user.getLogin()}`);
 		user.selectChannelOn(channelName);
 	}
 
@@ -57,7 +56,6 @@ export class ChatService {
 
 		if (user === undefined)
 			return ;
-		console.debug(`New user selected by ${user.getLogin()}`);
 		user.selectUserOn(userName);
 	}
 
@@ -81,7 +79,6 @@ export class ChatService {
 
 	public removeUser(user: users): void
 	{
-		console.log(`[ChatService] removing ${user.login} from socket buffer`);
 		Chat.removeUserById(user.id);
 	}
 

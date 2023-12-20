@@ -16,7 +16,6 @@ import { Channel, User, ChannelDto, UserDto } from './impl/Channel'
 import { JwtGuard } from 'src/auth/guard';
 import { users, channel_users } from '@prisma/client';
 import { ForbiddenException } from '@nestjs/common';
-// import { direct_messages } from '@prisma/client';
 
 
 // Gateway emit mostly the data he received in the case of message, new user_channel or channel-update event
@@ -45,7 +44,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 	public async handleConnection(client: Socket): Promise<void> {
 		try {
-			this.logger.debug(`New Connection attempt by client.id: ${client.id}`);
 			if (!client.handshake.headers.authorization) throw new Error('Invalid token');
 			const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
 			this.authService.verifyToken({ access_token: token });
@@ -59,8 +57,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			const users_lst: UserDto[] = this.chatService.getUserDtos();
 
 			const channelDtos: ChannelDto[] = this.chatService.getChannelDtos();
-			this.logger.debug(`>Emitting to user ${user.id}`);
-			this.logger.debug(`Sending list of connected Users to new User`);
 			client.emit('welcome', JSON.stringify(users_lst));
 			this.emitToEveryoneExceptOne('new-connection', user.login, client);
 
@@ -73,8 +69,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	public async handleDisconnect(client: Socket): Promise<void> {
 		this.logger.debug(`[Disconnection] client id: ${client.id}`);
 
-		//		const userDTOs: UserDto[] = this.chatService.getUsers().map((user) => new UserDto(user));
-		//	this.emitToChannels('User-Disconnected', user.getChannels(), userDTOs);
 		const token = client.handshake.headers.authorization.replace(/Bearer /g, '');
 		const  user: users = await this.authService.getUser(token);
 		const userDtos: UserDto[] = this.chatService.getUserDtos();
@@ -90,12 +84,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	{
 
 		const msg = JSON.parse(data);
-		console.log(JSON.parse(data));
 		const user: User | undefined = this.chatService.getUserById(msg.friend_id);
 		const me: User | undefined = this.chatService.getUserById(msg.user_id);
 
-//		const real_user:  users | undefined = await this.authService(
-//		real_user = users | undefined = await this.authService(
 		const { ['user_login']: user_login, ...newMsg } = msg;
 		const { ['target_login']: target_login, ...newMsg2 } =newMsg;
 
@@ -122,7 +113,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 
 		if (target !== undefined) {
-			this.logger.debug(`[ChanMsg] Sending channel message: ${msg}`);
 			target.map((user) => {
 				user.getSocket().emit('new-channel-message', newMsg2);
 			});
@@ -239,7 +229,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 	private emitToChannel(event: string, channel: Channel, data: any)
 	{
-		console.log('emitting to channel ' + channel.getId);
 		const chatUsers = channel.getUsers();
 
 		for (let i = 0; i < chatUsers.length; i++)
@@ -260,7 +249,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	{
 		const jsoned = JSON.stringify(data);
 
-		this.logger.debug(`>Emitting to client id ${client.id} data: ${jsoned}`);
+	//	this.logger.debug(`>Emitting to client id ${client.id} data: ${jsoned}`);
 		this.server.emit(event, jsoned);
 	}
 
@@ -268,7 +257,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	{
 		const jsoned = JSON.stringify(data);
 
-		this.logger.debug(`>Emitting to everyconnected client data: ${jsoned}`);
+	//	this.logger.debug(`>Emitting to everyconnected client data: ${jsoned}`);
 		this.server.emit(event, JSON.stringify(data), {except: excludedClient.id});
 	}
 
@@ -276,7 +265,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	{
 		const jsoned = JSON.stringify(data);
 
-		this.logger.debug(`>Emitting to everyconnected client data: ${jsoned}`);
+	//	this.logger.debug(`>Emitting to everyconnected client data: ${jsoned}`);
 		this.server.emit(event, JSON.stringify(data));
 	}
 }
