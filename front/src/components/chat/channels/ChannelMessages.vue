@@ -184,7 +184,7 @@ export default {
 					return;
 				}
 
-				this.fetchMessages();
+	//			this.fetchMessages();
 				this.input = '';
 
 			} catch (error: any) {
