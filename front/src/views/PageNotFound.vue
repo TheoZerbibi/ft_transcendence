@@ -3,11 +3,12 @@
 		fluid
 		fill-height
 		:style="{
-			height: '100vh',
-			width: '100vw',
+			height: '100dvh',
 			backgroundImage: 'url(/OmoriWallpaper/404_background.png)',
 			backgroundRepeat: 'no-repeat',
 			backgroundPosition: 'center center',
+			'object-fit': 'cover',
+			'aspect-ratio': 1,
 			backgroundSize: '100% 100%',
 			marginTop: '0',
 		}"
@@ -31,7 +32,7 @@
 		</div>
 		<v-row align="center" justify="center" class="fill-height">
 			<v-col class="text-center d-flex flex-column align-center">
-				<h3 class="mt-4 omoriFont">...are you lost?</h3>
+				<h1 class="mt-4 omoriDisturbed" style="color: white;">...are you lost?</h1>
 			</v-col>
 		</v-row>
 	</v-container>
