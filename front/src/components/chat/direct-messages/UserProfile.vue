@@ -1,9 +1,13 @@
 <template>
 
 	<v-card flat class="ma-2" v-if="selectedUserLogin">
+		<div class="div pa-2 d-flex flex-row align-center">
 
 		<h3>About @{{ selectedUserLogin }}</h3>
-
+		<v-spacer></v-spacer>
+		<v-icon v-if="friendData.isOnline" icon="fas fa-circle" color="green" size="xs"></v-icon>
+		<v-icon v-else icon="fas fa-circle" color="grey" size="xs"></v-icon>
+		</div>
 		<v-avatar size="100%" class="ma-2"
 			rounded="0"
 			variant="flat">
@@ -91,6 +95,7 @@ export default {
 					loses: 0 as number,
 					matches: 0 as number,
 				},
+				isOnline: false as boolean,
 			} as any,
 		};
 	},
@@ -157,8 +162,10 @@ export default {
 						loses: data.stats.defeat,
 						matches: data.stats.totalGame,
 					},
+					isOnline: data.isOnline,
 				};
 				console.log(this.friendData);
+				console.log(data);
 
 			} catch (error) {
 				console.log(error);
