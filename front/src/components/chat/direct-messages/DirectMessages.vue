@@ -1,12 +1,6 @@
 <template>
 	<div class="div pa-2 d-flex flex-row align-center">
 		<v-card-title>@{{ userLogin }}</v-card-title>
-		<!-- userStatus 
-			green: online
-			orange: away
-			grey: offline
-		-->
-		<v-icon icon="fas fa-circle" color="green" size="xs"></v-icon>
 		<v-spacer></v-spacer>
 	</div>
 	<v-card>
