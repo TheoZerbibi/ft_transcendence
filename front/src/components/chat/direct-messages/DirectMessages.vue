@@ -92,6 +92,7 @@ export default {
 	props: {
 		selectedUserLogin: String,
 		refresh: Number,
+		challengedUserLogin: String,
 	},
 	mounted() {},
 	data() {
@@ -100,6 +101,9 @@ export default {
 			messages: [] as any,
 			input: '' as string,
 			is_friend: false as boolean,
+			challengeLogin: this.challengedUserLogin ? (this.challengedUserLogin as string) : ('' as string),
+			challengeIntro: "Let's play pong together ! Follow this link : " as string,
+			challengeLink: '' as string,
 		};
 	},
 	watch: {
@@ -123,6 +127,9 @@ export default {
 					} else console.log('Error direct msg failed');
 				});
 			}
+		},
+		challengedUserLogin: function (newVal: string) {
+			this.challenge(newVal);
 		},
 	},
 	methods: {
@@ -192,9 +199,9 @@ export default {
 			}
 		},
 
-		sendMessage: async function () {
+		sendMessage: async function (challengeLink?: string) {
 			try {
-				if (!this.userLogin || this.userLogin === '' || this.input.trim() === '') {
+				if (!this.userLogin || this.userLogin === '' || (!challengeLink && this.input.trim() === '')) {
 					return;
 				}
 				const response: any = await fetch(
@@ -208,7 +215,7 @@ export default {
 						},
 						body: JSON.stringify({
 							target_login: this.userLogin,
-							content: this.input,
+							content: challengeLink? challengeLink : this.input,
 						}),
 					},
 				);
@@ -221,10 +228,43 @@ export default {
 
 				const data = await response.json();
 
-				//	this.fetchDirectMessages();
+				this.fetchDirectMessages();
 				this.input = '';
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
+			}
+		},
+
+		challenge: async function (login: string) {
+			const requestOptions = {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${this.JWT}`,
+					'Access-Control-Allow-Origin': '*',
+				},
+			};
+
+			try {
+				const response = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/game/createPrivateGame`,
+					requestOptions,
+				);
+				snackbarStore.hideSnackbar();
+				if (!response.ok) {
+					snackbarStore.showSnackbar(response.statusText, 3000, 'red');
+					return;
+				}
+				const data = await response.json();
+
+				this.challengeLink = `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/game/${data.uid}`;
+				const challenge = this.challengeIntro + this.challengeLink;
+				console.log('challenge: ', challenge);
+				this.sendMessage(challenge);
+				this.challengeLink = '';
+				//this.$router.push({ name: `Game`, params: { uid: data.uid } });
+			} catch (error: any) {
+				snackbarStore.showSnackbar("Can't create game.", 3000, 'red');
 			}
 		},
 	},
