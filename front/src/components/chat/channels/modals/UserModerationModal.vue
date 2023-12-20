@@ -1,9 +1,9 @@
 <template>
 	<v-dialog v-model="dialogOpen">
 		<template v-slot:activator="{ props }">
-			<v-btn 
-			flat
+			<v-btn
 			rounded="0"
+			flat
 			:ripple="false"
 			v-bind="props"
 			icon="fas fa-info-circle"></v-btn>
@@ -245,4 +245,11 @@ export default {
 </script>
 
 <style scoped>
+.v-btn {
+	width: 100%;
+	margin-top: 1dvh;
+	margin-bottom: 1dvh;
+	display: flex;
+	position: relative;
+}
 </style>

@@ -4,7 +4,7 @@
 		<!-- userStatus 
 			green: online
 			orange: away
-			red: offline
+			grey: offline
 		-->
 		<v-icon icon="fas fa-circle" color="green" size="xs"></v-icon>
 		<v-spacer></v-spacer>
