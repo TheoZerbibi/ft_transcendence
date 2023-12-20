@@ -37,6 +37,7 @@ import { computed } from 'vue';
 import { useUser } from '../stores/user';
 import { useSnackbarStore } from '../stores/snackbar';
 import { useOnlineSocketStore } from '../stores/online';
+import { useBlockedUser } from '../stores/blockedUser';
 import { useBackgroundColorStore } from '../stores/background';
 
 import Snackbar from '../components/layout/Snackbar.vue';
@@ -45,6 +46,7 @@ import Button from '../components/layout/Button.vue';
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 const onlineSocketStore = useOnlineSocketStore();
+const blockedUserStore = useBlockedUser();
 const backgroundColorStore = useBackgroundColorStore();
 
 export default defineComponent({
@@ -86,6 +88,7 @@ export default defineComponent({
 				this.$cookies.remove('token');
 				try {
 					await userStore.setJWT(token);
+					await blockedUserStore.fetchBlockedUsers(token);
 				} catch (err) {
 					return this.$router.push({ name: `Login` });
 				}
