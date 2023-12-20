@@ -61,8 +61,9 @@
 import { computed, ref } from 'vue';
 import { useUser } from '../../../stores/user';
 import { useSnackbarStore } from '../../../stores/snackbar';
-
+import { useBlockedUser } from '../../../stores/blockedUser';
 import Snackbar from '../../layout/Snackbar.vue';
+
 
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();

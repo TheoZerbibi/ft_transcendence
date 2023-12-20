@@ -216,7 +216,7 @@ export class ChannelService {
 			};
 			return channelUserDto;
 		} catch (e) {
-			throw e;
+			throw new BadRequestException(e);
 		}
 	}
 
