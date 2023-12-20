@@ -21,6 +21,9 @@ export const useUser = defineStore('user', {
 		is2FA: (state) => {
 			return state.dAuth;
 		},
+		getStatus: (state) => {
+			return state.isOnline;
+		}
 	},
 	actions: {
 		async setJWT(jwt: string): Promise<void> {

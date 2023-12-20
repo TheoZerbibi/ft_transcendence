@@ -24,12 +24,6 @@
 				</UserModeration>
 			</template>
 
-			<template v-slot:prepend>
-				<v-icon icon="fas fa-circle" size="xs"></v-icon>
-			</template>
-
-			
-
 			</v-list-item>
 		</v-list>
 		
