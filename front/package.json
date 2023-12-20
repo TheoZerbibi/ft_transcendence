@@ -45,10 +45,10 @@
 		"vue-cookies": "^1.8.3",
 		"vue-router": "^4.2.5",
 		"vuetify": "^3.4.7",
-		"webfontloader": "^1.6.28"
+		"webfontloader": "^1.6.28",
+		"@fortawesome/fontawesome-free": "^6.5.1"
 	},
 	"devDependencies": {
-		"@fortawesome/fontawesome-free": "^6.5.1",
 		"@mdi/js": "^7.3.67",
 		"@rushstack/eslint-patch": "^1.6.1",
 		"@types/p5": "^1.7.6",
