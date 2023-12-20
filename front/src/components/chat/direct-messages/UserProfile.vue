@@ -19,6 +19,7 @@
 
 		<v-card-actions class="flex-column justify-center align-end">
 		<v-btn
+			v-if="isFriend"
 			flat
 			rounded="0"
 			:ripple="false"
@@ -81,6 +82,7 @@ export default {
 	data() {
 		return {
 			friendLogin: '' as string,
+			isFriend: false as boolean,
 			friendData: {
 				name: '' as string,
 				avatar: '' as string,
@@ -109,6 +111,25 @@ export default {
 					console.log('[fetchFriendData]: friendLogin is empty');
 					return;
 				}
+				const isFriend: any = await fetch(
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/isfriend/${
+						this.friendLogin
+					}`,
+					{
+						method: 'GET',
+						headers: {
+							Authorization: `Bearer ${this.JWT}`,
+							'Access-Control-Allow-Origin': '*',
+						},
+					},
+				);
+				if (!isFriend.ok) {
+					const error = await isFriend.json();
+					snackbarStore.showSnackbar(error.message, 3000, 'red');
+					return;
+				}
+				const isFriendData: any = await isFriend.json();
+				this.isFriend = isFriendData.isFriend;
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/profile/${this.friendLogin}`,
 					{
@@ -174,6 +195,7 @@ export default {
 		},
 		deleteFriend: async function () {
 			try {
+				if (!this.isFriend) return;
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends`,
 					{
@@ -196,7 +218,7 @@ export default {
 				}
 
 				this.$emit('ask-refresh');
-				this.fetchFriends();
+				this.fetchFriendData();
 
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');

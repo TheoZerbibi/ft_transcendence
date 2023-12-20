@@ -130,7 +130,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 // Direct messages
@@ -161,7 +161,8 @@ import { computed } from 'vue';
 
 //socket import
 import { useSocketStore } from '../stores/websocket';
-import { provide } from 'vue';
+
+const snackbarStore = useSnackbarStore();
 
 export default defineComponent({
 	name: 'ChatView',

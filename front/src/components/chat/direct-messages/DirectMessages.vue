@@ -204,6 +204,11 @@ export default {
 				if (!this.userLogin || this.userLogin === '' || (!challengeLink && this.input.trim() === '')) {
 					return;
 				}
+				if (!this.is_friend) {
+					snackbarStore.showSnackbar('You are not friend with this user.', 3000, 'red');
+					return;
+				}
+				console.log('challengeLink: ', challengeLink);
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/directMessage/send`,
 					{
@@ -215,7 +220,7 @@ export default {
 						},
 						body: JSON.stringify({
 							target_login: this.userLogin,
-							content: challengeLink? challengeLink : this.input,
+							content: this.input,
 						}),
 					},
 				);
