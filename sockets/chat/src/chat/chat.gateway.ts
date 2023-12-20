@@ -11,7 +11,8 @@ import { Socket, Server } from 'socket.io';
 import { Logger, UseGuards } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { ChatService } from './chat.service';
-import { Chat, Channel, User, ChannelDto, UserDto } from './impl/Chat'
+import { Chat } from './impl/Chat'
+import { Channel, User, ChannelDto, UserDto } from './impl/Channel'
 import { JwtGuard } from 'src/auth/guard';
 import { users, channel_users } from '@prisma/client';
 import { ForbiddenException } from '@nestjs/common';
@@ -84,7 +85,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 	//-----------------Api to front routes--------------------
 
-	//	To_test
 	//	@SubscribeMessage('new-direct-message')
 	public dirmsg(data: any): void
 	{
@@ -94,40 +94,39 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		const user: User | undefined = this.chatService.getUserById(msg.friend_id);
 		const me: User | undefined = this.chatService.getUserById(msg.user_id);
 
+//		const real_user:  users | undefined = await this.authService(
+//		real_user = users | undefined = await this.authService(
+		const { ['user_login']: user_login, ...newMsg } = msg;
+		const { ['target_login']: target_login, ...newMsg2 } =newMsg;
+
 		this.logger.debug(`'new-direct-message': ${(data)}`);
 
-		if (user !== undefined)
-			this.server.to(user.getSocket().id).emit('new-direct-message', data);
-		if (me !== undefined) 
-			this.server.to(me.getSocket().id).emit('new-direct-message', data);
+		if (user !== undefined && user_login === user.getUserOn())
+			this.server.to(user.getSocket().id).emit('new-direct-message', JSON.stringify(newMsg2));
+		if (me !== undefined && target_login === me.getUserOn()) 
+			this.server.to(me.getSocket().id).emit('new-direct-message', JSON.stringify(newMsg2));
 	}
 
-	// To_test
 	//	@SubscribeMessage('new-channel-message')
 	public msg(data: any): void
 	{
 		const msg: any = JSON.parse(data);
-		console.log(`[NEW_MESSAGE_RECEIVED]: ${data}`);
-	//	const channel: Channel | undefined = this.chatService.getChannelById(msg.channel_id);
 		const users: User[] = this.chatService.getUsers();
 
-		console.log(`[Channel-name] msg = ${msg.channelName}`);
 		const target: User[] = users.filter((user) => user.getChannelOn() === msg.channelName);
-		console.log(target);
+
+		this.logger.debug(`[ChanMsg] received for ${msg.channelName}`);
+
 		const { ['channelName']: channelName, ...newMsg } = msg;
 		const { ['channel_id']: channel_id, ...newMsg2 } = newMsg;
 
+
 		if (target !== undefined) {
-			this.logger.debug(`[Channel-Message] Sending channel message: ${msg}`);
+			this.logger.debug(`[ChanMsg] Sending channel message: ${msg}`);
 			target.map((user) => {
 				user.getSocket().emit('new-channel-message', newMsg2);
 			});
 		}
-
-//		if (channel === undefined)
-//			console.log('No one is connected to this channel atm');
-//		else
-//			this.emitToChannel('new-channel-message', channel, msg)
 	}
 
 	//	transmit channelEntity data to everyone in the channel
@@ -160,21 +159,28 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			this.chatService.selectChannel(client, data);
 	}
 
-	@SubscribeMessage('channel-deselected')
-	channelDeselected(client: Socket, data: any): void {
+	@SubscribeMessage('user-selected')
+	userSelected(client: Socket, data: any): void {
+			const user_login = data;
+			
+			this.chatService.selectUser(client, data);
 	}
+
+//	May Be useful
+//	  @SubscribeMessage('channel-deselected')
+//	  channelDeselected(client: Socket, data: any): void {
+//	  }
 
 
 	//		@SubscribeMessage('channel-creation')
 	channelCreation(data: any): void {
+		let userSocket;
 		const channelData: any = JSON.parse(data);
 		const user: User | undefined = this.chatService.getUserById(channelData.users[0].user_id);
-		let userSocket;
 
 		this.chatService.addChannel(channelData.id, user);
 		const { ['password']: excludedPassword, ...newChannel } = channelData;
 		if (user === undefined) {
-			console.log('User who created channel is not connected');
 			this.emitToEveryone('channel-creation', newChannel);
 		}
 		else {
@@ -188,6 +194,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		const channel_user: channel_users = JSON.parse(data);
 
 		const user: User = this.chatService.getUserById(channel_user.user_id);
+
 		if (!user) {
 			console.error('Failure user not found in memory');
 			return;
@@ -273,18 +280,3 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		this.server.emit(event, JSON.stringify(data));
 	}
 }
-
-//	Should register user using handle connection
-//	Keeping it in failcase implementation of the feature in handleConnection
-//
-//
-//	// Await for a stringified channel_users as body
-//	@SubscribeMessage('new-connection')
-//	public async connection(client: Socket, data: any) {
-//		const user: any = JSON.parse(data);
-//		const newUser: User = await this.chatService.registerUser(client, user.id);
-//		const channels: Channel[] = newUser.getChannels();
-//	
-//		this.emitToChannels('new-connection', channels, user);
-//	}
-

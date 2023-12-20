@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { users, channel_users, channels } from '@prisma/client';
 import { Socket } from 'socket.io';
-import { Chat, Channel, User, ChannelDto, UserDto } from './impl/Chat';
+import { Chat } from './impl/Chat';
+import { Channel, User, ChannelDto, UserDto } from './impl/Channel';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -49,6 +50,17 @@ export class ChatService {
 		user.selectChannelOn(channelName);
 	}
 
+	public selectUser(client: Socket, userName: string): void
+	{
+		const user: User = Chat.getUserBySocket(client);
+
+
+		if (user === undefined)
+			return ;
+		console.debug(`New user selected by ${user.getLogin()}`);
+		user.selectUserOn(userName);
+	}
+
 	public addChannel(channelId: number, user: User): Channel
 	{
 		return Chat.addChannel(channelId, user);
@@ -56,9 +68,15 @@ export class ChatService {
 
 	public async addUser(socket: Socket, user: users)
 	{
+		try {
 		const channels_usr: channel_users[] = await this.retrieveUserChannel(user);
 
+
 		return Chat.addUser(socket, user, channels_usr);
+		} catch (e) {
+			console.log(e);
+		}
+		
 	}
 
 	public removeUser(user: users): void
