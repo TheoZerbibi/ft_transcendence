@@ -103,20 +103,26 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	{
 		const msg: any = JSON.parse(data);
 		const users: User[] = this.chatService.getUsers();
-
 		const target: User[] = users.filter((user) => user.getChannelOn() === msg.channelName);
 
-		this.logger.debug(`[ChanMsg] received for ${msg.channelName}`);
 
 		const { ['channelName']: channelName, ...newMsg } = msg;
 		const { ['channel_id']: channel_id, ...newMsg2 } = newMsg;
 
+		this.logger.debug(`[ChanMsg] received for ${msg.channelName}`);
+		const socket = users.find((user) => user.getLogin() === 'Gui').getSocket().id;
+		this.logger.debug(`[ChanMsg] user socket = ${JSON.stringify(socket)}`)
+
+		this.logger.debug(`[ChanMsg] Users found for message. target: ${JSON.stringify(users.map((user) => new UserDto(user)))}`);
+		this.logger.debug(`[ChanMsg] Targets found for message. target: ${JSON.stringify(target.map((user) => new UserDto(user)))}`);
 
 		if (target !== undefined) {
 			target.map((user) => {
 				user.getSocket().emit('new-channel-message', newMsg2);
 			});
 		}
+		else
+			this.logger.debug(`[ChanMsg] Target not found for message`);
 	}
 
 	//	transmit channelEntity data to everyone in the channel
@@ -145,7 +151,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	@SubscribeMessage('channel-selected')
 	channelSelected(client: Socket, data: any): void {
 			const channel = data;
-			
+			this.logger.debug(`[ChanMsg] Client ${client.id} selected channel ${data}`);
 			this.chatService.selectChannel(client, data);
 	}
 

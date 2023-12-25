@@ -115,6 +115,7 @@ export default {
 				console.log(`[ChanMsg-WebSocket] on`);
 				if (this.channelName)	this.sendSocket(this.channelName);
 				this.socket.on('new-channel-message', (data: any) => {
+					console.log(`[ChanMsg-WebSocket] data is ${data}`)
 					if (data !== undefined) {
 						this.messages.push(data);
 					} else
@@ -128,10 +129,8 @@ export default {
 		sendSocket: async function (data) {
 				    if (this.socket && this.isConnected === true) {
 					    this.socket.emit('channel-selected', data);
-		//				console.log(`[ChanMsg-WSckt] 'channel-selected': ${data}`);
+						console.log(`[ChanMsg-WSckt] 'channel-selected': ${data}`);
 				    }
-				
-			
 			    },
 
 		fetchMessages: async function () {

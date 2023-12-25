@@ -11,7 +11,7 @@ export class ChatService {
 	constructor(private prismaService: PrismaService) {}
 
 	/********* Getter *********/
-	public getChannels(): Channel[]{
+	public getChannels(): Channel[] {
 		return Chat.getChannels();
 	}
 
@@ -19,8 +19,7 @@ export class ChatService {
 		return Chat.getUsers();
 	}
 
-	public getUserDtos(): UserDto[]
-	{
+	public getUserDtos(): UserDto[] {
 		return Chat.getUserDtos();
 	}
 
@@ -43,7 +42,6 @@ export class ChatService {
 	{
 		const user: User = Chat.getUserBySocket(client);
 
-
 		if (user === undefined)
 			return ;
 		user.selectChannelOn(channelName);
@@ -52,7 +50,6 @@ export class ChatService {
 	public selectUser(client: Socket, userName: string): void
 	{
 		const user: User = Chat.getUserBySocket(client);
-
 
 		if (user === undefined)
 			return ;
@@ -74,7 +71,6 @@ export class ChatService {
 		} catch (e) {
 			console.log(e);
 		}
-		
 	}
 
 	public removeUser(user: users): void
@@ -89,7 +85,6 @@ export class ChatService {
 	}
 
 	//******** Operation on Bdd can be replaced by better API-socket interface *********
-
 	private async retrieveUserChannel(user: users): Promise<channel_users[]> {
 		try {
 			return await this.prismaService.channel_users.findMany({
@@ -101,6 +96,7 @@ export class ChatService {
 			console.log(e);
 		}
 	}
+
 
 	public	deleteChannel(channelEntity: any): Channel
 	{

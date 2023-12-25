@@ -282,12 +282,12 @@ export default defineComponent({
 			return this.$router.push({ name: `Login` });
 		} else {
 			await this.connect(this.JWT);
+			console.log(`[Chat-Websocket] attempt to connect. isConnectecd = ${this.isConnected}`);
 		}
 		await blockedUserStore.fetchBlockedUsers(this.JWT);
 	},
 	async mounted() {
-			await this.connect(this.JWT);
-			console.log(`[Chat-Websocket] attempt to connect. isConnectecd = ${this.isConnected}`);
+//			await this.connect(this.JWT);
 			this.socket.on('welcome', (data) => {
 				console.log(`[Chat-Websocket] List of connected user: ${data}`); 
 			});
