@@ -286,7 +286,6 @@ export default defineComponent({
 		await blockedUserStore.fetchBlockedUsers(this.JWT);
 	},
 	async mounted() {
-			await this.connect(this.JWT);
 			console.log(`[Chat-Websocket] attempt to connect. isConnectecd = ${this.isConnected}`);
 			this.socket.on('welcome', (data) => {
 				console.log(`[Chat-Websocket] List of connected user: ${data}`); 
