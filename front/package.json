@@ -52,7 +52,7 @@
 		"@mdi/js": "^7.3.67",
 		"@rushstack/eslint-patch": "^1.6.1",
 		"@types/p5": "^1.7.6",
-		"@vue/eslint-config-prettier": "^8.0.0",
+		"@vue/eslint-config-prettier": "^9.0.0",
 		"@vue/eslint-config-typescript": "^12.0.0",
 		"@vue/test-utils": "^2.4.3",
 		"cypress": "^13.6.1",
