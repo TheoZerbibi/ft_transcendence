@@ -33,7 +33,6 @@
 			:isLoser="isLoser"
 			:apiData="apiData"
 		/>
-		<v-btn color="primary" @click="openDialog">Open Dialog</v-btn>
 		<Snackbar />
 	</main>
 </template>
