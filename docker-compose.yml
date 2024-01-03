@@ -21,7 +21,7 @@ services:
       - ${FRONT_PORT}:${FRONT_PORT}
     depends_on:
       api:
-        condition: service_started
+        condition: service_healthy
       game:
         condition: service_started
       chat:
@@ -43,7 +43,7 @@ services:
     - ${GAME_SOCKET_PORT}:${GAME_SOCKET_PORT}
     depends_on:
       api:
-        condition: service_started
+        condition: service_healthy
       redis:
         condition: service_healthy
     environment:
@@ -72,7 +72,7 @@ services:
     - ${CHAT_SOCKET_PORT}:${CHAT_SOCKET_PORT}
     depends_on:
       api:
-        condition: service_started
+        condition: service_healthy
       redis:
         condition: service_healthy
     environment:
@@ -130,6 +130,11 @@ services:
     networks:
       - default
       - project
+    healthcheck:
+      test: ["CMD", "wget", "${HOSTNAME}:${API_PORT}/healthz -q -O - > /dev/null 2>&1"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
     command: sh -c "pnpm db:deploy:prod && pnpm start:prod"
     restart: always
 

@@ -16,7 +16,7 @@ services:
       - /home/node/app/.pnpm-store
     depends_on:
       api:
-        condition: service_started
+        condition: service_healthy
       game:
         condition: service_started
       chat:
@@ -48,7 +48,7 @@ services:
       - /home/node/app/.pnpm-store
     depends_on:
       api:
-        condition: service_started
+        condition: service_healthy
       redis:
         condition: service_healthy
     environment:
@@ -79,7 +79,7 @@ services:
       - /home/node/app/.pnpm-store
     depends_on:
       api:
-        condition: service_started
+        condition: service_healthy
       redis:
         condition: service_healthy
     environment:
@@ -136,6 +136,12 @@ services:
       CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
       CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
       CLOUDINARY_URL: ${CLOUDINARY_URL}
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider --quiet http://localhost:${API_PORT}/healthz || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     command: sh -c "pnpm db:deploy && pnpm start:dev"
       #command: sh -c "tail -f /dev/null"
     restart: always
@@ -149,7 +155,7 @@ services:
      - 5555:5555
    depends_on:
      api:
-       condition: service_started
+       condition: service_healthy
    environment:
      POSTGRES_DB: ${POSTGRES_DB}
      POSTGRES_USER: ${POSTGRES_USER}

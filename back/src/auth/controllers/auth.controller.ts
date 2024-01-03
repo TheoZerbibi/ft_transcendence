@@ -15,7 +15,7 @@ export class AuthController {
 	@HttpCode(HttpStatus.CREATED)
 	@ApiOperation({ summary: 'Create a new user.' })
 	async signup(@Body() dto: AuthDto) {
-		if (proccess.env.NODE_ENV === 'production') return { message: 'Not allowed in production' };
+		if (process.env.NODE_ENV === 'production') return { message: 'Not allowed in production' };
 		return this.authService.signup(dto);
 	}
 	//dev only
@@ -23,7 +23,7 @@ export class AuthController {
 	@HttpCode(HttpStatus.OK)
 	@ApiOperation({ summary: 'Log as user.' })
 	async signin(@Body() dto: AuthDto) {
-		if (proccess.env.NODE_ENV === 'production') return { message: 'Not allowed in production' };
+		if (process.env.NODE_ENV === 'production') return { message: 'Not allowed in production' };
 		return this.authService.signin(dto);
 	}
 

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
+import { HealthCheckModule} from './health-check/health-check.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { PrismaModule } from './prisma/prisma.module';
@@ -14,6 +15,7 @@ import { RedisModule } from './redis/redis.module';
 		ConfigModule.forRoot({
 			isGlobal: true,
 		}),
+		HealthCheckModule,
 		AuthModule,
 		PrismaModule,
 		RedisModule,
