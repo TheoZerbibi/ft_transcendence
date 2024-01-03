@@ -131,10 +131,11 @@ services:
       - default
       - project
     healthcheck:
-      test: ["CMD", "wget", "${HOSTNAME}:${API_PORT}/healthz -q -O - > /dev/null 2>&1"]
-      interval: 20s
+      test: ["CMD-SHELL", "wget --spider --quiet http://localhost:${API_PORT}/healthz || exit 1"]
+      interval: 30s
       timeout: 10s
-      retries: 5
+      retries: 3
+      start_period: 40s
     command: sh -c "pnpm db:deploy:prod && pnpm start:prod"
     restart: always
 
