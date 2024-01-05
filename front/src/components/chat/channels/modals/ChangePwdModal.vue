@@ -77,13 +77,11 @@ export default {
 		changePassword: async function () {
 			try {
 				if (!this.channelName || this.channelName === '') {
-					console.log('[changePassword]: channelName is empty');
 					return;
 				}
 				if (this.pwd.prev === '' && this.pwd.new === '' && this.pwd.confirm === '') {
 					return;
 				}
-				console.log(this.pwd);
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.channelName}/settings/owner/pwd`,
 					{

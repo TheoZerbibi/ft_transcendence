@@ -35,7 +35,6 @@ export const useBlockedUser = defineStore('blockedUser', {
 				for (const user of data) {
 					this.blockedUser.push(user.login);
 				}
-				console.log(this.blockedUser);
 				return Promise.resolve(data);
 			} catch (error) {
 				return Promise.reject(error);

@@ -12,32 +12,27 @@
 				<v-list>
 					<v-list-item v-for="message in messages" :key="message.id">
 						<span v-if="!blockedUsersList.includes(message.login)">
-						<v-list-item-subtitle>
-							{{ message.username }}
-							{{ message.created_at }}
-						</v-list-item-subtitle>
-						{{ message.content }}
-					</span>
-					<span v-else>
-						--- Blocked user ---
-					</span>
+							<v-list-item-subtitle>
+								{{ message.username }}
+								{{ message.created_at }}
+							</v-list-item-subtitle>
+							{{ message.content }}
+						</span>
+						<span v-else> --- Blocked user --- </span>
 					</v-list-item>
 				</v-list>
 			</v-card-text>
 
 			<!-- Input -->
-
 		</div>
 
 		<!-- Else if no channel selected -->
 		<div v-else>
-			<v-card-text>
-				~ no channel selected ~
-			</v-card-text>
+			<v-card-text> ~ no channel selected ~ </v-card-text>
 		</div>
 	</v-card>
 	<v-footer rounded="0" elevation="0">
-		<v-text-field 
+		<v-text-field
 			v-model="input"
 			placeholder="Type your message..."
 			max-length="200"
@@ -47,8 +42,9 @@
 			append-inner-icon="fas fa-paper-plane"
 			@keyup.enter="sendMessage"
 			@click:append-inner="sendMessage"
-			density="compact" 
-			clearable />
+			density="compact"
+			clearable
+		/>
 	</v-footer>
 	<!-- Error handling -->
 	<Snackbar></Snackbar>
@@ -63,8 +59,7 @@ import { useSocketStore } from '../../../stores/websocket';
 import Snackbar from '../../layout/Snackbar.vue';
 import { useBlockedUser } from '../../../stores/blockedUser';
 
-
-const blockedUserStore = useBlockedUser(); 
+const blockedUserStore = useBlockedUser();
 const userStore = useUser();
 const snackbarStore = useSnackbarStore();
 
@@ -107,18 +102,16 @@ export default {
 			this.sendSocket(newVal);
 			this.fetchMessages();
 		},
-		refresh: function() {
+		refresh: function () {
 			this.fetchMessages();
 		},
 		isConnected: function (newVal: boolean) {
 			if (newVal === true && this.socket) {
-				console.log(`[ChanMsg-WebSocket] on`);
-				if (this.channelName)	this.sendSocket(this.channelName);
+				if (this.channelName) this.sendSocket(this.channelName);
 				this.socket.on('new-channel-message', (data: any) => {
 					if (data !== undefined) {
 						this.messages.push(data);
-					} else
-						console.log('Error direct msg failed');
+					} else console.log('Error direct msg failed');
 				});
 			}
 		},
@@ -126,29 +119,27 @@ export default {
 	emits: ['open-profile'],
 	methods: {
 		sendSocket: async function (data) {
-				    if (this.socket && this.isConnected === true) {
-					    this.socket.emit('channel-selected', data);
-		//				console.log(`[ChanMsg-WSckt] 'channel-selected': ${data}`);
-				    }
-				
-			
-			    },
+			if (this.socket && this.isConnected === true) {
+				this.socket.emit('channel-selected', data);
+			}
+		},
 
 		fetchMessages: async function () {
 			try {
 				if (!this.channelName || this.channelName === '') {
-					console.log('[ChannelMessages]: No channel name');
 					return;
 				}
 				const response: any = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.channelName}/access/messages`,
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${
+						this.channelName
+					}/access/messages`,
 					{
 						method: 'GET',
 						headers: {
 							Authorization: `Bearer ${this.JWT}`,
 							'Access-Control-Allow-Origin': '*',
 						},
-					}
+					},
 				);
 				if (!response.ok) {
 					const error = await response.json();
@@ -158,19 +149,19 @@ export default {
 				const data = await response.json();
 
 				this.messages = data;
-
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 		sendMessage: async function () {
 			try {
-				if (!this.channelName || this.channelName === ''
-					|| this.input.trim() === '') {
+				if (!this.channelName || this.channelName === '' || this.input.trim() === '') {
 					return;
 				}
 				const response: any = await fetch(
-					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.channelName}/new_message`,
+					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${
+						this.channelName
+					}/new_message`,
 					{
 						method: 'POST',
 						headers: {
@@ -181,7 +172,7 @@ export default {
 						body: JSON.stringify({
 							content: this.input,
 						}),
-					}
+					},
 				);
 				if (!response.ok) {
 					const error = await response.json();
@@ -189,19 +180,17 @@ export default {
 					return;
 				}
 
-	//			this.fetchMessages();
+				//			this.fetchMessages();
 				this.input = '';
-
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
 		},
 		openProfile: function () {
-			this.$emit('open-profile', this.selectedUserLogin)
+			this.$emit('open-profile', this.selectedUserLogin);
 		},
 	},
 };
-
 </script>
 
 <style scoped>

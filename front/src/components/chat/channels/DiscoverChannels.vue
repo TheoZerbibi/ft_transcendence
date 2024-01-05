@@ -205,7 +205,6 @@ export default {
 					snackbarStore.showSnackbar('Please enter a password', 3000, 'red');
 					return;
 				}
-				console.log(`${this.selectedPrivChannel}: user input pwd = ${pwd}`);
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.selectedPrivChannel}/join`,
 					{

@@ -132,10 +132,8 @@ export default {
 		fetchUsers: async function() {
 			try {
 				if (!this.channelName || this.channelName === '') {
-					console.log('[fetchUsers]: channelName is empty');
 					return;
 				}
-				console.log('[fetchUsers]: channelName: ', this.channelName);
 				const response: any = await fetch(
 					`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/channel/${this.channelName}/access/users`,
 					{
@@ -163,7 +161,6 @@ export default {
 		fetchMyChannelUserProfile: async function() {
 			try {
 				if (!this.channelName || this.channelName === '') {
-					console.log('[fetchMyChannelUserProfile]: this.channelName is empty');
 					return;
 				}
 				const response: any = await fetch(
@@ -193,7 +190,6 @@ export default {
 		leaveChannel: async function() {
 			try {
 				if (!this.channelName || this.channelName === '') {
-					console.log('[leaveChannel]: channelName is empty');
 					return;
 				}
 				const response: any = await fetch(
@@ -226,7 +222,6 @@ export default {
 		deleteChannel: async function() {
 			try {
 				if (!this.channelName || this.channelName === '') {
-					console.log('[deleteChannel]: channelName is empty');
 					return;
 				}
 				const response: any = await fetch(

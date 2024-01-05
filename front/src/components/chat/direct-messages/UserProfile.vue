@@ -106,16 +106,13 @@ export default {
 			try {
 				this.friendLogin = newVal;
 				this.fetchFriendData();
-			} catch (error) {
-				console.log(error);
-			}
+			} catch (error) {}
 		},
 	},
 	methods: {
 		fetchFriendData: async function () {
 			try {
 				if (!this.friendLogin || this.friendLogin === '') {
-					console.log('[fetchFriendData]: friendLogin is empty');
 					return;
 				}
 				const isFriend: any = await fetch(
@@ -166,11 +163,9 @@ export default {
 					},
 					isOnline: data.isOnline,
 				};
-				console.log(this.friendData);
-				console.log(data);
 
 			} catch (error) {
-				console.log(error);
+				snackbarStore.showSnackbar('Error during fetching friend profile.', 3000, 'red');
 			}
 		},
 		blockUser: async function() {
@@ -204,7 +199,7 @@ export default {
 				const data = await response.json();
 				snackbarStore.showSnackbar(data.message, 3000, 'green');
 			} catch (error) {
-				console.log(error);
+				snackbarStore.showSnackbar('Error during blocking user.', 3000, 'red');
 			}
 		},
 		deleteFriend: async function () {

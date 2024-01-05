@@ -181,6 +181,9 @@ export default {
 			this.newUser.avatar = cookie.avatar;
 		} else {
 			this.step = 0;
+			sessionStorage.clear();
+			userStore.deleteUser();
+			this.disconnect();
 		}
 	},
 	methods: {

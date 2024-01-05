@@ -286,24 +286,21 @@ export default defineComponent({
 		await blockedUserStore.fetchBlockedUsers(this.JWT);
 	},
 	async mounted() {
-			console.log(`[Chat-Websocket] attempt to connect. isConnectecd = ${this.isConnected}`);
-			this.socket.on('welcome', (data) => {
-				console.log(`[Chat-Websocket] List of connected user: ${data}`); 
-			});
+		if (!this.JWT) {
+			return this.$router.push({ name: `Login` });
+		}
+		await blockedUserStore.fetchBlockedUsers(this.JWT);
 	},
 	methods: {
 		updateSelectedUser(login: string) {
 			this.selectedUserLogin = login;
-			console.log('[CHAT.vue] NEW SELECTED FRIEND LOGIN: ', this.selectedUserLogin);
 		},
 
 		updateSelectedChannel(name: string) {
 			this.selectedChannelName = name;
-			console.log('[CHAT.vue] NEW SELECTED CHANNEL NAME: ', this.selectedChannelName);
 		},
 		challengeSelectedUser(login: string) {
 			this.selectedChallengedLogin = login;
-			console.log(`[CHAT.vue] CHALLENGE SELECTED USER: ${login}`);
 		},
 		redirect(path: string) {
 			return this.$router.push({ name: path });

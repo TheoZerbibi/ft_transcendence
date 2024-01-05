@@ -76,7 +76,6 @@ export default {
 					return;
 				}
 				const data: any = await response.json();
-				console.log(data);
 				this.matchHistory = data;
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');

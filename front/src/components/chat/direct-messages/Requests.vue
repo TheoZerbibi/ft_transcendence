@@ -94,7 +94,6 @@ export default {
 	methods: {
 		fetchRequests: async function () {
 			try {
-				console.log(`[REQUESTS]: fetching requests of ${this.user.login}`);
 				const response: any = await
 					fetch(
 						`http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_API_PORT}/users/friends/requests`,
@@ -146,7 +145,7 @@ export default {
 				this.$emit('ask-refresh');
 
 			} catch (error) {
-				console.log(error);
+				snackbarStore.showSnackbar('Error during respond.', 3000, 'red');
 			}
 		},
 		cancelRequest: async function (target_login: string) {
@@ -173,7 +172,7 @@ export default {
 				this.$emit('ask-refresh');
 
 			} catch (error) {
-				console.log(error);
+				snackbarStore.showSnackbar('Error during friend remove.', 3000, 'red');
 			}
 		},
 		userSelected(login: string) {

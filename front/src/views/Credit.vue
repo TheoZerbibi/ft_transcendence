@@ -54,7 +54,6 @@ export default defineComponent({
 		let time = 0;
 		this.interval = setInterval(() => {
 			time++;
-			console.log(time);
 			if (time >= 20 && time < 24) {
 				this.mate = true;
 			} else if (time >= 24 && time < 29) {

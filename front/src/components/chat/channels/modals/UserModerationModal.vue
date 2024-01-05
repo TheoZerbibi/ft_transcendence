@@ -131,13 +131,11 @@ export default {
 			this.modUser(login, 'ban');
 		},
 		mute: async function (login: string, duration: number) {
-			console.log('mute: ', login, duration);
 			const dateUntil = new Date();
 			const millisecondsToAdd = duration * 3600000; // 1 heure = 3600000 millisecondes
 
 			dateUntil.setTime(dateUntil.getTime() + millisecondsToAdd);
 
-			console.log('mute: ', login, dateUntil);
 			this.modUser(login, 'mute', dateUntil);
 		},
 		unmute: async function (login: string) {
@@ -175,7 +173,7 @@ export default {
 				this.$emit('close-modal');
 
 			} catch (error) {
-				console.log(error);
+				snackbarStore.showSnackbar('Mute failed.', 3000, 'red');
 			}
 		},
 		promote: async function (login: string) {
@@ -206,7 +204,7 @@ export default {
 				this.dialogOpen = false;
 
 			} catch (error) {
-				console.log(error);
+				snackbarStore.showSnackbar('Promote failed.', 3000, 'red');
 			}
 		},
 		demote: async function (login: string) {
@@ -237,7 +235,7 @@ export default {
 				this.dialogOpen = false;
 
 			} catch (error) {
-				console.log(error);
+				snackbarStore.showSnackbar('Demote failed.', 3000, 'red');
 			}
 		},
 	}

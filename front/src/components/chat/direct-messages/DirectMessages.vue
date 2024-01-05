@@ -111,7 +111,6 @@ export default {
 		},
 		isConnected: function (newVal: boolean) {
 			if (newVal === true && this.socket) {
-				console.log(`[DirMsg-WebSocket] on`);
 				if (this.userLogin)	this.sendSocket(this.userLogin);
 				this.socket.on('new-direct-message', (data: any) => {
 					const msg: any = JSON.parse(data);
@@ -134,7 +133,6 @@ export default {
 		fetchDirectMessages: async function () {
 			try {
 				if (!this.userLogin || this.userLogin === '') {
-					console.log('[fetchDirectMessages]: userLogin is empty');
 					return;
 				}
 
@@ -253,7 +251,6 @@ export default {
 
 				this.challengeLink = `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}/game/${data.uid}`;
 				this.challenge = this.challengeIntro + this.challengeLink;
-				console.log('challenge: ', this.challenge);
 			} catch (error: any) {
 				snackbarStore.showSnackbar("Can't create game.", 3000, 'red');
 			}
@@ -281,11 +278,9 @@ export default {
 			}
 
 			const data2 = await response2.json();
-			console.log ('data2: ', data2);
 
 			this.fetchDirectMessages();
 			this.challengeLink = '';
-			//this.$router.push({ name: `Game`, params: { uid: data.uid } });
 			} catch (error: any) {
 				snackbarStore.showSnackbar(error, 3000, 'red');
 			}
