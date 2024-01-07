@@ -69,8 +69,8 @@ dependencies:
     specifier: ^1.41.0
     version: 1.41.0
   file-type:
-    specifier: ^18.7.0
-    version: 18.7.0
+    specifier: ^19.0.0
+    version: 19.0.0
   multer:
     specifier: 1.4.5-lts.1
     version: 1.4.5-lts.1
@@ -1748,7 +1748,7 @@ packages:
     resolution: {integrity: sha512-oq0fy8Jqj19HofanFsZ56o5anMDUQtFO9B3wfLqM9o42RyCe1WT+wRbSvRbL2l8ARZXNaJturHk0b442+0yi+g==}
     deprecated: This is a stub types definition. file-type provides its own type definitions, so you do not need this installed.
     dependencies:
-      file-type: 18.7.0
+      file-type: 19.0.0
     dev: false
 
   /@types/graceful-fs@4.1.9:
@@ -3565,9 +3565,9 @@ packages:
       flat-cache: 3.1.0
     dev: true
 
-  /file-type@18.7.0:
-    resolution: {integrity: sha512-ihHtXRzXEziMrQ56VSgU7wkxh55iNchFkosu7Y9/S+tXHdKyrGjVK0ujbqNnsxzea+78MaLhN6PGmfYSAv1ACw==}
-    engines: {node: '>=14.16'}
+  /file-type@19.0.0:
+    resolution: {integrity: sha512-s7cxa7/leUWLiXO78DVVfBVse+milos9FitauDLG1pI7lNaJ2+5lzPnr2N24ym+84HVwJL6hVuGfgVE+ALvU8Q==}
+    engines: {node: '>=18'}
     dependencies:
       readable-web-to-node-stream: 3.0.2
       strtok3: 7.0.0
