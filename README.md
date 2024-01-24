@@ -1,25 +1,6 @@
 # TRANSCENDENCE
 
-## Sommaire
-
-- [Présentation du Projet](#presentation)
-- [Direction Artistique](#direction-artistique)
-- [Cahier des Charges](#cahier-des-charges)
-- [Utilisation](#setup)
-- [Stack](#stack)
-	- [NestJS](#nestjs)
-	- [Sockets](#sockets)
-	- [Redis](#redis)
-	- [PostgreSQL](#postgres)
-	- [Prisma](#prisma)
-	- [VueJS](#vuedotjs)
-	- [Vuetify](#vuetify)
-	- [Vite](#vite)
-	- [Pinia](#pinia)
-- [Notions](#notions)
-- [Authors](#authors)
-
-## Présentation du Projet {#presentation}
+## Présentation du Projet
 
 ft_transcendence est le dernier projet du Tronc Commun (Common Core) de l'école 42.
 
@@ -27,7 +8,7 @@ L'objectif de ce projet est de rassembler les connaissances acquises tout au lon
 
 Cette application prend la forme d'un jeu de Pong responsive, accessible seulement aux étudiants de l'école 42 via une connexion Oauth2, et comprenant une base de donnée utilisateur.
 
-## Direction Artistique {#direction-artistique}
+## Direction Artistique
 
 Pour ce projet, nous avons décidé de nous inspirer du jeu Omori.
 
@@ -35,7 +16,7 @@ Omori est un jeu vidéo de rôle (RPG) développé par le studio indépendant Om
 
 Ce projet rend donc homage à cette oeuvre, en reprenant son style graphique et son ambiance. S'agissant d'un projet d'étudiant, il n'a pas vocation a être commercialisé. Aucun profit ne sera tiré de ce projet. Tous les droits d'auteur sont réservés au studio Omocat.
 
-## Cahier des Charges {#cahier-des-charges}
+## Cahier des Charges
 
 Le sujet requiert les fonctionnalités et technologies suivantes:
 
@@ -72,7 +53,7 @@ Le sujet requiert les fonctionnalités et technologies suivantes:
 		- système de modération (kick, ban, mute) réservé aux administrateurs
 
 
-## Utilisation {#setup}
+## Utilisation
 
 Le projet doit être lancé avec la commande suivante depuis la racine du repertoire:
 
@@ -82,7 +63,7 @@ Le site est accessible en local depuis l'adresse suivante:
 
 ```http://localhost:3000```
 
-## Stack {#stack}
+## Stack
 
 Pour notre projet nous avons choisi la stack suivantes:
 
@@ -96,7 +77,7 @@ Pour notre projet nous avons choisi la stack suivantes:
 | **Front-end** | ![Static Badge](https://img.shields.io/badge/Vue.js-%231a1a1a?logo=vuedotjs&link=https%3A%2F%2Fvuejs.org%2F) ![Static Badge](https://img.shields.io/badge/Vuetify-%231867C0?logo=vuetify&link=https%3A%2F%2Fvuetifyjs.com%2Fen%2F) ![Static Badge](https://img.shields.io/badge/Vite-%231b1b1f?logo=vite&link=https%3A%2F%2Fvitejs.dev%2F) ![Static Badge](https://img.shields.io/badge/p5.js-%23ED225D?logo=p5dotjs&link=https%3A%2F%2Fp5js.org%2F) |
 | **Stockage de données front-end** | ![Static Badge](https://img.shields.io/badge/Pinia-%23ffd859?logo=pinia&link=https%3A%2F%2Fpinia.vuejs.org%2F) |
 
-### NestJS {#nestjs}
+### NestJS
 
 C’est un framework javascript open source destiné au développement back-end. Il est construit sur la plateforme Node.js et s’inspire fortement du framework Angular pour le développement front-end.
 
@@ -120,7 +101,7 @@ Les développeurs peuvent ainsi créer un code propre qui ne se chevauche pas.
 
 ![Architecture et flux de travail NestJS](https://github.com/TheoZerbibi/ft_transcendence/blob/core/production/.img/Architecture-and-Workflow-of-NestJS.jpeg?raw=true)
 
-### Sockets avec NestJs et Sockets.io {#sockets}
+### Sockets avec NestJs et Sockets.io
 
 Les sockets (WebSockets) sont une technologie de communication bidirectionnelle en temps réel entre le client et le serveur. Dans le contexte de NestJS, Socket.io est une bibliothèque qui facilite la mise en oeuvre des WebSockets.
 
@@ -147,14 +128,14 @@ Avantages de Socket.io:
 - **Compatibilité**: fonctionne sur différents navigateurs et plate-formes
 - **Reconnexion automatique**: gère automatiquement les tentatives de reconnexion en cas de perte de connexion
 
-Limites: 
+Limites:
 
 - **Firewall**: certains pare-feu et proxys peuvent interférer avec les connexions WebSockets
 
 
 ![Cycle de vie d’une connexion WebSocket](https://github.com/TheoZerbibi/ft_transcendence/blob/core/production/.img/cycledevieduneconnextionwebsocket.png?raw=true)
 
-### Redis {#redis}
+### Redis
 
 La communication entre les sockets (via Sockets.io) et le back-end, en utilisant un système de publication/abonnement (Pub/Sub - Publish/Subscribe), peut être mise en oeuvre pour permettre une communication efficace en temps réel.
 
@@ -187,7 +168,7 @@ Limites:
 
 ![Exemple de méchanisme Pub and Sub](https://github.com/TheoZerbibi/ft_transcendence/blob/core/production/.img/publish-subscribe-pattern.png?raw=true)
 
-### PostgreSQL (Postgres) {#postgres}
+### PostgreSQL (Postgres)
 
 PostgreSQL (ou Postgres) est un système de gestion de base de données relationnelles (SGBDR) open source et performant.
 
@@ -216,7 +197,7 @@ Des outils comme **pgAdmin** et **DataGrip** sont souvent utilisés pour adminis
 
 ![Architecture base de données ft_transcendence](https://github.com/TheoZerbibi/ft_transcendence/blob/core/production/.img/schemaprisma.png?raw=true)
 
-### Prisma {#prisma}
+### Prisma
 
 Prisma est un **ORM** (Object-Relational Mapping) moderne pour les bases de données.
 
@@ -245,7 +226,7 @@ Prisma simplifie le développement avec des bases de données relationnelles en 
 
 ![Description de l’architecture Prisma](https://github.com/TheoZerbibi/ft_transcendence/blob/core/production/.img/prisma.png?raw=true)
 
-### Vue.js {#vuedotjs}
+### Vue.js
 
 Vue 3 est un framework JavaScript progressif et réactif utilisé pour la construction d'interfaces utilisateur.
 
@@ -255,7 +236,7 @@ Il est conçu pour être facile à intégrer dans des projets existants et à ad
 - **Performances améliorées**: Vue 3 a des performances améliorées grâce à la refonte du moteur de rendu. Il est plus rapide et plus efficace, offrant une expérience utilisateur réactive.
 - **Portail**: Vue 3 introduit la notion de portail qui facilite le rendu d'un composant à un endroit différent dans le DOM, souvent utile pour la création de modales ou de pop-ups.
 
-### Vuetify {#vuetify}
+### Vuetify 
 
 Vuetify est une bibliothèque de composants UI pour Vue.js, construite conformément aux principes du Google Material Design.
 
@@ -266,7 +247,7 @@ Elle offre une collection étendue de composants prêts à l'emploi pour aider l
 - **Thèmes personnalisables**: Les thèmes de Vuetify sont facilement personnalisables, permettant aux développeurs d'ajuster l'apparence de leurs applications en fonction des besoins.
 - **Composants prêts à l’emploi**: Une grande variété de composants tels que des boutons, des barres latérales, des cartes, etc.., prêts à l'emploi.
 
-### Vite {#vite}
+### Vite
 
 Vite est un outil de construction rapide pour les applications web modernes.
 
@@ -283,7 +264,7 @@ En combinant Vue 3, Vuetify, et Vite, vous obtenez un écosystème puissant pour
 
 [Create a new Vue3 project with Vite, Vuetify 3, Router and Typecript](https://www.youtube.com/watch?app=desktop&v=To5XzHlTS_E)
 
-### Pinia {#pinia}
+### Pinia
 
 Pinia est un système de gestion d'état global (global state management system) pour Vue 3.
 
@@ -301,7 +282,7 @@ Avec Pinia, vous pouvez gérer l'état global de manière réactive dans vos app
 
 ![Architecture VueEx](https://github.com/TheoZerbibi/ft_transcendence/blob/core/production/.img/archivuejex.png?raw=true)
 
-## Notions {#notions}
+## Notions
 
 ### Développement full stack
 
@@ -351,7 +332,7 @@ Il permet de suivre les modifications, de collaborer efficacement et de revenir 
 C’est le processus de mise en ligne d’une application afin qu’elle soit accessible aux utilisateurs finaux.
 Il rend l’application disponible et prête à être utilisée.
 
-## AUTHORS {#authors}
+## AUTHORS
 
 - [Théo Zeribi](https://github.com/TheoZerbibi)
 - [Noémi Fauconnier](https://github.com/nfauconn)
