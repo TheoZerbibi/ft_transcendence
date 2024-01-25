@@ -1,6 +1,6 @@
-# TRANSCENDENCE
+<h1 align="center">FT_TRANSCENDENCE</h1>
 
-## Présentation du Projet
+## 🏓 Présentation du Projet
 
 ft_transcendence est le dernier projet du Tronc Commun (Common Core) de l'école 42.
 
@@ -8,7 +8,7 @@ L'objectif de ce projet est de rassembler les connaissances acquises tout au lon
 
 Cette application prend la forme d'un jeu de Pong responsive, accessible seulement aux étudiants de l'école 42 via une connexion Oauth2, et comprenant une base de donnée utilisateur.
 
-## Direction Artistique
+## 🎨 Direction Artistique
 
 Pour ce projet, nous avons décidé de nous inspirer du jeu Omori.
 
@@ -16,11 +16,11 @@ Omori est un jeu vidéo de rôle (RPG) développé par le studio indépendant Om
 
 Ce projet rend donc homage à cette oeuvre, en reprenant son style graphique et son ambiance. S'agissant d'un projet d'étudiant, il n'a pas vocation a être commercialisé. Aucun profit ne sera tiré de ce projet. Tous les droits d'auteur sont réservés au studio Omocat.
 
-## Cahier des Charges
+## 📑 Cahier des Charges
 
 Le sujet requiert les fonctionnalités et technologies suivantes:
 
-### Techno / frameworks
+### 🔨 Techno / frameworks
 
 - `Nest.js` pour le back-end
 - `Typescript` dans sa version stable la plus récente pour le front (choix du framework libre)
@@ -29,7 +29,7 @@ Le sujet requiert les fonctionnalités et technologies suivantes:
 - Le site doit pouvoir fonctionner avec la dernière version stable de Google Chrome et un autre navigateur de notre choix
 - `Oauth2` pour l'authentification
 
-### Fonctionnalités
+### 🔮 Fonctionnalités
 
 - Un jeu de Pong
 	- responsive
@@ -52,8 +52,7 @@ Le sujet requiert les fonctionnalités et technologies suivantes:
 		- possibilité pour un utilisateur de créer, joindre et/ou quitter un channel
 		- système de modération (kick, ban, mute) réservé aux administrateurs
 
-
-## Utilisation
+## 💽 Utilisation
 
 Le projet doit être lancé avec la commande suivante depuis la racine du repertoire:
 
@@ -63,7 +62,7 @@ Le site est accessible en local depuis l'adresse suivante:
 
 ```http://localhost:3000```
 
-## Stack
+## 📚 Stack
 
 Pour notre projet nous avons choisi la stack suivantes:
 
@@ -77,7 +76,7 @@ Pour notre projet nous avons choisi la stack suivantes:
 | **Front-end** | ![Static Badge](https://img.shields.io/badge/Vue.js-%231a1a1a?logo=vuedotjs&link=https%3A%2F%2Fvuejs.org%2F) ![Static Badge](https://img.shields.io/badge/Vuetify-%231867C0?logo=vuetify&link=https%3A%2F%2Fvuetifyjs.com%2Fen%2F) ![Static Badge](https://img.shields.io/badge/Vite-%231b1b1f?logo=vite&link=https%3A%2F%2Fvitejs.dev%2F) ![Static Badge](https://img.shields.io/badge/p5.js-%23ED225D?logo=p5dotjs&link=https%3A%2F%2Fp5js.org%2F) |
 | **Stockage de données front-end** | ![Static Badge](https://img.shields.io/badge/Pinia-%23ffd859?logo=pinia&link=https%3A%2F%2Fpinia.vuejs.org%2F) |
 
-### NestJS
+###  NestJS
 
 C’est un framework javascript open source destiné au développement back-end. Il est construit sur la plateforme Node.js et s’inspire fortement du framework Angular pour le développement front-end.
 
@@ -282,7 +281,7 @@ Avec Pinia, vous pouvez gérer l'état global de manière réactive dans vos app
 
 ![Architecture VueEx](https://github.com/TheoZerbibi/ft_transcendence/blob/core/production/.img/archivuejex.png?raw=true)
 
-## Notions
+## 📎 Notions
 
 ### Développement full stack
 
@@ -332,10 +331,8 @@ Il permet de suivre les modifications, de collaborer efficacement et de revenir 
 C’est le processus de mise en ligne d’une application afin qu’elle soit accessible aux utilisateurs finaux.
 Il rend l’application disponible et prête à être utilisée.
 
-## AUTHORS
+## 🤝 Contributeurs
 
-- [Théo Zeribi](https://github.com/TheoZerbibi)
-- [Noémi Fauconnier](https://github.com/nfauconn)
-- [Gaëlle Rannou](https://github.com/Kyubie)
-- [Ismael Guidadou](https://github.com/Noob3vol)
-- [Semiha Beyazkilic](https://github.com/semx2a)
+<a href="https://github.com/TheoZerbibi/ft_transcendence/graphs/contributors">
+  <img align="center" src="https://contrib.rocks/image?repo=TheoZerbibi/ft_transcendence" />
+</a>
