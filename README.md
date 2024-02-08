@@ -11,7 +11,7 @@ The goal of this project is to consolidate the knowledge acquired throughout the
 
 This application takes the form of a responsive Pong game, accessible only to students of École 42 via Oauth2 connection, and includes a user database.
 
-## 🎨 Artistic Direction
+## 🎨 Art Direction
 
 For this project, we decided to draw inspiration from the game Omori.
 
