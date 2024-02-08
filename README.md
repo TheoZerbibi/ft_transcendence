@@ -1,7 +1,7 @@
-[![en](https://img.shields.io/badge/lang-en-pink.svg)](https://github.com/TheoZerbibi/ft_transcendence/blob/core/production/README.md)
-[![fr](https://img.shields.io/badge/lang-fr-purple.svg)](https://github.com/TheoZerbibi/ft_transcendence/blob/core/production/README.fr.md)
+# FT_TRANSCENDENCE
 
-<h1>FT_TRANSCENDENCE</h1>
+[![en](https://img.shields.io/badge/lang-en-pink.svg)](README.md)
+[![fr](https://img.shields.io/badge/lang-fr-purple.svg)](README.fr.md)
 
 ## 🏓 Project Presentation
 
@@ -35,25 +35,27 @@ The subject requires the following functionalities and technologies:
 ### 🔮 Features
 
 - A Pong game
-	- responsive
-	- featuring a matchmaking system
-	- recording user statistics to feed a leaderboard
+  - responsive
+    - featuring a matchmaking system
+    - recording user statistics to feed a leaderboard
 
 - User profiles
-	- hashed password
-	- possibility to upload an avatar
-	- match history
-	- social network system:
-		- adding/removing friends
-		- blocking a user
+
+  - hashed password
+  - possibility to upload an avatar
+  - match history
+  - social network system:
+    - adding/removing friends
+    - blocking a user
 
 - A real-time messaging application
-	- direct messaging
-		- online / offline status
-		- challenging a friend to Pong
-	- channels
-		- ability for a user to create, join and/or leave a channel
-		- moderation system (kick, ban, mute) reserved for administrators
+
+  - direct messaging
+    - online / offline status
+    - challenging a friend to Pong
+  - channels
+    - ability for a user to create, join and/or leave a channel
+    - moderation system (kick, ban, mute) reserved for administrators
 
 ## 💽 Usage
 
@@ -99,7 +101,9 @@ NestJS is useful for:
 
 NestJS has a 3-layer architecture consisting of controllers, providers, and modules, enabling developers to create clean, non-overlapping code.
 
-![NestJS Architecture and Workflow](https://github.com/TheoZerbibi/ft_transcendence/blob/core/production/.img/Architecture-and-Workflow-of-NestJS.jpeg?raw=true)
+<p align="center">
+	<img src=".img/Architecture-and-Workflow-of-NestJS.jpeg?raw=true" alt="Architecture and Workflow of NestJS" width="600px" height="auto">
+</p>
 
 ### Sockets with NestJs and Sockets.io
 
@@ -119,7 +123,7 @@ Integration with NestJS:
 - **@WebSocketServer**: allows injecting the WebSocket server instance into the application's components.
 - **Connection Management**: allows managing connections, disconnections, and data exchanges between the server and clients.
 
-#### Example of Use
+#### Use cases
 
 In a real-time chat, the server can use sockets to instantly send messages to connected clients without them having to refresh the page.
 
@@ -132,7 +136,9 @@ Limitations:
 
 - **Firewall**: some firewalls and proxies may interfere with WebSocket connections.
 
-![WebSocket Connection Lifecycle](https://github.com/TheoZerbibi/ft_transcendence/blob/core/production/.img/cycledevieduneconnextionwebsocket.png?raw=true)
+<p align="center">
+	<img src=.img/cycledevieduneconnextionwebsocket.png?raw=true alt="Cycle de vie d'une connexion WebSocket" width="600px" height="auto">
+</p>
 
 ### Redis
 
@@ -152,7 +158,7 @@ Communication between sockets (via Sockets.io) and the back-end, using a Publish
 - **Subscriber**: Client-side sockets can be configured as subscribers to these specific channels or events. When a message is published by the back-end, sockets that are subscribed to that particular channel will automatically receive that message.
 - **Emitter**: Sockets can also act as emitters, publishing messages to the back-end to signal client-side events.
 
-#### Example of Use
+#### Use cases
 
 Imagine a real-time chat application:
 
@@ -167,7 +173,9 @@ Limitations:
 
 - Implementing this model requires good management of channels, events, and messages to avoid performance and security issues.
 
-![Example of Pub and Sub Mechanism](https://github.com/TheoZerbibi/ft_transcendence/blob/core/production/.img/publish-subscribe-pattern.png?raw=true)
+<p align="center">
+	<img src=".img/publish-subscribe-pattern.png?raw=true" alt="Publish/Subscribe Pattern" width="600px" height="auto">
+</p>
 
 ### PostgreSQL (Postgres)
 
@@ -196,7 +204,9 @@ Tools such as **pgAdmin** and **DataGrip** are often used to administer and inte
 
 #### Architecture of Our Database
 
-![Database Architecture ft_transcendence](https://github.com/TheoZerbibi/ft_transcendence/blob/core/production/.img/schemaprisma.png?raw=true)
+<p align="center">
+	<img src=".img/schemaprisma.png?raw=true" alt="Schema Prisma" width="600px" height="auto">
+</p>
 
 ### Prisma
 
@@ -217,19 +227,18 @@ Key Features:
 - **Prisma Client**: Provides an automatically generated client that offers a type-safe API for interacting with the database.
 - **Pagination and Filtering**: Facilitates the implementation of pagination and filtering in queries.
 
-#### Usage
+#### Use cases
 
 Prisma is used in back-end application development to simplify database operations.
 
 It is often paired with frameworks such as Express.js (Node.js) or Fastify.
 
 Prisma simplifies development with relational databases by offering clear syntax and a type-safe client for interacting with the database.
+<p align="center">
+	<img src=".img/prisma.png?raw=true" alt="Prisma" width="600px" height="auto">
+</p>
 
-![Description of Prisma Architecture](https://github.com/TheoZerbibi/ft_transcendence/blob/core/production/.img/prisma.png?raw=true)
-
-###
-
- Vue.js
+### Vue.js
 
 Vue 3 is a progressive and reactive JavaScript framework used for building user interfaces.
 
@@ -262,8 +271,9 @@ It is designed to work with Vue.js, React, and other frameworks. It offers a fas
 - **Integration with Vuetify and Vue3**: Vite can be easily integrated with Vue 3 and Vuetify, providing an optimized setup for smooth development.
 
 Combining Vue 3, Vuetify, and Vite provides a powerful ecosystem for modern web application development with a seamless development experience and aesthetically pleasing and functional user interfaces.
-
-![](https://github.com/TheoZerbibi/ft_transcendence/blob/core/production/.img/vuevitepinia.png?raw=true)
+<p align="center">
+	<img src=".img/vuevitepinia.png?raw=true" alt="Vue, Vite, and Pinia" width="600px" height="auto">
+</p>
 
 [Create a new Vue3 project with Vite, Vuetify 3, Router and Typescript](https://www.youtube.com/watch?app=desktop&v=To5XzHlTS_E)
 
@@ -280,10 +290,12 @@ It offers reactive and efficient state management for Vue.js applications using 
 - **Support for Vue2**: Although designed for Vue 3, Pinia also offers a version for Vue 2.
 
 With Pinia, you can manage global state reactively in your Vue 3 applications. It offers a lightweight and efficient alternative for global state management.
-
-![Pinia Workflow Diagram](https://github.com/TheoZerbibi/ft_transcendence/blob/core/production/.img/piniaworkflow.png?raw=true)
-
-![VueEx Architecture](https://github.com/TheoZerbibi/ft_transcendence/blob/core/production/.img/archivuejex.png?raw=true)
+<p align="center">
+	<img src=".img/piniaworkflow.png?raw=true" alt="Pinia Workflow" width="600px" height="auto">
+</p>
+<p align="center">
+	<img src=".img/archivuejex.png?raw=true" alt="Architecture of a Vue.js Application with Pinia" width="600px" height="auto">
+</p>
 
 ## 📎 Concepts
 
@@ -296,8 +308,10 @@ Concerns the creation of complete web applications and covers:
 
 It allows for managing the entire application development process.
 Here the project consists of recreating a website with a beautiful user interface, offering an online and multiplayer pong game, and a chat service.
-
-![Example of a Full Stack Development Diagram](https://github.com/TheoZerbibi/ft_transcendence/blob/core/production/.img/Exemple%20de%20sch%C3%A9ma%20d%E2%80%99un%20d%C3%A9veloppement%20full%20stack.png?raw=true)
+	
+<p align="center">	
+	<img src=".img/Exemple%20de%20sch%C3%A9ma%20d%E2%80%99un%20d%C3%A9veloppement%20full%20stack.png?raw=true" alt="Full Stack Development Schema" width="600px" height="auto">)
+</p>
 
 ### Front-end
 
@@ -339,6 +353,6 @@ It makes the application available and ready for use.
 
 ## 🤝 Contributors
 
-<a href="https://github.com/TheoZerbibi/ft_transcendence/graphs/contributors">
-  <img align="center" src="https://contrib.rocks/image?repo=TheoZerbibi/ft_transcendence" />
-</a>
+<p href="https://github.com/TheoZerbibi/ft_transcendence/graphs/contributors" align="center">
+  <img src="https://contrib.rocks/image?repo=TheoZerbibi/ft_transcendence" alt="contributors" />
+</p>
